@@ -1,20 +1,26 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
+import '../../data/companions.dart';
+import '../../data/diseases.dart';
 import '../../data/regions/france.dart';
 import '../../data/regions/west_africa.dart';
+import '../../data/rotation.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
+import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
-import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 import 'calendar_grid_screen.dart';
+import 'monthly_calendar_screen.dart';
 
-/// Onglet "Semer" — illustration saisonnière + sélecteur de mois + liste
-/// des légumes semables pour le mois sélectionné, filtrée par région active.
+/// Dashboard principal — Hero saisonnier + météo + actions rapides +
+/// à faire + légume du jour + conseil du jour.
 class SowScreen extends StatefulWidget {
   const SowScreen({super.key});
 
@@ -23,23 +29,21 @@ class SowScreen extends StatefulWidget {
 }
 
 class _SowScreenState extends State<SowScreen> {
-  late final PageController _monthController;
-  late int _selectedMonth;
+  WeatherData? _weather;
+  bool _loadingWeather = false;
 
   @override
   void initState() {
     super.initState();
-    _selectedMonth = DateTime.now().month;
-    _monthController = PageController(
-      initialPage: _selectedMonth - 1,
-      viewportFraction: 0.32,
-    );
+    _loadWeather();
   }
 
-  @override
-  void dispose() {
-    _monthController.dispose();
-    super.dispose();
+  Future<void> _loadWeather() async {
+    setState(() => _loadingWeather = true);
+    try {
+      _weather = await WeatherService.getWeather();
+    } catch (_) {}
+    if (mounted) setState(() => _loadingWeather = false);
   }
 
   List<RegionData> _dataFor(Region region) {
@@ -51,217 +55,382 @@ class _SowScreenState extends State<SowScreen> {
     }
   }
 
-  RegionData? _findRegionData(List<RegionData> list, String vegetableId) {
-    for (final d in list) {
-      if (d.vegetableId == vegetableId) return d;
-    }
-    return null;
+  /// Légume du jour — déterministe par date (pas aléatoire à chaque build).
+  Vegetable get _vegetableOfTheDay {
+    final dayOfYear = DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
+    return vegetablesBase[dayOfYear % vegetablesBase.length];
   }
 
-  void _openDetail(Vegetable v) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => VegetableDetailScreen(vegetable: v),
-      ),
-    );
+  /// Conseil du jour — tiré des données de compagnonnage, rotation, maladies.
+  String get _tipOfTheDay {
+    final tips = <String>[];
+
+    // Tips compagnonnage.
+    for (final entry in companionMap.entries) {
+      final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
+      final comp = entry.value.isNotEmpty
+          ? vegetablesBase.where((v) => v.id == entry.value.first).firstOrNull
+          : null;
+      if (veg != null && comp != null) {
+        tips.add(
+            '${veg.emoji} ${veg.name} adore pousser à côté de ${comp.emoji} ${comp.name} !');
+      }
+    }
+
+    // Tips rotation.
+    for (final entry in rotationMap.entries) {
+      final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
+      if (veg != null) {
+        tips.add(
+            '${veg.emoji} ${veg.name} : attendre ${entry.value.waitYears} ans avant de replanter au même endroit (${entry.value.family}).');
+      }
+    }
+
+    // Tips maladies.
+    for (final entry in diseaseMap.entries) {
+      final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
+      if (veg != null && entry.value.isNotEmpty) {
+        final d = entry.value.first;
+        tips.add('${veg.emoji} ${veg.name} : attention au ${d.name}. Remède bio : ${d.remedy}.');
+      }
+    }
+
+    final dayOfYear =
+        DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
+    return tips[dayOfYear % tips.length];
   }
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final month = now.month;
+    final season = Season.fromMonth(month);
+
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
         final data = _dataFor(region);
-        final season = Season.fromMonth(_selectedMonth);
 
-        final sowNow = <Vegetable>[];
-        final later = <Vegetable>[];
+        // Légumes à semer ce mois (max 5).
+        final toSow = <Vegetable>[];
+        final toHarvest = <Vegetable>[];
         for (final veg in vegetablesBase) {
-          final entry = _findRegionData(data, veg.id);
-          if (entry != null &&
-              entry.sowingMonths.contains(_selectedMonth)) {
-            sowNow.add(veg);
-          } else {
-            later.add(veg);
+          for (final rd in data) {
+            if (rd.vegetableId == veg.id) {
+              if (rd.sowingMonths.contains(month)) toSow.add(veg);
+              if (rd.harvestMonths.contains(month)) toHarvest.add(veg);
+            }
           }
         }
 
+        final vegOfDay = _vegetableOfTheDay;
+        final tip = _tipOfTheDay;
+        final daysSinceWater = PrefsService.instance.daysSinceLastWatering;
+
         return SafeArea(
           bottom: false,
-          child: Stack(
-            children: [
-              ListView(
+          child: ListView(
             padding: EdgeInsets.zero,
-            children: <Widget>[
-              SeasonHeader(season: season, month: _selectedMonth),
-              const SizedBox(height: 16),
-              _MonthSelector(
-                controller: _monthController,
-                selected: _selectedMonth,
-                onSelected: (m) => setState(() => _selectedMonth = m),
-              ),
-              const SizedBox(height: 8),
-              if (sowNow.isNotEmpty) ...<Widget>[
-                const _SectionHeader(
-                  icon: '✅',
-                  title: 'À semer maintenant',
-                ),
-                for (final v in sowNow)
-                  VegetableCard(
-                    vegetable: v,
-                    canSowNow: true,
-                    onTap: () => _openDetail(v),
-                  ),
-              ] else
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 16,
-                  ),
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(18),
-                      child: Row(
-                        children: <Widget>[
-                          const Text('🌱', style: TextStyle(fontSize: 32)),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              "Rien à semer ce mois-ci. Patience, jardinier !",
-                              style:
-                                  Theme.of(context).textTheme.bodyMedium,
+            children: [
+              // ── Hero saisonnier + météo overlay ──
+              Stack(
+                children: [
+                  SeasonHeader(season: season, month: month, height: 200),
+                  if (_weather != null)
+                    Positioned(
+                      top: 12,
+                      right: 16,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(_weather!.weatherEmoji,
+                                style: const TextStyle(fontSize: 20)),
+                            const SizedBox(width: 6),
+                            Text(
+                              '${_weather!.currentTemp.toStringAsFixed(0)}°C',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 16,
+                              ),
                             ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  if (_loadingWeather && _weather == null)
+                    const Positioned(
+                      top: 12,
+                      right: 16,
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child:
+                            CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      ),
+                    ),
+                ],
+              ),
+
+              // ── Actions rapides ──
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  children: [
+                    _QuickAction(
+                      emoji: '📅',
+                      label: 'Calendrier',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                            builder: (_) => const MonthlyCalendarScreen()),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    _QuickAction(
+                      emoji: '📊',
+                      label: 'Vue annuelle',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                            builder: (_) => const CalendarGridScreen()),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    _QuickAction(
+                      emoji: '💧',
+                      label: daysSinceWater != null
+                          ? 'Arrosé il y a ${daysSinceWater}j'
+                          : 'Arrosage',
+                      onTap: () async {
+                        await PrefsService.instance.recordWatering();
+                        if (mounted) {
+                          setState(() {});
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Arrosage enregistré !')),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // ── À semer ce mois (top 5) ──
+              if (toSow.isNotEmpty) ...[
+                _DashSection(title: '🌱 À semer en ${_monthName(month)}'),
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    itemCount: toSow.length > 8 ? 8 : toSow.length,
+                    itemBuilder: (ctx, i) {
+                      final v = toSow[i];
+                      return _VegChip(
+                        vegetable: v,
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                VegetableDetailScreen(vegetable: v),
                           ),
-                        ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+
+              // ── Bientôt la récolte ──
+              if (toHarvest.isNotEmpty) ...[
+                _DashSection(title: '🧺 À récolter ce mois'),
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    itemCount: toHarvest.length > 8 ? 8 : toHarvest.length,
+                    itemBuilder: (ctx, i) {
+                      final v = toHarvest[i];
+                      return _VegChip(
+                        vegetable: v,
+                        color: KultivaColors.terracotta,
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                VegetableDetailScreen(vegetable: v),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+
+              // ── Légume du jour ──
+              _DashSection(title: '✨ Légume du jour'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Card(
+                  child: ListTile(
+                    leading:
+                        Text(vegOfDay.emoji, style: const TextStyle(fontSize: 36)),
+                    title: Text(vegOfDay.name,
+                        style: const TextStyle(fontWeight: FontWeight.w800)),
+                    subtitle: Text(
+                      vegOfDay.description ?? vegOfDay.note ?? '',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) =>
+                            VegetableDetailScreen(vegetable: vegOfDay),
                       ),
                     ),
                   ),
                 ),
-              const SizedBox(height: 16),
-              if (later.isNotEmpty) ...<Widget>[
-                const _SectionHeader(
-                  icon: '⏳',
-                  title: 'Pas encore la saison',
-                ),
-                for (final v in later)
-                  VegetableCard(
-                    vegetable: v,
-                    onTap: () => _openDetail(v),
+              ),
+
+              // ── Conseil du jour ──
+              _DashSection(title: '💡 Conseil du jour'),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                child: Card(
+                  color: KultivaColors.summerA.withOpacity(0.25),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      tip,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        height: 1.4,
+                      ),
+                    ),
                   ),
-              ],
-              const SizedBox(height: 80),
-            ],
-          ),
-          Positioned(
-            right: 16,
-            bottom: 16,
-            child: FloatingActionButton.small(
-              heroTag: 'calendarGrid',
-              tooltip: 'Calendrier annuel',
-              backgroundColor: KultivaColors.primaryGreen,
-              foregroundColor: Colors.white,
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const CalendarGridScreen(),
                 ),
               ),
-              child: const Icon(Icons.calendar_month),
-            ),
+            ],
           ),
-        ]),
         );
       },
     );
   }
+
+  String _monthName(int m) {
+    const names = [
+      'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+      'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+    ];
+    return names[m - 1];
+  }
 }
 
-class _MonthSelector extends StatelessWidget {
-  final PageController controller;
-  final int selected;
-  final ValueChanged<int> onSelected;
-
-  const _MonthSelector({
-    required this.controller,
-    required this.selected,
-    required this.onSelected,
-  });
-
-  static const List<String> _labels = <String>[
-    'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
-    'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc',
-  ];
+/// Bouton d'action rapide (chips arrondis).
+class _QuickAction extends StatelessWidget {
+  final String emoji;
+  final String label;
+  final VoidCallback onTap;
+  const _QuickAction(
+      {required this.emoji, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 72,
-      child: PageView.builder(
-        controller: controller,
-        itemCount: 12,
-        onPageChanged: (i) => onSelected(i + 1),
-        itemBuilder: (context, index) {
-          final m = index + 1;
-          final active = m == selected;
-          return GestureDetector(
-            onTap: () {
-              controller.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeOut,
-              );
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 220),
-              margin: EdgeInsets.symmetric(
-                horizontal: 6,
-                vertical: active ? 2 : 14,
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: KultivaColors.lightGreen.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            children: [
+              Text(emoji, style: const TextStyle(fontSize: 22)),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style:
+                    const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
-              decoration: BoxDecoration(
-                color:
-                    active ? KultivaColors.primaryGreen : Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color:
-                        KultivaColors.primaryGreen.withOpacity(0.15),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                _labels[index],
-                style: TextStyle(
-                  color: active
-                      ? Colors.white
-                      : KultivaColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                  fontSize: active ? 18 : 14,
-                ),
-              ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String icon;
+/// Section title dans le dashboard.
+class _DashSection extends StatelessWidget {
   final String title;
-  const _SectionHeader({required this.icon, required this.title});
+  const _DashSection({required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
       child: Text(
-        '$icon  $title',
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w800,
+        title,
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium
+            ?.copyWith(fontWeight: FontWeight.w800),
+      ),
+    );
+  }
+}
+
+/// Chip légume horizontal scrollable.
+class _VegChip extends StatelessWidget {
+  final Vegetable vegetable;
+  final VoidCallback onTap;
+  final Color? color;
+  const _VegChip({required this.vegetable, required this.onTap, this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 80,
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          color: (color ?? KultivaColors.primaryGreen).withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: (color ?? KultivaColors.primaryGreen).withOpacity(0.3),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(vegetable.emoji, style: const TextStyle(fontSize: 28)),
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                vegetable.name,
+                style:
+                    const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
+          ],
+        ),
       ),
     );
   }
