@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../data/companions.dart';
@@ -18,7 +20,7 @@ import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 
 /// Dashboard principal — Hero saisonnier + 4 cartes kawaii +
-/// légume du jour + conseil du jour.
+/// carrousel de slides (légume, météo, conseil, saison).
 class SowScreen extends StatefulWidget {
   const SowScreen({super.key});
 
@@ -30,10 +32,36 @@ class _SowScreenState extends State<SowScreen> {
   WeatherData? _weather;
   bool _loadingWeather = false;
 
+  // Carrousel.
+  late final PageController _slideController;
+  int _currentSlide = 0;
+  Timer? _autoSlideTimer;
+
   @override
   void initState() {
     super.initState();
+    _slideController = PageController(viewportFraction: 0.88);
     _loadWeather();
+    _startAutoSlide();
+  }
+
+  @override
+  void dispose() {
+    _autoSlideTimer?.cancel();
+    _slideController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoSlide() {
+    _autoSlideTimer = Timer.periodic(const Duration(seconds: 6), (_) {
+      if (!_slideController.hasClients) return;
+      final next = (_currentSlide + 1) % 4;
+      _slideController.animateToPage(
+        next,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   Future<void> _loadWeather() async {
@@ -77,7 +105,7 @@ class _SowScreenState extends State<SowScreen> {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       if (veg != null) {
         tips.add(
-            '${veg.emoji} ${veg.name} : attendre ${entry.value.waitYears} ans avant de replanter au même endroit (${entry.value.family}).');
+            '${veg.emoji} ${veg.name} : attendre ${entry.value.waitYears} ans avant de replanter au même endroit.');
       }
     }
 
@@ -86,7 +114,7 @@ class _SowScreenState extends State<SowScreen> {
       if (veg != null && entry.value.isNotEmpty) {
         final d = entry.value.first;
         tips.add(
-            '${veg.emoji} ${veg.name} : attention au ${d.name}. Remède bio : ${d.remedy}.');
+            '${veg.emoji} ${veg.name} : attention au ${d.name}. ${d.remedy}.');
       }
     }
 
@@ -94,6 +122,11 @@ class _SowScreenState extends State<SowScreen> {
         DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
     return tips[dayOfYear % tips.length];
   }
+
+  static const List<String> _monthNames = [
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +139,13 @@ class _SowScreenState extends State<SowScreen> {
       builder: (context, region, _) {
         final data = _dataFor(region);
 
-        int sowCount = 0;
-        int harvestCount = 0;
+        final toSow = <Vegetable>[];
+        final toHarvest = <Vegetable>[];
         for (final veg in vegetablesBase) {
           for (final rd in data) {
             if (rd.vegetableId == veg.id) {
-              if (rd.sowingMonths.contains(month)) sowCount++;
-              if (rd.harvestMonths.contains(month)) harvestCount++;
+              if (rd.sowingMonths.contains(month)) toSow.add(veg);
+              if (rd.harvestMonths.contains(month)) toHarvest.add(veg);
             }
           }
         }
@@ -120,61 +153,30 @@ class _SowScreenState extends State<SowScreen> {
         final vegOfDay = _vegetableOfTheDay;
         final tip = _tipOfTheDay;
 
+        // ── Build slides ──
+        final slides = <Widget>[
+          _SlideVegOfDay(vegetable: vegOfDay),
+          _SlideWeather(weather: _weather, loading: _loadingWeather),
+          _SlideTip(tip: tip),
+          _SlideSeason(
+            season: season,
+            month: month,
+            sowCount: toSow.length,
+            harvestCount: toHarvest.length,
+          ),
+        ];
+
         return SafeArea(
           bottom: false,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              // ── Hero saisonnier + météo ──
-              Stack(
-                children: [
-                  SeasonHeader(season: season, month: month, height: 180),
-                  if (_weather != null)
-                    Positioned(
-                      top: 12,
-                      right: 16,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.35),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(_weather!.weatherEmoji,
-                                style: const TextStyle(fontSize: 18)),
-                            const SizedBox(width: 6),
-                            Text(
-                              '${_weather!.currentTemp.toStringAsFixed(0)}°C',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (_loadingWeather && _weather == null)
-                    const Positioned(
-                      top: 16,
-                      right: 20,
-                      child: SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
-                      ),
-                    ),
-                ],
-              ),
+              // ── Hero saisonnier ──
+              SeasonHeader(season: season, month: month, height: 170),
 
               const SizedBox(height: 20),
 
-              // ── 4 cartes kawaii en grille 2×2 ──
+              // ── 4 cartes kawaii 2×2 ──
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -185,7 +187,7 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '🌱',
                             label: 'Semer',
-                            subtitle: '$sowCount légumes',
+                            subtitle: '${toSow.length} légumes',
                             gradientColors: const [
                               KultivaColors.springA,
                               KultivaColors.springB,
@@ -203,7 +205,7 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '🧺',
                             label: 'Récolter',
-                            subtitle: '$harvestCount légumes',
+                            subtitle: '${toHarvest.length} légumes',
                             gradientColors: const [
                               KultivaColors.summerA,
                               KultivaColors.summerB,
@@ -265,26 +267,38 @@ class _SowScreenState extends State<SowScreen> {
 
               const SizedBox(height: 24),
 
-              // ── Légume du jour — carte mise en avant ──
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _VegOfDayCard(
-                  vegetable: vegOfDay,
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) =>
-                          VegetableDetailScreen(vegetable: vegOfDay),
-                    ),
+              // ── Carrousel de slides ──
+              SizedBox(
+                height: 160,
+                child: PageView.builder(
+                  controller: _slideController,
+                  itemCount: slides.length,
+                  onPageChanged: (i) => setState(() => _currentSlide = i),
+                  itemBuilder: (_, i) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: slides[i],
                   ),
                 ),
               ),
-
-              const SizedBox(height: 16),
-
-              // ── Conseil du jour ──
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _TipCard(tip: tip),
+              const SizedBox(height: 12),
+              // Dots.
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(slides.length, (i) {
+                  final active = i == _currentSlide;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    width: active ? 22 : 8,
+                    height: 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    decoration: BoxDecoration(
+                      color: active
+                          ? KultivaColors.primaryGreen
+                          : KultivaColors.lightGreen.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  );
+                }),
               ),
 
               const SizedBox(height: 32),
@@ -296,9 +310,9 @@ class _SowScreenState extends State<SowScreen> {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Kawaii Card — carte carrée avec dégradé pastel, bulles décoratives, emoji
-// ─────────────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Kawaii Cards (grille 2×2)
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _KawaiiCard extends StatelessWidget {
   final String emoji;
@@ -339,8 +353,8 @@ class _KawaiiCard extends StatelessWidget {
           ],
         ),
         child: Stack(
+          clipBehavior: Clip.hardEdge,
           children: [
-            // Bulles décoratives kawaii.
             Positioned(
               top: -8,
               right: -8,
@@ -356,13 +370,11 @@ class _KawaiiCard extends StatelessWidget {
               right: 30,
               child: _Bubble(size: 14, color: bubbleColor.withOpacity(0.10)),
             ),
-            // Contenu.
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Emoji dans un cercle blanc doux.
                   Container(
                     width: 44,
                     height: 44,
@@ -410,7 +422,6 @@ class _KawaiiCard extends StatelessWidget {
   }
 }
 
-/// Bulle décorative ronde semi-transparente (style kawaii).
 class _Bubble extends StatelessWidget {
   final double size;
   final Color color;
@@ -426,144 +437,288 @@ class _Bubble extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Légume du jour — carte illustrée
-// ─────────────────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Slides du carrousel
+// ═══════════════════════════════════════════════════════════════════════════════
 
-class _VegOfDayCard extends StatelessWidget {
-  final Vegetable vegetable;
-  final VoidCallback onTap;
-  const _VegOfDayCard({required this.vegetable, required this.onTap});
+/// Base décorative commune à tous les slides.
+class _SlideBase extends StatelessWidget {
+  final List<Color> gradientColors;
+  final Color bubbleColor;
+  final Widget child;
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              KultivaColors.lightGreen.withOpacity(0.25),
-              KultivaColors.springA.withOpacity(0.3),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: KultivaColors.primaryGreen.withOpacity(0.15),
-          ),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            // Emoji dans un cercle pastel.
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: KultivaColors.primaryGreen.withOpacity(0.12),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child:
-                  Text(vegetable.emoji, style: const TextStyle(fontSize: 30)),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '✨ Légume du jour',
-                    style: TextStyle(
-                      color: KultivaColors.primaryGreen.withOpacity(0.7),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 11,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    vegetable.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 17,
-                    ),
-                  ),
-                  if (vegetable.note != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      vegetable.note!,
-                      style: TextStyle(
-                        color: KultivaColors.textPrimary.withOpacity(0.6),
-                        fontSize: 12,
-                        height: 1.3,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: KultivaColors.primaryGreen.withOpacity(0.4),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Conseil du jour — carte avec fond saisonnier doux
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _TipCard extends StatelessWidget {
-  final String tip;
-  const _TipCard({required this.tip});
+  const _SlideBase({
+    required this.gradientColors,
+    required this.bubbleColor,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            KultivaColors.summerA.withOpacity(0.2),
-            KultivaColors.terracotta.withOpacity(0.12),
-          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: gradientColors,
         ),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: KultivaColors.terracotta.withOpacity(0.15),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: gradientColors.last.withOpacity(0.25),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(16),
+      child: Stack(
+        clipBehavior: Clip.hardEdge,
+        children: [
+          // Bulles kawaii décoratives.
+          Positioned(
+            top: -12,
+            right: -12,
+            child: _Bubble(size: 50, color: bubbleColor.withOpacity(0.12)),
+          ),
+          Positioned(
+            bottom: 14,
+            right: 20,
+            child: _Bubble(size: 28, color: bubbleColor.withOpacity(0.10)),
+          ),
+          Positioned(
+            top: 30,
+            right: 50,
+            child: _Bubble(size: 16, color: bubbleColor.withOpacity(0.08)),
+          ),
+          Positioned(
+            bottom: 40,
+            left: -10,
+            child: _Bubble(size: 32, color: bubbleColor.withOpacity(0.06)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: child,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Slide 1 — Légume du jour.
+class _SlideVegOfDay extends StatelessWidget {
+  final Vegetable vegetable;
+  const _SlideVegOfDay({required this.vegetable});
+
+  @override
+  Widget build(BuildContext context) {
+    return _SlideBase(
+      gradientColors: [
+        KultivaColors.lightGreen.withOpacity(0.35),
+        KultivaColors.springA.withOpacity(0.45),
+      ],
+      bubbleColor: KultivaColors.primaryGreen,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.75),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: KultivaColors.primaryGreen.withOpacity(0.12),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Text(vegetable.emoji,
+                style: const TextStyle(fontSize: 32)),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '✨ Légume du jour',
+                  style: TextStyle(
+                    color: KultivaColors.primaryGreen.withOpacity(0.7),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  vegetable.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18,
+                  ),
+                ),
+                if (vegetable.note != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    vegetable.note!,
+                    style: TextStyle(
+                      color: KultivaColors.textPrimary.withOpacity(0.55),
+                      fontSize: 12,
+                      height: 1.3,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Slide 2 — Météo.
+class _SlideWeather extends StatelessWidget {
+  final WeatherData? weather;
+  final bool loading;
+  const _SlideWeather({required this.weather, required this.loading});
+
+  @override
+  Widget build(BuildContext context) {
+    return _SlideBase(
+      gradientColors: [
+        KultivaColors.winterA.withOpacity(0.5),
+        const Color(0xFFD6ECFA),
+      ],
+      bubbleColor: const Color(0xFF7BAFD4),
+      child: weather != null
+          ? Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.75),
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(weather!.weatherEmoji,
+                      style: const TextStyle(fontSize: 30)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '🌤 Météo du jour',
+                        style: TextStyle(
+                          color: const Color(0xFF5A8FB8).withOpacity(0.8),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${weather!.currentTemp.toStringAsFixed(0)}°C — ${weather!.weatherLabel}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 17,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        weather!.rainNext3Days > 0
+                            ? '${weather!.rainNext3Days.toStringAsFixed(1)} mm de pluie prévus sous 3 jours'
+                            : 'Pas de pluie prévue sur 3 jours',
+                        style: TextStyle(
+                          color: KultivaColors.textPrimary.withOpacity(0.55),
+                          fontSize: 12,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          : Center(
+              child: loading
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: const Color(0xFF7BAFD4).withOpacity(0.6),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Chargement météo...',
+                          style: TextStyle(
+                            color: KultivaColors.textPrimary.withOpacity(0.5),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text(
+                      'Météo indisponible\nActive la localisation pour les prévisions',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: KultivaColors.textPrimary.withOpacity(0.5),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
+                    ),
+            ),
+    );
+  }
+}
+
+/// Slide 3 — Conseil du jour.
+class _SlideTip extends StatelessWidget {
+  final String tip;
+  const _SlideTip({required this.tip});
+
+  @override
+  Widget build(BuildContext context) {
+    return _SlideBase(
+      gradientColors: [
+        KultivaColors.summerA.withOpacity(0.35),
+        KultivaColors.terracotta.withOpacity(0.2),
+      ],
+      bubbleColor: KultivaColors.terracotta,
+      child: Row(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.7),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: const Text('💡', style: TextStyle(fontSize: 20)),
+            child: const Text('💡', style: TextStyle(fontSize: 26)),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Conseil du jour',
@@ -580,7 +735,88 @@ class _TipCard extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 13,
-                    height: 1.5,
+                    height: 1.4,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Slide 4 — En saison (résumé semis/récoltes).
+class _SlideSeason extends StatelessWidget {
+  final Season season;
+  final int month;
+  final int sowCount;
+  final int harvestCount;
+  const _SlideSeason({
+    required this.season,
+    required this.month,
+    required this.sowCount,
+    required this.harvestCount,
+  });
+
+  static const List<String> _monthNames = [
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return _SlideBase(
+      gradientColors: [
+        KultivaColors.autumnA.withOpacity(0.35),
+        KultivaColors.springB.withOpacity(0.3),
+      ],
+      bubbleColor: KultivaColors.primaryGreen,
+      child: Row(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.7),
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: Text(season.emoji, style: const TextStyle(fontSize: 30)),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${season.emoji} ${season.label}',
+                  style: TextStyle(
+                    color: KultivaColors.primaryGreen.withOpacity(0.7),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'En ${_monthNames[month - 1]}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 17,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '🌱 $sowCount à semer  ·  🧺 $harvestCount à récolter',
+                  style: TextStyle(
+                    color: KultivaColors.textPrimary.withOpacity(0.55),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
