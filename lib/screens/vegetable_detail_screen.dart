@@ -12,16 +12,49 @@ import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
-/// de semis / récolte. Tous les champs optionnels sont affichés seulement
-/// s'ils sont renseignés.
-class VegetableDetailScreen extends StatelessWidget {
+/// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
+/// les légumes quand une liste est fournie.
+class VegetableDetailScreen extends StatefulWidget {
   final Vegetable vegetable;
-  const VegetableDetailScreen({super.key, required this.vegetable});
+  final List<Vegetable>? vegetables;
+  final int? initialIndex;
+
+  const VegetableDetailScreen({
+    super.key,
+    required this.vegetable,
+    this.vegetables,
+    this.initialIndex,
+  });
+
+  @override
+  State<VegetableDetailScreen> createState() => _VegetableDetailScreenState();
+}
+
+class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
+  late final PageController _pageController;
+  late int _currentIndex;
+  late List<Vegetable> _list;
 
   static const List<String> _shortMonths = <String>[
     'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
     'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _list = widget.vegetables ?? [widget.vegetable];
+    _currentIndex = widget.initialIndex ?? 0;
+    _pageController = PageController(initialPage: _currentIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  Vegetable get _currentVegetable => _list[_currentIndex];
 
   List<RegionData> _dataFor(Region region) {
     switch (region) {
@@ -32,15 +65,15 @@ class VegetableDetailScreen extends StatelessWidget {
     }
   }
 
-  RegionData? _findRegionData(List<RegionData> list) {
+  RegionData? _findRegionData(List<RegionData> list, String vegId) {
     for (final d in list) {
-      if (d.vegetableId == vegetable.id) return d;
+      if (d.vegetableId == vegId) return d;
     }
     return null;
   }
 
-  Future<void> _openAmazon(BuildContext context) async {
-    final url = vegetable.amazonUrl;
+  Future<void> _openAmazon(BuildContext context, Vegetable veg) async {
+    final url = veg.amazonUrl;
     if (url == null) return;
     final uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -59,122 +92,142 @@ class VegetableDetailScreen extends StatelessWidget {
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
-        final data = _findRegionData(_dataFor(region));
         return Scaffold(
           appBar: AppBar(
-            title: Text('${vegetable.emoji}  ${vegetable.name}'),
+            title: Text(
+                '${_currentVegetable.emoji}  ${_currentVegetable.name}'),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.picture_as_pdf),
                 tooltip: 'Exporter PDF',
-                onPressed: () =>
-                    PdfService.printVegetableSheet(vegetable, region),
+                onPressed: () => PdfService.printVegetableSheet(
+                    _currentVegetable, region),
               ),
               ValueListenableBuilder<Set<String>>(
                 valueListenable: PrefsService.instance.favorites,
                 builder: (context, favs, _) {
-                  final isFav = favs.contains(vegetable.id);
+                  final isFav = favs.contains(_currentVegetable.id);
                   return IconButton(
                     icon: Icon(
                       isFav ? Icons.favorite : Icons.favorite_border,
                       color: KultivaColors.terracotta,
                     ),
                     onPressed: () => PrefsService.instance
-                        .toggleFavorite(vegetable.id),
+                        .toggleFavorite(_currentVegetable.id),
                   );
                 },
               ),
             ],
           ),
-          body: ListView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            children: <Widget>[
-              _HeaderCard(vegetable: vegetable),
-              const SizedBox(height: 16),
-              if (data != null && data.sowingMonths.isNotEmpty)
-                _MonthsCard(
-                  title: 'Semis — ${region.label}',
-                  months: data.sowingMonths,
-                  color: KultivaColors.primaryGreen,
-                  shortMonths: _shortMonths,
+          body: _list.length == 1
+              ? _buildPage(_list[0], region)
+              : PageView.builder(
+                  controller: _pageController,
+                  itemCount: _list.length,
+                  onPageChanged: (i) => setState(() => _currentIndex = i),
+                  itemBuilder: (context, index) {
+                    return _buildPage(_list[index], region);
+                  },
                 ),
-              if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
-                const SizedBox(height: 12),
-                _MonthsCard(
-                  title: 'Récolte — ${region.label}',
-                  months: data.harvestMonths,
-                  color: KultivaColors.terracotta,
-                  shortMonths: _shortMonths,
-                ),
-              ],
-              if (data != null && data.regionalNote != null) ...<Widget>[
-                const SizedBox(height: 12),
-                _RegionalNoteCard(
-                  region: region,
-                  note: data.regionalNote!,
-                ),
-              ],
-              const SizedBox(height: 16),
-              _InfoSection(
-                title: '🌱  Semis',
-                rows: <_Row>[
-                  _Row('Technique', vegetable.sowingTechnique),
-                  _Row('Profondeur', vegetable.sowingDepth),
-                  _Row('Température', vegetable.germinationTemp),
-                  _Row('Levée', vegetable.germinationDays),
-                ],
-              ),
-              _InfoSection(
-                title: '🌿  Culture',
-                rows: <_Row>[
-                  _Row('Exposition', vegetable.exposure),
-                  _Row('Espacement', vegetable.spacing),
-                  _Row('Arrosage', vegetable.watering),
-                  _Row('Sol', vegetable.soil),
-                ],
-              ),
-              _InfoSection(
-                title: '📦  Rendement',
-                rows: <_Row>[
-                  _Row('Estimation', vegetable.yieldEstimate),
-                ],
-              ),
-              if (companionMap.containsKey(vegetable.id))
-                _CompanionSection(
-                  title: '🤝  Bons voisins',
-                  ids: companionMap[vegetable.id]!,
-                  color: KultivaColors.primaryGreen,
-                ),
-              if (incompatibleMap.containsKey(vegetable.id))
-                _CompanionSection(
-                  title: '⛔  À éviter à côté',
-                  ids: incompatibleMap[vegetable.id]!,
-                  color: KultivaColors.terracotta,
-                ),
-              const SizedBox(height: 16),
-              if (vegetable.amazonUrl != null)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () => _openAmazon(context),
-                    icon: const Text(
-                      '🛒',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    label: const Text('Acheter des graines'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: KultivaColors.terracotta,
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 24),
-            ],
-          ),
         );
       },
+    );
+  }
+
+  Widget _buildPage(Vegetable vegetable, Region region) {
+    final data = _findRegionData(_dataFor(region), vegetable.id);
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      children: <Widget>[
+        _HeaderCard(vegetable: vegetable),
+        const SizedBox(height: 16),
+        if (data != null && data.sowingMonths.isNotEmpty)
+          _MonthsCard(
+            title: 'Semis — ${region.label}',
+            months: data.sowingMonths,
+            color: KultivaColors.primaryGreen,
+            shortMonths: _shortMonths,
+          ),
+        if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 12),
+          _MonthsCard(
+            title: 'Récolte — ${region.label}',
+            months: data.harvestMonths,
+            color: KultivaColors.terracotta,
+            shortMonths: _shortMonths,
+          ),
+        ],
+        if (data != null && data.regionalNote != null) ...<Widget>[
+          const SizedBox(height: 12),
+          _RegionalNoteCard(
+            region: region,
+            note: data.regionalNote!,
+          ),
+        ],
+        const SizedBox(height: 16),
+        _InfoSection(
+          title: '🌱  Semis',
+          rows: <_Row>[
+            _Row('Technique', vegetable.sowingTechnique),
+            _Row('Profondeur', vegetable.sowingDepth),
+            _Row('Température', vegetable.germinationTemp),
+            _Row('Levée', vegetable.germinationDays),
+          ],
+        ),
+        _InfoSection(
+          title: '🌿  Culture',
+          rows: <_Row>[
+            _Row('Exposition', vegetable.exposure),
+            _Row('Espacement', vegetable.spacing),
+            _Row('Arrosage', vegetable.watering),
+            _Row('Sol', vegetable.soil),
+          ],
+        ),
+        _InfoSection(
+          title: '📦  Rendement',
+          rows: <_Row>[
+            _Row('Estimation', vegetable.yieldEstimate),
+          ],
+        ),
+        if (companionMap.containsKey(vegetable.id))
+          _CompanionSection(
+            title: '🤝  Bons voisins',
+            ids: companionMap[vegetable.id]!,
+            color: KultivaColors.primaryGreen,
+          ),
+        if (incompatibleMap.containsKey(vegetable.id))
+          _CompanionSection(
+            title: '⛔  À éviter à côté',
+            ids: incompatibleMap[vegetable.id]!,
+            color: KultivaColors.terracotta,
+          ),
+        const SizedBox(height: 16),
+        if (vegetable.amazonUrl != null)
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _openAmazon(context, vegetable),
+              icon: const Text('🛒', style: TextStyle(fontSize: 18)),
+              label: const Text('Acheter des graines'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: KultivaColors.terracotta,
+              ),
+            ),
+          ),
+        if (_list.length > 1)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Text(
+              '← Swipe pour naviguer →',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: KultivaColors.textSecondary,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        const SizedBox(height: 24),
+      ],
     );
   }
 }
