@@ -74,15 +74,13 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     return null;
   }
 
-  Future<void> _openAmazon(BuildContext context, Vegetable veg) async {
-    final url = veg.amazonUrl;
-    if (url == null) return;
+  Future<void> _openUrl(BuildContext context, String url) async {
     final uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Impossible d'ouvrir le lien Amazon."),
+            content: Text("Impossible d'ouvrir le lien."),
           ),
         );
       }
@@ -204,17 +202,30 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             color: KultivaColors.terracotta,
           ),
         const SizedBox(height: 16),
-        if (vegetable.amazonUrl != null)
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => _openAmazon(context, vegetable),
-              icon: const Text('🛒', style: TextStyle(fontSize: 18)),
-              label: const Text('Acheter des graines'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: KultivaColors.terracotta,
-              ),
-            ),
+        if (vegetable.amazonUrl != null || vegetable.youtubeUrl != null)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              if (vegetable.youtubeUrl != null)
+                ElevatedButton.icon(
+                  onPressed: () => _openUrl(context, vegetable.youtubeUrl!),
+                  icon: const Text('🎬', style: TextStyle(fontSize: 18)),
+                  label: const Text('Voir la vidéo tuto'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: KultivaColors.primaryGreen,
+                  ),
+                ),
+              if (vegetable.amazonUrl != null)
+                ElevatedButton.icon(
+                  onPressed: () => _openUrl(context, vegetable.amazonUrl!),
+                  icon: const Text('🛒', style: TextStyle(fontSize: 18)),
+                  label: const Text('Acheter des graines'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: KultivaColors.terracotta,
+                  ),
+                ),
+            ],
           ),
         if (diseaseMap.containsKey(vegetable.id))
           _DiseaseSection(diseases: diseaseMap[vegetable.id]!),

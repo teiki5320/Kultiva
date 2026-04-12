@@ -87,8 +87,9 @@ class Vegetable {
   // --- Rendement ---
   final String? yieldEstimate;
 
-  // --- Lien affilié ---
+  // --- Liens ---
   final String? amazonUrl;
+  final String? youtubeUrl;
 
   const Vegetable({
     required this.id,
@@ -107,5 +108,6 @@ class Vegetable {
     this.soil,
     this.yieldEstimate,
     this.amazonUrl,
+    this.youtubeUrl,
   });
 }
