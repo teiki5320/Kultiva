@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../../data/companions.dart';
@@ -19,8 +17,8 @@ import '../vegetable_detail_screen.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 
-/// Dashboard principal — Hero saisonnier + météo + actions rapides +
-/// à faire + légume du jour + conseil du jour.
+/// Dashboard principal — Hero saisonnier + 4 cartes kawaii +
+/// légume du jour + conseil du jour.
 class SowScreen extends StatefulWidget {
   const SowScreen({super.key});
 
@@ -55,17 +53,15 @@ class _SowScreenState extends State<SowScreen> {
     }
   }
 
-  /// Légume du jour — déterministe par date (pas aléatoire à chaque build).
   Vegetable get _vegetableOfTheDay {
-    final dayOfYear = DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
+    final dayOfYear =
+        DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
     return vegetablesBase[dayOfYear % vegetablesBase.length];
   }
 
-  /// Conseil du jour — tiré des données de compagnonnage, rotation, maladies.
   String get _tipOfTheDay {
     final tips = <String>[];
 
-    // Tips compagnonnage.
     for (final entry in companionMap.entries) {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       final comp = entry.value.isNotEmpty
@@ -77,7 +73,6 @@ class _SowScreenState extends State<SowScreen> {
       }
     }
 
-    // Tips rotation.
     for (final entry in rotationMap.entries) {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       if (veg != null) {
@@ -86,12 +81,12 @@ class _SowScreenState extends State<SowScreen> {
       }
     }
 
-    // Tips maladies.
     for (final entry in diseaseMap.entries) {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       if (veg != null && entry.value.isNotEmpty) {
         final d = entry.value.first;
-        tips.add('${veg.emoji} ${veg.name} : attention au ${d.name}. Remède bio : ${d.remedy}.');
+        tips.add(
+            '${veg.emoji} ${veg.name} : attention au ${d.name}. Remède bio : ${d.remedy}.');
       }
     }
 
@@ -111,31 +106,29 @@ class _SowScreenState extends State<SowScreen> {
       builder: (context, region, _) {
         final data = _dataFor(region);
 
-        // Légumes à semer ce mois (max 5).
-        final toSow = <Vegetable>[];
-        final toHarvest = <Vegetable>[];
+        int sowCount = 0;
+        int harvestCount = 0;
         for (final veg in vegetablesBase) {
           for (final rd in data) {
             if (rd.vegetableId == veg.id) {
-              if (rd.sowingMonths.contains(month)) toSow.add(veg);
-              if (rd.harvestMonths.contains(month)) toHarvest.add(veg);
+              if (rd.sowingMonths.contains(month)) sowCount++;
+              if (rd.harvestMonths.contains(month)) harvestCount++;
             }
           }
         }
 
         final vegOfDay = _vegetableOfTheDay;
         final tip = _tipOfTheDay;
-        final daysSinceWater = PrefsService.instance.daysSinceLastWatering;
 
         return SafeArea(
           bottom: false,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              // ── Hero saisonnier + météo overlay ──
+              // ── Hero saisonnier + météo ──
               Stack(
                 children: [
-                  SeasonHeader(season: season, month: month, height: 200),
+                  SeasonHeader(season: season, month: month, height: 180),
                   if (_weather != null)
                     Positioned(
                       top: 12,
@@ -144,21 +137,21 @@ class _SowScreenState extends State<SowScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.black.withOpacity(0.35),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(_weather!.weatherEmoji,
-                                style: const TextStyle(fontSize: 20)),
+                                style: const TextStyle(fontSize: 18)),
                             const SizedBox(width: 6),
                             Text(
                               '${_weather!.currentTemp.toStringAsFixed(0)}°C',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 16,
+                                fontSize: 15,
                               ),
                             ),
                           ],
@@ -167,270 +160,433 @@ class _SowScreenState extends State<SowScreen> {
                     ),
                   if (_loadingWeather && _weather == null)
                     const Positioned(
-                      top: 12,
-                      right: 16,
+                      top: 16,
+                      right: 20,
                       child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child:
-                            CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, color: Colors.white),
                       ),
                     ),
                 ],
               ),
 
-              // ── Actions rapides ──
+              const SizedBox(height: 20),
+
+              // ── 4 cartes kawaii en grille 2×2 ──
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
                   children: [
-                    _QuickAction(
-                      emoji: '📅',
-                      label: 'Calendrier',
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                            builder: (_) => const MonthlyCalendarScreen()),
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _KawaiiCard(
+                            emoji: '🌱',
+                            label: 'Semer',
+                            subtitle: '$sowCount légumes',
+                            gradientColors: const [
+                              KultivaColors.springA,
+                              KultivaColors.springB,
+                            ],
+                            bubbleColor: KultivaColors.primaryGreen,
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                  builder: (_) =>
+                                      const MonthlyCalendarScreen()),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _KawaiiCard(
+                            emoji: '🧺',
+                            label: 'Récolter',
+                            subtitle: '$harvestCount légumes',
+                            gradientColors: const [
+                              KultivaColors.summerA,
+                              KultivaColors.summerB,
+                            ],
+                            bubbleColor: KultivaColors.terracotta,
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                  builder: (_) =>
+                                      const MonthlyCalendarScreen()),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    _QuickAction(
-                      emoji: '📊',
-                      label: 'Vue annuelle',
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                            builder: (_) => const CalendarGridScreen()),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    _QuickAction(
-                      emoji: '💧',
-                      label: daysSinceWater != null
-                          ? 'Arrosé il y a ${daysSinceWater}j'
-                          : 'Arrosage',
-                      onTap: () async {
-                        await PrefsService.instance.recordWatering();
-                        if (mounted) {
-                          setState(() {});
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Arrosage enregistré !')),
-                          );
-                        }
-                      },
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _KawaiiCard(
+                            emoji: '📅',
+                            label: 'Calendrier',
+                            subtitle: 'Vue annuelle',
+                            gradientColors: const [
+                              KultivaColors.winterA,
+                              KultivaColors.winterB,
+                            ],
+                            bubbleColor: const Color(0xFF7BAFD4),
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                  builder: (_) =>
+                                      const CalendarGridScreen()),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _KawaiiCard(
+                            emoji: '🌻',
+                            label: 'Du jour',
+                            subtitle: vegOfDay.name,
+                            gradientColors: const [
+                              KultivaColors.autumnA,
+                              KultivaColors.autumnB,
+                            ],
+                            bubbleColor: KultivaColors.terracotta,
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => VegetableDetailScreen(
+                                    vegetable: vegOfDay),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
 
-              // ── À semer ce mois (top 5) ──
-              if (toSow.isNotEmpty) ...[
-                _DashSection(title: '🌱 À semer en ${_monthName(month)}'),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    itemCount: toSow.length > 8 ? 8 : toSow.length,
-                    itemBuilder: (ctx, i) {
-                      final v = toSow[i];
-                      return _VegChip(
-                        vegetable: v,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) =>
-                                VegetableDetailScreen(vegetable: v),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+              const SizedBox(height: 24),
 
-              // ── Bientôt la récolte ──
-              if (toHarvest.isNotEmpty) ...[
-                _DashSection(title: '🧺 À récolter ce mois'),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    itemCount: toHarvest.length > 8 ? 8 : toHarvest.length,
-                    itemBuilder: (ctx, i) {
-                      final v = toHarvest[i];
-                      return _VegChip(
-                        vegetable: v,
-                        color: KultivaColors.terracotta,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) =>
-                                VegetableDetailScreen(vegetable: v),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-
-              // ── Légume du jour ──
-              _DashSection(title: '✨ Légume du jour'),
+              // ── Légume du jour — carte mise en avant ──
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Card(
-                  child: ListTile(
-                    leading:
-                        Text(vegOfDay.emoji, style: const TextStyle(fontSize: 36)),
-                    title: Text(vegOfDay.name,
-                        style: const TextStyle(fontWeight: FontWeight.w800)),
-                    subtitle: Text(
-                      vegOfDay.description ?? vegOfDay.note ?? '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) =>
-                            VegetableDetailScreen(vegetable: vegOfDay),
-                      ),
+                child: _VegOfDayCard(
+                  vegetable: vegOfDay,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) =>
+                          VegetableDetailScreen(vegetable: vegOfDay),
                     ),
                   ),
                 ),
               ),
 
+              const SizedBox(height: 16),
+
               // ── Conseil du jour ──
-              _DashSection(title: '💡 Conseil du jour'),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                child: Card(
-                  color: KultivaColors.summerA.withOpacity(0.25),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      tip,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _TipCard(tip: tip),
               ),
+
+              const SizedBox(height: 32),
             ],
           ),
         );
       },
     );
   }
-
-  String _monthName(int m) {
-    const names = [
-      'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-      'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
-    ];
-    return names[m - 1];
-  }
 }
 
-/// Bouton d'action rapide (chips arrondis).
-class _QuickAction extends StatelessWidget {
+// ─────────────────────────────────────────────────────────────────────────────
+// Kawaii Card — carte carrée avec dégradé pastel, bulles décoratives, emoji
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _KawaiiCard extends StatelessWidget {
   final String emoji;
   final String label;
+  final String subtitle;
+  final List<Color> gradientColors;
+  final Color bubbleColor;
   final VoidCallback onTap;
-  const _QuickAction(
-      {required this.emoji, required this.label, required this.onTap});
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: KultivaColors.lightGreen.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 22)),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style:
-                    const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Section title dans le dashboard.
-class _DashSection extends StatelessWidget {
-  final String title;
-  const _DashSection({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-      child: Text(
-        title,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(fontWeight: FontWeight.w800),
-      ),
-    );
-  }
-}
-
-/// Chip légume horizontal scrollable.
-class _VegChip extends StatelessWidget {
-  final Vegetable vegetable;
-  final VoidCallback onTap;
-  final Color? color;
-  const _VegChip({required this.vegetable, required this.onTap, this.color});
+  const _KawaiiCard({
+    required this.emoji,
+    required this.label,
+    required this.subtitle,
+    required this.gradientColors,
+    required this.bubbleColor,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80,
-        margin: const EdgeInsets.symmetric(horizontal: 4),
+        height: 130,
         decoration: BoxDecoration(
-          color: (color ?? KultivaColors.primaryGreen).withOpacity(0.1),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: (color ?? KultivaColors.primaryGreen).withOpacity(0.3),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
           ),
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: [
+            BoxShadow(
+              color: gradientColors.last.withOpacity(0.35),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Text(vegetable.emoji, style: const TextStyle(fontSize: 28)),
-            const SizedBox(height: 4),
+            // Bulles décoratives kawaii.
+            Positioned(
+              top: -8,
+              right: -8,
+              child: _Bubble(size: 40, color: bubbleColor.withOpacity(0.15)),
+            ),
+            Positioned(
+              bottom: 10,
+              right: 12,
+              child: _Bubble(size: 24, color: bubbleColor.withOpacity(0.12)),
+            ),
+            Positioned(
+              top: 20,
+              right: 30,
+              child: _Bubble(size: 14, color: bubbleColor.withOpacity(0.10)),
+            ),
+            // Contenu.
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                vegetable.name,
-                style:
-                    const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Emoji dans un cercle blanc doux.
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.7),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: bubbleColor.withOpacity(0.15),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(emoji, style: const TextStyle(fontSize: 22)),
+                  ),
+                  const Spacer(),
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: KultivaColors.textPrimary.withOpacity(0.9),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: KultivaColors.textPrimary.withOpacity(0.55),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Bulle décorative ronde semi-transparente (style kawaii).
+class _Bubble extends StatelessWidget {
+  final double size;
+  final Color color;
+  const _Bubble({required this.size, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Légume du jour — carte illustrée
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _VegOfDayCard extends StatelessWidget {
+  final Vegetable vegetable;
+  final VoidCallback onTap;
+  const _VegOfDayCard({required this.vegetable, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              KultivaColors.lightGreen.withOpacity(0.25),
+              KultivaColors.springA.withOpacity(0.3),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.15),
+          ),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            // Emoji dans un cercle pastel.
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: KultivaColors.primaryGreen.withOpacity(0.12),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              alignment: Alignment.center,
+              child:
+                  Text(vegetable.emoji, style: const TextStyle(fontSize: 30)),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '✨ Légume du jour',
+                    style: TextStyle(
+                      color: KultivaColors.primaryGreen.withOpacity(0.7),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 11,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    vegetable.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 17,
+                    ),
+                  ),
+                  if (vegetable.note != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      vegetable.note!,
+                      style: TextStyle(
+                        color: KultivaColors.textPrimary.withOpacity(0.6),
+                        fontSize: 12,
+                        height: 1.3,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: KultivaColors.primaryGreen.withOpacity(0.4),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Conseil du jour — carte avec fond saisonnier doux
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _TipCard extends StatelessWidget {
+  final String tip;
+  const _TipCard({required this.tip});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            KultivaColors.summerA.withOpacity(0.2),
+            KultivaColors.terracotta.withOpacity(0.12),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: KultivaColors.terracotta.withOpacity(0.15),
+        ),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.7),
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: const Text('💡', style: TextStyle(fontSize: 20)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Conseil du jour',
+                  style: TextStyle(
+                    color: KultivaColors.terracotta.withOpacity(0.8),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  tip,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
