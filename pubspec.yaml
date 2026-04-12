@@ -40,9 +40,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Pour activer les illustrations saisonnières :
-  # 1. Ajoute spring.png / summer.png / autumn.png / winter.png
-  #    dans assets/images/
-  # 2. Décommente les lignes ci-dessous
-  # assets:
-  #   - assets/images/
+  assets:
+    - assets/images/
