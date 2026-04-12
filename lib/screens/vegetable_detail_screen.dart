@@ -101,6 +101,13 @@ class VegetableDetailScreen extends StatelessWidget {
                   shortMonths: _shortMonths,
                 ),
               ],
+              if (data != null && data.regionalNote != null) ...<Widget>[
+                const SizedBox(height: 12),
+                _RegionalNoteCard(
+                  region: region,
+                  note: data.regionalNote!,
+                ),
+              ],
               const SizedBox(height: 16),
               _InfoSection(
                 title: '🌱  Semis',
@@ -352,6 +359,52 @@ class _InfoSection extends StatelessWidget {
                 ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RegionalNoteCard extends StatelessWidget {
+  final Region region;
+  final String note;
+  const _RegionalNoteCard({required this.region, required this.note});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: KultivaColors.summerA.withOpacity(0.35),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(region.emoji, style: const TextStyle(fontSize: 22)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Adaptation — ${region.label}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.textSecondary,
+                      fontSize: 13,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    note,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
