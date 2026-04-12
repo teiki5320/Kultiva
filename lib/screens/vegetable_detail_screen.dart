@@ -4,6 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../data/regions/france.dart';
 import '../data/regions/west_africa.dart';
 import '../data/companions.dart';
+import '../data/diseases.dart';
+import '../data/rotation.dart';
 import '../data/vegetables_base.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
@@ -214,6 +216,10 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
+        if (diseaseMap.containsKey(vegetable.id))
+          _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
+        if (rotationMap.containsKey(vegetable.id))
+          _RotationSection(data: rotationMap[vegetable.id]!),
         if (_list.length > 1)
           Padding(
             padding: const EdgeInsets.only(top: 12),
@@ -431,6 +437,143 @@ class _InfoSection extends StatelessWidget {
                     ],
                   ),
                 ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DiseaseSection extends StatelessWidget {
+  final List<Disease> diseases;
+  const _DiseaseSection({required this.diseases});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '🐛  Maladies & ravageurs',
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              ),
+              const SizedBox(height: 10),
+              for (final d in diseases)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        d.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: KultivaColors.terracotta,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        d.remedy,
+                        style: const TextStyle(fontSize: 13, height: 1.3),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RotationSection extends StatelessWidget {
+  final RotationData data;
+  const _RotationSection({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final successors = data.goodAfter
+        .map((id) {
+          try {
+            return vegetablesBase.firstWhere((v) => v.id == id);
+          } catch (_) {
+            return null;
+          }
+        })
+        .whereType<Vegetable>()
+        .toList();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '🔄  Rotation des cultures',
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Text(
+                    'Famille : ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                  Text(data.family,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Text(
+                    'Attendre : ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                  Text(
+                    '${data.waitYears} ans avant de replanter au même endroit',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              if (successors.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'Bons successeurs :',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: successors.map((v) {
+                    return Chip(
+                      avatar:
+                          Text(v.emoji, style: const TextStyle(fontSize: 16)),
+                      label: Text(v.name,
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                    );
+                  }).toList(),
+                ),
+              ],
             ],
           ),
         ),
