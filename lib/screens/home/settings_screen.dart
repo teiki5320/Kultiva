@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/region_data.dart';
 import '../../services/auth_service.dart';
+import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 
@@ -53,6 +54,38 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       );
                     },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () async {
+                        final region = await GeolocationService.detectRegion();
+                        if (!context.mounted) return;
+                        if (region != null) {
+                          PrefsService.instance.setRegion(region);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Région détectée : ${region.emoji} ${region.label}',
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Impossible de détecter la position. Vérifie tes permissions de localisation.',
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.my_location),
+                      label: const Text('Détecter ma région automatiquement'),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
