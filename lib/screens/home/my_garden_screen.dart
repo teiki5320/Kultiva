@@ -6,6 +6,8 @@ import '../../data/companions.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
+import '../../services/watering_service.dart';
+import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 
 /// Tailles prédéfinies de potager.
@@ -35,11 +37,33 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   int _cols = 0;
   late List<List<String?>> _grid; // vegetableId or null
   bool _initialized = false;
+  WeatherData? _weather;
+  List<WateringAlert> _alerts = [];
+  bool _loadingWeather = false;
 
   @override
   void initState() {
     super.initState();
     _loadGarden();
+  }
+
+  /// Charge la météo et analyse les besoins en arrosage.
+  Future<void> _refreshWeather() async {
+    if (_loadingWeather) return;
+    setState(() => _loadingWeather = true);
+    try {
+      _weather = await WeatherService.getWeather();
+      if (_weather != null) {
+        final vegIds = <String>[];
+        for (final row in _grid) {
+          for (final cell in row) {
+            if (cell != null) vegIds.add(cell);
+          }
+        }
+        _alerts = await WateringService.analyzeGarden(vegIds);
+      }
+    } catch (_) {}
+    if (mounted) setState(() => _loadingWeather = false);
   }
 
   Future<void> _loadGarden() async {
@@ -59,6 +83,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         );
         _initialized = true;
         setState(() {});
+        _refreshWeather();
         return;
       } catch (_) {}
     }
@@ -139,6 +164,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   void _placeVegetable(int row, int col, String? vegId) {
     setState(() => _grid[row][col] = vegId);
     _saveGarden();
+    _refreshWeather(); // Recalculer les alertes avec le nouveau légume.
   }
 
   /// Check if a vegetable at (row, col) has any incompatible neighbors.
@@ -280,9 +306,34 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
+  /// Vérifie si un légume spécifique a besoin d'arrosage.
+  WateringAlert? _alertFor(String vegId) {
+    try {
+      return _alerts.firstWhere((a) => a.vegetable.id == vegId);
+    } catch (_) {
+      return null;
+    }
+  }
+
   Widget _buildGarden() {
+    final urgentAlerts = _alerts.where((a) => a.needsWatering).toList();
     return Column(
       children: [
+        // Bannière météo.
+        if (_weather != null)
+          _WeatherBanner(
+            weather: _weather!,
+            urgentCount: urgentAlerts.length,
+            onRefresh: _refreshWeather,
+          ),
+        if (_loadingWeather && _weather == null)
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: LinearProgressIndicator(),
+          ),
+        // Alertes arrosage.
+        if (urgentAlerts.isNotEmpty)
+          _WateringAlertBanner(alerts: urgentAlerts),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
@@ -312,9 +363,11 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                 children: List.generate(_rows, (r) {
                   return Row(
                     children: List.generate(_cols, (c) {
+                      final cellId = _grid[r][c];
                       return _GardenCell(
-                        vegId: _grid[r][c],
+                        vegId: cellId,
                         warnings: _getWarnings(r, c),
+                        waterAlert: cellId != null ? _alertFor(cellId) : null,
                         onTap: () => _showPicker(r, c),
                         onClear: () => _placeVegetable(r, c, null),
                       );
@@ -467,15 +520,134 @@ class _VegetablePickerState extends State<_VegetablePicker> {
   }
 }
 
+class _WeatherBanner extends StatelessWidget {
+  final WeatherData weather;
+  final int urgentCount;
+  final VoidCallback onRefresh;
+  const _WeatherBanner({
+    required this.weather,
+    required this.urgentCount,
+    required this.onRefresh,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Text(weather.weatherEmoji, style: const TextStyle(fontSize: 32)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${weather.currentTemp.toStringAsFixed(0)} °C — ${weather.weatherLabel}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 15),
+                  ),
+                  Text(
+                    '${weather.consecutiveDryDays} jour(s) sans pluie — ${weather.rainNext3Days.toStringAsFixed(0)} mm prévus sous 3 j',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (urgentCount > 0)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: KultivaColors.terracotta.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '$urgentCount',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: KultivaColors.terracotta,
+                  ),
+                ),
+              ),
+            IconButton(
+              icon: const Icon(Icons.refresh, size: 20),
+              onPressed: onRefresh,
+              tooltip: 'Rafraîchir la météo',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WateringAlertBanner extends StatelessWidget {
+  final List<WateringAlert> alerts;
+  const _WateringAlertBanner({required this.alerts});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      color: KultivaColors.terracotta.withOpacity(0.08),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '💧 Alertes arrosage',
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+            ),
+            const SizedBox(height: 6),
+            for (final a in alerts)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Row(
+                  children: [
+                    Text(a.emoji, style: const TextStyle(fontSize: 14)),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${a.vegetable.emoji} ${a.vegetable.name}',
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        a.message,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: KultivaColors.textSecondary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _GardenCell extends StatelessWidget {
   final String? vegId;
   final List<String> warnings;
+  final WateringAlert? waterAlert;
   final VoidCallback onTap;
   final VoidCallback onClear;
 
   const _GardenCell({
     required this.vegId,
     required this.warnings,
+    this.waterAlert,
     required this.onTap,
     required this.onClear,
   });
@@ -486,13 +658,16 @@ class _GardenCell extends StatelessWidget {
         ? vegetablesBase.where((v) => v.id == vegId).firstOrNull
         : null;
     final hasWarning = warnings.isNotEmpty;
+    final needsWater = waterAlert?.needsWatering ?? false;
 
     return GestureDetector(
       onTap: onTap,
       onLongPress: vegId != null ? onClear : null,
       child: Tooltip(
         message: veg != null
-            ? '${veg.name}${hasWarning ? "\n⚠️ Mauvais voisin : ${warnings.join(", ")}" : ""}'
+            ? '${veg.name}'
+                '${hasWarning ? "\n⚠️ Mauvais voisin : ${warnings.join(", ")}" : ""}'
+                '${needsWater ? "\n💧 ${waterAlert!.message}" : ""}'
             : 'Case vide — tape pour placer',
         child: Container(
           width: 72,
@@ -518,7 +693,7 @@ class _GardenCell extends StatelessWidget {
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(veg.emoji, style: const TextStyle(fontSize: 24)),
+                    Text(veg.emoji, style: const TextStyle(fontSize: 22)),
                     Text(
                       veg.name,
                       style: const TextStyle(
@@ -526,8 +701,17 @@ class _GardenCell extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                     ),
-                    if (hasWarning)
-                      const Text('⚠️', style: TextStyle(fontSize: 10)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (hasWarning)
+                          const Text('⚠️', style: TextStyle(fontSize: 9)),
+                        if (needsWater)
+                          Text(waterAlert!.emoji,
+                              style: const TextStyle(fontSize: 9)),
+                      ],
+                    ),
                   ],
                 )
               : Icon(Icons.add, size: 20, color: Colors.grey.withOpacity(0.4)),

@@ -39,6 +39,9 @@ dependencies:
   # Géolocalisation
   geolocator: ^11.0.0
 
+  # HTTP (météo Open-Meteo)
+  http: ^1.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

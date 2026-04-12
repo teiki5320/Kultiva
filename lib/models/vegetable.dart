@@ -84,6 +84,10 @@ class Vegetable {
   final String? watering;
   final String? soil;
 
+  /// Nombre max de jours consécutifs sans pluie avant arrosage nécessaire.
+  /// Si null, dérivé automatiquement du champ [watering].
+  final int? wateringDaysMax;
+
   // --- Rendement ---
   final String? yieldEstimate;
 
@@ -106,8 +110,21 @@ class Vegetable {
     this.spacing,
     this.watering,
     this.soil,
+    this.wateringDaysMax,
     this.yieldEstimate,
     this.amazonUrl,
     this.youtubeUrl,
   });
+
+  /// Seuil effectif de jours secs max. Si [wateringDaysMax] est renseigné,
+  /// il est utilisé. Sinon, dérivé du champ [watering] texte.
+  int get effectiveWateringDays {
+    if (wateringDaysMax != null) return wateringDaysMax!;
+    final w = (watering ?? '').toLowerCase();
+    if (w.contains('abondant')) return 2;
+    if (w.contains('régulier')) return 3;
+    if (w.contains('modéré')) return 5;
+    if (w.contains('faible') || w.contains('très')) return 7;
+    return 4; // défaut raisonnable
+  }
 }
