@@ -137,4 +137,137 @@ const List<RegionData> westAfricaData = <RegionData>[
     sowingMonths: [5, 6, 7, 8],
     harvestMonths: [8, 9, 10, 11, 12],
   ),
+  // ── Légumes 21–40 ──────────────────────────────────────────────────────
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'echalote',
+    sowingMonths: [9, 10, 11],
+    harvestMonths: [1, 2, 3],
+    regionalNote:
+        "Cultivée principalement au Sahel (Niger, Mali). Préférer la saison sèche fraîche.",
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'chou_fleur',
+    sowingMonths: [9, 10, 11],
+    harvestMonths: [12, 1, 2, 3],
+    regionalNote:
+        "Cultiver en saison fraîche et sèche. Le chou-fleur supporte mal la forte chaleur humide.",
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'brocoli',
+    sowingMonths: [9, 10, 11],
+    harvestMonths: [12, 1, 2],
+    regionalNote:
+        "Même exigences que le chou-fleur — saison fraîche uniquement.",
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'courge_butternut',
+    sowingMonths: [6, 7, 8],
+    harvestMonths: [10, 11, 12],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'potiron',
+    sowingMonths: [6, 7, 8],
+    harvestMonths: [10, 11, 12],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'melon',
+    sowingMonths: [10, 11, 12],
+    harvestMonths: [1, 2, 3],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'pasteque',
+    sowingMonths: [10, 11, 12, 1],
+    harvestMonths: [2, 3, 4, 5],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'fraise',
+    sowingMonths: [10, 11],
+    harvestMonths: [1, 2, 3],
+    regionalNote:
+        "Culture rare en zone tropicale — possible en altitude ou en saison fraîche sèche avec variétés adaptées.",
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'navet',
+    sowingMonths: [10, 11, 12],
+    harvestMonths: [12, 1, 2],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'betterave',
+    sowingMonths: [10, 11, 12],
+    harvestMonths: [1, 2, 3],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'mais',
+    sowingMonths: [5, 6, 7],
+    harvestMonths: [8, 9, 10],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'persil',
+    sowingMonths: [9, 10, 11, 12],
+    harvestMonths: [11, 12, 1, 2, 3, 4],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'coriandre',
+    sowingMonths: [10, 11, 12],
+    harvestMonths: [12, 1, 2, 3],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'ciboulette',
+    sowingMonths: [9, 10, 11],
+    harvestMonths: [11, 12, 1, 2, 3, 4],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'menthe',
+    sowingMonths: [6, 7, 8, 9],
+    harvestMonths: [8, 9, 10, 11, 12, 1, 2],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'thym',
+    sowingMonths: [9, 10, 11],
+    harvestMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    regionalNote:
+        "Pousse bien en zone sahélienne. En climat très humide, veiller au drainage pour éviter la pourriture.",
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'feve',
+    sowingMonths: [10, 11],
+    harvestMonths: [1, 2, 3],
+    regionalNote:
+        "Peu courante en Afrique de l'Ouest. Tester en saison fraîche et sèche.",
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'igname',
+    sowingMonths: [3, 4, 5],
+    harvestMonths: [11, 12, 1],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'manioc',
+    sowingMonths: [4, 5, 6],
+    harvestMonths: [12, 1, 2, 3, 4, 5],
+  ),
+  RegionData(
+    regionId: 'west_africa',
+    vegetableId: 'niebe',
+    sowingMonths: [6, 7, 8],
+    harvestMonths: [9, 10, 11],
+  ),
 ];
