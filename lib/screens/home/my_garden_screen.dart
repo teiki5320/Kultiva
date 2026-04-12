@@ -329,45 +329,129 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       context: context,
       isScrollControlled: true,
       builder: (ctx) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          minChildSize: 0.3,
-          maxChildSize: 0.85,
-          expand: false,
-          builder: (ctx, scrollCtrl) {
-            final sorted = List<Vegetable>.from(vegetablesBase)
-              ..sort((a, b) => a.name.compareTo(b.name));
+        return _VegetablePicker(
+          onSelected: (vegId) {
+            _placeVegetable(row, col, vegId);
+            Navigator.pop(ctx);
+          },
+        );
+      },
+    );
+  }
+}
+
+/// Picker de légumes avec recherche et filtre favoris.
+class _VegetablePicker extends StatefulWidget {
+  final ValueChanged<String> onSelected;
+  const _VegetablePicker({required this.onSelected});
+
+  @override
+  State<_VegetablePicker> createState() => _VegetablePickerState();
+}
+
+class _VegetablePickerState extends State<_VegetablePicker> {
+  String _query = '';
+  bool _favOnly = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.7,
+      minChildSize: 0.3,
+      maxChildSize: 0.9,
+      expand: false,
+      builder: (ctx, scrollCtrl) {
+        return ValueListenableBuilder<Set<String>>(
+          valueListenable: PrefsService.instance.favorites,
+          builder: (ctx, favs, _) {
+            var list = List<Vegetable>.from(vegetablesBase);
+            if (_favOnly) {
+              list = list.where((v) => favs.contains(v.id)).toList();
+            }
+            if (_query.isNotEmpty) {
+              final q = _query.toLowerCase();
+              list = list
+                  .where((v) =>
+                      v.name.toLowerCase().contains(q) ||
+                      v.category.label.toLowerCase().contains(q))
+                  .toList();
+            }
+            // Favoris en premier, puis alphabétique.
+            list.sort((a, b) {
+              final aFav = favs.contains(a.id) ? 0 : 1;
+              final bFav = favs.contains(b.id) ? 0 : 1;
+              final cmp = aFav.compareTo(bFav);
+              return cmp != 0 ? cmp : a.name.compareTo(b.name);
+            });
+
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    'Choisir un légume',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: TextField(
+                    autofocus: true,
+                    onChanged: (v) => setState(() => _query = v.trim()),
+                    decoration: InputDecoration(
+                      hintText: 'Rechercher un légume…',
+                      prefixIcon: const Icon(Icons.search),
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    controller: scrollCtrl,
-                    itemCount: sorted.length,
-                    itemBuilder: (ctx, i) {
-                      final v = sorted[i];
-                      return ListTile(
-                        leading: Text(v.emoji,
-                            style: const TextStyle(fontSize: 28)),
-                        title: Text(v.name,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w600)),
-                        subtitle: Text(v.category.label),
-                        onTap: () {
-                          _placeVegetable(row, col, v.id);
-                          Navigator.pop(ctx);
-                        },
-                      );
-                    },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      ChoiceChip(
+                        label: const Text('❤️ Favoris'),
+                        selected: _favOnly,
+                        onSelected: (v) => setState(() => _favOnly = v),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${list.length} légume${list.length > 1 ? "s" : ""}',
+                        style: TextStyle(
+                          color: KultivaColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                const SizedBox(height: 4),
+                Expanded(
+                  child: list.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Aucun résultat',
+                            style: TextStyle(
+                              color: KultivaColors.textSecondary,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          controller: scrollCtrl,
+                          itemCount: list.length,
+                          itemBuilder: (ctx, i) {
+                            final v = list[i];
+                            final isFav = favs.contains(v.id);
+                            return ListTile(
+                              leading: Text(v.emoji,
+                                  style: const TextStyle(fontSize: 28)),
+                              title: Text(v.name,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
+                              subtitle: Text(v.category.label),
+                              trailing: isFav
+                                  ? Icon(Icons.favorite,
+                                      size: 16,
+                                      color: KultivaColors.terracotta)
+                                  : null,
+                              onTap: () => widget.onSelected(v.id),
+                            );
+                          },
+                        ),
                 ),
               ],
             );
