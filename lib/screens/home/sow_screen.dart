@@ -11,6 +11,7 @@ import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
+import 'calendar_grid_screen.dart';
 
 /// Onglet "Semer" — illustration saisonnière + sélecteur de mois + liste
 /// des légumes semables pour le mois sélectionné, filtrée par région active.
@@ -87,7 +88,9 @@ class _SowScreenState extends State<SowScreen> {
 
         return SafeArea(
           bottom: false,
-          child: ListView(
+          child: Stack(
+            children: [
+              ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               SeasonHeader(season: season, month: _selectedMonth),
@@ -146,9 +149,26 @@ class _SowScreenState extends State<SowScreen> {
                     onTap: () => _openDetail(v),
                   ),
               ],
-              const SizedBox(height: 24),
+              const SizedBox(height: 80),
             ],
           ),
+          Positioned(
+            right: 16,
+            bottom: 16,
+            child: FloatingActionButton.small(
+              heroTag: 'calendarGrid',
+              tooltip: 'Calendrier annuel',
+              backgroundColor: KultivaColors.primaryGreen,
+              foregroundColor: Colors.white,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const CalendarGridScreen(),
+                ),
+              ),
+              child: const Icon(Icons.calendar_month),
+            ),
+          ),
+        ]),
         );
       },
     );
