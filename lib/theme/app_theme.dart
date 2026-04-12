@@ -62,7 +62,7 @@ class AppTheme {
           fontSize: 20,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: KultivaColors.lightCard,
         elevation: 2,
         shadowColor: KultivaColors.primaryGreen.withOpacity(0.12),
@@ -188,7 +188,7 @@ class AppTheme {
           fontSize: 20,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: KultivaColors.darkCard,
         elevation: 2,
         shadowColor: Colors.black54,
