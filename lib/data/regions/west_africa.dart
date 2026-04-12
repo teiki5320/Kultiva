@@ -270,4 +270,48 @@ const List<RegionData> westAfricaData = <RegionData>[
     sowingMonths: [6, 7, 8],
     harvestMonths: [9, 10, 11],
   ),
+  // ── Légumes 41–60 ──────────────────────────────────────────────────────
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'artichaut', sowingMonths: [10, 11], harvestMonths: [2, 3, 4],
+    regionalNote: "Peu cultivé en Afrique de l'Ouest. Possible en altitude ou en saison fraîche sèche.",
+  ),
+  RegionData(regionId: 'west_africa', vegetableId: 'blette', sowingMonths: [10, 11, 12], harvestMonths: [1, 2, 3, 4]),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'celeri', sowingMonths: [10, 11], harvestMonths: [1, 2, 3],
+    regionalNote: "Préférer la saison sèche et fraîche. Le céleri supporte mal la chaleur humide.",
+  ),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'mache', sowingMonths: [11, 12], harvestMonths: [1, 2],
+    regionalNote: "Non adaptée au climat tropical — possible en altitude uniquement. Préférer la laitue.",
+  ),
+  RegionData(regionId: 'west_africa', vegetableId: 'roquette', sowingMonths: [10, 11, 12], harvestMonths: [12, 1, 2]),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'chou_kale', sowingMonths: [9, 10, 11], harvestMonths: [12, 1, 2, 3],
+    regionalNote: "Cultiver en saison sèche fraîche. Le kale résiste mieux à la chaleur que les autres choux.",
+  ),
+  RegionData(regionId: 'west_africa', vegetableId: 'arachide', sowingMonths: [5, 6, 7], harvestMonths: [9, 10, 11]),
+  RegionData(regionId: 'west_africa', vegetableId: 'bissap', sowingMonths: [5, 6, 7], harvestMonths: [10, 11, 12]),
+  RegionData(regionId: 'west_africa', vegetableId: 'sesame', sowingMonths: [6, 7], harvestMonths: [10, 11]),
+  RegionData(regionId: 'west_africa', vegetableId: 'gingembre', sowingMonths: [4, 5, 6], harvestMonths: [12, 1, 2]),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'asperge', sowingMonths: [10, 11], harvestMonths: [2, 3, 4],
+    regionalNote: "Rare en Afrique de l'Ouest — culture expérimentale en zone sahélienne irriguée.",
+  ),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'fenouil', sowingMonths: [10, 11, 12], harvestMonths: [1, 2, 3],
+    regionalNote: "Cultiver en saison fraîche sèche uniquement. Monte vite en graines sous forte chaleur.",
+  ),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'endive', sowingMonths: [10, 11], harvestMonths: [2, 3],
+    regionalNote: "Le forçage en cave est difficile en climat chaud. Culture marginale.",
+  ),
+  RegionData(
+    regionId: 'west_africa', vegetableId: 'chou_bruxelles', sowingMonths: [9, 10], harvestMonths: [1, 2, 3],
+    regionalNote: "Très peu adapté aux tropiques — nécessite du froid pour former les pommes. Essayer en altitude.",
+  ),
+  RegionData(regionId: 'west_africa', vegetableId: 'potimarron', sowingMonths: [6, 7, 8], harvestMonths: [10, 11, 12]),
+  RegionData(regionId: 'west_africa', vegetableId: 'oseille', sowingMonths: [6, 7, 8, 9], harvestMonths: [8, 9, 10, 11, 12]),
+  RegionData(regionId: 'west_africa', vegetableId: 'taro', sowingMonths: [4, 5, 6], harvestMonths: [11, 12, 1]),
+  RegionData(regionId: 'west_africa', vegetableId: 'amarante', sowingMonths: [5, 6, 7, 8], harvestMonths: [7, 8, 9, 10, 11]),
+  RegionData(regionId: 'west_africa', vegetableId: 'sorgho', sowingMonths: [5, 6, 7], harvestMonths: [9, 10, 11]),
 ];

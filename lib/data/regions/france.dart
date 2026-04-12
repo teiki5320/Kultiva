@@ -262,4 +262,45 @@ const List<RegionData> franceData = <RegionData>[
     regionalNote:
         "Peu cultivé en France métropolitaine. Possible dans le sud — même culture que le haricot, mais plus tolérant à la chaleur.",
   ),
+  // ── Légumes 41–60 ──────────────────────────────────────────────────────
+  RegionData(regionId: 'france', vegetableId: 'artichaut', sowingMonths: [3, 4, 5], harvestMonths: [6, 7, 8, 9]),
+  RegionData(regionId: 'france', vegetableId: 'blette', sowingMonths: [4, 5, 6, 7], harvestMonths: [7, 8, 9, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'celeri', sowingMonths: [2, 3, 4], harvestMonths: [8, 9, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'mache', sowingMonths: [8, 9, 10], harvestMonths: [10, 11, 12, 1, 2, 3]),
+  RegionData(regionId: 'france', vegetableId: 'roquette', sowingMonths: [3, 4, 5, 8, 9], harvestMonths: [5, 6, 7, 9, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'chou_kale', sowingMonths: [4, 5, 6, 7], harvestMonths: [9, 10, 11, 12, 1, 2]),
+  RegionData(
+    regionId: 'france', vegetableId: 'arachide', sowingMonths: [5, 6], harvestMonths: [9, 10],
+    regionalNote: "Culture expérimentale en France — possible dans le sud-ouest (Landes) en sol sableux chaud.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'bissap', sowingMonths: [4, 5], harvestMonths: [9, 10],
+    regionalNote: "Annuelle tropicale — possible sous serre chauffée ou en pot rentré en hiver. Résultats aléatoires en plein air.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'sesame', sowingMonths: [5, 6], harvestMonths: [9, 10],
+    regionalNote: "Culture rare en France — réservée au sud méditerranéen, sol chaud et sec.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'gingembre', sowingMonths: [3, 4], harvestMonths: [10, 11],
+    regionalNote: "Possible en pot sous serre ou en intérieur lumineux. Cycle de 8 mois minimum.",
+  ),
+  RegionData(regionId: 'france', vegetableId: 'asperge', sowingMonths: [2, 3, 4], harvestMonths: [4, 5, 6]),
+  RegionData(regionId: 'france', vegetableId: 'fenouil', sowingMonths: [5, 6, 7], harvestMonths: [8, 9, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'endive', sowingMonths: [5, 6], harvestMonths: [11, 12, 1, 2, 3]),
+  RegionData(regionId: 'france', vegetableId: 'chou_bruxelles', sowingMonths: [3, 4, 5], harvestMonths: [10, 11, 12, 1, 2]),
+  RegionData(regionId: 'france', vegetableId: 'potimarron', sowingMonths: [4, 5], harvestMonths: [9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'oseille', sowingMonths: [3, 4, 5], harvestMonths: [4, 5, 6, 7, 8, 9, 10]),
+  RegionData(
+    regionId: 'france', vegetableId: 'taro', sowingMonths: [4, 5], harvestMonths: [10, 11],
+    regionalNote: "Non adapté au climat français sauf DOM-TOM. Possible en pot sous serre chauffée.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'amarante', sowingMonths: [5, 6], harvestMonths: [8, 9, 10],
+    regionalNote: "Pousse bien dans le sud de la France. Ailleurs, semer après les dernières gelées.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'sorgho', sowingMonths: [5, 6], harvestMonths: [9, 10],
+    regionalNote: "Culture rare en France métropolitaine — possible dans le sud en sol chaud et sec.",
+  ),
 ];
