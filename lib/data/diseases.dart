@@ -16,7 +16,7 @@ const Map<String, List<Disease>> diseaseMap = {
     Disease('Pucerons', 'Savon noir, coccinelles'),
   ],
   'laitue': [
-    Disease('Limaces', 'Pièges à bière, cendres, coquilles d'œufs broyées'),
+    Disease('Limaces', "Pièges à bière, cendres, coquilles d'œufs broyées"),
     Disease('Pourriture grise (Botrytis)', 'Aérer, espacement suffisant, ne pas arroser le feuillage'),
   ],
   'haricot': [
@@ -37,7 +37,7 @@ const Map<String, List<Disease>> diseaseMap = {
   ],
   'oignon': [
     Disease('Mildiou', 'Bouillie bordelaise, rotation (4 ans minimum)'),
-    Disease('Mouche de l'oignon', 'Filet anti-insectes, associer avec la carotte'),
+    Disease("Mouche de l'oignon", "Filet anti-insectes, associer avec la carotte"),
   ],
   'pomme_de_terre': [
     Disease('Mildiou', 'Bouillie bordelaise préventive, butter les plants, variétés résistantes'),
@@ -52,10 +52,10 @@ const Map<String, List<Disease>> diseaseMap = {
     Disease('Pucerons', 'Savon noir, pyrèthre naturel'),
   ],
   'radis': [
-    Disease('Altise', 'Filet anti-insectes, arrosage fréquent (les altises détestent l'humidité)'),
+    Disease('Altise', "Filet anti-insectes, arrosage fréquent (les altises détestent l'humidité)"),
   ],
   'piment': [
-    Disease('Pucerons', 'Savon noir, jet d'eau puissant'),
+    Disease('Pucerons', "Savon noir, jet d'eau puissant"),
     Disease('Mouche blanche', 'Plaquettes jaunes engluées, savon noir'),
   ],
   'fraise': [

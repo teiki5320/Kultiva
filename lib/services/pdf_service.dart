@@ -103,7 +103,7 @@ class PdfService {
                 ),
               ),
               pw.SizedBox(height: 8),
-              _buildInfoTable(<List<String>>[
+              _buildInfoTable(<List<String?>>[
                 ['Technique', vegetable.sowingTechnique],
                 ['Profondeur', vegetable.sowingDepth],
                 ['Température germination', vegetable.germinationTemp],
