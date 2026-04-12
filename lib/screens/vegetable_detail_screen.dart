@@ -7,6 +7,7 @@ import '../data/companions.dart';
 import '../data/vegetables_base.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
+import '../services/pdf_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 
@@ -63,6 +64,12 @@ class VegetableDetailScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text('${vegetable.emoji}  ${vegetable.name}'),
             actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.picture_as_pdf),
+                tooltip: 'Exporter PDF',
+                onPressed: () =>
+                    PdfService.printVegetableSheet(vegetable, region),
+              ),
               ValueListenableBuilder<Set<String>>(
                 valueListenable: PrefsService.instance.favorites,
                 builder: (context, favs, _) {
