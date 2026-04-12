@@ -3,8 +3,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/regions/france.dart';
 import '../data/regions/west_africa.dart';
+import '../data/companions.dart';
+import '../data/vegetables_base.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
+import '../services/pdf_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 
@@ -61,6 +64,12 @@ class VegetableDetailScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text('${vegetable.emoji}  ${vegetable.name}'),
             actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.picture_as_pdf),
+                tooltip: 'Exporter PDF',
+                onPressed: () =>
+                    PdfService.printVegetableSheet(vegetable, region),
+              ),
               ValueListenableBuilder<Set<String>>(
                 valueListenable: PrefsService.instance.favorites,
                 builder: (context, favs, _) {
@@ -101,6 +110,13 @@ class VegetableDetailScreen extends StatelessWidget {
                   shortMonths: _shortMonths,
                 ),
               ],
+              if (data != null && data.regionalNote != null) ...<Widget>[
+                const SizedBox(height: 12),
+                _RegionalNoteCard(
+                  region: region,
+                  note: data.regionalNote!,
+                ),
+              ],
               const SizedBox(height: 16),
               _InfoSection(
                 title: '🌱  Semis',
@@ -126,6 +142,18 @@ class VegetableDetailScreen extends StatelessWidget {
                   _Row('Estimation', vegetable.yieldEstimate),
                 ],
               ),
+              if (companionMap.containsKey(vegetable.id))
+                _CompanionSection(
+                  title: '🤝  Bons voisins',
+                  ids: companionMap[vegetable.id]!,
+                  color: KultivaColors.primaryGreen,
+                ),
+              if (incompatibleMap.containsKey(vegetable.id))
+                _CompanionSection(
+                  title: '⛔  À éviter à côté',
+                  ids: incompatibleMap[vegetable.id]!,
+                  color: KultivaColors.terracotta,
+                ),
               const SizedBox(height: 16),
               if (vegetable.amazonUrl != null)
                 SizedBox(
@@ -352,6 +380,113 @@ class _InfoSection extends StatelessWidget {
                 ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CompanionSection extends StatelessWidget {
+  final String title;
+  final List<String> ids;
+  final Color color;
+  const _CompanionSection({
+    required this.title,
+    required this.ids,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final vegs = ids
+        .map((id) {
+          try {
+            return vegetablesBase.firstWhere((v) => v.id == id);
+          } catch (_) {
+            return null;
+          }
+        })
+        .whereType<Vegetable>()
+        .toList();
+    if (vegs.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: color,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: vegs.map((v) {
+                  return Chip(
+                    avatar: Text(v.emoji, style: const TextStyle(fontSize: 16)),
+                    label: Text(
+                      v.name,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RegionalNoteCard extends StatelessWidget {
+  final Region region;
+  final String note;
+  const _RegionalNoteCard({required this.region, required this.note});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: KultivaColors.summerA.withOpacity(0.35),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(region.emoji, style: const TextStyle(fontSize: 22)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Adaptation — ${region.label}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.textSecondary,
+                      fontSize: 13,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    note,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      height: 1.35,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

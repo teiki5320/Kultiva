@@ -32,6 +32,10 @@ dependencies:
   # URL launcher (liens Amazon)
   url_launcher: ^6.2.2
 
+  # Export PDF
+  pdf: ^3.10.0
+  printing: ^5.12.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
