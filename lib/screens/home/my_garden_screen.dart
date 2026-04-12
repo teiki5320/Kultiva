@@ -52,7 +52,10 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         final cells = (data['cells'] as List).cast<String?>();
         _grid = List.generate(
           _rows,
-          (r) => List.generate(_cols, (c) => cells[r * _cols + c]),
+          (r) => List<String?>.generate(
+              _cols, (c) => cells[r * _cols + c],
+              growable: true),
+          growable: true,
         );
         _initialized = true;
         setState(() {});
@@ -80,7 +83,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     setState(() {
       _rows = preset.rows;
       _cols = preset.cols;
-      _grid = List.generate(_rows, (_) => List.filled(_cols, null));
+      _grid = List.generate(
+          _rows, (_) => List<String?>.filled(_cols, null, growable: true),
+          growable: true);
     });
     _saveGarden();
   }
@@ -96,7 +101,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   void _addRow() {
     setState(() {
       _rows++;
-      _grid.add(List.filled(_cols, null));
+      _grid.add(List<String?>.filled(_cols, null, growable: true));
     });
     _saveGarden();
   }
