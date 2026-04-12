@@ -19,6 +19,7 @@ class PrefsService {
   static const _kFavorites = 'kultiva.favorites';
   static const _kAuthEmail = 'kultiva.auth.email';
   static const _kAuthName = 'kultiva.auth.name';
+  static const _kGardenGrid = 'kultiva.gardenGrid';
 
   SharedPreferences? _prefs;
 
@@ -76,6 +77,17 @@ class PrefsService {
     }
     favorites.value = next;
     await _prefs?.setStringList(_kFavorites, next.toList());
+  }
+
+  // --- Garden grid ---
+  String? get gardenGrid => _prefs?.getString(_kGardenGrid);
+
+  Future<void> setGardenGrid(String? json) async {
+    if (json == null) {
+      await _prefs?.remove(_kGardenGrid);
+    } else {
+      await _prefs?.setString(_kGardenGrid, json);
+    }
   }
 
   String? get authEmail => _prefs?.getString(_kAuthEmail);

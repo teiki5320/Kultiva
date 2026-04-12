@@ -42,9 +42,9 @@ class _RootTabsState extends State<RootTabs> {
             label: 'Légumes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Mon Jardin',
+            icon: Icon(Icons.grid_view_outlined),
+            activeIcon: Icon(Icons.grid_view),
+            label: 'Mon Potager',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
