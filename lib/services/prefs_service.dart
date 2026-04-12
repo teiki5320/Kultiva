@@ -20,6 +20,7 @@ class PrefsService {
   static const _kAuthEmail = 'kultiva.auth.email';
   static const _kAuthName = 'kultiva.auth.name';
   static const _kGardenGrid = 'kultiva.gardenGrid';
+  static const _kWateringHistory = 'kultiva.wateringHistory';
 
   SharedPreferences? _prefs;
 
@@ -88,6 +89,34 @@ class PrefsService {
     } else {
       await _prefs?.setString(_kGardenGrid, json);
     }
+  }
+
+  // --- Watering history ---
+  /// Retourne la liste des dates d'arrosage (ISO 8601).
+  List<String> get wateringHistory =>
+      _prefs?.getStringList(_kWateringHistory) ?? [];
+
+  /// Enregistre un arrosage maintenant.
+  Future<void> recordWatering() async {
+    final history = wateringHistory;
+    history.insert(0, DateTime.now().toIso8601String());
+    // Garder max 60 jours d'historique.
+    if (history.length > 60) history.removeRange(60, history.length);
+    await _prefs?.setStringList(_kWateringHistory, history);
+  }
+
+  /// Dernier arrosage enregistré, ou null.
+  DateTime? get lastWatering {
+    final h = wateringHistory;
+    if (h.isEmpty) return null;
+    return DateTime.tryParse(h.first);
+  }
+
+  /// Nombre de jours depuis le dernier arrosage.
+  int? get daysSinceLastWatering {
+    final last = lastWatering;
+    if (last == null) return null;
+    return DateTime.now().difference(last).inDays;
   }
 
   String? get authEmail => _prefs?.getString(_kAuthEmail);

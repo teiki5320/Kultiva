@@ -6,6 +6,7 @@ import '../../data/companions.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
+import '../../services/notification_service.dart';
 import '../../services/watering_service.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
@@ -61,6 +62,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           }
         }
         _alerts = await WateringService.analyzeGarden(vegIds);
+        // Envoyer une notification si des légumes ont soif (mobile uniquement).
+        NotificationService.checkAndNotify(vegIds);
       }
     } catch (_) {}
     if (mounted) setState(() => _loadingWeather = false);
@@ -306,6 +309,14 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
+  String _lastWateringLabel() {
+    final days = PrefsService.instance.daysSinceLastWatering;
+    if (days == null) return 'Jamais arrosé';
+    if (days == 0) return "Arrosé aujourd'hui";
+    if (days == 1) return 'Arrosé hier';
+    return 'Arrosé il y a $days jours';
+  }
+
   /// Vérifie si un légume spécifique a besoin d'arrosage.
   WateringAlert? _alertFor(String vegId) {
     try {
@@ -334,8 +345,45 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         // Alertes arrosage.
         if (urgentAlerts.isNotEmpty)
           _WateringAlertBanner(alerts: urgentAlerts),
+        // Bouton "J'ai arrosé" + dernier arrosage.
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          child: Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    await PrefsService.instance.recordWatering();
+                    if (mounted) {
+                      setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Arrosage enregistré !'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Text('💧', style: TextStyle(fontSize: 18)),
+                  label: const Text("J'ai arrosé"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue.shade400,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                _lastWateringLabel(),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: KultivaColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Row(
             children: [
               Text(
