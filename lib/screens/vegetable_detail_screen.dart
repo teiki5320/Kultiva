@@ -3,6 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/regions/france.dart';
 import '../data/regions/west_africa.dart';
+import '../data/companions.dart';
+import '../data/vegetables_base.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
 import '../services/prefs_service.dart';
@@ -133,6 +135,18 @@ class VegetableDetailScreen extends StatelessWidget {
                   _Row('Estimation', vegetable.yieldEstimate),
                 ],
               ),
+              if (companionMap.containsKey(vegetable.id))
+                _CompanionSection(
+                  title: '🤝  Bons voisins',
+                  ids: companionMap[vegetable.id]!,
+                  color: KultivaColors.primaryGreen,
+                ),
+              if (incompatibleMap.containsKey(vegetable.id))
+                _CompanionSection(
+                  title: '⛔  À éviter à côté',
+                  ids: incompatibleMap[vegetable.id]!,
+                  color: KultivaColors.terracotta,
+                ),
               const SizedBox(height: 16),
               if (vegetable.amazonUrl != null)
                 SizedBox(
@@ -357,6 +371,67 @@ class _InfoSection extends StatelessWidget {
                     ],
                   ),
                 ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CompanionSection extends StatelessWidget {
+  final String title;
+  final List<String> ids;
+  final Color color;
+  const _CompanionSection({
+    required this.title,
+    required this.ids,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final vegs = ids
+        .map((id) {
+          try {
+            return vegetablesBase.firstWhere((v) => v.id == id);
+          } catch (_) {
+            return null;
+          }
+        })
+        .whereType<Vegetable>()
+        .toList();
+    if (vegs.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: color,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: vegs.map((v) {
+                  return Chip(
+                    avatar: Text(v.emoji, style: const TextStyle(fontSize: 16)),
+                    label: Text(
+                      v.name,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  );
+                }).toList(),
+              ),
             ],
           ),
         ),
