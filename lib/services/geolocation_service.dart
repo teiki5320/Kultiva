@@ -30,10 +30,7 @@ class GeolocationService {
 
       // Récupérer la position.
       final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.low,
-          timeLimit: Duration(seconds: 10),
-        ),
+        desiredAccuracy: LocationAccuracy.low,
       );
 
       return _regionFromCoordinates(position.latitude, position.longitude);

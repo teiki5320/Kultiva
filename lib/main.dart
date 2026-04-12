@@ -5,6 +5,7 @@ import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
 import 'screens/splash_screen.dart';
 import 'services/auth_service.dart';
+import 'services/notification_service.dart';
 import 'services/prefs_service.dart';
 import 'theme/app_theme.dart';
 
@@ -12,6 +13,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PrefsService.instance.load();
   await AuthService.instance.load();
+  await NotificationService.init();
   runApp(const KultivaApp());
 }
 
