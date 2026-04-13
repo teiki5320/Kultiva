@@ -467,10 +467,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
               child: Stack(
                 children: [
                   // Image de fond potager.
@@ -518,7 +516,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               ),
             ),
           ),
-        ),
         // Boutons d'édition sous la grille.
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -859,17 +856,17 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return Colors.white.withOpacity(0.25);
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.45);
-    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2).withOpacity(0.7);
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0).withOpacity(0.7);
-    return KultivaColors.springB.withOpacity(0.55);
+    if (veg == null) return Colors.white.withOpacity(0.55);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.7);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2).withOpacity(0.85);
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0).withOpacity(0.85);
+    return KultivaColors.springB.withOpacity(0.75);
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.6);
-    if (veg != null) return Colors.white.withOpacity(0.5);
-    return Colors.white.withOpacity(0.3);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.7);
+    if (veg != null) return Colors.white.withOpacity(0.7);
+    return Colors.white.withOpacity(0.5);
   }
 
   String _waterEmoji() {
