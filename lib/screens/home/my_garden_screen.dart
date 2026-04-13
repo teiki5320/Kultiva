@@ -467,36 +467,28 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
         Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      KultivaColors.springB.withOpacity(0.3),
-                      KultivaColors.lightGreen.withOpacity(0.15),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(22),
-                  border: Border.all(
-                    color: KultivaColors.primaryGreen.withOpacity(0.2),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: KultivaColors.primaryGreen.withOpacity(0.1),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                children: [
+                  // Image de fond potager.
+                  Positioned.fill(
+                    child: Image.asset(
+                      'assets/images/potager_bg.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: const Color(0xFF5C4033),
+                      ),
                     ),
-                  ],
-                ),
-                child: Column(
+                  ),
+                  // Grille de cases par-dessus.
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
                 children: List.generate(_rows, (r) {
                   return Row(
                     children: List.generate(_cols, (c) {
@@ -520,6 +512,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                   );
                 }),
               ),
+            ),
+          ),
+                ],
               ),
             ),
           ),
@@ -864,17 +859,17 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.12);
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.15);
-    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2);
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0);
-    return KultivaColors.springB.withOpacity(0.35);
+    if (veg == null) return Colors.white.withOpacity(0.25);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.45);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2).withOpacity(0.7);
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0).withOpacity(0.7);
+    return KultivaColors.springB.withOpacity(0.55);
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.5);
-    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.3);
-    return KultivaColors.lightGreen.withOpacity(0.25);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.6);
+    if (veg != null) return Colors.white.withOpacity(0.5);
+    return Colors.white.withOpacity(0.3);
   }
 
   String _waterEmoji() {
