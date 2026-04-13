@@ -240,16 +240,20 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
   Widget _buildGrid(
       List<Vegetable> list, Set<String> favs, List<RegionData> regionData) {
-    return GridView.builder(
-      padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        childAspectRatio: 0.85,
-      ),
-      itemCount: list.length,
-      itemBuilder: (context, i) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Adapter le nombre de colonnes à la largeur.
+        final cols = constraints.maxWidth > 600 ? 5 : (constraints.maxWidth > 400 ? 4 : 3);
+        return GridView.builder(
+          padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cols,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 0.9,
+          ),
+          itemCount: list.length,
+          itemBuilder: (context, i) {
         final v = list[i];
         final sow = _canSow(v, regionData);
         final harvest = _canHarvest(v, regionData);
@@ -384,6 +388,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             ),
           ),
         );
+      },
+    );
       },
     );
   }
