@@ -473,39 +473,34 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                children: List.generate(_rows, (r) {
-                  return Row(
-                    children: List.generate(_cols, (c) {
-                      final cellId = _grid[r][c];
-                      final veg = cellId != null
-                          ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
-                          : null;
-                      final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
-                      final threshold = veg?.effectiveWateringDays ?? 4;
-                      return _GardenCell(
-                        veg: veg,
-                        dryDays: dryDays,
-                        threshold: threshold,
-                        warnings: _getWarnings(r, c),
-                        onTap: () => _showPicker(r, c),
-                        onLongPress: veg != null
-                            ? () => _showPlantDetail(r, c, veg)
-                            : null,
-                      );
-                    }),
-                  );
-                }),
+                  children: List.generate(_rows, (r) {
+                    return Row(
+                      children: List.generate(_cols, (c) {
+                        final cellId = _grid[r][c];
+                        final veg = cellId != null
+                            ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
+                            : null;
+                        final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
+                        final threshold = veg?.effectiveWateringDays ?? 4;
+                        return _GardenCell(
+                          veg: veg,
+                          dryDays: dryDays,
+                          threshold: threshold,
+                          warnings: _getWarnings(r, c),
+                          onTap: () => _showPicker(r, c),
+                          onLongPress: veg != null
+                              ? () => _showPlantDetail(r, c, veg)
+                              : null,
+                        );
+                      }),
+                    );
+                  }),
+                ),
               ),
             ),
           ),
-          ),
         ),
-        // Mascotte jardinier chibi.
-        const Padding(
-          padding: EdgeInsets.only(bottom: 4),
-          child: Text('👨‍🌾', style: TextStyle(fontSize: 28)),
-        ),
-        // Boutons d'édition sous la grille.
+        const Text('👨‍🌾', style: TextStyle(fontSize: 28)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
@@ -528,8 +523,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
       ],
-      ],
-      ),
     );
   }
 
