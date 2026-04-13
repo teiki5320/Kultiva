@@ -7,6 +7,7 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/petal_animation.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -99,35 +100,21 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             final filtered = _filter(region, favs);
             final regionData =
                 region == Region.france ? franceData : westAfricaData;
+            final season = Season.fromMonth(DateTime.now().month);
             return SafeArea(
               bottom: false,
               child: Column(
                 children: [
-                  AppBar(
-                    title: const Text('Légumes'),
-                    actions: [
-                      IconButton(
-                        icon: Icon(_gridView
-                            ? Icons.view_list_rounded
-                            : Icons.grid_view_rounded, size: 22),
-                        tooltip: _gridView ? 'Vue liste' : 'Vue grille',
-                        onPressed: () =>
-                            setState(() => _gridView = !_gridView),
-                      ),
-                      PopupMenuButton<_SortMode>(
-                        icon: const Icon(Icons.sort),
-                        tooltip: 'Trier',
-                        onSelected: (m) => setState(() => _sortMode = m),
-                        itemBuilder: (_) => [
-                          _sortItem(_SortMode.alpha, Icons.sort_by_alpha,
-                              'Alphabétique'),
-                          _sortItem(_SortMode.category, Icons.category,
-                              'Par catégorie'),
-                          _sortItem(
-                              _SortMode.sowNow, Icons.eco, 'À semer ce mois'),
-                        ],
-                      ),
-                    ],
+                  // Header kawaii saisonnier.
+                  _KawaiiHeader(
+                    season: season,
+                    count: filtered.length,
+                    gridView: _gridView,
+                    onToggleView: () =>
+                        setState(() => _gridView = !_gridView),
+                    sortMode: _sortMode,
+                    onSortChanged: (m) =>
+                        setState(() => _sortMode = m),
                   ),
                   // Barre de recherche.
                   Padding(
@@ -158,16 +145,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       children: [
-                        _CategoryChip(
+                        _PastelChip(
                           label: 'Favoris',
                           emoji: '❤️',
+                          color: KultivaColors.terracotta,
                           selected: _favOnly,
                           onTap: () =>
                               setState(() => _favOnly = !_favOnly),
                         ),
-                        _CategoryChip(
+                        _PastelChip(
                           label: 'Toutes',
                           emoji: '✨',
+                          color: KultivaColors.primaryGreen,
                           selected:
                               _selectedCategory == null && !_favOnly,
                           onTap: () => setState(() {
@@ -176,32 +165,16 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                           }),
                         ),
                         for (final cat in VegetableCategory.values)
-                          _CategoryChip(
+                          _PastelChip(
                             label: cat.label,
                             emoji: cat.emoji,
+                            color: _categoryColor(cat),
                             selected: _selectedCategory == cat,
                             onTap: () => setState(
                               () => _selectedCategory =
                                   _selectedCategory == cat ? null : cat,
                             ),
                           ),
-                      ],
-                    ),
-                  ),
-                  // Compteur.
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 4),
-                    child: Row(
-                      children: [
-                        Text(
-                          '${filtered.length} légume${filtered.length > 1 ? "s" : ""}',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: KultivaColors.textSecondary,
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -235,23 +208,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           },
         );
       },
-    );
-  }
-
-  PopupMenuItem<_SortMode> _sortItem(
-      _SortMode mode, IconData icon, String label) {
-    return PopupMenuItem(
-      value: mode,
-      child: Row(
-        children: [
-          Icon(icon,
-              color: _sortMode == mode
-                  ? KultivaColors.primaryGreen
-                  : null),
-          const SizedBox(width: 8),
-          Text(label),
-        ],
-      ),
     );
   }
 
@@ -298,6 +254,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         final sow = _canSow(v, regionData);
         final harvest = _canHarvest(v, regionData);
         final isFav = favs.contains(v.id);
+        final cc = _categoryColor(v.category);
         return GestureDetector(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -310,31 +267,62 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: sow
-                  ? KultivaColors.lightGreen.withOpacity(0.2)
-                  : Colors.white,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: sow
-                    ? KultivaColors.primaryGreen.withOpacity(0.3)
-                    : Colors.grey.withOpacity(0.15),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  cc.withOpacity(0.12),
+                  cc.withOpacity(0.25),
+                ],
               ),
+              borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.04),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: cc.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: Stack(
+              clipBehavior: Clip.hardEdge,
               children: [
+                // Bulles kawaii.
+                Positioned(
+                  top: -8, right: -8,
+                  child: Container(
+                    width: 30, height: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: cc.withOpacity(0.12),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 8, left: -6,
+                  child: Container(
+                    width: 18, height: 18,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: cc.withOpacity(0.08),
+                    ),
+                  ),
+                ),
                 Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(v.emoji,
-                          style: const TextStyle(fontSize: 32)),
+                      // Emoji dans cercle blanc.
+                      Container(
+                        width: 44, height: 44,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(v.emoji,
+                            style: const TextStyle(fontSize: 24)),
+                      ),
                       const SizedBox(height: 6),
                       Padding(
                         padding:
@@ -424,15 +412,116 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   }
 }
 
-class _CategoryChip extends StatelessWidget {
+// Header kawaii saisonnier.
+class _KawaiiHeader extends StatelessWidget {
+  final Season season;
+  final int count;
+  final bool gridView;
+  final VoidCallback onToggleView;
+  final _SortMode sortMode;
+  final ValueChanged<_SortMode> onSortChanged;
+
+  const _KawaiiHeader({
+    required this.season,
+    required this.count,
+    required this.gridView,
+    required this.onToggleView,
+    required this.sortMode,
+    required this.onSortChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = _seasonColors(season);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [colors[0].withOpacity(0.4), colors[1].withOpacity(0.3)],
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(24),
+          bottomRight: Radius.circular(24),
+        ),
+      ),
+      child: Row(
+        children: [
+          Text(season.emoji, style: const TextStyle(fontSize: 28)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Catalogue',
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
+                Text(
+                  '$count légume${count > 1 ? "s" : ""}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: KultivaColors.textPrimary.withOpacity(0.5),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: Icon(gridView
+                ? Icons.view_list_rounded
+                : Icons.grid_view_rounded, size: 22),
+            onPressed: onToggleView,
+          ),
+          PopupMenuButton<_SortMode>(
+            icon: const Icon(Icons.sort, size: 22),
+            onSelected: onSortChanged,
+            itemBuilder: (_) => [
+              _sortItem(_SortMode.alpha, 'Alphabétique'),
+              _sortItem(_SortMode.category, 'Par catégorie'),
+              _sortItem(_SortMode.sowNow, 'À semer ce mois'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  PopupMenuItem<_SortMode> _sortItem(_SortMode mode, String label) {
+    return PopupMenuItem(
+      value: mode,
+      child: Text(label,
+          style: TextStyle(
+            fontWeight: sortMode == mode ? FontWeight.w800 : FontWeight.w500,
+            color: sortMode == mode ? KultivaColors.primaryGreen : null,
+          )),
+    );
+  }
+
+  List<Color> _seasonColors(Season s) {
+    switch (s) {
+      case Season.spring:
+        return [KultivaColors.springA, KultivaColors.springB];
+      case Season.summer:
+        return [KultivaColors.summerA, KultivaColors.summerB];
+      case Season.autumn:
+        return [KultivaColors.autumnA, KultivaColors.autumnB];
+      case Season.winter:
+        return [KultivaColors.winterA, KultivaColors.winterB];
+    }
+  }
+}
+
+// Chip pastel coloré par catégorie.
+class _PastelChip extends StatelessWidget {
   final String label;
   final String emoji;
+  final Color color;
   final bool selected;
   final VoidCallback onTap;
 
-  const _CategoryChip({
+  const _PastelChip({
     required this.label,
     required this.emoji,
+    required this.color,
     required this.selected,
     required this.onTap,
   });
@@ -440,11 +529,29 @@ class _CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: ChoiceChip(
-        label: Text('$emoji  $label'),
-        selected: selected,
-        onSelected: (_) => onTap(),
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: selected ? color.withOpacity(0.25) : color.withOpacity(0.08),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: selected ? color : color.withOpacity(0.15),
+              width: selected ? 1.8 : 1,
+            ),
+          ),
+          child: Text(
+            '$emoji $label',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
+              color: selected ? color : KultivaColors.textPrimary.withOpacity(0.7),
+            ),
+          ),
+        ),
       ),
     );
   }
