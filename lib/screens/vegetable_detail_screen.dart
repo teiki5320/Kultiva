@@ -299,13 +299,37 @@ class _HeaderCard extends StatelessWidget {
                                 mode: LaunchMode.externalApplication,
                               ),
                               child: Container(
-                                padding: const EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: KultivaColors.primaryGreen.withOpacity(0.1),
-                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      KultivaColors.primaryGreen.withOpacity(0.15),
+                                      KultivaColors.springB.withOpacity(0.25),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: KultivaColors.primaryGreen.withOpacity(0.15),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                child: Icon(Icons.shopping_cart_outlined,
-                                    size: 20, color: KultivaColors.primaryGreen),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('🛒', style: const TextStyle(fontSize: 22)),
+                                    const SizedBox(width: 6),
+                                    Text('Acheter',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
+                                        color: KultivaColors.primaryGreen,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                         ],
