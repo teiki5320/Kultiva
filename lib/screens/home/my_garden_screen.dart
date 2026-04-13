@@ -428,25 +428,24 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  // Fond terre.
-                  color: const Color(0xFF5C4033),
-                  borderRadius: BorderRadius.circular(12),
-                  // Bordure bois.
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      KultivaColors.springB.withOpacity(0.3),
+                      KultivaColors.lightGreen.withOpacity(0.15),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(22),
                   border: Border.all(
-                    color: const Color(0xFF8B5E3C),
-                    width: 6,
+                    color: KultivaColors.primaryGreen.withOpacity(0.2),
+                    width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.brown.withOpacity(0.4),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                    // Ombre interne pour effet profondeur.
-                    BoxShadow(
-                      color: const Color(0xFF6B4226).withOpacity(0.5),
-                      blurRadius: 2,
-                      spreadRadius: -1,
+                      color: KultivaColors.primaryGreen.withOpacity(0.1),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -818,17 +817,17 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return const Color(0xFF6B8F3C); // herbe vide
-    if (warnings.isNotEmpty) return const Color(0xFFAA6644); // terre problème
-    if (dryDays >= threshold + 2) return const Color(0xFF9B7B3A); // herbe sèche
-    if (dryDays >= threshold) return const Color(0xFF7D9B40); // herbe un peu sèche
-    return const Color(0xFF5DA03B); // herbe verte bien arrosée
+    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.12);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.15);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2);
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0);
+    return KultivaColors.springB.withOpacity(0.35);
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return const Color(0xFFCC4444);
-    if (veg != null) return const Color(0xFF4A7A2E);
-    return const Color(0xFF557A35);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.5);
+    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.3);
+    return KultivaColors.lightGreen.withOpacity(0.25);
   }
 
   String _waterEmoji() {
@@ -882,11 +881,30 @@ class _GardenCell extends StatelessWidget {
                   ),
                 ],
               )
-            : Center(
-                child: Text('🌿', style: TextStyle(
-                  fontSize: 22,
-                  color: Colors.white.withOpacity(0.4),
-                )),
+            : Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Positioned(top: -5, right: -5,
+                    child: Container(width: 18, height: 18,
+                      decoration: BoxDecoration(shape: BoxShape.circle,
+                        color: KultivaColors.primaryGreen.withOpacity(0.08)))),
+                  Positioned(bottom: 3, left: 2,
+                    child: Container(width: 10, height: 10,
+                      decoration: BoxDecoration(shape: BoxShape.circle,
+                        color: KultivaColors.springA.withOpacity(0.1)))),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('🌱', style: const TextStyle(fontSize: 18)),
+                        const SizedBox(height: 2),
+                        Text('Planter', style: TextStyle(
+                          fontSize: 7, fontWeight: FontWeight.w600,
+                          color: KultivaColors.primaryGreen.withOpacity(0.4))),
+                      ],
+                    ),
+                  ),
+                ],
               ),
       ),
     );
