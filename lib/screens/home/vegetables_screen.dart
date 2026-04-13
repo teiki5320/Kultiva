@@ -590,11 +590,11 @@ class _PastelChip extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? color.withOpacity(0.25) : color.withOpacity(0.08),
+            color: selected ? color.withOpacity(0.2) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: selected ? color : color.withOpacity(0.15),
-              width: selected ? 1.8 : 1,
+              color: selected ? color : Colors.grey.shade300,
+              width: selected ? 2 : 1,
             ),
           ),
           child: Text(

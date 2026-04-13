@@ -428,25 +428,25 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  // Fond terre/herbe.
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF8B6F47), // terre brune
-                      Color(0xFF6B5335), // terre foncée
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
+                  // Fond terre.
+                  color: const Color(0xFF5C4033),
+                  borderRadius: BorderRadius.circular(12),
+                  // Bordure bois.
                   border: Border.all(
-                    color: const Color(0xFF4A8B3F), // bordure herbe
-                    width: 3,
+                    color: const Color(0xFF8B5E3C),
+                    width: 6,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.brown.withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                      color: Colors.brown.withOpacity(0.4),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                    // Ombre interne pour effet profondeur.
+                    BoxShadow(
+                      color: const Color(0xFF6B4226).withOpacity(0.5),
+                      blurRadius: 2,
+                      spreadRadius: -1,
                     ),
                   ],
                 ),
@@ -818,17 +818,17 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return const Color(0xFFA68B6B); // terre claire vide
-    if (warnings.isNotEmpty) return const Color(0xFFD4896B); // terre rougeâtre
-    if (dryDays >= threshold + 2) return const Color(0xFFC97B5A); // terre sèche
-    if (dryDays >= threshold) return const Color(0xFFB89070); // terre un peu sèche
-    return const Color(0xFF7BA05B); // terre verte fertile
+    if (veg == null) return const Color(0xFF6B8F3C); // herbe vide
+    if (warnings.isNotEmpty) return const Color(0xFFAA6644); // terre problème
+    if (dryDays >= threshold + 2) return const Color(0xFF9B7B3A); // herbe sèche
+    if (dryDays >= threshold) return const Color(0xFF7D9B40); // herbe un peu sèche
+    return const Color(0xFF5DA03B); // herbe verte bien arrosée
   }
 
   Color _borderColor() {
     if (warnings.isNotEmpty) return const Color(0xFFCC4444);
-    if (veg != null) return const Color(0xFF5A8B3F);
-    return const Color(0xFF9B8060);
+    if (veg != null) return const Color(0xFF4A7A2E);
+    return const Color(0xFF557A35);
   }
 
   String _waterEmoji() {
@@ -883,17 +883,10 @@ class _GardenCell extends StatelessWidget {
                 ],
               )
             : Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('~', style: TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w300,
-                      color: Colors.white.withOpacity(0.25))),
-                    Text('+', style: TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w300,
-                      color: Colors.white.withOpacity(0.3))),
-                  ],
-                ),
+                child: Text('🌿', style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white.withOpacity(0.4),
+                )),
               ),
       ),
     );
