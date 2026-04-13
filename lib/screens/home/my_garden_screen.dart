@@ -491,21 +491,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFFFCE4EC), // rose
-                        Color(0xFFE8EAF6), // lavande
-                      ],
-                    ),
-                  ),
-                  foregroundDecoration: const BoxDecoration(),
-                  child: CustomPaint(
-                    painter: _GridPainter(),
-                    child: Container(
+                child: CustomPaint(
+                  painter: _GridPainter(),
                   child: Center(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -539,10 +526,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                     ),
                   ),
                 ),
-              ),
-            ),
-          ), // CustomPaint
-          ), // Container inside
               ),
             ),
           ),
@@ -1038,15 +1021,24 @@ class _GardenParticleAnimationState extends State<_GardenParticleAnimation>
 class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.45)
+    // Fond dégradé rose → lavande.
+    final bgPaint = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color(0xFFFCE4EC), Color(0xFFE8EAF6)],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
+    // Quadrillage blanc.
+    final linePaint = Paint()
+      ..color = Colors.white.withOpacity(0.5)
       ..strokeWidth = 0.8;
-    const step = 20.0;
+    const step = 18.0;
     for (double x = 0; x < size.width; x += step) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), linePaint);
     }
     for (double y = 0; y < size.height; y += step) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), linePaint);
     }
   }
 
