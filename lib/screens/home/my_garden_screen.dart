@@ -298,7 +298,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   Widget _buildSetup() {
-    return Center(
+    return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
