@@ -37,6 +37,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   int _rows = 0;
   int _cols = 0;
   late List<List<String?>> _grid; // vegetableId or null
+  Map<String, String> _wateredMap = {}; // "r_c" -> ISO timestamp
   bool _initialized = false;
   WeatherData? _weather;
   List<WateringAlert> _alerts = [];
@@ -84,6 +85,11 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               growable: true),
           growable: true,
         );
+        // Charger les timestamps d'arrosage par cellule.
+        final w = data['watered'];
+        if (w is Map) {
+          _wateredMap = w.map((k, v) => MapEntry(k.toString(), v.toString()));
+        }
         _initialized = true;
         setState(() {});
         _refreshWeather();
@@ -103,6 +109,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       'rows': _rows,
       'cols': _cols,
       'cells': cells,
+      'watered': _wateredMap,
     });
     PrefsService.instance.setGardenGrid(json);
   }
@@ -165,9 +172,33 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   void _placeVegetable(int row, int col, String? vegId) {
-    setState(() => _grid[row][col] = vegId);
+    setState(() {
+      _grid[row][col] = vegId;
+      if (vegId == null) _wateredMap.remove('${row}_$col');
+    });
     _saveGarden();
-    _refreshWeather(); // Recalculer les alertes avec le nouveau légume.
+    _refreshWeather();
+  }
+
+  /// Arrose une cellule spécifique (pas global).
+  void _waterCell(int row, int col) {
+    setState(() {
+      _wateredMap['${row}_$col'] = DateTime.now().toIso8601String();
+    });
+    _saveGarden();
+  }
+
+  /// Jours secs effectifs pour une cellule.
+  /// = min(jours sans pluie météo, jours depuis arrosage manuel).
+  int _cellDryDays(int row, int col) {
+    final weatherDry = _weather?.consecutiveDryDays ?? 0;
+    final key = '${row}_$col';
+    final ts = _wateredMap[key];
+    if (ts == null) return weatherDry;
+    final last = DateTime.tryParse(ts);
+    if (last == null) return weatherDry;
+    final manualDry = DateTime.now().difference(last).inDays;
+    return manualDry < weatherDry ? manualDry : weatherDry;
   }
 
   /// Check if a vegetable at (row, col) has any incompatible neighbors.
@@ -309,14 +340,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
-  String _lastWateringLabel() {
-    final days = PrefsService.instance.daysSinceLastWatering;
-    if (days == null) return 'Jamais arrosé';
-    if (days == 0) return "Arrosé aujourd'hui";
-    if (days == 1) return 'Arrosé hier';
-    return 'Arrosé il y a $days jours';
-  }
-
   /// Vérifie si un légume spécifique a besoin d'arrosage.
   WateringAlert? _alertFor(String vegId) {
     try {
@@ -328,60 +351,78 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
 
   Widget _buildGarden() {
     final urgentAlerts = _alerts.where((a) => a.needsWatering).toList();
+    // Compter les plantes et trouver celles en alerte avec position.
+    int plantCount = 0;
+    final alertCells = <({int r, int c, String vegId, int dryDays})>[];
+    for (int r = 0; r < _rows; r++) {
+      for (int c = 0; c < _cols; c++) {
+        final id = _grid[r][c];
+        if (id == null) continue;
+        plantCount++;
+        final veg = vegetablesBase.where((v) => v.id == id).firstOrNull;
+        if (veg != null) {
+          final dry = _cellDryDays(r, c);
+          if (dry >= veg.effectiveWateringDays) {
+            alertCells.add((r: r, c: c, vegId: id, dryDays: dry));
+          }
+        }
+      }
+    }
     return Column(
       children: [
-        // Bannière météo.
-        if (_weather != null)
-          _WeatherBanner(
-            weather: _weather!,
-            urgentCount: urgentAlerts.length,
-            onRefresh: _refreshWeather,
-          ),
-        if (_loadingWeather && _weather == null)
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: LinearProgressIndicator(),
-          ),
-        // Alertes arrosage.
-        if (urgentAlerts.isNotEmpty)
-          _WateringAlertBanner(alerts: urgentAlerts),
-        // Bouton "J'ai arrosé" + dernier arrosage.
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    await PrefsService.instance.recordWatering();
-                    if (mounted) {
-                      setState(() {});
+        // Barre résumé compacte.
+        _SummaryBar(
+          plantCount: plantCount,
+          alertCount: alertCells.length,
+          weather: _weather,
+          loading: _loadingWeather,
+          onRefresh: _refreshWeather,
+        ),
+        // Chips alertes arrosage.
+        if (alertCells.isNotEmpty)
+          SizedBox(
+            height: 44,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              itemCount: alertCells.length,
+              itemBuilder: (ctx, i) {
+                final a = alertCells[i];
+                final veg = vegetablesBase
+                    .where((v) => v.id == a.vegId)
+                    .firstOrNull;
+                if (veg == null) return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ActionChip(
+                    avatar: Text(veg.emoji, style: const TextStyle(fontSize: 14)),
+                    label: Text(
+                      '${a.dryDays}j',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                    backgroundColor:
+                        KultivaColors.terracotta.withOpacity(0.15),
+                    side: BorderSide(
+                      color: KultivaColors.terracotta.withOpacity(0.3),
+                    ),
+                    onPressed: () {
+                      _waterCell(a.r, a.c);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Arrosage enregistré !'),
-                          duration: Duration(seconds: 2),
+                        SnackBar(
+                          content: Text(
+                              '${veg.emoji} ${veg.name} arrosé !'),
+                          duration: const Duration(seconds: 2),
                         ),
                       );
-                    }
-                  },
-                  icon: const Text('💧', style: TextStyle(fontSize: 18)),
-                  label: const Text("J'ai arrosé"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade400,
+                    },
                   ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                _lastWateringLabel(),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: KultivaColors.textSecondary,
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Row(
@@ -412,12 +453,20 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                   return Row(
                     children: List.generate(_cols, (c) {
                       final cellId = _grid[r][c];
+                      final veg = cellId != null
+                          ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
+                          : null;
+                      final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
+                      final threshold = veg?.effectiveWateringDays ?? 4;
                       return _GardenCell(
-                        vegId: cellId,
+                        veg: veg,
+                        dryDays: dryDays,
+                        threshold: threshold,
                         warnings: _getWarnings(r, c),
-                        waterAlert: cellId != null ? _alertFor(cellId) : null,
                         onTap: () => _showPicker(r, c),
-                        onClear: () => _placeVegetable(r, c, null),
+                        onLongPress: veg != null
+                            ? () => _showPlantDetail(r, c, veg)
+                            : null,
                       );
                     }),
                   );
@@ -427,6 +476,102 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showPlantDetail(int row, int col, Vegetable veg) {
+    final dryDays = _cellDryDays(row, col);
+    final threshold = veg.effectiveWateringDays;
+    final key = '${row}_$col';
+    final lastTs = _wateredMap[key];
+    final lastWatered = lastTs != null ? DateTime.tryParse(lastTs) : null;
+
+    // Voisins bons/mauvais.
+    final goodNeighbors = <String>[];
+    final badNeighbors = <String>[];
+    final companions = companionMap[veg.id] ?? [];
+    final incompatibles = incompatibleMap[veg.id] ?? [];
+    for (int dr = -1; dr <= 1; dr++) {
+      for (int dc = -1; dc <= 1; dc++) {
+        if (dr == 0 && dc == 0) continue;
+        final nr = row + dr, nc = col + dc;
+        if (nr < 0 || nr >= _rows || nc < 0 || nc >= _cols) continue;
+        final nId = _grid[nr][nc];
+        if (nId == null) continue;
+        final nVeg = vegetablesBase.where((v) => v.id == nId).firstOrNull;
+        if (nVeg == null) continue;
+        if (companions.contains(nId)) goodNeighbors.add('${nVeg.emoji} ${nVeg.name}');
+        if (incompatibles.contains(nId)) badNeighbors.add('${nVeg.emoji} ${nVeg.name}');
+      }
+    }
+
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(width: 40, height: 4, decoration: BoxDecoration(
+                color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2))),
+              const SizedBox(height: 16),
+              Text(veg.emoji, style: const TextStyle(fontSize: 48)),
+              const SizedBox(height: 8),
+              Text(veg.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+              Text(veg.category.label, style: TextStyle(color: KultivaColors.textSecondary, fontSize: 13)),
+              const SizedBox(height: 16),
+              // Arrosage.
+              _DetailRow(
+                icon: dryDays >= threshold ? '🚨' : '💧',
+                label: lastWatered != null
+                    ? 'Arrosé il y a ${DateTime.now().difference(lastWatered).inDays}j'
+                    : 'Jamais arrosé manuellement',
+              ),
+              _DetailRow(icon: '⏱', label: 'Besoin : tous les ${threshold}j'),
+              if (veg.watering != null)
+                _DetailRow(icon: '🌊', label: veg.watering!),
+              // Compagnons.
+              if (goodNeighbors.isNotEmpty)
+                _DetailRow(icon: '✅', label: goodNeighbors.join(', ')),
+              if (badNeighbors.isNotEmpty)
+                _DetailRow(icon: '⛔', label: badNeighbors.join(', ')),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        _waterCell(row, col);
+                        Navigator.pop(ctx);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${veg.emoji} ${veg.name} arrosé !')),
+                        );
+                      },
+                      icon: const Text('💧', style: TextStyle(fontSize: 16)),
+                      label: const Text('Arroser'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        _placeVegetable(row, col, null);
+                        Navigator.pop(ctx);
+                      },
+                      icon: const Icon(Icons.delete_outline, size: 18),
+                      label: const Text('Retirer'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -568,13 +713,17 @@ class _VegetablePickerState extends State<_VegetablePicker> {
   }
 }
 
-class _WeatherBanner extends StatelessWidget {
-  final WeatherData weather;
-  final int urgentCount;
+class _SummaryBar extends StatelessWidget {
+  final int plantCount;
+  final int alertCount;
+  final WeatherData? weather;
+  final bool loading;
   final VoidCallback onRefresh;
-  const _WeatherBanner({
+  const _SummaryBar({
+    required this.plantCount,
+    required this.alertCount,
     required this.weather,
-    required this.urgentCount,
+    required this.loading,
     required this.onRefresh,
   });
 
@@ -583,49 +732,40 @@ class _WeatherBanner extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            Text(weather.weatherEmoji, style: const TextStyle(fontSize: 32)),
+            Text('🌱', style: const TextStyle(fontSize: 16)),
+            const SizedBox(width: 4),
+            Text('$plantCount',
+                style: const TextStyle(fontWeight: FontWeight.w800)),
             const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${weather.currentTemp.toStringAsFixed(0)} °C — ${weather.weatherLabel}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 15),
-                  ),
-                  Text(
-                    '${weather.consecutiveDryDays} jour(s) sans pluie — ${weather.rainNext3Days.toStringAsFixed(0)} mm prévus sous 3 j',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: KultivaColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (urgentCount > 0)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: KultivaColors.terracotta.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '$urgentCount',
+            if (alertCount > 0) ...[
+              Text('💧', style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 4),
+              Text('$alertCount',
                   style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: KultivaColors.terracotta,
-                  ),
-                ),
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.terracotta)),
+              const SizedBox(width: 12),
+            ],
+            if (weather != null) ...[
+              Text(weather!.weatherEmoji,
+                  style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 4),
+              Text('${weather!.currentTemp.toStringAsFixed(0)}°C',
+                  style: const TextStyle(fontWeight: FontWeight.w700)),
+            ],
+            if (loading && weather == null)
+              const SizedBox(
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(strokeWidth: 2),
               ),
-            IconButton(
-              icon: const Icon(Icons.refresh, size: 20),
-              onPressed: onRefresh,
-              tooltip: 'Rafraîchir la météo',
+            const Spacer(),
+            GestureDetector(
+              onTap: onRefresh,
+              child: const Icon(Icons.refresh, size: 18),
             ),
           ],
         ),
@@ -634,136 +774,115 @@ class _WeatherBanner extends StatelessWidget {
   }
 }
 
-class _WateringAlertBanner extends StatelessWidget {
-  final List<WateringAlert> alerts;
-  const _WateringAlertBanner({required this.alerts});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      color: KultivaColors.terracotta.withOpacity(0.08),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '💧 Alertes arrosage',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
-            ),
-            const SizedBox(height: 6),
-            for (final a in alerts)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  children: [
-                    Text(a.emoji, style: const TextStyle(fontSize: 14)),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${a.vegetable.emoji} ${a.vegetable.name}',
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        a.message,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: KultivaColors.textSecondary,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _GardenCell extends StatelessWidget {
-  final String? vegId;
+  final Vegetable? veg;
+  final int dryDays;
+  final int threshold;
   final List<String> warnings;
-  final WateringAlert? waterAlert;
   final VoidCallback onTap;
-  final VoidCallback onClear;
+  final VoidCallback? onLongPress;
 
   const _GardenCell({
-    required this.vegId,
+    required this.veg,
+    required this.dryDays,
+    required this.threshold,
     required this.warnings,
-    this.waterAlert,
     required this.onTap,
-    required this.onClear,
+    this.onLongPress,
   });
+
+  Color _bgColor() {
+    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.08);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.12);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2); // rouge
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0); // orange
+    return KultivaColors.lightGreen.withOpacity(0.2); // vert
+  }
+
+  Color _borderColor() {
+    if (warnings.isNotEmpty) return KultivaColors.terracotta;
+    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.35);
+    return KultivaColors.lightGreen.withOpacity(0.3);
+  }
+
+  String _waterEmoji() {
+    if (dryDays >= threshold + 2) return '🚨';
+    if (dryDays >= threshold) return '💦';
+    return '💧';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final veg = vegId != null
-        ? vegetablesBase.where((v) => v.id == vegId).firstOrNull
-        : null;
-    final hasWarning = warnings.isNotEmpty;
-    final needsWater = waterAlert?.needsWatering ?? false;
-
     return GestureDetector(
       onTap: onTap,
-      onLongPress: vegId != null ? onClear : null,
-      child: Tooltip(
-        message: veg != null
-            ? '${veg.name}'
-                '${hasWarning ? "\n⚠️ Mauvais voisin : ${warnings.join(", ")}" : ""}'
-                '${needsWater ? "\n💧 ${waterAlert!.message}" : ""}'
-            : 'Case vide — tape pour placer',
-        child: Container(
-          width: 72,
-          height: 72,
-          margin: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: veg != null
-                ? (hasWarning
-                    ? KultivaColors.terracotta.withOpacity(0.15)
-                    : KultivaColors.lightGreen.withOpacity(0.25))
-                : Colors.grey.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: hasWarning
-                  ? KultivaColors.terracotta
-                  : (veg != null
-                      ? KultivaColors.primaryGreen.withOpacity(0.4)
-                      : Colors.grey.withOpacity(0.2)),
-              width: hasWarning ? 2.5 : 1,
-            ),
+      onLongPress: onLongPress,
+      child: Container(
+        width: 80,
+        height: 80,
+        margin: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: _bgColor(),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: _borderColor(),
+            width: warnings.isNotEmpty ? 2.5 : 1.2,
           ),
-          child: veg != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(veg.emoji, style: const TextStyle(fontSize: 22)),
-                    Text(
-                      veg.name,
-                      style: const TextStyle(
-                          fontSize: 9, fontWeight: FontWeight.w700),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        child: veg != null
+            ? Stack(
+                children: [
+                  Center(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (hasWarning)
-                          const Text('⚠️', style: TextStyle(fontSize: 9)),
-                        if (needsWater)
-                          Text(waterAlert!.emoji,
-                              style: const TextStyle(fontSize: 9)),
+                        Text(veg!.emoji,
+                            style: const TextStyle(fontSize: 26)),
+                        const SizedBox(height: 2),
+                        Text(
+                          veg!.name,
+                          style: const TextStyle(
+                              fontSize: 9, fontWeight: FontWeight.w700),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
-                  ],
-                )
-              : Icon(Icons.add, size: 20, color: Colors.grey.withOpacity(0.4)),
-        ),
+                  ),
+                  Positioned(
+                    right: 4,
+                    bottom: 4,
+                    child: Text(_waterEmoji(),
+                        style: const TextStyle(fontSize: 10)),
+                  ),
+                ],
+              )
+            : Icon(Icons.add_rounded,
+                size: 22,
+                color: KultivaColors.lightGreen.withOpacity(0.6)),
+      ),
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  final String icon;
+  final String label;
+  const _DetailRow({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 16)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(label,
+                style: const TextStyle(fontSize: 13, height: 1.3)),
+          ),
+        ],
       ),
     );
   }
