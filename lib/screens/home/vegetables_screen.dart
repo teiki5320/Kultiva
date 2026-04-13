@@ -29,7 +29,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   String _query = '';
   _SortMode _sortMode = _SortMode.alpha;
   bool _favOnly = false;
-  bool _gridView = false;
+  bool _gridView = true;
 
   @override
   void dispose() {
