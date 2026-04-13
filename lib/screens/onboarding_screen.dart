@@ -188,7 +188,7 @@ class _RegionSelectorPage extends StatelessWidget {
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
-        return Padding(
+        return SingleChildScrollView(
           padding:
               const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: Column(
