@@ -233,47 +233,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       bottom: false,
       child: Column(
         children: [
-          AppBar(
-            title: const Text('Mon Potager'),
-            actions: [
-              if (_rows > 0)
-                PopupMenuButton<String>(
-                  icon: const Icon(Icons.tune),
-                  onSelected: (v) {
-                    switch (v) {
-                      case 'add_row':
-                        _addRow();
-                      case 'remove_row':
-                        _removeRow();
-                      case 'add_col':
-                        _addCol();
-                      case 'remove_col':
-                        _removeCol();
-                      case 'reset':
-                        _resetGarden();
-                    }
-                  },
-                  itemBuilder: (_) => [
-                    const PopupMenuItem(
-                        value: 'add_row', child: Text('+ Ajouter une ligne')),
-                    const PopupMenuItem(
-                        value: 'remove_row',
-                        child: Text('- Supprimer une ligne')),
-                    const PopupMenuItem(
-                        value: 'add_col',
-                        child: Text('+ Ajouter une colonne')),
-                    const PopupMenuItem(
-                        value: 'remove_col',
-                        child: Text('- Supprimer une colonne')),
-                    const PopupMenuDivider(),
-                    const PopupMenuItem(
-                        value: 'reset',
-                        child: Text('Recommencer',
-                            style: TextStyle(color: Colors.red))),
-                  ],
-                ),
-            ],
-          ),
+          AppBar(title: const Text('Mon Potager')),
           Expanded(
             child: _rows == 0 ? _buildSetup() : _buildGarden(),
           ),
@@ -378,65 +338,76 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           loading: _loadingWeather,
           onRefresh: _refreshWeather,
         ),
-        // Chips alertes arrosage.
+        // Bannière arrosage claire.
         if (alertCells.isNotEmpty)
-          SizedBox(
-            height: 44,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              itemCount: alertCells.length,
-              itemBuilder: (ctx, i) {
-                final a = alertCells[i];
-                final veg = vegetablesBase
-                    .where((v) => v.id == a.vegId)
-                    .firstOrNull;
-                if (veg == null) return const SizedBox.shrink();
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: ActionChip(
-                    avatar: Text(veg.emoji, style: const TextStyle(fontSize: 14)),
-                    label: Text(
-                      '${a.dryDays}j',
-                      style: const TextStyle(
+          GestureDetector(
+            onTap: () {
+              for (final a in alertCells) {
+                _waterCell(a.r, a.c);
+              }
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      '💧 ${alertCells.length} plante${alertCells.length > 1 ? "s" : ""} arrosée${alertCells.length > 1 ? "s" : ""} !'),
+                ),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  KultivaColors.terracotta.withOpacity(0.15),
+                  KultivaColors.summerA.withOpacity(0.1),
+                ]),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: KultivaColors.terracotta.withOpacity(0.25)),
+              ),
+              child: Row(
+                children: [
+                  const Text('💧', style: TextStyle(fontSize: 20)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      '${alertCells.length} plante${alertCells.length > 1 ? "s ont" : " a"} soif — Tap pour tout arroser',
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 12,
+                        fontSize: 13,
+                        color: KultivaColors.terracotta,
                       ),
                     ),
-                    backgroundColor:
-                        KultivaColors.terracotta.withOpacity(0.15),
-                    side: BorderSide(
-                      color: KultivaColors.terracotta.withOpacity(0.3),
-                    ),
-                    onPressed: () {
-                      _waterCell(a.r, a.c);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              '${veg.emoji} ${veg.name} arrosé !'),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
                   ),
-                );
-              },
+                  Icon(Icons.water_drop, color: KultivaColors.terracotta, size: 18),
+                ],
+              ),
             ),
           ),
+        // Barre de progression.
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: Row(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: Column(
             children: [
-              Text(
-                'Grille $_rows × $_cols',
-                style: const TextStyle(fontWeight: FontWeight.w700),
+              Row(
+                children: [
+                  Text(
+                    '$plantCount / ${_rows * _cols} cases plantées',
+                    style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Tap = planter · Appui long = détails',
+                    style: TextStyle(fontSize: 10, color: KultivaColors.textSecondary),
+                  ),
+                ],
               ),
-              const Spacer(),
-              Text(
-                'Tape une case pour placer un légume',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: KultivaColors.textSecondary,
+              const SizedBox(height: 6),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: LinearProgressIndicator(
+                  value: (_rows * _cols) > 0 ? plantCount / (_rows * _cols) : 0,
+                  minHeight: 6,
+                  backgroundColor: KultivaColors.lightGreen.withOpacity(0.2),
+                  valueColor: AlwaysStoppedAnimation<Color>(KultivaColors.primaryGreen),
                 ),
               ),
             ],
@@ -473,6 +444,28 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                 }),
               ),
             ),
+          ),
+        ),
+        // Boutons d'édition sous la grille.
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _GridButton(icon: Icons.add, label: 'Ligne', onTap: _addRow),
+              const SizedBox(width: 8),
+              _GridButton(icon: Icons.remove, label: 'Ligne', onTap: _removeRow),
+              const SizedBox(width: 16),
+              _GridButton(icon: Icons.add, label: 'Colonne', onTap: _addCol),
+              const SizedBox(width: 8),
+              _GridButton(icon: Icons.remove, label: 'Colonne', onTap: _removeCol),
+              const Spacer(),
+              TextButton(
+                onPressed: _resetGarden,
+                child: Text('Recommencer',
+                    style: TextStyle(color: Colors.red.shade300, fontSize: 12)),
+              ),
+            ],
           ),
         ),
       ],
@@ -857,9 +850,38 @@ class _GardenCell extends StatelessWidget {
                   ),
                 ],
               )
-            : Icon(Icons.add_rounded,
-                size: 22,
-                color: KultivaColors.lightGreen.withOpacity(0.6)),
+            : Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Positioned(
+                    top: -6, right: -6,
+                    child: Container(width: 20, height: 20,
+                      decoration: BoxDecoration(shape: BoxShape.circle,
+                        color: KultivaColors.springB.withOpacity(0.15))),
+                  ),
+                  Positioned(
+                    bottom: 4, left: 2,
+                    child: Container(width: 12, height: 12,
+                      decoration: BoxDecoration(shape: BoxShape.circle,
+                        color: KultivaColors.springA.withOpacity(0.12))),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('🌱', style: const TextStyle(fontSize: 20)),
+                        const SizedBox(height: 2),
+                        Text('Planter',
+                          style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.w600,
+                            color: KultivaColors.primaryGreen.withOpacity(0.5)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -883,6 +905,38 @@ class _DetailRow extends StatelessWidget {
                 style: const TextStyle(fontSize: 13, height: 1.3)),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _GridButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  const _GridButton({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: KultivaColors.lightGreen.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: KultivaColors.primaryGreen.withOpacity(0.2)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14, color: KultivaColors.primaryGreen),
+            const SizedBox(width: 4),
+            Text(label, style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.w700,
+              color: KultivaColors.primaryGreen)),
+          ],
+        ),
       ),
     );
   }
