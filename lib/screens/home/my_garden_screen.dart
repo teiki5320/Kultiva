@@ -469,41 +469,78 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
             ],
           ),
         ),
+        // Cadre bois + pelouse + grille.
         Expanded(
-          child: Center(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: List.generate(_rows, (r) {
-                    return Row(
-                      children: List.generate(_cols, (c) {
-                        final cellId = _grid[r][c];
-                        final veg = cellId != null
-                            ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
-                            : null;
-                        final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
-                        final threshold = veg?.effectiveWateringDays ?? 4;
-                        return _GardenCell(
-                          veg: veg,
-                          dryDays: dryDays,
-                          threshold: threshold,
-                          warnings: _getWarnings(r, c),
-                          onTap: () => _showPicker(r, c),
-                          onLongPress: veg != null
-                              ? () => _showPlantDetail(r, c, veg)
-                              : null,
-                        );
-                      }),
-                    );
-                  }),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Container(
+              decoration: BoxDecoration(
+                // Bordure bois.
+                border: Border.all(
+                  color: const Color(0xFF8B6B4A),
+                  width: 8,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                // Ombre sous le cadre.
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF6B4E37).withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  // Fond pelouse verte.
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF7EC850), // vert clair
+                        Color(0xFF5DA03B), // vert foncé
+                      ],
+                    ),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: List.generate(_rows, (r) {
+                            return Row(
+                              children: List.generate(_cols, (c) {
+                                final cellId = _grid[r][c];
+                                final veg = cellId != null
+                                    ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
+                                    : null;
+                                final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
+                                final threshold = veg?.effectiveWateringDays ?? 4;
+                                return _GardenCell(
+                                  veg: veg,
+                                  dryDays: dryDays,
+                                  threshold: threshold,
+                                  warnings: _getWarnings(r, c),
+                                  onTap: () => _showPicker(r, c),
+                                  onLongPress: veg != null
+                                      ? () => _showPlantDetail(r, c, veg)
+                                      : null,
+                                );
+                              }),
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        const Text('👨‍🌾', style: TextStyle(fontSize: 28)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
@@ -842,23 +879,17 @@ class _GardenCell extends StatelessWidget {
     this.onLongPress,
   });
 
-  Color _bgColor() {
-    if (veg == null) return const Color(0xFFFFF8F0); // crème
-    if (warnings.isNotEmpty) return const Color(0xFFFFE0D0); // pêche alerte
-    if (dryDays >= threshold + 2) return const Color(0xFFFFD4C4); // pêche sec
-    if (dryDays >= threshold) return const Color(0xFFFFF0D8); // jaune doux
-    return const Color(0xFFE8F5D8); // vert doux
+  // Couleurs terre.
+  Color _topColor() {
+    if (veg == null) return const Color(0xFF9B7B5A); // terre claire
+    if (warnings.isNotEmpty) return const Color(0xFFAA6644);
+    if (dryDays >= threshold + 2) return const Color(0xFFB8956A); // sec
+    if (dryDays >= threshold) return const Color(0xFF8B6B4A);
+    return const Color(0xFF6B4E37); // bien arrosé = terre foncée humide
   }
 
-  List<Color> _gradientColors() {
-    final bg = _bgColor();
-    return [bg, bg.withOpacity(bg.opacity * 0.6)];
-  }
-
-  Color _borderColor() {
-    if (warnings.isNotEmpty) return const Color(0xFFCC8866);
-    if (veg != null) return const Color(0xFFB8956A);
-    return const Color(0xFFD4B896);
+  Color _bottomColor() {
+    return const Color(0xFF5C3D2E); // base du monticule
   }
 
   String _waterEmoji() {
@@ -873,74 +904,59 @@ class _GardenCell extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        width: 90,
-        height: 90,
-        margin: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: _bgColor(),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: _borderColor(),
-            width: warnings.isNotEmpty ? 3 : 2,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFD4B896).withOpacity(0.3),
-              blurRadius: 4,
-              offset: const Offset(1, 2),
-            ),
-          ],
-        ),
-        child: Stack(
-          clipBehavior: Clip.hardEdge,
+        width: 85,
+        height: 85,
+        margin: const EdgeInsets.all(6),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // Fleur décorative coin haut-droit.
-            Positioned(top: -2, right: -2,
-              child: Text(veg != null ? '🌸' : '✿',
-                style: TextStyle(fontSize: 10,
-                  color: Colors.orange.withOpacity(0.4)))),
-            // Feuille coin bas-gauche.
-            Positioned(bottom: 0, left: 2,
-              child: Text('🍃', style: TextStyle(fontSize: 8,
-                color: Colors.green.withOpacity(0.3)))),
+            // Plante au-dessus du monticule.
             if (veg != null) ...[
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(veg!.emoji,
-                        style: const TextStyle(fontSize: 28)),
-                    const SizedBox(height: 2),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        veg!.name,
-                        style: TextStyle(
-                          fontSize: 9, fontWeight: FontWeight.w700,
-                          color: const Color(0xFF6B4E37)),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                right: 3, bottom: 3,
-                child: Text(_waterEmoji(),
-                    style: const TextStyle(fontSize: 10)),
-              ),
+              Text(veg!.emoji, style: const TextStyle(fontSize: 26)),
+              Text(veg!.name, style: const TextStyle(
+                fontSize: 8, fontWeight: FontWeight.w700,
+                color: Colors.white,
+                shadows: [Shadow(color: Colors.black54, blurRadius: 3)],
+              ), overflow: TextOverflow.ellipsis),
             ] else
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('+', style: TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w300,
-                      color: const Color(0xFFD4B896))),
-                  ],
+              Text('🌱', style: TextStyle(fontSize: 16,
+                color: Colors.white.withOpacity(0.4))),
+            const SizedBox(height: 2),
+            // Monticule de terre.
+            Container(
+              width: 70,
+              height: 28,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [_topColor(), _bottomColor()],
                 ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(35),
+                  bottomLeft: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
+              child: veg != null
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 2, right: 6),
+                        child: Text(_waterEmoji(),
+                            style: const TextStyle(fontSize: 9)),
+                      ),
+                    )
+                  : null,
+            ),
           ],
         ),
       ),
