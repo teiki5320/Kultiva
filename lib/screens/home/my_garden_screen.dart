@@ -530,9 +530,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
       ],
-    ),
-    ),
-    );
+      ), // Column
+      ), // SafeArea
+    ); // Container
   }
 
   void _showPlantDetail(int row, int col, Vegetable veg) {
