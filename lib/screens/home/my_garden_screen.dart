@@ -351,11 +351,21 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
 
   Widget _buildGarden() {
     final urgentAlerts = _alerts.where((a) => a.needsWatering).toList();
-    // Compter les plantes.
+    // Compter les plantes et trouver celles en alerte avec position.
     int plantCount = 0;
-    for (final row in _grid) {
-      for (final cell in row) {
-        if (cell != null) plantCount++;
+    final alertCells = <({int r, int c, String vegId, int dryDays})>[];
+    for (int r = 0; r < _rows; r++) {
+      for (int c = 0; c < _cols; c++) {
+        final id = _grid[r][c];
+        if (id == null) continue;
+        plantCount++;
+        final veg = vegetablesBase.where((v) => v.id == id).firstOrNull;
+        if (veg != null) {
+          final dry = _cellDryDays(r, c);
+          if (dry >= veg.effectiveWateringDays) {
+            alertCells.add((r: r, c: c, vegId: id, dryDays: dry));
+          }
+        }
       }
     }
     return Column(
@@ -363,11 +373,56 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         // Barre résumé compacte.
         _SummaryBar(
           plantCount: plantCount,
-          alertCount: urgentAlerts.length,
+          alertCount: alertCells.length,
           weather: _weather,
           loading: _loadingWeather,
           onRefresh: _refreshWeather,
         ),
+        // Chips alertes arrosage.
+        if (alertCells.isNotEmpty)
+          SizedBox(
+            height: 44,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              itemCount: alertCells.length,
+              itemBuilder: (ctx, i) {
+                final a = alertCells[i];
+                final veg = vegetablesBase
+                    .where((v) => v.id == a.vegId)
+                    .firstOrNull;
+                if (veg == null) return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ActionChip(
+                    avatar: Text(veg.emoji, style: const TextStyle(fontSize: 14)),
+                    label: Text(
+                      '${a.dryDays}j',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                    backgroundColor:
+                        KultivaColors.terracotta.withOpacity(0.15),
+                    side: BorderSide(
+                      color: KultivaColors.terracotta.withOpacity(0.3),
+                    ),
+                    onPressed: () {
+                      _waterCell(a.r, a.c);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              '${veg.emoji} ${veg.name} arrosé !'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Row(
@@ -615,56 +670,7 @@ class _SummaryBar extends StatelessWidget {
   }
 }
 
-class _WateringAlertBanner extends StatelessWidget {
-  final List<WateringAlert> alerts;
-  const _WateringAlertBanner({required this.alerts});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      color: KultivaColors.terracotta.withOpacity(0.08),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '💧 Alertes arrosage',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
-            ),
-            const SizedBox(height: 6),
-            for (final a in alerts)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  children: [
-                    Text(a.emoji, style: const TextStyle(fontSize: 14)),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${a.vegetable.emoji} ${a.vegetable.name}',
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        a.message,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: KultivaColors.textSecondary,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// _WateringAlertBanner supprimé — remplacé par les chips inline dans _buildGarden.
 
 class _GardenCell extends StatelessWidget {
   final String? vegId;
