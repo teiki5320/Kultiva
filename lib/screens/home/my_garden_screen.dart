@@ -351,23 +351,23 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
 
   Widget _buildGarden() {
     final urgentAlerts = _alerts.where((a) => a.needsWatering).toList();
+    // Compter les plantes.
+    int plantCount = 0;
+    for (final row in _grid) {
+      for (final cell in row) {
+        if (cell != null) plantCount++;
+      }
+    }
     return Column(
       children: [
-        // Bannière météo.
-        if (_weather != null)
-          _WeatherBanner(
-            weather: _weather!,
-            urgentCount: urgentAlerts.length,
-            onRefresh: _refreshWeather,
-          ),
-        if (_loadingWeather && _weather == null)
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: LinearProgressIndicator(),
-          ),
-        // Alertes arrosage.
-        if (urgentAlerts.isNotEmpty)
-          _WateringAlertBanner(alerts: urgentAlerts),
+        // Barre résumé compacte.
+        _SummaryBar(
+          plantCount: plantCount,
+          alertCount: urgentAlerts.length,
+          weather: _weather,
+          loading: _loadingWeather,
+          onRefresh: _refreshWeather,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Row(
@@ -554,13 +554,17 @@ class _VegetablePickerState extends State<_VegetablePicker> {
   }
 }
 
-class _WeatherBanner extends StatelessWidget {
-  final WeatherData weather;
-  final int urgentCount;
+class _SummaryBar extends StatelessWidget {
+  final int plantCount;
+  final int alertCount;
+  final WeatherData? weather;
+  final bool loading;
   final VoidCallback onRefresh;
-  const _WeatherBanner({
+  const _SummaryBar({
+    required this.plantCount,
+    required this.alertCount,
     required this.weather,
-    required this.urgentCount,
+    required this.loading,
     required this.onRefresh,
   });
 
@@ -569,49 +573,40 @@ class _WeatherBanner extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
-            Text(weather.weatherEmoji, style: const TextStyle(fontSize: 32)),
+            Text('🌱', style: const TextStyle(fontSize: 16)),
+            const SizedBox(width: 4),
+            Text('$plantCount',
+                style: const TextStyle(fontWeight: FontWeight.w800)),
             const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${weather.currentTemp.toStringAsFixed(0)} °C — ${weather.weatherLabel}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 15),
-                  ),
-                  Text(
-                    '${weather.consecutiveDryDays} jour(s) sans pluie — ${weather.rainNext3Days.toStringAsFixed(0)} mm prévus sous 3 j',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: KultivaColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (urgentCount > 0)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: KultivaColors.terracotta.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '$urgentCount',
+            if (alertCount > 0) ...[
+              Text('💧', style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 4),
+              Text('$alertCount',
                   style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: KultivaColors.terracotta,
-                  ),
-                ),
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.terracotta)),
+              const SizedBox(width: 12),
+            ],
+            if (weather != null) ...[
+              Text(weather!.weatherEmoji,
+                  style: const TextStyle(fontSize: 16)),
+              const SizedBox(width: 4),
+              Text('${weather!.currentTemp.toStringAsFixed(0)}°C',
+                  style: const TextStyle(fontWeight: FontWeight.w700)),
+            ],
+            if (loading && weather == null)
+              const SizedBox(
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(strokeWidth: 2),
               ),
-            IconButton(
-              icon: const Icon(Icons.refresh, size: 20),
-              onPressed: onRefresh,
-              tooltip: 'Rafraîchir la météo',
+            const Spacer(),
+            GestureDetector(
+              onTap: onRefresh,
+              child: const Icon(Icons.refresh, size: 18),
             ),
           ],
         ),
