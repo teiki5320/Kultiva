@@ -231,7 +231,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return SafeArea(
+    return Container(
+      color: const Color(0xFFFFF5EE), // fond rose crème
+      child: SafeArea(
       bottom: false,
       child: Column(
         children: [
@@ -528,6 +530,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
       ],
+    ),
     );
   }
 
@@ -845,11 +848,11 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.15);
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.2);
-    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2);
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0);
-    return KultivaColors.springB.withOpacity(0.4);
+    if (veg == null) return const Color(0xFFFFF8F0); // crème
+    if (warnings.isNotEmpty) return const Color(0xFFFFE0D0); // pêche alerte
+    if (dryDays >= threshold + 2) return const Color(0xFFFFD4C4); // pêche sec
+    if (dryDays >= threshold) return const Color(0xFFFFF0D8); // jaune doux
+    return const Color(0xFFE8F5D8); // vert doux
   }
 
   List<Color> _gradientColors() {
@@ -858,9 +861,9 @@ class _GardenCell extends StatelessWidget {
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.5);
-    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.3);
-    return KultivaColors.lightGreen.withOpacity(0.3);
+    if (warnings.isNotEmpty) return const Color(0xFFCC8866);
+    if (veg != null) return const Color(0xFFB8956A);
+    return const Color(0xFFD4B896);
   }
 
   String _waterEmoji() {
@@ -879,64 +882,56 @@ class _GardenCell extends StatelessWidget {
         height: 90,
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: _gradientColors(),
-          ),
-          borderRadius: BorderRadius.circular(20),
+          color: _bgColor(),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: _borderColor(),
-            width: warnings.isNotEmpty ? 2.5 : 1.2,
+            width: warnings.isNotEmpty ? 2.5 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: _borderColor().withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+              color: const Color(0xFFD4B896).withOpacity(0.3),
+              blurRadius: 4,
+              offset: const Offset(1, 2),
             ),
           ],
         ),
         child: Stack(
           clipBehavior: Clip.hardEdge,
           children: [
-            // Bulles kawaii.
-            Positioned(top: -6, right: -6,
-              child: Container(width: 22, height: 22,
-                decoration: BoxDecoration(shape: BoxShape.circle,
-                  color: _borderColor().withOpacity(0.15)))),
-            Positioned(bottom: 4, left: 2,
-              child: Container(width: 12, height: 12,
-                decoration: BoxDecoration(shape: BoxShape.circle,
-                  color: _borderColor().withOpacity(0.1)))),
+            // Fleur décorative coin haut-droit.
+            Positioned(top: -2, right: -2,
+              child: Text(veg != null ? '🌸' : '✿',
+                style: TextStyle(fontSize: 10,
+                  color: Colors.orange.withOpacity(0.4)))),
+            // Feuille coin bas-gauche.
+            Positioned(bottom: 0, left: 2,
+              child: Text('🍃', style: TextStyle(fontSize: 8,
+                color: Colors.green.withOpacity(0.3)))),
             if (veg != null) ...[
               Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 42, height: 42,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.6),
-                        shape: BoxShape.circle,
+                    Text(veg!.emoji,
+                        style: const TextStyle(fontSize: 28)),
+                    const SizedBox(height: 2),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(
+                        veg!.name,
+                        style: TextStyle(
+                          fontSize: 9, fontWeight: FontWeight.w700,
+                          color: const Color(0xFF6B4E37)),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
                       ),
-                      alignment: Alignment.center,
-                      child: Text(veg!.emoji,
-                          style: const TextStyle(fontSize: 22)),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      veg!.name,
-                      style: const TextStyle(
-                          fontSize: 9, fontWeight: FontWeight.w700),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
               Positioned(
-                right: 4, bottom: 4,
+                right: 3, bottom: 3,
                 child: Text(_waterEmoji(),
                     style: const TextStyle(fontSize: 10)),
               ),
@@ -945,11 +940,9 @@ class _GardenCell extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('🌱', style: const TextStyle(fontSize: 22)),
-                    const SizedBox(height: 2),
-                    Text('Planter', style: TextStyle(
-                      fontSize: 8, fontWeight: FontWeight.w600,
-                      color: KultivaColors.primaryGreen.withOpacity(0.5))),
+                    Text('+', style: TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.w300,
+                      color: const Color(0xFFD4B896))),
                   ],
                 ),
               ),
