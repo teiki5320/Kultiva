@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'home/my_garden_screen.dart';
 import 'home/settings_screen.dart';
 import 'home/sow_screen.dart';
+import 'home/tutos_screen.dart';
 import 'home/vegetables_screen.dart';
 
 /// Conteneur des 4 onglets principaux de Kultiva.
+/// Paramètres accessible via icône engrenage en haut à droite.
 class RootTabs extends StatefulWidget {
   final VoidCallback onSignOut;
   const RootTabs({super.key, required this.onSignOut});
@@ -17,13 +19,23 @@ class RootTabs extends StatefulWidget {
 class _RootTabsState extends State<RootTabs> {
   int _index = 0;
 
+  void _openSettings() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => SettingsScreen(onSignOut: onSignOut),
+      ),
+    );
+  }
+
+  VoidCallback get onSignOut => widget.onSignOut;
+
   @override
   Widget build(BuildContext context) {
     final pages = <Widget>[
       const SowScreen(),
       const VegetablesScreen(),
       const MyGardenScreen(),
-      SettingsScreen(onSignOut: widget.onSignOut),
+      const TutosScreen(),
     ];
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
@@ -47,9 +59,9 @@ class _RootTabsState extends State<RootTabs> {
             label: 'Mon Potager',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Paramètres',
+            icon: Icon(Icons.school_outlined),
+            activeIcon: Icon(Icons.school),
+            label: 'Tutos',
           ),
         ],
       ),

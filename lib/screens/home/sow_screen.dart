@@ -18,6 +18,7 @@ import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
+import 'settings_screen.dart';
 
 /// Dashboard principal — Hero saisonnier + 4 cartes kawaii +
 /// carrousel de slides (légume, météo, conseil, saison).
@@ -171,8 +172,32 @@ class _SowScreenState extends State<SowScreen> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              // ── Hero saisonnier ──
-              SeasonHeader(season: season, month: month, height: 170),
+              // ── Hero saisonnier + engrenage paramètres ──
+              Stack(
+                children: [
+                  SeasonHeader(season: season, month: month, height: 170),
+                  Positioned(
+                    top: 8,
+                    right: 12,
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => _SettingsProxy(),
+                        ),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.25),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.settings,
+                            color: Colors.white, size: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
               const SizedBox(height: 20),
 
@@ -750,6 +775,14 @@ class _SlideTip extends StatelessWidget {
 }
 
 /// Slide 4 — En saison (résumé semis/récoltes).
+/// Proxy pour ouvrir les paramètres sans connaître onSignOut.
+class _SettingsProxy extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SettingsScreen(onSignOut: () => Navigator.of(context).pop());
+  }
+}
+
 class _SlideSeason extends StatelessWidget {
   final Season season;
   final int month;
