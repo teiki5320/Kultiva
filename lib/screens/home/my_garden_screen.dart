@@ -231,9 +231,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return Container(
-      color: const Color(0xFFFFF5EE), // fond rose crème
-      child: SafeArea(
+    return SafeArea(
       bottom: false,
       child: Column(
         children: [
@@ -530,9 +528,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
       ],
-      ), // Column
-      ), // SafeArea
-    ); // Container
+      ],
+      ),
+    );
   }
 
   void _showPlantDetail(int row, int col, Vegetable veg) {
