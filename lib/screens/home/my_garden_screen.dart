@@ -480,7 +480,99 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   void _showPlantDetail(int row, int col, Vegetable veg) {
-    // Sera implémenté au point 5.
+    final dryDays = _cellDryDays(row, col);
+    final threshold = veg.effectiveWateringDays;
+    final key = '${row}_$col';
+    final lastTs = _wateredMap[key];
+    final lastWatered = lastTs != null ? DateTime.tryParse(lastTs) : null;
+
+    // Voisins bons/mauvais.
+    final goodNeighbors = <String>[];
+    final badNeighbors = <String>[];
+    final companions = companionMap[veg.id] ?? [];
+    final incompatibles = incompatibleMap[veg.id] ?? [];
+    for (int dr = -1; dr <= 1; dr++) {
+      for (int dc = -1; dc <= 1; dc++) {
+        if (dr == 0 && dc == 0) continue;
+        final nr = row + dr, nc = col + dc;
+        if (nr < 0 || nr >= _rows || nc < 0 || nc >= _cols) continue;
+        final nId = _grid[nr][nc];
+        if (nId == null) continue;
+        final nVeg = vegetablesBase.where((v) => v.id == nId).firstOrNull;
+        if (nVeg == null) continue;
+        if (companions.contains(nId)) goodNeighbors.add('${nVeg.emoji} ${nVeg.name}');
+        if (incompatibles.contains(nId)) badNeighbors.add('${nVeg.emoji} ${nVeg.name}');
+      }
+    }
+
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(width: 40, height: 4, decoration: BoxDecoration(
+                color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2))),
+              const SizedBox(height: 16),
+              Text(veg.emoji, style: const TextStyle(fontSize: 48)),
+              const SizedBox(height: 8),
+              Text(veg.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+              Text(veg.category.label, style: TextStyle(color: KultivaColors.textSecondary, fontSize: 13)),
+              const SizedBox(height: 16),
+              // Arrosage.
+              _DetailRow(
+                icon: dryDays >= threshold ? '🚨' : '💧',
+                label: lastWatered != null
+                    ? 'Arrosé il y a ${DateTime.now().difference(lastWatered).inDays}j'
+                    : 'Jamais arrosé manuellement',
+              ),
+              _DetailRow(icon: '⏱', label: 'Besoin : tous les ${threshold}j'),
+              if (veg.watering != null)
+                _DetailRow(icon: '🌊', label: veg.watering!),
+              // Compagnons.
+              if (goodNeighbors.isNotEmpty)
+                _DetailRow(icon: '✅', label: goodNeighbors.join(', ')),
+              if (badNeighbors.isNotEmpty)
+                _DetailRow(icon: '⛔', label: badNeighbors.join(', ')),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        _waterCell(row, col);
+                        Navigator.pop(ctx);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${veg.emoji} ${veg.name} arrosé !')),
+                        );
+                      },
+                      icon: const Text('💧', style: TextStyle(fontSize: 16)),
+                      label: const Text('Arroser'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        _placeVegetable(row, col, null);
+                        Navigator.pop(ctx);
+                      },
+                      icon: const Icon(Icons.delete_outline, size: 18),
+                      label: const Text('Retirer'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _showPicker(int row, int col) {
@@ -682,7 +774,6 @@ class _SummaryBar extends StatelessWidget {
   }
 }
 
-// _WateringAlertBanner supprimé — remplacé par les chips inline dans _buildGarden.
 
 class _GardenCell extends StatelessWidget {
   final Vegetable? veg;
@@ -769,6 +860,29 @@ class _GardenCell extends StatelessWidget {
             : Icon(Icons.add_rounded,
                 size: 22,
                 color: KultivaColors.lightGreen.withOpacity(0.6)),
+      ),
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  final String icon;
+  final String label;
+  const _DetailRow({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 16)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(label,
+                style: const TextStyle(fontSize: 13, height: 1.3)),
+          ),
+        ],
       ),
     );
   }
