@@ -467,20 +467,12 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
         Expanded(
-          child: Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/potager_bg.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Center(
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
+                padding: const EdgeInsets.all(20),
+                child: Column(
                 children: List.generate(_rows, (r) {
                   return Row(
                     children: List.generate(_cols, (c) {
@@ -506,9 +498,13 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               ),
             ),
           ),
-            ),
           ),
-          ),
+        ),
+        // Mascotte jardinier chibi.
+        const Padding(
+          padding: EdgeInsets.only(bottom: 4),
+          child: Text('👨‍🌾', style: TextStyle(fontSize: 28)),
+        ),
         // Boutons d'édition sous la grille.
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -849,17 +845,22 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return Colors.white.withOpacity(0.55);
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.7);
-    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2).withOpacity(0.85);
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0).withOpacity(0.85);
-    return KultivaColors.springB.withOpacity(0.75);
+    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.15);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.2);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2);
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0);
+    return KultivaColors.springB.withOpacity(0.4);
+  }
+
+  List<Color> _gradientColors() {
+    final bg = _bgColor();
+    return [bg, bg.withOpacity(bg.opacity * 0.6)];
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.7);
-    if (veg != null) return Colors.white.withOpacity(0.7);
-    return Colors.white.withOpacity(0.5);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.5);
+    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.3);
+    return KultivaColors.lightGreen.withOpacity(0.3);
   }
 
   String _waterEmoji() {
@@ -874,70 +875,86 @@ class _GardenCell extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        width: 80,
-        height: 80,
-        margin: const EdgeInsets.all(3),
+        width: 90,
+        height: 90,
+        margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: _bgColor(),
-          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: _gradientColors(),
+          ),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: _borderColor(),
             width: warnings.isNotEmpty ? 2.5 : 1.2,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: _borderColor().withOpacity(0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        child: veg != null
-            ? Stack(
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(veg!.emoji,
-                            style: const TextStyle(fontSize: 26)),
-                        const SizedBox(height: 2),
-                        Text(
-                          veg!.name,
-                          style: const TextStyle(
-                              fontSize: 9, fontWeight: FontWeight.w700),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+        child: Stack(
+          clipBehavior: Clip.hardEdge,
+          children: [
+            // Bulles kawaii.
+            Positioned(top: -6, right: -6,
+              child: Container(width: 22, height: 22,
+                decoration: BoxDecoration(shape: BoxShape.circle,
+                  color: _borderColor().withOpacity(0.15)))),
+            Positioned(bottom: 4, left: 2,
+              child: Container(width: 12, height: 12,
+                decoration: BoxDecoration(shape: BoxShape.circle,
+                  color: _borderColor().withOpacity(0.1)))),
+            if (veg != null) ...[
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 42, height: 42,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.6),
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(veg!.emoji,
+                          style: const TextStyle(fontSize: 22)),
                     ),
-                  ),
-                  Positioned(
-                    right: 4,
-                    bottom: 4,
-                    child: Text(_waterEmoji(),
-                        style: const TextStyle(fontSize: 10)),
-                  ),
-                ],
-              )
-            : Stack(
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  Positioned(top: -5, right: -5,
-                    child: Container(width: 18, height: 18,
-                      decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: KultivaColors.primaryGreen.withOpacity(0.08)))),
-                  Positioned(bottom: 3, left: 2,
-                    child: Container(width: 10, height: 10,
-                      decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: KultivaColors.springA.withOpacity(0.1)))),
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('🌱', style: const TextStyle(fontSize: 18)),
-                        const SizedBox(height: 2),
-                        Text('Planter', style: TextStyle(
-                          fontSize: 7, fontWeight: FontWeight.w600,
-                          color: KultivaColors.primaryGreen.withOpacity(0.4))),
-                      ],
+                    const SizedBox(height: 4),
+                    Text(
+                      veg!.name,
+                      style: const TextStyle(
+                          fontSize: 9, fontWeight: FontWeight.w700),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              Positioned(
+                right: 4, bottom: 4,
+                child: Text(_waterEmoji(),
+                    style: const TextStyle(fontSize: 10)),
+              ),
+            ] else
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('🌱', style: const TextStyle(fontSize: 22)),
+                    const SizedBox(height: 2),
+                    Text('Planter', style: TextStyle(
+                      fontSize: 8, fontWeight: FontWeight.w600,
+                      color: KultivaColors.primaryGreen.withOpacity(0.5))),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
