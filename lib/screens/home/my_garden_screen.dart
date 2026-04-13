@@ -10,6 +10,8 @@ import '../../services/notification_service.dart';
 import '../../services/watering_service.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/petal_animation.dart';
+import '../../widgets/season_header.dart';
 
 /// Tailles prédéfinies de potager.
 enum GardenPreset {
@@ -233,7 +235,11 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       bottom: false,
       child: Column(
         children: [
-          AppBar(title: const Text('Mon Potager')),
+          SeasonHeader(
+            season: Season.fromMonth(DateTime.now().month),
+            month: DateTime.now().month,
+            height: 110,
+          ),
           Expanded(
             child: _rows == 0 ? _buildSetup() : _buildGarden(),
           ),
@@ -419,7 +425,32 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  // Fond terre/herbe.
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF8B6F47), // terre brune
+                      Color(0xFF6B5335), // terre foncée
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: const Color(0xFF4A8B3F), // bordure herbe
+                    width: 3,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.brown.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
                 children: List.generate(_rows, (r) {
                   return Row(
                     children: List.generate(_cols, (c) {
@@ -442,6 +473,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                     }),
                   );
                 }),
+              ),
               ),
             ),
           ),
@@ -786,17 +818,17 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.08);
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.12);
-    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2); // rouge
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0); // orange
-    return KultivaColors.lightGreen.withOpacity(0.2); // vert
+    if (veg == null) return const Color(0xFFA68B6B); // terre claire vide
+    if (warnings.isNotEmpty) return const Color(0xFFD4896B); // terre rougeâtre
+    if (dryDays >= threshold + 2) return const Color(0xFFC97B5A); // terre sèche
+    if (dryDays >= threshold) return const Color(0xFFB89070); // terre un peu sèche
+    return const Color(0xFF7BA05B); // terre verte fertile
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return KultivaColors.terracotta;
-    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.35);
-    return KultivaColors.lightGreen.withOpacity(0.3);
+    if (warnings.isNotEmpty) return const Color(0xFFCC4444);
+    if (veg != null) return const Color(0xFF5A8B3F);
+    return const Color(0xFF9B8060);
   }
 
   String _waterEmoji() {
@@ -850,37 +882,18 @@ class _GardenCell extends StatelessWidget {
                   ),
                 ],
               )
-            : Stack(
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  Positioned(
-                    top: -6, right: -6,
-                    child: Container(width: 20, height: 20,
-                      decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: KultivaColors.springB.withOpacity(0.15))),
-                  ),
-                  Positioned(
-                    bottom: 4, left: 2,
-                    child: Container(width: 12, height: 12,
-                      decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: KultivaColors.springA.withOpacity(0.12))),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('🌱', style: const TextStyle(fontSize: 20)),
-                        const SizedBox(height: 2),
-                        Text('Planter',
-                          style: TextStyle(
-                            fontSize: 8,
-                            fontWeight: FontWeight.w600,
-                            color: KultivaColors.primaryGreen.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+            : Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('~', style: TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w300,
+                      color: Colors.white.withOpacity(0.25))),
+                    Text('+', style: TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w300,
+                      color: Colors.white.withOpacity(0.3))),
+                  ],
+                ),
               ),
       ),
     );
