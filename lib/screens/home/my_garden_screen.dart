@@ -531,6 +531,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         ),
       ],
     ),
+    ),
     );
   }
 
