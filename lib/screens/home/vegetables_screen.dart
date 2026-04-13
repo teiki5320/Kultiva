@@ -8,6 +8,7 @@ import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
+import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -113,16 +114,55 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               bottom: false,
               child: Column(
                 children: [
-                  // Header kawaii saisonnier.
-                  _KawaiiHeader(
-                    season: season,
-                    count: filtered.length,
-                    gridView: _gridView,
-                    onToggleView: () =>
-                        setState(() => _gridView = !_gridView),
-                    sortMode: _sortMode,
-                    onSortChanged: (m) =>
-                        setState(() => _sortMode = m),
+                  // Header illustré animé comme Semer.
+                  Stack(
+                    children: [
+                      SeasonHeader(
+                          season: season,
+                          month: DateTime.now().month,
+                          height: 120),
+                      Positioned(
+                        left: 16, bottom: 10,
+                        child: Text(
+                          '${filtered.length} légume${filtered.length > 1 ? "s" : ""}',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            shadows: const [Shadow(color: Colors.black38, blurRadius: 6)],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 8, bottom: 6,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(_gridView
+                                  ? Icons.view_list_rounded
+                                  : Icons.grid_view_rounded,
+                                  color: Colors.white, size: 20),
+                              onPressed: () =>
+                                  setState(() => _gridView = !_gridView),
+                            ),
+                            PopupMenuButton<_SortMode>(
+                              icon: const Icon(Icons.sort,
+                                  color: Colors.white, size: 20),
+                              onSelected: (m) =>
+                                  setState(() => _sortMode = m),
+                              itemBuilder: (_) => [
+                                PopupMenuItem(value: _SortMode.alpha,
+                                    child: Text('Alphabétique')),
+                                PopupMenuItem(value: _SortMode.category,
+                                    child: Text('Par catégorie')),
+                                PopupMenuItem(value: _SortMode.sowNow,
+                                    child: Text('À semer ce mois')),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   // Barre de recherche.
                   Padding(
