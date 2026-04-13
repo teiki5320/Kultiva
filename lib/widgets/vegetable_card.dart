@@ -41,6 +41,8 @@ class VegetableCard extends StatelessWidget {
         return const Color(0xFF66BB6A);
       case VegetableCategory.aromatics:
         return const Color(0xFF26A69A);
+      case VegetableCategory.accessories:
+        return const Color(0xFF78909C);
     }
   }
 

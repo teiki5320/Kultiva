@@ -121,7 +121,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                       bottomRight: Radius.circular(28),
                     ),
                     child: SizedBox(
-                      height: 130,
+                      height: 170,
                       width: double.infinity,
                       child: Stack(
                         fit: StackFit.expand,
@@ -149,13 +149,13 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                               ),
                             ),
                           ),
-                          SeasonParticleAnimation(season: season),
+                          const _VegParticleAnimation(),
                           Positioned(
                             left: 20, bottom: 12,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Légumes',
+                                Text('Étal',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
@@ -506,6 +506,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return const Color(0xFF66BB6A);
       case VegetableCategory.aromatics:
         return const Color(0xFF26A69A);
+      case VegetableCategory.accessories:
+        return const Color(0xFF78909C);
     }
   }
 }
@@ -651,6 +653,58 @@ class _PastelChip extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Animation de petits légumes flottants pour l'onglet Légumes.
+class _VegParticleAnimation extends StatefulWidget {
+  const _VegParticleAnimation();
+  @override
+  State<_VegParticleAnimation> createState() => _VegParticleAnimationState();
+}
+
+class _VegParticleAnimationState extends State<_VegParticleAnimation>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  static const _emojis = ['🥕', '🍅', '🥬', '🌽', '🍆', '🥒', '🌶️', '🥦'];
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 20),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, _) {
+        return Stack(
+          children: List.generate(8, (i) {
+            final t = (_ctrl.value + i * 0.125) % 1.0;
+            final x = (i * 0.13 + 0.05) % 1.0;
+            return Positioned(
+              left: x * MediaQuery.of(context).size.width * 0.8,
+              top: t * 170 - 20,
+              child: Opacity(
+                opacity: (1 - t).clamp(0.0, 0.6),
+                child: Text(_emojis[i % _emojis.length],
+                    style: const TextStyle(fontSize: 16)),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }

@@ -281,12 +281,58 @@ class _HeaderCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        vegetable.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w800),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              vegetable.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                          if (vegetable.amazonUrl != null)
+                            GestureDetector(
+                              onTap: () => launchUrl(
+                                Uri.parse(vegetable.amazonUrl!),
+                                mode: LaunchMode.externalApplication,
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      KultivaColors.primaryGreen.withOpacity(0.15),
+                                      KultivaColors.springB.withOpacity(0.25),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: KultivaColors.primaryGreen.withOpacity(0.15),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('🛒', style: const TextStyle(fontSize: 22)),
+                                    const SizedBox(width: 6),
+                                    Text('Acheter',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
+                                        color: KultivaColors.primaryGreen,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                       Text(
                         vegetable.category.label,

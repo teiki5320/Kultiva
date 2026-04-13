@@ -241,7 +241,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               bottomRight: Radius.circular(28),
             ),
             child: SizedBox(
-              height: 120,
+              height: 170,
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
@@ -269,8 +269,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                       ),
                     ),
                   ),
-                  SeasonParticleAnimation(
-                      season: Season.fromMonth(DateTime.now().month)),
+                  const _GardenParticleAnimation(),
                   Positioned(
                     left: 20, bottom: 12,
                     child: Text('Mon Potager',
@@ -468,36 +467,26 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
         Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      KultivaColors.springB.withOpacity(0.3),
-                      KultivaColors.lightGreen.withOpacity(0.15),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(22),
-                  border: Border.all(
-                    color: KultivaColors.primaryGreen.withOpacity(0.2),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: KultivaColors.primaryGreen.withOpacity(0.1),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Stack(
+                children: [
+                  // Image de fond potager.
+                  Positioned.fill(
+                    child: Image.asset(
+                      'assets/images/potager_bg.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: const Color(0xFF5C4033),
+                      ),
                     ),
-                  ],
-                ),
-                child: Column(
+                  ),
+                  // Grille de cases par-dessus.
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
                 children: List.generate(_rows, (r) {
                   return Row(
                     children: List.generate(_cols, (c) {
@@ -521,10 +510,12 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                   );
                 }),
               ),
+            ),
+          ),
+                ],
               ),
             ),
           ),
-        ),
         // Boutons d'édition sous la grille.
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -865,17 +856,17 @@ class _GardenCell extends StatelessWidget {
   });
 
   Color _bgColor() {
-    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.12);
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.15);
-    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2);
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0);
-    return KultivaColors.springB.withOpacity(0.35);
+    if (veg == null) return Colors.white.withOpacity(0.55);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.7);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2).withOpacity(0.85);
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0).withOpacity(0.85);
+    return KultivaColors.springB.withOpacity(0.75);
   }
 
   Color _borderColor() {
-    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.5);
-    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.3);
-    return KultivaColors.lightGreen.withOpacity(0.25);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.7);
+    if (veg != null) return Colors.white.withOpacity(0.7);
+    return Colors.white.withOpacity(0.5);
   }
 
   String _waterEmoji() {
@@ -978,6 +969,59 @@ class _DetailRow extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Animation de feuilles et gouttes pour l'onglet Mon Potager.
+class _GardenParticleAnimation extends StatefulWidget {
+  const _GardenParticleAnimation();
+  @override
+  State<_GardenParticleAnimation> createState() =>
+      _GardenParticleAnimationState();
+}
+
+class _GardenParticleAnimationState extends State<_GardenParticleAnimation>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  static const _emojis = ['🍃', '💧', '🌿', '✨', '🍃', '💧', '🌱', '✨'];
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 18),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, _) {
+        return Stack(
+          children: List.generate(8, (i) {
+            final t = (_ctrl.value + i * 0.125) % 1.0;
+            final x = (i * 0.14 + 0.03) % 1.0;
+            return Positioned(
+              left: x * MediaQuery.of(context).size.width * 0.8,
+              top: t * 170 - 15,
+              child: Opacity(
+                opacity: (1 - t).clamp(0.0, 0.5),
+                child: Text(_emojis[i % _emojis.length],
+                    style: const TextStyle(fontSize: 14)),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }
