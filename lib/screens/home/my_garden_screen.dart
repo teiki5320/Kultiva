@@ -235,10 +235,58 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       bottom: false,
       child: Column(
         children: [
-          SeasonHeader(
-            season: Season.fromMonth(DateTime.now().month),
-            month: DateTime.now().month,
-            height: 110,
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(28),
+              bottomRight: Radius.circular(28),
+            ),
+            child: SizedBox(
+              height: 120,
+              width: double.infinity,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    'assets/images/potager.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [KultivaColors.springA, KultivaColors.springB],
+                        ),
+                      ),
+                    ),
+                  ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.0),
+                          Colors.black.withOpacity(0.3),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SeasonParticleAnimation(
+                      season: Season.fromMonth(DateTime.now().month)),
+                  Positioned(
+                    left: 20, bottom: 12,
+                    child: Text('Mon Potager',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        shadows: const [
+                          Shadow(color: Colors.black45, blurRadius: 8),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Expanded(
             child: _rows == 0 ? _buildSetup() : _buildGarden(),

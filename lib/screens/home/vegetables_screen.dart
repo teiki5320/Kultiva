@@ -114,25 +114,67 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               bottom: false,
               child: Column(
                 children: [
-                  // Header illustré animé comme Semer.
-                  Stack(
-                    children: [
-                      SeasonHeader(
-                          season: season,
-                          month: DateTime.now().month,
-                          height: 120),
-                      Positioned(
-                        left: 16, bottom: 10,
-                        child: Text(
-                          '${filtered.length} légume${filtered.length > 1 ? "s" : ""}',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            shadows: const [Shadow(color: Colors.black38, blurRadius: 6)],
+                  // Header avec image vegetables.png + animation.
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(28),
+                      bottomRight: Radius.circular(28),
+                    ),
+                    child: SizedBox(
+                      height: 130,
+                      width: double.infinity,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset(
+                            'assets/images/vegetables.png',
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [KultivaColors.springA, KultivaColors.springB],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.0),
+                                  Colors.black.withOpacity(0.3),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SeasonParticleAnimation(season: season),
+                          Positioned(
+                            left: 20, bottom: 12,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Légumes',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 22,
+                                    shadows: const [Shadow(color: Colors.black45, blurRadius: 8)],
+                                  ),
+                                ),
+                                Text(
+                                  '${filtered.length} variétés',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    shadows: const [Shadow(color: Colors.black38, blurRadius: 6)],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                       Positioned(
                         right: 8, bottom: 6,
                         child: Row(
@@ -162,7 +204,9 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                           ],
                         ),
                       ),
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                   // Barre de recherche.
                   Padding(
