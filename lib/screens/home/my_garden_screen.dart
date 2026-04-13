@@ -884,58 +884,73 @@ class _GardenCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cc = _cellColor();
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        width: 80,
-        height: 80,
+        width: 82,
+        height: 82,
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: _cellColor(),
-          borderRadius: BorderRadius.circular(14),
+          color: cc,
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color(0xFFE8B4B8).withOpacity(0.5),
+            color: const Color(0xFFE8B4B8).withOpacity(0.6),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFE8B4B8).withOpacity(0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              color: const Color(0xFFE8B4B8).withOpacity(0.3),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
-        child: veg != null
-            ? Stack(
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(veg!.emoji,
-                            style: const TextStyle(fontSize: 28)),
-                        const SizedBox(height: 2),
-                        Text(veg!.name, style: const TextStyle(
-                          fontSize: 8, fontWeight: FontWeight.w700,
-                          color: Color(0xFF8B6B7A)),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center),
-                      ],
+        child: Stack(
+          clipBehavior: Clip.hardEdge,
+          children: [
+            // Bulles décoratives.
+            Positioned(top: -5, right: -5,
+              child: Container(width: 20, height: 20,
+                decoration: BoxDecoration(shape: BoxShape.circle,
+                  color: const Color(0xFFE8B4B8).withOpacity(0.2)))),
+            Positioned(bottom: 3, left: 2,
+              child: Container(width: 12, height: 12,
+                decoration: BoxDecoration(shape: BoxShape.circle,
+                  color: const Color(0xFFE8B4B8).withOpacity(0.15)))),
+            if (veg != null) ...[
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(veg!.emoji,
+                        style: const TextStyle(fontSize: 28)),
+                    const SizedBox(height: 2),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(veg!.name, style: const TextStyle(
+                        fontSize: 8, fontWeight: FontWeight.w700,
+                        color: Color(0xFF8B6B7A)),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center),
                     ),
-                  ),
-                  Positioned(
-                    right: 4, bottom: 4,
-                    child: Text(_waterEmoji(),
-                        style: const TextStyle(fontSize: 9)),
-                  ),
-                ],
-              )
-            : Center(
-                child: Text('+', style: TextStyle(
-                  fontSize: 28, fontWeight: FontWeight.w300,
-                  color: const Color(0xFFE8B4B8).withOpacity(0.6))),
+                  ],
+                ),
               ),
+              Positioned(
+                right: 3, bottom: 3,
+                child: Text(_waterEmoji(),
+                    style: const TextStyle(fontSize: 9)),
+              ),
+            ] else
+              Center(
+                child: Text('+', style: TextStyle(
+                  fontSize: 26, fontWeight: FontWeight.w300,
+                  color: const Color(0xFFE8B4B8).withOpacity(0.7))),
+              ),
+          ],
+        ),
       ),
     );
   }
