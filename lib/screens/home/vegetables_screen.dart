@@ -8,6 +8,7 @@ import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
+import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -113,16 +114,99 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               bottom: false,
               child: Column(
                 children: [
-                  // Header kawaii saisonnier.
-                  _KawaiiHeader(
-                    season: season,
-                    count: filtered.length,
-                    gridView: _gridView,
-                    onToggleView: () =>
-                        setState(() => _gridView = !_gridView),
-                    sortMode: _sortMode,
-                    onSortChanged: (m) =>
-                        setState(() => _sortMode = m),
+                  // Header avec image vegetables.png + animation.
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(28),
+                      bottomRight: Radius.circular(28),
+                    ),
+                    child: SizedBox(
+                      height: 130,
+                      width: double.infinity,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset(
+                            'assets/images/vegetables.png',
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [KultivaColors.springA, KultivaColors.springB],
+                                ),
+                              ),
+                            ),
+                          ),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.0),
+                                  Colors.black.withOpacity(0.3),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SeasonParticleAnimation(season: season),
+                          Positioned(
+                            left: 20, bottom: 12,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Légumes',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 22,
+                                    shadows: const [Shadow(color: Colors.black45, blurRadius: 8)],
+                                  ),
+                                ),
+                                Text(
+                                  '${filtered.length} variétés',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    shadows: const [Shadow(color: Colors.black38, blurRadius: 6)],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      Positioned(
+                        right: 8, bottom: 6,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(_gridView
+                                  ? Icons.view_list_rounded
+                                  : Icons.grid_view_rounded,
+                                  color: Colors.white, size: 20),
+                              onPressed: () =>
+                                  setState(() => _gridView = !_gridView),
+                            ),
+                            PopupMenuButton<_SortMode>(
+                              icon: const Icon(Icons.sort,
+                                  color: Colors.white, size: 20),
+                              onSelected: (m) =>
+                                  setState(() => _sortMode = m),
+                              itemBuilder: (_) => [
+                                PopupMenuItem(value: _SortMode.alpha,
+                                    child: Text('Alphabétique')),
+                                PopupMenuItem(value: _SortMode.category,
+                                    child: Text('Par catégorie')),
+                                PopupMenuItem(value: _SortMode.sowNow,
+                                    child: Text('À semer ce mois')),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                        ],
+                      ),
+                    ),
                   ),
                   // Barre de recherche.
                   Padding(
@@ -550,11 +634,11 @@ class _PastelChip extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? color.withOpacity(0.25) : color.withOpacity(0.08),
+            color: selected ? color.withOpacity(0.2) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: selected ? color : color.withOpacity(0.15),
-              width: selected ? 1.8 : 1,
+              color: selected ? color : Colors.grey.shade300,
+              width: selected ? 2 : 1,
             ),
           ),
           child: Text(
