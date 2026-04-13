@@ -243,14 +243,14 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Adapter le nombre de colonnes à la largeur.
-        final cols = constraints.maxWidth > 600 ? 5 : (constraints.maxWidth > 400 ? 4 : 3);
+        final cols = constraints.maxWidth > 900 ? 8 : (constraints.maxWidth > 600 ? 6 : (constraints.maxWidth > 400 ? 4 : 3));
         return GridView.builder(
           padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: cols,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 0.9,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 1.0,
           ),
           itemCount: list.length,
           itemBuilder: (context, i) {
