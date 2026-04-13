@@ -37,6 +37,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   int _rows = 0;
   int _cols = 0;
   late List<List<String?>> _grid; // vegetableId or null
+  Map<String, String> _wateredMap = {}; // "r_c" -> ISO timestamp
   bool _initialized = false;
   WeatherData? _weather;
   List<WateringAlert> _alerts = [];
@@ -84,6 +85,11 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               growable: true),
           growable: true,
         );
+        // Charger les timestamps d'arrosage par cellule.
+        final w = data['watered'];
+        if (w is Map) {
+          _wateredMap = w.map((k, v) => MapEntry(k.toString(), v.toString()));
+        }
         _initialized = true;
         setState(() {});
         _refreshWeather();
@@ -103,6 +109,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       'rows': _rows,
       'cols': _cols,
       'cells': cells,
+      'watered': _wateredMap,
     });
     PrefsService.instance.setGardenGrid(json);
   }
@@ -165,9 +172,33 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   void _placeVegetable(int row, int col, String? vegId) {
-    setState(() => _grid[row][col] = vegId);
+    setState(() {
+      _grid[row][col] = vegId;
+      if (vegId == null) _wateredMap.remove('${row}_$col');
+    });
     _saveGarden();
-    _refreshWeather(); // Recalculer les alertes avec le nouveau légume.
+    _refreshWeather();
+  }
+
+  /// Arrose une cellule spécifique (pas global).
+  void _waterCell(int row, int col) {
+    setState(() {
+      _wateredMap['${row}_$col'] = DateTime.now().toIso8601String();
+    });
+    _saveGarden();
+  }
+
+  /// Jours secs effectifs pour une cellule.
+  /// = min(jours sans pluie météo, jours depuis arrosage manuel).
+  int _cellDryDays(int row, int col) {
+    final weatherDry = _weather?.consecutiveDryDays ?? 0;
+    final key = '${row}_$col';
+    final ts = _wateredMap[key];
+    if (ts == null) return weatherDry;
+    final last = DateTime.tryParse(ts);
+    if (last == null) return weatherDry;
+    final manualDry = DateTime.now().difference(last).inDays;
+    return manualDry < weatherDry ? manualDry : weatherDry;
   }
 
   /// Check if a vegetable at (row, col) has any incompatible neighbors.
@@ -309,14 +340,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
-  String _lastWateringLabel() {
-    final days = PrefsService.instance.daysSinceLastWatering;
-    if (days == null) return 'Jamais arrosé';
-    if (days == 0) return "Arrosé aujourd'hui";
-    if (days == 1) return 'Arrosé hier';
-    return 'Arrosé il y a $days jours';
-  }
-
   /// Vérifie si un légume spécifique a besoin d'arrosage.
   WateringAlert? _alertFor(String vegId) {
     try {
@@ -345,43 +368,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         // Alertes arrosage.
         if (urgentAlerts.isNotEmpty)
           _WateringAlertBanner(alerts: urgentAlerts),
-        // Bouton "J'ai arrosé" + dernier arrosage.
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    await PrefsService.instance.recordWatering();
-                    if (mounted) {
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Arrosage enregistré !'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    }
-                  },
-                  icon: const Text('💧', style: TextStyle(fontSize: 18)),
-                  label: const Text("J'ai arrosé"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade400,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                _lastWateringLabel(),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: KultivaColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: Row(
