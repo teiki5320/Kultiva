@@ -231,10 +231,12 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return SafeArea(
-      bottom: false,
-      child: Column(
-        children: [
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF5EE),
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(28),
@@ -290,7 +292,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           Expanded(
             child: _rows == 0 ? _buildSetup() : _buildGarden(),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -878,7 +881,7 @@ class _GardenCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: _borderColor(),
-            width: warnings.isNotEmpty ? 2.5 : 1.5,
+            width: warnings.isNotEmpty ? 3 : 2,
           ),
           boxShadow: [
             BoxShadow(
