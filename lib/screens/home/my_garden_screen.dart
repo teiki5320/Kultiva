@@ -467,26 +467,20 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           ),
         ),
         Expanded(
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Stack(
-                children: [
-                  // Image de fond potager.
-                  Positioned.fill(
-                    child: Image.asset(
-                      'assets/images/potager_bg.png',
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: const Color(0xFF5C4033),
-                      ),
-                    ),
-                  ),
-                  // Grille de cases par-dessus.
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
+          child: Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/potager_bg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
                 children: List.generate(_rows, (r) {
                   return Row(
                     children: List.generate(_cols, (c) {
@@ -512,9 +506,8 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               ),
             ),
           ),
-                ],
-              ),
             ),
+          ),
           ),
         // Boutons d'édition sous la grille.
         Padding(
