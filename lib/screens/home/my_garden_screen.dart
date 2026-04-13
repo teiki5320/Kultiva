@@ -493,8 +493,19 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                 borderRadius: BorderRadius.circular(15),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFFF8F0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFFFCE4EC), // rose
+                        Color(0xFFE8EAF6), // lavande
+                      ],
+                    ),
                   ),
+                  foregroundDecoration: const BoxDecoration(),
+                  child: CustomPaint(
+                    painter: _GridPainter(),
+                    child: Container(
                   child: Center(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -528,6 +539,10 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                     ),
                   ),
                 ),
+              ),
+            ),
+          ), // CustomPaint
+          ), // Container inside
               ),
             ),
           ),
@@ -1017,6 +1032,26 @@ class _GardenParticleAnimationState extends State<_GardenParticleAnimation>
       },
     );
   }
+}
+
+/// Quadrillage kawaii rose/lavande.
+class _GridPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.45)
+      ..strokeWidth = 0.8;
+    const step = 20.0;
+    for (double x = 0; x < size.width; x += step) {
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+    }
+    for (double y = 0; y < size.height; y += step) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _GridButton extends StatelessWidget {
