@@ -475,32 +475,35 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Container(
               decoration: BoxDecoration(
-                // Bordure bois.
                 border: Border.all(
-                  color: const Color(0xFF8B6B4A),
-                  width: 8,
+                  color: const Color(0xFFBE9B71),
+                  width: 10,
                 ),
-                borderRadius: BorderRadius.circular(16),
-                // Ombre sous le cadre.
+                borderRadius: BorderRadius.circular(22),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF6B4E37).withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
+                    color: const Color(0xFFA0845C).withOpacity(0.4),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                  BoxShadow(
+                    color: const Color(0xFFD4BC9A).withOpacity(0.6),
+                    blurRadius: 0,
+                    spreadRadius: -2,
+                    offset: const Offset(0, -2),
                   ),
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  // Fond pelouse verte.
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Color(0xFF7EC850), // vert clair
-                        Color(0xFF5DA03B), // vert foncé
+                        Color(0xFFA8D98A),
+                        Color(0xFF8BC870),
                       ],
                     ),
                   ),
@@ -879,17 +882,12 @@ class _GardenCell extends StatelessWidget {
     this.onLongPress,
   });
 
-  // Couleurs terre.
-  Color _topColor() {
-    if (veg == null) return const Color(0xFF9B7B5A); // terre claire
-    if (warnings.isNotEmpty) return const Color(0xFFAA6644);
-    if (dryDays >= threshold + 2) return const Color(0xFFB8956A); // sec
-    if (dryDays >= threshold) return const Color(0xFF8B6B4A);
-    return const Color(0xFF6B4E37); // bien arrosé = terre foncée humide
-  }
-
-  Color _bottomColor() {
-    return const Color(0xFF5C3D2E); // base du monticule
+  Color _moundColor() {
+    if (veg == null) return const Color(0xFFCBA882);
+    if (warnings.isNotEmpty) return const Color(0xFFD4896B);
+    if (dryDays >= threshold + 2) return const Color(0xFFD4B088);
+    if (dryDays >= threshold) return const Color(0xFFC49B70);
+    return const Color(0xFFB08860);
   }
 
   String _waterEmoji() {
@@ -903,60 +901,70 @@ class _GardenCell extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
-      child: Container(
-        width: 85,
-        height: 85,
-        margin: const EdgeInsets.all(6),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+      child: SizedBox(
+        width: 90,
+        height: 90,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            // Plante au-dessus du monticule.
-            if (veg != null) ...[
-              Text(veg!.emoji, style: const TextStyle(fontSize: 26)),
-              Text(veg!.name, style: const TextStyle(
-                fontSize: 8, fontWeight: FontWeight.w700,
-                color: Colors.white,
-                shadows: [Shadow(color: Colors.black54, blurRadius: 3)],
-              ), overflow: TextOverflow.ellipsis),
-            ] else
-              Text('🌱', style: TextStyle(fontSize: 16,
-                color: Colors.white.withOpacity(0.4))),
-            const SizedBox(height: 2),
-            // Monticule de terre.
-            Container(
-              width: 70,
-              height: 28,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [_topColor(), _bottomColor()],
+            // Monticule ovale vu du dessus.
+            Positioned(
+              bottom: 4,
+              child: Container(
+                width: 72,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: _moundColor(),
+                  borderRadius: BorderRadius.circular(36),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(35),
-                  topRight: Radius.circular(35),
-                  bottomLeft: Radius.circular(8),
-                  bottomRight: Radius.circular(8),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: veg != null
-                  ? Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 2, right: 6),
-                        child: Text(_waterEmoji(),
-                            style: const TextStyle(fontSize: 9)),
+                child: veg == null
+                    // Yeux kawaii sur la terre vide.
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(width: 5, height: 5,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF6B4E37),
+                              shape: BoxShape.circle)),
+                          const SizedBox(width: 10),
+                          Container(width: 5, height: 5,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF6B4E37),
+                              shape: BoxShape.circle)),
+                        ],
+                      )
+                    : Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 4, right: 8),
+                          child: Text(_waterEmoji(),
+                              style: const TextStyle(fontSize: 9)),
+                        ),
                       ),
-                    )
-                  : null,
+              ),
             ),
+            // Plante qui pousse.
+            if (veg != null)
+              Positioned(
+                top: 0,
+                child: Column(
+                  children: [
+                    Text(veg!.emoji, style: const TextStyle(fontSize: 28)),
+                    Text(veg!.name, style: const TextStyle(
+                      fontSize: 8, fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      shadows: [Shadow(color: Colors.black54, blurRadius: 3)],
+                    ), overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
