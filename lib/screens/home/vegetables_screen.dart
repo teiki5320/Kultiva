@@ -30,6 +30,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   _SortMode _sortMode = _SortMode.alpha;
   bool _favOnly = false;
   bool _gridView = true;
+  bool _initialFavChecked = false;
 
   @override
   void dispose() {
@@ -97,6 +98,13 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return ValueListenableBuilder<Set<String>>(
           valueListenable: PrefsService.instance.favorites,
           builder: (context, favs, _) {
+            // Au premier affichage, activer favoris si non vide.
+            if (!_initialFavChecked) {
+              _initialFavChecked = true;
+              if (favs.isNotEmpty) {
+                _favOnly = true;
+              }
+            }
             final filtered = _filter(region, favs);
             final regionData =
                 region == Region.france ? franceData : westAfricaData;
