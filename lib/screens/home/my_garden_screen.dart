@@ -475,37 +475,25 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Container(
               decoration: BoxDecoration(
+                color: const Color(0xFFFFF8F0),
+                borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: const Color(0xFFBE9B71),
-                  width: 10,
+                  color: const Color(0xFFE8B4B8),
+                  width: 3,
                 ),
-                borderRadius: BorderRadius.circular(22),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFA0845C).withOpacity(0.4),
-                    blurRadius: 6,
+                    color: const Color(0xFFE8B4B8).withOpacity(0.25),
+                    blurRadius: 8,
                     offset: const Offset(0, 3),
-                  ),
-                  BoxShadow(
-                    color: const Color(0xFFD4BC9A).withOpacity(0.6),
-                    blurRadius: 0,
-                    spreadRadius: -2,
-                    offset: const Offset(0, -2),
                   ),
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(15),
                 child: Container(
                   decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFFA8D98A),
-                        Color(0xFF8BC870),
-                      ],
-                    ),
+                    color: Color(0xFFFFF8F0),
                   ),
                   child: Center(
                     child: SingleChildScrollView(
@@ -882,12 +870,12 @@ class _GardenCell extends StatelessWidget {
     this.onLongPress,
   });
 
-  Color _moundColor() {
-    if (veg == null) return const Color(0xFFCBA882);
-    if (warnings.isNotEmpty) return const Color(0xFFD4896B);
-    if (dryDays >= threshold + 2) return const Color(0xFFD4B088);
-    if (dryDays >= threshold) return const Color(0xFFC49B70);
-    return const Color(0xFFB08860);
+  Color _cellColor() {
+    if (veg == null) return const Color(0xFFFCE4EC);
+    if (warnings.isNotEmpty) return const Color(0xFFFFCCBC);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFE0B2);
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0);
+    return const Color(0xFFF8BBD0);
   }
 
   String _waterEmoji() {
@@ -901,72 +889,55 @@ class _GardenCell extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
-      child: SizedBox(
-        width: 90,
-        height: 90,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Monticule ovale vu du dessus.
-            Positioned(
-              bottom: 4,
-              child: Container(
-                width: 72,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: _moundColor(),
-                  borderRadius: BorderRadius.circular(36),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: veg == null
-                    // Yeux kawaii sur la terre vide.
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(width: 5, height: 5,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF6B4E37),
-                              shape: BoxShape.circle)),
-                          const SizedBox(width: 10),
-                          Container(width: 5, height: 5,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF6B4E37),
-                              shape: BoxShape.circle)),
-                        ],
-                      )
-                    : Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 4, right: 8),
-                          child: Text(_waterEmoji(),
-                              style: const TextStyle(fontSize: 9)),
-                        ),
-                      ),
-              ),
+      child: Container(
+        width: 80,
+        height: 80,
+        margin: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: _cellColor(),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: const Color(0xFFE8B4B8).withOpacity(0.5),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFE8B4B8).withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
-            // Plante qui pousse.
-            if (veg != null)
-              Positioned(
-                top: 0,
-                child: Column(
-                  children: [
-                    Text(veg!.emoji, style: const TextStyle(fontSize: 28)),
-                    Text(veg!.name, style: const TextStyle(
-                      fontSize: 8, fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      shadows: [Shadow(color: Colors.black54, blurRadius: 3)],
-                    ), overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-              ),
           ],
         ),
+        child: veg != null
+            ? Stack(
+                children: [
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(veg!.emoji,
+                            style: const TextStyle(fontSize: 28)),
+                        const SizedBox(height: 2),
+                        Text(veg!.name, style: const TextStyle(
+                          fontSize: 8, fontWeight: FontWeight.w700,
+                          color: Color(0xFF8B6B7A)),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    right: 4, bottom: 4,
+                    child: Text(_waterEmoji(),
+                        style: const TextStyle(fontSize: 9)),
+                  ),
+                ],
+              )
+            : Center(
+                child: Text('+', style: TextStyle(
+                  fontSize: 28, fontWeight: FontWeight.w300,
+                  color: const Color(0xFFE8B4B8).withOpacity(0.6))),
+              ),
       ),
     );
   }
