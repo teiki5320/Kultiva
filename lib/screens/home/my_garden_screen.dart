@@ -241,7 +241,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               bottomRight: Radius.circular(28),
             ),
             child: SizedBox(
-              height: 120,
+              height: 170,
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
@@ -269,8 +269,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                       ),
                     ),
                   ),
-                  SeasonParticleAnimation(
-                      season: Season.fromMonth(DateTime.now().month)),
+                  const _GardenParticleAnimation(),
                   Positioned(
                     left: 20, bottom: 12,
                     child: Text('Mon Potager',
@@ -978,6 +977,59 @@ class _DetailRow extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Animation de feuilles et gouttes pour l'onglet Mon Potager.
+class _GardenParticleAnimation extends StatefulWidget {
+  const _GardenParticleAnimation();
+  @override
+  State<_GardenParticleAnimation> createState() =>
+      _GardenParticleAnimationState();
+}
+
+class _GardenParticleAnimationState extends State<_GardenParticleAnimation>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  static const _emojis = ['🍃', '💧', '🌿', '✨', '🍃', '💧', '🌱', '✨'];
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 18),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, _) {
+        return Stack(
+          children: List.generate(8, (i) {
+            final t = (_ctrl.value + i * 0.125) % 1.0;
+            final x = (i * 0.14 + 0.03) % 1.0;
+            return Positioned(
+              left: x * MediaQuery.of(context).size.width * 0.8,
+              top: t * 170 - 15,
+              child: Opacity(
+                opacity: (1 - t).clamp(0.0, 0.5),
+                child: Text(_emojis[i % _emojis.length],
+                    style: const TextStyle(fontSize: 14)),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }
