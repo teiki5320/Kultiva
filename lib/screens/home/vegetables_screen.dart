@@ -29,7 +29,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   String _query = '';
   _SortMode _sortMode = _SortMode.alpha;
   bool _favOnly = false;
-  bool _gridView = false;
+  bool _gridView = true;
+  bool _initialFavChecked = false;
 
   @override
   void dispose() {
@@ -97,6 +98,13 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return ValueListenableBuilder<Set<String>>(
           valueListenable: PrefsService.instance.favorites,
           builder: (context, favs, _) {
+            // Au premier affichage, activer favoris si non vide.
+            if (!_initialFavChecked) {
+              _initialFavChecked = true;
+              if (favs.isNotEmpty) {
+                _favOnly = true;
+              }
+            }
             final filtered = _filter(region, favs);
             final regionData =
                 region == Region.france ? franceData : westAfricaData;
@@ -240,16 +248,20 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
   Widget _buildGrid(
       List<Vegetable> list, Set<String> favs, List<RegionData> regionData) {
-    return GridView.builder(
-      padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        childAspectRatio: 0.85,
-      ),
-      itemCount: list.length,
-      itemBuilder: (context, i) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Adapter le nombre de colonnes à la largeur.
+        final cols = constraints.maxWidth > 900 ? 8 : (constraints.maxWidth > 600 ? 6 : (constraints.maxWidth > 400 ? 4 : 3));
+        return GridView.builder(
+          padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cols,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 1.0,
+          ),
+          itemCount: list.length,
+          itemBuilder: (context, i) {
         final v = list[i];
         final sow = _canSow(v, regionData);
         final harvest = _canHarvest(v, regionData);
@@ -384,6 +396,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             ),
           ),
         );
+      },
+    );
       },
     );
   }
