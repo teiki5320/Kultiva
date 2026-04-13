@@ -453,12 +453,20 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
                   return Row(
                     children: List.generate(_cols, (c) {
                       final cellId = _grid[r][c];
+                      final veg = cellId != null
+                          ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
+                          : null;
+                      final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
+                      final threshold = veg?.effectiveWateringDays ?? 4;
                       return _GardenCell(
-                        vegId: cellId,
+                        veg: veg,
+                        dryDays: dryDays,
+                        threshold: threshold,
                         warnings: _getWarnings(r, c),
-                        waterAlert: cellId != null ? _alertFor(cellId) : null,
                         onTap: () => _showPicker(r, c),
-                        onClear: () => _placeVegetable(r, c, null),
+                        onLongPress: veg != null
+                            ? () => _showPlantDetail(r, c, veg)
+                            : null,
                       );
                     }),
                   );
@@ -469,6 +477,10 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         ),
       ],
     );
+  }
+
+  void _showPlantDetail(int row, int col, Vegetable veg) {
+    // Sera implémenté au point 5.
   }
 
   void _showPicker(int row, int col) {
@@ -673,84 +685,90 @@ class _SummaryBar extends StatelessWidget {
 // _WateringAlertBanner supprimé — remplacé par les chips inline dans _buildGarden.
 
 class _GardenCell extends StatelessWidget {
-  final String? vegId;
+  final Vegetable? veg;
+  final int dryDays;
+  final int threshold;
   final List<String> warnings;
-  final WateringAlert? waterAlert;
   final VoidCallback onTap;
-  final VoidCallback onClear;
+  final VoidCallback? onLongPress;
 
   const _GardenCell({
-    required this.vegId,
+    required this.veg,
+    required this.dryDays,
+    required this.threshold,
     required this.warnings,
-    this.waterAlert,
     required this.onTap,
-    required this.onClear,
+    this.onLongPress,
   });
+
+  Color _bgColor() {
+    if (veg == null) return KultivaColors.lightGreen.withOpacity(0.08);
+    if (warnings.isNotEmpty) return KultivaColors.terracotta.withOpacity(0.12);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFCDD2); // rouge
+    if (dryDays >= threshold) return const Color(0xFFFFF3E0); // orange
+    return KultivaColors.lightGreen.withOpacity(0.2); // vert
+  }
+
+  Color _borderColor() {
+    if (warnings.isNotEmpty) return KultivaColors.terracotta;
+    if (veg != null) return KultivaColors.primaryGreen.withOpacity(0.35);
+    return KultivaColors.lightGreen.withOpacity(0.3);
+  }
+
+  String _waterEmoji() {
+    if (dryDays >= threshold + 2) return '🚨';
+    if (dryDays >= threshold) return '💦';
+    return '💧';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final veg = vegId != null
-        ? vegetablesBase.where((v) => v.id == vegId).firstOrNull
-        : null;
-    final hasWarning = warnings.isNotEmpty;
-    final needsWater = waterAlert?.needsWatering ?? false;
-
     return GestureDetector(
       onTap: onTap,
-      onLongPress: vegId != null ? onClear : null,
-      child: Tooltip(
-        message: veg != null
-            ? '${veg.name}'
-                '${hasWarning ? "\n⚠️ Mauvais voisin : ${warnings.join(", ")}" : ""}'
-                '${needsWater ? "\n💧 ${waterAlert!.message}" : ""}'
-            : 'Case vide — tape pour placer',
-        child: Container(
-          width: 72,
-          height: 72,
-          margin: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: veg != null
-                ? (hasWarning
-                    ? KultivaColors.terracotta.withOpacity(0.15)
-                    : KultivaColors.lightGreen.withOpacity(0.25))
-                : Colors.grey.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: hasWarning
-                  ? KultivaColors.terracotta
-                  : (veg != null
-                      ? KultivaColors.primaryGreen.withOpacity(0.4)
-                      : Colors.grey.withOpacity(0.2)),
-              width: hasWarning ? 2.5 : 1,
-            ),
+      onLongPress: onLongPress,
+      child: Container(
+        width: 80,
+        height: 80,
+        margin: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: _bgColor(),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: _borderColor(),
+            width: warnings.isNotEmpty ? 2.5 : 1.2,
           ),
-          child: veg != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(veg.emoji, style: const TextStyle(fontSize: 22)),
-                    Text(
-                      veg.name,
-                      style: const TextStyle(
-                          fontSize: 9, fontWeight: FontWeight.w700),
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        child: veg != null
+            ? Stack(
+                children: [
+                  Center(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (hasWarning)
-                          const Text('⚠️', style: TextStyle(fontSize: 9)),
-                        if (needsWater)
-                          Text(waterAlert!.emoji,
-                              style: const TextStyle(fontSize: 9)),
+                        Text(veg!.emoji,
+                            style: const TextStyle(fontSize: 26)),
+                        const SizedBox(height: 2),
+                        Text(
+                          veg!.name,
+                          style: const TextStyle(
+                              fontSize: 9, fontWeight: FontWeight.w700),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
-                  ],
-                )
-              : Icon(Icons.add, size: 20, color: Colors.grey.withOpacity(0.4)),
-        ),
+                  ),
+                  Positioned(
+                    right: 4,
+                    bottom: 4,
+                    child: Text(_waterEmoji(),
+                        style: const TextStyle(fontSize: 10)),
+                  ),
+                ],
+              )
+            : Icon(Icons.add_rounded,
+                size: 22,
+                color: KultivaColors.lightGreen.withOpacity(0.6)),
       ),
     );
   }
