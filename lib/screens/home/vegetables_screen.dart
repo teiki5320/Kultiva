@@ -155,7 +155,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Légumes',
+                                Text('Étal',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
@@ -506,6 +506,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return const Color(0xFF66BB6A);
       case VegetableCategory.aromatics:
         return const Color(0xFF26A69A);
+      case VegetableCategory.accessories:
+        return const Color(0xFF78909C);
     }
   }
 }

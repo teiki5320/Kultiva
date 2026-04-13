@@ -281,12 +281,34 @@ class _HeaderCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        vegetable.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w800),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              vegetable.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                          if (vegetable.amazonUrl != null)
+                            GestureDetector(
+                              onTap: () => launchUrl(
+                                Uri.parse(vegetable.amazonUrl!),
+                                mode: LaunchMode.externalApplication,
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: KultivaColors.primaryGreen.withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(Icons.shopping_cart_outlined,
+                                    size: 20, color: KultivaColors.primaryGreen),
+                              ),
+                            ),
+                        ],
                       ),
                       Text(
                         vegetable.category.label,

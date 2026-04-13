@@ -37,9 +37,9 @@ class _RootTabsState extends State<RootTabs> {
             label: 'Semer',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_outlined),
-            activeIcon: Icon(Icons.menu_book),
-            label: 'Légumes',
+            icon: Icon(Icons.storefront_outlined),
+            activeIcon: Icon(Icons.storefront),
+            label: 'Étal',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view_outlined),

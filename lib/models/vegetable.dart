@@ -8,7 +8,8 @@ enum VegetableCategory {
   seeds,
   roots,
   stems,
-  aromatics;
+  aromatics,
+  accessories;
 
   String get label {
     switch (this) {
@@ -30,6 +31,8 @@ enum VegetableCategory {
         return 'Tiges';
       case VegetableCategory.aromatics:
         return 'Aromatiques';
+      case VegetableCategory.accessories:
+        return 'Accessoires';
     }
   }
 
@@ -53,6 +56,8 @@ enum VegetableCategory {
         return '🌿';
       case VegetableCategory.aromatics:
         return '🌿';
+      case VegetableCategory.accessories:
+        return '🧰';
     }
   }
 }
