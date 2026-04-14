@@ -469,107 +469,131 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
             ],
           ),
         ),
-        // Grand cahier kawaii.
+        // Potager Bonbon — Candy Pastel.
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Stack(
-              children: [
-                // Fond cahier.
-                Container(
-                  margin: const EdgeInsets.only(left: 20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8F0),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFFDEB8A0),
-                      width: 2.5,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFFDEB8A0).withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: const Offset(2, 4),
-                      ),
-                    ],
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFFFF0F4),
+                    Color(0xFFFFF5F0),
+                    Color(0xFFF8F0FF),
+                    Color(0xFFF0F8FF),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: const Color(0xFFF0D0D8), width: 3),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFF0D0D8).withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CustomPaint(
-                      painter: _GridPainter(),
-                      child: Stack(
-                        children: [
-                          // Fleurs décoratives.
-                          const Positioned(top: 6, right: 8,
-                            child: Text('🌸', style: TextStyle(fontSize: 16))),
-                          const Positioned(top: 8, right: 30,
-                            child: Text('🌼', style: TextStyle(fontSize: 12))),
-                          const Positioned(bottom: 6, left: 28,
-                            child: Text('🌿', style: TextStyle(fontSize: 14))),
-                          const Positioned(bottom: 8, right: 12,
-                            child: Text('🍃', style: TextStyle(fontSize: 12))),
-                          const Positioned(top: 6, left: 28,
-                            child: Text('✨', style: TextStyle(fontSize: 11))),
-                          // Grille de post-its.
-                          Center(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: SingleChildScrollView(
-                                padding: const EdgeInsets.fromLTRB(24, 30, 16, 16),
-                                child: Column(
-                                  children: List.generate(_rows, (r) {
-                                    return Row(
-                                      children: List.generate(_cols, (c) {
-                                        final cellId = _grid[r][c];
-                                        final veg = cellId != null
-                                            ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
-                                            : null;
-                                        final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
-                                        final threshold = veg?.effectiveWateringDays ?? 4;
-                                        return _GardenCell(
-                                          veg: veg,
-                                          dryDays: dryDays,
-                                          threshold: threshold,
-                                          warnings: _getWarnings(r, c),
-                                          onTap: () => _showPicker(r, c),
-                                          onLongPress: veg != null
-                                              ? () => _showPlantDetail(r, c, veg)
-                                              : null,
-                                        );
-                                      }),
-                                    );
-                                  }),
-                                ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(21),
+                child: CustomPaint(
+                  painter: _CandyDotsPainter(),
+                  child: Stack(
+                    children: [
+                      // Sucette gauche.
+                      Positioned(top: 8, left: 10, child: Column(children: [
+                        Container(width: 18, height: 18,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const SweepGradient(colors: [
+                              Color(0xFFF8D0E0), Color(0xFFFFF0F4),
+                              Color(0xFFE0D0F0), Color(0xFFF8D0E0),
+                            ]),
+                            border: Border.all(color: const Color(0xFFF0C0D0), width: 1.5),
+                          )),
+                        Container(width: 2, height: 16, color: const Color(0xFFE8D0D8)),
+                      ])),
+                      // Sucette droite.
+                      Positioned(top: 10, right: 12, child: Column(children: [
+                        Container(width: 14, height: 14,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const SweepGradient(colors: [
+                              Color(0xFFD0E8F0), Color(0xFFF0F8FF),
+                              Color(0xFFD0F0E0), Color(0xFFD0E8F0),
+                            ]),
+                            border: Border.all(color: const Color(0xFFC0D8E0), width: 1.5),
+                          )),
+                        Container(width: 2, height: 14, color: const Color(0xFFD0D8E0)),
+                      ])),
+                      // Sprinkles éparpillés.
+                      ...List.generate(14, (i) {
+                        final colors = [
+                          const Color(0xFFF8D0E0), const Color(0xFFD0E8F0),
+                          const Color(0xFFF0E0B8), const Color(0xFFD0F0D8),
+                          const Color(0xFFD8D0F0),
+                        ];
+                        return Positioned(
+                          left: (4 + i * 7) * 3.0,
+                          top: (5 + (i % 5) * 18) * 1.0,
+                          child: Transform.rotate(
+                            angle: i * 28 * 3.14 / 180,
+                            child: Container(
+                              width: 3, height: 7,
+                              decoration: BoxDecoration(
+                                color: colors[i % 5].withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(3),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                // Spirale gauche.
-                Positioned(
-                  left: 8,
-                  top: 0,
-                  bottom: 0,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(8, (_) => Container(
-                      width: 18,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: const Color(0xFFCCA882),
-                          width: 2,
+                        );
+                      }),
+                      // Grille de bonbons.
+                      Center(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.fromLTRB(16, 40, 16, 32),
+                            child: Column(
+                              children: List.generate(_rows, (r) {
+                                return Row(
+                                  children: List.generate(_cols, (c) {
+                                    final cellId = _grid[r][c];
+                                    final veg = cellId != null
+                                        ? vegetablesBase.where((v) => v.id == cellId).firstOrNull
+                                        : null;
+                                    final dryDays = cellId != null ? _cellDryDays(r, c) : 0;
+                                    final threshold = veg?.effectiveWateringDays ?? 4;
+                                    return _GardenCell(
+                                      veg: veg,
+                                      dryDays: dryDays,
+                                      threshold: threshold,
+                                      warnings: _getWarnings(r, c),
+                                      onTap: () => _showPicker(r, c),
+                                      onLongPress: veg != null
+                                          ? () => _showPlantDetail(r, c, veg)
+                                          : null,
+                                      index: r * _cols + c,
+                                    );
+                                  }),
+                                );
+                              }),
+                            ),
+                          ),
                         ),
-                        color: const Color(0xFFFFF8F0),
                       ),
-                    )),
+                      // Nœud ruban en bas.
+                      const Positioned(
+                        bottom: 8, left: 0, right: 0,
+                        child: Center(
+                          child: Text('🎀', style: TextStyle(fontSize: 18)),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -901,6 +925,7 @@ class _GardenCell extends StatelessWidget {
   final List<String> warnings;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
+  final int index;
 
   const _GardenCell({
     required this.veg,
@@ -909,19 +934,34 @@ class _GardenCell extends StatelessWidget {
     required this.warnings,
     required this.onTap,
     this.onLongPress,
+    this.index = 0,
   });
 
-  // Couleurs post-it variées selon état.
-  Color _cellColor() {
-    if (veg == null) return const Color(0xFFFFF9E6); // jaune pâle
-    if (warnings.isNotEmpty) return const Color(0xFFFFCCBC); // pêche
-    if (dryDays >= threshold + 2) return const Color(0xFFFFE0B2); // orange
-    if (dryDays >= threshold) return const Color(0xFFFFF3E0); // jaune
-    return const Color(0xFFE8F5E9); // vert pâle
+  // 9 couleurs candy avec bordure.
+  static const _candyColors = [
+    [Color(0xFFFFE0E8), Color(0xFFF8C0D0)], // rose
+    [Color(0xFFE0F0FF), Color(0xFFC0D8F0)], // bleu
+    [Color(0xFFFFF0D8), Color(0xFFF0E0B8)], // jaune
+    [Color(0xFFE0FFE8), Color(0xFFC0E8D0)], // vert
+    [Color(0xFFF0E0FF), Color(0xFFD8C0F0)], // violet
+    [Color(0xFFFFE8E0), Color(0xFFF0D0C0)], // pêche
+    [Color(0xFFE0F8F0), Color(0xFFC0E0D8)], // menthe
+    [Color(0xFFF8F0E0), Color(0xFFE8D8C0)], // crème
+    [Color(0xFFE8E0F8), Color(0xFFD0C8E8)], // lavande
+  ];
+
+  Color _candyBg() {
+    if (warnings.isNotEmpty) return const Color(0xFFFFCCBC);
+    if (dryDays >= threshold + 2) return const Color(0xFFFFD4C4);
+    if (dryDays >= threshold) return const Color(0xFFFFF0D8);
+    return _candyColors[index % 9][0];
   }
 
-  Color _foldColor() {
-    return _cellColor().withOpacity(0.6);
+  Color _candyBorder() {
+    if (warnings.isNotEmpty) return const Color(0xFFFF8A65);
+    if (dryDays >= threshold + 2) return const Color(0xFFE8896B);
+    if (dryDays >= threshold) return const Color(0xFFF0E0B8);
+    return _candyColors[index % 9][1];
   }
 
   String _waterEmoji() {
@@ -932,101 +972,114 @@ class _GardenCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bg = _candyBg();
+    final border = _candyBorder();
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
-      child: Container(
-        width: 85,
-        height: 85,
-        margin: const EdgeInsets.all(6),
+      child: SizedBox(
+        width: 80,
+        height: 76,
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
-            // Ombre du post-it.
+            // Twist gauche (emballage).
             Positioned(
-              left: 2, top: 2, right: -2, bottom: -2,
+              left: -3, top: 28,
               child: Container(
+                width: 10, height: 16,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.06),
-                  borderRadius: BorderRadius.circular(4),
+                  color: border.withOpacity(0.5),
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
                 ),
               ),
             ),
-            // Post-it principal.
-            Container(
-              decoration: BoxDecoration(
-                color: _cellColor(),
-                borderRadius: BorderRadius.circular(3),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.brown.withOpacity(0.08),
-                    blurRadius: 3,
-                    offset: const Offset(1, 2),
+            // Twist droit (emballage).
+            Positioned(
+              right: -3, top: 28,
+              child: Container(
+                width: 10, height: 16,
+                decoration: BoxDecoration(
+                  color: border.withOpacity(0.5),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
                   ),
-                ],
+                ),
               ),
-              child: Stack(
-                children: [
-                  // Petit pli bas-droit.
-                  Positioned(
-                    bottom: 0, right: 0,
-                    child: Container(
-                      width: 14, height: 14,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            _cellColor(),
-                            _foldColor(),
+            ),
+            // Corps du bonbon.
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [bg, bg.withOpacity(0.8)],
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: border, width: 2.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: border.withOpacity(0.3),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Stack(
+                  clipBehavior: Clip.hardEdge,
+                  children: [
+                    // Reflet brillant.
+                    Positioned(
+                      top: 6, left: 10,
+                      child: Transform.rotate(
+                        angle: -15 * 3.14 / 180,
+                        child: Container(
+                          width: 20, height: 8,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Contenu.
+                    if (veg != null)
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(veg!.emoji, style: const TextStyle(fontSize: 26)),
+                            const SizedBox(height: 2),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: Text(veg!.name, style: const TextStyle(
+                                fontSize: 8, fontWeight: FontWeight.w700,
+                                color: Color(0xFFC0A0B0)),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center),
+                            ),
                           ],
                         ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.brown.withOpacity(0.1),
-                            blurRadius: 2,
-                            offset: const Offset(-1, -1),
-                          ),
-                        ],
+                      )
+                    else
+                      const Center(
+                        child: Text('🍭', style: TextStyle(fontSize: 20)),
                       ),
-                    ),
-                  ),
-                  // Contenu.
-                  if (veg != null)
-                    Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(veg!.emoji,
-                              style: const TextStyle(fontSize: 26)),
-                          const SizedBox(height: 2),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(veg!.name, style: const TextStyle(
-                              fontSize: 8, fontWeight: FontWeight.w700,
-                              color: Color(0xFF6B5040)),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center),
-                          ),
-                        ],
+                    // Indicateur eau.
+                    if (veg != null)
+                      Positioned(
+                        right: 4, bottom: 4,
+                        child: Text(_waterEmoji(),
+                            style: const TextStyle(fontSize: 9)),
                       ),
-                    )
-                  else
-                    Center(
-                      child: Text('+', style: TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.w300,
-                        color: const Color(0xFFCCA882).withOpacity(0.5))),
-                    ),
-                  // Indicateur eau.
-                  if (veg != null)
-                    Positioned(
-                      right: 3, top: 3,
-                      child: Text(_waterEmoji(),
-                          style: const TextStyle(fontSize: 9)),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -1113,27 +1166,16 @@ class _GardenParticleAnimationState extends State<_GardenParticleAnimation>
 }
 
 /// Quadrillage kawaii rose/lavande.
-class _GridPainter extends CustomPainter {
+class _CandyDotsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    // Fond dégradé rose → lavande.
-    final bgPaint = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Color(0xFFFCE4EC), Color(0xFFE8EAF6)],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
-    // Quadrillage blanc.
-    final linePaint = Paint()
-      ..color = Colors.white.withOpacity(0.5)
-      ..strokeWidth = 0.8;
+    final paint = Paint()
+      ..color = const Color(0xFFF8D0E0).withOpacity(0.13);
     const step = 18.0;
-    for (double x = 0; x < size.width; x += step) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), linePaint);
-    }
-    for (double y = 0; y < size.height; y += step) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), linePaint);
+    for (double x = step / 2; x < size.width; x += step) {
+      for (double y = step / 2; y < size.height; y += step) {
+        canvas.drawCircle(Offset(x, y), 2, paint);
+      }
     }
   }
 
