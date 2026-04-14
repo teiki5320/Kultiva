@@ -96,6 +96,17 @@ const _categories = <_TutoCategory>[
       _TutoItem(emoji: '🪴', label: 'Potager en balcon', url: ''),
     ],
   ),
+  _TutoCategory(
+    emoji: '💡',
+    label: 'Astuces',
+    color: Color(0xFFFFB74D),
+    items: [
+      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
+      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
+      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', url: ''),
+      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', url: ''),
+    ],
+  ),
 ];
 
 class TutosScreen extends StatelessWidget {

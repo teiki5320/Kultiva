@@ -75,6 +75,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
         final activeVegs = <Vegetable>[];
         final later = <Vegetable>[];
         for (final veg in vegetablesBase) {
+          if (veg.category == VegetableCategory.accessories) continue;
           final entry = _findRegionData(data, veg.id);
           final months = isHarvest
               ? (entry?.harvestMonths ?? const <int>[])

@@ -38,6 +38,7 @@ class MyGardenScreen extends StatefulWidget {
 class _MyGardenScreenState extends State<MyGardenScreen> {
   int _rows = 0;
   int _cols = 0;
+  bool _waterMode = false; // Mode arrosage : tap = arrose
   late List<List<String?>> _grid; // vegetableId or null
   Map<String, String> _wateredMap = {}; // "r_c" -> ISO timestamp
   bool _initialized = false;
@@ -597,6 +598,79 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
             ),
           ),
         ),
+        // Boutons arrosage.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => setState(() => _waterMode = !_waterMode),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: _waterMode
+                          ? const Color(0xFF4FC3F7)
+                          : const Color(0xFF4FC3F7).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: const Color(0xFF4FC3F7),
+                        width: _waterMode ? 2 : 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(_waterMode ? '💧' : '🚿', style: const TextStyle(fontSize: 18)),
+                        const SizedBox(width: 6),
+                        Text(
+                          _waterMode ? 'Mode arrosage actif' : 'Arroser',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            color: _waterMode ? Colors.white : const Color(0xFF0288D1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: GestureDetector(
+                  onTap: _waterAll,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF29B6F6).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: const Color(0xFF29B6F6),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('🌧️', style: TextStyle(fontSize: 18)),
+                        const SizedBox(width: 6),
+                        Text(
+                          'Tout arroser',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            color: const Color(0xFF0277BD),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
@@ -719,6 +793,19 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   void _showPicker(int row, int col) {
+    // Mode arrosage : tap = arrose la case (si plante présente).
+    if (_waterMode) {
+      if (_grid[row][col] != null) {
+        _waterCell(row, col);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('💧 Arrosé !'),
+            duration: Duration(milliseconds: 600),
+          ),
+        );
+      }
+      return;
+    }
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -730,6 +817,21 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           },
         );
       },
+    );
+  }
+
+  void _waterAll() {
+    int count = 0;
+    for (int r = 0; r < _rows; r++) {
+      for (int c = 0; c < _cols; c++) {
+        if (_grid[r][c] != null) {
+          _waterCell(r, c);
+          count++;
+        }
+      }
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('💧 $count plante${count > 1 ? "s" : ""} arrosée${count > 1 ? "s" : ""} !')),
     );
   }
 }
