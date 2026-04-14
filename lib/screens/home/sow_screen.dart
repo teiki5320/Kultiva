@@ -19,6 +19,7 @@ import '../vegetable_detail_screen.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 import 'settings_screen.dart';
+import 'weather_screen.dart';
 
 /// Dashboard principal — Hero saisonnier + 4 cartes kawaii +
 /// carrousel de slides (légume, météo, conseil, saison).
@@ -196,6 +197,42 @@ class _SowScreenState extends State<SowScreen> {
                       ),
                     ),
                   ),
+                  // Bulle météo sous l'icône paramètres.
+                  if (_weather != null)
+                    Positioned(
+                      top: 48,
+                      right: 12,
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                              builder: (_) => const WeatherScreen()),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(_weather!.weatherEmoji,
+                                  style: const TextStyle(fontSize: 14)),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${_weather!.currentTemp.toStringAsFixed(0)}°',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
 
@@ -305,7 +342,15 @@ class _SowScreenState extends State<SowScreen> {
                   onPageChanged: (i) => setState(() => _currentSlide = i),
                   itemBuilder: (_, i) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: slides[i],
+                    child: GestureDetector(
+                      onTap: i == 1
+                          ? () => Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                    builder: (_) => const WeatherScreen()),
+                              )
+                          : null,
+                      child: slides[i],
+                    ),
                   ),
                 ),
               ),
