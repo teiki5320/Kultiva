@@ -7,15 +7,37 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../vegetable_detail_screen.dart';
 
 /// Vue calendrier annuel — grille 12 mois × tous les légumes de la région.
 /// Vert = mois de semis, orange = mois de récolte.
-class CalendarGridScreen extends StatelessWidget {
+class CalendarGridScreen extends StatefulWidget {
   const CalendarGridScreen({super.key});
 
+  @override
+  State<CalendarGridScreen> createState() => _CalendarGridScreenState();
+}
+
+class _CalendarGridScreenState extends State<CalendarGridScreen> {
   static const List<String> _shortMonths = [
     'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D',
   ];
+  static const List<String> _fullMonths = [
+    'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+    'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
+  ];
+
+  /// Filtre actif — null = tout afficher, sinon ne montre que les légumes
+  /// avec une activité (semis ou récolte) durant ce mois.
+  int? _filterMonth;
+
+  void _openVegetable(Vegetable v) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => VegetableDetailScreen(vegetable: v),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +47,7 @@ class CalendarGridScreen extends StatelessWidget {
       builder: (context, region, _) {
         final regionData =
             region == Region.france ? franceData : westAfricaData;
-        // Only show vegetables that have data in this region, sorted by name.
-        final entries = regionData.toList()
+        var entries = regionData.toList()
           ..sort((a, b) {
             final va = vegetablesBase
                 .where((v) => v.id == a.vegetableId)
@@ -37,77 +58,187 @@ class CalendarGridScreen extends StatelessWidget {
             return (va?.name ?? '').compareTo(vb?.name ?? '');
           });
 
+        // Filtre par mois actif.
+        if (_filterMonth != null) {
+          entries = entries.where((rd) =>
+              rd.sowingMonths.contains(_filterMonth) ||
+              rd.harvestMonths.contains(_filterMonth)).toList();
+        }
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Calendrier ${region.label}'),
+            actions: [
+              if (_filterMonth != null)
+                IconButton(
+                  icon: const Icon(Icons.filter_alt_off),
+                  tooltip: 'Retirer le filtre',
+                  onPressed: () => setState(() => _filterMonth = null),
+                ),
+            ],
           ),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-              child: DataTable(
-                headingRowHeight: 40,
-                dataRowMinHeight: 36,
-                dataRowMaxHeight: 36,
-                columnSpacing: 0,
-                horizontalMargin: 8,
-                columns: [
-                  const DataColumn(
-                    label: SizedBox(
-                      width: 120,
-                      child: Text('Légume',
-                          style: TextStyle(fontWeight: FontWeight.w800)),
-                    ),
-                  ),
-                  for (int m = 0; m < 12; m++)
-                    DataColumn(
-                      label: Container(
-                        width: 32,
-                        alignment: Alignment.center,
+          body: Column(
+            children: [
+              // Légende.
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                color: KultivaColors.lightGreen.withOpacity(0.1),
+                child: Row(
+                  children: [
+                    _LegendItem(color: KultivaColors.primaryGreen, label: 'Semis'),
+                    const SizedBox(width: 16),
+                    _LegendItem(color: KultivaColors.terracotta, label: 'Récolte'),
+                    const Spacer(),
+                    if (_filterMonth != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: KultivaColors.primaryGreen.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         child: Text(
-                          _shortMonths[m],
+                          '${_fullMonths[_filterMonth! - 1]} (${entries.length})',
                           style: TextStyle(
+                            fontSize: 12,
                             fontWeight: FontWeight.w800,
-                            color: m + 1 == now
-                                ? KultivaColors.primaryGreen
-                                : null,
+                            color: KultivaColors.primaryGreen,
                           ),
+                        ),
+                      )
+                    else
+                      Text(
+                        '💡 Tap mois = filtre · Tap case = fiche',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: KultivaColors.textSecondary,
                         ),
                       ),
-                    ),
-                ],
-                rows: entries.map((rd) {
-                  final veg = vegetablesBase
-                      .where((v) => v.id == rd.vegetableId)
-                      .firstOrNull;
-                  if (veg == null) return const DataRow(cells: []);
-                  return DataRow(
-                    cells: [
-                      DataCell(SizedBox(
-                        width: 120,
-                        child: Text(
-                          '${veg.emoji} ${veg.name}',
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      )),
-                      for (int m = 1; m <= 12; m++)
-                        DataCell(
-                          Center(
-                            child: _MonthCell(
-                              isSow: rd.sowingMonths.contains(m),
-                              isHarvest: rd.harvestMonths.contains(m),
-                              isCurrentMonth: m == now,
-                            ),
+                  ],
+                ),
+              ),
+              // Grille.
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    child: DataTable(
+                      headingRowHeight: 44,
+                      dataRowMinHeight: 36,
+                      dataRowMaxHeight: 36,
+                      columnSpacing: 0,
+                      horizontalMargin: 8,
+                      columns: [
+                        const DataColumn(
+                          label: SizedBox(
+                            width: 120,
+                            child: Text('Légume',
+                                style: TextStyle(fontWeight: FontWeight.w800)),
                           ),
                         ),
-                    ],
-                  );
-                }).toList(),
+                        for (int m = 0; m < 12; m++)
+                          DataColumn(
+                            label: GestureDetector(
+                              onTap: () => setState(() {
+                                _filterMonth = _filterMonth == m + 1 ? null : m + 1;
+                              }),
+                              child: Container(
+                                width: 32,
+                                padding: const EdgeInsets.symmetric(vertical: 4),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: _filterMonth == m + 1
+                                      ? KultivaColors.primaryGreen.withOpacity(0.2)
+                                      : null,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  _shortMonths[m],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: m + 1 == now
+                                        ? KultivaColors.primaryGreen
+                                        : null,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                      rows: entries.map((rd) {
+                        final veg = vegetablesBase
+                            .where((v) => v.id == rd.vegetableId)
+                            .firstOrNull;
+                        if (veg == null) return const DataRow(cells: []);
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              GestureDetector(
+                                onTap: () => _openVegetable(veg),
+                                child: SizedBox(
+                                  width: 120,
+                                  child: Text(
+                                    '${veg.emoji} ${veg.name}',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: KultivaColors.primaryGreen,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
+                                          KultivaColors.primaryGreen.withOpacity(0.3),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            for (int m = 1; m <= 12; m++)
+                              DataCell(
+                                Center(
+                                  child: GestureDetector(
+                                    onTap: () => _openVegetable(veg),
+                                    child: _MonthCell(
+                                      isSow: rd.sowingMonths.contains(m),
+                                      isHarvest: rd.harvestMonths.contains(m),
+                                      isCurrentMonth: m == now,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         );
       },
+    );
+  }
+}
+
+class _LegendItem extends StatelessWidget {
+  final Color color;
+  final String label;
+  const _LegendItem({required this.color, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 14, height: 14,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(label, style: const TextStyle(
+          fontSize: 12, fontWeight: FontWeight.w700)),
+      ],
     );
   }
 }
@@ -136,7 +267,6 @@ class _MonthCell extends StatelessWidget {
         ),
       );
     }
-    // Both sow and harvest → split cell
     if (isSow && isHarvest) {
       return Container(
         width: 28,
