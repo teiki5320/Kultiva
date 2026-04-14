@@ -211,6 +211,7 @@ class _SowScreenState extends State<SowScreen> {
                         Expanded(
                           child: _KawaiiCard(
                             emoji: '🌱',
+                            imagePath: 'assets/images/onboarding_1.png',
                             label: 'Semer',
                             subtitle: '${toSow.length} légumes',
                             gradientColors: const [
@@ -251,6 +252,7 @@ class _SowScreenState extends State<SowScreen> {
                         Expanded(
                           child: _KawaiiCard(
                             emoji: '📅',
+                            imagePath: 'assets/images/onboarding_2.png',
                             label: 'Calendrier',
                             subtitle: 'Vue annuelle',
                             gradientColors: const [
@@ -341,6 +343,7 @@ class _SowScreenState extends State<SowScreen> {
 
 class _KawaiiCard extends StatelessWidget {
   final String emoji;
+  final String? imagePath;
   final String label;
   final String subtitle;
   final List<Color> gradientColors;
@@ -349,6 +352,7 @@ class _KawaiiCard extends StatelessWidget {
 
   const _KawaiiCard({
     required this.emoji,
+    this.imagePath,
     required this.label,
     required this.subtitle,
     required this.gradientColors,
@@ -415,7 +419,14 @@ class _KawaiiCard extends StatelessWidget {
                       ],
                     ),
                     alignment: Alignment.center,
-                    child: Text(emoji, style: const TextStyle(fontSize: 22)),
+                    child: imagePath != null
+                        ? ClipOval(
+                            child: Image.asset(imagePath!,
+                                width: 44, height: 44, fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) =>
+                                    Text(emoji, style: const TextStyle(fontSize: 22))),
+                          )
+                        : Text(emoji, style: const TextStyle(fontSize: 22)),
                   ),
                   const Spacer(),
                   Text(
