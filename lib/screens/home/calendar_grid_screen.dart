@@ -7,6 +7,8 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/petal_animation.dart';
+import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
 
 /// Vue calendrier annuel — grille 12 mois × tous les légumes de la région.
@@ -20,7 +22,8 @@ class CalendarGridScreen extends StatefulWidget {
 
 class _CalendarGridScreenState extends State<CalendarGridScreen> {
   static const List<String> _shortMonths = [
-    'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D',
+    'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
+    'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc',
   ];
   static const List<String> _fullMonths = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -66,19 +69,53 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
         }
 
         return Scaffold(
-          appBar: AppBar(
-            title: Text('Calendrier ${region.label}'),
-            actions: [
-              if (_filterMonth != null)
-                IconButton(
-                  icon: const Icon(Icons.filter_alt_off),
-                  tooltip: 'Retirer le filtre',
-                  onPressed: () => setState(() => _filterMonth = null),
-                ),
-            ],
-          ),
           body: Column(
             children: [
+              // Header saisonnier avec flèche retour + bouton filtre off.
+              Stack(
+                children: [
+                  SeasonHeader(
+                    season: Season.fromMonth(_filterMonth ?? now),
+                    month: _filterMonth ?? now,
+                    height: 150,
+                  ),
+                  Positioned(
+                    top: 8, left: 8,
+                    child: SafeArea(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.25),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.arrow_back,
+                              color: Colors.white, size: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (_filterMonth != null)
+                    Positioned(
+                      top: 8, right: 8,
+                      child: SafeArea(
+                        child: GestureDetector(
+                          onTap: () => setState(() => _filterMonth = null),
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.25),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.filter_alt_off,
+                                color: Colors.white, size: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
               // Légende.
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -142,8 +179,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                                 _filterMonth = _filterMonth == m + 1 ? null : m + 1;
                               }),
                               child: Container(
-                                width: 32,
-                                padding: const EdgeInsets.symmetric(vertical: 4),
+                                width: 42,
+                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: _filterMonth == m + 1
@@ -154,6 +191,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                                 child: Text(
                                   _shortMonths[m],
                                   style: TextStyle(
+                                    fontSize: 11,
                                     fontWeight: FontWeight.w800,
                                     color: m + 1 == now
                                         ? KultivaColors.primaryGreen
