@@ -7,6 +7,8 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/petal_animation.dart';
+import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -78,10 +80,37 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
         }
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Calendrier mensuel')),
           body: ListView(
             padding: EdgeInsets.zero,
             children: [
+              // Header saisonnier avec flèche retour.
+              Stack(
+                children: [
+                  SeasonHeader(
+                    season: Season.fromMonth(_selectedMonth),
+                    month: _selectedMonth,
+                    height: 170,
+                  ),
+                  Positioned(
+                    top: 8, left: 8,
+                    child: SafeArea(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.25),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.arrow_back,
+                              color: Colors.white, size: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
               // Month selector.
               SizedBox(
                 height: 72,
