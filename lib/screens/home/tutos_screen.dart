@@ -34,7 +34,7 @@ class _TutoItem {
 const _categories = <_TutoCategory>[
   _TutoCategory(
     emoji: '🌱',
-    imagePath: 'assets/images/tuto_semis.png',
+    imagePath: 'assets/images/tuto_semis.PNG',
     label: 'Semis',
     color: Color(0xFF4A9B5A),
     items: [
@@ -46,7 +46,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '💧',
-    imagePath: 'assets/images/tuto_arrosage.png',
+    imagePath: 'assets/images/tuto_arrosage.PNG',
     label: 'Arrosage',
     color: Color(0xFF4A90D9),
     items: [
@@ -58,7 +58,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🧺',
-    imagePath: 'assets/images/tuto_recolte.png',
+    imagePath: 'assets/images/tuto_recolte.PNG',
     label: 'Récolte',
     color: Color(0xFFE8A87C),
     items: [
@@ -70,7 +70,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🌍',
-    imagePath: 'assets/images/tuto_sol.png',
+    imagePath: 'assets/images/tuto_sol.PNG',
     label: 'Sol & Compost',
     color: Color(0xFF8B6914),
     items: [
@@ -82,7 +82,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🐛',
-    imagePath: 'assets/images/tuto_maladies.png',
+    imagePath: 'assets/images/tuto_maladies.PNG',
     label: 'Maladies & Nuisibles',
     color: Color(0xFFCC4444),
     items: [
@@ -94,7 +94,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🏡',
-    imagePath: 'assets/images/tuto_amenagement.png',
+    imagePath: 'assets/images/tuto_amenagement.PNG',
     label: 'Aménagement',
     color: Color(0xFF7BAFD4),
     items: [
@@ -106,7 +106,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '💡',
-    imagePath: 'assets/images/tuto_astuces.png',
+    imagePath: 'assets/images/tuto_astuces.PNG',
     label: 'Astuces',
     color: Color(0xFFFFB74D),
     items: [
