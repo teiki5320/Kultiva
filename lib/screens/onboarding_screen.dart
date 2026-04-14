@@ -18,17 +18,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   static const List<_OnboardingContent> _pages = <_OnboardingContent>[
     _OnboardingContent(
-      emoji: '🌱',
+      imagePath: 'assets/images/onboarding_1.png',
       title: 'Bienvenue sur Kultiva',
       subtitle: "Ton calendrier de semis, tout en douceur.",
     ),
     _OnboardingContent(
-      emoji: '📅',
+      imagePath: 'assets/images/onboarding_2.png',
       title: 'Le bon légume, au bon mois',
       subtitle: "Kultiva te dit quoi semer selon ta région.",
     ),
     _OnboardingContent(
-      emoji: '🏡',
+      imagePath: 'assets/images/onboarding_3.png',
       title: 'Ton jardin, tes favoris',
       subtitle: "Garde tes légumes préférés à portée de main.",
     ),
@@ -125,11 +125,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _OnboardingContent {
-  final String emoji;
+  final String imagePath;
   final String title;
   final String subtitle;
   const _OnboardingContent({
-    required this.emoji,
+    required this.imagePath,
     required this.title,
     required this.subtitle,
   });
@@ -146,16 +146,23 @@ class _OnboardingPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(
-              color: KultivaColors.lightGreen.withOpacity(0.35),
-              borderRadius: BorderRadius.circular(52),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(52),
+            child: Image.asset(
+              content.imagePath,
+              width: 240,
+              height: 240,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(
+                width: 240, height: 240,
+                decoration: BoxDecoration(
+                  color: KultivaColors.lightGreen.withOpacity(0.35),
+                  borderRadius: BorderRadius.circular(52),
+                ),
+                alignment: Alignment.center,
+                child: const Text('🌱', style: TextStyle(fontSize: 110)),
+              ),
             ),
-            alignment: Alignment.center,
-            child:
-                Text(content.emoji, style: const TextStyle(fontSize: 110)),
           ),
           const SizedBox(height: 36),
           Text(
@@ -194,7 +201,16 @@ class _RegionSelectorPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text('🌍', style: TextStyle(fontSize: 100)),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(52),
+                child: Image.asset(
+                  'assets/images/onboarding_4.png',
+                  width: 200, height: 200,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) =>
+                      const Text('🌍', style: TextStyle(fontSize: 100)),
+                ),
+              ),
               const SizedBox(height: 16),
               Text(
                 'Choisis ta région',
