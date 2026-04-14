@@ -1069,7 +1069,7 @@ class _GardenCell extends StatelessWidget {
                       )
                     else
                       const Center(
-                        child: Text('🍭', style: TextStyle(fontSize: 20)),
+                        child: Text('🌱', style: TextStyle(fontSize: 20)),
                       ),
                     // Indicateur eau.
                     if (veg != null)
