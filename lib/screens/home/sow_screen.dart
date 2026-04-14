@@ -221,8 +221,8 @@ class _SowScreenState extends State<SowScreen> {
                             bubbleColor: KultivaColors.primaryGreen,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                  builder: (_) =>
-                                      const MonthlyCalendarScreen()),
+                                  builder: (_) => const MonthlyCalendarScreen(
+                                      mode: CalendarMode.sow)),
                             ),
                           ),
                         ),
@@ -240,8 +240,8 @@ class _SowScreenState extends State<SowScreen> {
                             bubbleColor: KultivaColors.terracotta,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                  builder: (_) =>
-                                      const MonthlyCalendarScreen()),
+                                  builder: (_) => const MonthlyCalendarScreen(
+                                      mode: CalendarMode.harvest)),
                             ),
                           ),
                         ),
