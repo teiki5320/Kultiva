@@ -211,7 +211,7 @@ class _SowScreenState extends State<SowScreen> {
                         Expanded(
                           child: _KawaiiCard(
                             emoji: '🌱',
-                            imagePath: 'assets/images/onboarding_1.png',
+                            imagePath: 'assets/images/card_semer.png',
                             label: 'Semer',
                             subtitle: '${toSow.length} légumes',
                             gradientColors: const [
@@ -230,6 +230,7 @@ class _SowScreenState extends State<SowScreen> {
                         Expanded(
                           child: _KawaiiCard(
                             emoji: '🧺',
+                            imagePath: 'assets/images/card_recolter.png',
                             label: 'Récolter',
                             subtitle: '${toHarvest.length} légumes',
                             gradientColors: const [
@@ -252,7 +253,7 @@ class _SowScreenState extends State<SowScreen> {
                         Expanded(
                           child: _KawaiiCard(
                             emoji: '📅',
-                            imagePath: 'assets/images/onboarding_2.png',
+                            imagePath: 'assets/images/card_calendrier.png',
                             label: 'Calendrier',
                             subtitle: 'Vue annuelle',
                             gradientColors: const [
@@ -271,6 +272,7 @@ class _SowScreenState extends State<SowScreen> {
                         Expanded(
                           child: _KawaiiCard(
                             emoji: '🌻',
+                            imagePath: 'assets/images/card_dujour.png',
                             label: 'Du jour',
                             subtitle: vegOfDay.name,
                             gradientColors: const [
