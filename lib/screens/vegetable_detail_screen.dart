@@ -13,6 +13,7 @@ import '../models/vegetable.dart';
 import '../services/pdf_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/lexicon_text.dart';
 
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
 /// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
@@ -184,6 +185,9 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             _Row('Sol', vegetable.soil),
           ],
         ),
+        if (vegetable.harvestTimeBySeason != null &&
+            vegetable.harvestTimeBySeason!.isNotEmpty)
+          _HarvestTimeSection(times: vegetable.harvestTimeBySeason!),
         _InfoSection(
           title: '📦  Rendement',
           rows: <_Row>[
@@ -402,7 +406,7 @@ class _HeaderCard extends StatelessWidget {
             ),
             if (vegetable.description != null) ...<Widget>[
               const SizedBox(height: 16),
-              Text(
+              LexiconText(
                 vegetable.description!,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
@@ -554,6 +558,95 @@ class _InfoSection extends StatelessWidget {
   }
 }
 
+class _HarvestTimeSection extends StatelessWidget {
+  final Map<String, String> times;
+  const _HarvestTimeSection({required this.times});
+
+  static const _order = <String, ({String emoji, Color color})>{
+    'spring': (emoji: '🌸', color: Color(0xFFE8A87C)),
+    'summer': (emoji: '☀️', color: Color(0xFFFFB74D)),
+    'autumn': (emoji: '🍂', color: Color(0xFFD5A679)),
+    'winter': (emoji: '❄️', color: Color(0xFF7BAFD4)),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final entries = _order.entries
+        .where((e) => times.containsKey(e.key))
+        .toList();
+    if (entries.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '⏱  Temps avant récolte',
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              ),
+              const SizedBox(height: 10),
+              for (final e in entries)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: e.value.color.withOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(e.value.emoji,
+                            style: const TextStyle(fontSize: 16)),
+                      ),
+                      const SizedBox(width: 12),
+                      SizedBox(
+                        width: 90,
+                        child: Text(
+                          _seasonLabel(e.key),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          times[e.key]!,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _seasonLabel(String key) {
+    switch (key) {
+      case 'spring':
+        return 'Printemps';
+      case 'summer':
+        return 'Été';
+      case 'autumn':
+        return 'Automne';
+      case 'winter':
+        return 'Hiver';
+    }
+    return key;
+  }
+}
+
 class _DiseaseSection extends StatelessWidget {
   final List<Disease> diseases;
   const _DiseaseSection({required this.diseases});
@@ -579,7 +672,7 @@ class _DiseaseSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      LexiconText(
                         d.name,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -587,7 +680,7 @@ class _DiseaseSection extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      Text(
+                      LexiconText(
                         d.remedy,
                         style: const TextStyle(fontSize: 13, height: 1.3),
                       ),

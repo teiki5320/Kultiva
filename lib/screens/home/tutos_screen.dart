@@ -33,6 +33,24 @@ class _TutoItem {
 
 const _categories = <_TutoCategory>[
   _TutoCategory(
+    emoji: '💡',
+    imagePath: 'assets/images/tuto_astuces.PNG',
+    label: 'Astuces',
+    color: Color(0xFFFFB74D),
+    items: [
+      // 4 premiers tutos = comment utiliser l'app Kultiva.
+      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', url: ''),
+      _TutoItem(emoji: '🌿', label: 'Gérer mon potager', url: ''),
+      _TutoItem(emoji: '💧', label: 'Suivre l\'arrosage', url: ''),
+      _TutoItem(emoji: '🛒', label: 'Commander des graines', url: ''),
+      // Astuces jardinage.
+      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
+      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
+      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', url: ''),
+      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', url: ''),
+    ],
+  ),
+  _TutoCategory(
     emoji: '🌱',
     imagePath: 'assets/images/tuto_semis.PNG',
     label: 'Semis',
@@ -102,18 +120,6 @@ const _categories = <_TutoCategory>[
       _TutoItem(emoji: '🏡', label: 'Potager en carrés', url: ''),
       _TutoItem(emoji: '🌻', label: 'Associations de plantes', url: ''),
       _TutoItem(emoji: '🪴', label: 'Potager en balcon', url: ''),
-    ],
-  ),
-  _TutoCategory(
-    emoji: '💡',
-    imagePath: 'assets/images/tuto_astuces.PNG',
-    label: 'Astuces',
-    color: Color(0xFFFFB74D),
-    items: [
-      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
-      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
-      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', url: ''),
-      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', url: ''),
     ],
   ),
 ];

@@ -20,17 +20,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_1.png',
       title: 'Bienvenue sur Kultiva',
-      subtitle: "Ton calendrier de semis, tout en douceur.",
+      subtitle:
+          "Ton copain potager : calendrier de semis, suivi d'arrosage, météo et conseils, tout au même endroit.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_2.png',
-      title: 'Le bon légume, au bon mois',
-      subtitle: "Kultiva te dit quoi semer selon ta région.",
+      title: 'Ton tableau de bord',
+      subtitle:
+          "Chaque jour : ton légume du jour, la météo, les cartes Semer / Récolter / Calendrier. Tout se met à jour selon la saison.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_3.png',
-      title: 'Ton jardin, tes favoris',
-      subtitle: "Garde tes légumes préférés à portée de main.",
+      title: 'Mon Potager — à toi de jouer',
+      subtitle:
+          "Dessine ta parcelle, ajoute tes plants, suis l'arrosage case par case. Kultiva t'alerte quand il faut arroser.",
+    ),
+    _OnboardingContent(
+      imagePath: 'assets/images/onboarding_5.png',
+      title: 'Acheter tes graines en un clic',
+      subtitle:
+          "Depuis chaque fiche légume, un bouton t'emmène vers des graines bio et du matériel sur Amazon.",
     ),
   ];
 

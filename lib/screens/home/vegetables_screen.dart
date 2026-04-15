@@ -27,6 +27,7 @@ class VegetablesScreen extends StatefulWidget {
 class _VegetablesScreenState extends State<VegetablesScreen> {
   final TextEditingController _searchCtrl = TextEditingController();
   VegetableCategory? _selectedCategory;
+  AccessorySubCategory? _selectedAccSub;
   String _query = '';
   _SortMode _sortMode = _SortMode.alpha;
   bool _favOnly = false;
@@ -52,6 +53,12 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return false;
       }
       if (_selectedCategory != null && v.category != _selectedCategory) {
+        return false;
+      }
+      // Filtre sous-catégorie accessoires (si accessoires sélectionnés).
+      if (_selectedCategory == VegetableCategory.accessories &&
+          _selectedAccSub != null &&
+          v.accessorySub != _selectedAccSub) {
         return false;
       }
       if (_query.isNotEmpty) {
@@ -235,59 +242,107 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                       ),
                     ),
                   ),
-                  // Chips catégories + favoris.
+                  // Chips fixes (Favoris / Toutes / Accessoires).
                   SizedBox(
                     height: 48,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      children: [
-                        _PastelChip(
-                          label: 'Favoris',
-                          emoji: '❤️',
-                          color: KultivaColors.terracotta,
-                          selected: _favOnly,
-                          onTap: () =>
-                              setState(() => _favOnly = !_favOnly),
-                        ),
-                        _PastelChip(
-                          label: 'Toutes',
-                          emoji: '✨',
-                          color: KultivaColors.primaryGreen,
-                          selected:
-                              _selectedCategory == null && !_favOnly,
-                          onTap: () => setState(() {
-                            _selectedCategory = null;
-                            _favOnly = false;
-                          }),
-                        ),
-                        // Accessoires en 3e position, puis les autres catégories.
-                        _PastelChip(
-                          label: VegetableCategory.accessories.label,
-                          emoji: VegetableCategory.accessories.emoji,
-                          color: _categoryColor(VegetableCategory.accessories),
-                          selected: _selectedCategory == VegetableCategory.accessories,
-                          onTap: () => setState(
-                            () => _selectedCategory =
-                                _selectedCategory == VegetableCategory.accessories
-                                    ? null
-                                    : VegetableCategory.accessories,
-                          ),
-                        ),
-                        for (final cat in VegetableCategory.values.where(
-                            (c) => c != VegetableCategory.accessories))
-                          _PastelChip(
-                            label: cat.label,
-                            emoji: cat.emoji,
-                            color: _categoryColor(cat),
-                            selected: _selectedCategory == cat,
-                            onTap: () => setState(
-                              () => _selectedCategory =
-                                  _selectedCategory == cat ? null : cat,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _PastelChip(
+                              label: 'Favoris',
+                              emoji: '❤️',
+                              color: KultivaColors.terracotta,
+                              selected: _favOnly,
+                              onTap: () => setState(() {
+                                _favOnly = !_favOnly;
+                                if (_favOnly) {
+                                  _selectedCategory = null;
+                                  _selectedAccSub = null;
+                                }
+                              }),
                             ),
                           ),
-                      ],
+                          Expanded(
+                            child: _PastelChip(
+                              label: 'Toutes',
+                              emoji: '✨',
+                              color: KultivaColors.primaryGreen,
+                              selected:
+                                  _selectedCategory == null && !_favOnly,
+                              onTap: () => setState(() {
+                                _selectedCategory = null;
+                                _selectedAccSub = null;
+                                _favOnly = false;
+                              }),
+                            ),
+                          ),
+                          Expanded(
+                            child: _PastelChip(
+                              label: VegetableCategory.accessories.label,
+                              emoji: VegetableCategory.accessories.emoji,
+                              color: _categoryColor(VegetableCategory.accessories),
+                              selected: _selectedCategory ==
+                                  VegetableCategory.accessories,
+                              onTap: () => setState(() {
+                                _selectedCategory = _selectedCategory ==
+                                        VegetableCategory.accessories
+                                    ? null
+                                    : VegetableCategory.accessories;
+                                _selectedAccSub = null;
+                                _favOnly = false;
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  ),
+                  // Ligne scrollable contextuelle :
+                  //  - familles si Favoris ou Toutes
+                  //  - sous-catégories accessoires si Accessoires
+                  SizedBox(
+                    height: 44,
+                    child: _selectedCategory == VegetableCategory.accessories
+                        ? ListView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            children: [
+                              for (final sub in AccessorySubCategory.values)
+                                _PastelChip(
+                                  label: sub.label,
+                                  emoji: sub.emoji,
+                                  color: _categoryColor(
+                                      VegetableCategory.accessories),
+                                  selected: _selectedAccSub == sub,
+                                  onTap: () => setState(
+                                    () => _selectedAccSub =
+                                        _selectedAccSub == sub ? null : sub,
+                                  ),
+                                ),
+                            ],
+                          )
+                        : ListView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            children: [
+                              for (final cat in VegetableCategory.values.where(
+                                  (c) => c != VegetableCategory.accessories))
+                                _PastelChip(
+                                  label: cat.label,
+                                  emoji: cat.emoji,
+                                  color: _categoryColor(cat),
+                                  selected: _selectedCategory == cat,
+                                  onTap: () => setState(() {
+                                    _selectedCategory =
+                                        _selectedCategory == cat ? null : cat;
+                                    _selectedAccSub = null;
+                                    _favOnly = false;
+                                  }),
+                                ),
+                            ],
+                          ),
                   ),
                   // Liste ou grille.
                   Expanded(
@@ -370,6 +425,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         final harvest = _canHarvest(v, regionData);
         final isFav = favs.contains(v.id);
         final cc = _categoryColor(v.category);
+        // Quand la famille est filtrée, fond plus saturé.
+        final familyFiltered = _selectedCategory == v.category;
         return GestureDetector(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -385,12 +442,22 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  cc.withOpacity(0.12),
-                  cc.withOpacity(0.25),
-                ],
+                colors: familyFiltered
+                    ? [
+                        cc.withOpacity(0.30),
+                        cc.withOpacity(0.55),
+                      ]
+                    : [
+                        cc.withOpacity(0.08),
+                        cc.withOpacity(0.18),
+                      ],
               ),
               borderRadius: BorderRadius.circular(20),
+              // Bordure colorée de la famille (plus épaisse quand filtré).
+              border: Border.all(
+                color: cc.withOpacity(familyFiltered ? 0.9 : 0.55),
+                width: familyFiltered ? 2.5 : 2,
+              ),
               boxShadow: [
                 BoxShadow(
                   color: cc.withOpacity(0.2),
