@@ -51,22 +51,21 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Container(
-                  width: 140,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    color: KultivaColors.lightGreen.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(36),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: KultivaColors.primaryGreen.withOpacity(0.15),
-                        blurRadius: 24,
-                        offset: const Offset(0, 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(36),
+                  child: Image.asset(
+                    'assets/images/onboarding_1.png',
+                    width: 160, height: 160, fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      width: 140, height: 140,
+                      decoration: BoxDecoration(
+                        color: KultivaColors.lightGreen.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(36),
                       ),
-                    ],
-                  ),
-                  child: const Center(
-                    child: Text('🌱', style: TextStyle(fontSize: 80)),
+                      child: const Center(
+                        child: Text('🌱', style: TextStyle(fontSize: 80)),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 28),

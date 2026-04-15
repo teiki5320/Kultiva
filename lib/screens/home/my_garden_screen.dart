@@ -306,15 +306,21 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                color: KultivaColors.lightGreen.withOpacity(0.35),
-                borderRadius: BorderRadius.circular(36),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(36),
+              child: Image.asset(
+                'assets/images/onboarding_1.png',
+                width: 160, height: 160, fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  width: 140, height: 140,
+                  decoration: BoxDecoration(
+                    color: KultivaColors.lightGreen.withOpacity(0.35),
+                    borderRadius: BorderRadius.circular(36),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text('🌱', style: TextStyle(fontSize: 70)),
+                ),
               ),
-              alignment: Alignment.center,
-              child: const Text('🌱', style: TextStyle(fontSize: 70)),
             ),
             const SizedBox(height: 24),
             Text(
@@ -1069,7 +1075,7 @@ class _GardenCell extends StatelessWidget {
   String _waterEmoji() {
     if (dryDays >= threshold + 2) return '🚨';
     if (dryDays >= threshold) return '💦';
-    return '💧';
+    return ''; // Bien arrosé : pas d'indicateur.
   }
 
   @override

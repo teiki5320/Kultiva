@@ -154,6 +154,30 @@ class SettingsScreen extends StatelessWidget {
                           const Divider(height: 0, indent: 16),
                           ListTile(
                             leading: const Icon(
+                              Icons.replay,
+                              color: KultivaColors.primaryGreen,
+                            ),
+                            title: const Text(
+                              'Revoir la présentation',
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            subtitle: const Text(
+                                'Réafficher les écrans de bienvenue'),
+                            onTap: () async {
+                              await PrefsService.instance.setOnboardingDone(false);
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Redémarre l\'app pour revoir l\'onboarding'),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                          const Divider(height: 0, indent: 16),
+                          ListTile(
+                            leading: const Icon(
                               Icons.logout,
                               color: KultivaColors.terracotta,
                             ),
