@@ -340,18 +340,37 @@ class _SowScreenState extends State<SowScreen> {
                   controller: _slideController,
                   itemCount: slides.length,
                   onPageChanged: (i) => setState(() => _currentSlide = i),
-                  itemBuilder: (_, i) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: GestureDetector(
-                      onTap: i == 1
-                          ? () => Navigator.of(context).push(
-                                MaterialPageRoute<void>(
-                                    builder: (_) => const WeatherScreen()),
-                              )
-                          : null,
-                      child: slides[i],
-                    ),
-                  ),
+                  itemBuilder: (_, i) {
+                    VoidCallback? onTap;
+                    if (i == 0) {
+                      // Légume du jour → fiche détail.
+                      onTap = () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  VegetableDetailScreen(vegetable: vegOfDay),
+                            ),
+                          );
+                    } else if (i == 1) {
+                      // Météo → page météo.
+                      onTap = () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                                builder: (_) => const WeatherScreen()),
+                          );
+                    } else if (i == 3) {
+                      // Saison → calendrier mensuel.
+                      onTap = () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                                builder: (_) => const MonthlyCalendarScreen()),
+                          );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: GestureDetector(
+                        onTap: onTap,
+                        child: slides[i],
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 12),

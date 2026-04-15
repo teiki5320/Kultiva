@@ -46,6 +46,11 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
     final filtered = vegetablesBase.where((v) {
       if (_favOnly && !favs.contains(v.id)) return false;
+      // Exclure les accessoires sauf si explicitement sélectionnés.
+      if (_selectedCategory == null && !_favOnly &&
+          v.category == VegetableCategory.accessories) {
+        return false;
+      }
       if (_selectedCategory != null && v.category != _selectedCategory) {
         return false;
       }

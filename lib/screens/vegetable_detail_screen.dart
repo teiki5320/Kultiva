@@ -201,32 +201,21 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             ids: incompatibleMap[vegetable.id]!,
             color: KultivaColors.terracotta,
           ),
-        const SizedBox(height: 16),
-        if (vegetable.amazonUrl != null || vegetable.youtubeUrl != null)
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              if (vegetable.youtubeUrl != null)
-                ElevatedButton.icon(
-                  onPressed: () => _openUrl(context, vegetable.youtubeUrl!),
-                  icon: const Text('🎬', style: TextStyle(fontSize: 18)),
-                  label: const Text('Voir la vidéo tuto'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: KultivaColors.primaryGreen,
-                  ),
-                ),
-              if (vegetable.amazonUrl != null)
-                ElevatedButton.icon(
-                  onPressed: () => _openUrl(context, vegetable.amazonUrl!),
-                  icon: const Text('🛒', style: TextStyle(fontSize: 18)),
-                  label: const Text('Acheter des graines'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: KultivaColors.terracotta,
-                  ),
-                ),
-            ],
+        if (vegetable.youtubeUrl != null) ...[
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _openUrl(context, vegetable.youtubeUrl!),
+              icon: const Text('🎬', style: TextStyle(fontSize: 18)),
+              label: const Text('Voir la vidéo tuto'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: KultivaColors.primaryGreen,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+            ),
           ),
+        ],
         if (diseaseMap.containsKey(vegetable.id))
           _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
         if (rotationMap.containsKey(vegetable.id))
@@ -243,6 +232,27 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
+        // Bouton Acheter en bas, large et bien visible.
+        if (vegetable.amazonUrl != null) ...[
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _openUrl(context, vegetable.amazonUrl!),
+              icon: const Text('🛒', style: TextStyle(fontSize: 22)),
+              label: const Text('Acheter des graines',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: KultivaColors.terracotta,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+          ),
+        ],
         const SizedBox(height: 24),
       ],
     );
@@ -300,7 +310,7 @@ class _HeaderCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (vegetable.amazonUrl != null) ...[
+                if (false) ...[
                   const SizedBox(width: 12),
                   GestureDetector(
                     onTap: () => launchUrl(
