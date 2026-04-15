@@ -272,6 +272,7 @@ class _HeaderCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   width: 72,
@@ -286,13 +287,14 @@ class _HeaderCard extends StatelessWidget {
                     style: const TextStyle(fontSize: 42),
                   ),
                 ),
-                const SizedBox(width: 16),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         vegetable.name,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall
@@ -300,6 +302,7 @@ class _HeaderCard extends StatelessWidget {
                       ),
                       Text(
                         vegetable.category.label,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -310,6 +313,40 @@ class _HeaderCard extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (vegetable.amazonUrl != null)
+                  GestureDetector(
+                    onTap: () => launchUrl(
+                      Uri.parse(vegetable.amazonUrl!),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                    child: Container(
+                      width: 72,
+                      height: 72,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            KultivaColors.terracotta.withOpacity(0.25),
+                            KultivaColors.summerA.withOpacity(0.35),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('🛒', style: TextStyle(fontSize: 28)),
+                          Text('Acheter',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              color: KultivaColors.terracotta,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 if (false) ...[
                   const SizedBox(width: 12),
                   GestureDetector(

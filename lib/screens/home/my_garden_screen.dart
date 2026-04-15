@@ -1075,7 +1075,7 @@ class _GardenCell extends StatelessWidget {
   String _waterEmoji() {
     if (dryDays >= threshold + 2) return '🚨';
     if (dryDays >= threshold) return '💦';
-    return '💧';
+    return ''; // Bien arrosé : pas d'indicateur.
   }
 
   @override

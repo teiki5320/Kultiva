@@ -177,16 +177,27 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                   icon: isHarvest ? '🧺' : '✅',
                   title: '${isHarvest ? "À récolter" : "À semer"} en ${_monthLabels[_selectedMonth - 1]}',
                 ),
-                for (final v in activeVegs)
-                  VegetableCard(
-                    vegetable: v,
-                    canSowNow: true,
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => VegetableDetailScreen(vegetable: v),
-                      ),
-                    ),
+                ValueListenableBuilder<Set<String>>(
+                  valueListenable: PrefsService.instance.favorites,
+                  builder: (_, favs, __) => Column(
+                    children: [
+                      for (final v in activeVegs)
+                        VegetableCard(
+                          vegetable: v,
+                          canSowNow: true,
+                          isFavorite: favs.contains(v.id),
+                          onFavoriteToggle: () =>
+                              PrefsService.instance.toggleFavorite(v.id),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  VegetableDetailScreen(vegetable: v),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
+                ),
               ] else
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -211,15 +222,26 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               if (later.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 const _SectionHeader(icon: '⏳', title: 'Pas encore la saison'),
-                for (final v in later)
-                  VegetableCard(
-                    vegetable: v,
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => VegetableDetailScreen(vegetable: v),
-                      ),
-                    ),
+                ValueListenableBuilder<Set<String>>(
+                  valueListenable: PrefsService.instance.favorites,
+                  builder: (_, favs, __) => Column(
+                    children: [
+                      for (final v in later)
+                        VegetableCard(
+                          vegetable: v,
+                          isFavorite: favs.contains(v.id),
+                          onFavoriteToggle: () =>
+                              PrefsService.instance.toggleFavorite(v.id),
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) =>
+                                  VegetableDetailScreen(vegetable: v),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
+                ),
               ],
               const SizedBox(height: 24),
             ],
