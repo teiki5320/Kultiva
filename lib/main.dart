@@ -49,7 +49,20 @@ class _KultivaBootstrap extends StatefulWidget {
 enum _BootStep { splash, onboarding, auth, main }
 
 class _KultivaBootstrapState extends State<_KultivaBootstrap> {
-  _BootStep _step = _BootStep.splash;
+  late _BootStep _step;
+
+  @override
+  void initState() {
+    super.initState();
+    // Skip splash: go directly to onboarding/auth/main.
+    if (!PrefsService.instance.onboardingDone) {
+      _step = _BootStep.onboarding;
+    } else if (!AuthService.instance.isSignedIn) {
+      _step = _BootStep.auth;
+    } else {
+      _step = _BootStep.main;
+    }
+  }
 
   void _afterSplash() {
     setState(() {
