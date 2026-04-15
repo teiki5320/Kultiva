@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/vegetable.dart';
+import '../services/audio_service.dart';
 import '../theme/app_theme.dart';
 
 /// Card d'un légume — emoji dans cercle pastel, nom, note, badges saison,
@@ -149,7 +150,10 @@ class VegetableCard extends StatelessWidget {
               ),
               if (onFavoriteToggle != null)
                 GestureDetector(
-                  onTap: onFavoriteToggle,
+                  onTap: () {
+                    AudioService.instance.play(Sfx.favorite);
+                    onFavoriteToggle!();
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: Icon(

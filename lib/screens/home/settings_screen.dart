@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/region_data.dart';
+import '../../services/audio_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
@@ -108,6 +109,65 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       );
                     },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _SectionTitle(title: '🔊  Sons'),
+                Card(
+                  child: Column(
+                    children: [
+                      ValueListenableBuilder<bool>(
+                        valueListenable: PrefsService.instance.soundEnabled,
+                        builder: (context, v, _) => SwitchListTile(
+                          value: v,
+                          onChanged: PrefsService.instance.setSoundEnabled,
+                          activeColor: KultivaColors.primaryGreen,
+                          title: const Text('Sons des boutons',
+                              style: TextStyle(fontWeight: FontWeight.w700)),
+                          subtitle: const Text('Bips kawaii sur les actions'),
+                        ),
+                      ),
+                      const Divider(height: 0, indent: 16),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: PrefsService.instance.musicEnabled,
+                        builder: (context, v, _) => SwitchListTile(
+                          value: v,
+                          onChanged: (val) async {
+                            await PrefsService.instance.setMusicEnabled(val);
+                            if (val) {
+                              await AudioService.instance.startMusic();
+                            } else {
+                              await AudioService.instance.stopMusic();
+                            }
+                          },
+                          activeColor: KultivaColors.primaryGreen,
+                          title: const Text('Musique de fond',
+                              style: TextStyle(fontWeight: FontWeight.w700)),
+                          subtitle: const Text('Ambiance douce japonisante'),
+                        ),
+                      ),
+                      const Divider(height: 0, indent: 16),
+                      ValueListenableBuilder<double>(
+                        valueListenable: PrefsService.instance.soundVolume,
+                        builder: (context, v, _) => ListTile(
+                          leading: const Icon(Icons.volume_up),
+                          title: const Text('Volume',
+                              style: TextStyle(fontWeight: FontWeight.w700)),
+                          subtitle: Slider(
+                            value: v,
+                            min: 0,
+                            max: 1,
+                            divisions: 10,
+                            label: '${(v * 100).round()}%',
+                            activeColor: KultivaColors.primaryGreen,
+                            onChanged: (val) async {
+                              await PrefsService.instance.setSoundVolume(val);
+                              await AudioService.instance.setMusicVolume(val);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
