@@ -54,7 +54,10 @@ class VegetableCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
+        onTap: onTap == null ? null : () {
+          AudioService.instance.play(Sfx.tap);
+          onTap!();
+        },
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(

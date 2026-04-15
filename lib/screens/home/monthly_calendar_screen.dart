@@ -6,6 +6,7 @@ import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
+import '../../services/audio_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
@@ -125,7 +126,10 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                 child: PageView.builder(
                   controller: _monthController,
                   itemCount: 12,
-                  onPageChanged: (i) => setState(() => _selectedMonth = i + 1),
+                  onPageChanged: (i) {
+                    AudioService.instance.play(Sfx.tap);
+                    setState(() => _selectedMonth = i + 1);
+                  },
                   itemBuilder: (context, index) {
                     final m = index + 1;
                     final active = m == _selectedMonth;

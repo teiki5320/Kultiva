@@ -233,8 +233,9 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
-        // Bouton Acheter en bas, large et bien visible.
-        if (vegetable.amazonUrl != null) ...[
+        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier en haut).
+        if (vegetable.amazonUrl != null &&
+            vegetable.category != VegetableCategory.accessories) ...[
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
