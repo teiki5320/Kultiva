@@ -174,6 +174,131 @@ const Map<String, RotationData> rotationMap = {
     goodAfter: ['haricot', 'carotte', 'tomate'],
     family: 'Chénopodiacées',
   ),
+  'amarante': RotationData(
+    waitYears: 2,
+    goodAfter: ['haricot', 'niebe', 'mais', 'arachide'],
+    family: 'Amarantacées',
+  ),
+  'arachide': RotationData(
+    waitYears: 3,
+    goodAfter: ['mais', 'sorgho', 'manioc', 'igname'],
+    family: 'Fabacées',
+  ),
+  'artichaut': RotationData(
+    waitYears: 5,
+    goodAfter: ['haricot', 'feve', 'pomme_de_terre', 'laitue'],
+    family: 'Astéracées',
+  ),
+  'asperge': RotationData(
+    waitYears: 8,
+    goodAfter: ['haricot', 'feve', 'pomme_de_terre', 'tomate'],
+    family: 'Asparagacées',
+  ),
+  'basilic': RotationData(
+    waitYears: 2,
+    goodAfter: ['haricot', 'laitue', 'carotte', 'epinard'],
+    family: 'Lamiacées',
+  ),
+  'bissap': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'arachide', 'mais', 'sorgho'],
+    family: 'Malvacées',
+  ),
+  'ciboulette': RotationData(
+    waitYears: 3,
+    goodAfter: ['carotte', 'tomate', 'laitue', 'fraise'],
+    family: 'Alliacées',
+  ),
+  'coriandre': RotationData(
+    waitYears: 3,
+    goodAfter: ['haricot', 'tomate', 'laitue', 'chou_pomme'],
+    family: 'Apiacées',
+  ),
+  'endive': RotationData(
+    waitYears: 3,
+    goodAfter: ['haricot', 'pomme_de_terre', 'tomate', 'carotte'],
+    family: 'Astéracées',
+  ),
+  'fraise': RotationData(
+    waitYears: 4,
+    goodAfter: ['haricot', 'feve', 'epinard', 'laitue'],
+    family: 'Rosacées',
+  ),
+  'gingembre': RotationData(
+    waitYears: 3,
+    goodAfter: ['haricot', 'niebe', 'arachide', 'patate_douce'],
+    family: 'Zingibéracées',
+  ),
+  'gombo': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'arachide', 'mais', 'sorgho'],
+    family: 'Malvacées',
+  ),
+  'igname': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'arachide', 'mais', 'haricot'],
+    family: 'Dioscoréacées',
+  ),
+  'mache': RotationData(
+    waitYears: 2,
+    goodAfter: ['tomate', 'haricot', 'pomme_de_terre', 'courgette'],
+    family: 'Valérianacées',
+  ),
+  'mais': RotationData(
+    waitYears: 2,
+    goodAfter: ['haricot', 'niebe', 'arachide', 'feve'],
+    family: 'Poacées',
+  ),
+  'manioc': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'arachide', 'haricot', 'mais'],
+    family: 'Euphorbiacées',
+  ),
+  'menthe': RotationData(
+    waitYears: 3,
+    goodAfter: ['haricot', 'tomate', 'laitue'],
+    family: 'Lamiacées',
+  ),
+  'niebe': RotationData(
+    waitYears: 2,
+    goodAfter: ['mais', 'sorgho', 'manioc', 'igname'],
+    family: 'Fabacées',
+  ),
+  'oseille': RotationData(
+    waitYears: 4,
+    goodAfter: ['haricot', 'laitue', 'carotte', 'tomate'],
+    family: 'Polygonacées',
+  ),
+  'patate_douce': RotationData(
+    waitYears: 3,
+    goodAfter: ['haricot', 'niebe', 'mais', 'arachide'],
+    family: 'Convolvulacées',
+  ),
+  'persil': RotationData(
+    waitYears: 3,
+    goodAfter: ['haricot', 'tomate', 'chou_pomme', 'laitue'],
+    family: 'Apiacées',
+  ),
+  'sesame': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'arachide', 'mais', 'sorgho'],
+    family: 'Pédaliacées',
+  ),
+  'sorgho': RotationData(
+    waitYears: 2,
+    goodAfter: ['niebe', 'arachide', 'haricot', 'feve'],
+    family: 'Poacées',
+  ),
+  'taro': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'haricot', 'mais', 'arachide'],
+    family: 'Aracées',
+  ),
+  'thym': RotationData(
+    waitYears: 4,
+    goodAfter: ['haricot', 'laitue', 'tomate', 'carotte'],
+    family: 'Lamiacées',
+  ),
 };
 
 /// Données de rotation pour un légume.
