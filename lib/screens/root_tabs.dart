@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../services/audio_service.dart';
 import 'home/my_garden_screen.dart';
 import 'home/settings_screen.dart';
 import 'home/sow_screen.dart';
@@ -41,7 +42,10 @@ class _RootTabsState extends State<RootTabs> {
       body: IndexedStack(index: _index, children: pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
+        onTap: (i) {
+          AudioService.instance.play(Sfx.tap);
+          setState(() => _index = i);
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../services/audio_service.dart';
 import '../data/regions/france.dart';
 import '../data/regions/west_africa.dart';
 import '../data/companions.dart';
@@ -232,8 +233,9 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
-        // Bouton Acheter en bas, large et bien visible.
-        if (vegetable.amazonUrl != null) ...[
+        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier en haut).
+        if (vegetable.amazonUrl != null &&
+            vegetable.category != VegetableCategory.accessories) ...[
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,
@@ -315,10 +317,13 @@ class _HeaderCard extends StatelessWidget {
                 ),
                 if (vegetable.amazonUrl != null)
                   GestureDetector(
-                    onTap: () => launchUrl(
-                      Uri.parse(vegetable.amazonUrl!),
-                      mode: LaunchMode.externalApplication,
-                    ),
+                    onTap: () {
+                      AudioService.instance.play(Sfx.cart);
+                      launchUrl(
+                        Uri.parse(vegetable.amazonUrl!),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
                     child: Container(
                       width: 72,
                       height: 72,
@@ -350,10 +355,13 @@ class _HeaderCard extends StatelessWidget {
                 if (false) ...[
                   const SizedBox(width: 12),
                   GestureDetector(
-                    onTap: () => launchUrl(
-                      Uri.parse(vegetable.amazonUrl!),
-                      mode: LaunchMode.externalApplication,
-                    ),
+                    onTap: () {
+                      AudioService.instance.play(Sfx.cart);
+                      launchUrl(
+                        Uri.parse(vegetable.amazonUrl!),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
                     child: Container(
                       width: 72,
                       height: 72,

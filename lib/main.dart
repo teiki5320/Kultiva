@@ -4,6 +4,7 @@ import 'screens/auth/login_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
 import 'screens/splash_screen.dart';
+import 'services/audio_service.dart';
 import 'services/auth_service.dart';
 import 'services/notification_service.dart';
 import 'services/prefs_service.dart';
@@ -14,6 +15,9 @@ Future<void> main() async {
   await PrefsService.instance.load();
   await AuthService.instance.load();
   await NotificationService.init();
+  if (PrefsService.instance.musicEnabled.value) {
+    AudioService.instance.startMusic();
+  }
   runApp(const KultivaApp());
 }
 

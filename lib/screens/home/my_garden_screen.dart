@@ -8,6 +8,7 @@ import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../services/notification_service.dart';
 import '../../services/watering_service.dart';
+import '../../services/audio_service.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
@@ -181,14 +182,16 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     });
     _saveGarden();
     _refreshWeather();
+    if (vegId != null) AudioService.instance.play(Sfx.plant);
   }
 
   /// Arrose une cellule spécifique (pas global).
-  void _waterCell(int row, int col) {
+  void _waterCell(int row, int col, {bool playSound = true}) {
     setState(() {
       _wateredMap['${row}_$col'] = DateTime.now().toIso8601String();
     });
     _saveGarden();
+    if (playSound) AudioService.instance.play(Sfx.drop);
   }
 
   /// Jours secs effectifs pour une cellule.
@@ -831,11 +834,12 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     for (int r = 0; r < _rows; r++) {
       for (int c = 0; c < _cols; c++) {
         if (_grid[r][c] != null) {
-          _waterCell(r, c);
+          _waterCell(r, c, playSound: false);
           count++;
         }
       }
     }
+    AudioService.instance.play(Sfx.rain);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('💧 $count plante${count > 1 ? "s" : ""} arrosée${count > 1 ? "s" : ""} !')),
     );

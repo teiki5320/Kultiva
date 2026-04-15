@@ -16,6 +16,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
+import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 import 'settings_screen.dart';
@@ -429,7 +430,10 @@ class _KawaiiCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        AudioService.instance.play(Sfx.tap);
+        onTap();
+      },
       child: Container(
         height: 130,
         decoration: BoxDecoration(

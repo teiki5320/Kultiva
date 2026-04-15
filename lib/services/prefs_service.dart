@@ -21,6 +21,9 @@ class PrefsService {
   static const _kAuthName = 'kultiva.auth.name';
   static const _kGardenGrid = 'kultiva.gardenGrid';
   static const _kWateringHistory = 'kultiva.wateringHistory';
+  static const _kSoundEnabled = 'kultiva.soundEnabled';
+  static const _kMusicEnabled = 'kultiva.musicEnabled';
+  static const _kSoundVolume = 'kultiva.soundVolume';
 
   SharedPreferences? _prefs;
 
@@ -29,6 +32,9 @@ class PrefsService {
   final ValueNotifier<bool> notifications = ValueNotifier<bool>(true);
   final ValueNotifier<Set<String>> favorites =
       ValueNotifier<Set<String>>(<String>{});
+  final ValueNotifier<bool> soundEnabled = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> musicEnabled = ValueNotifier<bool>(false);
+  final ValueNotifier<double> soundVolume = ValueNotifier<double>(0.7);
 
   bool _loaded = false;
   bool get isLoaded => _loaded;
@@ -40,6 +46,9 @@ class PrefsService {
     notifications.value = _prefs!.getBool(_kNotifications) ?? true;
     favorites.value =
         (_prefs!.getStringList(_kFavorites) ?? const <String>[]).toSet();
+    soundEnabled.value = _prefs!.getBool(_kSoundEnabled) ?? true;
+    musicEnabled.value = _prefs!.getBool(_kMusicEnabled) ?? false;
+    soundVolume.value = _prefs!.getDouble(_kSoundVolume) ?? 0.7;
     _loaded = true;
   }
 
@@ -58,6 +67,21 @@ class PrefsService {
     await _prefs?.setBool(_kNotifications, value);
     // TODO: brancher flutter_local_notifications pour planifier/annuler
     // la notification mensuelle (le 1er de chaque mois).
+  }
+
+  Future<void> setSoundEnabled(bool value) async {
+    soundEnabled.value = value;
+    await _prefs?.setBool(_kSoundEnabled, value);
+  }
+
+  Future<void> setMusicEnabled(bool value) async {
+    musicEnabled.value = value;
+    await _prefs?.setBool(_kMusicEnabled, value);
+  }
+
+  Future<void> setSoundVolume(double value) async {
+    soundVolume.value = value;
+    await _prefs?.setDouble(_kSoundVolume, value);
   }
 
   bool get onboardingDone => _prefs?.getBool(_kOnboardingDone) ?? false;
