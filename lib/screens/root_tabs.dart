@@ -44,9 +44,9 @@ class _RootTabsState extends State<RootTabs> {
         onTap: (i) => setState(() => _index = i),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_florist_outlined),
-            activeIcon: Icon(Icons.local_florist),
-            label: 'Semer',
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.storefront_outlined),

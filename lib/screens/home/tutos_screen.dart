@@ -7,11 +7,13 @@ import '../../widgets/petal_animation.dart';
 /// Catégorie de tuto avec ses vidéos.
 class _TutoCategory {
   final String emoji;
+  final String imagePath;
   final String label;
   final Color color;
   final List<_TutoItem> items;
   const _TutoCategory({
     required this.emoji,
+    required this.imagePath,
     required this.label,
     required this.color,
     required this.items,
@@ -32,6 +34,7 @@ class _TutoItem {
 const _categories = <_TutoCategory>[
   _TutoCategory(
     emoji: '🌱',
+    imagePath: 'assets/images/tuto_semis.PNG',
     label: 'Semis',
     color: Color(0xFF4A9B5A),
     items: [
@@ -43,6 +46,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '💧',
+    imagePath: 'assets/images/tuto_arrosage.PNG',
     label: 'Arrosage',
     color: Color(0xFF4A90D9),
     items: [
@@ -54,6 +58,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🧺',
+    imagePath: 'assets/images/tuto_recolte.PNG',
     label: 'Récolte',
     color: Color(0xFFE8A87C),
     items: [
@@ -65,6 +70,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🌍',
+    imagePath: 'assets/images/tuto_sol.PNG',
     label: 'Sol & Compost',
     color: Color(0xFF8B6914),
     items: [
@@ -76,6 +82,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🐛',
+    imagePath: 'assets/images/tuto_maladies.PNG',
     label: 'Maladies & Nuisibles',
     color: Color(0xFFCC4444),
     items: [
@@ -87,6 +94,7 @@ const _categories = <_TutoCategory>[
   ),
   _TutoCategory(
     emoji: '🏡',
+    imagePath: 'assets/images/tuto_amenagement.PNG',
     label: 'Aménagement',
     color: Color(0xFF7BAFD4),
     items: [
@@ -94,6 +102,18 @@ const _categories = <_TutoCategory>[
       _TutoItem(emoji: '🏡', label: 'Potager en carrés', url: ''),
       _TutoItem(emoji: '🌻', label: 'Associations de plantes', url: ''),
       _TutoItem(emoji: '🪴', label: 'Potager en balcon', url: ''),
+    ],
+  ),
+  _TutoCategory(
+    emoji: '💡',
+    imagePath: 'assets/images/tuto_astuces.PNG',
+    label: 'Astuces',
+    color: Color(0xFFFFB74D),
+    items: [
+      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
+      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
+      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', url: ''),
+      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', url: ''),
     ],
   ),
 ];
@@ -187,12 +207,25 @@ class TutosScreen extends StatelessWidget {
           for (final cat in _categories) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-              child: Text(
-                '${cat.emoji}  ${cat.label}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 16,
-                ),
+              child: Row(
+                children: [
+                  ClipOval(
+                    child: Image.asset(
+                      cat.imagePath,
+                      width: 32, height: 32, fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) =>
+                          Text(cat.emoji, style: const TextStyle(fontSize: 22)),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    cat.label,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(

@@ -70,15 +70,23 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             const SizedBox(height: 16),
             Center(
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: KultivaColors.lightGreen.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(28),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(28),
+                child: Image.asset(
+                  'assets/images/onboarding_1.png',
+                  width: 100, height: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: KultivaColors.lightGreen.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text('🌱', style: TextStyle(fontSize: 60)),
+                  ),
                 ),
-                alignment: Alignment.center,
-                child: const Text('🌱', style: TextStyle(fontSize: 60)),
               ),
             ),
             const SizedBox(height: 24),

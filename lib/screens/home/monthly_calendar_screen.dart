@@ -7,13 +7,18 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/petal_animation.dart';
+import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
-/// Écran calendrier mensuel — sélecteur de mois + liste des légumes
-/// semables, filtré par la région active.
+enum CalendarMode { sow, harvest }
+
+/// Écran calendrier mensuel — sélecteur de mois + liste des légumes,
+/// soit à semer soit à récolter selon le mode.
 class MonthlyCalendarScreen extends StatefulWidget {
-  const MonthlyCalendarScreen({super.key});
+  final CalendarMode mode;
+  const MonthlyCalendarScreen({super.key, this.mode = CalendarMode.sow});
 
   @override
   State<MonthlyCalendarScreen> createState() => _MonthlyCalendarScreenState();
@@ -66,22 +71,54 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
         final data = _dataFor(region);
-        final sowNow = <Vegetable>[];
+        final isHarvest = widget.mode == CalendarMode.harvest;
+        final activeVegs = <Vegetable>[];
         final later = <Vegetable>[];
         for (final veg in vegetablesBase) {
+          if (veg.category == VegetableCategory.accessories) continue;
           final entry = _findRegionData(data, veg.id);
-          if (entry != null && entry.sowingMonths.contains(_selectedMonth)) {
-            sowNow.add(veg);
+          final months = isHarvest
+              ? (entry?.harvestMonths ?? const <int>[])
+              : (entry?.sowingMonths ?? const <int>[]);
+          if (entry != null && months.contains(_selectedMonth)) {
+            activeVegs.add(veg);
           } else {
             later.add(veg);
           }
         }
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Calendrier mensuel')),
           body: ListView(
             padding: EdgeInsets.zero,
             children: [
+              // Header saisonnier avec flèche retour.
+              Stack(
+                children: [
+                  SeasonHeader(
+                    season: Season.fromMonth(_selectedMonth),
+                    month: _selectedMonth,
+                    height: 170,
+                  ),
+                  Positioned(
+                    top: 8, left: 8,
+                    child: SafeArea(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.25),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.arrow_back,
+                              color: Colors.white, size: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
               // Month selector.
               SizedBox(
                 height: 72,
@@ -135,9 +172,12 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              if (sowNow.isNotEmpty) ...[
-                _SectionHeader(icon: '✅', title: 'À semer en ${_monthLabels[_selectedMonth - 1]}'),
-                for (final v in sowNow)
+              if (activeVegs.isNotEmpty) ...[
+                _SectionHeader(
+                  icon: isHarvest ? '🧺' : '✅',
+                  title: '${isHarvest ? "À récolter" : "À semer"} en ${_monthLabels[_selectedMonth - 1]}',
+                ),
+                for (final v in activeVegs)
                   VegetableCard(
                     vegetable: v,
                     canSowNow: true,

@@ -256,7 +256,21 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             _favOnly = false;
                           }),
                         ),
-                        for (final cat in VegetableCategory.values)
+                        // Accessoires en 3e position, puis les autres catégories.
+                        _PastelChip(
+                          label: VegetableCategory.accessories.label,
+                          emoji: VegetableCategory.accessories.emoji,
+                          color: _categoryColor(VegetableCategory.accessories),
+                          selected: _selectedCategory == VegetableCategory.accessories,
+                          onTap: () => setState(
+                            () => _selectedCategory =
+                                _selectedCategory == VegetableCategory.accessories
+                                    ? null
+                                    : VegetableCategory.accessories,
+                          ),
+                        ),
+                        for (final cat in VegetableCategory.values.where(
+                            (c) => c != VegetableCategory.accessories))
                           _PastelChip(
                             label: cat.label,
                             emoji: cat.emoji,
