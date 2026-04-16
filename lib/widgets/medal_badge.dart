@@ -44,24 +44,42 @@ class MedalBadge extends StatelessWidget {
     final double emojiSize = size * 0.55;
     final cornerSize = (size * 0.34).clamp(16.0, 26.0);
 
-    // Fond du cercle : teinte famille par défaut ; gold reçoit un dégradé
-    // radial doré pour matérialiser l'effet "pièce".
-    final BoxDecoration circleDecoration = tier == MedalTier.gold
-        ? const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: <Color>[
-                Color(0xFFFFF3B0), // centre jaune clair
-                Color(0xFFFFD54A), // milieu or
-                Color(0xFFE8B923), // bord or profond
-              ],
-              stops: <double>[0.0, 0.65, 1.0],
-            ),
-          )
-        : BoxDecoration(
-            shape: BoxShape.circle,
-            color: familyColor.withOpacity(0.15),
-          );
+    // Fond du cercle : teinte famille pour none/bronze, dégradé radial
+    // argenté pour silver, doré pour gold — effet "pièce".
+    BoxDecoration circleDecoration;
+    switch (tier) {
+      case MedalTier.silver:
+        circleDecoration = const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            colors: <Color>[
+              Color(0xFFF7F9FC), // centre blanc-bleuté
+              Color(0xFFCED5DE), // milieu argent
+              Color(0xFF9AA4B0), // bord argent profond
+            ],
+            stops: <double>[0.0, 0.65, 1.0],
+          ),
+        );
+      case MedalTier.gold:
+        circleDecoration = const BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            colors: <Color>[
+              Color(0xFFFFF3B0), // centre jaune clair
+              Color(0xFFFFD54A), // milieu or
+              Color(0xFFE8B923), // bord or profond
+            ],
+            stops: <double>[0.0, 0.65, 1.0],
+          ),
+        );
+      case MedalTier.none:
+      case MedalTier.bronze:
+      case MedalTier.shiny:
+        circleDecoration = BoxDecoration(
+          shape: BoxShape.circle,
+          color: familyColor.withOpacity(0.15),
+        );
+    }
 
     Widget circle = Container(
       width: size,
