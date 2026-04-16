@@ -45,21 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _socialSignIn(Future<void> Function() action) async {
-    setState(() {
-      _loading = true;
-      _error = null;
-    });
-    try {
-      await action();
-      if (mounted) widget.onSignedIn();
-    } catch (e) {
-      setState(() => _error = e.toString());
-    } finally {
-      if (mounted) setState(() => _loading = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,60 +172,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
               child: const Text("Créer un compte"),
             ),
-            const SizedBox(height: 16),
-            const _OrSeparator(),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: _loading
-                  ? null
-                  : () => _socialSignIn(
-                        AuthService.instance.signInWithGoogle,
-                      ),
-              icon: const Text('🔵', style: TextStyle(fontSize: 18)),
-              label: const Text('Continuer avec Google'),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton.icon(
-              onPressed: _loading
-                  ? null
-                  : () => _socialSignIn(
-                        AuthService.instance.signInWithApple,
-                      ),
-              icon: const Text('🍎', style: TextStyle(fontSize: 18)),
-              label: const Text('Continuer avec Apple'),
-            ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _OrSeparator extends StatelessWidget {
-  const _OrSeparator();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: Divider(
-            color: KultivaColors.lightGreen.withOpacity(0.6),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            'ou',
-            style: TextStyle(color: KultivaColors.textSecondary),
-          ),
-        ),
-        Expanded(
-          child: Divider(
-            color: KultivaColors.lightGreen.withOpacity(0.6),
-          ),
-        ),
-      ],
     );
   }
 }

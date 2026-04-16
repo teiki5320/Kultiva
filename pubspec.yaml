@@ -15,11 +15,6 @@ dependencies:
   # UI
   google_fonts: ^6.1.0
 
-  # Auth & Backend
-  supabase_flutter: ^2.0.0
-  google_sign_in: ^6.1.6
-  sign_in_with_apple: ^5.0.0
-
   # Préférences locales
   shared_preferences: ^2.2.2
 
