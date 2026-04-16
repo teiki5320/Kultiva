@@ -19,11 +19,12 @@ import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_card.dart';
 import 'poussidex/poussidex_journal.dart';
+import 'poussidex/poussidex_podium.dart';
 import 'poussidex/poussidex_stats.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
 /// Filtre actif dans le Poussidex.
-enum _AlbumFilter { all, growing, harvested, badges, stats, journal }
+enum _AlbumFilter { all, growing, harvested, badges, stats, journal, podium }
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -135,6 +136,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
       case _AlbumFilter.badges: // ignoré, la vue badges ne passe pas par là
       case _AlbumFilter.stats: // ignoré, la vue stats ne passe pas par là
       case _AlbumFilter.journal: // ignoré, la vue journal ne passe pas par là
+      case _AlbumFilter.podium: // ignoré, la vue podium ne passe pas par là
         return _plantations;
       case _AlbumFilter.growing:
         return _plantations.where((p) => p.isActive).toList();
@@ -377,6 +379,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     final showFab = _filter != _AlbumFilter.badges &&
         _filter != _AlbumFilter.stats &&
         _filter != _AlbumFilter.journal &&
+        _filter != _AlbumFilter.podium &&
         _plantations.isNotEmpty;
     final thirstyCount = _thirsty.length;
     return Scaffold(
@@ -395,7 +398,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
                 !_deleteMode &&
                 _filter != _AlbumFilter.badges &&
                 _filter != _AlbumFilter.stats &&
-                _filter != _AlbumFilter.journal)
+                _filter != _AlbumFilter.journal &&
+                _filter != _AlbumFilter.podium)
               _ThirstyBanner(
                 count: thirstyCount,
                 onTap: _waterAllThirsty,
@@ -471,6 +475,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     }
     if (_filter == _AlbumFilter.journal) {
       return PoussidexJournalView(plantations: _plantations);
+    }
+    if (_filter == _AlbumFilter.podium) {
+      return PoussidexPodiumView(plantations: _plantations);
     }
     if (_plantations.isEmpty) {
       return _EmptyState(onPlant: _openPicker);
@@ -823,6 +830,14 @@ class _FilterBar extends StatelessWidget {
             selected: filter == _AlbumFilter.journal,
             color: const Color(0xFFB39DDB),
             onTap: () => onChanged(_AlbumFilter.journal),
+          ),
+          _FilterChip(
+            label: '🏅 Podium',
+            count: allCount,
+            hideCount: true,
+            selected: filter == _AlbumFilter.podium,
+            color: const Color(0xFFFF8FAB),
+            onTap: () => onChanged(_AlbumFilter.podium),
           ),
         ],
       ),
