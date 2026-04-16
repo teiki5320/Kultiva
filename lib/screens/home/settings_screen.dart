@@ -243,11 +243,11 @@ class SettingsScreen extends StatelessWidget {
                               color: KultivaColors.primaryGreen,
                             ),
                             title: const Text(
-                              'Revoir le tuto potager',
+                              'Revoir le tuto Poussidex',
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                             subtitle: const Text(
-                                "Les 3 slides d'explication de Mon Potager"),
+                                "Les 3 slides d'explication du Poussidex"),
                             onTap: () {
                               showModalBottomSheet<void>(
                                 context: context,

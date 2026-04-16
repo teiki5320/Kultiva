@@ -58,9 +58,9 @@ class _RootTabsState extends State<RootTabs> {
             label: 'Étal',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view_outlined),
-            activeIcon: Icon(Icons.grid_view),
-            label: 'Mon Potager',
+            icon: Icon(Icons.collections_bookmark_outlined),
+            activeIcon: Icon(Icons.collections_bookmark),
+            label: 'Poussidex',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school_outlined),
