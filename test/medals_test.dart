@@ -45,10 +45,23 @@ void main() {
     });
 
     test('2 plantations in different seasons → gold (no harvest needed)', () {
+      // Plantations terminées (active: false) pour neutraliser la règle
+      // shiny-par-survie (180j). 30 jours et 120 jours dans le passé
+      // couvrent au moins 2 mois différents → 2 saisons potentielles.
+      // On force les mois (février = hiver, mai = printemps) via DateTime
+      // fixes avec une année certainement passée.
       expect(
         computeMedalTier('tomate', [
-          _plant(vegId: 'tomate', plantedAt: DateTime(2025, 4, 1)),
-          _plant(vegId: 'tomate', plantedAt: DateTime(2025, 7, 1)),
+          _plant(
+            vegId: 'tomate',
+            plantedAt: DateTime(2024, 2, 15), // hiver 2024
+            active: false,
+          ),
+          _plant(
+            vegId: 'tomate',
+            plantedAt: DateTime(2024, 5, 15), // printemps 2024
+            active: false,
+          ),
         ]),
         MedalTier.gold,
       );
