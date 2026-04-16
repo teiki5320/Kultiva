@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_theme.dart';
-import '../../widgets/petal_animation.dart';
 
 /// Catégorie de tuto avec ses vidéos.
 class _TutoCategory {
@@ -129,7 +128,6 @@ class TutosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final season = Season.fromMonth(DateTime.now().month);
     return SafeArea(
       bottom: false,
       child: ListView(
@@ -177,7 +175,7 @@ class TutosScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SeasonParticleAnimation(season: season),
+                  const _TutoParticleAnimation(),
                   Positioned(
                     left: 20,
                     bottom: 16,
@@ -350,6 +348,77 @@ class _TutoTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Animation d'ampoules, étoiles et cœurs flottants pour l'onglet Tutos —
+/// évoque l'apprentissage et l'inspiration plutôt que les saisons.
+class _TutoParticleAnimation extends StatefulWidget {
+  const _TutoParticleAnimation();
+  @override
+  State<_TutoParticleAnimation> createState() =>
+      _TutoParticleAnimationState();
+}
+
+class _TutoParticleAnimationState extends State<_TutoParticleAnimation>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  static const _emojis = <String>[
+    '💡', '✨', '📚', '⭐', '💖', '🌱', '🎓', '✨',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 22),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (context, _) {
+        final width = MediaQuery.of(context).size.width;
+        return Stack(
+          children: List.generate(_emojis.length, (i) {
+            // Flottement ascendant : les particules montent lentement
+            // avec un léger décalage horizontal en ondulation.
+            final t = (_ctrl.value + i * (1 / _emojis.length)) % 1.0;
+            final baseX = (i * 0.17 + 0.05) % 1.0;
+            final wave = 0.04 *
+                (1 - (2 * ((t + i * 0.1) % 1.0) - 1).abs()); // petite sinus
+            final x = ((baseX + wave) % 1.0) * width * 0.9;
+            final y = 170 - t * 180; // monte depuis le bas
+            return Positioned(
+              left: x,
+              top: y,
+              child: Opacity(
+                // Fade-in au départ, fade-out à la fin du trajet.
+                opacity: (t < 0.15
+                        ? t / 0.15
+                        : t > 0.85
+                            ? (1 - t) / 0.15
+                            : 1.0)
+                    .clamp(0.0, 0.7),
+                child: Text(
+                  _emojis[i],
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }
