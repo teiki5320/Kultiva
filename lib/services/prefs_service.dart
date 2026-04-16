@@ -25,6 +25,9 @@ class PrefsService {
   static const _kMusicEnabled = 'kultiva.musicEnabled';
   static const _kSoundVolume = 'kultiva.soundVolume';
   static const _kGardenTutorialDone = 'kultiva.gardenTutorialDone';
+  static const _kPlantations = 'kultiva.plantations.v1';
+  static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
+  static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
 
   SharedPreferences? _prefs;
 
@@ -112,7 +115,7 @@ class PrefsService {
     await _prefs?.setStringList(_kFavorites, next.toList());
   }
 
-  // --- Garden grid ---
+  // --- Garden grid (legacy, migré vers Poussidex) ---
   String? get gardenGrid => _prefs?.getString(_kGardenGrid);
 
   Future<void> setGardenGrid(String? json) async {
@@ -121,6 +124,26 @@ class PrefsService {
     } else {
       await _prefs?.setString(_kGardenGrid, json);
     }
+  }
+
+  // --- Poussidex : collection de plantations ---
+  String? get plantationsJson => _prefs?.getString(_kPlantations);
+
+  Future<void> setPlantationsJson(String json) async {
+    await _prefs?.setString(_kPlantations, json);
+  }
+
+  Set<String> get unlockedBadges =>
+      (_prefs?.getStringList(_kUnlockedBadges) ?? const <String>[]).toSet();
+
+  Future<void> setUnlockedBadges(Set<String> ids) async {
+    await _prefs?.setStringList(_kUnlockedBadges, ids.toList());
+  }
+
+  bool get gridMigrated => _prefs?.getBool(_kGridMigrated) ?? false;
+
+  Future<void> setGridMigrated(bool value) async {
+    await _prefs?.setBool(_kGridMigrated, value);
   }
 
   // --- Watering history ---
