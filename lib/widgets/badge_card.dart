@@ -228,60 +228,40 @@ class _BadgeCardVisual extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Illustration centrale : grand emoji dans un cadre coloré.
+            // Illustration centrale : image custom si dispo dans
+            // assets/images/badges/<id>.png, sinon gros emoji + sparkles.
             Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: unlocked
-                        ? <Color>[
-                            const Color(0xFFFFF9E6),
-                            const Color(0xFFFFE5A8),
-                          ]
-                        : <Color>[
-                            Colors.grey.shade100,
-                            Colors.grey.shade200,
-                          ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: unlocked
+                          ? <Color>[
+                              const Color(0xFFFFF9E6),
+                              const Color(0xFFFFE5A8),
+                            ]
+                          : <Color>[
+                              Colors.grey.shade100,
+                              Colors.grey.shade200,
+                            ],
+                    ),
+                    border: Border.all(
+                        color: frameColor.withOpacity(0.4), width: 1.5),
                   ),
-                  border: Border.all(
-                      color: frameColor.withOpacity(0.4), width: 1.5),
-                ),
-                alignment: Alignment.center,
-                child: Opacity(
-                  opacity: unlocked ? 1.0 : 0.35,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      if (unlocked)
-                        // Étoiles décoratives en fond d'illustration.
-                        Positioned(
-                          top: 12,
-                          left: 14,
-                          child: Text('✨',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white.withOpacity(0.9),
-                              )),
-                        ),
-                      if (unlocked)
-                        Positioned(
-                          bottom: 18,
-                          right: 18,
-                          child: Text('⭐',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white.withOpacity(0.9),
-                              )),
-                        ),
-                      Text(
-                        badge.emoji,
-                        style: const TextStyle(fontSize: 96),
+                  child: Opacity(
+                    opacity: unlocked ? 1.0 : 0.35,
+                    child: Image.asset(
+                      'assets/images/badges/${badge.id}.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => _EmojiFallback(
+                        emoji: badge.emoji,
+                        unlocked: unlocked,
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -311,7 +291,7 @@ class _BadgeCardVisual extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            // Bas de carte : ID + "Kultiva".
+            // Bas de carte : ID + "KULTIVA".
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -338,6 +318,52 @@ class _BadgeCardVisual extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Fallback quand l'image `assets/images/badges/<id>.png` n'existe pas
+/// encore : gros emoji centré + sparkles décoratifs.
+class _EmojiFallback extends StatelessWidget {
+  final String emoji;
+  final bool unlocked;
+
+  const _EmojiFallback({
+    required this.emoji,
+    required this.unlocked,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        if (unlocked)
+          Positioned(
+            top: 12,
+            left: 14,
+            child: Text(
+              '✨',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white.withOpacity(0.9),
+              ),
+            ),
+          ),
+        if (unlocked)
+          Positioned(
+            bottom: 18,
+            right: 18,
+            child: Text(
+              '⭐',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white.withOpacity(0.9),
+              ),
+            ),
+          ),
+        Text(emoji, style: const TextStyle(fontSize: 96)),
+      ],
     );
   }
 }
