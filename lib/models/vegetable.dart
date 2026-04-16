@@ -132,7 +132,6 @@ class Vegetable {
 
   // --- Liens ---
   final String? amazonUrl;
-  final String? youtubeUrl;
 
   // --- Accessoires : sous-catégorie (uniquement si category == accessories) ---
   final AccessorySubCategory? accessorySub;
@@ -159,7 +158,6 @@ class Vegetable {
     this.wateringDaysMax,
     this.yieldEstimate,
     this.amazonUrl,
-    this.youtubeUrl,
     this.accessorySub,
     this.harvestTimeBySeason,
   });

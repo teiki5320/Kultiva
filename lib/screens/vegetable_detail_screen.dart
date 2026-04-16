@@ -206,21 +206,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             ids: incompatibleMap[vegetable.id]!,
             color: KultivaColors.terracotta,
           ),
-        if (vegetable.youtubeUrl != null) ...[
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => _openUrl(context, vegetable.youtubeUrl!),
-              icon: const Text('🎬', style: TextStyle(fontSize: 18)),
-              label: const Text('Voir la vidéo tuto'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: KultivaColors.primaryGreen,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-            ),
-          ),
-        ],
         if (diseaseMap.containsKey(vegetable.id))
           _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
         if (rotationMap.containsKey(vegetable.id))
