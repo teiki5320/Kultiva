@@ -13,6 +13,7 @@ import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
+import '../../widgets/share_card.dart';
 
 /// Filtre actif dans le Poussidex.
 enum _AlbumFilter { all, growing, harvested, badges, stats }
@@ -1769,7 +1770,21 @@ class _PlantationDetailSheetState extends State<_PlantationDetailSheet> {
                 onAdd: () => _showPhotoSourceSheet(context),
                 onRemove: widget.onRemovePhoto,
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 12),
+              // Partage.
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: () => _openShareDialog(context, cc),
+                  icon: const Icon(Icons.share, size: 16),
+                  label: const Text('Partager cette carte'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: KultivaColors.primaryGreen,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
               // Note.
               _NoteEditor(
                 initial: p.note,
@@ -1870,6 +1885,17 @@ class _PlantationDetailSheetState extends State<_PlantationDetailSheet> {
                 style: TextStyle(color: Colors.red)),
           ),
         ],
+      ),
+    );
+  }
+
+  void _openShareDialog(BuildContext context, Color familyColor) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => SharePreviewDialog(
+        plantation: widget.plantation,
+        vegetable: widget.vegetable,
+        familyColor: familyColor,
       ),
     );
   }
