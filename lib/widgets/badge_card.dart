@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../data/badges.dart';
 import '../models/vegetable_medal.dart';
+import '../services/audio_service.dart';
 import '../theme/app_theme.dart';
 
 /// Ouvre un overlay plein écran qui affiche une grande carte "Pokemon"
@@ -842,14 +844,19 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
     super.initState();
     _ctrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1600),
+      duration: const Duration(milliseconds: 2600),
     );
     _idleCtrl = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
     );
+    // Feedback haptique léger au début (whoosh) pour signaler qu'un
+    // truc arrive, suivi d'un impact fort à l'atterrissage.
+    HapticFeedback.lightImpact();
     _ctrl.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
+        HapticFeedback.heavyImpact();
+        AudioService.instance.play(Sfx.plant);
         setState(() => _showParticles = true);
         _idleCtrl.repeat();
       }
@@ -884,20 +891,21 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
             animation: Listenable.merge(<Listenable>[_ctrl, _idleCtrl]),
             builder: (context, _) {
               final t = _ctrl.value;
-              // Phase 1 (0 → 0.5) : chute depuis le ciel + spin rapide.
-              // Phase 2 (0.5 → 0.9) : atterrissage avec bounce (ease out).
-              // Phase 3 (0.9 → 1.0) : stabilisation douce.
+              // Phase 1 (0 → 0.65) : chute depuis le ciel + spin.
+              // Phase 2 (0.65 → 0.95) : atterrissage avec bounce.
+              // Phase 3 (0.95 → 1.0) : stabilisation douce.
               final fallCurve = Curves.easeIn.transform(
-                (t / 0.5).clamp(0.0, 1.0),
+                (t / 0.65).clamp(0.0, 1.0),
               );
               final bounceCurve = Curves.elasticOut.transform(
-                ((t - 0.5) / 0.5).clamp(0.0, 1.0),
+                ((t - 0.65) / 0.35).clamp(0.0, 1.0),
               );
 
               // Translation verticale : du haut de l'écran vers le centre.
               final dy = (1 - fallCurve) * -400;
-              // Rotation totale : 4 tours complets durant la chute.
-              final spinY = (1 - fallCurve) * 4 * 2 * math.pi;
+              // Rotation totale : 3 tours complets durant la chute, plus
+              // lente qu'avant pour laisser le temps de voir la carte.
+              final spinY = (1 - fallCurve) * 3 * 2 * math.pi;
               // Scale : petite quand elle tombe, grossit en atterrissant.
               final scale = 0.3 + bounceCurve * 0.7;
               // Balancement idle une fois posée.
