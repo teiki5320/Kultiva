@@ -8,12 +8,15 @@ import '../data/companions.dart';
 import '../data/diseases.dart';
 import '../data/rotation.dart';
 import '../data/vegetables_base.dart';
+import '../models/plantation.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
+import '../models/vegetable_medal.dart';
 import '../services/pdf_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/lexicon_text.dart';
+import '../widgets/medal_badge.dart';
 
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
 /// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
@@ -269,8 +272,24 @@ class _HeaderCard extends StatelessWidget {
   final Vegetable vegetable;
   const _HeaderCard({required this.vegetable});
 
+  MedalTier _loadTier() {
+    final plantations =
+        Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    return computeMedalTier(vegetable.id, plantations);
+  }
+
   @override
   Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.plantationsVersion,
+      builder: (_, __, ___) {
+        final tier = _loadTier();
+        return _buildCard(context, tier);
+      },
+    );
+  }
+
+  Widget _buildCard(BuildContext context, MedalTier tier) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -280,18 +299,12 @@ class _HeaderCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  width: 72,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    color: KultivaColors.lightGreen.withOpacity(0.35),
-                    borderRadius: BorderRadius.circular(22),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    vegetable.emoji,
-                    style: const TextStyle(fontSize: 42),
-                  ),
+                MedalBadge(
+                  emoji: vegetable.emoji,
+                  tier: tier,
+                  familyColor: KultivaColors.primaryGreen,
+                  size: 72,
+                  showCornerMedal: tier != MedalTier.none,
                 ),
                 Expanded(
                   child: Column(
@@ -316,6 +329,26 @@ class _HeaderCard extends StatelessWidget {
                               color: KultivaColors.textSecondary,
                             ),
                       ),
+                      if (tier != MedalTier.none) ...<Widget>[
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: tier.color.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: tier.color, width: 1.2),
+                          ),
+                          child: Text(
+                            '${tier.emoji}  ${tier.label}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: tier.color,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

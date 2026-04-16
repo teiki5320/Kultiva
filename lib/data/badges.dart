@@ -1,6 +1,7 @@
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
 import '../models/vegetable.dart';
+import '../models/vegetable_medal.dart';
 import '../widgets/petal_animation.dart' show Season;
 
 /// Un badge débloquable dans le Poussidex.
@@ -144,6 +145,31 @@ const List<PoussidexBadge> allBadges = <PoussidexBadge>[
     name: 'Gourmand',
     description: '100 récoltes cumulées.',
   ),
+  // ─── Médailles d'espèce ────────────────────────────────────────────────
+  PoussidexBadge(
+    id: 'first_gold',
+    emoji: '🥇',
+    name: 'Premier Or',
+    description: 'Décrocher ta première médaille Or sur une espèce.',
+  ),
+  PoussidexBadge(
+    id: 'first_shiny',
+    emoji: '✨',
+    name: 'Premier Shiny',
+    description: 'Obtenir ta première version Shiny d\'un légume.',
+  ),
+  PoussidexBadge(
+    id: 'shiny_master',
+    emoji: '🌟',
+    name: 'Maître Shiny',
+    description: 'Obtenir 5 espèces en version Shiny.',
+  ),
+  PoussidexBadge(
+    id: 'rainbow_gold',
+    emoji: '🌈',
+    name: 'Arc-en-ciel doré',
+    description: "Une médaille Or ou plus dans chacune des 9 familles.",
+  ),
 ];
 
 /// Retourne l'ensemble des IDs de badges débloqués par cette collection.
@@ -254,6 +280,31 @@ Set<String> computeUnlockedBadges(List<Plantation> plantations) {
 
   // Gourmand : 100 récoltes cumulées.
   if (totalHarvests >= 100) unlocked.add('gourmand');
+
+  // ─── Badges dérivés du système de médailles ────────────────────────────
+  final medals = computeAllMedals(plantations);
+  int goldCount = 0;
+  int shinyCount = 0;
+  final goldFamilies = <VegetableCategory>{};
+  for (final entry in medals.entries) {
+    if (entry.value.rank >= MedalTier.gold.rank) {
+      goldCount++;
+      final v = vegetablesBase.where((x) => x.id == entry.key).firstOrNull;
+      if (v != null && v.category != VegetableCategory.accessories) {
+        goldFamilies.add(v.category);
+      }
+    }
+    if (entry.value == MedalTier.shiny) shinyCount++;
+  }
+  if (goldCount >= 1) unlocked.add('first_gold');
+  if (shinyCount >= 1) unlocked.add('first_shiny');
+  if (shinyCount >= 5) unlocked.add('shiny_master');
+  final rainbowTargets = VegetableCategory.values
+      .where((c) => c != VegetableCategory.accessories)
+      .toSet();
+  if (rainbowTargets.every(goldFamilies.contains)) {
+    unlocked.add('rainbow_gold');
+  }
 
   return unlocked;
 }

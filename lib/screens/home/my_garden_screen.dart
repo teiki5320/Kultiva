@@ -8,11 +8,13 @@ import '../../data/badges.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
+import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
 import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
+import '../../widgets/medal_badge.dart';
 import '../../widgets/share_card.dart';
 
 /// Filtre actif dans le Poussidex.
@@ -34,8 +36,14 @@ class MyGardenScreen extends StatefulWidget {
 class MyGardenScreenState extends State<MyGardenScreen> {
   List<Plantation> _plantations = <Plantation>[];
   Set<String> _unlockedBadges = <String>{};
+  Map<String, MedalTier> _medals = <String, MedalTier>{};
   _AlbumFilter _filter = _AlbumFilter.all;
   bool _loaded = false;
+
+  /// Total d'espèces collectionnables (tous les légumes sauf accessoires).
+  static final int _totalSpecies = vegetablesBase
+      .where((v) => v.category != VegetableCategory.accessories)
+      .length;
 
   @override
   void initState() {
@@ -52,6 +60,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     // lecture de données déjà présentes, sans déclencher de snackbar
     // historique — on se contente d'aligner l'état).
     _unlockedBadges = computeUnlockedBadges(_plantations);
+    _medals = computeAllMedals(_plantations);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
     if (mounted) setState(() => _loaded = true);
     // Le tuto n'est PAS déclenché ici — RootTabs l'appelle via
@@ -69,9 +78,36 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   void _refreshBadges() {
     final next = computeUnlockedBadges(_plantations);
     final newly = next.difference(_unlockedBadges);
+    final nextMedals = computeAllMedals(_plantations);
+    final newlyPromoted = <String, MedalTier>{};
+    for (final entry in nextMedals.entries) {
+      final prev = _medals[entry.key] ?? MedalTier.none;
+      if (entry.value.rank > prev.rank && entry.value != MedalTier.bronze) {
+        newlyPromoted[entry.key] = entry.value;
+      }
+    }
     _unlockedBadges = next;
+    _medals = nextMedals;
     PrefsService.instance.setUnlockedBadges(next);
-    if (newly.isEmpty || !mounted) return;
+    if (!mounted) return;
+    // Snackbar promotion d'espèce (argent/or/shiny).
+    for (final entry in newlyPromoted.entries) {
+      final veg = vegetablesBase
+          .where((v) => v.id == entry.key)
+          .firstOrNull;
+      if (veg == null) continue;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${entry.value.emoji} ${veg.name} passe ${entry.value.label} !',
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: entry.value.color,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+    if (newly.isEmpty) return;
     for (final id in newly) {
       final b = allBadges.firstWhere((x) => x.id == id);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -343,6 +379,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
           children: <Widget>[
             _Header(
               plantationsCount: _plantations.length,
+              speciesCount: _medals.length,
+              totalSpecies: _totalSpecies,
               unlockedCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
             ),
@@ -417,7 +455,11 @@ class MyGardenScreenState extends State<MyGardenScreen> {
         if (veg == null) return const SizedBox.shrink();
         return GestureDetector(
           onTap: () => _showDetail(p, veg),
-          child: _PlantationCard(plantation: p, vegetable: veg),
+          child: _PlantationCard(
+            plantation: p,
+            vegetable: veg,
+            tier: _medals[p.vegetableId] ?? MedalTier.bronze,
+          ),
         );
       },
     );
@@ -430,10 +472,14 @@ class MyGardenScreenState extends State<MyGardenScreen> {
 
 class _Header extends StatelessWidget {
   final int plantationsCount;
+  final int speciesCount;
+  final int totalSpecies;
   final int unlockedCount;
   final int totalBadges;
   const _Header({
     required this.plantationsCount,
+    required this.speciesCount,
+    required this.totalSpecies,
     required this.unlockedCount,
     required this.totalBadges,
   });
@@ -496,9 +542,7 @@ class _Header extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    plantationsCount == 0
-                        ? '0 légume · $unlockedCount / $totalBadges badges'
-                        : '$plantationsCount légume${plantationsCount > 1 ? "s" : ""} · $unlockedCount / $totalBadges badges',
+                    '🏅 $speciesCount / $totalSpecies espèces  ·  🏆 $unlockedCount / $totalBadges badges',
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.9),
                       fontWeight: FontWeight.w600,
@@ -1639,7 +1683,12 @@ int _expectedHarvestDays(Vegetable v, DateTime plantedAt) {
 class _PlantationCard extends StatelessWidget {
   final Plantation plantation;
   final Vegetable vegetable;
-  const _PlantationCard({required this.plantation, required this.vegetable});
+  final MedalTier tier;
+  const _PlantationCard({
+    required this.plantation,
+    required this.vegetable,
+    required this.tier,
+  });
 
   static const List<String> _shortMonths = <String>[
     'jan', 'fév', 'mar', 'avr', 'mai', 'juin',
@@ -1701,23 +1750,23 @@ class _PlantationCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           // Photo du plant si disponible, sinon emoji dans cercle famille.
+          // Dans les 2 cas, le palier de médaille est affiché (anneau +
+          // pastille coin haut-droit).
           Expanded(
             child: Center(
               child: plantation.photoPaths.isNotEmpty
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(
-                        File(plantation.photoPaths.last),
-                        width: 82,
-                        height: 82,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _EmojiCircle(
-                          color: cc,
-                          emoji: vegetable.emoji,
-                        ),
-                      ),
+                  ? _PhotoWithTier(
+                      path: plantation.photoPaths.last,
+                      tier: tier,
+                      familyColor: cc,
+                      fallbackEmoji: vegetable.emoji,
                     )
-                  : _EmojiCircle(color: cc, emoji: vegetable.emoji),
+                  : MedalBadge(
+                      emoji: vegetable.emoji,
+                      tier: tier,
+                      familyColor: cc,
+                      size: 78,
+                    ),
             ),
           ),
           const SizedBox(height: 8),
@@ -1770,23 +1819,109 @@ class _PlantationCard extends StatelessWidget {
   }
 }
 
-class _EmojiCircle extends StatelessWidget {
-  final Color color;
-  final String emoji;
-  const _EmojiCircle({required this.color, required this.emoji});
+/// Photo carrée d'un plant avec anneau/pastille médaille superposés.
+class _PhotoWithTier extends StatelessWidget {
+  final String path;
+  final MedalTier tier;
+  final Color familyColor;
+  final String fallbackEmoji;
+
+  const _PhotoWithTier({
+    required this.path,
+    required this.tier,
+    required this.familyColor,
+    required this.fallbackEmoji,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 70,
-      height: 70,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color.withOpacity(0.15),
-        border: Border.all(color: color.withOpacity(0.35), width: 1.5),
+    const double size = 82;
+    final double radius = 12;
+    final Color ring = tier == MedalTier.none ? familyColor : tier.color;
+    final double ringWidth = tier == MedalTier.none
+        ? 0
+        : (tier == MedalTier.shiny ? 3 : 2.5);
+
+    Widget image = ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: Image.file(
+        File(path),
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => MedalBadge(
+          emoji: fallbackEmoji,
+          tier: tier,
+          familyColor: familyColor,
+          size: size,
+        ),
       ),
-      alignment: Alignment.center,
-      child: Text(emoji, style: const TextStyle(fontSize: 38)),
+    );
+
+    Widget framed = Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius),
+        border: tier == MedalTier.none
+            ? null
+            : Border.all(color: ring, width: ringWidth),
+        boxShadow: tier == MedalTier.gold
+            ? <BoxShadow>[
+                BoxShadow(
+                  color: ring.withOpacity(0.35),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                ),
+              ]
+            : tier == MedalTier.shiny
+                ? <BoxShadow>[
+                    BoxShadow(
+                      color: const Color(0xFFFF5CA8).withOpacity(0.4),
+                      blurRadius: 12,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : const <BoxShadow>[],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(ringWidth),
+        child: image,
+      ),
+    );
+
+    if (tier == MedalTier.none) return framed;
+
+    return SizedBox(
+      width: size + 6,
+      height: size + 6,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          Positioned.fill(child: Center(child: framed)),
+          Positioned(
+            top: -2,
+            right: -2,
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Text(tier.emoji, style: const TextStyle(fontSize: 13)),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

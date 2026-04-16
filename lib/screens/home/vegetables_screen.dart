@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../../data/regions/france.dart';
 import '../../data/regions/west_africa.dart';
 import '../../data/vegetables_base.dart';
+import '../../models/plantation.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
+import '../../models/vegetable_medal.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/medal_badge.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
@@ -358,9 +361,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                               ],
                             ),
                           )
-                        : _gridView
-                            ? _buildGrid(filtered, favs, regionData)
-                            : _buildList(filtered, favs, regionData),
+                        : ValueListenableBuilder<int>(
+                            valueListenable:
+                                PrefsService.instance.plantationsVersion,
+                            builder: (_, __, ___) {
+                              final medals = _loadMedals();
+                              return _gridView
+                                  ? _buildGrid(
+                                      filtered, favs, regionData, medals)
+                                  : _buildList(
+                                      filtered, favs, regionData, medals);
+                            },
+                          ),
                   ),
                 ],
               ),
@@ -371,8 +383,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     );
   }
 
+  /// Charge les plantations persistées et calcule les paliers par espèce.
+  Map<String, MedalTier> _loadMedals() {
+    final plantations =
+        Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    return computeAllMedals(plantations);
+  }
+
   Widget _buildList(
-      List<Vegetable> list, Set<String> favs, List<RegionData> regionData) {
+      List<Vegetable> list,
+      Set<String> favs,
+      List<RegionData> regionData,
+      Map<String, MedalTier> medals) {
     return ListView.builder(
       padding: const EdgeInsets.only(bottom: 16),
       itemCount: list.length,
@@ -382,6 +404,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           vegetable: v,
           canSowNow: _canSow(v, regionData),
           isFavorite: favs.contains(v.id),
+          medalTier: medals[v.id] ?? MedalTier.none,
           onFavoriteToggle: () =>
               PrefsService.instance.toggleFavorite(v.id),
           onTap: () => Navigator.of(context).push(
@@ -399,7 +422,10 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   }
 
   Widget _buildGrid(
-      List<Vegetable> list, Set<String> favs, List<RegionData> regionData) {
+      List<Vegetable> list,
+      Set<String> favs,
+      List<RegionData> regionData,
+      Map<String, MedalTier> medals) {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Adapter le nombre de colonnes à la largeur.
@@ -417,6 +443,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         final v = list[i];
         final isFav = favs.contains(v.id);
         final cc = _categoryColor(v.category);
+        final tier = medals[v.id] ?? MedalTier.none;
         return GestureDetector(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -458,16 +485,14 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Emoji dans cercle blanc.
-                      Container(
-                        width: 44, height: 44,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.7),
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(v.emoji,
-                            style: const TextStyle(fontSize: 24)),
+                      // Emoji dans cercle + anneau médaille si espèce
+                      // déjà collectionnée.
+                      MedalBadge(
+                        emoji: v.emoji,
+                        tier: tier,
+                        familyColor: cc,
+                        size: 48,
+                        showCornerMedal: tier != MedalTier.none,
                       ),
                       const SizedBox(height: 6),
                       Padding(

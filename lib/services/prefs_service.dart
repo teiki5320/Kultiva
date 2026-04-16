@@ -40,6 +40,12 @@ class PrefsService {
   final ValueNotifier<bool> musicEnabled = ValueNotifier<bool>(false);
   final ValueNotifier<double> soundVolume = ValueNotifier<double>(0.7);
 
+  /// Notifier incrémenté à chaque écriture de la collection de
+  /// plantations. Les écrans qui dépendent des médailles (Étal) s'y
+  /// abonnent pour se rafraîchir sans avoir à importer l'état du
+  /// Poussidex.
+  final ValueNotifier<int> plantationsVersion = ValueNotifier<int>(0);
+
   bool _loaded = false;
   bool get isLoaded => _loaded;
 
@@ -131,6 +137,7 @@ class PrefsService {
 
   Future<void> setPlantationsJson(String json) async {
     await _prefs?.setString(_kPlantations, json);
+    plantationsVersion.value = plantationsVersion.value + 1;
   }
 
   Set<String> get unlockedBadges =>

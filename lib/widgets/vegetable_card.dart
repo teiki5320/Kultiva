@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../models/vegetable.dart';
+import '../models/vegetable_medal.dart';
 import '../services/audio_service.dart';
 import '../theme/app_theme.dart';
+import 'medal_badge.dart';
 
 /// Card d'un légume — emoji dans cercle pastel, nom, note, badges saison,
 /// indicateur catégorie coloré, bouton favori.
@@ -12,6 +14,7 @@ class VegetableCard extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
+  final MedalTier medalTier;
 
   const VegetableCard({
     super.key,
@@ -20,6 +23,7 @@ class VegetableCard extends StatelessWidget {
     this.onTap,
     this.isFavorite = false,
     this.onFavoriteToggle,
+    this.medalTier = MedalTier.none,
   });
 
   Color _catColor() {
@@ -62,25 +66,14 @@ class VegetableCard extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-              // Emoji dans cercle pastel avec bande catégorie.
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      cc.withOpacity(0.12),
-                      cc.withOpacity(0.25),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: cc.withOpacity(0.2)),
-                ),
-                alignment: Alignment.center,
-                child: Text(vegetable.emoji,
-                    style: const TextStyle(fontSize: 28)),
+              // Emoji dans cercle pastel — anneau de palier si espèce
+              // déjà collectionnée.
+              MedalBadge(
+                emoji: vegetable.emoji,
+                tier: medalTier,
+                familyColor: cc,
+                size: 54,
+                showCornerMedal: medalTier != MedalTier.none,
               ),
               const SizedBox(width: 12),
               // Contenu.
