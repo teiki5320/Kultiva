@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/region_data.dart';
+import 'notification_service.dart';
 
 /// Service de persistance locale + état réactif de l'application.
 ///
@@ -75,8 +76,11 @@ class PrefsService {
   Future<void> setNotifications(bool value) async {
     notifications.value = value;
     await _prefs?.setBool(_kNotifications, value);
-    // TODO: brancher flutter_local_notifications pour planifier/annuler
-    // la notification mensuelle (le 1er de chaque mois).
+    if (value) {
+      await NotificationService.scheduleMonthlyReminder();
+    } else {
+      await NotificationService.cancelMonthlyReminder();
+    }
   }
 
   Future<void> setSoundEnabled(bool value) async {

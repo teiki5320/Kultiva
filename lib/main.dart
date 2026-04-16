@@ -15,6 +15,10 @@ Future<void> main() async {
   await PrefsService.instance.load();
   await AuthService.instance.load();
   await NotificationService.init();
+  // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
+  if (PrefsService.instance.notifications.value) {
+    await NotificationService.scheduleMonthlyReminder();
+  }
   if (PrefsService.instance.musicEnabled.value) {
     AudioService.instance.startMusic();
   }
