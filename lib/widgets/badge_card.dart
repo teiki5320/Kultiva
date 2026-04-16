@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../data/badges.dart';
+import '../models/vegetable_medal.dart';
 import '../theme/app_theme.dart';
 
 /// Ouvre un overlay plein écran qui affiche une grande carte "Pokemon"
@@ -158,7 +159,10 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
                 ? Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.identity()..rotateY(math.pi),
-                    child: _BadgeCardBack(unlocked: widget.unlocked),
+                    child: _BadgeCardBack(
+                      unlocked: widget.unlocked,
+                      tier: widget.badge.tier,
+                    ),
                   )
                 : _BadgeCardVisual(
                     badge: widget.badge,
@@ -205,8 +209,8 @@ class _BadgeCardVisual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gold = const Color(0xFFFFB74D);
-    final Color frameColor = unlocked ? gold : Colors.grey.shade500;
+    final tierColors = _TierColors.forBadge(badge.tier, unlocked);
+    final Color frameColor = tierColors.frame;
 
     return Container(
       width: 280,
@@ -217,16 +221,7 @@ class _BadgeCardVisual extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: unlocked
-              ? <Color>[
-                  const Color(0xFFFFF3B0),
-                  const Color(0xFFFFD54A),
-                  const Color(0xFFE8B923),
-                ]
-              : <Color>[
-                  Colors.grey.shade300,
-                  Colors.grey.shade400,
-                ],
+          colors: tierColors.frameGradient,
         ),
         border: Border.all(color: frameColor, width: 4),
         boxShadow: <BoxShadow>[
@@ -237,7 +232,7 @@ class _BadgeCardVisual extends StatelessWidget {
           ),
           if (unlocked)
             BoxShadow(
-              color: gold.withOpacity(0.45),
+              color: tierColors.glow,
               blurRadius: 30,
               spreadRadius: 2,
             ),
@@ -268,9 +263,7 @@ class _BadgeCardVisual extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
-                  color: unlocked
-                      ? const Color(0xFF5A3E00)
-                      : Colors.grey.shade700,
+                  color: tierColors.text,
                   letterSpacing: 0.4,
                 ),
               ),
@@ -289,15 +282,7 @@ class _BadgeCardVisual extends StatelessWidget {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: unlocked
-                          ? <Color>[
-                              const Color(0xFFFFF9E6),
-                              const Color(0xFFFFE5A8),
-                            ]
-                          : <Color>[
-                              Colors.grey.shade100,
-                              Colors.grey.shade200,
-                            ],
+                      colors: tierColors.innerGradient,
                     ),
                     border: Border.all(
                         color: frameColor.withOpacity(0.4), width: 1.5),
@@ -527,13 +512,17 @@ class _HolographicOverlay extends StatelessWidget {
 /// avant pour un retournement fluide.
 class _BadgeCardBack extends StatelessWidget {
   final bool unlocked;
+  final MedalTier tier;
 
-  const _BadgeCardBack({required this.unlocked});
+  const _BadgeCardBack({
+    required this.unlocked,
+    required this.tier,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final gold = const Color(0xFFFFB74D);
-    final Color frameColor = unlocked ? gold : Colors.grey.shade500;
+    final tierColors = _TierColors.forBadge(tier, unlocked);
+    final Color frameColor = tierColors.frame;
 
     return Container(
       width: 280,
@@ -544,16 +533,7 @@ class _BadgeCardBack extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: unlocked
-              ? <Color>[
-                  const Color(0xFFF5E4AD),
-                  const Color(0xFFE8B923),
-                  const Color(0xFF8B6914),
-                ]
-              : <Color>[
-                  Colors.grey.shade400,
-                  Colors.grey.shade600,
-                ],
+          colors: tierColors.frameGradient,
         ),
         border: Border.all(color: frameColor, width: 4),
         boxShadow: <BoxShadow>[
@@ -564,7 +544,7 @@ class _BadgeCardBack extends StatelessWidget {
           ),
           if (unlocked)
             BoxShadow(
-              color: gold.withOpacity(0.45),
+              color: tierColors.glow,
               blurRadius: 30,
               spreadRadius: 2,
             ),
@@ -575,15 +555,7 @@ class _BadgeCardBack extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: unlocked
-                ? <Color>[
-                    const Color(0xFFFFF3B0),
-                    const Color(0xFFFFD54A),
-                  ]
-                : <Color>[
-                    Colors.grey.shade200,
-                    Colors.grey.shade300,
-                  ],
+            colors: tierColors.innerGradient,
           ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: frameColor.withOpacity(0.5), width: 2),
@@ -634,9 +606,7 @@ class _BadgeCardBack extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                       fontSize: 22,
                       letterSpacing: 4,
-                      color: unlocked
-                          ? const Color(0xFF5A3E00)
-                          : Colors.grey.shade700,
+                      color: tierColors.text,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -703,4 +673,115 @@ class _BackPatternPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_BackPatternPainter old) => old.color != color;
+}
+
+/// Palette de couleurs pour une carte badge selon son [MedalTier].
+/// Chaque palier a sa propre teinte de cadre, son gradient, et sa
+/// couleur de texte assombrie qui garde le contraste.
+class _TierColors {
+  final Color frame;
+  final Color glow;
+  final Color text;
+  final List<Color> frameGradient;
+  final List<Color> innerGradient;
+
+  const _TierColors({
+    required this.frame,
+    required this.glow,
+    required this.text,
+    required this.frameGradient,
+    required this.innerGradient,
+  });
+
+  static _TierColors forBadge(MedalTier tier, bool unlocked) {
+    if (!unlocked) return _locked;
+    switch (tier) {
+      case MedalTier.bronze:
+        return _bronze;
+      case MedalTier.silver:
+        return _silver;
+      case MedalTier.gold:
+        return _gold;
+      case MedalTier.shiny:
+        return _shiny;
+      case MedalTier.none:
+        return _locked;
+    }
+  }
+
+  static const _bronze = _TierColors(
+    frame: Color(0xFFCD7F32),
+    glow: Color(0x73B5722B), // 0.45 alpha
+    text: Color(0xFF5A3817),
+    frameGradient: <Color>[
+      Color(0xFFF2D3A7),
+      Color(0xFFCD7F32),
+      Color(0xFF8E4F10),
+    ],
+    innerGradient: <Color>[
+      Color(0xFFFDEAD3),
+      Color(0xFFE8BE85),
+    ],
+  );
+
+  static const _silver = _TierColors(
+    frame: Color(0xFF9AA4B0),
+    glow: Color(0x7399A4B1),
+    text: Color(0xFF2F3A45),
+    frameGradient: <Color>[
+      Color(0xFFEFF3F8),
+      Color(0xFFB8C1CC),
+      Color(0xFF6E7986),
+    ],
+    innerGradient: <Color>[
+      Color(0xFFF7F9FC),
+      Color(0xFFCED5DE),
+    ],
+  );
+
+  static const _gold = _TierColors(
+    frame: Color(0xFFFFB74D),
+    glow: Color(0x73FFB800),
+    text: Color(0xFF5A3E00),
+    frameGradient: <Color>[
+      Color(0xFFFFF3B0),
+      Color(0xFFFFD54A),
+      Color(0xFFE8B923),
+    ],
+    innerGradient: <Color>[
+      Color(0xFFFFF9E6),
+      Color(0xFFFFE5A8),
+    ],
+  );
+
+  static const _shiny = _TierColors(
+    frame: Color(0xFFFF5CA8),
+    glow: Color(0x80FF5CA8), // 0.5 alpha — plus vif
+    text: Color(0xFF6B1F4B),
+    frameGradient: <Color>[
+      Color(0xFFFFB3C1), // rose
+      Color(0xFFB5DEFF), // cyan
+      Color(0xFFCFB5FF), // lavande
+      Color(0xFFFFF0A0), // jaune doux
+      Color(0xFFC7F5E0), // mint
+    ],
+    innerGradient: <Color>[
+      Color(0xFFFFF2FA),
+      Color(0xFFFFE0EE),
+    ],
+  );
+
+  static final _locked = _TierColors(
+    frame: Colors.grey.shade500,
+    glow: Colors.grey.shade500.withOpacity(0.3),
+    text: Colors.grey.shade700,
+    frameGradient: <Color>[
+      Colors.grey.shade300,
+      Colors.grey.shade400,
+    ],
+    innerGradient: <Color>[
+      Colors.grey.shade100,
+      Colors.grey.shade200,
+    ],
+  );
 }

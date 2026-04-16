@@ -5,170 +5,205 @@ import '../models/vegetable_medal.dart';
 import '../widgets/petal_animation.dart' show Season;
 
 /// Un badge débloquable dans le Poussidex.
+///
+/// Chaque badge a un palier de rareté ([tier]) qui détermine sa couleur
+/// de cadre et son effet visuel sur la carte (bronze, silver, gold,
+/// shiny). On réutilise l'enum [MedalTier] de vegetable_medal.dart —
+/// même palette, même sémantique.
 class PoussidexBadge {
   final String id;
   final String emoji;
   final String name;
   final String description;
+  final MedalTier tier;
   const PoussidexBadge({
     required this.id,
     required this.emoji,
     required this.name,
     required this.description,
+    required this.tier,
   });
 }
 
 const List<PoussidexBadge> allBadges = <PoussidexBadge>[
+  // ─── BRONZE : premiers pas ────────────────────────────────────────────
   PoussidexBadge(
     id: 'first_step',
     emoji: '🌱',
     name: 'Premier pas',
     description: 'Planter ton tout premier légume.',
+    tier: MedalTier.bronze,
   ),
   PoussidexBadge(
     id: 'small_watering_can',
     emoji: '💧',
     name: 'Petit arrosoir',
     description: '10 arrosages cumulés dans ton Poussidex.',
+    tier: MedalTier.bronze,
   ),
   PoussidexBadge(
     id: 'first_harvest',
     emoji: '🧺',
     name: 'Première récolte',
     description: 'Récolter ton tout premier légume.',
-  ),
-  PoussidexBadge(
-    id: 'diverse',
-    emoji: '🎨',
-    name: 'Diversifié',
-    description: '5 familles de légumes différentes dans ton album.',
-  ),
-  PoussidexBadge(
-    id: 'collector',
-    emoji: '⭐',
-    name: 'Collectionneur',
-    description: '10 plants dans ton Poussidex.',
-  ),
-  PoussidexBadge(
-    id: 'master_collector',
-    emoji: '🏅',
-    name: 'Maître collectionneur',
-    description: '30 plants dans ton Poussidex.',
-  ),
-  PoussidexBadge(
-    id: 'sun_tour',
-    emoji: '☀️',
-    name: 'Tour du soleil',
-    description: 'Planter au moins un légume dans chacune des 4 saisons.',
-  ),
-  PoussidexBadge(
-    id: 'big_harvester',
-    emoji: '🏆',
-    name: 'Gros récolteur',
-    description: '50 récoltes cumulées.',
-  ),
-  PoussidexBadge(
-    id: 'green_thumb',
-    emoji: '🌿',
-    name: 'Main verte',
-    description: 'Un de tes plants survit 6 mois.',
-  ),
-  PoussidexBadge(
-    id: 'herbalist',
-    emoji: '🌿',
-    name: 'Herboriste',
-    description: 'Planter 3 aromatiques différentes.',
+    tier: MedalTier.bronze,
   ),
   PoussidexBadge(
     id: 'first_photo',
     emoji: '📸',
     name: 'Premier cliché',
     description: 'Ajouter ta première photo à un plant du Poussidex.',
+    tier: MedalTier.bronze,
   ),
   PoussidexBadge(
-    id: 'documentary',
-    emoji: '📷',
-    name: 'Documentaire',
-    description: '10 photos cumulées dans ton Poussidex.',
-  ),
-  PoussidexBadge(
-    id: 'fruit_lover',
-    emoji: '🍅',
-    name: 'Amateur de fruits',
-    description: '5 légumes-fruits plantés.',
-  ),
-  PoussidexBadge(
-    id: 'florist',
-    emoji: '🌷',
-    name: 'Fleuriste',
-    description: '3 fleurs différentes dans ton album.',
-  ),
-  PoussidexBadge(
-    id: 'generous_waterer',
-    emoji: '💦',
-    name: 'Généreux',
-    description: '50 arrosages cumulés.',
-  ),
-  PoussidexBadge(
-    id: 'rain_bringer',
-    emoji: '🌊',
-    name: 'Pluie bienfaisante',
-    description: '100 arrosages cumulés.',
-  ),
-  PoussidexBadge(
-    id: 'anniversary',
-    emoji: '🎂',
-    name: 'Anniversaire',
-    description: 'Un de tes plants fête son premier an.',
-  ),
-  PoussidexBadge(
-    id: 'writer',
-    emoji: '📝',
-    name: 'Écrivain',
-    description: 'Ajouter une note à 5 plants différents.',
+    id: 'herbalist',
+    emoji: '🌿',
+    name: 'Herboriste',
+    description: 'Planter 3 aromatiques différentes.',
+    tier: MedalTier.bronze,
   ),
   PoussidexBadge(
     id: 'lightning',
     emoji: '⚡',
     name: 'Éclair',
     description: '5 plantations dans la même journée.',
+    tier: MedalTier.bronze,
+  ),
+  // ─── SILVER : ça devient sérieux ──────────────────────────────────────
+  PoussidexBadge(
+    id: 'collector',
+    emoji: '⭐',
+    name: 'Collectionneur',
+    description: '10 plants dans ton Poussidex.',
+    tier: MedalTier.silver,
   ),
   PoussidexBadge(
-    id: 'all_families',
-    emoji: '🎭',
-    name: 'Toutes familles',
-    description: "Un plant dans chacune des 9 familles de légumes.",
+    id: 'diverse',
+    emoji: '🎨',
+    name: 'Diversifié',
+    description: '5 familles de légumes différentes dans ton album.',
+    tier: MedalTier.silver,
   ),
   PoussidexBadge(
-    id: 'gourmand',
-    emoji: '🍽️',
-    name: 'Gourmand',
-    description: '100 récoltes cumulées.',
+    id: 'fruit_lover',
+    emoji: '🍅',
+    name: 'Amateur de fruits',
+    description: '5 légumes-fruits plantés.',
+    tier: MedalTier.silver,
   ),
-  // ─── Médailles d'espèce ────────────────────────────────────────────────
+  PoussidexBadge(
+    id: 'florist',
+    emoji: '🌷',
+    name: 'Fleuriste',
+    description: '3 fleurs différentes dans ton album.',
+    tier: MedalTier.silver,
+  ),
+  PoussidexBadge(
+    id: 'documentary',
+    emoji: '📷',
+    name: 'Documentaire',
+    description: '10 photos cumulées dans ton Poussidex.',
+    tier: MedalTier.silver,
+  ),
+  PoussidexBadge(
+    id: 'generous_waterer',
+    emoji: '💦',
+    name: 'Généreux',
+    description: '50 arrosages cumulés.',
+    tier: MedalTier.silver,
+  ),
+  PoussidexBadge(
+    id: 'writer',
+    emoji: '📝',
+    name: 'Écrivain',
+    description: 'Ajouter une note à 5 plants différents.',
+    tier: MedalTier.silver,
+  ),
   PoussidexBadge(
     id: 'first_gold',
     emoji: '🥇',
     name: 'Premier Or',
     description: 'Décrocher ta première médaille Or sur une espèce.',
+    tier: MedalTier.silver,
+  ),
+  // ─── GOLD : jardinier confirmé ────────────────────────────────────────
+  PoussidexBadge(
+    id: 'master_collector',
+    emoji: '🏅',
+    name: 'Maître collectionneur',
+    description: '30 plants dans ton Poussidex.',
+    tier: MedalTier.gold,
+  ),
+  PoussidexBadge(
+    id: 'sun_tour',
+    emoji: '☀️',
+    name: 'Tour du soleil',
+    description: 'Planter au moins un légume dans chacune des 4 saisons.',
+    tier: MedalTier.gold,
+  ),
+  PoussidexBadge(
+    id: 'big_harvester',
+    emoji: '🏆',
+    name: 'Gros récolteur',
+    description: '50 récoltes cumulées.',
+    tier: MedalTier.gold,
+  ),
+  PoussidexBadge(
+    id: 'green_thumb',
+    emoji: '🌿',
+    name: 'Main verte',
+    description: 'Un de tes plants survit 6 mois.',
+    tier: MedalTier.gold,
+  ),
+  PoussidexBadge(
+    id: 'rain_bringer',
+    emoji: '🌊',
+    name: 'Pluie bienfaisante',
+    description: '100 arrosages cumulés.',
+    tier: MedalTier.gold,
+  ),
+  PoussidexBadge(
+    id: 'anniversary',
+    emoji: '🎂',
+    name: 'Anniversaire',
+    description: 'Un de tes plants fête son premier an.',
+    tier: MedalTier.gold,
   ),
   PoussidexBadge(
     id: 'first_shiny',
     emoji: '✨',
     name: 'Premier Shiny',
     description: 'Obtenir ta première version Shiny d\'un légume.',
+    tier: MedalTier.gold,
+  ),
+  // ─── SHINY : la cour des grands ───────────────────────────────────────
+  PoussidexBadge(
+    id: 'all_families',
+    emoji: '🎭',
+    name: 'Toutes familles',
+    description: "Un plant dans chacune des 9 familles de légumes.",
+    tier: MedalTier.shiny,
+  ),
+  PoussidexBadge(
+    id: 'gourmand',
+    emoji: '🍽️',
+    name: 'Gourmand',
+    description: '100 récoltes cumulées.',
+    tier: MedalTier.shiny,
   ),
   PoussidexBadge(
     id: 'shiny_master',
     emoji: '🌟',
     name: 'Maître Shiny',
     description: 'Obtenir 5 espèces en version Shiny.',
+    tier: MedalTier.shiny,
   ),
   PoussidexBadge(
     id: 'rainbow_gold',
     emoji: '🌈',
     name: 'Arc-en-ciel doré',
     description: "Une médaille Or ou plus dans chacune des 9 familles.",
+    tier: MedalTier.shiny,
   ),
 ];
 

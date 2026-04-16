@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/models/plantation.dart';
+import 'package:kultiva/models/vegetable_medal.dart';
 
 Plantation _plant({
   required String vegId,
@@ -158,6 +159,13 @@ void main() {
             reason: '${b.id} has empty description');
         expect(b.emoji.trim(), isNotEmpty,
             reason: '${b.id} has empty emoji');
+      }
+    });
+
+    test('all badges have a tier (not MedalTier.none)', () {
+      for (final b in allBadges) {
+        expect(b.tier, isNot(MedalTier.none),
+            reason: '${b.id} has no tier assigned');
       }
     });
   });
