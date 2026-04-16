@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
-/// Overlay bottom-sheet qui explique en 3 slides comment utiliser
-/// Mon Potager. Affiché une seule fois (flag gardenTutorialDone) juste
-/// après le choix de la taille de potager.
+/// Overlay bottom-sheet qui explique en 3 slides comment utiliser le
+/// Poussidex. Affiché une seule fois (flag gardenTutorialDone) juste
+/// après la 1ère plantation.
 class GardenTutorialSheet extends StatefulWidget {
   const GardenTutorialSheet({super.key});
 
@@ -18,30 +18,31 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
 
   static const List<_TutoSlide> _slides = <_TutoSlide>[
     _TutoSlide(
-      emoji: '🌱',
-      title: 'Pose tes plants',
+      emoji: '🪴',
+      title: 'Collectionne tes légumes',
       subtitle:
-          "Tap une case vide pour choisir un légume dans ton catalogue. "
-          "Chaque plant prend la forme d'un bonbon kawaii avec le nom en dessous.",
-      gradient: [Color(0xFFFFE0E8), Color(0xFFF8C0D0)],
+          "Chaque fois que tu plantes un légume, une carte unique "
+          "s'ajoute à ton Poussidex. Une barre de progression te montre "
+          "combien de jours il reste avant la récolte.",
+      gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _TutoSlide(
       emoji: '💧',
-      title: 'Arrose en deux taps',
+      title: 'Prends-en soin',
       subtitle:
-          "Active le bouton 💧 en bas : chaque case tapée est arrosée. "
-          "Ou utilise '🌧️ Tout arroser' pour tout hydrater d'un coup — "
-          "la bannière orange te signale les plantes qui ont soif.",
+          "Tape une carte pour ouvrir sa fiche. Arrose, récolte, "
+          "ajoute des notes ou termine la culture. Les plantes qui "
+          "ont soif sont marquées d'une goutte 💧 sur leur carte.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
     ),
     _TutoSlide(
-      emoji: '🔍',
-      title: 'Appui long = fiche plante',
+      emoji: '🏆',
+      title: 'Débloque des badges',
       subtitle:
-          "Maintiens le doigt sur une case plantée pour voir sa fiche : "
-          "dernière date d'arrosage, bons voisins, alertes de compagnonnage. "
-          "Tu peux aussi retirer le plant depuis là.",
-      gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
+          "10 badges à gagner : premier pas, diversifié, tour du "
+          "soleil, main verte… Chaque action rapporte, et un kawaii "
+          "te prévient à chaque nouveau déblocage.",
+      gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
     ),
   ];
 
