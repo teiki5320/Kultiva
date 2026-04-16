@@ -4,6 +4,7 @@ import '../models/vegetable.dart';
 import '../models/vegetable_medal.dart';
 import '../services/audio_service.dart';
 import '../theme/app_theme.dart';
+import '../utils/category_colors.dart';
 import 'medal_badge.dart';
 
 /// Card d'un légume — emoji dans cercle pastel, nom, note, badges saison,
@@ -26,34 +27,9 @@ class VegetableCard extends StatelessWidget {
     this.medalTier = MedalTier.none,
   });
 
-  Color _catColor() {
-    switch (vegetable.category) {
-      case VegetableCategory.fruits:
-        return KultivaColors.terracotta;
-      case VegetableCategory.leaves:
-        return KultivaColors.primaryGreen;
-      case VegetableCategory.roots:
-        return const Color(0xFF8B6914);
-      case VegetableCategory.bulbs:
-        return const Color(0xFFB39DDB);
-      case VegetableCategory.tubers:
-        return const Color(0xFF795548);
-      case VegetableCategory.flowers:
-        return KultivaColors.springA;
-      case VegetableCategory.seeds:
-        return KultivaColors.summerA;
-      case VegetableCategory.stems:
-        return const Color(0xFF66BB6A);
-      case VegetableCategory.aromatics:
-        return const Color(0xFF26A69A);
-      case VegetableCategory.accessories:
-        return const Color(0xFF78909C);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final cc = _catColor();
+    final cc = vegetable.category.familyColor;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: InkWell(

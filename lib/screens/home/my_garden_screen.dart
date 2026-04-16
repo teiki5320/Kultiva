@@ -13,6 +13,8 @@ import '../../services/audio_service.dart';
 import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/category_colors.dart';
+import '../../utils/months.dart';
 import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/medal_badge.dart';
@@ -1026,12 +1028,7 @@ class _StatsView extends StatelessWidget {
   final List<Plantation> plantations;
   const _StatsView({required this.plantations});
 
-  static const List<String> _monthsLong = <String>[
-    'jan', 'fév', 'mar', 'avr', 'mai', 'juin',
-    'juil', 'août', 'sep', 'oct', 'nov', 'déc',
-  ];
-
-  String _fmt(DateTime d) => '${d.day} ${_monthsLong[d.month - 1]}';
+  String _fmt(DateTime d) => '${d.day} ${monthNamesShort[d.month - 1]}';
 
   @override
   Widget build(BuildContext context) {
@@ -1151,7 +1148,7 @@ class _StatsView extends StatelessWidget {
                 emoji: e.key.emoji,
                 count: e.value,
                 max: topFamilies.first.value,
-                color: _familyColor(e.key),
+                color: e.key.familyColor,
               ),
             const SizedBox(height: 20),
           ],
@@ -1476,11 +1473,6 @@ class _JournalView extends StatelessWidget {
   final List<Plantation> plantations;
   const _JournalView({required this.plantations});
 
-  static const List<String> _monthsLong = <String>[
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
-  ];
-
   String _dayLabel(DateTime d) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -1488,7 +1480,7 @@ class _JournalView extends StatelessWidget {
     final diff = today.difference(dd).inDays;
     if (diff == 0) return "AUJOURD'HUI";
     if (diff == 1) return 'HIER';
-    return '${d.day} ${_monthsLong[d.month - 1].toUpperCase()}';
+    return '${d.day} ${monthNamesLong[d.month - 1].toUpperCase()}';
   }
 
   @override
@@ -1500,7 +1492,7 @@ class _JournalView extends StatelessWidget {
       final label = v == null ? p.vegetableId : '${v.emoji} ${v.name}';
       final color = v == null
           ? KultivaColors.primaryGreen
-          : _familyColor(v.category);
+          : v.category.familyColor;
 
       events.add(_JournalEvent(
         date: p.plantedAt,
@@ -1773,32 +1765,6 @@ class _EmptyState extends StatelessWidget {
 // Carte d'une plantation — bordure famille, barre de progression, stats
 // ═══════════════════════════════════════════════════════════════════════════
 
-/// Couleur associée à la famille d'un légume.
-Color _familyColor(VegetableCategory cat) {
-  switch (cat) {
-    case VegetableCategory.fruits:
-      return KultivaColors.terracotta;
-    case VegetableCategory.leaves:
-      return KultivaColors.primaryGreen;
-    case VegetableCategory.roots:
-      return const Color(0xFF8B6914);
-    case VegetableCategory.bulbs:
-      return const Color(0xFFB39DDB);
-    case VegetableCategory.tubers:
-      return const Color(0xFF795548);
-    case VegetableCategory.flowers:
-      return KultivaColors.springA;
-    case VegetableCategory.seeds:
-      return KultivaColors.summerA;
-    case VegetableCategory.stems:
-      return const Color(0xFF66BB6A);
-    case VegetableCategory.aromatics:
-      return const Color(0xFF26A69A);
-    case VegetableCategory.accessories:
-      return const Color(0xFF78909C);
-  }
-}
-
 /// Estimation du nombre de jours jusqu'à récolte (borne haute).
 /// Lit [Vegetable.harvestTimeBySeason] si rempli, sinon défaut par famille.
 int _expectedHarvestDays(Vegetable v, DateTime plantedAt) {
@@ -1856,14 +1822,9 @@ class _PlantationCard extends StatelessWidget {
     required this.tier,
   });
 
-  static const List<String> _shortMonths = <String>[
-    'jan', 'fév', 'mar', 'avr', 'mai', 'juin',
-    'juil', 'août', 'sep', 'oct', 'nov', 'déc',
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final cc = _familyColor(vegetable.category);
+    final cc = vegetable.category.familyColor;
     final days = plantation.daysSincePlanted;
     final expected = _expectedHarvestDays(vegetable, plantation.plantedAt);
     final progress = (days / expected).clamp(0.0, 1.0);
@@ -1873,7 +1834,7 @@ class _PlantationCard extends StatelessWidget {
     final watered = plantation.wateredAt.length;
     final harvested = plantation.harvestCount;
     final plantedLabel =
-        '${plantation.plantedAt.day} ${_shortMonths[plantation.plantedAt.month - 1]}';
+        '${plantation.plantedAt.day} ${monthNamesShort[plantation.plantedAt.month - 1]}';
 
     return Container(
       decoration: BoxDecoration(
@@ -2156,20 +2117,16 @@ class _PlantationDetailSheet extends StatefulWidget {
 }
 
 class _PlantationDetailSheetState extends State<_PlantationDetailSheet> {
-  static const List<String> _monthsLong = <String>[
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
-  ];
 
   String _fmtDate(DateTime d) {
-    return '${d.day} ${_monthsLong[d.month - 1]}';
+    return '${d.day} ${monthNamesLong[d.month - 1]}';
   }
 
   @override
   Widget build(BuildContext context) {
     final p = widget.plantation;
     final v = widget.vegetable;
-    final cc = _familyColor(v.category);
+    final cc = v.category.familyColor;
     final days = p.daysSincePlanted;
     final expected = _expectedHarvestDays(v, p.plantedAt);
     final remaining = (expected - days).clamp(0, expected);

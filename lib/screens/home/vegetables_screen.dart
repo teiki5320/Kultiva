@@ -9,6 +9,7 @@ import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/category_colors.dart';
 import '../../widgets/medal_badge.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
@@ -542,30 +543,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     );
   }
 
-  Color _categoryColor(VegetableCategory cat) {
-    switch (cat) {
-      case VegetableCategory.fruits:
-        return KultivaColors.terracotta;
-      case VegetableCategory.leaves:
-        return KultivaColors.primaryGreen;
-      case VegetableCategory.roots:
-        return const Color(0xFF8B6914);
-      case VegetableCategory.bulbs:
-        return const Color(0xFFB39DDB);
-      case VegetableCategory.tubers:
-        return const Color(0xFF795548);
-      case VegetableCategory.flowers:
-        return KultivaColors.springA;
-      case VegetableCategory.seeds:
-        return KultivaColors.summerA;
-      case VegetableCategory.stems:
-        return const Color(0xFF66BB6A);
-      case VegetableCategory.aromatics:
-        return const Color(0xFF26A69A);
-      case VegetableCategory.accessories:
-        return const Color(0xFF78909C);
-    }
-  }
+  Color _categoryColor(VegetableCategory cat) => cat.familyColor;
 }
 
 // Header kawaii saisonnier.
