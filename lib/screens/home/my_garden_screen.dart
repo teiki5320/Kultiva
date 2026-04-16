@@ -309,13 +309,54 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   Future<void> _addPhoto(Plantation p, {required bool fromCamera}) async {
-    final path = await PhotoService.pick(fromCamera: fromCamera);
-    if (path == null) return;
-    _replace(p.copyWith(photoPaths: <String>[...p.photoPaths, path]));
+    final localPath = await PhotoService.pick(fromCamera: fromCamera);
+    if (localPath == null) return;
+    // Ajoute la photo immédiatement (chemin local) pour que l'UI
+    // affiche la miniature sans attendre le réseau.
+    _replace(p.copyWith(
+      photoPaths: <String>[...p.photoPaths, localPath],
+    ));
+    // Upload vers Supabase Storage en arrière-plan ; si succès on
+    // remplace le chemin local par l'URL cloud dans la plantation,
+    // et on efface le fichier local (économise l'espace device).
+    unawaited(_uploadAndReplacePhoto(p.id, localPath));
+  }
+
+  /// Upload une photo locale vers Storage puis met à jour la
+  /// plantation pour remplacer le chemin local par l'URL renvoyée.
+  Future<void> _uploadAndReplacePhoto(
+      String plantationId, String localPath) async {
+    final url = await CloudSyncService.instance.uploadPhoto(
+      localPath: localPath,
+      plantationId: plantationId,
+    );
+    if (url == null) return; // Upload échoué : on garde le local.
+    if (!mounted) return;
+    final idx = _plantations.indexWhere((x) => x.id == plantationId);
+    if (idx < 0) return;
+    final current = _plantations[idx];
+    final updated = current.copyWith(
+      photoPaths: current.photoPaths
+          .map((p) => p == localPath ? url : p)
+          .toList(),
+    );
+    setState(() => _plantations[idx] = updated);
+    await PrefsService.instance
+        .setPlantationsJson(Plantation.encodeAll(_plantations));
+    unawaited(
+      CloudSyncService.instance.uploadAllPlantations(_plantations),
+    );
+    // Efface le fichier local maintenant qu'on a l'URL cloud.
+    unawaited(PhotoService.deleteFile(localPath));
   }
 
   void _removePhoto(Plantation p, String path) {
-    PhotoService.deleteFile(path);
+    // Supprime le fichier (local OU cloud).
+    if (path.startsWith('http')) {
+      unawaited(CloudSyncService.instance.deletePhoto(path));
+    } else {
+      PhotoService.deleteFile(path);
+    }
     _replace(p.copyWith(
       photoPaths: p.photoPaths.where((x) => x != path).toList(),
     ));

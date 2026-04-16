@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../../models/plantation.dart';
@@ -9,6 +7,7 @@ import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/months.dart';
 import '../../../widgets/medal_badge.dart';
+import '../../../widgets/plantation_photo.dart';
 
 /// Estimation du nombre de jours jusqu'à récolte (borne haute). Lit
 /// [Vegetable.harvestTimeBySeason] si rempli, sinon défaut par famille.
@@ -212,8 +211,8 @@ class _PhotoWithTier extends StatelessWidget {
 
     Widget image = ClipRRect(
       borderRadius: BorderRadius.circular(radius),
-      child: Image.file(
-        File(path),
+      child: PlantationPhoto(
+        pathOrUrl: path,
         width: size,
         height: size,
         fit: BoxFit.cover,

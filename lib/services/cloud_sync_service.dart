@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -258,13 +259,118 @@ class CloudSyncService {
     final merged = <String>{...localBadges, ...cloudBadges};
     await PrefsService.instance.setUnlockedBadges(merged);
     await uploadBadges(merged);
-    // 3. Plantations (déjà implémenté).
+    // 3. Plantations.
     await mergeOnLogin();
+    // 4. Photos en attente (chemins locaux à uploader vers Storage).
+    unawaited(syncPendingPhotos());
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // Photos (Supabase Storage : bucket "plant-photos")
+  // ══════════════════════════════════════════════════════════════════
+
+  static const String _photosBucket = 'plant-photos';
+
+  /// Upload une photo locale vers Supabase Storage sous le path
+  /// `{user_id}/{plant_id}/plant_<ts>.jpg` et retourne l'URL publique.
+  /// Retourne null si l'user n'est pas connecté ou si l'upload échoue.
+  Future<String?> uploadPhoto({
+    required String localPath,
+    required String plantationId,
+  }) async {
+    if (!_signedIn) return null;
+    final uid = _userId;
+    if (uid == null) return null;
+    final file = File(localPath);
+    if (!await file.exists()) return null;
+    try {
+      final filename = localPath.split('/').last;
+      final storagePath = '$uid/$plantationId/$filename';
+      await _client.storage.from(_photosBucket).upload(
+            storagePath,
+            file,
+            fileOptions: const FileOptions(
+              cacheControl: '3600',
+              upsert: true,
+            ),
+          );
+      return _client.storage.from(_photosBucket).getPublicUrl(storagePath);
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.uploadPhoto error: $e');
+      return null;
+    }
+  }
+
+  /// Supprime une photo du bucket (si c'est une URL Storage de ce
+  /// projet). Silencieux pour les chemins locaux.
+  Future<void> deletePhoto(String pathOrUrl) async {
+    if (!_signedIn) return;
+    if (!pathOrUrl.startsWith('http')) return;
+    try {
+      // L'URL publique a la forme :
+      //   https://<project>.supabase.co/storage/v1/object/public/plant-photos/<path>
+      // On extrait le path après "/plant-photos/".
+      const marker = '/plant-photos/';
+      final idx = pathOrUrl.indexOf(marker);
+      if (idx < 0) return;
+      final storagePath = pathOrUrl.substring(idx + marker.length);
+      await _client.storage.from(_photosBucket).remove([storagePath]);
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.deletePhoto error: $e');
+    }
+  }
+
+  /// Upload les photos locales restantes (prises offline ou avant le
+  /// login) vers Storage et met à jour les plantations locales avec
+  /// les nouvelles URLs. À appeler au boot / login.
+  Future<void> syncPendingPhotos() async {
+    if (!_signedIn) return;
+    final plantations =
+        Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    bool anyChange = false;
+    for (int i = 0; i < plantations.length; i++) {
+      final p = plantations[i];
+      final newPaths = <String>[];
+      bool pChanged = false;
+      for (final path in p.photoPaths) {
+        if (path.startsWith('http')) {
+          newPaths.add(path);
+          continue;
+        }
+        // Chemin local → tenter l'upload.
+        final url = await uploadPhoto(
+          localPath: path,
+          plantationId: p.id,
+        );
+        if (url != null) {
+          newPaths.add(url);
+          pChanged = true;
+        } else {
+          // Upload échoué : on garde le chemin local, on réessaiera.
+          newPaths.add(path);
+        }
+      }
+      if (pChanged) {
+        plantations[i] = p.copyWith(photoPaths: newPaths);
+        anyChange = true;
+      }
+    }
+    if (anyChange) {
+      await PrefsService.instance
+          .setPlantationsJson(Plantation.encodeAll(plantations));
+      await uploadAllPlantations(plantations);
+    }
   }
 
   // ─── Helpers ────────────────────────────────────────────────────────
 
   Map<String, dynamic> _toRow(Plantation p, String userId) {
+    // On upload uniquement les photos cloud (URLs https). Les chemins
+    // locaux restants (photos prises offline, pas encore synchronisées)
+    // seront uploadées plus tard par syncPendingPhotos() et l'URL
+    // remplacera le chemin local dans la plantation.
+    final cloudPhotos =
+        p.photoPaths.where((s) => s.startsWith('http')).toList();
     return <String, dynamic>{
       'id': p.id,
       'user_id': userId,
@@ -275,11 +381,7 @@ class CloudSyncService {
       'watered_at':
           p.wateredAt.map((d) => d.toIso8601String()).toList(),
       'note': p.note,
-      // On n'upload PAS le chemin local des photos : c'est un path
-      // filesystem (/var/mobile/...) qui n'a aucun sens sur un autre
-      // device. Les photos seront uploadées dans Supabase Storage au
-      // chunk 9c, avec des URLs publiques qui remplaceront ces paths.
-      'photo_paths': const <String>[],
+      'photo_paths': cloudPhotos,
     };
   }
 

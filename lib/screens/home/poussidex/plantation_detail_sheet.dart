@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../../../models/plantation.dart';
@@ -7,6 +5,7 @@ import '../../../models/vegetable.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/months.dart';
+import '../../../widgets/plantation_photo.dart';
 import '../../../widgets/share_card.dart';
 import 'poussidex_card.dart' show expectedHarvestDays;
 
@@ -534,8 +533,8 @@ class _PhotoThumb extends StatelessWidget {
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(14),
-            child: Image.file(
-              File(path),
+            child: PlantationPhoto(
+              pathOrUrl: path,
               width: 96,
               height: 96,
               fit: BoxFit.cover,

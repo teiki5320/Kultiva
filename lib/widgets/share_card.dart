@@ -11,6 +11,7 @@ import '../models/plantation.dart';
 import '../models/vegetable.dart';
 import '../theme/app_theme.dart';
 import '../utils/months.dart';
+import 'plantation_photo.dart';
 
 /// Dialog qui affiche une prévisualisation "partage" d'une carte Poussidex
 /// et propose de l'exporter comme image (via RepaintBoundary) puis de
@@ -203,8 +204,8 @@ class _ShareCardContent extends StatelessWidget {
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: hasPhoto
-                    ? Image.file(
-                        File(plantation.photoPaths.last),
+                    ? PlantationPhoto(
+                        pathOrUrl: plantation.photoPaths.last,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Center(
                           child: Text(vegetable.emoji,
