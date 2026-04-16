@@ -125,6 +125,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     switch (_filter) {
       case _AlbumFilter.all:
       case _AlbumFilter.badges: // ignoré, la vue badges ne passe pas par là
+      case _AlbumFilter.stats: // ignoré, la vue stats ne passe pas par là
+      case _AlbumFilter.journal: // ignoré, la vue journal ne passe pas par là
         return _plantations;
       case _AlbumFilter.growing:
         return _plantations.where((p) => p.isActive).toList();
