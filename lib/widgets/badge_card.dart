@@ -52,8 +52,9 @@ class _BadgeCardOverlay extends StatefulWidget {
 }
 
 class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _idleCtrl;
+  late final AnimationController _flipCtrl;
 
   /// Rotation Y contrôlée par le drag utilisateur (en radians).
   double _dragRotationY = 0;
@@ -64,6 +65,9 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
   /// true pendant un drag : pause le balancement idle.
   bool _dragging = false;
 
+  /// true si la carte montre sa face arrière.
+  bool _showingBack = false;
+
   @override
   void initState() {
     super.initState();
@@ -71,12 +75,26 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
       vsync: this,
       duration: const Duration(seconds: 5),
     )..repeat(reverse: false);
+    _flipCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
   }
 
   @override
   void dispose() {
     _idleCtrl.dispose();
+    _flipCtrl.dispose();
     super.dispose();
+  }
+
+  void _toggleFlip() {
+    setState(() => _showingBack = !_showingBack);
+    if (_showingBack) {
+      _flipCtrl.forward();
+    } else {
+      _flipCtrl.reverse();
+    }
   }
 
   void _onDragStart(_) {
@@ -109,13 +127,15 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
       behavior: HitTestBehavior.opaque,
       child: Center(
         child: AnimatedBuilder(
-          animation: _idleCtrl,
+          animation: Listenable.merge(<Listenable>[_idleCtrl, _flipCtrl]),
           builder: (context, _) {
             // Balancement idle : sinusoïde ±0.25 rad (~14°) sur Y.
             final idleY = _dragging
                 ? 0.0
                 : math.sin(_idleCtrl.value * 2 * math.pi) * 0.25;
-            final totalY = _dragRotationY + idleY;
+            // Angle du retournement : 0 → π sur _flipCtrl.
+            final flipY = _flipCtrl.value * math.pi;
+            final totalY = _dragRotationY + idleY + flipY;
             final totalX = _dragRotationX;
 
             final matrix = Matrix4.identity()
@@ -123,21 +143,40 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
               ..rotateX(totalX)
               ..rotateY(totalY);
 
+            // On détermine quelle face montrer en fonction de l'angle Y
+            // effectif (modulo 2π). Si on est dans [π/2, 3π/2] → face
+            // arrière. Sinon → face avant.
+            final normalizedY =
+                (totalY % (2 * math.pi) + 2 * math.pi) % (2 * math.pi);
+            final showBack =
+                normalizedY > math.pi / 2 && normalizedY < 3 * math.pi / 2;
+
+            // Contenu à afficher. Le dos est pré-inversé en miroir (Y)
+            // pour compenser la rotation — sans ça, les textes du dos
+            // apparaîtraient à l'envers.
+            final Widget content = showBack
+                ? Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..rotateY(math.pi),
+                    child: _BadgeCardBack(unlocked: widget.unlocked),
+                  )
+                : _BadgeCardVisual(
+                    badge: widget.badge,
+                    unlocked: widget.unlocked,
+                    rotationX: totalX,
+                    rotationY: totalY,
+                  );
+
             return GestureDetector(
-              // Le tap sur la carte ne ferme pas (on absorbe l'event).
-              onTap: () {},
+              // Tap sur la carte = retournement (au lieu de rien).
+              onTap: _toggleFlip,
               onPanStart: _onDragStart,
               onPanUpdate: _onDragUpdate,
               onPanEnd: _onDragEnd,
               child: Transform(
                 alignment: Alignment.center,
                 transform: matrix,
-                child: _BadgeCardVisual(
-                  badge: widget.badge,
-                  unlocked: widget.unlocked,
-                  rotationX: totalX,
-                  rotationY: totalY,
-                ),
+                child: content,
               ),
             );
           },
@@ -481,4 +520,187 @@ class _HolographicOverlay extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Face arrière de la carte : design "Poussidex Collection" sans
+/// dépendre d'un badge spécifique. Même format 280×400 que la face
+/// avant pour un retournement fluide.
+class _BadgeCardBack extends StatelessWidget {
+  final bool unlocked;
+
+  const _BadgeCardBack({required this.unlocked});
+
+  @override
+  Widget build(BuildContext context) {
+    final gold = const Color(0xFFFFB74D);
+    final Color frameColor = unlocked ? gold : Colors.grey.shade500;
+
+    return Container(
+      width: 280,
+      height: 400,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: unlocked
+              ? <Color>[
+                  const Color(0xFFF5E4AD),
+                  const Color(0xFFE8B923),
+                  const Color(0xFF8B6914),
+                ]
+              : <Color>[
+                  Colors.grey.shade400,
+                  Colors.grey.shade600,
+                ],
+        ),
+        border: Border.all(color: frameColor, width: 4),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 24,
+            offset: const Offset(0, 10),
+          ),
+          if (unlocked)
+            BoxShadow(
+              color: gold.withOpacity(0.45),
+              blurRadius: 30,
+              spreadRadius: 2,
+            ),
+        ],
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: unlocked
+                ? <Color>[
+                    const Color(0xFFFFF3B0),
+                    const Color(0xFFFFD54A),
+                  ]
+                : <Color>[
+                    Colors.grey.shade200,
+                    Colors.grey.shade300,
+                  ],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: frameColor.withOpacity(0.5), width: 2),
+        ),
+        child: Stack(
+          children: <Widget>[
+            // Motif de fond : hexagones + sparkles en mosaïque douce.
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.25,
+                child: CustomPaint(
+                  painter: _BackPatternPainter(color: frameColor),
+                ),
+              ),
+            ),
+            // Contenu central : gros emoji + lettrage stylisé.
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: <Widget>[
+                  const Spacer(),
+                  // Grand logo (emoji central).
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.9),
+                      border: Border.all(color: frameColor, width: 3),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: frameColor.withOpacity(0.4),
+                          blurRadius: 16,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      '🪴',
+                      style: TextStyle(fontSize: 72),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'POUSSIDEX',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 22,
+                      letterSpacing: 4,
+                      color: unlocked
+                          ? const Color(0xFF5A3E00)
+                          : Colors.grey.shade700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'COLLECTION',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 11,
+                      letterSpacing: 5,
+                      color: frameColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'KULTIVA',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 10,
+                      letterSpacing: 3,
+                      color: frameColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Motif de fond décoratif pour le dos de carte : petits symboles
+/// jardinage (feuilles, sparkles) dispersés en diagonale.
+class _BackPatternPainter extends CustomPainter {
+  final Color color;
+  _BackPatternPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const symbols = <String>['🌱', '✨', '🍃', '⭐'];
+    final textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+    final step = 48.0;
+    int i = 0;
+    for (double y = -step; y < size.height + step; y += step) {
+      for (double x = -step; x < size.width + step; x += step) {
+        final offsetX = (i.isEven) ? 0.0 : step / 2;
+        final symbol = symbols[i % symbols.length];
+        textPainter.text = TextSpan(
+          text: symbol,
+          style: TextStyle(
+            fontSize: 16,
+            color: color.withOpacity(0.8),
+          ),
+        );
+        textPainter.layout();
+        textPainter.paint(canvas, Offset(x + offsetX, y));
+        i++;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_BackPatternPainter old) => old.color != color;
 }
