@@ -44,52 +44,12 @@ class MedalBadge extends StatelessWidget {
     final double emojiSize = size * 0.55;
     final cornerSize = (size * 0.34).clamp(16.0, 26.0);
 
-    // Fond du cercle : teinte famille pour none/bronze, dégradé radial
-    // argenté pour silver, doré pour gold — effet "pièce".
-    BoxDecoration circleDecoration;
-    switch (tier) {
-      case MedalTier.silver:
-        circleDecoration = const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: <Color>[
-              Color(0xFFF7F9FC), // centre blanc-bleuté
-              Color(0xFFCED5DE), // milieu argent
-              Color(0xFF9AA4B0), // bord argent profond
-            ],
-            stops: <double>[0.0, 0.65, 1.0],
-          ),
-        );
-      case MedalTier.gold:
-        circleDecoration = const BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: <Color>[
-              Color(0xFFFFF3B0), // centre jaune clair
-              Color(0xFFFFD54A), // milieu or
-              Color(0xFFE8B923), // bord or profond
-            ],
-            stops: <double>[0.0, 0.65, 1.0],
-          ),
-        );
-      case MedalTier.none:
-      case MedalTier.bronze:
-      case MedalTier.shiny:
-        circleDecoration = BoxDecoration(
-          shape: BoxShape.circle,
-          color: familyColor.withOpacity(0.15),
-        );
-    }
+    // Construction du cercle inner : simple fond famille pour
+    // none/bronze/shiny ; pièce métallique brillante pour silver/gold.
+    Widget circle = _buildInnerCircle(emojiSize);
 
-    Widget circle = Container(
-      width: size,
-      height: size,
-      decoration: circleDecoration,
-      alignment: Alignment.center,
-      child: Text(emoji, style: TextStyle(fontSize: emojiSize)),
-    );
-
-    // Anneau : uni (bronze/silver/gold) ou arc-en-ciel (shiny).
+    // Anneau + glow extérieur. Silver et gold reçoivent un vrai glow
+    // (pas qu'un boxShadow discret) pour trancher sur les fonds pastel.
     Widget ring;
     if (tier == MedalTier.shiny) {
       ring = Container(
@@ -110,21 +70,40 @@ class MedalBadge extends StatelessWidget {
         child: ClipOval(child: circle),
       );
     } else {
+      final glowShadows = switch (tier) {
+        MedalTier.gold => <BoxShadow>[
+            BoxShadow(
+              color: const Color(0xFFFFB800).withOpacity(0.55),
+              blurRadius: 18,
+              spreadRadius: 1,
+            ),
+            BoxShadow(
+              color: const Color(0xFFFFF0A0).withOpacity(0.45),
+              blurRadius: 6,
+              spreadRadius: 0,
+            ),
+          ],
+        MedalTier.silver => <BoxShadow>[
+            BoxShadow(
+              color: const Color(0xFF9AA4B0).withOpacity(0.45),
+              blurRadius: 14,
+              spreadRadius: 1,
+            ),
+            BoxShadow(
+              color: Colors.white.withOpacity(0.5),
+              blurRadius: 6,
+              spreadRadius: 0,
+            ),
+          ],
+        _ => const <BoxShadow>[],
+      };
       ring = Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: ringColor, width: ringWidth),
-          boxShadow: tier == MedalTier.gold
-              ? <BoxShadow>[
-                  BoxShadow(
-                    color: ringColor.withOpacity(0.35),
-                    blurRadius: 10,
-                    spreadRadius: 1,
-                  ),
-                ]
-              : const <BoxShadow>[],
+          boxShadow: glowShadows,
         ),
         child: ClipOval(child: circle),
       );
@@ -181,5 +160,107 @@ class MedalBadge extends StatelessWidget {
       case MedalTier.shiny:
         return tier.color;
     }
+  }
+
+  /// Construit le disque central. Pour silver/gold, empile :
+  ///  1. dégradé radial décalé (lumière venant du haut-gauche),
+  ///  2. reflet diagonal (band gloss) qui simule un reflet de lumière,
+  ///  3. highlight brillant en haut-gauche,
+  ///  4. l'emoji centré.
+  /// Pour les autres paliers, simple cercle teinté famille.
+  Widget _buildInnerCircle(double emojiSize) {
+    final isMetallic =
+        tier == MedalTier.silver || tier == MedalTier.gold;
+    if (!isMetallic) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: familyColor.withOpacity(0.15),
+        ),
+        alignment: Alignment.center,
+        child: Text(emoji, style: TextStyle(fontSize: emojiSize)),
+      );
+    }
+
+    final List<Color> metallicColors = tier == MedalTier.gold
+        ? const <Color>[
+            Color(0xFFFFFCE0), // highlight quasi blanc
+            Color(0xFFFFE870), // or clair
+            Color(0xFFF5C518), // or vif
+            Color(0xFFB8851F), // or profond (ombre)
+          ]
+        : const <Color>[
+            Color(0xFFFFFFFF), // highlight pur
+            Color(0xFFE5EAF0), // argent clair
+            Color(0xFFB8C1CC), // argent
+            Color(0xFF6E7986), // argent profond (ombre)
+          ];
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          // 1. Disque métallique : dégradé radial décalé pour simuler
+          //    une source de lumière en haut-gauche.
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                center: const Alignment(-0.35, -0.4),
+                radius: 1.1,
+                colors: metallicColors,
+                stops: const <double>[0.0, 0.25, 0.65, 1.0],
+              ),
+            ),
+          ),
+          // 2. Bande de reflet diagonale (gloss) — très subtile.
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  Colors.white.withOpacity(0.45),
+                  Colors.white.withOpacity(0.0),
+                  Colors.white.withOpacity(0.0),
+                  Colors.white.withOpacity(0.15),
+                ],
+                stops: const <double>[0.0, 0.35, 0.7, 1.0],
+              ),
+            ),
+          ),
+          // 3. Highlight spéculaire (petit spot blanc en haut-gauche).
+          Positioned(
+            top: size * 0.12,
+            left: size * 0.18,
+            child: Container(
+              width: size * 0.32,
+              height: size * 0.2,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: <Color>[
+                    Colors.white.withOpacity(0.85),
+                    Colors.white.withOpacity(0.0),
+                  ],
+                  stops: const <double>[0.0, 1.0],
+                ),
+              ),
+            ),
+          ),
+          // 4. Emoji centré.
+          Text(emoji, style: TextStyle(fontSize: emojiSize)),
+        ],
+      ),
+    );
   }
 }
