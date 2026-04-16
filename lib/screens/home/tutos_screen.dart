@@ -147,24 +147,18 @@ class TutosScreen extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Image de fond (fallback dégradé si absente).
-                  Image.asset(
-                    'assets/images/tuto_astuces.PNG',
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            const Color(0xFFFFE0B2),
-                            KultivaColors.springB,
-                          ],
-                        ),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFFFFE0B2),
+                          KultivaColors.springB,
+                        ],
                       ),
                     ),
                   ),
-                  // Voile noir pour lisibilité du texte.
                   DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -172,7 +166,7 @@ class TutosScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.black.withOpacity(0.0),
-                          Colors.black.withOpacity(0.35),
+                          Colors.black.withOpacity(0.2),
                         ],
                       ),
                     ),
@@ -221,19 +215,14 @@ class TutosScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
               child: Row(
                 children: [
-                  // Astuces : image utilisée en header → on affiche juste
-                  // un emoji pour éviter le doublon visuel.
-                  if (cat.label == 'Astuces')
-                    Text(cat.emoji, style: const TextStyle(fontSize: 24))
-                  else
-                    ClipOval(
-                      child: Image.asset(
-                        cat.imagePath,
-                        width: 32, height: 32, fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) =>
-                            Text(cat.emoji, style: const TextStyle(fontSize: 22)),
-                      ),
+                  ClipOval(
+                    child: Image.asset(
+                      cat.imagePath,
+                      width: 32, height: 32, fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) =>
+                          Text(cat.emoji, style: const TextStyle(fontSize: 22)),
                     ),
+                  ),
                   const SizedBox(width: 10),
                   Text(
                     cat.label,
