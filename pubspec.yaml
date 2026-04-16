@@ -20,6 +20,12 @@ dependencies:
 
   # Backend : auth + sync cloud du Poussidex
   supabase_flutter: ^2.5.0
+  # OAuth natif pour Google / Apple Sign-In (échange d'idToken avec
+  # Supabase.auth.signInWithIdToken).
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.3
+  # Nonce hashé en SHA-256 pour Sign in with Apple.
+  crypto: ^3.0.3
 
   # Navigation
   go_router: ^12.0.0

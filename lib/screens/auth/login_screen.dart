@@ -1,5 +1,9 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/supabase_config.dart';
 import '../../services/auth_service.dart';
 import '../../services/cloud_sync_service.dart';
 import '../../theme/app_theme.dart';
@@ -29,18 +33,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
+    await _runAuth(() => AuthService.instance.signInWithEmail(
+          email: _emailCtrl.text.trim(),
+          password: _passwordCtrl.text,
+        ));
+  }
+
+  Future<void> _signInWithGoogle() =>
+      _runAuth(AuthService.instance.signInWithGoogle);
+
+  Future<void> _signInWithApple() =>
+      _runAuth(AuthService.instance.signInWithApple);
+
+  /// Exécute l'action d'auth donnée, gère loading/erreur/sync cloud.
+  Future<void> _runAuth(Future<void> Function() action) async {
     setState(() {
       _loading = true;
       _error = null;
     });
     try {
-      await AuthService.instance.signInWithEmail(
-        email: _emailCtrl.text.trim(),
-        password: _passwordCtrl.text,
-      );
-      // Sync complet avec le cloud : plantations + badges + préférences.
-      // Si l'utilisateur revient d'une autre installation, ses plants,
-      // badges et réglages réapparaissent automatiquement.
+      await action();
+      // Vérifie qu'on est bien loggé (l'user peut annuler un flow OAuth).
+      if (!AuthService.instance.isSignedIn) return;
+      // Sync cloud après login OK : plantations + badges + prefs + photos.
       await CloudSyncService.instance.syncAllOnLogin();
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
@@ -49,6 +64,16 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) setState(() => _loading = false);
     }
   }
+
+  /// Sign in with Apple n'a de sens que sur iOS / macOS natifs.
+  /// Ailleurs on masque le bouton.
+  bool get _showAppleButton =>
+      !kIsWeb && (Platform.isIOS || Platform.isMacOS);
+
+  /// Le bouton Google s'affiche dès qu'un Web Client ID a été
+  /// configuré dans SupabaseConfig. Sinon on le cache pour ne pas
+  /// promettre une feature qui ne marche pas.
+  bool get _showGoogleButton => GoogleOAuthConfig.webClientId != null;
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +202,57 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
               child: const Text("Créer un compte"),
             ),
+            if (_showGoogleButton || _showAppleButton) ...<Widget>[
+              const SizedBox(height: 20),
+              const _OrSeparator(),
+              const SizedBox(height: 16),
+              if (_showGoogleButton) ...<Widget>[
+                OutlinedButton.icon(
+                  onPressed: _loading ? null : _signInWithGoogle,
+                  icon: const Text('🇬', style: TextStyle(fontSize: 18)),
+                  label: const Text('Continuer avec Google'),
+                ),
+                const SizedBox(height: 10),
+              ],
+              if (_showAppleButton)
+                OutlinedButton.icon(
+                  onPressed: _loading ? null : _signInWithApple,
+                  icon: const Icon(Icons.apple, size: 20),
+                  label: const Text('Continuer avec Apple'),
+                ),
+            ],
           ],
         ),
       ),
+    );
+  }
+}
+
+class _OrSeparator extends StatelessWidget {
+  const _OrSeparator();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Divider(
+            color: KultivaColors.lightGreen.withOpacity(0.6),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            'ou',
+            style: TextStyle(color: KultivaColors.textSecondary),
+          ),
+        ),
+        Expanded(
+          child: Divider(
+            color: KultivaColors.lightGreen.withOpacity(0.6),
+          ),
+        ),
+      ],
     );
   }
 }

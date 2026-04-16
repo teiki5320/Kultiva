@@ -15,3 +15,30 @@ class SupabaseConfig {
   static const String anonKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZraXdrZWtuZnp3ZHZ1ZmNxYnJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNDQ0NDIsImV4cCI6MjA5MTkyMDQ0Mn0.TlR7djhq7N76fVsKbxpbxTQfz0hlqItVIP0J5zZUPOc';
 }
+
+/// Configuration Google OAuth pour Sign in with Google.
+///
+/// Prérequis — dans Google Cloud Console (console.cloud.google.com) :
+///   1. Créer (ou sélectionner) un projet.
+///   2. APIs & Services → OAuth consent screen → configurer l'app.
+///   3. Credentials → Create Credentials → OAuth client ID :
+///        a. Application type = iOS → bundle ID = ton bundle
+///           (ex: com.example.kultiva). Copie le REVERSED_CLIENT_ID
+///           dans ios/Runner/Info.plist.
+///        b. Application type = Web → copie le Client ID ici dans
+///           [webClientId]. C'est ce même Client ID + Secret que tu
+///           colles dans Supabase Dashboard → Authentication →
+///           Providers → Google.
+///   4. Pour Android (plus tard) : créer un client OAuth Android
+///      avec le SHA-1 de ta clé de signature.
+class GoogleOAuthConfig {
+  GoogleOAuthConfig._();
+
+  /// Client ID de type "Web" — utilisé par google_sign_in pour
+  /// demander un idToken que Supabase peut valider.
+  ///
+  /// Remplace cette valeur par ton vrai Web Client ID dès qu'il est
+  /// créé dans Google Cloud. Tant que c'est `null`, la connexion
+  /// Google est désactivée côté app.
+  static const String? webClientId = null;
+}
