@@ -39,6 +39,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   Map<String, MedalTier> _medals = <String, MedalTier>{};
   _AlbumFilter _filter = _AlbumFilter.all;
   bool _loaded = false;
+  bool _deleteMode = false;
 
   /// Total d'espèces collectionnables (tous les légumes sauf accessoires).
   static final int _totalSpecies = vegetablesBase
@@ -287,6 +288,35 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _save();
   }
 
+  /// Supprime une plantation en mode suppression avec un bouton d'annulation
+  /// dans un SnackBar (fenêtre de 4 secondes).
+  void _removeWithUndo(Plantation p, Vegetable veg) {
+    setState(() => _plantations.removeWhere((x) => x.id == p.id));
+    _save();
+    AudioService.instance.play(Sfx.tap);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('🗑️ ${veg.name} retiré du Poussidex'),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Annuler',
+          textColor: Colors.white,
+          onPressed: () {
+            setState(() => _plantations.add(p));
+            _save();
+          },
+        ),
+      ),
+    );
+    // Si la collection est vide, on sort auto du mode suppression.
+    if (_plantations.isEmpty) {
+      setState(() => _deleteMode = false);
+    }
+  }
+
   void _setNote(Plantation p, String? note) {
     _replace(p.copyWith(note: note));
   }
@@ -387,12 +417,17 @@ class MyGardenScreenState extends State<MyGardenScreen> {
               totalBadges: allBadges.length,
             ),
             if (thirstyCount > 0 &&
+                !_deleteMode &&
                 _filter != _AlbumFilter.badges &&
                 _filter != _AlbumFilter.stats &&
                 _filter != _AlbumFilter.journal)
               _ThirstyBanner(
                 count: thirstyCount,
                 onTap: _waterAllThirsty,
+              ),
+            if (_deleteMode)
+              _DeleteModeBanner(
+                onExit: () => setState(() => _deleteMode = false),
               ),
             _FilterBar(
               filter: _filter,
@@ -413,12 +448,40 @@ class MyGardenScreenState extends State<MyGardenScreen> {
         ),
       ),
       floatingActionButton: showFab
-          ? FloatingActionButton.extended(
-              onPressed: _openPicker,
-              icon: const Icon(Icons.add),
-              label: const Text('Planter',
-                  style: TextStyle(fontWeight: FontWeight.w800)),
-              backgroundColor: KultivaColors.primaryGreen,
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                FloatingActionButton.extended(
+                  heroTag: 'poussidex_delete_fab',
+                  onPressed: () => setState(() => _deleteMode = !_deleteMode),
+                  icon: Icon(
+                    _deleteMode ? Icons.close : Icons.delete_outline,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    _deleteMode ? 'Terminé' : 'Retirer',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: _deleteMode
+                      ? Colors.grey.shade600
+                      : Colors.red.shade400,
+                ),
+                const SizedBox(width: 10),
+                FloatingActionButton.extended(
+                  heroTag: 'poussidex_plant_fab',
+                  onPressed: _deleteMode ? null : _openPicker,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Planter',
+                      style: TextStyle(fontWeight: FontWeight.w800)),
+                  backgroundColor: _deleteMode
+                      ? Colors.grey.shade300
+                      : KultivaColors.primaryGreen,
+                ),
+              ],
             )
           : null,
     );
@@ -456,11 +519,53 @@ class MyGardenScreenState extends State<MyGardenScreen> {
             vegetablesBase.where((v) => v.id == p.vegetableId).firstOrNull;
         if (veg == null) return const SizedBox.shrink();
         return GestureDetector(
-          onTap: () => _showDetail(p, veg),
-          child: _PlantationCard(
-            plantation: p,
-            vegetable: veg,
-            tier: _medals[p.vegetableId] ?? MedalTier.bronze,
+          onTap: () {
+            if (_deleteMode) {
+              _removeWithUndo(p, veg);
+            } else {
+              _showDetail(p, veg);
+            }
+          },
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              _PlantationCard(
+                plantation: p,
+                vegetable: veg,
+                tier: _medals[p.vegetableId] ?? MedalTier.bronze,
+              ),
+              // Overlay rouge + croix quand on est en mode suppression.
+              if (_deleteMode)
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.red.withOpacity(0.18),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                          color: Colors.red.shade400, width: 2),
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red.shade400,
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.25),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(Icons.close,
+                            color: Colors.white, size: 24),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         );
       },
@@ -611,6 +716,57 @@ class _ThirstyBanner extends StatelessWidget {
                   color: KultivaColors.terracotta, size: 18),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Bannière "Mode suppression actif — tap pour sortir"
+// ═══════════════════════════════════════════════════════════════════════════
+
+class _DeleteModeBanner extends StatelessWidget {
+  final VoidCallback onExit;
+  const _DeleteModeBanner({required this.onExit});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.red.shade50,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.red.shade300),
+        ),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.delete_outline,
+                color: Colors.red.shade700, size: 20),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Tape une carte pour la retirer',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.red.shade700,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: onExit,
+              child: Text(
+                'Terminé',
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: Colors.red.shade700,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
