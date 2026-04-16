@@ -311,7 +311,7 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '🌻',
                             imagePath: 'assets/images/card_dujour.png',
-                            label: 'Du jour',
+                            label: 'Légume du jour',
                             subtitle: vegOfDay.name,
                             gradientColors: const [
                               KultivaColors.autumnA,

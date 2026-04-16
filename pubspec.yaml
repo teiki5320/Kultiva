@@ -45,10 +45,19 @@ dependencies:
   # Audio (sons + musique de fond)
   audioplayers: ^6.1.0
 
+  # Photos des plants du Poussidex
+  image_picker: ^1.0.4
+  path_provider: ^2.1.1
+
+  # Partage d'images (cartes Poussidex sur Instagram / Stories)
+  share_plus: ^7.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  # Génération des icônes iOS + Android à partir de assets/images/app_icon.png
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
@@ -56,3 +65,20 @@ flutter:
   assets:
     - assets/images/
     - assets/sounds/
+
+flutter_launcher_icons:
+  image_path: "assets/images/app_icon.png"
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  background_color_ios: "#FCF4E1"
+  min_sdk_android: 21
+  # Icône adaptative Android (API 26+) : fond crème + lettre en premier plan.
+  adaptive_icon_background: "#FCF4E1"
+  adaptive_icon_foreground: "assets/images/app_icon.png"
+  web:
+    generate: false
+  windows:
+    generate: false
+  macos:
+    generate: false

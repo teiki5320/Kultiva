@@ -24,6 +24,10 @@ class PrefsService {
   static const _kSoundEnabled = 'kultiva.soundEnabled';
   static const _kMusicEnabled = 'kultiva.musicEnabled';
   static const _kSoundVolume = 'kultiva.soundVolume';
+  static const _kGardenTutorialDone = 'kultiva.gardenTutorialDone';
+  static const _kPlantations = 'kultiva.plantations.v1';
+  static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
+  static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
 
   SharedPreferences? _prefs;
 
@@ -35,6 +39,12 @@ class PrefsService {
   final ValueNotifier<bool> soundEnabled = ValueNotifier<bool>(true);
   final ValueNotifier<bool> musicEnabled = ValueNotifier<bool>(false);
   final ValueNotifier<double> soundVolume = ValueNotifier<double>(0.7);
+
+  /// Notifier incrémenté à chaque écriture de la collection de
+  /// plantations. Les écrans qui dépendent des médailles (Étal) s'y
+  /// abonnent pour se rafraîchir sans avoir à importer l'état du
+  /// Poussidex.
+  final ValueNotifier<int> plantationsVersion = ValueNotifier<int>(0);
 
   bool _loaded = false;
   bool get isLoaded => _loaded;
@@ -90,6 +100,13 @@ class PrefsService {
     await _prefs?.setBool(_kOnboardingDone, value);
   }
 
+  bool get gardenTutorialDone =>
+      _prefs?.getBool(_kGardenTutorialDone) ?? false;
+
+  Future<void> setGardenTutorialDone(bool value) async {
+    await _prefs?.setBool(_kGardenTutorialDone, value);
+  }
+
   bool isFavorite(String vegetableId) =>
       favorites.value.contains(vegetableId);
 
@@ -104,7 +121,7 @@ class PrefsService {
     await _prefs?.setStringList(_kFavorites, next.toList());
   }
 
-  // --- Garden grid ---
+  // --- Garden grid (legacy, migré vers Poussidex) ---
   String? get gardenGrid => _prefs?.getString(_kGardenGrid);
 
   Future<void> setGardenGrid(String? json) async {
@@ -113,6 +130,27 @@ class PrefsService {
     } else {
       await _prefs?.setString(_kGardenGrid, json);
     }
+  }
+
+  // --- Poussidex : collection de plantations ---
+  String? get plantationsJson => _prefs?.getString(_kPlantations);
+
+  Future<void> setPlantationsJson(String json) async {
+    await _prefs?.setString(_kPlantations, json);
+    plantationsVersion.value = plantationsVersion.value + 1;
+  }
+
+  Set<String> get unlockedBadges =>
+      (_prefs?.getStringList(_kUnlockedBadges) ?? const <String>[]).toSet();
+
+  Future<void> setUnlockedBadges(Set<String> ids) async {
+    await _prefs?.setStringList(_kUnlockedBadges, ids.toList());
+  }
+
+  bool get gridMigrated => _prefs?.getBool(_kGridMigrated) ?? false;
+
+  Future<void> setGridMigrated(bool value) async {
+    await _prefs?.setBool(_kGridMigrated, value);
   }
 
   // --- Watering history ---

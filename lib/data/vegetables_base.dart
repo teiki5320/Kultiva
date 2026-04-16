@@ -28,6 +28,11 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+tomate",
     youtubeUrl: "https://www.youtube.com/results?search_query=semer+tomates+potager",
+    harvestTimeBySeason: {
+      'spring': '90 à 110 jours (semis précoce sous abri)',
+      'summer': '70 à 90 jours (plein champ)',
+      'autumn': '100 à 120 jours (variétés tardives)',
+    },
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -52,6 +57,11 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+carotte",
     youtubeUrl: "https://www.youtube.com/results?search_query=semer+carottes+potager",
+    harvestTimeBySeason: {
+      'spring': '75 à 90 jours',
+      'summer': '90 à 110 jours',
+      'autumn': '100 à 120 jours (variétés de garde)',
+    },
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -75,6 +85,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Riche, frais, bien drainé",
     yieldEstimate: "3 à 6 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+courgette",
+    harvestTimeBySeason: {
+      'spring': '60 à 75 jours (semis en avril)',
+      'summer': '50 à 65 jours',
+    },
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -98,6 +112,11 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Meuble, humifère",
     yieldEstimate: "2 à 3 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+laitue",
+    harvestTimeBySeason: {
+      'spring': '45 à 60 jours',
+      'summer': '40 à 55 jours',
+      'autumn': '55 à 75 jours',
+    },
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -357,6 +376,11 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Léger, meuble, frais",
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+radis",
+    harvestTimeBySeason: {
+      'spring': '21 à 30 jours',
+      'summer': '25 à 35 jours',
+      'autumn': '30 à 40 jours',
+    },
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1329,6 +1353,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Indispensable pour tailler et récolter',
     description: 'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.',
     amazonUrl: 'https://www.amazon.fr/s?k=sécateur+jardinage',
+    accessorySub: AccessorySubCategory.tools,
   ),
   Vegetable(
     id: 'acc_arrosoir',
@@ -1338,6 +1363,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Pour un arrosage doux et précis',
     description: 'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.',
     amazonUrl: 'https://www.amazon.fr/s?k=arrosoir+jardinage',
+    accessorySub: AccessorySubCategory.tools,
   ),
   Vegetable(
     id: 'acc_terreau',
@@ -1347,6 +1373,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'La base pour des plants en bonne santé',
     description: 'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.',
     amazonUrl: 'https://www.amazon.fr/s?k=terreau+bio+potager',
+    accessorySub: AccessorySubCategory.soil,
   ),
   Vegetable(
     id: 'acc_engrais',
@@ -1356,6 +1383,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Nourrir le sol naturellement',
     description: 'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.',
     amazonUrl: 'https://www.amazon.fr/s?k=engrais+bio+potager',
+    accessorySub: AccessorySubCategory.soil,
   ),
   Vegetable(
     id: 'acc_bac',
@@ -1365,6 +1393,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Potager surélevé pour balcon ou terrasse',
     description: 'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.',
     amazonUrl: 'https://www.amazon.fr/s?k=bac+potager+surélevé',
+    accessorySub: AccessorySubCategory.pots,
   ),
   Vegetable(
     id: 'acc_tuteur',
@@ -1374,6 +1403,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Soutenir tomates, haricots, pois...',
     description: 'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.',
     amazonUrl: 'https://www.amazon.fr/s?k=tuteur+potager+bambou',
+    accessorySub: AccessorySubCategory.tools,
   ),
   Vegetable(
     id: 'acc_graines',
@@ -1383,6 +1413,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Coffret de graines variées pour démarrer',
     description: 'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.',
     amazonUrl: 'https://www.amazon.fr/s?k=kit+graines+potager+bio',
+    accessorySub: AccessorySubCategory.seeds,
   ),
   Vegetable(
     id: 'acc_gants',
@@ -1392,5 +1423,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     note: 'Protéger ses mains au jardin',
     description: 'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.',
     amazonUrl: 'https://www.amazon.fr/s?k=gants+jardinage',
+    accessorySub: AccessorySubCategory.tools,
   ),
 ];

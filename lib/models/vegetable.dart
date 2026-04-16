@@ -1,3 +1,37 @@
+/// Sous-catégorie d'un accessoire dans le catalogue Kultiva.
+enum AccessorySubCategory {
+  tools,
+  pots,
+  soil,
+  seeds;
+
+  String get label {
+    switch (this) {
+      case AccessorySubCategory.tools:
+        return 'Outils';
+      case AccessorySubCategory.pots:
+        return 'Bacs & Pots';
+      case AccessorySubCategory.soil:
+        return 'Terreau & Engrais';
+      case AccessorySubCategory.seeds:
+        return 'Semences';
+    }
+  }
+
+  String get emoji {
+    switch (this) {
+      case AccessorySubCategory.tools:
+        return '🛠️';
+      case AccessorySubCategory.pots:
+        return '🪴';
+      case AccessorySubCategory.soil:
+        return '🌱';
+      case AccessorySubCategory.seeds:
+        return '🌾';
+    }
+  }
+}
+
 /// Catégorie d'un légume dans le catalogue Kultiva.
 enum VegetableCategory {
   flowers,
@@ -100,6 +134,13 @@ class Vegetable {
   final String? amazonUrl;
   final String? youtubeUrl;
 
+  // --- Accessoires : sous-catégorie (uniquement si category == accessories) ---
+  final AccessorySubCategory? accessorySub;
+
+  // --- Temps avant récolte par saison (si renseigné) ---
+  /// Ex. {Season.spring: '60-80 jours', Season.summer: '50-70 jours'}.
+  final Map<String, String>? harvestTimeBySeason;
+
   const Vegetable({
     required this.id,
     required this.name,
@@ -119,6 +160,8 @@ class Vegetable {
     this.yieldEstimate,
     this.amazonUrl,
     this.youtubeUrl,
+    this.accessorySub,
+    this.harvestTimeBySeason,
   });
 
   /// Seuil effectif de jours secs max. Si [wateringDaysMax] est renseigné,

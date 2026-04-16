@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import '../../data/regions/france.dart';
 import '../../data/regions/west_africa.dart';
 import '../../data/vegetables_base.dart';
+import '../../models/plantation.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
+import '../../models/vegetable_medal.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/medal_badge.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
@@ -27,6 +30,7 @@ class VegetablesScreen extends StatefulWidget {
 class _VegetablesScreenState extends State<VegetablesScreen> {
   final TextEditingController _searchCtrl = TextEditingController();
   VegetableCategory? _selectedCategory;
+  AccessorySubCategory? _selectedAccSub;
   String _query = '';
   _SortMode _sortMode = _SortMode.alpha;
   bool _favOnly = false;
@@ -52,6 +56,12 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return false;
       }
       if (_selectedCategory != null && v.category != _selectedCategory) {
+        return false;
+      }
+      // Filtre sous-catégorie accessoires (si accessoires sélectionnés).
+      if (_selectedCategory == VegetableCategory.accessories &&
+          _selectedAccSub != null &&
+          v.accessorySub != _selectedAccSub) {
         return false;
       }
       if (_query.isNotEmpty) {
@@ -88,12 +98,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     final now = DateTime.now().month;
     return regionData.any(
         (rd) => rd.vegetableId == v.id && rd.sowingMonths.contains(now));
-  }
-
-  bool _canHarvest(Vegetable v, List<RegionData> regionData) {
-    final now = DateTime.now().month;
-    return regionData.any(
-        (rd) => rd.vegetableId == v.id && rd.harvestMonths.contains(now));
   }
 
   @override
@@ -235,59 +239,107 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                       ),
                     ),
                   ),
-                  // Chips catégories + favoris.
+                  // Chips fixes (Favoris / Toutes / Accessoires).
                   SizedBox(
                     height: 48,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      children: [
-                        _PastelChip(
-                          label: 'Favoris',
-                          emoji: '❤️',
-                          color: KultivaColors.terracotta,
-                          selected: _favOnly,
-                          onTap: () =>
-                              setState(() => _favOnly = !_favOnly),
-                        ),
-                        _PastelChip(
-                          label: 'Toutes',
-                          emoji: '✨',
-                          color: KultivaColors.primaryGreen,
-                          selected:
-                              _selectedCategory == null && !_favOnly,
-                          onTap: () => setState(() {
-                            _selectedCategory = null;
-                            _favOnly = false;
-                          }),
-                        ),
-                        // Accessoires en 3e position, puis les autres catégories.
-                        _PastelChip(
-                          label: VegetableCategory.accessories.label,
-                          emoji: VegetableCategory.accessories.emoji,
-                          color: _categoryColor(VegetableCategory.accessories),
-                          selected: _selectedCategory == VegetableCategory.accessories,
-                          onTap: () => setState(
-                            () => _selectedCategory =
-                                _selectedCategory == VegetableCategory.accessories
-                                    ? null
-                                    : VegetableCategory.accessories,
-                          ),
-                        ),
-                        for (final cat in VegetableCategory.values.where(
-                            (c) => c != VegetableCategory.accessories))
-                          _PastelChip(
-                            label: cat.label,
-                            emoji: cat.emoji,
-                            color: _categoryColor(cat),
-                            selected: _selectedCategory == cat,
-                            onTap: () => setState(
-                              () => _selectedCategory =
-                                  _selectedCategory == cat ? null : cat,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _PastelChip(
+                              label: 'Favoris',
+                              emoji: '❤️',
+                              color: KultivaColors.terracotta,
+                              selected: _favOnly,
+                              onTap: () => setState(() {
+                                _favOnly = !_favOnly;
+                                if (_favOnly) {
+                                  _selectedCategory = null;
+                                  _selectedAccSub = null;
+                                }
+                              }),
                             ),
                           ),
-                      ],
+                          Expanded(
+                            child: _PastelChip(
+                              label: 'Toutes',
+                              emoji: '✨',
+                              color: KultivaColors.primaryGreen,
+                              selected:
+                                  _selectedCategory == null && !_favOnly,
+                              onTap: () => setState(() {
+                                _selectedCategory = null;
+                                _selectedAccSub = null;
+                                _favOnly = false;
+                              }),
+                            ),
+                          ),
+                          Expanded(
+                            child: _PastelChip(
+                              label: VegetableCategory.accessories.label,
+                              emoji: VegetableCategory.accessories.emoji,
+                              color: _categoryColor(VegetableCategory.accessories),
+                              selected: _selectedCategory ==
+                                  VegetableCategory.accessories,
+                              onTap: () => setState(() {
+                                _selectedCategory = _selectedCategory ==
+                                        VegetableCategory.accessories
+                                    ? null
+                                    : VegetableCategory.accessories;
+                                _selectedAccSub = null;
+                                _favOnly = false;
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  ),
+                  // Ligne scrollable contextuelle :
+                  //  - familles si Favoris ou Toutes
+                  //  - sous-catégories accessoires si Accessoires
+                  SizedBox(
+                    height: 44,
+                    child: _selectedCategory == VegetableCategory.accessories
+                        ? ListView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            children: [
+                              for (final sub in AccessorySubCategory.values)
+                                _PastelChip(
+                                  label: sub.label,
+                                  emoji: sub.emoji,
+                                  color: _categoryColor(
+                                      VegetableCategory.accessories),
+                                  selected: _selectedAccSub == sub,
+                                  onTap: () => setState(
+                                    () => _selectedAccSub =
+                                        _selectedAccSub == sub ? null : sub,
+                                  ),
+                                ),
+                            ],
+                          )
+                        : ListView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            children: [
+                              for (final cat in VegetableCategory.values.where(
+                                  (c) => c != VegetableCategory.accessories))
+                                _PastelChip(
+                                  label: cat.label,
+                                  emoji: cat.emoji,
+                                  color: _categoryColor(cat),
+                                  selected: _selectedCategory == cat,
+                                  onTap: () => setState(() {
+                                    _selectedCategory =
+                                        _selectedCategory == cat ? null : cat;
+                                    _selectedAccSub = null;
+                                    _favOnly = false;
+                                  }),
+                                ),
+                            ],
+                          ),
                   ),
                   // Liste ou grille.
                   Expanded(
@@ -309,9 +361,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                               ],
                             ),
                           )
-                        : _gridView
-                            ? _buildGrid(filtered, favs, regionData)
-                            : _buildList(filtered, favs, regionData),
+                        : ValueListenableBuilder<int>(
+                            valueListenable:
+                                PrefsService.instance.plantationsVersion,
+                            builder: (_, __, ___) {
+                              final medals = _loadMedals();
+                              return _gridView
+                                  ? _buildGrid(
+                                      filtered, favs, regionData, medals)
+                                  : _buildList(
+                                      filtered, favs, regionData, medals);
+                            },
+                          ),
                   ),
                 ],
               ),
@@ -322,8 +383,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     );
   }
 
+  /// Charge les plantations persistées et calcule les paliers par espèce.
+  Map<String, MedalTier> _loadMedals() {
+    final plantations =
+        Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    return computeAllMedals(plantations);
+  }
+
   Widget _buildList(
-      List<Vegetable> list, Set<String> favs, List<RegionData> regionData) {
+      List<Vegetable> list,
+      Set<String> favs,
+      List<RegionData> regionData,
+      Map<String, MedalTier> medals) {
     return ListView.builder(
       padding: const EdgeInsets.only(bottom: 16),
       itemCount: list.length,
@@ -333,6 +404,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           vegetable: v,
           canSowNow: _canSow(v, regionData),
           isFavorite: favs.contains(v.id),
+          medalTier: medals[v.id] ?? MedalTier.none,
           onFavoriteToggle: () =>
               PrefsService.instance.toggleFavorite(v.id),
           onTap: () => Navigator.of(context).push(
@@ -350,7 +422,10 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   }
 
   Widget _buildGrid(
-      List<Vegetable> list, Set<String> favs, List<RegionData> regionData) {
+      List<Vegetable> list,
+      Set<String> favs,
+      List<RegionData> regionData,
+      Map<String, MedalTier> medals) {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Adapter le nombre de colonnes à la largeur.
@@ -366,10 +441,9 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           itemCount: list.length,
           itemBuilder: (context, i) {
         final v = list[i];
-        final sow = _canSow(v, regionData);
-        final harvest = _canHarvest(v, regionData);
         final isFav = favs.contains(v.id);
         final cc = _categoryColor(v.category);
+        final tier = medals[v.id] ?? MedalTier.none;
         return GestureDetector(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -391,6 +465,11 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                 ],
               ),
               borderRadius: BorderRadius.circular(20),
+              // Contour couleur famille pour repérage visuel.
+              border: Border.all(
+                color: cc.withOpacity(0.7),
+                width: 2,
+              ),
               boxShadow: [
                 BoxShadow(
                   color: cc.withOpacity(0.2),
@@ -402,41 +481,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             child: Stack(
               clipBehavior: Clip.hardEdge,
               children: [
-                // Bulles kawaii.
-                Positioned(
-                  top: -8, right: -8,
-                  child: Container(
-                    width: 30, height: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: cc.withOpacity(0.12),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 8, left: -6,
-                  child: Container(
-                    width: 18, height: 18,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: cc.withOpacity(0.08),
-                    ),
-                  ),
-                ),
                 Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Emoji dans cercle blanc.
-                      Container(
-                        width: 44, height: 44,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.7),
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(v.emoji,
-                            style: const TextStyle(fontSize: 24)),
+                      // Emoji dans cercle + anneau médaille si espèce
+                      // déjà collectionnée.
+                      MedalBadge(
+                        emoji: v.emoji,
+                        tier: tier,
+                        familyColor: cc,
+                        size: 48,
+                        showCornerMedal: tier != MedalTier.none,
                       ),
                       const SizedBox(height: 6),
                       Padding(
@@ -455,25 +511,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                     ],
                   ),
                 ),
-                // Badges saison.
-                if (sow || harvest)
-                  Positioned(
-                    top: 6,
-                    left: 6,
-                    child: Row(
-                      children: [
-                        if (sow)
-                          _MiniTag(
-                              label: 'Semer',
-                              color: KultivaColors.primaryGreen),
-                        if (sow && harvest) const SizedBox(width: 3),
-                        if (harvest)
-                          _MiniTag(
-                              label: 'Récolte',
-                              color: KultivaColors.terracotta),
-                      ],
-                    ),
-                  ),
                 // Favori.
                 if (isFav)
                   Positioned(
@@ -655,19 +692,21 @@ class _PastelChip extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
+            // Sélectionné : fond coloré. Non sélectionné : fond blanc +
+            // bordure couleur famille pour se repérer visuellement.
             color: selected ? color.withOpacity(0.2) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: selected ? color : Colors.grey.shade300,
-              width: selected ? 2 : 1,
+              color: color,
+              width: selected ? 2.5 : 2,
             ),
           ),
           child: Text(
             '$emoji $label',
             style: TextStyle(
               fontSize: 12,
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-              color: selected ? color : KultivaColors.textPrimary.withOpacity(0.7),
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+              color: color,
             ),
           ),
         ),
@@ -728,27 +767,3 @@ class _VegParticleAnimationState extends State<_VegParticleAnimation>
   }
 }
 
-class _MiniTag extends StatelessWidget {
-  final String label;
-  final Color color;
-  const _MiniTag({required this.label, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 8,
-          fontWeight: FontWeight.w800,
-          color: color,
-        ),
-      ),
-    );
-  }
-}
