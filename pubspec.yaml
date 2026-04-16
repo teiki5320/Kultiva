@@ -18,6 +18,9 @@ dependencies:
   # Préférences locales
   shared_preferences: ^2.2.2
 
+  # Backend : auth + sync cloud du Poussidex
+  supabase_flutter: ^2.5.0
+
   # Navigation
   go_router: ^12.0.0
 

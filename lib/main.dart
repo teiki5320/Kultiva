@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'config/supabase_config.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
@@ -12,6 +14,12 @@ import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialise Supabase (auth + sync cloud). Doit être fait avant
+  // AuthService.load() qui pioche la session courante dans Supabase.
+  await Supabase.initialize(
+    url: SupabaseConfig.url,
+    anonKey: SupabaseConfig.anonKey,
+  );
   await PrefsService.instance.load();
   await AuthService.instance.load();
   await NotificationService.init();
