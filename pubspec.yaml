@@ -61,10 +61,14 @@ flutter:
 
 flutter_launcher_icons:
   image_path: "assets/images/app_icon.png"
-  android: false
+  android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
   background_color_ios: "#FCF4E1"
+  min_sdk_android: 21
+  # Icône adaptative Android (API 26+) : fond crème + lettre en premier plan.
+  adaptive_icon_background: "#FCF4E1"
+  adaptive_icon_foreground: "assets/images/app_icon.png"
   web:
     generate: false
   windows:
