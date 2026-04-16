@@ -36,6 +36,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           "Dessine ta parcelle, ajoute tes plants, suis l'arrosage case par case. Kultiva t'alerte quand il faut arroser.",
     ),
     _OnboardingContent(
+      imagePath: 'assets/images/onboarding_tutos.png',
+      title: 'Apprends en vidéo',
+      subtitle:
+          "L'onglet Tutos regroupe astuces et vidéos pour débuter, "
+          "réussir tes semis, arroser juste, lutter contre les nuisibles.",
+    ),
+    _OnboardingContent(
       imagePath: 'assets/images/onboarding_5.png',
       title: 'Acheter tes graines en un clic',
       subtitle:
