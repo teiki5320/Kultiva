@@ -7,8 +7,6 @@ import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 
 /// Vue "Podium" : 4 podiums top 3 sur différentes métriques.
-/// Chaque podium montre les 3 espèces/plants les mieux classés avec
-/// un visuel de podium doré/argenté/bronze.
 class PoussidexPodiumView extends StatelessWidget {
   final List<Plantation> plantations;
   const PoussidexPodiumView({super.key, required this.plantations});
@@ -59,31 +57,47 @@ class PoussidexPodiumView extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 32),
       children: <Widget>[
         _PodiumSection(
-          title: '🧺 Les plus récoltés',
+          title: 'Les plus récoltés',
+          emoji: '🧺',
+          color: KultivaColors.terracotta,
           entries: topBy((s) => s.totalHarvests),
-          unit: 'récoltes',
+          unitSingular: 'récolte',
+          unitPlural: 'récoltes',
           valueOf: (s) => s.totalHarvests,
+          hint: 'Récolte tes plants pour lancer la course.',
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         _PodiumSection(
-          title: '⏳ Les plus anciens',
+          title: 'Les plus anciens',
+          emoji: '⏳',
+          color: const Color(0xFF8B6914),
           entries: topBy((s) => s.oldestDays),
-          unit: 'jours',
+          unitSingular: 'jour',
+          unitPlural: 'jours',
           valueOf: (s) => s.oldestDays,
+          hint: 'Ton plus vieux plant apparaîtra ici.',
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         _PodiumSection(
-          title: '💧 Les plus arrosés',
+          title: 'Les plus arrosés',
+          emoji: '💧',
+          color: const Color(0xFF4FC3F7),
           entries: topBy((s) => s.totalWaterings),
-          unit: 'arrosages',
+          unitSingular: 'arrosage',
+          unitPlural: 'arrosages',
           valueOf: (s) => s.totalWaterings,
+          hint: 'Arrose tes plants pour remplir le podium.',
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         _PodiumSection(
-          title: '📷 Les plus photographiés',
+          title: 'Les plus photographiés',
+          emoji: '📷',
+          color: const Color(0xFFFFB74D),
           entries: topBy((s) => s.totalPhotos),
-          unit: 'photos',
+          unitSingular: 'photo',
+          unitPlural: 'photos',
           valueOf: (s) => s.totalPhotos,
+          hint: 'Ajoute des photos à tes plants pour ce classement.',
         ),
       ],
     );
@@ -104,132 +118,184 @@ class _SpeciesStats {
 /// Une section podium avec un titre + les 3 marches.
 class _PodiumSection extends StatelessWidget {
   final String title;
+  final String emoji;
+  final Color color;
   final List<_SpeciesStats> entries;
-  final String unit;
+  final String unitSingular;
+  final String unitPlural;
   final int Function(_SpeciesStats) valueOf;
+  final String hint;
 
   const _PodiumSection({
     required this.title,
+    required this.emoji,
+    required this.color,
     required this.entries,
-    required this.unit,
+    required this.unitSingular,
+    required this.unitPlural,
     required this.valueOf,
+    required this.hint,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (entries.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.grey.shade200),
-        ),
-        child: Row(
-          children: <Widget>[
-            Text(title,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w800, fontSize: 14)),
-            const Spacer(),
-            Text(
-              '—',
-              style: TextStyle(
-                color: KultivaColors.textSecondary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // On attribue la 1ère, 2ème, 3ème place aux index 0, 1, 2.
     final first = entries.isNotEmpty ? entries[0] : null;
     final second = entries.length > 1 ? entries[1] : null;
     final third = entries.length > 2 ? entries[2] : null;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.25), width: 1.5),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: color.withOpacity(0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w800,
-              fontSize: 15,
+          // Header de section avec emoji + titre.
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  color.withOpacity(0.10),
+                  color.withOpacity(0.18),
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          // Marche du podium — 2ème à gauche, 1ère au centre, 3ème à droite.
-          SizedBox(
-            height: 160,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
+                Text(emoji, style: const TextStyle(fontSize: 20)),
+                const SizedBox(width: 10),
                 Expanded(
-                  child: second == null
-                      ? const SizedBox()
-                      : _PodiumStep(
-                          rank: 2,
-                          stats: second,
-                          unit: unit,
-                          value: valueOf(second),
-                        ),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      color: color,
+                    ),
+                  ),
                 ),
-                Expanded(
-                  child: first == null
-                      ? const SizedBox()
-                      : _PodiumStep(
-                          rank: 1,
-                          stats: first,
-                          unit: unit,
-                          value: valueOf(first),
-                        ),
-                ),
-                Expanded(
-                  child: third == null
-                      ? const SizedBox()
-                      : _PodiumStep(
-                          rank: 3,
-                          stats: third,
-                          unit: unit,
-                          value: valueOf(third),
-                        ),
-                ),
+                if (first != null)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '${valueOf(first)} ${valueOf(first) > 1 ? unitPlural : unitSingular}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
+          // Corps du podium.
+          if (entries.isEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.hourglass_empty,
+                      size: 16, color: KultivaColors.textSecondary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      hint,
+                      style: TextStyle(
+                        color: KultivaColors.textSecondary,
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+              child: SizedBox(
+                height: 180,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: second == null
+                          ? const SizedBox()
+                          : _PodiumStep(
+                              rank: 2,
+                              stats: second,
+                              unitSingular: unitSingular,
+                              unitPlural: unitPlural,
+                              value: valueOf(second),
+                            ),
+                    ),
+                    Expanded(
+                      child: _PodiumStep(
+                        rank: 1,
+                        stats: first!,
+                        unitSingular: unitSingular,
+                        unitPlural: unitPlural,
+                        value: valueOf(first),
+                      ),
+                    ),
+                    Expanded(
+                      child: third == null
+                          ? const SizedBox()
+                          : _PodiumStep(
+                              rank: 3,
+                              stats: third,
+                              unitSingular: unitSingular,
+                              unitPlural: unitPlural,
+                              value: valueOf(third),
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 }
 
-/// Une marche du podium : emoji légume au sommet, couronne pour le 1er,
-/// médaille pour les autres, socle coloré avec hauteur selon le rang.
+/// Une marche du podium : emoji + badge-médaille, nom dessous, avec un
+/// socle coloré dont la hauteur varie avec le rang. Le 1er a une
+/// couronne + un halo doré marqué.
 class _PodiumStep extends StatelessWidget {
   final int rank; // 1, 2 ou 3
   final _SpeciesStats stats;
-  final String unit;
+  final String unitSingular;
+  final String unitPlural;
   final int value;
 
   const _PodiumStep({
     required this.rank,
     required this.stats,
-    required this.unit,
+    required this.unitSingular,
+    required this.unitPlural,
     required this.value,
   });
 
@@ -240,99 +306,163 @@ class _PodiumStep extends StatelessWidget {
         .firstOrNull;
     if (veg == null) return const SizedBox();
 
-    // Hauteur du socle selon le rang.
-    final stepHeight = rank == 1 ? 90.0 : (rank == 2 ? 65.0 : 45.0);
-    // Couleur du socle selon le rang.
+    final stepHeight = rank == 1 ? 80.0 : (rank == 2 ? 58.0 : 40.0);
+    final emojiSize = rank == 1 ? 66.0 : 50.0;
     final stepColor = _rankColor(rank);
-    final medalEmoji = rank == 1 ? '🥇' : (rank == 2 ? '🥈' : '🥉');
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        // Couronne pour le 1er.
+        // 👑 couronne seulement pour le 1er.
         if (rank == 1)
-          const Text('👑', style: TextStyle(fontSize: 20)),
-        // Emoji du légume dans un cercle coloré.
-        Container(
-          width: 54,
-          height: 54,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: veg.category.familyColor.withOpacity(0.18),
-            border: Border.all(color: stepColor, width: 2.5),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: stepColor.withOpacity(0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 2),
+            child: Text('👑', style: TextStyle(fontSize: 28)),
+          ),
+        // Emoji du légume dans un cercle coloré avec une pastille médaille.
+        SizedBox(
+          width: emojiSize + 14,
+          height: emojiSize + 14,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: <Widget>[
+              Container(
+                width: emojiSize,
+                height: emojiSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: veg.category.familyColor.withOpacity(0.18),
+                  border: Border.all(color: stepColor, width: 3),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: stepColor.withOpacity(rank == 1 ? 0.55 : 0.3),
+                      blurRadius: rank == 1 ? 14 : 8,
+                      spreadRadius: rank == 1 ? 1 : 0,
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  veg.emoji,
+                  style: TextStyle(fontSize: emojiSize * 0.56),
+                ),
+              ),
+              // Pastille médaille au coin haut-droit.
+              Positioned(
+                top: -2,
+                right: -2,
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.18),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    _medalEmoji(rank),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
               ),
             ],
           ),
-          alignment: Alignment.center,
-          child: Text(veg.emoji, style: const TextStyle(fontSize: 28)),
         ),
-        const SizedBox(height: 3),
-        // Valeur (ex : 12 récoltes).
+        const SizedBox(height: 6),
+        // Valeur en gros + unité.
         Text(
           '$value',
           style: TextStyle(
             fontWeight: FontWeight.w900,
-            fontSize: 14,
+            fontSize: rank == 1 ? 20 : 16,
             color: stepColor,
+            height: 1.0,
           ),
         ),
-        // Socle avec rang + nom.
+        Text(
+          value > 1 ? unitPlural : unitSingular,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: stepColor,
+            height: 1.0,
+          ),
+        ),
+        const SizedBox(height: 4),
+        // Socle : juste le nom centré, hauteur varie avec le rang.
         Container(
           width: double.infinity,
           height: stepHeight,
-          margin: const EdgeInsets.symmetric(horizontal: 2),
+          margin: const EdgeInsets.symmetric(horizontal: 3),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
                 stepColor,
-                stepColor.withOpacity(0.8),
+                stepColor.withOpacity(0.75),
               ],
             ),
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(6),
               topRight: Radius.circular(6),
             ),
-            border: Border.all(color: stepColor.withOpacity(0.8)),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(medalEmoji, style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 2),
-              Text(
-                veg.name,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  fontSize: 10,
-                ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
             ],
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+          alignment: Alignment.center,
+          child: Text(
+            veg.name,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+              fontSize: rank == 1 ? 12 : 11,
+              height: 1.1,
+            ),
           ),
         ),
       ],
     );
   }
 
+  String _medalEmoji(int rank) {
+    switch (rank) {
+      case 1:
+        return '🥇';
+      case 2:
+        return '🥈';
+      case 3:
+        return '🥉';
+      default:
+        return '';
+    }
+  }
+
   Color _rankColor(int rank) {
     switch (rank) {
       case 1:
-        return const Color(0xFFE8B923); // or
+        return const Color(0xFFE8B923);
       case 2:
-        return const Color(0xFF9AA4B0); // argent
+        return const Color(0xFF9AA4B0);
       case 3:
-        return const Color(0xFFCD7F32); // bronze
+        return const Color(0xFFCD7F32);
       default:
         return Colors.grey.shade400;
     }
