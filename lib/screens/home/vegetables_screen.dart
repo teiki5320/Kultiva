@@ -438,6 +438,11 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                 ],
               ),
               borderRadius: BorderRadius.circular(20),
+              // Contour couleur famille pour repérage visuel.
+              border: Border.all(
+                color: cc.withOpacity(0.7),
+                width: 2,
+              ),
               boxShadow: [
                 BoxShadow(
                   color: cc.withOpacity(0.2),

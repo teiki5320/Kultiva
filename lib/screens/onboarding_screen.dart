@@ -44,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_5.png',
-      title: 'Acheter tes graines en un clic',
+      title: 'Achète tes graines en un clic',
       subtitle:
           "Depuis chaque fiche légume, un bouton t'emmène vers des graines bio et du matériel sur Amazon.",
     ),
