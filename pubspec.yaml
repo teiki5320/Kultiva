@@ -26,8 +26,9 @@ dependencies:
 
   # Notifications (planification mensuelle + alertes météo)
   # TODO: flutter_local_notifications 16 → 21 dispo mais breaking API.
+  # Tant qu'on est sur 16.x, timezone est bloqué sur 0.9.x.
   flutter_local_notifications: ^16.1.0
-  timezone: ^0.10.0
+  timezone: ^0.9.4
 
   # URL launcher (liens Amazon)
   url_launcher: ^6.2.2
