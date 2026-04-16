@@ -425,8 +425,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         final harvest = _canHarvest(v, regionData);
         final isFav = favs.contains(v.id);
         final cc = _categoryColor(v.category);
-        // Quand la famille est filtrée, fond plus saturé.
-        final familyFiltered = _selectedCategory == v.category;
         return GestureDetector(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -439,29 +437,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: familyFiltered
-                    ? [
-                        cc.withOpacity(0.35),
-                        cc.withOpacity(0.60),
-                      ]
-                    : [
-                        cc.withOpacity(0.10),
-                        cc.withOpacity(0.20),
-                      ],
+                colors: [
+                  cc.withOpacity(0.12),
+                  cc.withOpacity(0.25),
+                ],
               ),
               borderRadius: BorderRadius.circular(20),
-              // Bordure couleur famille bien franche.
-              border: Border.all(
-                color: cc,
-                width: familyFiltered ? 4 : 3,
-              ),
               boxShadow: [
                 BoxShadow(
-                  color: cc.withOpacity(0.25),
+                  color: cc.withOpacity(0.2),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -723,19 +710,21 @@ class _PastelChip extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
+            // Sélectionné : fond coloré. Non sélectionné : fond blanc +
+            // bordure couleur famille pour se repérer visuellement.
             color: selected ? color.withOpacity(0.2) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: selected ? color : Colors.grey.shade300,
-              width: selected ? 2 : 1,
+              color: color,
+              width: selected ? 2.5 : 2,
             ),
           ),
           child: Text(
             '$emoji $label',
             style: TextStyle(
               fontSize: 12,
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-              color: selected ? color : KultivaColors.textPrimary.withOpacity(0.7),
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+              color: color,
             ),
           ),
         ),
