@@ -221,14 +221,19 @@ class TutosScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
               child: Row(
                 children: [
-                  ClipOval(
-                    child: Image.asset(
-                      cat.imagePath,
-                      width: 32, height: 32, fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) =>
-                          Text(cat.emoji, style: const TextStyle(fontSize: 22)),
+                  // Astuces : image utilisée en header → on affiche juste
+                  // un emoji pour éviter le doublon visuel.
+                  if (cat.label == 'Astuces')
+                    Text(cat.emoji, style: const TextStyle(fontSize: 24))
+                  else
+                    ClipOval(
+                      child: Image.asset(
+                        cat.imagePath,
+                        width: 32, height: 32, fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            Text(cat.emoji, style: const TextStyle(fontSize: 22)),
+                      ),
                     ),
-                  ),
                   const SizedBox(width: 10),
                   Text(
                     cat.label,

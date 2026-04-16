@@ -97,12 +97,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         (rd) => rd.vegetableId == v.id && rd.sowingMonths.contains(now));
   }
 
-  bool _canHarvest(Vegetable v, List<RegionData> regionData) {
-    final now = DateTime.now().month;
-    return regionData.any(
-        (rd) => rd.vegetableId == v.id && rd.harvestMonths.contains(now));
-  }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Region>(
@@ -421,8 +415,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           itemCount: list.length,
           itemBuilder: (context, i) {
         final v = list[i];
-        final sow = _canSow(v, regionData);
-        final harvest = _canHarvest(v, regionData);
         final isFav = favs.contains(v.id);
         final cc = _categoryColor(v.category);
         return GestureDetector(
@@ -457,27 +449,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             child: Stack(
               clipBehavior: Clip.hardEdge,
               children: [
-                // Bulles kawaii.
-                Positioned(
-                  top: -8, right: -8,
-                  child: Container(
-                    width: 30, height: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: cc.withOpacity(0.12),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 8, left: -6,
-                  child: Container(
-                    width: 18, height: 18,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: cc.withOpacity(0.08),
-                    ),
-                  ),
-                ),
                 Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -510,25 +481,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                     ],
                   ),
                 ),
-                // Badges saison.
-                if (sow || harvest)
-                  Positioned(
-                    top: 6,
-                    left: 6,
-                    child: Row(
-                      children: [
-                        if (sow)
-                          _MiniTag(
-                              label: 'Semer',
-                              color: KultivaColors.primaryGreen),
-                        if (sow && harvest) const SizedBox(width: 3),
-                        if (harvest)
-                          _MiniTag(
-                              label: 'Récolte',
-                              color: KultivaColors.terracotta),
-                      ],
-                    ),
-                  ),
                 // Favori.
                 if (isFav)
                   Positioned(
@@ -785,27 +737,3 @@ class _VegParticleAnimationState extends State<_VegParticleAnimation>
   }
 }
 
-class _MiniTag extends StatelessWidget {
-  final String label;
-  final Color color;
-  const _MiniTag({required this.label, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 8,
-          fontWeight: FontWeight.w800,
-          color: color,
-        ),
-      ),
-    );
-  }
-}
