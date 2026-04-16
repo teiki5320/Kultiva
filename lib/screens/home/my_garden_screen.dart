@@ -328,62 +328,236 @@ class _EmptyState extends StatelessWidget {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Carte d'une plantation (version minimale — enrichissement en chunk 3b)
+// Carte d'une plantation — bordure famille, barre de progression, stats
 // ═══════════════════════════════════════════════════════════════════════════
+
+/// Couleur associée à la famille d'un légume.
+Color _familyColor(VegetableCategory cat) {
+  switch (cat) {
+    case VegetableCategory.fruits:
+      return KultivaColors.terracotta;
+    case VegetableCategory.leaves:
+      return KultivaColors.primaryGreen;
+    case VegetableCategory.roots:
+      return const Color(0xFF8B6914);
+    case VegetableCategory.bulbs:
+      return const Color(0xFFB39DDB);
+    case VegetableCategory.tubers:
+      return const Color(0xFF795548);
+    case VegetableCategory.flowers:
+      return KultivaColors.springA;
+    case VegetableCategory.seeds:
+      return KultivaColors.summerA;
+    case VegetableCategory.stems:
+      return const Color(0xFF66BB6A);
+    case VegetableCategory.aromatics:
+      return const Color(0xFF26A69A);
+    case VegetableCategory.accessories:
+      return const Color(0xFF78909C);
+  }
+}
+
+/// Estimation du nombre de jours jusqu'à récolte (borne haute).
+/// Lit [Vegetable.harvestTimeBySeason] si rempli, sinon défaut par famille.
+int _expectedHarvestDays(Vegetable v, DateTime plantedAt) {
+  final times = v.harvestTimeBySeason;
+  if (times != null) {
+    final m = plantedAt.month;
+    final seasonKey = m >= 3 && m <= 5
+        ? 'spring'
+        : m >= 6 && m <= 8
+            ? 'summer'
+            : m >= 9 && m <= 11
+                ? 'autumn'
+                : 'winter';
+    final raw = times[seasonKey] ?? times.values.firstOrNull;
+    if (raw != null) {
+      // Extrait le dernier nombre entier de la chaîne ("70 à 90 jours" → 90).
+      final matches = RegExp(r'\d+').allMatches(raw).toList();
+      if (matches.isNotEmpty) {
+        return int.tryParse(matches.last.group(0)!) ?? 70;
+      }
+    }
+  }
+  // Défauts par famille.
+  switch (v.category) {
+    case VegetableCategory.leaves:
+      return 55;
+    case VegetableCategory.roots:
+      return 70;
+    case VegetableCategory.fruits:
+      return 80;
+    case VegetableCategory.bulbs:
+      return 90;
+    case VegetableCategory.tubers:
+      return 100;
+    case VegetableCategory.aromatics:
+      return 45;
+    case VegetableCategory.flowers:
+      return 60;
+    case VegetableCategory.seeds:
+      return 90;
+    case VegetableCategory.stems:
+      return 70;
+    case VegetableCategory.accessories:
+      return 1;
+  }
+}
 
 class _PlantationCard extends StatelessWidget {
   final Plantation plantation;
   final Vegetable vegetable;
   const _PlantationCard({required this.plantation, required this.vegetable});
 
+  static const List<String> _shortMonths = <String>[
+    'jan', 'fév', 'mar', 'avr', 'mai', 'juin',
+    'juil', 'août', 'sep', 'oct', 'nov', 'déc',
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final cc = _familyColor(vegetable.category);
+    final days = plantation.daysSincePlanted;
+    final expected = _expectedHarvestDays(vegetable, plantation.plantedAt);
+    final progress = (days / expected).clamp(0.0, 1.0);
+    final mature = progress >= 1.0;
+    final thirsty = plantation.isActive &&
+        plantation.daysSinceWatered >= vegetable.effectiveWateringDays;
+    final watered = plantation.wateredAt.length;
+    final harvested = plantation.harvestCount;
+    final plantedLabel =
+        '${plantation.plantedAt.day} ${_shortMonths[plantation.plantedAt.month - 1]}';
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: cc.withOpacity(0.7), width: 2),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: cc.withOpacity(0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const Spacer(),
-          Container(
-            width: 72,
-            height: 72,
-            decoration: BoxDecoration(
-              color: KultivaColors.lightGreen.withOpacity(0.35),
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: Text(vegetable.emoji,
-                style: const TextStyle(fontSize: 40)),
+          // Ligne haute : nom + indicateur soif / récolté.
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  vegetable.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (!plantation.isActive)
+                const Text('🧺', style: TextStyle(fontSize: 14))
+              else if (thirsty)
+                const Text('💧', style: TextStyle(fontSize: 14))
+              else if (mature)
+                const Text('✨', style: TextStyle(fontSize: 14)),
+            ],
           ),
-          const Spacer(),
+          const SizedBox(height: 6),
+          // Emoji central dans cercle coloré famille.
+          Expanded(
+            child: Center(
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: cc.withOpacity(0.15),
+                  border: Border.all(color: cc.withOpacity(0.35), width: 1.5),
+                ),
+                alignment: Alignment.center,
+                child: Text(vegetable.emoji,
+                    style: const TextStyle(fontSize: 38)),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Progression.
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                plantation.isActive
+                    ? 'Jour ${days + 1}${mature ? " ★" : "/$expected"}'
+                    : 'Récolté',
+                style: TextStyle(
+                  color: KultivaColors.textSecondary,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                plantedLabel,
+                style: TextStyle(
+                  color: KultivaColors.textSecondary.withOpacity(0.7),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 3),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: plantation.isActive ? progress : 1.0,
+              minHeight: 5,
+              backgroundColor: cc.withOpacity(0.12),
+              valueColor: AlwaysStoppedAnimation<Color>(cc),
+            ),
+          ),
+          const SizedBox(height: 6),
+          // Stats (💧 arrosages, 🧺 récoltes).
+          Row(
+            children: <Widget>[
+              _StatChip(icon: '💧', count: watered),
+              const SizedBox(width: 6),
+              _StatChip(icon: '🧺', count: harvested),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatChip extends StatelessWidget {
+  final String icon;
+  final int count;
+  const _StatChip({required this.icon, required this.count});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(icon, style: const TextStyle(fontSize: 10)),
+          const SizedBox(width: 3),
           Text(
-            vegetable.name,
+            '×$count',
             style: const TextStyle(
-              fontWeight: FontWeight.w800,
-              fontSize: 14,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Jour ${plantation.daysSincePlanted + 1}',
-            style: TextStyle(
-              color: KultivaColors.textSecondary,
-              fontWeight: FontWeight.w600,
-              fontSize: 11,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
