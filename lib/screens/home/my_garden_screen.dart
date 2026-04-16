@@ -13,6 +13,7 @@ import '../../services/audio_service.dart';
 import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/medal_badge.dart';
 import '../../widgets/share_card.dart';
@@ -944,7 +945,13 @@ class _BadgeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gold = const Color(0xFFFFB74D);
-    return Container(
+    return GestureDetector(
+      onTap: () => showBadgeCard(
+        context,
+        badge: badge,
+        unlocked: unlocked,
+      ),
+      child: Container(
       decoration: BoxDecoration(
         color: unlocked ? gold.withOpacity(0.12) : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(18),
@@ -1005,6 +1012,7 @@ class _BadgeTile extends StatelessWidget {
             Icon(Icons.lock_outline,
                 size: 14, color: Colors.grey.shade400),
         ],
+      ),
       ),
     );
   }
