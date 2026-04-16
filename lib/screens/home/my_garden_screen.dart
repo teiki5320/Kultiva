@@ -189,6 +189,46 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     AudioService.instance.play(Sfx.drop);
   }
 
+  /// Liste des plantations qui ont soif (isActive + seuil dépassé).
+  List<Plantation> get _thirsty {
+    final result = <Plantation>[];
+    for (final p in _plantations) {
+      if (!p.isActive) continue;
+      final v = vegetablesBase
+          .where((x) => x.id == p.vegetableId)
+          .firstOrNull;
+      if (v == null) continue;
+      if (p.daysSinceWatered >= v.effectiveWateringDays) result.add(p);
+    }
+    return result;
+  }
+
+  /// Arrose en un tap toutes les plantes qui ont soif.
+  void _waterAllThirsty() {
+    final list = _thirsty;
+    if (list.isEmpty) return;
+    final now = DateTime.now();
+    setState(() {
+      for (int i = 0; i < _plantations.length; i++) {
+        final p = _plantations[i];
+        if (list.any((x) => x.id == p.id)) {
+          _plantations[i] = p.copyWith(
+            wateredAt: <DateTime>[...p.wateredAt, now],
+          );
+        }
+      }
+    });
+    _save();
+    AudioService.instance.play(Sfx.rain);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            '💧 ${list.length} plante${list.length > 1 ? "s" : ""} arrosée${list.length > 1 ? "s" : ""}'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   void _harvest(Plantation p) {
     _replace(p.copyWith(harvestCount: p.harvestCount + 1));
     AudioService.instance.play(Sfx.plant);
@@ -287,6 +327,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     }
     final showFab =
         _filter != _AlbumFilter.badges && _plantations.isNotEmpty;
+    final thirstyCount = _thirsty.length;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -297,6 +338,11 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
               unlockedCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
             ),
+            if (thirstyCount > 0 && _filter != _AlbumFilter.badges)
+              _ThirstyBanner(
+                count: thirstyCount,
+                onTap: _waterAllThirsty,
+              ),
             _FilterBar(
               filter: _filter,
               allCount: _plantations.length,
@@ -449,6 +495,59 @@ class _Header extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Bannière "X plantes ont soif — tap pour tout arroser"
+// ═══════════════════════════════════════════════════════════════════════════
+
+class _ThirstyBanner extends StatelessWidget {
+  final int count;
+  final VoidCallback onTap;
+  const _ThirstyBanner({required this.count, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: <Color>[
+                KultivaColors.terracotta.withOpacity(0.18),
+                const Color(0xFFFFE0B2).withOpacity(0.25),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: KultivaColors.terracotta.withOpacity(0.35),
+            ),
+          ),
+          child: Row(
+            children: <Widget>[
+              const Text('💧', style: TextStyle(fontSize: 20)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  '$count plante${count > 1 ? "s ont" : " a"} soif — Tap pour tout arroser',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: KultivaColors.terracotta,
+                  ),
+                ),
+              ),
+              Icon(Icons.water_drop,
+                  color: KultivaColors.terracotta, size: 18),
+            ],
+          ),
         ),
       ),
     );
