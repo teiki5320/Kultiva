@@ -24,6 +24,7 @@ class PrefsService {
   static const _kSoundEnabled = 'kultiva.soundEnabled';
   static const _kMusicEnabled = 'kultiva.musicEnabled';
   static const _kSoundVolume = 'kultiva.soundVolume';
+  static const _kGardenTutorialDone = 'kultiva.gardenTutorialDone';
 
   SharedPreferences? _prefs;
 
@@ -88,6 +89,13 @@ class PrefsService {
 
   Future<void> setOnboardingDone(bool value) async {
     await _prefs?.setBool(_kOnboardingDone, value);
+  }
+
+  bool get gardenTutorialDone =>
+      _prefs?.getBool(_kGardenTutorialDone) ?? false;
+
+  Future<void> setGardenTutorialDone(bool value) async {
+    await _prefs?.setBool(_kGardenTutorialDone, value);
   }
 
   bool isFavorite(String vegetableId) =>

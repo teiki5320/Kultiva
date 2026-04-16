@@ -11,6 +11,7 @@ import '../../services/watering_service.dart';
 import '../../services/audio_service.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 
@@ -127,6 +128,26 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
           growable: true);
     });
     _saveGarden();
+    _maybeShowTutorial();
+  }
+
+  /// Affiche le tuto 3 slides la première fois qu'un potager est créé.
+  void _maybeShowTutorial() {
+    if (PrefsService.instance.gardenTutorialDone) return;
+    // On attend que le build ait eu lieu avant de pusher la sheet.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (_) => const GardenTutorialSheet(),
+      ).whenComplete(() {
+        PrefsService.instance.setGardenTutorialDone(true);
+      });
+    });
   }
 
   void _resetGarden() {
