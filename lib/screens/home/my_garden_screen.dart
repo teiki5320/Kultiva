@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
 import '../../services/photo_service.dart';
+import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
@@ -147,42 +147,10 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   Future<void> _maybeMigrate() async {
     if (PrefsService.instance.gridMigrated) return;
     final legacy = PrefsService.instance.gardenGrid;
-    if (legacy == null || legacy.isEmpty) {
-      await PrefsService.instance.setGridMigrated(true);
-      return;
-    }
-    try {
-      final data = jsonDecode(legacy) as Map<String, dynamic>;
-      final rows = data['rows'] as int;
-      final cols = data['cols'] as int;
-      final cells = (data['cells'] as List).cast<String?>();
-      final watered = (data['watered'] as Map?) ?? const <String, dynamic>{};
-      final migrated = <Plantation>[];
-      final now = DateTime.now();
-      final rng = Random(42);
-      int idx = 0;
-      for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-          final vegId = cells[r * cols + c];
-          if (vegId == null) continue;
-          final wIso = watered['${r}_$c'] as String?;
-          final wDates = <DateTime>[];
-          if (wIso != null) {
-            final w = DateTime.tryParse(wIso);
-            if (w != null) wDates.add(w);
-          }
-          migrated.add(Plantation(
-            id: '${now.millisecondsSinceEpoch}_${idx++}_${rng.nextInt(99999)}',
-            vegetableId: vegId,
-            plantedAt: now, // l'info de date plantation est perdue
-            wateredAt: wDates,
-          ));
-        }
-      }
+    final migrated = migrateGridToPlantations(legacy);
+    if (migrated.isNotEmpty) {
       await PrefsService.instance
           .setPlantationsJson(Plantation.encodeAll(migrated));
-    } catch (_) {
-      // En cas d'échec de parsing, on abandonne silencieusement.
     }
     await PrefsService.instance.setGridMigrated(true);
   }
