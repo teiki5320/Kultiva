@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
+import '../../services/cloud_sync_service.dart';
 import '../../theme/app_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -39,6 +40,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordCtrl.text,
         name: _nameCtrl.text.trim(),
       );
+      // Upload les plantations locales (si l'user avait déjà joué
+      // offline avant de créer son compte, on ne perd rien).
+      await CloudSyncService.instance.mergeOnLogin();
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
       setState(() => _error = e.message);

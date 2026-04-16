@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
+import '../../services/cloud_sync_service.dart';
 import '../../services/photo_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
@@ -181,6 +183,11 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     await PrefsService.instance
         .setPlantationsJson(Plantation.encodeAll(_plantations));
     _refreshBadges();
+    // Upload vers le cloud en fire-and-forget (pas de await, l'UI
+    // n'attend pas le réseau pour répondre au tap).
+    unawaited(
+      CloudSyncService.instance.uploadAllPlantations(_plantations),
+    );
   }
 
   String _genId() =>
@@ -263,6 +270,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   void _remove(Plantation p) {
     setState(() => _plantations.removeWhere((x) => x.id == p.id));
     _save();
+    unawaited(CloudSyncService.instance.deletePlantation(p.id));
   }
 
   /// Supprime une plantation en mode suppression avec un bouton d'annulation
@@ -270,6 +278,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   void _removeWithUndo(Plantation p, Vegetable veg) {
     setState(() => _plantations.removeWhere((x) => x.id == p.id));
     _save();
+    unawaited(CloudSyncService.instance.deletePlantation(p.id));
     AudioService.instance.play(Sfx.tap);
     if (!mounted) return;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();

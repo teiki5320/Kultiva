@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
+import '../../services/cloud_sync_service.dart';
 import '../../theme/app_theme.dart';
 import 'register_screen.dart';
 
@@ -37,6 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailCtrl.text.trim(),
         password: _passwordCtrl.text,
       );
+      // Fusionne les plantations locales avec celles du cloud.
+      // Si l'utilisateur revient d'une autre installation, ses
+      // plants apparaissent automatiquement.
+      await CloudSyncService.instance.mergeOnLogin();
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
       setState(() => _error = e.message);

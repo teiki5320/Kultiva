@@ -8,6 +8,7 @@ import 'screens/root_tabs.dart';
 import 'screens/splash_screen.dart';
 import 'services/audio_service.dart';
 import 'services/auth_service.dart';
+import 'services/cloud_sync_service.dart';
 import 'services/notification_service.dart';
 import 'services/prefs_service.dart';
 import 'theme/app_theme.dart';
@@ -23,6 +24,12 @@ Future<void> main() async {
   await PrefsService.instance.load();
   await AuthService.instance.load();
   await NotificationService.init();
+  // Si l'utilisateur a déjà une session (il avait ouvert l'app avant),
+  // on merge les plants locaux avec ceux du cloud en arrière-plan. Pas
+  // de await : l'UI démarre tout de suite, la sync se fait derrière.
+  if (AuthService.instance.isSignedIn) {
+    CloudSyncService.instance.mergeOnLogin();
+  }
   // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
   if (PrefsService.instance.notifications.value) {
     await NotificationService.scheduleMonthlyReminder();

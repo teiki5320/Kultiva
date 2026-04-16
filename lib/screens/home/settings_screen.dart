@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
 import '../../services/auth_service.dart';
+import '../../services/cloud_sync_service.dart';
 import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
@@ -271,6 +272,8 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             onTap: () async {
                               await AuthService.instance.signOut();
+                              await CloudSyncService.instance
+                                  .clearLocalData();
                               onSignOut();
                             },
                           ),
