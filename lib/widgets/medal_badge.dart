@@ -44,13 +44,29 @@ class MedalBadge extends StatelessWidget {
     final double emojiSize = size * 0.55;
     final cornerSize = (size * 0.34).clamp(16.0, 26.0);
 
+    // Fond du cercle : teinte famille par défaut ; gold reçoit un dégradé
+    // radial doré pour matérialiser l'effet "pièce".
+    final BoxDecoration circleDecoration = tier == MedalTier.gold
+        ? const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+              colors: <Color>[
+                Color(0xFFFFF3B0), // centre jaune clair
+                Color(0xFFFFD54A), // milieu or
+                Color(0xFFE8B923), // bord or profond
+              ],
+              stops: <double>[0.0, 0.65, 1.0],
+            ),
+          )
+        : BoxDecoration(
+            shape: BoxShape.circle,
+            color: familyColor.withOpacity(0.15),
+          );
+
     Widget circle = Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: familyColor.withOpacity(0.15),
-      ),
+      decoration: circleDecoration,
       alignment: Alignment.center,
       child: Text(emoji, style: TextStyle(fontSize: emojiSize)),
     );
