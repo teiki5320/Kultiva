@@ -126,6 +126,37 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     _showTutorialIfNeeded();
   }
 
+  void _replace(Plantation updated) {
+    setState(() {
+      final i = _plantations.indexWhere((x) => x.id == updated.id);
+      if (i >= 0) _plantations[i] = updated;
+    });
+    _save();
+  }
+
+  void _water(Plantation p) {
+    _replace(p.copyWith(wateredAt: <DateTime>[...p.wateredAt, DateTime.now()]));
+    AudioService.instance.play(Sfx.drop);
+  }
+
+  void _harvest(Plantation p) {
+    _replace(p.copyWith(harvestCount: p.harvestCount + 1));
+    AudioService.instance.play(Sfx.plant);
+  }
+
+  void _terminate(Plantation p) {
+    _replace(p.copyWith(harvestedAt: DateTime.now()));
+  }
+
+  void _remove(Plantation p) {
+    setState(() => _plantations.removeWhere((x) => x.id == p.id));
+    _save();
+  }
+
+  void _setNote(Plantation p, String? note) {
+    _replace(p.copyWith(note: note));
+  }
+
   void _openPicker() {
     showModalBottomSheet<String>(
       context: context,
@@ -134,6 +165,37 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     ).then((vegId) {
       if (vegId != null) _plant(vegId);
     });
+  }
+
+  Future<void> _showDetail(Plantation p, Vegetable v) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) => _PlantationDetailSheet(
+        plantation: p,
+        vegetable: v,
+        onWater: () {
+          _water(p);
+          Navigator.pop(ctx);
+        },
+        onHarvest: () {
+          _harvest(p);
+          Navigator.pop(ctx);
+        },
+        onTerminate: () {
+          _terminate(p);
+          Navigator.pop(ctx);
+        },
+        onRemove: () {
+          _remove(p);
+          Navigator.pop(ctx);
+        },
+        onNoteChanged: (note) => _setNote(p, note),
+      ),
+    );
   }
 
   @override
@@ -182,7 +244,10 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         final veg =
             vegetablesBase.where((v) => v.id == p.vegetableId).firstOrNull;
         if (veg == null) return const SizedBox.shrink();
-        return _PlantationCard(plantation: p, vegetable: veg);
+        return GestureDetector(
+          onTap: () => _showDetail(p, veg),
+          child: _PlantationCard(plantation: p, vegetable: veg),
+        );
       },
     );
   }
@@ -561,6 +626,479 @@ class _StatChip extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Fiche détail d'une carte (bottom sheet)
+// ═══════════════════════════════════════════════════════════════════════════
+
+class _PlantationDetailSheet extends StatefulWidget {
+  final Plantation plantation;
+  final Vegetable vegetable;
+  final VoidCallback onWater;
+  final VoidCallback onHarvest;
+  final VoidCallback onTerminate;
+  final VoidCallback onRemove;
+  final ValueChanged<String?> onNoteChanged;
+
+  const _PlantationDetailSheet({
+    required this.plantation,
+    required this.vegetable,
+    required this.onWater,
+    required this.onHarvest,
+    required this.onTerminate,
+    required this.onRemove,
+    required this.onNoteChanged,
+  });
+
+  @override
+  State<_PlantationDetailSheet> createState() =>
+      _PlantationDetailSheetState();
+}
+
+class _PlantationDetailSheetState extends State<_PlantationDetailSheet> {
+  static const List<String> _monthsLong = <String>[
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+  ];
+
+  String _fmtDate(DateTime d) {
+    return '${d.day} ${_monthsLong[d.month - 1]}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = widget.plantation;
+    final v = widget.vegetable;
+    final cc = _familyColor(v.category);
+    final days = p.daysSincePlanted;
+    final expected = _expectedHarvestDays(v, p.plantedAt);
+    final remaining = (expected - days).clamp(0, expected);
+    final progress = (days / expected).clamp(0.0, 1.0);
+    final thirsty =
+        p.isActive && p.daysSinceWatered >= v.effectiveWateringDays;
+
+    // Timeline d'événements tri anti-chronologique.
+    final events = <_TimelineEvent>[];
+    events.add(_TimelineEvent(
+        date: p.plantedAt, emoji: '🌱', label: 'Planté'));
+    for (final w in p.wateredAt) {
+      events.add(_TimelineEvent(date: w, emoji: '💧', label: 'Arrosé'));
+    }
+    if (p.harvestedAt != null) {
+      events.add(_TimelineEvent(
+          date: p.harvestedAt!, emoji: '🏁', label: 'Culture terminée'));
+    }
+    events.sort((a, b) => b.date.compareTo(a.date));
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.75,
+      minChildSize: 0.4,
+      maxChildSize: 0.95,
+      expand: false,
+      builder: (ctx, scrollCtrl) {
+        return SingleChildScrollView(
+          controller: scrollCtrl,
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Poignée.
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              // En-tête grande carte.
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: cc, width: 3),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: cc.withOpacity(0.25),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 18),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: cc.withOpacity(0.18),
+                          border: Border.all(
+                              color: cc.withOpacity(0.5), width: 2),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(v.emoji,
+                            style: const TextStyle(fontSize: 52)),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(v.name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w800, fontSize: 22)),
+                      Text(v.category.label,
+                          style: TextStyle(
+                              color: KultivaColors.textSecondary,
+                              fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Barre progression.
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    p.isActive
+                        ? 'Jour ${days + 1} / $expected'
+                        : 'Culture terminée',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800, fontSize: 14),
+                  ),
+                  if (p.isActive)
+                    Text(
+                      remaining == 0
+                          ? '✨ Prêt à récolter'
+                          : '⏳ $remaining j restants',
+                      style: TextStyle(
+                        color: KultivaColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: LinearProgressIndicator(
+                  value: p.isActive ? progress : 1.0,
+                  minHeight: 8,
+                  backgroundColor: cc.withOpacity(0.12),
+                  valueColor: AlwaysStoppedAnimation<Color>(cc),
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Infos clés.
+              _InfoRow(
+                icon: '💧',
+                label: p.lastWatered == null
+                    ? 'Jamais arrosé'
+                    : 'Dernier arrosage : ${_fmtDate(p.lastWatered!)} (${p.daysSinceWatered}j)',
+                alert: thirsty,
+              ),
+              _InfoRow(
+                icon: '🧺',
+                label:
+                    '${p.harvestCount} récolte${p.harvestCount > 1 ? "s" : ""} enregistrée${p.harvestCount > 1 ? "s" : ""}',
+              ),
+              _InfoRow(
+                icon: '📅',
+                label: 'Planté le ${_fmtDate(p.plantedAt)}',
+              ),
+              if (v.watering != null)
+                _InfoRow(icon: '🌊', label: v.watering!),
+              const SizedBox(height: 18),
+              // Note.
+              _NoteEditor(
+                initial: p.note,
+                onChanged: widget.onNoteChanged,
+              ),
+              const SizedBox(height: 20),
+              // Actions principales.
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: p.isActive ? widget.onWater : null,
+                      icon: const Text('💧',
+                          style: TextStyle(fontSize: 18)),
+                      label: const Text('Arroser'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4FC3F7),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: p.isActive ? widget.onHarvest : null,
+                      icon: const Text('🧺',
+                          style: TextStyle(fontSize: 18)),
+                      label: const Text('Récolter'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: KultivaColors.terracotta,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // Actions secondaires.
+              Row(
+                children: <Widget>[
+                  if (p.isActive)
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: widget.onTerminate,
+                        icon: const Text('🏁',
+                            style: TextStyle(fontSize: 14)),
+                        label: const Text('Terminer'),
+                      ),
+                    ),
+                  if (p.isActive) const SizedBox(width: 10),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _confirmRemove(context),
+                      icon: const Icon(Icons.delete_outline,
+                          size: 18, color: Colors.red),
+                      label: const Text('Retirer',
+                          style: TextStyle(color: Colors.red)),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Timeline.
+              const Text(
+                '📜 Historique',
+                style: TextStyle(
+                    fontWeight: FontWeight.w800, fontSize: 15),
+              ),
+              const SizedBox(height: 8),
+              for (final e in events) _TimelineTile(event: e, formatter: _fmtDate),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _confirmRemove(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Retirer ce plant ?'),
+        content: Text(
+            'Cette action supprime définitivement ${widget.vegetable.name} de ton Poussidex. Tes arrosages et récoltes liés seront perdus.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onRemove();
+            },
+            child: const Text('Retirer',
+                style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimelineEvent {
+  final DateTime date;
+  final String emoji;
+  final String label;
+  const _TimelineEvent({
+    required this.date,
+    required this.emoji,
+    required this.label,
+  });
+}
+
+class _TimelineTile extends StatelessWidget {
+  final _TimelineEvent event;
+  final String Function(DateTime) formatter;
+  const _TimelineTile({required this.event, required this.formatter});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: <Widget>[
+          Text(event.emoji, style: const TextStyle(fontSize: 16)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(event.label,
+                style: const TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w600)),
+          ),
+          Text(
+            formatter(event.date),
+            style: TextStyle(
+              color: KultivaColors.textSecondary,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final String icon;
+  final String label;
+  final bool alert;
+  const _InfoRow({required this.icon, required this.label, this.alert = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: <Widget>[
+          Text(icon, style: const TextStyle(fontSize: 16)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: alert ? KultivaColors.terracotta : null,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NoteEditor extends StatefulWidget {
+  final String? initial;
+  final ValueChanged<String?> onChanged;
+  const _NoteEditor({required this.initial, required this.onChanged});
+
+  @override
+  State<_NoteEditor> createState() => _NoteEditorState();
+}
+
+class _NoteEditorState extends State<_NoteEditor> {
+  late TextEditingController _ctrl;
+  bool _editing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = TextEditingController(text: widget.initial ?? '');
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final text = _ctrl.text.trim();
+    widget.onChanged(text.isEmpty ? null : text);
+    setState(() => _editing = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_editing) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          TextField(
+            controller: _ctrl,
+            autofocus: true,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText: 'Ajoute une note sur ce plant…',
+              border: OutlineInputBorder(),
+              isDense: true,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  _ctrl.text = widget.initial ?? '';
+                  setState(() => _editing = false);
+                },
+                child: const Text('Annuler'),
+              ),
+              const SizedBox(width: 6),
+              ElevatedButton(
+                onPressed: _save,
+                child: const Text('Enregistrer'),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+    final text = widget.initial;
+    return InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: () => setState(() => _editing = true),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Row(
+          children: <Widget>[
+            const Text('📝', style: TextStyle(fontSize: 16)),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                text == null || text.isEmpty
+                    ? 'Ajouter une note…'
+                    : text,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: text == null || text.isEmpty
+                      ? KultivaColors.textSecondary
+                      : null,
+                ),
+              ),
+            ),
+            Icon(Icons.edit_outlined,
+                size: 16, color: KultivaColors.textSecondary),
+          ],
+        ),
       ),
     );
   }
