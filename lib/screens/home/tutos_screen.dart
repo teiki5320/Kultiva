@@ -147,18 +147,24 @@ class TutosScreen extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          const Color(0xFFFFE0B2),
-                          KultivaColors.springB,
-                        ],
+                  // Image de fond (fallback dégradé si absente).
+                  Image.asset(
+                    'assets/images/tuto_astuces.PNG',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xFFFFE0B2),
+                            KultivaColors.springB,
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  // Voile noir pour lisibilité du texte.
                   DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -166,7 +172,7 @@ class TutosScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.black.withOpacity(0.0),
-                          Colors.black.withOpacity(0.2),
+                          Colors.black.withOpacity(0.35),
                         ],
                       ),
                     ),
