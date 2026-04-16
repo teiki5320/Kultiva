@@ -13,6 +13,7 @@ import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
+import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_badges.dart';
@@ -113,16 +114,18 @@ class MyGardenScreenState extends State<MyGardenScreen> {
       );
     }
     if (newly.isEmpty) return;
-    for (final id in newly) {
+    // Animation "pack opening" pour chaque nouveau badge, séquentielle :
+    // la prochaine ne se lance qu'une fois la précédente fermée.
+    _showNewBadgesSequentially(newly.toList());
+  }
+
+  /// Affiche les cartes des nouveaux badges une par une, en attendant
+  /// que l'utilisateur tape pour fermer entre chaque.
+  Future<void> _showNewBadgesSequentially(List<String> ids) async {
+    for (final id in ids) {
+      if (!mounted) return;
       final b = allBadges.firstWhere((x) => x.id == id);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('🎉 Badge débloqué : ${b.emoji} ${b.name}'),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: KultivaColors.primaryGreen,
-          duration: const Duration(seconds: 3),
-        ),
-      );
+      await showBadgeUnlockedAnimation(context, badge: b);
     }
   }
 

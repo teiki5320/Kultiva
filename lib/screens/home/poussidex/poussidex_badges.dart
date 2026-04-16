@@ -36,10 +36,10 @@ class _BadgeTile extends StatelessWidget {
   final bool unlocked;
   const _BadgeTile({required this.badge, required this.unlocked});
 
-  /// Couleur de cadre et de pastille d'après le palier du badge.
-  /// Les verrouillés utilisent un gris neutre peu importe leur tier.
-  Color get _tileColor {
-    if (!unlocked) return Colors.grey.shade400;
+  /// Couleur de référence du palier. Les verrouillés utilisent la même
+  /// teinte mais en version désaturée pour qu'on voie "de quoi ça aura
+  /// l'air" sans tout dévoiler.
+  Color get _tierBaseColor {
     switch (badge.tier) {
       case MedalTier.bronze:
         return const Color(0xFFCD7F32);
@@ -56,7 +56,10 @@ class _BadgeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = _tileColor;
+    final base = _tierBaseColor;
+    final c = unlocked
+        ? base
+        : (Color.lerp(base, Colors.grey.shade400, 0.55) ?? base);
     return GestureDetector(
       onTap: () => showBadgeCard(
         context,
@@ -65,16 +68,16 @@ class _BadgeTile extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: unlocked ? c.withOpacity(0.12) : Colors.grey.shade100,
+          color: c.withOpacity(unlocked ? 0.12 : 0.06),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: unlocked ? c : Colors.grey.shade300,
+            color: c,
             width: unlocked ? 2.5 : 1.5,
           ),
           boxShadow: unlocked
               ? <BoxShadow>[
                   BoxShadow(
-                    color: c.withOpacity(0.3),
+                    color: base.withOpacity(0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
