@@ -439,28 +439,29 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           ),
           child: Container(
             decoration: BoxDecoration(
+              color: Colors.white,
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: familyFiltered
                     ? [
-                        cc.withOpacity(0.30),
-                        cc.withOpacity(0.55),
+                        cc.withOpacity(0.35),
+                        cc.withOpacity(0.60),
                       ]
                     : [
-                        cc.withOpacity(0.08),
-                        cc.withOpacity(0.18),
+                        cc.withOpacity(0.10),
+                        cc.withOpacity(0.20),
                       ],
               ),
               borderRadius: BorderRadius.circular(20),
-              // Bordure colorée de la famille (plus épaisse quand filtré).
+              // Bordure couleur famille bien franche.
               border: Border.all(
-                color: cc.withOpacity(familyFiltered ? 0.9 : 0.55),
-                width: familyFiltered ? 2.5 : 2,
+                color: cc,
+                width: familyFiltered ? 4 : 3,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: cc.withOpacity(0.2),
+                  color: cc.withOpacity(0.25),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
