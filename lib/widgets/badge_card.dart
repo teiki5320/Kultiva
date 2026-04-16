@@ -135,6 +135,8 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
                 child: _BadgeCardVisual(
                   badge: widget.badge,
                   unlocked: widget.unlocked,
+                  rotationX: totalX,
+                  rotationY: totalY,
                 ),
               ),
             );
@@ -150,9 +152,16 @@ class _BadgeCardVisual extends StatelessWidget {
   final PoussidexBadge badge;
   final bool unlocked;
 
+  /// Rotation courante (en radians) — utilisée pour animer l'effet
+  /// holographique qui suit le tilt de la carte.
+  final double rotationX;
+  final double rotationY;
+
   const _BadgeCardVisual({
     required this.badge,
     required this.unlocked,
+    this.rotationX = 0,
+    this.rotationY = 0,
   });
 
   @override
@@ -230,6 +239,8 @@ class _BadgeCardVisual extends StatelessWidget {
             const SizedBox(height: 16),
             // Illustration centrale : image custom si dispo dans
             // assets/images/badges/<id>.png, sinon gros emoji + sparkles.
+            // Superposée d'un effet holographique qui réagit à la
+            // rotation de la carte (sur les badges débloqués uniquement).
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(14),
@@ -252,16 +263,30 @@ class _BadgeCardVisual extends StatelessWidget {
                     border: Border.all(
                         color: frameColor.withOpacity(0.4), width: 1.5),
                   ),
-                  child: Opacity(
-                    opacity: unlocked ? 1.0 : 0.35,
-                    child: Image.asset(
-                      'assets/images/badges/${badge.id}.png',
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => _EmojiFallback(
-                        emoji: badge.emoji,
-                        unlocked: unlocked,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      // 1. Illustration (image ou fallback emoji).
+                      Opacity(
+                        opacity: unlocked ? 1.0 : 0.35,
+                        child: Image.asset(
+                          'assets/images/badges/${badge.id}.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _EmojiFallback(
+                            emoji: badge.emoji,
+                            unlocked: unlocked,
+                          ),
+                        ),
                       ),
-                    ),
+                      // 2. Effet holo (badges débloqués uniquement).
+                      if (unlocked)
+                        IgnorePointer(
+                          child: _HolographicOverlay(
+                            rotationX: rotationX,
+                            rotationY: rotationY,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -363,6 +388,96 @@ class _EmojiFallback extends StatelessWidget {
             ),
           ),
         Text(emoji, style: const TextStyle(fontSize: 96)),
+      ],
+    );
+  }
+}
+
+/// Superposition holographique qui réagit à la rotation de la carte.
+///
+/// Deux couches :
+///  1. Un gradient arc-en-ciel pastel (reflet prismatique) dont
+///     l'orientation suit la rotation → on voit différentes teintes
+///     selon l'angle de vue.
+///  2. Une bande de lumière diagonale (reflet brillant) qui traverse
+///     la carte selon [rotationY] → sensation d'un vrai reflet sur
+///     une surface brillante.
+class _HolographicOverlay extends StatelessWidget {
+  final double rotationX;
+  final double rotationY;
+
+  const _HolographicOverlay({
+    required this.rotationX,
+    required this.rotationY,
+  });
+
+  static const List<Color> _rainbowColors = <Color>[
+    Color(0xFFFFC7E0), // rose
+    Color(0xFFC9E6FF), // bleu ciel
+    Color(0xFFD8C7FF), // lavande
+    Color(0xFFFFF3B0), // jaune doux
+    Color(0xFFC7F5E0), // mint
+    Color(0xFFFFC7E0), // bouclage rose
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    // Position normalisée du spot brillant, dérivée de rotationY.
+    // rotationY = 0 → centre ; rotationY > 0 → droite ; rotationY < 0
+    // → gauche. On clamp pour qu'à fort tilt le reflet sorte du cadre
+    // plutôt que de s'étirer.
+    final rawPos = 0.5 + rotationY * 0.6;
+    final shinePos = rawPos.clamp(-0.2, 1.2);
+    final left = (shinePos - 0.18).clamp(0.0, 1.0);
+    final mid = shinePos.clamp(0.0, 1.0);
+    final right = (shinePos + 0.18).clamp(0.0, 1.0);
+
+    // Intensité du reflet : maximum au tilt maximal, faible au repos.
+    final tiltMagnitude =
+        (rotationY.abs() + rotationX.abs()).clamp(0.0, 1.0);
+    final shineOpacity = 0.15 + tiltMagnitude * 0.4;
+
+    // Angle du gradient arc-en-ciel : rotate selon rotationY pour donner
+    // l'illusion que les teintes changent avec l'inclinaison.
+    final angleRad = rotationY * 1.5;
+    final dx = math.cos(angleRad);
+    final dy = math.sin(angleRad);
+
+    return Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        // Couche 1 : teinte arc-en-ciel (blendMode plus = additive).
+        Opacity(
+          opacity: 0.25,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(-dx, -dy),
+                end: Alignment(dx, dy),
+                colors: _rainbowColors,
+              ),
+            ),
+          ),
+        ),
+        // Couche 2 : bande de lumière qui traverse la carte.
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: <double>[
+                left,
+                mid,
+                right,
+              ],
+              colors: <Color>[
+                Colors.white.withOpacity(0),
+                Colors.white.withOpacity(shineOpacity),
+                Colors.white.withOpacity(0),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
