@@ -66,5 +66,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Kultiva utilise la caméra pour que tu puisses photographier tes plants du Poussidex.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Kultiva utilise ta galerie pour que tu puisses ajouter des photos existantes à tes plants.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Kultiva peut enregistrer une copie de tes photos de plants dans ta galerie.</string>
 </dict>
 </plist>

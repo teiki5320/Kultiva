@@ -12,6 +12,7 @@ class Plantation {
   final int harvestCount;
   final List<DateTime> wateredAt;
   final String? note;
+  final List<String> photoPaths;
 
   const Plantation({
     required this.id,
@@ -21,6 +22,7 @@ class Plantation {
     this.harvestCount = 0,
     this.wateredAt = const <DateTime>[],
     this.note,
+    this.photoPaths = const <String>[],
   });
 
   /// Est encore en cours (non-récoltée définitivement).
@@ -45,6 +47,7 @@ class Plantation {
     int? harvestCount,
     List<DateTime>? wateredAt,
     String? note,
+    List<String>? photoPaths,
     bool clearHarvestedAt = false,
   }) {
     return Plantation(
@@ -55,6 +58,7 @@ class Plantation {
       harvestCount: harvestCount ?? this.harvestCount,
       wateredAt: wateredAt ?? this.wateredAt,
       note: note ?? this.note,
+      photoPaths: photoPaths ?? this.photoPaths,
     );
   }
 
@@ -66,6 +70,7 @@ class Plantation {
         'harvestCount': harvestCount,
         'wateredAt': wateredAt.map((d) => d.toIso8601String()).toList(),
         'note': note,
+        'photoPaths': photoPaths,
       };
 
   factory Plantation.fromJson(Map<String, dynamic> json) {
@@ -81,6 +86,9 @@ class Plantation {
           .map((e) => DateTime.parse(e as String))
           .toList(),
       note: json['note'] as String?,
+      photoPaths: ((json['photoPaths'] as List?) ?? const <dynamic>[])
+          .map((e) => e as String)
+          .toList(),
     );
   }
 

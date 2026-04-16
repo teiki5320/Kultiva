@@ -78,6 +78,72 @@ const List<PoussidexBadge> allBadges = <PoussidexBadge>[
     name: 'Herboriste',
     description: 'Planter 3 aromatiques différentes.',
   ),
+  PoussidexBadge(
+    id: 'first_photo',
+    emoji: '📸',
+    name: 'Premier cliché',
+    description: 'Ajouter ta première photo à un plant du Poussidex.',
+  ),
+  PoussidexBadge(
+    id: 'documentary',
+    emoji: '📷',
+    name: 'Documentaire',
+    description: '10 photos cumulées dans ton Poussidex.',
+  ),
+  PoussidexBadge(
+    id: 'fruit_lover',
+    emoji: '🍅',
+    name: 'Amateur de fruits',
+    description: '5 légumes-fruits plantés.',
+  ),
+  PoussidexBadge(
+    id: 'florist',
+    emoji: '🌷',
+    name: 'Fleuriste',
+    description: '3 fleurs différentes dans ton album.',
+  ),
+  PoussidexBadge(
+    id: 'generous_waterer',
+    emoji: '💦',
+    name: 'Généreux',
+    description: '50 arrosages cumulés.',
+  ),
+  PoussidexBadge(
+    id: 'rain_bringer',
+    emoji: '🌊',
+    name: 'Pluie bienfaisante',
+    description: '100 arrosages cumulés.',
+  ),
+  PoussidexBadge(
+    id: 'anniversary',
+    emoji: '🎂',
+    name: 'Anniversaire',
+    description: 'Un de tes plants fête son premier an.',
+  ),
+  PoussidexBadge(
+    id: 'writer',
+    emoji: '📝',
+    name: 'Écrivain',
+    description: 'Ajouter une note à 5 plants différents.',
+  ),
+  PoussidexBadge(
+    id: 'lightning',
+    emoji: '⚡',
+    name: 'Éclair',
+    description: '5 plantations dans la même journée.',
+  ),
+  PoussidexBadge(
+    id: 'all_families',
+    emoji: '🎭',
+    name: 'Toutes familles',
+    description: "Un plant dans chacune des 9 familles de légumes.",
+  ),
+  PoussidexBadge(
+    id: 'gourmand',
+    emoji: '🍽️',
+    name: 'Gourmand',
+    description: '100 récoltes cumulées.',
+  ),
 ];
 
 /// Retourne l'ensemble des IDs de badges débloqués par cette collection.
@@ -134,6 +200,60 @@ Set<String> computeUnlockedBadges(List<Plantation> plantations) {
       .any((p) => p.isActive && now.difference(p.plantedAt).inDays >= 180)) {
     unlocked.add('green_thumb');
   }
+
+  // Photos : premier cliché + documentaire (10 photos cumulées).
+  final totalPhotos =
+      plantations.fold<int>(0, (sum, p) => sum + p.photoPaths.length);
+  if (totalPhotos >= 1) unlocked.add('first_photo');
+  if (totalPhotos >= 10) unlocked.add('documentary');
+
+  // Amateur de fruits : 5 légumes-fruits plantés.
+  final fruitCount = plantations.where((p) {
+    final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
+    return v?.category == VegetableCategory.fruits;
+  }).length;
+  if (fruitCount >= 5) unlocked.add('fruit_lover');
+
+  // Fleuriste : 3 fleurs différentes.
+  final flowerIds = <String>{};
+  for (final p in plantations) {
+    final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
+    if (v?.category == VegetableCategory.flowers) flowerIds.add(v!.id);
+  }
+  if (flowerIds.length >= 3) unlocked.add('florist');
+
+  // Paliers d'arrosage.
+  if (totalWaterings >= 50) unlocked.add('generous_waterer');
+  if (totalWaterings >= 100) unlocked.add('rain_bringer');
+
+  // Anniversaire : un plant (même terminé) a au moins 365 jours d'existence.
+  if (plantations.any((p) => now.difference(p.plantedAt).inDays >= 365)) {
+    unlocked.add('anniversary');
+  }
+
+  // Écrivain : 5 plants ont une note non-vide.
+  final withNotes = plantations
+      .where((p) => p.note != null && p.note!.trim().isNotEmpty)
+      .length;
+  if (withNotes >= 5) unlocked.add('writer');
+
+  // Éclair : 5 plantations la même journée (quel que soit le jour).
+  final plantedByDay = <String, int>{};
+  for (final p in plantations) {
+    final key =
+        '${p.plantedAt.year}-${p.plantedAt.month}-${p.plantedAt.day}';
+    plantedByDay[key] = (plantedByDay[key] ?? 0) + 1;
+  }
+  if (plantedByDay.values.any((n) => n >= 5)) unlocked.add('lightning');
+
+  // Toutes familles : un plant dans chacune des 9 familles (hors accessoires).
+  final targetFamilies = VegetableCategory.values
+      .where((c) => c != VegetableCategory.accessories)
+      .toSet();
+  if (targetFamilies.every(families.contains)) unlocked.add('all_families');
+
+  // Gourmand : 100 récoltes cumulées.
+  if (totalHarvests >= 100) unlocked.add('gourmand');
 
   return unlocked;
 }

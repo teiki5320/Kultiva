@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../services/audio_service.dart';
+import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
@@ -205,6 +207,19 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     _replace(p.copyWith(note: note));
   }
 
+  Future<void> _addPhoto(Plantation p, {required bool fromCamera}) async {
+    final path = await PhotoService.pick(fromCamera: fromCamera);
+    if (path == null) return;
+    _replace(p.copyWith(photoPaths: <String>[...p.photoPaths, path]));
+  }
+
+  void _removePhoto(Plantation p, String path) {
+    PhotoService.deleteFile(path);
+    _replace(p.copyWith(
+      photoPaths: p.photoPaths.where((x) => x != path).toList(),
+    ));
+  }
+
   void _openPicker() {
     showModalBottomSheet<String>(
       context: context,
@@ -222,27 +237,46 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (ctx) => _PlantationDetailSheet(
-        plantation: p,
-        vegetable: v,
-        onWater: () {
-          _water(p);
-          Navigator.pop(ctx);
-        },
-        onHarvest: () {
-          _harvest(p);
-          Navigator.pop(ctx);
-        },
-        onTerminate: () {
-          _terminate(p);
-          Navigator.pop(ctx);
-        },
-        onRemove: () {
-          _remove(p);
-          Navigator.pop(ctx);
-        },
-        onNoteChanged: (note) => _setNote(p, note),
-      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setSheetState) {
+            // On lit la dernière version de la plantation à chaque rebuild
+            // pour refléter immédiatement les photos ajoutées sans fermer
+            // la sheet.
+            final current =
+                _plantations.firstWhere((x) => x.id == p.id, orElse: () => p);
+            return _PlantationDetailSheet(
+              plantation: current,
+              vegetable: v,
+              onWater: () {
+                _water(current);
+                Navigator.pop(ctx);
+              },
+              onHarvest: () {
+                _harvest(current);
+                Navigator.pop(ctx);
+              },
+              onTerminate: () {
+                _terminate(current);
+                Navigator.pop(ctx);
+              },
+              onRemove: () {
+                _remove(current);
+                Navigator.pop(ctx);
+              },
+              onNoteChanged: (note) => _setNote(current, note),
+              onAddPhoto: (fromCamera) async {
+                await _addPhoto(current, fromCamera: fromCamera);
+                setSheetState(() {});
+              },
+              onRemovePhoto: (path) {
+                _removePhoto(current, path);
+                setSheetState(() {});
+              },
+            );
+          },
+        );
+      },
     );
   }
 
@@ -864,21 +898,24 @@ class _PlantationCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          // Emoji central dans cercle coloré famille.
+          // Photo du plant si disponible, sinon emoji dans cercle famille.
           Expanded(
             child: Center(
-              child: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: cc.withOpacity(0.15),
-                  border: Border.all(color: cc.withOpacity(0.35), width: 1.5),
-                ),
-                alignment: Alignment.center,
-                child: Text(vegetable.emoji,
-                    style: const TextStyle(fontSize: 38)),
-              ),
+              child: plantation.photoPaths.isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.file(
+                        File(plantation.photoPaths.last),
+                        width: 82,
+                        height: 82,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => _EmojiCircle(
+                          color: cc,
+                          emoji: vegetable.emoji,
+                        ),
+                      ),
+                    )
+                  : _EmojiCircle(color: cc, emoji: vegetable.emoji),
             ),
           ),
           const SizedBox(height: 8),
@@ -931,6 +968,27 @@ class _PlantationCard extends StatelessWidget {
   }
 }
 
+class _EmojiCircle extends StatelessWidget {
+  final Color color;
+  final String emoji;
+  const _EmojiCircle({required this.color, required this.emoji});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 70,
+      height: 70,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color.withOpacity(0.15),
+        border: Border.all(color: color.withOpacity(0.35), width: 1.5),
+      ),
+      alignment: Alignment.center,
+      child: Text(emoji, style: const TextStyle(fontSize: 38)),
+    );
+  }
+}
+
 class _StatChip extends StatelessWidget {
   final String icon;
   final int count;
@@ -974,6 +1032,8 @@ class _PlantationDetailSheet extends StatefulWidget {
   final VoidCallback onTerminate;
   final VoidCallback onRemove;
   final ValueChanged<String?> onNoteChanged;
+  final ValueChanged<bool> onAddPhoto; // bool = fromCamera
+  final ValueChanged<String> onRemovePhoto;
 
   const _PlantationDetailSheet({
     required this.plantation,
@@ -983,6 +1043,8 @@ class _PlantationDetailSheet extends StatefulWidget {
     required this.onTerminate,
     required this.onRemove,
     required this.onNoteChanged,
+    required this.onAddPhoto,
+    required this.onRemovePhoto,
   });
 
   @override
@@ -1149,6 +1211,13 @@ class _PlantationDetailSheetState extends State<_PlantationDetailSheet> {
               if (v.watering != null)
                 _InfoRow(icon: '🌊', label: v.watering!),
               const SizedBox(height: 18),
+              // Photos.
+              _PhotoGallery(
+                photos: p.photoPaths,
+                onAdd: () => _showPhotoSourceSheet(context),
+                onRemove: widget.onRemovePhoto,
+              ),
+              const SizedBox(height: 14),
               // Note.
               _NoteEditor(
                 initial: p.note,
@@ -1252,6 +1321,53 @@ class _PlantationDetailSheetState extends State<_PlantationDetailSheet> {
       ),
     );
   }
+
+  void _showPhotoSourceSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ListTile(
+                leading: const Text('📸', style: TextStyle(fontSize: 22)),
+                title: const Text('Prendre une photo',
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  widget.onAddPhoto(true);
+                },
+              ),
+              ListTile(
+                leading: const Text('🖼️', style: TextStyle(fontSize: 22)),
+                title: const Text('Choisir depuis la galerie',
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  widget.onAddPhoto(false);
+                },
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _TimelineEvent {
@@ -1319,6 +1435,157 @@ class _InfoRow extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: alert ? KultivaColors.terracotta : null,
                 height: 1.3,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PhotoGallery extends StatelessWidget {
+  final List<String> photos;
+  final VoidCallback onAdd;
+  final ValueChanged<String> onRemove;
+  const _PhotoGallery({
+    required this.photos,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            const Text('📷', style: TextStyle(fontSize: 16)),
+            const SizedBox(width: 8),
+            Text(
+              'Photos${photos.isEmpty ? "" : " (${photos.length})"}',
+              style: const TextStyle(
+                  fontWeight: FontWeight.w800, fontSize: 14),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 96,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              for (final path in photos)
+                _PhotoThumb(
+                  path: path,
+                  onRemove: () => onRemove(path),
+                ),
+              // Bouton ajouter.
+              GestureDetector(
+                onTap: onAdd,
+                child: Container(
+                  width: 96,
+                  height: 96,
+                  margin: const EdgeInsets.only(right: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: Colors.grey.shade300,
+                      width: 2,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.add_a_photo_outlined,
+                          color: KultivaColors.primaryGreen, size: 28),
+                      const SizedBox(height: 4),
+                      Text(
+                        photos.isEmpty ? 'Ajouter' : '+',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: KultivaColors.primaryGreen,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PhotoThumb extends StatelessWidget {
+  final String path;
+  final VoidCallback onRemove;
+  const _PhotoThumb({required this.path, required this.onRemove});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 96,
+      height: 96,
+      margin: const EdgeInsets.only(right: 8),
+      child: Stack(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.file(
+              File(path),
+              width: 96,
+              height: 96,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(
+                color: Colors.grey.shade200,
+                alignment: Alignment.center,
+                child: const Icon(Icons.broken_image_outlined,
+                    color: Colors.grey),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 4,
+            right: 4,
+            child: GestureDetector(
+              onTap: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text('Retirer la photo ?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Annuler'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          onRemove();
+                        },
+                        child: const Text('Retirer',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.close,
+                    size: 14, color: Colors.white),
               ),
             ),
           ),

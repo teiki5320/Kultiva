@@ -45,6 +45,10 @@ dependencies:
   # Audio (sons + musique de fond)
   audioplayers: ^6.1.0
 
+  # Photos des plants du Poussidex
+  image_picker: ^1.0.4
+  path_provider: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
