@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/plantation.dart';
+import '../models/region_data.dart';
 import 'auth_service.dart';
 import 'prefs_service.dart';
 
@@ -119,6 +120,146 @@ class CloudSyncService {
   Future<void> clearLocalData() async {
     await PrefsService.instance.setPlantationsJson('[]');
     await PrefsService.instance.setUnlockedBadges(<String>{});
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // Badges
+  // ══════════════════════════════════════════════════════════════════
+
+  /// Upload l'état complet des badges débloqués vers le cloud.
+  /// Stratégie : upsert l'ensemble actuel, puis delete les badges en
+  /// cloud qui ne sont plus dans le set local (au cas où on a reset).
+  Future<void> uploadBadges(Set<String> unlocked) async {
+    if (!_signedIn) return;
+    final uid = _userId;
+    if (uid == null) return;
+    try {
+      if (unlocked.isNotEmpty) {
+        final rows = unlocked
+            .map((id) => <String, dynamic>{
+                  'user_id': uid,
+                  'badge_id': id,
+                })
+            .toList();
+        await _client.from('unlocked_badges').upsert(rows);
+      }
+      // Supprime du cloud les badges qui ne sont plus dans le set local.
+      final cloud = await _client
+          .from('unlocked_badges')
+          .select('badge_id');
+      final cloudIds = cloud
+          .map<String>((row) => row['badge_id'] as String)
+          .toSet();
+      final toDelete = cloudIds.difference(unlocked);
+      for (final id in toDelete) {
+        await _client
+            .from('unlocked_badges')
+            .delete()
+            .eq('badge_id', id);
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.uploadBadges error: $e');
+    }
+  }
+
+  /// Télécharge les IDs de badges débloqués depuis le cloud.
+  Future<Set<String>> fetchBadges() async {
+    if (!_signedIn) return <String>{};
+    try {
+      final data = await _client.from('unlocked_badges').select('badge_id');
+      return data
+          .map<String>((row) => row['badge_id'] as String)
+          .toSet();
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.fetchBadges error: $e');
+      return <String>{};
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // Preferences
+  // ══════════════════════════════════════════════════════════════════
+
+  /// Upload les préférences utilisateur (région, son, notif, etc.).
+  /// Idempotent : upsert par user_id (PK).
+  Future<void> uploadPreferences() async {
+    if (!_signedIn) return;
+    final uid = _userId;
+    if (uid == null) return;
+    try {
+      final prefs = PrefsService.instance;
+      await _client.from('preferences').upsert(<String, dynamic>{
+        'user_id': uid,
+        'region': prefs.region.value.id,
+        'dark_mode': prefs.darkMode.value,
+        'notifications': prefs.notifications.value,
+        'sound_enabled': prefs.soundEnabled.value,
+        'music_enabled': prefs.musicEnabled.value,
+        'sound_volume': prefs.soundVolume.value,
+      });
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.uploadPrefs error: $e');
+    }
+  }
+
+  /// Télécharge les préférences depuis le cloud et les applique
+  /// localement. Silencieux si aucune ligne (première fois).
+  Future<void> fetchAndApplyPreferences() async {
+    if (!_signedIn) return;
+    try {
+      final rows = await _client.from('preferences').select().limit(1);
+      if (rows.isEmpty) return;
+      final row = rows.first;
+      final prefs = PrefsService.instance;
+      final regionId = row['region'] as String?;
+      if (regionId != null) {
+        await prefs.setRegion(Region.fromId(regionId));
+      }
+      if (row['dark_mode'] is bool) {
+        await prefs.setDarkMode(row['dark_mode'] as bool);
+      }
+      if (row['notifications'] is bool) {
+        await prefs.setNotifications(row['notifications'] as bool);
+      }
+      if (row['sound_enabled'] is bool) {
+        await prefs.setSoundEnabled(row['sound_enabled'] as bool);
+      }
+      if (row['music_enabled'] is bool) {
+        await prefs.setMusicEnabled(row['music_enabled'] as bool);
+      }
+      final sv = row['sound_volume'];
+      if (sv is num) {
+        await prefs.setSoundVolume(sv.toDouble());
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.fetchPrefs error: $e');
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // Full merge on login (plantations + badges + prefs)
+  // ══════════════════════════════════════════════════════════════════
+
+  /// Alias historique pour retrocompatibilité. Appelle [syncAllOnLogin].
+  @Deprecated('Use syncAllOnLogin instead')
+  Future<List<Plantation>> mergeOnLoginOnlyPlantations() => mergeOnLogin();
+
+  /// Synchronise plantations + badges + prefs en une passe. À appeler
+  /// juste après un login réussi ou au boot si session persistée.
+  Future<void> syncAllOnLogin() async {
+    if (!_signedIn) return;
+    // 1. Prefs : on tire le cloud et on applique. Si rien côté cloud,
+    //    on pousse les prefs locales.
+    await fetchAndApplyPreferences();
+    await uploadPreferences();
+    // 2. Badges : union cloud + local, puis upload du résultat.
+    final cloudBadges = await fetchBadges();
+    final localBadges = PrefsService.instance.unlockedBadges;
+    final merged = <String>{...localBadges, ...cloudBadges};
+    await PrefsService.instance.setUnlockedBadges(merged);
+    await uploadBadges(merged);
+    // 3. Plantations (déjà implémenté).
+    await mergeOnLogin();
   }
 
   // ─── Helpers ────────────────────────────────────────────────────────

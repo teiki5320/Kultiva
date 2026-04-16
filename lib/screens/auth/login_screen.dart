@@ -38,10 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailCtrl.text.trim(),
         password: _passwordCtrl.text,
       );
-      // Fusionne les plantations locales avec celles du cloud.
-      // Si l'utilisateur revient d'une autre installation, ses
-      // plants apparaissent automatiquement.
-      await CloudSyncService.instance.mergeOnLogin();
+      // Sync complet avec le cloud : plantations + badges + préférences.
+      // Si l'utilisateur revient d'une autre installation, ses plants,
+      // badges et réglages réapparaissent automatiquement.
+      await CloudSyncService.instance.syncAllOnLogin();
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
       setState(() => _error = e.message);

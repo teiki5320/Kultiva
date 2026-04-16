@@ -22,13 +22,18 @@ Future<void> main() async {
     anonKey: SupabaseConfig.anonKey,
   );
   await PrefsService.instance.load();
+  // Dès qu'une préférence change, on la pousse vers le cloud (si
+  // l'utilisateur est connecté). Fire-and-forget — l'UI ne bloque pas.
+  PrefsService.instance.onPreferencesChanged = () {
+    CloudSyncService.instance.uploadPreferences();
+  };
   await AuthService.instance.load();
   await NotificationService.init();
   // Si l'utilisateur a déjà une session (il avait ouvert l'app avant),
-  // on merge les plants locaux avec ceux du cloud en arrière-plan. Pas
-  // de await : l'UI démarre tout de suite, la sync se fait derrière.
+  // on synchronise plants + badges + prefs avec le cloud en arrière-
+  // plan. Pas de await : l'UI démarre tout de suite.
   if (AuthService.instance.isSignedIn) {
-    CloudSyncService.instance.mergeOnLogin();
+    CloudSyncService.instance.syncAllOnLogin();
   }
   // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
   if (PrefsService.instance.notifications.value) {

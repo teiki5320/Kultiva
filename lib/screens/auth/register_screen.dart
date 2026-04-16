@@ -40,9 +40,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordCtrl.text,
         name: _nameCtrl.text.trim(),
       );
-      // Upload les plantations locales (si l'user avait déjà joué
-      // offline avant de créer son compte, on ne perd rien).
-      await CloudSyncService.instance.mergeOnLogin();
+      // Sync complet. Si l'user avait joué offline avant de créer
+      // son compte, ses plants + badges + prefs sont poussés au cloud.
+      await CloudSyncService.instance.syncAllOnLogin();
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
       setState(() => _error = e.message);

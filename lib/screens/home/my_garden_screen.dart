@@ -98,6 +98,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _unlockedBadges = next;
     _medals = nextMedals;
     PrefsService.instance.setUnlockedBadges(next);
+    unawaited(CloudSyncService.instance.uploadBadges(next));
     if (!mounted) return;
     // Snackbar promotion d'espèce (argent/or/shiny).
     for (final entry in newlyPromoted.entries) {

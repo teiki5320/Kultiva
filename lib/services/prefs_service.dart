@@ -48,6 +48,17 @@ class PrefsService {
   /// Poussidex.
   final ValueNotifier<int> plantationsVersion = ValueNotifier<int>(0);
 
+  /// Callback appelé après chaque changement de préférence. Permet
+  /// à CloudSyncService de re-uploader les prefs sans créer de
+  /// dépendance circulaire. Réglé une fois dans main().
+  VoidCallback? onPreferencesChanged;
+
+  void _notifyPrefsChanged() {
+    try {
+      onPreferencesChanged?.call();
+    } catch (_) {}
+  }
+
   bool _loaded = false;
   bool get isLoaded => _loaded;
 
@@ -67,11 +78,13 @@ class PrefsService {
   Future<void> setRegion(Region value) async {
     region.value = value;
     await _prefs?.setString(_kRegion, value.id);
+    _notifyPrefsChanged();
   }
 
   Future<void> setDarkMode(bool value) async {
     darkMode.value = value;
     await _prefs?.setBool(_kDarkMode, value);
+    _notifyPrefsChanged();
   }
 
   Future<void> setNotifications(bool value) async {
@@ -82,21 +95,25 @@ class PrefsService {
     } else {
       await NotificationService.cancelMonthlyReminder();
     }
+    _notifyPrefsChanged();
   }
 
   Future<void> setSoundEnabled(bool value) async {
     soundEnabled.value = value;
     await _prefs?.setBool(_kSoundEnabled, value);
+    _notifyPrefsChanged();
   }
 
   Future<void> setMusicEnabled(bool value) async {
     musicEnabled.value = value;
     await _prefs?.setBool(_kMusicEnabled, value);
+    _notifyPrefsChanged();
   }
 
   Future<void> setSoundVolume(double value) async {
     soundVolume.value = value;
     await _prefs?.setDouble(_kSoundVolume, value);
+    _notifyPrefsChanged();
   }
 
   bool get onboardingDone => _prefs?.getBool(_kOnboardingDone) ?? false;
