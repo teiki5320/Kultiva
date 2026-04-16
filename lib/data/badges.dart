@@ -4,12 +4,12 @@ import '../models/vegetable.dart';
 import '../widgets/petal_animation.dart' show Season;
 
 /// Un badge débloquable dans le Poussidex.
-class Badge {
+class PoussidexBadge {
   final String id;
   final String emoji;
   final String name;
   final String description;
-  const Badge({
+  const PoussidexBadge({
     required this.id,
     required this.emoji,
     required this.name,
@@ -17,62 +17,62 @@ class Badge {
   });
 }
 
-const List<Badge> allBadges = <Badge>[
-  Badge(
+const List<PoussidexBadge> allBadges = <PoussidexBadge>[
+  PoussidexBadge(
     id: 'first_step',
     emoji: '🌱',
     name: 'Premier pas',
     description: 'Planter ton tout premier légume.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'small_watering_can',
     emoji: '💧',
     name: 'Petit arrosoir',
     description: '10 arrosages cumulés dans ton Poussidex.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'first_harvest',
     emoji: '🧺',
     name: 'Première récolte',
     description: 'Récolter ton tout premier légume.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'diverse',
     emoji: '🎨',
     name: 'Diversifié',
     description: '5 familles de légumes différentes dans ton album.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'collector',
     emoji: '⭐',
     name: 'Collectionneur',
     description: '10 plants dans ton Poussidex.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'master_collector',
     emoji: '🏅',
     name: 'Maître collectionneur',
     description: '30 plants dans ton Poussidex.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'sun_tour',
     emoji: '☀️',
     name: 'Tour du soleil',
     description: 'Planter au moins un légume dans chacune des 4 saisons.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'big_harvester',
     emoji: '🏆',
     name: 'Gros récolteur',
     description: '50 récoltes cumulées.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'green_thumb',
     emoji: '🌿',
     name: 'Main verte',
     description: 'Un de tes plants survit 6 mois.',
   ),
-  Badge(
+  PoussidexBadge(
     id: 'herbalist',
     emoji: '🌿',
     name: 'Herboriste',

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../data/badges.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
@@ -10,6 +11,9 @@ import '../../services/audio_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
+
+/// Filtre actif dans le Poussidex.
+enum _AlbumFilter { all, growing, harvested, badges }
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -26,6 +30,8 @@ class MyGardenScreen extends StatefulWidget {
 
 class _MyGardenScreenState extends State<MyGardenScreen> {
   List<Plantation> _plantations = <Plantation>[];
+  Set<String> _unlockedBadges = <String>{};
+  _AlbumFilter _filter = _AlbumFilter.all;
   bool _loaded = false;
 
   @override
@@ -38,8 +44,49 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     await _maybeMigrate();
     _plantations =
         Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    _unlockedBadges = PrefsService.instance.unlockedBadges;
+    // Met à jour (au cas où des badges seraient débloqués par la simple
+    // lecture de données déjà présentes, sans déclencher de snackbar
+    // historique — on se contente d'aligner l'état).
+    _unlockedBadges = computeUnlockedBadges(_plantations);
+    await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
     if (mounted) setState(() => _loaded = true);
     _showTutorialIfNeeded();
+  }
+
+  /// Appelée après chaque action qui modifie la collection — détecte les
+  /// nouveaux badges débloqués et montre un snackbar kawaii pour chacun.
+  void _refreshBadges() {
+    final next = computeUnlockedBadges(_plantations);
+    final newly = next.difference(_unlockedBadges);
+    _unlockedBadges = next;
+    PrefsService.instance.setUnlockedBadges(next);
+    if (newly.isEmpty || !mounted) return;
+    for (final id in newly) {
+      final b = allBadges.firstWhere((x) => x.id == id);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('🎉 Badge débloqué : ${b.emoji} ${b.name}'),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: KultivaColors.primaryGreen,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  List<Plantation> get _filteredPlantations {
+    switch (_filter) {
+      case _AlbumFilter.all:
+      case _AlbumFilter.badges: // ignoré, la vue badges ne passe pas par là
+        return _plantations;
+      case _AlbumFilter.growing:
+        return _plantations.where((p) => p.isActive).toList();
+      case _AlbumFilter.harvested:
+        return _plantations
+            .where((p) => !p.isActive || p.harvestCount > 0)
+            .toList();
+    }
   }
 
   /// Convertit l'ancienne grille 2D en plantations une seule fois,
@@ -108,6 +155,7 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
   Future<void> _save() async {
     await PrefsService.instance
         .setPlantationsJson(Plantation.encodeAll(_plantations));
+    _refreshBadges();
   }
 
   String _genId() =>
@@ -203,33 +251,59 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     if (!_loaded) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
+    final showFab =
+        _filter != _AlbumFilter.badges && _plantations.isNotEmpty;
     return Scaffold(
       body: SafeArea(
         bottom: false,
         child: Column(
           children: <Widget>[
-            _Header(count: _plantations.length),
+            _Header(
+              plantationsCount: _plantations.length,
+              unlockedCount: _unlockedBadges.length,
+              totalBadges: allBadges.length,
+            ),
+            _FilterBar(
+              filter: _filter,
+              allCount: _plantations.length,
+              growingCount:
+                  _plantations.where((p) => p.isActive).length,
+              harvestedCount: _plantations
+                  .where((p) => !p.isActive || p.harvestCount > 0)
+                  .length,
+              badgesCount: _unlockedBadges.length,
+              totalBadges: allBadges.length,
+              onChanged: (f) => setState(() => _filter = f),
+            ),
             Expanded(
-              child: _plantations.isEmpty
-                  ? _EmptyState(onPlant: _openPicker)
-                  : _buildCardsGrid(),
+              child: _buildBody(),
             ),
           ],
         ),
       ),
-      floatingActionButton: _plantations.isEmpty
-          ? null
-          : FloatingActionButton.extended(
+      floatingActionButton: showFab
+          ? FloatingActionButton.extended(
               onPressed: _openPicker,
               icon: const Icon(Icons.add),
               label: const Text('Planter',
                   style: TextStyle(fontWeight: FontWeight.w800)),
               backgroundColor: KultivaColors.primaryGreen,
-            ),
+            )
+          : null,
     );
   }
 
-  Widget _buildCardsGrid() {
+  Widget _buildBody() {
+    if (_filter == _AlbumFilter.badges) {
+      return _BadgesGrid(unlocked: _unlockedBadges);
+    }
+    if (_plantations.isEmpty) {
+      return _EmptyState(onPlant: _openPicker);
+    }
+    final list = _filteredPlantations;
+    if (list.isEmpty) {
+      return _FilterEmptyState(filter: _filter);
+    }
     return GridView.builder(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 96),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -238,9 +312,9 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
       ),
-      itemCount: _plantations.length,
+      itemCount: list.length,
       itemBuilder: (context, i) {
-        final p = _plantations[i];
+        final p = list[i];
         final veg =
             vegetablesBase.where((v) => v.id == p.vegetableId).firstOrNull;
         if (veg == null) return const SizedBox.shrink();
@@ -258,8 +332,14 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
 // ═══════════════════════════════════════════════════════════════════════════
 
 class _Header extends StatelessWidget {
-  final int count;
-  const _Header({required this.count});
+  final int plantationsCount;
+  final int unlockedCount;
+  final int totalBadges;
+  const _Header({
+    required this.plantationsCount,
+    required this.unlockedCount,
+    required this.totalBadges,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -319,9 +399,9 @@ class _Header extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    count == 0
-                        ? 'Aucun légume collecté'
-                        : '$count légume${count > 1 ? "s" : ""} collecté${count > 1 ? "s" : ""}',
+                    plantationsCount == 0
+                        ? '0 légume · $unlockedCount / $totalBadges badges'
+                        : '$plantationsCount légume${plantationsCount > 1 ? "s" : ""} · $unlockedCount / $totalBadges badges',
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.9),
                       fontWeight: FontWeight.w600,
@@ -335,6 +415,257 @@ class _Header extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Barre de filtres (Tout / En cours / Récoltés / Badges)
+// ═══════════════════════════════════════════════════════════════════════════
+
+class _FilterBar extends StatelessWidget {
+  final _AlbumFilter filter;
+  final int allCount;
+  final int growingCount;
+  final int harvestedCount;
+  final int badgesCount;
+  final int totalBadges;
+  final ValueChanged<_AlbumFilter> onChanged;
+
+  const _FilterBar({
+    required this.filter,
+    required this.allCount,
+    required this.growingCount,
+    required this.harvestedCount,
+    required this.badgesCount,
+    required this.totalBadges,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 52,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        children: <Widget>[
+          _FilterChip(
+            label: '✨ Tout',
+            count: allCount,
+            selected: filter == _AlbumFilter.all,
+            color: KultivaColors.primaryGreen,
+            onTap: () => onChanged(_AlbumFilter.all),
+          ),
+          _FilterChip(
+            label: '🌱 En cours',
+            count: growingCount,
+            selected: filter == _AlbumFilter.growing,
+            color: KultivaColors.primaryGreen,
+            onTap: () => onChanged(_AlbumFilter.growing),
+          ),
+          _FilterChip(
+            label: '🧺 Récoltés',
+            count: harvestedCount,
+            selected: filter == _AlbumFilter.harvested,
+            color: KultivaColors.terracotta,
+            onTap: () => onChanged(_AlbumFilter.harvested),
+          ),
+          _FilterChip(
+            label: '🏆 Badges',
+            count: badgesCount,
+            total: totalBadges,
+            selected: filter == _AlbumFilter.badges,
+            color: const Color(0xFFFFB74D),
+            onTap: () => onChanged(_AlbumFilter.badges),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FilterChip extends StatelessWidget {
+  final String label;
+  final int count;
+  final int? total;
+  final bool selected;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _FilterChip({
+    required this.label,
+    required this.count,
+    this.total,
+    required this.selected,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final suffix = total != null ? ' $count/$total' : ' ($count)';
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: selected ? color.withOpacity(0.2) : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: color,
+              width: selected ? 2.5 : 2,
+            ),
+          ),
+          child: Text(
+            '$label$suffix',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+              color: color,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Grille de badges (vue "Badges")
+// ═══════════════════════════════════════════════════════════════════════════
+
+class _BadgesGrid extends StatelessWidget {
+  final Set<String> unlocked;
+  const _BadgesGrid({required this.unlocked});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 170,
+        childAspectRatio: 0.95,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+      ),
+      itemCount: allBadges.length,
+      itemBuilder: (context, i) {
+        final b = allBadges[i];
+        final isUnlocked = unlocked.contains(b.id);
+        return _BadgeTile(badge: b, unlocked: isUnlocked);
+      },
+    );
+  }
+}
+
+class _BadgeTile extends StatelessWidget {
+  final PoussidexBadge badge;
+  final bool unlocked;
+  const _BadgeTile({required this.badge, required this.unlocked});
+
+  @override
+  Widget build(BuildContext context) {
+    final gold = const Color(0xFFFFB74D);
+    return Container(
+      decoration: BoxDecoration(
+        color: unlocked ? gold.withOpacity(0.12) : Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: unlocked ? gold : Colors.grey.shade300,
+          width: unlocked ? 2.5 : 1.5,
+        ),
+        boxShadow: unlocked
+            ? <BoxShadow>[
+                BoxShadow(
+                  color: gold.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : const <BoxShadow>[],
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        children: <Widget>[
+          const SizedBox(height: 4),
+          Opacity(
+            opacity: unlocked ? 1.0 : 0.3,
+            child: Text(
+              badge.emoji,
+              style: const TextStyle(fontSize: 44),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            badge.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 13,
+              color: unlocked ? null : Colors.grey.shade500,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 4),
+          Expanded(
+            child: Text(
+              badge.description,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 10,
+                height: 1.3,
+                color: unlocked
+                    ? KultivaColors.textSecondary
+                    : Colors.grey.shade400,
+              ),
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (!unlocked)
+            Icon(Icons.lock_outline,
+                size: 14, color: Colors.grey.shade400),
+        ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Empty states spécifiques à chaque filtre
+// ═══════════════════════════════════════════════════════════════════════════
+
+class _FilterEmptyState extends StatelessWidget {
+  final _AlbumFilter filter;
+  const _FilterEmptyState({required this.filter});
+
+  @override
+  Widget build(BuildContext context) {
+    final message = switch (filter) {
+      _AlbumFilter.growing =>
+        '🌱\n\nAucun plant en cours pour le moment.\nPlante quelque chose avec le bouton +.',
+      _AlbumFilter.harvested =>
+        '🧺\n\nAucune récolte enregistrée.\nOuvre une fiche plant et appuie sur Récolter.',
+      _ => 'Aucun légume à afficher.',
+    };
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: KultivaColors.textSecondary,
+            fontSize: 13,
+            height: 1.5,
+          ),
         ),
       ),
     );
