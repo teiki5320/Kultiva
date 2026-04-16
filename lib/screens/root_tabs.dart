@@ -19,6 +19,8 @@ class RootTabs extends StatefulWidget {
 
 class _RootTabsState extends State<RootTabs> {
   int _index = 0;
+  final GlobalKey<MyGardenScreenState> _poussidexKey =
+      GlobalKey<MyGardenScreenState>();
 
   void _openSettings() {
     Navigator.of(context).push(
@@ -35,7 +37,7 @@ class _RootTabsState extends State<RootTabs> {
     final pages = <Widget>[
       const SowScreen(),
       const VegetablesScreen(),
-      const MyGardenScreen(),
+      MyGardenScreen(key: _poussidexKey),
       const TutosScreen(),
     ];
     return Scaffold(
@@ -45,6 +47,11 @@ class _RootTabsState extends State<RootTabs> {
         onTap: (i) {
           AudioService.instance.play(Sfx.tap);
           setState(() => _index = i);
+          // Déclenche le tuto Poussidex la 1ère fois que l'utilisateur
+          // arrive sur cet onglet (la méthode gère elle-même le flag).
+          if (i == 2) {
+            _poussidexKey.currentState?.onBecameVisible();
+          }
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

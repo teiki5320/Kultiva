@@ -30,10 +30,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           "Chaque jour : ton légume du jour, la météo, les cartes Semer / Récolter / Calendrier. Tout se met à jour selon la saison.",
     ),
     _OnboardingContent(
-      imagePath: 'assets/images/onboarding_3.png',
-      title: 'Mon Potager — à toi de jouer',
+      imagePath: 'assets/images/onboarding_poussidex.png',
+      title: 'Ton Poussidex',
       subtitle:
-          "Dessine ta parcelle, ajoute tes plants, suis l'arrosage case par case. Kultiva t'alerte quand il faut arroser.",
+          "Chaque légume que tu plantes devient une carte unique dans ton album. "
+          "Ajoute des photos, suis la croissance et débloque 21 badges au fil de tes récoltes.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_tutos.png',

@@ -28,10 +28,10 @@ class MyGardenScreen extends StatefulWidget {
   const MyGardenScreen({super.key});
 
   @override
-  State<MyGardenScreen> createState() => _MyGardenScreenState();
+  State<MyGardenScreen> createState() => MyGardenScreenState();
 }
 
-class _MyGardenScreenState extends State<MyGardenScreen> {
+class MyGardenScreenState extends State<MyGardenScreen> {
   List<Plantation> _plantations = <Plantation>[];
   Set<String> _unlockedBadges = <String>{};
   _AlbumFilter _filter = _AlbumFilter.all;
@@ -54,6 +54,13 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     _unlockedBadges = computeUnlockedBadges(_plantations);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
     if (mounted) setState(() => _loaded = true);
+    // Le tuto n'est PAS déclenché ici — RootTabs l'appelle via
+    // [onBecameVisible] quand l'utilisateur arrive sur cet onglet.
+  }
+
+  /// Appelé par RootTabs quand l'utilisateur sélectionne l'onglet
+  /// Poussidex pour la première fois.
+  void onBecameVisible() {
     _showTutorialIfNeeded();
   }
 
@@ -139,7 +146,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
 
   void _showTutorialIfNeeded() {
     if (PrefsService.instance.gardenTutorialDone) return;
-    if (_plantations.isEmpty) return; // tuto après la 1ère plantation
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       showModalBottomSheet<void>(
@@ -174,7 +180,6 @@ class _MyGardenScreenState extends State<MyGardenScreen> {
     });
     _save();
     AudioService.instance.play(Sfx.plant);
-    _showTutorialIfNeeded();
   }
 
   void _replace(Plantation updated) {

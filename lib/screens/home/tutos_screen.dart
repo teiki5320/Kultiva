@@ -39,9 +39,9 @@ const _categories = <_TutoCategory>[
     items: [
       // 4 premiers tutos = comment utiliser l'app Kultiva.
       _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', url: ''),
-      _TutoItem(emoji: '🌿', label: 'Gérer mon potager', url: ''),
-      _TutoItem(emoji: '💧', label: 'Suivre l\'arrosage', url: ''),
-      _TutoItem(emoji: '🛒', label: 'Commander des graines', url: ''),
+      _TutoItem(emoji: '🪴', label: 'Utiliser le Poussidex', url: ''),
+      _TutoItem(emoji: '📷', label: 'Ajouter des photos', url: ''),
+      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', url: ''),
       // Astuces jardinage.
       _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
       _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
