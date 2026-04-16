@@ -234,9 +234,9 @@ class _PodiumSection extends StatelessWidget {
             )
           else
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+              padding: const EdgeInsets.fromLTRB(12, 24, 12, 16),
               child: SizedBox(
-                height: 180,
+                height: 210,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
@@ -310,23 +310,23 @@ class _PodiumStep extends StatelessWidget {
     final emojiSize = rank == 1 ? 66.0 : 50.0;
     final stepColor = _rankColor(rank);
 
+    // On utilise une hauteur fixe pour l'emoji-box (celle du rank 1) sur
+    // toutes les colonnes pour garantir un alignement impeccable des
+    // marches du podium. La couronne est en overlay — pas dans le flux.
+    const emojiBoxHeight = 80.0; // = emojiSize(1) + 14 marge
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        // 👑 couronne seulement pour le 1er.
-        if (rank == 1)
-          const Padding(
-            padding: EdgeInsets.only(bottom: 2),
-            child: Text('👑', style: TextStyle(fontSize: 28)),
-          ),
-        // Emoji du légume dans un cercle coloré avec une pastille médaille.
+        // Emoji cerclé + couronne en overlay (rank 1) + pastille médaille.
         SizedBox(
           width: emojiSize + 14,
-          height: emojiSize + 14,
+          height: emojiBoxHeight,
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
             children: <Widget>[
+              // Cercle emoji centré.
               Container(
                 width: emojiSize,
                 height: emojiSize,
@@ -348,10 +348,19 @@ class _PodiumStep extends StatelessWidget {
                   style: TextStyle(fontSize: emojiSize * 0.56),
                 ),
               ),
+              // 👑 Couronne en overlay au-dessus de l'emoji (rank 1).
+              if (rank == 1)
+                Positioned(
+                  top: -14,
+                  child: Text(
+                    '👑',
+                    style: const TextStyle(fontSize: 28),
+                  ),
+                ),
               // Pastille médaille au coin haut-droit.
               Positioned(
-                top: -2,
-                right: -2,
+                top: 4,
+                right: 0,
                 child: Container(
                   width: 26,
                   height: 26,
