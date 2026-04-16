@@ -29,6 +29,7 @@ class PrefsService {
   static const _kPlantations = 'kultiva.plantations.v1';
   static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
   static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
+  static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
 
   SharedPreferences? _prefs;
 
@@ -155,6 +156,18 @@ class PrefsService {
 
   Future<void> setGridMigrated(bool value) async {
     await _prefs?.setBool(_kGridMigrated, value);
+  }
+
+  /// Dernier moment où une notification d'alerte d'arrosage a été
+  /// envoyée. Utilisé pour throttler à max 1 notif par 24h.
+  DateTime? get lastWateringNotificationCheck {
+    final iso = _prefs?.getString(_kLastWateringCheck);
+    if (iso == null) return null;
+    return DateTime.tryParse(iso);
+  }
+
+  Future<void> setLastWateringNotificationCheck(DateTime t) async {
+    await _prefs?.setString(_kLastWateringCheck, t.toIso8601String());
   }
 
   // --- Watering history ---

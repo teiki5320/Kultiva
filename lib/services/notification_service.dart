@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'prefs_service.dart';
 import 'watering_service.dart';
 import 'weather_service.dart';
 
@@ -121,9 +122,24 @@ class NotificationService {
 
   /// Vérifie les besoins en arrosage et envoie une notification immédiate
   /// si nécessaire. À appeler quand l'app revient en foreground.
+  ///
+  /// Respecte les règles suivantes :
+  ///  - Ne rien faire si l'utilisateur a désactivé les notifications
+  ///    dans les paramètres.
+  ///  - Throttle : max 1 notif d'arrosage toutes les 24h.
+  ///  - Silencieux s'il n'y a aucun plant en cours ou aucun plant en
+  ///    détresse.
   static Future<void> checkAndNotify(List<String> gardenVegIds) async {
     if (kIsWeb || !_initialized) return;
     if (gardenVegIds.isEmpty) return;
+    if (!PrefsService.instance.notifications.value) return;
+
+    // Throttle : 24h minimum entre 2 notifs d'arrosage.
+    final last = PrefsService.instance.lastWateringNotificationCheck;
+    if (last != null &&
+        DateTime.now().difference(last).inHours < 24) {
+      return;
+    }
 
     try {
       final weather = await WeatherService.getWeather();
@@ -163,6 +179,8 @@ class NotificationService {
         body,
         details,
       );
+      await PrefsService.instance
+          .setLastWateringNotificationCheck(DateTime.now());
     } catch (_) {}
   }
 }
