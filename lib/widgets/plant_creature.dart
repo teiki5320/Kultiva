@@ -92,11 +92,19 @@ class _PlantCreatureState extends State<PlantCreature>
   /// disponible, on retombe alors sur le CustomPainter).
   String? _assetPathForLevel() {
     if (widget.starter != CreatureStarter.poussia) return null;
-    // Pour l'instant seul le stade "pousse" (20-29) a une illustration.
-    if (widget.level >= 20 && widget.level < 30) {
-      return 'assets/images/creatures/poussia/pousse.png';
-    }
-    return null;
+    final lv = widget.level;
+    const base = 'assets/images/creatures/poussia';
+    if (lv >= 100) return '$base/legende.png';
+    if (lv >= 75) return '$base/arbre.png';
+    if (lv >= 60) return '$base/arbrisseau.png';
+    if (lv >= 50) return '$base/plante.png';
+    if (lv >= 40) return '$base/fleur.png';
+    if (lv >= 30) return '$base/bourgeon.png';
+    if (lv >= 20) return '$base/pousse.png';
+    if (lv >= 15) return '$base/germe.png';
+    if (lv >= 10) return '$base/graine3.png';
+    if (lv >= 5) return '$base/graine2.png';
+    return '$base/graine1.png';
   }
 
   /// Retourne soit une Image.asset (si illustration dispo) soit le
