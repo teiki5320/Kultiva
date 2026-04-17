@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../data/badges.dart';
 import '../../data/vegetables_base.dart';
@@ -133,6 +134,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   List<Plantation> get _filteredPlantations => _plantations;
+
+  final GlobalKey<_TamassiViewState> _tamassiKey =
+      GlobalKey<_TamassiViewState>();
 
   /// Convertit l'ancienne grille 2D en plantations une seule fois,
   /// puis marque la migration comme faite pour ne plus la rejouer.
@@ -478,29 +482,17 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   void _onWater() {
-    // TODO : brancher XP booster "arroser" quand le système de niveaux arrive.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('💧 Arrosage — XP boost bientôt.'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    _tamassiKey.currentState?.triggerEffect(_TamassiEffect.water);
   }
 
   void _onFertilize() {
-    // TODO : brancher XP booster "engrais".
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('🌿 Engrais — XP boost bientôt.'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+    _tamassiKey.currentState?.triggerEffect(_TamassiEffect.fertilize);
   }
 
   Widget _buildBody() {
     switch (_filter) {
       case _AlbumFilter.tamassi:
-        return const _TamassiView();
+        return _TamassiView(key: _tamassiKey);
       case _AlbumFilter.challenges:
         return PoussidexChallengesGrid(
           onPhotoTaken: _onChallengePhotoTaken,
@@ -511,17 +503,47 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 }
 
+/// Type d'effet déclenché depuis les boutons Arroser/Engrais.
+enum _TamassiEffect { water, fertilize }
+
 /// Vue Tamassi — la créature Poussia en grand avec son nom et niveau.
 /// Inclut un slider de prototypage pour tester les stades d'évolution.
 class _TamassiView extends StatefulWidget {
-  const _TamassiView();
+  const _TamassiView({super.key});
 
   @override
   State<_TamassiView> createState() => _TamassiViewState();
 }
 
-class _TamassiViewState extends State<_TamassiView> {
+class _TamassiViewState extends State<_TamassiView>
+    with SingleTickerProviderStateMixin {
   double _level = 5;
+  late final AnimationController _effectCtrl;
+  _TamassiEffect? _effect;
+
+  @override
+  void initState() {
+    super.initState();
+    _effectCtrl = AnimationController(
+      duration: const Duration(milliseconds: 1400),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _effectCtrl.dispose();
+    super.dispose();
+  }
+
+  /// Appelée par le parent via GlobalKey quand on tape Arroser/Engrais.
+  void triggerEffect(_TamassiEffect effect) {
+    HapticFeedback.mediumImpact();
+    setState(() => _effect = effect);
+    _effectCtrl.forward(from: 0).whenComplete(() {
+      if (mounted) setState(() => _effect = null);
+    });
+  }
 
   String get _stageName {
     final lv = _level.round();
@@ -543,55 +565,308 @@ class _TamassiViewState extends State<_TamassiView> {
     final lv = _level.round();
     final screenWidth = MediaQuery.of(context).size.width;
     final creatureSize = min(screenWidth * 0.9, 420.0);
-    return Column(
+    return Stack(
       children: <Widget>[
-        const Spacer(),
-        PlantCreature(level: lv, size: creatureSize),
-        const SizedBox(height: 16),
-        const Text(
-          'Poussia',
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.4,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          'Niveau $lv · $_stageName',
-          style: TextStyle(
-            fontSize: 13,
-            color: KultivaColors.textSecondary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const Spacer(),
-        // Slider de niveau (prototype — sera remplacé par la vraie XP).
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
-          child: Row(
-            children: <Widget>[
-              const Text('1',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
-              Expanded(
-                child: Slider(
-                  value: _level,
-                  min: 1,
-                  max: 100,
-                  divisions: 99,
-                  label: '$lv',
-                  activeColor: KultivaColors.primaryGreen,
-                  onChanged: (v) => setState(() => _level = v),
-                ),
+        // Fond kawaii plein écran.
+        const Positioned.fill(child: _KawaiiBackground()),
+        // Contenu principal.
+        Column(
+          children: <Widget>[
+            const Spacer(),
+            // Créature + overlay effets (drops / sparkles).
+            SizedBox(
+              width: creatureSize,
+              height: creatureSize,
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: PlantCreature(level: lv, size: creatureSize),
+                  ),
+                  if (_effect != null)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: AnimatedBuilder(
+                          animation: _effectCtrl,
+                          builder: (_, __) => CustomPaint(
+                            painter: _EffectPainter(
+                              effect: _effect!,
+                              progress: _effectCtrl.value,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
-              const Text('100',
-                  style: TextStyle(fontWeight: FontWeight.w700)),
-            ],
-          ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Poussia',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.4,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              'Niveau $lv · $_stageName',
+              style: TextStyle(
+                fontSize: 13,
+                color: KultivaColors.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
+              child: Row(
+                children: <Widget>[
+                  const Text('1',
+                      style: TextStyle(fontWeight: FontWeight.w700)),
+                  Expanded(
+                    child: Slider(
+                      value: _level,
+                      min: 1,
+                      max: 100,
+                      divisions: 99,
+                      label: '$lv',
+                      activeColor: KultivaColors.primaryGreen,
+                      onChanged: (v) => setState(() => _level = v),
+                    ),
+                  ),
+                  const Text('100',
+                      style: TextStyle(fontWeight: FontWeight.w700)),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
+}
+
+/// Fond kawaii en arrière-plan de la vue Tamassi :
+/// dégradé pastel ciel→herbe + quelques nuages et fleurs positionnés.
+class _KawaiiBackground extends StatelessWidget {
+  const _KawaiiBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          stops: <double>[0.0, 0.55, 1.0],
+          colors: <Color>[
+            Color(0xFFE9F6FF), // bleu ciel très pâle
+            Color(0xFFFFE9F1), // rose très pâle
+            Color(0xFFDCF2D4), // vert herbe très pâle
+          ],
+        ),
+      ),
+      child: Stack(
+        children: <Widget>[
+          // Nuages.
+          Positioned(
+            top: 20,
+            left: 30,
+            child: Text('☁️',
+                style: TextStyle(
+                    fontSize: 44,
+                    color: Colors.white.withOpacity(0.9))),
+          ),
+          Positioned(
+            top: 60,
+            right: 40,
+            child: Text('☁️',
+                style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white.withOpacity(0.8))),
+          ),
+          Positioned(
+            top: 140,
+            left: 20,
+            child: Text('☁️',
+                style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.white.withOpacity(0.7))),
+          ),
+          // Scintillements.
+          const Positioned(
+            top: 100,
+            right: 60,
+            child: Text('✨', style: TextStyle(fontSize: 22)),
+          ),
+          const Positioned(
+            top: 220,
+            right: 30,
+            child: Text('✨', style: TextStyle(fontSize: 18)),
+          ),
+          const Positioned(
+            top: 80,
+            left: 180,
+            child: Text('✨', style: TextStyle(fontSize: 14)),
+          ),
+          // Fleurs en bas.
+          const Positioned(
+            bottom: 20,
+            left: 20,
+            child: Text('🌸', style: TextStyle(fontSize: 26)),
+          ),
+          const Positioned(
+            bottom: 40,
+            right: 30,
+            child: Text('🌼', style: TextStyle(fontSize: 22)),
+          ),
+          const Positioned(
+            bottom: 12,
+            left: 160,
+            child: Text('🌿', style: TextStyle(fontSize: 20)),
+          ),
+          const Positioned(
+            bottom: 70,
+            right: 80,
+            child: Text('🌸', style: TextStyle(fontSize: 18)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Peintre d'effet particules pour Arroser (gouttes d'eau) et Engrais
+/// (étincelles vertes/dorées). L'animation est pilotée par [progress]
+/// qui va de 0 à 1.
+class _EffectPainter extends CustomPainter {
+  final _TamassiEffect effect;
+  final double progress;
+
+  _EffectPainter({required this.effect, required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (effect == _TamassiEffect.water) {
+      _paintWater(canvas, size);
+    } else {
+      _paintFertilize(canvas, size);
+    }
+  }
+
+  void _paintWater(Canvas canvas, Size size) {
+    // 10 gouttes qui tombent du haut vers le milieu de la créature.
+    final rng = Random(42);
+    const dropCount = 10;
+    for (int i = 0; i < dropCount; i++) {
+      final startX = size.width * (0.15 + 0.70 * rng.nextDouble());
+      final delay = i * 0.06;
+      final localP = ((progress - delay) / 0.55).clamp(0.0, 1.0);
+      if (localP <= 0) continue;
+      // Gouttes tombent de y=-10% à y=55% (centre de la créature).
+      final startY = -size.height * 0.1;
+      final endY = size.height * 0.55;
+      final y = startY + (endY - startY) * _easeInQuad(localP);
+      final dropSize = size.width * 0.018;
+      // Goutte : forme d'œuf inversé.
+      final dropPath = Path()
+        ..moveTo(startX, y - dropSize * 2)
+        ..quadraticBezierTo(
+          startX + dropSize, y - dropSize,
+          startX + dropSize * 0.6, y + dropSize * 0.8,
+        )
+        ..quadraticBezierTo(
+          startX, y + dropSize,
+          startX - dropSize * 0.6, y + dropSize * 0.8,
+        )
+        ..quadraticBezierTo(
+          startX - dropSize, y - dropSize,
+          startX, y - dropSize * 2,
+        )
+        ..close();
+      canvas.drawPath(
+        dropPath,
+        Paint()
+          ..shader = LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: <Color>[
+              const Color(0xFF9BD4FF).withOpacity(0.9),
+              const Color(0xFF3A9BE8).withOpacity(0.95),
+            ],
+          ).createShader(Rect.fromCircle(
+              center: Offset(startX, y), radius: dropSize * 2)),
+      );
+      // Splash quand la goutte atteint le bas (dernier 25% du localP).
+      if (localP > 0.75) {
+        final splashP = (localP - 0.75) / 0.25;
+        final splashRadius = dropSize * 3 * splashP;
+        canvas.drawCircle(
+          Offset(startX, endY),
+          splashRadius,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 2
+            ..color =
+                const Color(0xFF3A9BE8).withOpacity(0.5 * (1 - splashP)),
+        );
+      }
+    }
+  }
+
+  void _paintFertilize(Canvas canvas, Size size) {
+    // 14 étincelles qui montent depuis le bas de la créature en fade.
+    final rng = Random(123);
+    const sparkCount = 14;
+    for (int i = 0; i < sparkCount; i++) {
+      final xBase = size.width * (0.12 + 0.76 * rng.nextDouble());
+      final xDrift = (rng.nextDouble() - 0.5) * size.width * 0.08;
+      final delay = i * 0.045;
+      final localP = ((progress - delay) / 0.65).clamp(0.0, 1.0);
+      if (localP <= 0) continue;
+      // Monte de y=85% à y=15%.
+      final startY = size.height * 0.85;
+      final endY = size.height * 0.15;
+      final y = startY + (endY - startY) * _easeOutCubic(localP);
+      final x = xBase + xDrift * localP;
+      final opacity = (1 - localP).clamp(0.0, 1.0);
+      final sparkSize = size.width * 0.018 * (1 + 0.5 * (1 - localP));
+      final color = i.isEven
+          ? const Color(0xFFB2E371) // vert tendre
+          : const Color(0xFFFFD86B); // jaune doré
+      _drawSpark(canvas, Offset(x, y), sparkSize, color, opacity);
+    }
+  }
+
+  void _drawSpark(
+      Canvas canvas, Offset center, double size, Color color, double opacity) {
+    final paint = Paint()..color = color.withOpacity(opacity);
+    // 4-branch star.
+    final path = Path();
+    for (int i = 0; i < 8; i++) {
+      final angle = i * pi / 4;
+      final r = i.isEven ? size : size * 0.35;
+      final p = center + Offset(cos(angle) * r, sin(angle) * r);
+      if (i == 0) {
+        path.moveTo(p.dx, p.dy);
+      } else {
+        path.lineTo(p.dx, p.dy);
+      }
+    }
+    path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  double _easeInQuad(double t) => t * t;
+  double _easeOutCubic(double t) {
+    final x = 1 - t;
+    return 1 - x * x * x;
+  }
+
+  @override
+  bool shouldRepaint(covariant _EffectPainter old) =>
+      old.progress != progress || old.effect != effect;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
