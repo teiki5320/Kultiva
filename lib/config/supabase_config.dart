@@ -40,5 +40,6 @@ class GoogleOAuthConfig {
   /// Remplace cette valeur par ton vrai Web Client ID dès qu'il est
   /// créé dans Google Cloud. Tant que c'est `null`, la connexion
   /// Google est désactivée côté app.
-  static const String? webClientId = null;
+  static const String? webClientId =
+      '56977548622-l52olnkn81icjbo6aqk6b5trssjpbqiu.apps.googleusercontent.com';
 }
