@@ -28,6 +28,7 @@ class _PlantCreatureState extends State<PlantCreature>
     with TickerProviderStateMixin {
   late final AnimationController _breathCtrl;
   late final AnimationController _blinkCtrl;
+  late final AnimationController _swayCtrl;
   Timer? _blinkTimer;
   final math.Random _rng = math.Random();
 
@@ -42,6 +43,10 @@ class _PlantCreatureState extends State<PlantCreature>
       duration: const Duration(milliseconds: 150),
       vsync: this,
     );
+    _swayCtrl = AnimationController(
+      duration: const Duration(milliseconds: 3200),
+      vsync: this,
+    )..repeat(reverse: true);
     _scheduleBlink();
   }
 
@@ -63,19 +68,24 @@ class _PlantCreatureState extends State<PlantCreature>
     _blinkTimer?.cancel();
     _breathCtrl.dispose();
     _blinkCtrl.dispose();
+    _swayCtrl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge(<Listenable>[_breathCtrl, _blinkCtrl]),
+      animation: Listenable.merge(
+          <Listenable>[_breathCtrl, _blinkCtrl, _swayCtrl]),
       builder: (context, _) {
         final t = _breathCtrl.value;
         final scale = 1.0 + 0.03 * math.sin(t * math.pi);
+        final sway = 0.03 * math.sin(_swayCtrl.value * math.pi * 2 - math.pi);
         return Transform(
           alignment: Alignment.bottomCenter,
-          transform: Matrix4.identity()..scale(scale, scale),
+          transform: Matrix4.identity()
+            ..rotateZ(sway)
+            ..scale(scale, scale),
           child: SizedBox.square(
             dimension: widget.size,
             child: CustomPaint(
