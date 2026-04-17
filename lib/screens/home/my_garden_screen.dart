@@ -541,10 +541,12 @@ class _TamassiViewState extends State<_TamassiView> {
   @override
   Widget build(BuildContext context) {
     final lv = _level.round();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final creatureSize = min(screenWidth * 0.9, 420.0);
     return Column(
       children: <Widget>[
         const Spacer(),
-        PlantCreature(level: lv, size: 260),
+        PlantCreature(level: lv, size: creatureSize),
         const SizedBox(height: 16),
         const Text(
           'Poussia',
@@ -564,9 +566,9 @@ class _TamassiViewState extends State<_TamassiView> {
           ),
         ),
         const Spacer(),
-        // Slider temporaire pour tester les stades d'évolution.
+        // Slider de niveau (prototype — sera remplacé par la vraie XP).
         Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
           child: Row(
             children: <Widget>[
               const Text('1',
@@ -585,19 +587,6 @@ class _TamassiViewState extends State<_TamassiView> {
               const Text('100',
                   style: TextStyle(fontWeight: FontWeight.w700)),
             ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
-          child: Wrap(
-            spacing: 8,
-            children: <int>[1, 5, 10, 15, 20, 30, 40, 50, 60, 75, 100]
-                .map((v) => ActionChip(
-                      label: Text('$v'),
-                      onPressed: () =>
-                          setState(() => _level = v.toDouble()),
-                    ))
-                .toList(),
           ),
         ),
       ],
