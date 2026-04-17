@@ -167,10 +167,16 @@ class _CreaturePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Étape 1 : on ignore le level et starter, on dessine toujours
-    // Poussia au stade "pousse".
     _paintGroundShadow(canvas, size);
-    _paintPoussiaSprout(canvas, size);
+    if (level < 5) {
+      _paintPoussiaSeed(canvas, size);
+    } else if (level < 15) {
+      _paintPoussiaSprout(canvas, size);
+    } else if (level < 30) {
+      _paintPoussiaFlower(canvas, size);
+    } else {
+      _paintPoussiaTree(canvas, size);
+    }
   }
 
   // Ombre douce au sol pour ancrer la créature dans l'espace.
@@ -188,6 +194,112 @@ class _CreaturePainter extends CustomPainter {
         ],
       ).createShader(shadowRect);
     canvas.drawOval(shadowRect, paint);
+  }
+
+  /// Poussia au stade "graine" (niveau 1-4) :
+  /// grosse graine brune ovoïde avec yeux qui piquent à travers
+  /// une craquelure, petite pousse qui sort du dessus.
+  void _paintPoussiaSeed(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final cx = w * 0.5;
+
+    // Corps de la graine (gros ovale brun).
+    final bodyCenter = Offset(cx, h * 0.58);
+    final bodyRect = Rect.fromCenter(
+      center: bodyCenter,
+      width: w * 0.50,
+      height: h * 0.48,
+    );
+    canvas.drawOval(
+      bodyRect,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.3, -0.5),
+          radius: 0.9,
+          colors: const <Color>[
+            Color(0xFFD4A96A),
+            Color(0xFFAA7B42),
+            Color(0xFF6F4A2A),
+          ],
+          stops: const <double>[0.0, 0.5, 1.0],
+        ).createShader(bodyRect),
+    );
+
+    // Craquelure en haut de la graine.
+    final crackPath = Path()
+      ..moveTo(cx - w * 0.06, h * 0.38)
+      ..lineTo(cx - w * 0.02, h * 0.35)
+      ..lineTo(cx + w * 0.03, h * 0.37)
+      ..lineTo(cx + w * 0.06, h * 0.34);
+    canvas.drawPath(
+      crackPath,
+      Paint()
+        ..color = const Color(0xFF3E7A48)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w * 0.012
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
+
+    // Minuscule pousse sortant de la craquelure.
+    final sproutPath = Path()
+      ..moveTo(cx, h * 0.36)
+      ..quadraticBezierTo(cx + w * 0.04, h * 0.28, cx + w * 0.02, h * 0.22);
+    canvas.drawPath(
+      sproutPath,
+      Paint()
+        ..color = const Color(0xFF5CAF5C)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w * 0.018
+        ..strokeCap = StrokeCap.round,
+    );
+    // Petite feuille au bout.
+    final tinyLeaf = Path()
+      ..moveTo(cx + w * 0.02, h * 0.22)
+      ..quadraticBezierTo(cx + w * 0.10, h * 0.18, cx + w * 0.08, h * 0.24)
+      ..quadraticBezierTo(cx + w * 0.05, h * 0.23, cx + w * 0.02, h * 0.22);
+    canvas.drawPath(tinyLeaf, Paint()..color = const Color(0xFF5CAF5C));
+
+    // Highlight.
+    final hlRect = Rect.fromCenter(
+      center: Offset(cx - w * 0.08, h * 0.50),
+      width: w * 0.14,
+      height: h * 0.10,
+    );
+    canvas.drawOval(
+      hlRect,
+      Paint()
+        ..shader = RadialGradient(
+          colors: <Color>[
+            Colors.white.withOpacity(0.45),
+            Colors.white.withOpacity(0.0),
+          ],
+        ).createShader(hlRect),
+    );
+
+    // Yeux kawaii sur la graine.
+    _paintEye(canvas, size,
+        center: Offset(cx - w * 0.08, h * 0.56), blink: blink);
+    _paintEye(canvas, size,
+        center: Offset(cx + w * 0.08, h * 0.56), blink: blink);
+
+    // Bouche.
+    final mouth = Path()
+      ..moveTo(cx - w * 0.03, h * 0.66)
+      ..quadraticBezierTo(cx, h * 0.69, cx + w * 0.03, h * 0.66);
+    canvas.drawPath(
+      mouth,
+      Paint()
+        ..color = const Color(0xFF5A3A1A)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w * 0.010
+        ..strokeCap = StrokeCap.round,
+    );
+
+    // Blush.
+    _paintBlush(canvas, size, center: Offset(cx - w * 0.14, h * 0.62));
+    _paintBlush(canvas, size, center: Offset(cx + w * 0.14, h * 0.62));
   }
 
   /// Poussia au stade "pousse" (niveau 5) :
@@ -335,6 +447,303 @@ class _CreaturePainter extends CustomPainter {
     // --- 8. Blush joues (touche kawaii) ---
     _paintBlush(canvas, size, center: Offset(cx - w * 0.14, h * 0.42));
     _paintBlush(canvas, size, center: Offset(cx + w * 0.14, h * 0.42));
+  }
+
+  /// Poussia au stade "fleur" (niveau 15-29) :
+  /// tige plus haute, 4 feuilles, fleur ouverte au sommet (pétales),
+  /// yeux au centre de la fleur.
+  void _paintPoussiaFlower(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final cx = w * 0.5;
+
+    // Petit monticule de terre.
+    final earthPath = Path()
+      ..moveTo(cx - w * 0.25, h * 0.90)
+      ..quadraticBezierTo(cx, h * 0.82, cx + w * 0.25, h * 0.90)
+      ..lineTo(cx + w * 0.25, h * 0.94)
+      ..lineTo(cx - w * 0.25, h * 0.94)
+      ..close();
+    canvas.drawPath(
+      earthPath,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(0, -0.5),
+          colors: const <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
+        ).createShader(Rect.fromLTWH(cx - w * 0.25, h * 0.82, w * 0.5, h * 0.12)),
+    );
+
+    // Tige.
+    final stemPath = Path()
+      ..moveTo(cx - w * 0.018, h * 0.84)
+      ..cubicTo(cx - w * 0.06, h * 0.65, cx + w * 0.06, h * 0.50,
+          cx - w * 0.01, h * 0.32)
+      ..lineTo(cx + w * 0.01, h * 0.32)
+      ..cubicTo(cx + w * 0.08, h * 0.50, cx - w * 0.04, h * 0.65,
+          cx + w * 0.018, h * 0.84)
+      ..close();
+    canvas.drawPath(
+      stemPath,
+      Paint()..color = const Color(0xFF4F9F5A),
+    );
+
+    // 4 feuilles.
+    _paintLeaf(canvas, size,
+        anchor: Offset(cx - w * 0.02, h * 0.72),
+        tip: Offset(cx - w * 0.24, h * 0.64),
+        mirror: false);
+    _paintLeaf(canvas, size,
+        anchor: Offset(cx + w * 0.02, h * 0.68),
+        tip: Offset(cx + w * 0.26, h * 0.58),
+        mirror: true);
+    _paintLeaf(canvas, size,
+        anchor: Offset(cx - w * 0.02, h * 0.56),
+        tip: Offset(cx - w * 0.20, h * 0.46),
+        mirror: false);
+    _paintLeaf(canvas, size,
+        anchor: Offset(cx + w * 0.02, h * 0.50),
+        tip: Offset(cx + w * 0.22, h * 0.40),
+        mirror: true);
+
+    // Centre de la fleur (gros rond jaune).
+    final flowerCenter = Offset(cx, h * 0.26);
+    final petalLen = w * 0.12;
+    const petalCount = 6;
+    // Pétales.
+    for (int i = 0; i < petalCount; i++) {
+      final angle = (i * math.pi * 2 / petalCount) - math.pi / 2;
+      final petalTip = flowerCenter +
+          Offset(math.cos(angle) * petalLen, math.sin(angle) * petalLen);
+      final perpAngle = angle + math.pi / 2;
+      final perpOff =
+          Offset(math.cos(perpAngle) * w * 0.04, math.sin(perpAngle) * w * 0.04);
+      final petal = Path()
+        ..moveTo(flowerCenter.dx, flowerCenter.dy)
+        ..quadraticBezierTo(
+          petalTip.dx + perpOff.dx, petalTip.dy + perpOff.dy,
+          petalTip.dx, petalTip.dy,
+        )
+        ..quadraticBezierTo(
+          petalTip.dx - perpOff.dx, petalTip.dy - perpOff.dy,
+          flowerCenter.dx, flowerCenter.dy,
+        );
+      canvas.drawPath(
+        petal,
+        Paint()
+          ..color = Color.lerp(
+            const Color(0xFFFFB7D5),
+            const Color(0xFFFF8AB0),
+            i / petalCount,
+          )!,
+      );
+    }
+
+    // Centre jaune.
+    final centerRect = Rect.fromCenter(
+      center: flowerCenter,
+      width: w * 0.18,
+      height: w * 0.18,
+    );
+    canvas.drawOval(
+      centerRect,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.3, -0.4),
+          colors: const <Color>[Color(0xFFFFE68A), Color(0xFFEABF30)],
+        ).createShader(centerRect),
+    );
+
+    // Highlight.
+    final hlRect = Rect.fromCenter(
+      center: flowerCenter.translate(-w * 0.03, -w * 0.03),
+      width: w * 0.06,
+      height: w * 0.04,
+    );
+    canvas.drawOval(
+      hlRect,
+      Paint()
+        ..shader = RadialGradient(
+          colors: <Color>[
+            Colors.white.withOpacity(0.55),
+            Colors.white.withOpacity(0.0),
+          ],
+        ).createShader(hlRect),
+    );
+
+    // Yeux.
+    _paintEye(canvas, size,
+        center: flowerCenter.translate(-w * 0.03, w * 0.01), blink: blink);
+    _paintEye(canvas, size,
+        center: flowerCenter.translate(w * 0.03, w * 0.01), blink: blink);
+
+    // Bouche.
+    final mouth = Path()
+      ..moveTo(flowerCenter.dx - w * 0.02, flowerCenter.dy + w * 0.05)
+      ..quadraticBezierTo(
+        flowerCenter.dx, flowerCenter.dy + w * 0.065,
+        flowerCenter.dx + w * 0.02, flowerCenter.dy + w * 0.05,
+      );
+    canvas.drawPath(
+      mouth,
+      Paint()
+        ..color = const Color(0xFF8A6A00)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w * 0.008
+        ..strokeCap = StrokeCap.round,
+    );
+
+    // Blush.
+    _paintBlush(canvas, size,
+        center: flowerCenter.translate(-w * 0.06, w * 0.04));
+    _paintBlush(canvas, size,
+        center: flowerCenter.translate(w * 0.06, w * 0.04));
+  }
+
+  /// Poussia au stade "arbre" (niveau 30+) :
+  /// tronc solide, couronne feuillue ronde avec yeux.
+  void _paintPoussiaTree(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final cx = w * 0.5;
+
+    // Petit monticule de terre.
+    final earthPath = Path()
+      ..moveTo(cx - w * 0.30, h * 0.92)
+      ..quadraticBezierTo(cx, h * 0.84, cx + w * 0.30, h * 0.92)
+      ..lineTo(cx + w * 0.30, h * 0.96)
+      ..lineTo(cx - w * 0.30, h * 0.96)
+      ..close();
+    canvas.drawPath(
+      earthPath,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(0, -0.5),
+          colors: const <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
+        ).createShader(
+            Rect.fromLTWH(cx - w * 0.30, h * 0.84, w * 0.60, h * 0.12)),
+    );
+
+    // Tronc.
+    final trunkPath = Path()
+      ..moveTo(cx - w * 0.04, h * 0.86)
+      ..lineTo(cx - w * 0.035, h * 0.48)
+      ..lineTo(cx + w * 0.035, h * 0.48)
+      ..lineTo(cx + w * 0.04, h * 0.86)
+      ..close();
+    canvas.drawPath(
+      trunkPath,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: const <Color>[
+            Color(0xFF7A5530),
+            Color(0xFFA07240),
+            Color(0xFF7A5530),
+          ],
+        ).createShader(Rect.fromLTWH(cx - w * 0.04, h * 0.48, w * 0.08, h * 0.38)),
+    );
+
+    // Branches latérales.
+    _paintLeaf(canvas, size,
+        anchor: Offset(cx - w * 0.02, h * 0.62),
+        tip: Offset(cx - w * 0.18, h * 0.55),
+        mirror: false);
+    _paintLeaf(canvas, size,
+        anchor: Offset(cx + w * 0.02, h * 0.58),
+        tip: Offset(cx + w * 0.20, h * 0.50),
+        mirror: true);
+
+    // Canopée (gros ovale vert).
+    final canopyCenter = Offset(cx, h * 0.30);
+    final canopyRect = Rect.fromCenter(
+      center: canopyCenter,
+      width: w * 0.72,
+      height: h * 0.50,
+    );
+    canvas.drawOval(
+      canopyRect,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.25, -0.4),
+          radius: 0.85,
+          colors: const <Color>[
+            Color(0xFF8FD98F),
+            Color(0xFF5CB35C),
+            Color(0xFF2E7A2E),
+          ],
+          stops: const <double>[0.0, 0.5, 1.0],
+        ).createShader(canopyRect),
+    );
+
+    // Amas de feuilles texturées (petits cercles plus clairs).
+    final leafDots = <Offset>[
+      canopyCenter + Offset(-w * 0.12, -h * 0.08),
+      canopyCenter + Offset(w * 0.10, -h * 0.12),
+      canopyCenter + Offset(w * 0.18, -h * 0.02),
+      canopyCenter + Offset(-w * 0.20, h * 0.02),
+      canopyCenter + Offset(w * 0.05, h * 0.10),
+      canopyCenter + Offset(-w * 0.08, h * 0.12),
+    ];
+    for (final dot in leafDots) {
+      final r = w * 0.06;
+      final rect = Rect.fromCenter(center: dot, width: r * 2, height: r * 2);
+      canvas.drawOval(
+        rect,
+        Paint()
+          ..shader = RadialGradient(
+            colors: <Color>[
+              const Color(0xFFA8E8A8).withOpacity(0.5),
+              const Color(0xFFA8E8A8).withOpacity(0.0),
+            ],
+          ).createShader(rect),
+      );
+    }
+
+    // Highlight.
+    final hlRect = Rect.fromCenter(
+      center: canopyCenter + Offset(-w * 0.10, -h * 0.10),
+      width: w * 0.18,
+      height: h * 0.10,
+    );
+    canvas.drawOval(
+      hlRect,
+      Paint()
+        ..shader = RadialGradient(
+          colors: <Color>[
+            Colors.white.withOpacity(0.35),
+            Colors.white.withOpacity(0.0),
+          ],
+        ).createShader(hlRect),
+    );
+
+    // Yeux.
+    _paintEye(canvas, size,
+        center: canopyCenter + Offset(-w * 0.08, h * 0.02), blink: blink);
+    _paintEye(canvas, size,
+        center: canopyCenter + Offset(w * 0.08, h * 0.02), blink: blink);
+
+    // Bouche.
+    final mouth = Path()
+      ..moveTo(cx - w * 0.04, canopyCenter.dy + h * 0.10)
+      ..quadraticBezierTo(
+        cx, canopyCenter.dy + h * 0.14,
+        cx + w * 0.04, canopyCenter.dy + h * 0.10,
+      );
+    canvas.drawPath(
+      mouth,
+      Paint()
+        ..color = const Color(0xFF1A4A1A)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = w * 0.012
+        ..strokeCap = StrokeCap.round,
+    );
+
+    // Blush.
+    _paintBlush(canvas, size,
+        center: canopyCenter + Offset(-w * 0.14, h * 0.06));
+    _paintBlush(canvas, size,
+        center: canopyCenter + Offset(w * 0.14, h * 0.06));
   }
 
   void _paintLeaf(
