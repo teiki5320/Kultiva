@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -24,8 +25,11 @@ class PlantCreature extends StatefulWidget {
 }
 
 class _PlantCreatureState extends State<PlantCreature>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _breathCtrl;
+  late final AnimationController _blinkCtrl;
+  Timer? _blinkTimer;
+  final math.Random _rng = math.Random();
 
   @override
   void initState() {
@@ -34,36 +38,56 @@ class _PlantCreatureState extends State<PlantCreature>
       duration: const Duration(milliseconds: 2500),
       vsync: this,
     )..repeat(reverse: true);
+    _blinkCtrl = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    _scheduleBlink();
+  }
+
+  void _scheduleBlink() {
+    _blinkTimer = Timer(
+      Duration(milliseconds: 2500 + _rng.nextInt(3000)),
+      () {
+        if (!mounted) return;
+        _blinkCtrl.forward().then((_) {
+          if (mounted) _blinkCtrl.reverse();
+        });
+        _scheduleBlink();
+      },
+    );
   }
 
   @override
   void dispose() {
+    _blinkTimer?.cancel();
     _breathCtrl.dispose();
+    _blinkCtrl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _breathCtrl,
-      builder: (context, child) {
+      animation: Listenable.merge(<Listenable>[_breathCtrl, _blinkCtrl]),
+      builder: (context, _) {
         final t = _breathCtrl.value;
         final scale = 1.0 + 0.03 * math.sin(t * math.pi);
         return Transform(
           alignment: Alignment.bottomCenter,
           transform: Matrix4.identity()..scale(scale, scale),
-          child: child,
+          child: SizedBox.square(
+            dimension: widget.size,
+            child: CustomPaint(
+              painter: _CreaturePainter(
+                level: widget.level,
+                starter: widget.starter,
+                blink: _blinkCtrl.value,
+              ),
+            ),
+          ),
         );
       },
-      child: SizedBox.square(
-        dimension: widget.size,
-        child: CustomPaint(
-          painter: _CreaturePainter(
-            level: widget.level,
-            starter: widget.starter,
-          ),
-        ),
-      ),
     );
   }
 }
@@ -71,8 +95,13 @@ class _PlantCreatureState extends State<PlantCreature>
 class _CreaturePainter extends CustomPainter {
   final int level;
   final CreatureStarter starter;
+  final double blink; // 0 = yeux ouverts, 1 = fermés
 
-  _CreaturePainter({required this.level, required this.starter});
+  _CreaturePainter({
+    required this.level,
+    required this.starter,
+    this.blink = 0,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -222,9 +251,11 @@ class _CreaturePainter extends CustomPainter {
         ).createShader(highlightRect),
     );
 
-    // --- 6. Yeux kawaii ---
-    _paintEye(canvas, size, center: Offset(cx - w * 0.09, h * 0.36));
-    _paintEye(canvas, size, center: Offset(cx + w * 0.09, h * 0.36));
+    // --- 6. Yeux kawaii (fermés si blink > 0) ---
+    _paintEye(canvas, size,
+        center: Offset(cx - w * 0.09, h * 0.36), blink: blink);
+    _paintEye(canvas, size,
+        center: Offset(cx + w * 0.09, h * 0.36), blink: blink);
 
     // --- 7. Mini bouche souriante ---
     final mouthPath = Path()
@@ -296,9 +327,24 @@ class _CreaturePainter extends CustomPainter {
     );
   }
 
-  void _paintEye(Canvas canvas, Size size, {required Offset center}) {
+  void _paintEye(Canvas canvas, Size size,
+      {required Offset center, double blink = 0}) {
     final eyeWidth = size.width * 0.08;
-    final eyeHeight = size.height * 0.10;
+    final eyeOpenHeight = size.height * 0.10;
+    final eyeHeight = eyeOpenHeight * (1.0 - blink * 0.85);
+
+    if (blink > 0.7) {
+      // Yeux quasi-fermés → simple trait horizontal.
+      canvas.drawLine(
+        center.translate(-eyeWidth * 0.5, 0),
+        center.translate(eyeWidth * 0.5, 0),
+        Paint()
+          ..color = const Color(0xFF2A4A3A)
+          ..strokeWidth = size.width * 0.008
+          ..strokeCap = StrokeCap.round,
+      );
+      return;
+    }
 
     // Blanc de l'œil.
     canvas.drawOval(
@@ -313,7 +359,7 @@ class _CreaturePainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = size.width * 0.006,
     );
-    // Pupille.
+    // Pupille (s'écrase avec le blink).
     canvas.drawOval(
       Rect.fromCenter(
         center: center.translate(0, size.height * 0.01),
@@ -322,17 +368,19 @@ class _CreaturePainter extends CustomPainter {
       ),
       Paint()..color = const Color(0xFF1A2A20),
     );
-    // Reflet dans la pupille (2 points brillants).
-    canvas.drawCircle(
-      center.translate(-size.width * 0.012, -size.height * 0.015),
-      size.width * 0.012,
-      Paint()..color = Colors.white,
-    );
-    canvas.drawCircle(
-      center.translate(size.width * 0.014, size.height * 0.010),
-      size.width * 0.006,
-      Paint()..color = Colors.white.withOpacity(0.7),
-    );
+    // Reflets (seulement si pas trop fermé).
+    if (blink < 0.4) {
+      canvas.drawCircle(
+        center.translate(-size.width * 0.012, -size.height * 0.015),
+        size.width * 0.012,
+        Paint()..color = Colors.white,
+      );
+      canvas.drawCircle(
+        center.translate(size.width * 0.014, size.height * 0.010),
+        size.width * 0.006,
+        Paint()..color = Colors.white.withOpacity(0.7),
+      );
+    }
   }
 
   void _paintBlush(Canvas canvas, Size size, {required Offset center}) {
@@ -355,7 +403,7 @@ class _CreaturePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _CreaturePainter old) =>
-      old.level != level || old.starter != starter;
+      old.level != level || old.starter != starter || old.blink != blink;
 }
 
 extension _OffsetNorm on Offset {
