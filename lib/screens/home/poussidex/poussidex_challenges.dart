@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../services/cloud_sync_service.dart';
