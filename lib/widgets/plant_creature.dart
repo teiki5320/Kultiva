@@ -88,6 +88,49 @@ class _PlantCreatureState extends State<PlantCreature>
     setState(() => _showHeart = true);
   }
 
+  /// Mapping niveau → chemin d'asset PNG (null si pas d'illustration
+  /// disponible, on retombe alors sur le CustomPainter).
+  String? _assetPathForLevel() {
+    if (widget.starter != CreatureStarter.poussia) return null;
+    // Pour l'instant seul le stade "pousse" (20-29) a une illustration.
+    if (widget.level >= 20 && widget.level < 30) {
+      return 'assets/images/creatures/poussia/pousse.png';
+    }
+    return null;
+  }
+
+  /// Retourne soit une Image.asset (si illustration dispo) soit le
+  /// CustomPainter de fallback.
+  Widget _buildCreatureVisual() {
+    final assetPath = _assetPathForLevel();
+    if (assetPath != null) {
+      return SizedBox.square(
+        dimension: widget.size,
+        child: Image.asset(
+          assetPath,
+          fit: BoxFit.contain,
+          // Si l'asset est introuvable, on retombe sur le CustomPainter.
+          errorBuilder: (_, __, ___) => CustomPaint(
+            size: Size.square(widget.size),
+            painter: _CreaturePainter(
+              level: widget.level,
+              starter: widget.starter,
+              blink: _blinkCtrl.value,
+            ),
+          ),
+        ),
+      );
+    }
+    return CustomPaint(
+      size: Size.square(widget.size),
+      painter: _CreaturePainter(
+        level: widget.level,
+        starter: widget.starter,
+        blink: _blinkCtrl.value,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -118,14 +161,7 @@ class _PlantCreatureState extends State<PlantCreature>
                   transform: Matrix4.identity()
                     ..rotateZ(sway)
                     ..scale(squash * breathScale, stretch * breathScale),
-                  child: CustomPaint(
-                    size: Size.square(widget.size),
-                    painter: _CreaturePainter(
-                      level: widget.level,
-                      starter: widget.starter,
-                      blink: _blinkCtrl.value,
-                    ),
-                  ),
+                  child: _buildCreatureVisual(),
                 );
               },
             ),
