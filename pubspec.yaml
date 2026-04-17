@@ -72,9 +72,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/badges/
-    - assets/images/creatures/poussia/
-    - assets/images/creatures/soleia/
-    - assets/images/creatures/spira/
+    - assets/images/creatures/Poussia/
+    - assets/images/creatures/Soleia/
+    - assets/images/creatures/Spira/
     - assets/sounds/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───

@@ -93,18 +93,18 @@ class _PlantCreatureState extends State<PlantCreature>
   String? _assetPathForLevel() {
     if (widget.starter != CreatureStarter.poussia) return null;
     final lv = widget.level;
-    const base = 'assets/images/creatures/poussia';
-    if (lv >= 100) return '$base/legende.png';
-    if (lv >= 75) return '$base/arbre.png';
-    if (lv >= 60) return '$base/arbrisseau.png';
-    if (lv >= 50) return '$base/plante.png';
-    if (lv >= 40) return '$base/fleur.png';
-    if (lv >= 30) return '$base/bourgeon.png';
-    if (lv >= 20) return '$base/pousse.png';
-    if (lv >= 15) return '$base/germe.png';
-    if (lv >= 10) return '$base/graine3.png';
-    if (lv >= 5) return '$base/graine2.png';
-    return '$base/graine1.png';
+    const base = 'assets/images/creatures/Poussia';
+    if (lv >= 100) return '$base/N11.png';
+    if (lv >= 75) return '$base/N10.png';
+    if (lv >= 60) return '$base/N9.png';
+    if (lv >= 50) return '$base/N8.png';
+    if (lv >= 40) return '$base/N7.png';
+    if (lv >= 30) return '$base/N6.png';
+    if (lv >= 20) return '$base/N5.png';
+    if (lv >= 15) return '$base/N4.png';
+    if (lv >= 10) return '$base/N3.png';
+    if (lv >= 5) return '$base/N2.png';
+    return '$base/N1.png';
   }
 
   /// Retourne soit une Image.asset (si illustration dispo) soit le
