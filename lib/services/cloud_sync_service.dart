@@ -296,7 +296,7 @@ class CloudSyncService {
           );
       return _client.storage.from(_photosBucket).getPublicUrl(storagePath);
     } catch (e) {
-      if (kDebugMode) debugPrint('CloudSync.uploadPhoto error: $e');
+      debugPrint('CloudSync.uploadPhoto error: $e');
       return null;
     }
   }

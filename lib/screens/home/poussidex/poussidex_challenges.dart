@@ -59,7 +59,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
     setState(() => _completed[challenge.id] = path);
     await _saveCompleted();
     widget.onPhotoTaken?.call(challenge.id, path);
-    // Upload la photo vers le cloud en arrière-plan.
+    // Upload la photo vers le cloud.
     final url = await CloudSyncService.instance.uploadPhoto(
       localPath: path,
       plantationId: 'challenge_${challenge.id}',
@@ -68,9 +68,18 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       setState(() => _completed[challenge.id] = url);
       await _saveCompleted();
       // Publier dans le feed communautaire.
-      FeedService.instance.publishChallengePost(
+      await FeedService.instance.publishChallengePost(
         challengeId: challenge.id,
         photoUrl: url,
+      );
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('⚠️ Upload photo échoué — le défi est validé '
+              'localement mais ne sera pas visible dans le Feed.'),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 5),
+        ),
       );
     }
     if (!mounted) return;
