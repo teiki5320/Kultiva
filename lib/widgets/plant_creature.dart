@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// Les 3 starters jouables (style Pokémon).
 enum CreatureStarter { poussia, soleia, racia }
@@ -29,8 +30,10 @@ class _PlantCreatureState extends State<PlantCreature>
   late final AnimationController _breathCtrl;
   late final AnimationController _blinkCtrl;
   late final AnimationController _swayCtrl;
+  late final AnimationController _tapCtrl;
   Timer? _blinkTimer;
   final math.Random _rng = math.Random();
+  bool _showHeart = false;
 
   @override
   void initState() {
@@ -47,6 +50,10 @@ class _PlantCreatureState extends State<PlantCreature>
       duration: const Duration(milliseconds: 3200),
       vsync: this,
     )..repeat(reverse: true);
+    _tapCtrl = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
     _scheduleBlink();
   }
 
@@ -69,35 +76,80 @@ class _PlantCreatureState extends State<PlantCreature>
     _breathCtrl.dispose();
     _blinkCtrl.dispose();
     _swayCtrl.dispose();
+    _tapCtrl.dispose();
     super.dispose();
+  }
+
+  void _onTap() {
+    HapticFeedback.lightImpact();
+    _tapCtrl.forward(from: 0).then((_) {
+      if (mounted) setState(() => _showHeart = false);
+    });
+    setState(() => _showHeart = true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: Listenable.merge(
-          <Listenable>[_breathCtrl, _blinkCtrl, _swayCtrl]),
-      builder: (context, _) {
-        final t = _breathCtrl.value;
-        final scale = 1.0 + 0.03 * math.sin(t * math.pi);
-        final sway = 0.03 * math.sin(_swayCtrl.value * math.pi * 2 - math.pi);
-        return Transform(
-          alignment: Alignment.bottomCenter,
-          transform: Matrix4.identity()
-            ..rotateZ(sway)
-            ..scale(scale, scale),
-          child: SizedBox.square(
-            dimension: widget.size,
-            child: CustomPaint(
-              painter: _CreaturePainter(
-                level: widget.level,
-                starter: widget.starter,
-                blink: _blinkCtrl.value,
-              ),
+    return GestureDetector(
+      onTap: _onTap,
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox.square(
+        dimension: widget.size,
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            AnimatedBuilder(
+              animation: Listenable.merge(
+                  <Listenable>[_breathCtrl, _blinkCtrl, _swayCtrl, _tapCtrl]),
+              builder: (context, _) {
+                final t = _breathCtrl.value;
+                final breathScale = 1.0 + 0.03 * math.sin(t * math.pi);
+                final sway =
+                    0.03 * math.sin(_swayCtrl.value * math.pi * 2 - math.pi);
+                final tap = _tapCtrl.value;
+                final squash = tap < 0.3
+                    ? 1.0 - 0.12 * (tap / 0.3)
+                    : 1.0 - 0.12 * (1.0 - (tap - 0.3) / 0.7);
+                final stretch = tap < 0.3
+                    ? 1.0 + 0.08 * (tap / 0.3)
+                    : 1.0 + 0.08 * (1.0 - (tap - 0.3) / 0.7);
+                return Transform(
+                  alignment: Alignment.bottomCenter,
+                  transform: Matrix4.identity()
+                    ..rotateZ(sway)
+                    ..scale(squash * breathScale, stretch * breathScale),
+                  child: CustomPaint(
+                    size: Size.square(widget.size),
+                    painter: _CreaturePainter(
+                      level: widget.level,
+                      starter: widget.starter,
+                      blink: _blinkCtrl.value,
+                    ),
+                  ),
+                );
+              },
             ),
-          ),
-        );
-      },
+            if (_showHeart)
+              AnimatedBuilder(
+                animation: _tapCtrl,
+                builder: (context, child) {
+                  final p = _tapCtrl.value;
+                  return Positioned(
+                    top: widget.size * 0.05 - p * widget.size * 0.15,
+                    child: Opacity(
+                      opacity: (1.0 - p).clamp(0.0, 1.0),
+                      child: Transform.scale(
+                        scale: 0.5 + p * 0.8,
+                        child: const Text('❤️',
+                            style: TextStyle(fontSize: 28)),
+                      ),
+                    ),
+                  );
+                },
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
