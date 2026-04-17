@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/challenges.dart';
+import '../../../models/vegetable_medal.dart';
 import '../../../services/feed_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/plantation_photo.dart';
