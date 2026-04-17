@@ -52,7 +52,7 @@ class FeedService {
         'caption': caption,
       });
     } catch (e) {
-      if (kDebugMode) debugPrint('FeedService.publish error: $e');
+      debugPrint('FeedService.publish error: $e');
     }
   }
 
@@ -102,7 +102,7 @@ class FeedService {
         );
       }).toList();
     } catch (e) {
-      if (kDebugMode) debugPrint('FeedService.fetchFeed error: $e');
+      debugPrint('FeedService.fetchFeed error: $e');
       return <FeedPost>[];
     }
   }

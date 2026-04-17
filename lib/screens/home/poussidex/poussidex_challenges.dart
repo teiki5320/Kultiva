@@ -68,10 +68,18 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       setState(() => _completed[challenge.id] = url);
       await _saveCompleted();
       // Publier dans le feed communautaire.
-      await FeedService.instance.publishChallengePost(
-        challengeId: challenge.id,
-        photoUrl: url,
-      );
+      try {
+        await FeedService.instance.publishChallengePost(
+          challengeId: challenge.id,
+          photoUrl: url,
+        );
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Feed publish error: $e')),
+          );
+        }
+      }
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
