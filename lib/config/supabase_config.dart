@@ -36,10 +36,12 @@ class GoogleOAuthConfig {
 
   /// Client ID de type "Web" — utilisé par google_sign_in pour
   /// demander un idToken que Supabase peut valider.
-  ///
-  /// Remplace cette valeur par ton vrai Web Client ID dès qu'il est
-  /// créé dans Google Cloud. Tant que c'est `null`, la connexion
-  /// Google est désactivée côté app.
   static const String? webClientId =
       '56977548622-l52olnkn81icjbo6aqk6b5trssjpbqiu.apps.googleusercontent.com';
+
+  /// Client ID de type "iOS" — nécessaire pour que le SDK Google
+  /// natif puisse ouvrir la feuille de connexion sur iPhone.
+  /// Dérivé du REVERSED_CLIENT_ID dans Info.plist.
+  static const String? iosClientId =
+      '56977548622-fokr6eq79msehbmphcler1pldmokg8fv.apps.googleusercontent.com';
 }

@@ -131,8 +131,10 @@ class AuthService extends ChangeNotifier {
     }
     try {
       final googleUser = await GoogleSignIn(
-        // Le serverClientId (= Web Client ID Google) est requis pour
-        // que Google nous renvoie un idToken utilisable côté Supabase.
+        // clientId = iOS Client ID (pour ouvrir la feuille Google native).
+        // serverClientId = Web Client ID (pour que Google renvoie un
+        // idToken que Supabase peut valider).
+        clientId: GoogleOAuthConfig.iosClientId,
         serverClientId: serverClientId,
       ).signIn();
       if (googleUser == null) {
