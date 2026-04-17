@@ -75,6 +75,14 @@ class PrefsService {
     _loaded = true;
   }
 
+  /// Lecture/écriture générique pour stocker des données arbitraires
+  /// (ex: défis complétés). Pour des champs typés, utiliser les
+  /// getters/setters dédiés ci-dessous.
+  String? getString(String key) => _prefs?.getString(key);
+  Future<void> setString(String key, String value) async {
+    await _prefs?.setString(key, value);
+  }
+
   Future<void> setRegion(Region value) async {
     region.value = value;
     await _prefs?.setString(_kRegion, value.id);

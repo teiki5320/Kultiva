@@ -18,15 +18,12 @@ import '../../utils/category_colors.dart';
 import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import 'poussidex/plantation_detail_sheet.dart';
-import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_card.dart';
-import 'poussidex/poussidex_journal.dart';
-import 'poussidex/poussidex_podium.dart';
-import 'poussidex/poussidex_stats.dart';
+import 'poussidex/poussidex_challenges.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
 /// Filtre actif dans le Poussidex.
-enum _AlbumFilter { all, growing, harvested, badges, stats, journal, podium }
+enum _AlbumFilter { all, growing, harvested, challenges }
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -136,10 +133,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   List<Plantation> get _filteredPlantations {
     switch (_filter) {
       case _AlbumFilter.all:
-      case _AlbumFilter.badges: // ignoré, la vue badges ne passe pas par là
-      case _AlbumFilter.stats: // ignoré, la vue stats ne passe pas par là
-      case _AlbumFilter.journal: // ignoré, la vue journal ne passe pas par là
-      case _AlbumFilter.podium: // ignoré, la vue podium ne passe pas par là
+      case _AlbumFilter.challenges:
         return _plantations;
       case _AlbumFilter.growing:
         return _plantations.where((p) => p.isActive).toList();
@@ -362,6 +356,12 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     ));
   }
 
+  /// Appelé quand l'user soumet une photo pour un défi.
+  void _onChallengePhotoTaken(String challengeId, String photoPath) {
+    // On rebuild le grid pour montrer la photo tout de suite.
+    if (mounted) setState(() {});
+  }
+
   void _openPicker() {
     showModalBottomSheet<String>(
       context: context,
@@ -427,10 +427,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     if (!_loaded) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final showFab = _filter != _AlbumFilter.badges &&
-        _filter != _AlbumFilter.stats &&
-        _filter != _AlbumFilter.journal &&
-        _filter != _AlbumFilter.podium &&
+    final showFab = _filter != _AlbumFilter.challenges &&
         _plantations.isNotEmpty;
     final thirstyCount = _thirsty.length;
     return Scaffold(
@@ -447,10 +444,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
             ),
             if (thirstyCount > 0 &&
                 !_deleteMode &&
-                _filter != _AlbumFilter.badges &&
-                _filter != _AlbumFilter.stats &&
-                _filter != _AlbumFilter.journal &&
-                _filter != _AlbumFilter.podium)
+                _filter != _AlbumFilter.challenges)
               _ThirstyBanner(
                 count: thirstyCount,
                 onTap: _waterAllThirsty,
@@ -518,17 +512,10 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   Widget _buildBody() {
-    if (_filter == _AlbumFilter.badges) {
-      return PoussidexBadgesGrid(unlocked: _unlockedBadges);
-    }
-    if (_filter == _AlbumFilter.stats) {
-      return PoussidexStatsView(plantations: _plantations);
-    }
-    if (_filter == _AlbumFilter.journal) {
-      return PoussidexJournalView(plantations: _plantations);
-    }
-    if (_filter == _AlbumFilter.podium) {
-      return PoussidexPodiumView(plantations: _plantations);
+    if (_filter == _AlbumFilter.challenges) {
+      return PoussidexChallengesGrid(
+        onPhotoTaken: _onChallengePhotoTaken,
+      );
     }
     if (_plantations.isEmpty) {
       return _EmptyState(onPlant: _openPicker);
@@ -859,36 +846,12 @@ class _FilterBar extends StatelessWidget {
             onTap: () => onChanged(_AlbumFilter.harvested),
           ),
           _FilterChip(
-            label: '🏆 Badges',
-            count: badgesCount,
-            total: totalBadges,
-            selected: filter == _AlbumFilter.badges,
-            color: const Color(0xFFFFB74D),
-            onTap: () => onChanged(_AlbumFilter.badges),
-          ),
-          _FilterChip(
-            label: '📊 Stats',
+            label: '📸 Défis',
             count: allCount,
             hideCount: true,
-            selected: filter == _AlbumFilter.stats,
-            color: const Color(0xFF7BAFD4),
-            onTap: () => onChanged(_AlbumFilter.stats),
-          ),
-          _FilterChip(
-            label: '📜 Journal',
-            count: allCount,
-            hideCount: true,
-            selected: filter == _AlbumFilter.journal,
-            color: const Color(0xFFB39DDB),
-            onTap: () => onChanged(_AlbumFilter.journal),
-          ),
-          _FilterChip(
-            label: '🏅 Podium',
-            count: allCount,
-            hideCount: true,
-            selected: filter == _AlbumFilter.podium,
+            selected: filter == _AlbumFilter.challenges,
             color: const Color(0xFFFF8FAB),
-            onTap: () => onChanged(_AlbumFilter.podium),
+            onTap: () => onChanged(_AlbumFilter.challenges),
           ),
         ],
       ),
