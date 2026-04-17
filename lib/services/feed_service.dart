@@ -37,23 +37,22 @@ class FeedService {
   String? get _userId => _client.auth.currentUser?.id;
 
   /// Publie un post de défi dans le feed.
+  /// Throw une exception si ça échoue (pour que l'UI puisse l'afficher).
   Future<void> publishChallengePost({
     required String challengeId,
     required String photoUrl,
     String? caption,
   }) async {
     final uid = _userId;
-    if (uid == null) return;
-    try {
-      await _client.from('challenge_posts').insert(<String, dynamic>{
-        'user_id': uid,
-        'challenge_id': challengeId,
-        'photo_url': photoUrl,
-        'caption': caption,
-      });
-    } catch (e) {
-      debugPrint('FeedService.publish error: $e');
+    if (uid == null) {
+      throw Exception('Pas de session Supabase active');
     }
+    await _client.from('challenge_posts').insert(<String, dynamic>{
+      'user_id': uid,
+      'challenge_id': challengeId,
+      'photo_url': photoUrl,
+      'caption': caption,
+    });
   }
 
   /// Récupère les posts du feed (les plus récents en premier).

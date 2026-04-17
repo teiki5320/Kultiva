@@ -18,6 +18,7 @@ class PoussidexFeed extends StatefulWidget {
 class _PoussidexFeedState extends State<PoussidexFeed> {
   List<FeedPost> _posts = <FeedPost>[];
   bool _loading = true;
+  String? _error;
 
   @override
   void initState() {
@@ -26,12 +27,26 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
   }
 
   Future<void> _loadFeed() async {
-    setState(() => _loading = true);
-    final posts = await FeedService.instance.fetchFeed();
-    if (mounted) setState(() {
-      _posts = posts;
-      _loading = false;
+    setState(() {
+      _loading = true;
+      _error = null;
     });
+    try {
+      final posts = await FeedService.instance.fetchFeed();
+      if (mounted) {
+        setState(() {
+          _posts = posts;
+          _loading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _loading = false;
+        });
+      }
+    }
   }
 
   Future<void> _toggleLike(int index) async {
@@ -73,6 +88,30 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
   Widget build(BuildContext context) {
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
+    }
+    if (_error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Text('⚠️', style: TextStyle(fontSize: 48)),
+              const SizedBox(height: 12),
+              Text(
+                'Erreur feed :\n${_error!}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 12, fontFamily: 'monospace'),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _loadFeed,
+                child: const Text('Réessayer'),
+              ),
+            ],
+          ),
+        ),
+      );
     }
     if (_posts.isEmpty) {
       return Center(
