@@ -25,7 +25,6 @@ class _CreatureDemoScreenState extends State<CreatureDemoScreen> {
   Widget build(BuildContext context) {
     final lv = _level.round();
     return Scaffold(
-      appBar: AppBar(title: const Text('Poussia — prototype')),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
