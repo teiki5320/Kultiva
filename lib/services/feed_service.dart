@@ -62,9 +62,11 @@ class FeedService {
     final uid = _userId;
     try {
       // Requête avec jointure sur profiles pour le display_name.
+      // On utilise une jointure LEFT (pas inner) pour que les posts
+      // s'affichent même si le profil n'existe pas encore.
       final data = await _client
           .from('challenge_posts')
-          .select('*, profiles!inner(display_name)')
+          .select('*, profiles(display_name)')
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
