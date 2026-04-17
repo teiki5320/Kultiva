@@ -4,7 +4,7 @@ import '../models/plantation.dart';
 import '../services/audio_service.dart';
 import '../services/notification_service.dart';
 import '../services/prefs_service.dart';
-import 'creature_demo_screen.dart';
+import 'home/my_garden_screen.dart';
 import 'home/settings_screen.dart';
 import 'home/sow_screen.dart';
 import 'home/tutos_screen.dart';
@@ -22,6 +22,8 @@ class RootTabs extends StatefulWidget {
 
 class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   int _index = 0;
+  final GlobalKey<MyGardenScreenState> _poussidexKey =
+      GlobalKey<MyGardenScreenState>();
 
   @override
   void initState() {
@@ -81,7 +83,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     final pages = <Widget>[
       const SowScreen(),
       const VegetablesScreen(),
-      const CreatureDemoScreen(),
+      MyGardenScreen(key: _poussidexKey),
       const TutosScreen(),
     ];
     return Scaffold(
@@ -91,6 +93,9 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
         onTap: (i) {
           AudioService.instance.play(Sfx.tap);
           setState(() => _index = i);
+          if (i == 2) {
+            _poussidexKey.currentState?.onBecameVisible();
+          }
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

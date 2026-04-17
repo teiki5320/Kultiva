@@ -17,15 +17,15 @@ import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
-import '../creature_demo_screen.dart';
+import '../../widgets/plant_creature.dart';
 import 'poussidex/plantation_detail_sheet.dart';
+import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_card.dart';
 import 'poussidex/poussidex_challenges.dart';
-import 'poussidex/poussidex_feed.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
 /// Filtre actif dans le Poussidex.
-enum _AlbumFilter { all, growing, harvested, challenges, feed }
+enum _AlbumFilter { tamassi, challenges, badges }
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -44,7 +44,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   List<Plantation> _plantations = <Plantation>[];
   Set<String> _unlockedBadges = <String>{};
   Map<String, MedalTier> _medals = <String, MedalTier>{};
-  _AlbumFilter _filter = _AlbumFilter.all;
+  _AlbumFilter _filter = _AlbumFilter.tamassi;
   bool _loaded = false;
   bool _deleteMode = false;
 
@@ -132,20 +132,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     }
   }
 
-  List<Plantation> get _filteredPlantations {
-    switch (_filter) {
-      case _AlbumFilter.all:
-      case _AlbumFilter.challenges:
-      case _AlbumFilter.feed:
-        return _plantations;
-      case _AlbumFilter.growing:
-        return _plantations.where((p) => p.isActive).toList();
-      case _AlbumFilter.harvested:
-        return _plantations
-            .where((p) => !p.isActive || p.harvestCount > 0)
-            .toList();
-    }
-  }
+  List<Plantation> get _filteredPlantations => _plantations;
 
   /// Convertit l'ancienne grille 2D en plantations une seule fois,
   /// puis marque la migration comme faite pour ne plus la rejouer.
@@ -430,10 +417,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     if (!_loaded) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final showFab = _filter != _AlbumFilter.challenges &&
-        _filter != _AlbumFilter.feed &&
-        _plantations.isNotEmpty;
-    final thirstyCount = _thirsty.length;
+    final showFab = _filter == _AlbumFilter.tamassi;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -446,26 +430,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
               unlockedCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
             ),
-            if (thirstyCount > 0 &&
-                !_deleteMode &&
-                _filter != _AlbumFilter.challenges &&
-                _filter != _AlbumFilter.feed)
-              _ThirstyBanner(
-                count: thirstyCount,
-                onTap: _waterAllThirsty,
-              ),
-            if (_deleteMode)
-              _DeleteModeBanner(
-                onExit: () => setState(() => _deleteMode = false),
-              ),
             _FilterBar(
               filter: _filter,
-              allCount: _plantations.length,
-              growingCount:
-                  _plantations.where((p) => p.isActive).length,
-              harvestedCount: _plantations
-                  .where((p) => !p.isActive || p.harvestCount > 0)
-                  .length,
+              challengesCount: 0,
               badgesCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
               onChanged: (f) => setState(() => _filter = f),
@@ -482,33 +449,27 @@ class MyGardenScreenState extends State<MyGardenScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 FloatingActionButton.extended(
-                  heroTag: 'poussidex_delete_fab',
-                  onPressed: () => setState(() => _deleteMode = !_deleteMode),
-                  icon: Icon(
-                    _deleteMode ? Icons.close : Icons.delete_outline,
-                    color: Colors.white,
+                  heroTag: 'tamassi_water_fab',
+                  onPressed: _onWater,
+                  icon: const Icon(Icons.water_drop, color: Colors.white),
+                  label: const Text(
+                    'Arroser',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800, color: Colors.white),
                   ),
-                  label: Text(
-                    _deleteMode ? 'Terminé' : 'Retirer',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: _deleteMode
-                      ? Colors.grey.shade600
-                      : Colors.red.shade400,
+                  backgroundColor: Colors.blue.shade400,
                 ),
                 const SizedBox(width: 10),
                 FloatingActionButton.extended(
-                  heroTag: 'poussidex_plant_fab',
-                  onPressed: _deleteMode ? null : _openPicker,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Planter',
-                      style: TextStyle(fontWeight: FontWeight.w800)),
-                  backgroundColor: _deleteMode
-                      ? Colors.grey.shade300
-                      : KultivaColors.primaryGreen,
+                  heroTag: 'tamassi_fertilize_fab',
+                  onPressed: _onFertilize,
+                  icon: const Icon(Icons.eco, color: Colors.white),
+                  label: const Text(
+                    'Engrais',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800, color: Colors.white),
+                  ),
+                  backgroundColor: KultivaColors.terracotta,
                 ),
               ],
             )
@@ -516,87 +477,123 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
-  Widget _buildBody() {
-    if (_filter == _AlbumFilter.challenges) {
-      return PoussidexChallengesGrid(
-        onPhotoTaken: _onChallengePhotoTaken,
-      );
-    }
-    if (_filter == _AlbumFilter.feed) {
-      return const PoussidexFeed();
-    }
-    if (_plantations.isEmpty) {
-      return _EmptyState(onPlant: _openPicker);
-    }
-    final list = _filteredPlantations;
-    if (list.isEmpty) {
-      return _FilterEmptyState(filter: _filter);
-    }
-    return GridView.builder(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 96),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 180,
-        childAspectRatio: 0.78,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
+  void _onWater() {
+    // TODO : brancher XP booster "arroser" quand le système de niveaux arrive.
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('💧 Arrosage — XP boost bientôt.'),
+        duration: Duration(seconds: 2),
       ),
-      itemCount: list.length,
-      itemBuilder: (context, i) {
-        final p = list[i];
-        final veg =
-            vegetablesBase.where((v) => v.id == p.vegetableId).firstOrNull;
-        if (veg == null) return const SizedBox.shrink();
-        return GestureDetector(
-          onTap: () {
-            if (_deleteMode) {
-              _removeWithUndo(p, veg);
-            } else {
-              _showDetail(p, veg);
-            }
-          },
-          child: Stack(
-            clipBehavior: Clip.none,
+    );
+  }
+
+  void _onFertilize() {
+    // TODO : brancher XP booster "engrais".
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🌿 Engrais — XP boost bientôt.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    switch (_filter) {
+      case _AlbumFilter.tamassi:
+        return const _TamassiView();
+      case _AlbumFilter.challenges:
+        return PoussidexChallengesGrid(
+          onPhotoTaken: _onChallengePhotoTaken,
+        );
+      case _AlbumFilter.badges:
+        return PoussidexBadgesGrid(unlocked: _unlockedBadges);
+    }
+  }
+}
+
+/// Vue Tamassi — la créature Poussia en grand avec son nom et niveau.
+/// Inclut un slider de prototypage pour tester les stades d'évolution.
+class _TamassiView extends StatefulWidget {
+  const _TamassiView();
+
+  @override
+  State<_TamassiView> createState() => _TamassiViewState();
+}
+
+class _TamassiViewState extends State<_TamassiView> {
+  double _level = 5;
+
+  String get _stageName {
+    final lv = _level.round();
+    if (lv < 5) return 'Graine';
+    if (lv < 15) return 'Pousse';
+    if (lv < 30) return 'Fleur';
+    return 'Arbre';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final lv = _level.round();
+    return Column(
+      children: <Widget>[
+        const Spacer(),
+        PlantCreature(level: lv, size: 260),
+        const SizedBox(height: 16),
+        const Text(
+          'Poussia',
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.4,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          'Niveau $lv · $_stageName',
+          style: TextStyle(
+            fontSize: 13,
+            color: KultivaColors.textSecondary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const Spacer(),
+        // Slider temporaire pour tester les stades d'évolution.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+          child: Row(
             children: <Widget>[
-              PlantationCard(
-                plantation: p,
-                vegetable: veg,
-                tier: _medals[p.vegetableId] ?? MedalTier.bronze,
-              ),
-              // Overlay rouge + croix quand on est en mode suppression.
-              if (_deleteMode)
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.18),
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                          color: Colors.red.shade400, width: 2),
-                    ),
-                    child: Center(
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.red.shade400,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.25),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(Icons.close,
-                            color: Colors.white, size: 24),
-                      ),
-                    ),
-                  ),
+              const Text('1',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
+              Expanded(
+                child: Slider(
+                  value: _level,
+                  min: 1,
+                  max: 100,
+                  divisions: 99,
+                  label: '$lv',
+                  activeColor: KultivaColors.primaryGreen,
+                  onChanged: (v) => setState(() => _level = v),
                 ),
+              ),
+              const Text('100',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
             ],
           ),
-        );
-      },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
+          child: Wrap(
+            spacing: 8,
+            children: <int>[1, 5, 15, 30, 50, 75, 100]
+                .map((v) => ActionChip(
+                      label: Text('$v'),
+                      onPressed: () =>
+                          setState(() => _level = v.toDouble()),
+                    ))
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -655,26 +652,6 @@ class _Header extends StatelessWidget {
                     Colors.black.withOpacity(0),
                     Colors.black.withOpacity(0.35),
                   ],
-                ),
-              ),
-            ),
-            Positioned(
-              top: 10,
-              right: 14,
-              child: Material(
-                color: Colors.white.withOpacity(0.85),
-                shape: const CircleBorder(),
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const CreatureDemoScreen(),
-                    ),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('🌱', style: TextStyle(fontSize: 20)),
-                  ),
                 ),
               ),
             ),
@@ -827,18 +804,14 @@ class _DeleteModeBanner extends StatelessWidget {
 
 class _FilterBar extends StatelessWidget {
   final _AlbumFilter filter;
-  final int allCount;
-  final int growingCount;
-  final int harvestedCount;
+  final int challengesCount;
   final int badgesCount;
   final int totalBadges;
   final ValueChanged<_AlbumFilter> onChanged;
 
   const _FilterBar({
     required this.filter,
-    required this.allCount,
-    required this.growingCount,
-    required this.harvestedCount,
+    required this.challengesCount,
     required this.badgesCount,
     required this.totalBadges,
     required this.onChanged,
@@ -853,41 +826,28 @@ class _FilterBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         children: <Widget>[
           _FilterChip(
-            label: '✨ Tout',
-            count: allCount,
-            selected: filter == _AlbumFilter.all,
+            label: '🌱 Tamassi',
+            count: 0,
+            hideCount: true,
+            selected: filter == _AlbumFilter.tamassi,
             color: KultivaColors.primaryGreen,
-            onTap: () => onChanged(_AlbumFilter.all),
-          ),
-          _FilterChip(
-            label: '🌱 En cours',
-            count: growingCount,
-            selected: filter == _AlbumFilter.growing,
-            color: KultivaColors.primaryGreen,
-            onTap: () => onChanged(_AlbumFilter.growing),
-          ),
-          _FilterChip(
-            label: '🧺 Récoltés',
-            count: harvestedCount,
-            selected: filter == _AlbumFilter.harvested,
-            color: KultivaColors.terracotta,
-            onTap: () => onChanged(_AlbumFilter.harvested),
+            onTap: () => onChanged(_AlbumFilter.tamassi),
           ),
           _FilterChip(
             label: '📸 Défis',
-            count: allCount,
+            count: 0,
             hideCount: true,
             selected: filter == _AlbumFilter.challenges,
             color: const Color(0xFFFF8FAB),
             onTap: () => onChanged(_AlbumFilter.challenges),
           ),
           _FilterChip(
-            label: '🌍 Feed',
-            count: allCount,
-            hideCount: true,
-            selected: filter == _AlbumFilter.feed,
-            color: const Color(0xFF7BAFD4),
-            onTap: () => onChanged(_AlbumFilter.feed),
+            label: '🏆 Badges',
+            count: badgesCount,
+            total: totalBadges,
+            selected: filter == _AlbumFilter.badges,
+            color: const Color(0xFFE8B923),
+            onTap: () => onChanged(_AlbumFilter.badges),
           ),
         ],
       ),
@@ -953,83 +913,3 @@ class _FilterChip extends StatelessWidget {
 // Empty states spécifiques à chaque filtre
 // ═══════════════════════════════════════════════════════════════════════════
 
-class _FilterEmptyState extends StatelessWidget {
-  final _AlbumFilter filter;
-  const _FilterEmptyState({required this.filter});
-
-  @override
-  Widget build(BuildContext context) {
-    final message = switch (filter) {
-      _AlbumFilter.growing =>
-        '🌱\n\nAucun plant en cours pour le moment.\nPlante quelque chose avec le bouton +.',
-      _AlbumFilter.harvested =>
-        '🧺\n\nAucune récolte enregistrée.\nOuvre une fiche plant et appuie sur Récolter.',
-      _ => 'Aucun légume à afficher.',
-    };
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Text(
-          message,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: KultivaColors.textSecondary,
-            fontSize: 13,
-            height: 1.5,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Empty state
-// ═══════════════════════════════════════════════════════════════════════════
-
-class _EmptyState extends StatelessWidget {
-  final VoidCallback onPlant;
-  const _EmptyState({required this.onPlant});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text('📖', style: TextStyle(fontSize: 72)),
-            const SizedBox(height: 16),
-            Text(
-              'Ton Poussidex est vide',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Plante ton premier légume pour commencer ta collection !',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: KultivaColors.textSecondary,
-                  ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: onPlant,
-              icon: const Text('🌱', style: TextStyle(fontSize: 16)),
-              label: const Text('Planter mon 1er légume'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: KultivaColors.primaryGreen,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
