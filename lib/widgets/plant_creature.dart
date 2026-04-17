@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// Les 3 starters jouables (style Pokémon).
-enum CreatureStarter { poussia, soleia, racia }
+enum CreatureStarter { poussia, soleia, spira }
 
 /// La créature-plante du Poussidex. Rendue 100% en CustomPainter —
 /// son apparence évolue avec le niveau.
