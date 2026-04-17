@@ -17,6 +17,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
+import '../creature_demo_screen.dart';
 import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_card.dart';
 import 'poussidex/poussidex_challenges.dart';
@@ -654,6 +655,26 @@ class _Header extends StatelessWidget {
                     Colors.black.withOpacity(0),
                     Colors.black.withOpacity(0.35),
                   ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              right: 14,
+              child: Material(
+                color: Colors.white.withOpacity(0.85),
+                shape: const CircleBorder(),
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const CreatureDemoScreen(),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text('🌱', style: TextStyle(fontSize: 20)),
+                  ),
                 ),
               ),
             ),
