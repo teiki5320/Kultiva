@@ -1091,10 +1091,9 @@ class _FilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 52,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      height: 56,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _FilterChip(
             label: '🌱 Tamassi',
@@ -1151,15 +1150,15 @@ class _FilterChip extends StatelessWidget {
         ? ''
         : (total != null ? ' $count/$total' : ' ($count)');
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
             color: selected ? color.withOpacity(0.2) : Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: color,
               width: selected ? 2.5 : 2,
@@ -1168,7 +1167,7 @@ class _FilterChip extends StatelessWidget {
           child: Text(
             '$label$suffix',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
               color: color,
             ),

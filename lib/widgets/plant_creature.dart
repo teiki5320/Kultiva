@@ -112,12 +112,14 @@ class _PlantCreatureState extends State<PlantCreature>
   Widget _buildCreatureVisual() {
     final assetPath = _assetPathForLevel();
     if (assetPath != null) {
-      return SizedBox.square(
+      // Les 4 premiers stades (graines + germe) sont visuellement plus
+      // petits → on les zoom pour qu'ils remplissent mieux l'espace.
+      final scale = widget.level < 20 ? 1.45 : 1.0;
+      Widget image = SizedBox.square(
         dimension: widget.size,
         child: Image.asset(
           assetPath,
           fit: BoxFit.contain,
-          // Si l'asset est introuvable, on retombe sur le CustomPainter.
           errorBuilder: (_, __, ___) => CustomPaint(
             size: Size.square(widget.size),
             painter: _CreaturePainter(
@@ -128,6 +130,10 @@ class _PlantCreatureState extends State<PlantCreature>
           ),
         ),
       );
+      if (scale != 1.0) {
+        image = Transform.scale(scale: scale, child: image);
+      }
+      return image;
     }
     return CustomPaint(
       size: Size.square(widget.size),
