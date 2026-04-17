@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 /// Les 3 starters jouables (style Pokémon).
@@ -5,10 +7,7 @@ enum CreatureStarter { poussia, soleia, racia }
 
 /// La créature-plante du Poussidex. Rendue 100% en CustomPainter —
 /// son apparence évolue avec le niveau.
-///
-/// Étape 1 : dessin statique de Poussia au stade "pousse" uniquement.
-/// Les animations et les autres stades arrivent dans les étapes suivantes.
-class PlantCreature extends StatelessWidget {
+class PlantCreature extends StatefulWidget {
   final int level;
   final CreatureStarter starter;
   final double size;
@@ -21,11 +20,49 @@ class PlantCreature extends StatelessWidget {
   });
 
   @override
+  State<PlantCreature> createState() => _PlantCreatureState();
+}
+
+class _PlantCreatureState extends State<PlantCreature>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _breathCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _breathCtrl = AnimationController(
+      duration: const Duration(milliseconds: 2500),
+      vsync: this,
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _breathCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: size,
-      child: CustomPaint(
-        painter: _CreaturePainter(level: level, starter: starter),
+    return AnimatedBuilder(
+      animation: _breathCtrl,
+      builder: (context, child) {
+        final t = _breathCtrl.value;
+        final scale = 1.0 + 0.03 * math.sin(t * math.pi);
+        return Transform(
+          alignment: Alignment.bottomCenter,
+          transform: Matrix4.identity()..scale(scale, scale),
+          child: child,
+        );
+      },
+      child: SizedBox.square(
+        dimension: widget.size,
+        child: CustomPaint(
+          painter: _CreaturePainter(
+            level: widget.level,
+            starter: widget.starter,
+          ),
+        ),
       ),
     );
   }
