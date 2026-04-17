@@ -6,6 +6,7 @@ import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../services/cloud_sync_service.dart';
+import '../../../services/feed_service.dart';
 import '../../../services/photo_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
@@ -66,6 +67,11 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
     if (url != null) {
       setState(() => _completed[challenge.id] = url);
       await _saveCompleted();
+      // Publier dans le feed communautaire.
+      FeedService.instance.publishChallengePost(
+        challengeId: challenge.id,
+        photoUrl: url,
+      );
     }
     if (!mounted) return;
     // Montrer la carte du défi complété avec l'animation pack-opening.

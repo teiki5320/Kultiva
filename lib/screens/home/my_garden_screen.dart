@@ -20,10 +20,11 @@ import '../../widgets/garden_tutorial_sheet.dart';
 import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_card.dart';
 import 'poussidex/poussidex_challenges.dart';
+import 'poussidex/poussidex_feed.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
 /// Filtre actif dans le Poussidex.
-enum _AlbumFilter { all, growing, harvested, challenges }
+enum _AlbumFilter { all, growing, harvested, challenges, feed }
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -134,6 +135,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     switch (_filter) {
       case _AlbumFilter.all:
       case _AlbumFilter.challenges:
+      case _AlbumFilter.feed:
         return _plantations;
       case _AlbumFilter.growing:
         return _plantations.where((p) => p.isActive).toList();
@@ -428,6 +430,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     final showFab = _filter != _AlbumFilter.challenges &&
+        _filter != _AlbumFilter.feed &&
         _plantations.isNotEmpty;
     final thirstyCount = _thirsty.length;
     return Scaffold(
@@ -444,7 +447,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
             ),
             if (thirstyCount > 0 &&
                 !_deleteMode &&
-                _filter != _AlbumFilter.challenges)
+                _filter != _AlbumFilter.challenges &&
+                _filter != _AlbumFilter.feed)
               _ThirstyBanner(
                 count: thirstyCount,
                 onTap: _waterAllThirsty,
@@ -516,6 +520,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
       return PoussidexChallengesGrid(
         onPhotoTaken: _onChallengePhotoTaken,
       );
+    }
+    if (_filter == _AlbumFilter.feed) {
+      return const PoussidexFeed();
     }
     if (_plantations.isEmpty) {
       return _EmptyState(onPlant: _openPicker);
@@ -852,6 +859,14 @@ class _FilterBar extends StatelessWidget {
             selected: filter == _AlbumFilter.challenges,
             color: const Color(0xFFFF8FAB),
             onTap: () => onChanged(_AlbumFilter.challenges),
+          ),
+          _FilterChip(
+            label: '🌍 Feed',
+            count: allCount,
+            hideCount: true,
+            selected: filter == _AlbumFilter.feed,
+            color: const Color(0xFF7BAFD4),
+            onTap: () => onChanged(_AlbumFilter.feed),
           ),
         ],
       ),
