@@ -10,6 +10,7 @@ import '../../../services/photo_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/badge_card.dart';
+import '../../../widgets/challenge_story_card.dart';
 import '../../../widgets/plantation_photo.dart';
 
 /// Grille des 30 défis photo du Poussidex. Chaque défi est un tile
@@ -76,6 +77,14 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       tier: challenge.tier,
     );
     await showBadgeUnlockedAnimation(context, badge: badge);
+    if (!mounted) return;
+    // Proposer le partage Story Instagram.
+    final finalPath = _completed[challenge.id] ?? path;
+    await showChallengeStoryShare(
+      context,
+      challenge: challenge,
+      photoPath: finalPath,
+    );
   }
 
   @override
@@ -146,14 +155,15 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
   }
 
   void _showCompletedCard(PhotoChallenge challenge) {
-    final badge = PoussidexBadge(
-      id: challenge.id,
-      emoji: challenge.emoji,
-      name: challenge.name,
-      description: challenge.description,
-      tier: challenge.tier,
+    final photoPath = _completed[challenge.id];
+    if (photoPath == null) return;
+    // On propose directement le partage Story (plus utile que
+    // revoir la carte Pokémon pour un défi déjà fait).
+    showChallengeStoryShare(
+      context,
+      challenge: challenge,
+      photoPath: photoPath,
     );
-    showBadgeCard(context, badge: badge, unlocked: true);
   }
 }
 
