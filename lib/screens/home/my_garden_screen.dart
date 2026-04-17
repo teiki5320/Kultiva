@@ -525,10 +525,17 @@ class _TamassiViewState extends State<_TamassiView> {
 
   String get _stageName {
     final lv = _level.round();
-    if (lv < 5) return 'Graine';
-    if (lv < 15) return 'Pousse';
-    if (lv < 30) return 'Fleur';
-    return 'Arbre';
+    if (lv < 5) return 'Graine I';
+    if (lv < 10) return 'Graine II';
+    if (lv < 15) return 'Graine III';
+    if (lv < 20) return 'Germe';
+    if (lv < 30) return 'Pousse';
+    if (lv < 40) return 'Bourgeon';
+    if (lv < 50) return 'Fleur';
+    if (lv < 60) return 'Plante';
+    if (lv < 75) return 'Arbrisseau';
+    if (lv < 100) return 'Arbre';
+    return 'Arbre légendaire';
   }
 
   @override
@@ -584,7 +591,7 @@ class _TamassiViewState extends State<_TamassiView> {
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
           child: Wrap(
             spacing: 8,
-            children: <int>[1, 5, 15, 30, 50, 75, 100]
+            children: <int>[1, 5, 10, 15, 20, 30, 40, 50, 60, 75, 100]
                 .map((v) => ActionChip(
                       label: Text('$v'),
                       onPressed: () =>
