@@ -72,6 +72,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/badges/
+    - assets/images/creatures/
     - assets/images/creatures/Poussia/
     - assets/images/creatures/Soleia/
     - assets/images/creatures/Spira/

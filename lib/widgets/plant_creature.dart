@@ -91,20 +91,49 @@ class _PlantCreatureState extends State<PlantCreature>
   /// Mapping niveau → chemin d'asset PNG (null si pas d'illustration
   /// disponible, on retombe alors sur le CustomPainter).
   String? _assetPathForLevel() {
-    if (widget.starter != CreatureStarter.poussia) return null;
     final lv = widget.level;
-    const base = 'assets/images/creatures/Poussia';
-    if (lv >= 100) return '$base/P11.png';
-    if (lv >= 75) return '$base/P10.png';
-    if (lv >= 60) return '$base/P9.png';
-    if (lv >= 50) return '$base/P8.png';
-    if (lv >= 40) return '$base/P7.png';
-    if (lv >= 30) return '$base/P6.png';
-    if (lv >= 20) return '$base/P5.png';
-    if (lv >= 15) return '$base/P4.png';
-    if (lv >= 10) return '$base/P3.png';
-    if (lv >= 5) return '$base/P2.png';
-    return '$base/P1.png';
+    final String folder;
+    final String prefix;
+    switch (widget.starter) {
+      case CreatureStarter.poussia:
+        folder = 'Poussia';
+        prefix = 'P';
+        break;
+      case CreatureStarter.soleia:
+        folder = 'Soleia';
+        prefix = 'S';
+        break;
+      case CreatureStarter.spira:
+        folder = 'Spira';
+        prefix = 'SP';
+        break;
+    }
+    final base = 'assets/images/creatures/$folder';
+    final int n;
+    if (lv >= 100) {
+      n = 11;
+    } else if (lv >= 75) {
+      n = 10;
+    } else if (lv >= 60) {
+      n = 9;
+    } else if (lv >= 50) {
+      n = 8;
+    } else if (lv >= 40) {
+      n = 7;
+    } else if (lv >= 30) {
+      n = 6;
+    } else if (lv >= 20) {
+      n = 5;
+    } else if (lv >= 15) {
+      n = 4;
+    } else if (lv >= 10) {
+      n = 3;
+    } else if (lv >= 5) {
+      n = 2;
+    } else {
+      n = 1;
+    }
+    return '$base/$prefix$n.png';
   }
 
   /// Retourne soit une Image.asset (si illustration dispo) soit le
