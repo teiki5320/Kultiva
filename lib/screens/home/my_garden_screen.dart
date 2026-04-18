@@ -1090,6 +1090,34 @@ class _TamassiViewState extends State<_TamassiView>
     return Stack(
       children: <Widget>[
         const Positioned.fill(child: _KawaiiBackground()),
+        // Bouton debug "+10 XP" en haut à droite (test d'évolution).
+        Positioned(
+          top: 8,
+          right: 8,
+          child: SafeArea(
+            child: Material(
+              color: Colors.black.withOpacity(0.55),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: () => _gainXp(10, '🧪 Debug'),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Text(
+                    '+10 XP',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         // Animal qui traverse l'écran (selon l'heure).
         if (_currentCrossing != null)
           AnimatedBuilder(
