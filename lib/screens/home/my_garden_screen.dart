@@ -952,7 +952,7 @@ class _TamassiViewState extends State<_TamassiView>
         Column(
           children: <Widget>[
             // Espace important en haut pour pousser la créature vers le bas.
-            const Spacer(flex: 8),
+            const Spacer(flex: 12),
             SizedBox(
               width: creatureSize,
               height: creatureSize,
