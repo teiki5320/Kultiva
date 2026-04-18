@@ -424,7 +424,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     if (!_loaded) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final showFab = _filter == _AlbumFilter.tamassi;
+    final showActions = _filter == _AlbumFilter.tamassi;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -444,43 +444,36 @@ class MyGardenScreenState extends State<MyGardenScreen> {
               totalBadges: allBadges.length,
               onChanged: (f) => setState(() => _filter = f),
             ),
+            // Boutons Arroser + Engrais centrés sous les onglets (Tamassi
+            // uniquement).
+            if (showActions)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _TamassiActionButton(
+                      label: 'Arroser',
+                      icon: Icons.water_drop,
+                      color: Colors.blue.shade400,
+                      onTap: _onWater,
+                    ),
+                    const SizedBox(width: 12),
+                    _TamassiActionButton(
+                      label: 'Engrais',
+                      icon: Icons.eco,
+                      color: KultivaColors.terracotta,
+                      onTap: _onFertilize,
+                    ),
+                  ],
+                ),
+              ),
             Expanded(
               child: _buildBody(),
             ),
           ],
         ),
       ),
-      floatingActionButton: showFab
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                FloatingActionButton.extended(
-                  heroTag: 'tamassi_water_fab',
-                  onPressed: _onWater,
-                  icon: const Icon(Icons.water_drop, color: Colors.white),
-                  label: const Text(
-                    'Arroser',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800, color: Colors.white),
-                  ),
-                  backgroundColor: Colors.blue.shade400,
-                ),
-                const SizedBox(width: 10),
-                FloatingActionButton.extended(
-                  heroTag: 'tamassi_fertilize_fab',
-                  onPressed: _onFertilize,
-                  icon: const Icon(Icons.eco, color: Colors.white),
-                  label: const Text(
-                    'Engrais',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800, color: Colors.white),
-                  ),
-                  backgroundColor: KultivaColors.terracotta,
-                ),
-              ],
-            )
-          : null,
     );
   }
 
@@ -883,7 +876,8 @@ class _TamassiViewState extends State<_TamassiView>
           ),
         Column(
           children: <Widget>[
-            const Spacer(),
+            // Espace plus grand en haut pour pousser la créature vers le bas.
+            const Spacer(flex: 3),
             SizedBox(
               width: creatureSize,
               height: creatureSize,
@@ -1073,9 +1067,9 @@ class _TamassiViewState extends State<_TamassiView>
                 ),
               ),
             ],
-            const Spacer(),
+            const Spacer(flex: 2),
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: Row(
                 children: <Widget>[
                   const Text('1',
@@ -1102,6 +1096,57 @@ class _TamassiViewState extends State<_TamassiView>
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Bouton d'action Arroser / Engrais sous les onglets Tamassi.
+class _TamassiActionButton extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _TamassiActionButton({
+    required this.label,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: color.withOpacity(0.35),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
