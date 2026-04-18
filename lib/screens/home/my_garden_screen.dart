@@ -508,8 +508,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
 /// Type d'effet déclenché depuis les boutons Arroser/Engrais.
 enum _TamassiEffect { water, fertilize }
 
-/// Vue Tamassi — la créature Poussia en grand avec son nom et niveau.
-/// Inclut un slider de prototypage pour tester les stades d'évolution.
+/// Vue Tamassi — la créature du joueur avec animations.
+/// Si aucun starter n'est choisi, affiche l'écran de sélection.
 class _TamassiView extends StatefulWidget {
   const _TamassiView({super.key});
 
@@ -519,9 +519,15 @@ class _TamassiView extends StatefulWidget {
 
 class _TamassiViewState extends State<_TamassiView>
     with SingleTickerProviderStateMixin {
+  static const _kStarter = 'kultiva.creature.starter';
+  static const _kName = 'kultiva.creature.name';
+
   double _level = 5;
   late final AnimationController _effectCtrl;
   _TamassiEffect? _effect;
+
+  CreatureStarter? _starter;
+  String _creatureName = '';
 
   @override
   void initState() {
@@ -529,6 +535,73 @@ class _TamassiViewState extends State<_TamassiView>
     _effectCtrl = AnimationController(
       duration: const Duration(milliseconds: 1400),
       vsync: this,
+    );
+    _loadCreature();
+  }
+
+  void _loadCreature() {
+    final raw = PrefsService.instance.getString(_kStarter);
+    if (raw != null) {
+      _starter = CreatureStarter.values.firstWhere(
+        (s) => s.name == raw,
+        orElse: () => CreatureStarter.poussia,
+      );
+      _creatureName = PrefsService.instance.getString(_kName) ?? '';
+    }
+  }
+
+  Future<void> _selectStarter(CreatureStarter starter) async {
+    final name = await _askName(context, starter);
+    if (name == null || name.trim().isEmpty) return;
+    await PrefsService.instance.setString(_kStarter, starter.name);
+    await PrefsService.instance.setString(_kName, name.trim());
+    if (!mounted) return;
+    setState(() {
+      _starter = starter;
+      _creatureName = name.trim();
+    });
+  }
+
+  Future<String?> _askName(
+      BuildContext context, CreatureStarter starter) async {
+    final controller = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          'Nomme ta ${starter.name[0].toUpperCase()}${starter.name.substring(1)} !',
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+        ),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          textCapitalization: TextCapitalization.words,
+          maxLength: 20,
+          decoration: const InputDecoration(
+            hintText: 'Ex: Poupoune, Sunny, Twisty…',
+          ),
+          onSubmitted: (v) {
+            if (v.trim().isNotEmpty) Navigator.pop(ctx, v.trim());
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Annuler'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final v = controller.text.trim();
+              if (v.isNotEmpty) Navigator.pop(ctx, v);
+            },
+            child: const Text('Valider'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -538,7 +611,6 @@ class _TamassiViewState extends State<_TamassiView>
     super.dispose();
   }
 
-  /// Appelée par le parent via GlobalKey quand on tape Arroser/Engrais.
   void triggerEffect(_TamassiEffect effect) {
     HapticFeedback.mediumImpact();
     setState(() => _effect = effect);
@@ -564,25 +636,107 @@ class _TamassiViewState extends State<_TamassiView>
 
   @override
   Widget build(BuildContext context) {
+    // Pas de starter choisi → écran de sélection.
+    if (_starter == null) {
+      return _buildStarterSelection();
+    }
+    return _buildCreatureView();
+  }
+
+  Widget _buildStarterSelection() {
+    return Stack(
+      children: <Widget>[
+        const Positioned.fill(child: _KawaiiBackground()),
+        SafeArea(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 20),
+              const Text(
+                'Choisis ton compagnon',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Il t\'accompagnera dans tes aventures !',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: KultivaColors.textSecondary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Image.asset(
+                      'assets/images/creatures/3.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) =>
+                          const Text('🌱🌻🌿', style: TextStyle(fontSize: 64)),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                child: Row(
+                  children: <Widget>[
+                    _StarterButton(
+                      label: 'Poussia',
+                      emoji: '🌱',
+                      color: KultivaColors.primaryGreen,
+                      onTap: () => _selectStarter(CreatureStarter.poussia),
+                    ),
+                    const SizedBox(width: 10),
+                    _StarterButton(
+                      label: 'Soleia',
+                      emoji: '🌻',
+                      color: const Color(0xFFE8B923),
+                      onTap: () => _selectStarter(CreatureStarter.soleia),
+                    ),
+                    const SizedBox(width: 10),
+                    _StarterButton(
+                      label: 'Spira',
+                      emoji: '🌿',
+                      color: const Color(0xFF9B6B4A),
+                      onTap: () => _selectStarter(CreatureStarter.spira),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCreatureView() {
     final lv = _level.round();
     final screenWidth = MediaQuery.of(context).size.width;
     final creatureSize = min(screenWidth * 0.9, 420.0);
     return Stack(
       children: <Widget>[
-        // Fond kawaii plein écran.
         const Positioned.fill(child: _KawaiiBackground()),
-        // Contenu principal.
         Column(
           children: <Widget>[
             const Spacer(),
-            // Créature + overlay effets (drops / sparkles).
             SizedBox(
               width: creatureSize,
               height: creatureSize,
               child: Stack(
                 children: <Widget>[
                   Positioned.fill(
-                    child: PlantCreature(level: lv, size: creatureSize),
+                    child: PlantCreature(
+                      level: lv,
+                      size: creatureSize,
+                      starter: _starter!,
+                    ),
                   ),
                   if (_effect != null)
                     Positioned.fill(
@@ -602,9 +756,9 @@ class _TamassiViewState extends State<_TamassiView>
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Poussia',
-              style: TextStyle(
+            Text(
+              _creatureName,
+              style: const TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.4,
@@ -645,6 +799,51 @@ class _TamassiViewState extends State<_TamassiView>
           ],
         ),
       ],
+    );
+  }
+}
+
+class _StarterButton extends StatelessWidget {
+  final String label;
+  final String emoji;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _StarterButton({
+    required this.label,
+    required this.emoji,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: color, width: 2.5),
+          ),
+          child: Column(
+            children: <Widget>[
+              Text(emoji, style: const TextStyle(fontSize: 28)),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 13,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
