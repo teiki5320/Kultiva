@@ -21,6 +21,7 @@ class NotificationService {
   /// IDs fixes pour pouvoir annuler/remplacer les notifs.
   static const int _monthlyId = 100;
   static const int _wateringId = 42;
+  static const int _dailyTamassiId = 73;
 
   /// Initialise le plugin. Appelé au démarrage de l'app.
   static Future<void> init() async {
@@ -117,6 +118,56 @@ class NotificationService {
     if (kIsWeb || !_initialized) return;
     try {
       await _plugin.cancel(_monthlyId);
+    } catch (_) {}
+  }
+
+  /// Planifie une notification quotidienne (19h locale) pour rappeler
+  /// à l'utilisateur de venir voir son Tamassi.
+  static Future<void> scheduleDailyTamassiReminder() async {
+    if (kIsWeb || !_initialized) return;
+    try {
+      await _plugin.cancel(_dailyTamassiId);
+      final now = tz.TZDateTime.now(tz.local);
+      tz.TZDateTime next =
+          tz.TZDateTime(tz.local, now.year, now.month, now.day, 19);
+      if (!next.isAfter(now)) {
+        next = next.add(const Duration(days: 1));
+      }
+      const androidDetails = AndroidNotificationDetails(
+        'kultiva_tamassi_daily',
+        'Rappel Tamassi',
+        channelDescription:
+            'Rappel quotidien pour venir voir ton Tamassi.',
+        importance: Importance.defaultImportance,
+        priority: Priority.defaultPriority,
+      );
+      const iosDetails = DarwinNotificationDetails();
+      const details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+        macOS: iosDetails,
+      );
+      await _plugin.zonedSchedule(
+        _dailyTamassiId,
+        '🌱 Ton Tamassi t\'attend !',
+        'Viens lui dire bonjour et récupérer ton XP du jour.',
+        next,
+        details,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } catch (_) {
+      // Fail silently (perms refused, etc.).
+    }
+  }
+
+  /// Annule la notification quotidienne Tamassi.
+  static Future<void> cancelDailyTamassiReminder() async {
+    if (kIsWeb || !_initialized) return;
+    try {
+      await _plugin.cancel(_dailyTamassiId);
     } catch (_) {}
   }
 

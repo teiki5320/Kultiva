@@ -1020,13 +1020,13 @@ class _TamassiViewState extends State<_TamassiView>
     _gainXp(3, '📸 Défi complété !');
   }
 
-  /// Tap sur la créature — caresse quotidienne (+3 XP).
-  void _onCaress() {
+  /// Tap sur la créature — petit bonjour quotidien (+3 XP).
+  void _onPet() {
     if (_canAct(_kLastCaress)) {
       PrefsService.instance.setString(_kLastCaress, _todayKey());
-      _gainXp(3, '💕 Caresse quotidienne');
+      _gainXp(3, '👋 Bonjour quotidien');
     }
-    // Pas de snackbar "déjà caressé" — sinon on spammerait à chaque tap.
+    // Pas de snackbar "déjà fait" — sinon on spammerait à chaque tap.
   }
 
   String get _stageName {
@@ -1320,7 +1320,7 @@ class _TamassiViewState extends State<_TamassiView>
                       level: lv,
                       size: creatureSize,
                       starter: _starter!,
-                      onTap: _onCaress,
+                      onTap: _onPet,
                     ),
                   ),
                   // Lucioles qui tournoient autour de la créature la nuit.

@@ -94,23 +94,50 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 _SectionTitle(title: '🔔  Notifications'),
                 Card(
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: PrefsService.instance.notifications,
-                    builder: (context, value, _) {
-                      return SwitchListTile(
-                        value: value,
-                        onChanged:
-                            PrefsService.instance.setNotifications,
-                        activeColor: KultivaColors.primaryGreen,
-                        title: const Text(
-                          'Rappel mensuel',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        subtitle: const Text(
-                          "Une notification le 1er de chaque mois",
-                        ),
-                      );
-                    },
+                  child: Column(
+                    children: <Widget>[
+                      ValueListenableBuilder<bool>(
+                        valueListenable:
+                            PrefsService.instance.notifications,
+                        builder: (context, value, _) {
+                          return SwitchListTile(
+                            value: value,
+                            onChanged:
+                                PrefsService.instance.setNotifications,
+                            activeColor: KultivaColors.primaryGreen,
+                            title: const Text(
+                              'Rappel mensuel',
+                              style:
+                                  TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            subtitle: const Text(
+                              "Une notification le 1er de chaque mois",
+                            ),
+                          );
+                        },
+                      ),
+                      const Divider(height: 0, indent: 16),
+                      ValueListenableBuilder<bool>(
+                        valueListenable:
+                            PrefsService.instance.tamassiDailyReminder,
+                        builder: (context, value, _) {
+                          return SwitchListTile(
+                            value: value,
+                            onChanged: PrefsService
+                                .instance.setTamassiDailyReminder,
+                            activeColor: KultivaColors.primaryGreen,
+                            title: const Text(
+                              'Rappel Tamassi quotidien',
+                              style:
+                                  TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            subtitle: const Text(
+                              "Tous les jours à 19h",
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),

@@ -39,6 +39,10 @@ Future<void> main() async {
   if (PrefsService.instance.notifications.value) {
     await NotificationService.scheduleMonthlyReminder();
   }
+  // Re-programme le rappel quotidien Tamassi si activé.
+  if (PrefsService.instance.tamassiDailyReminder.value) {
+    await NotificationService.scheduleDailyTamassiReminder();
+  }
   if (PrefsService.instance.musicEnabled.value) {
     AudioService.instance.startMusic();
   }
