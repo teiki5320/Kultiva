@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../services/tamassi_stats.dart';
 import '../../services/weather_service.dart';
 
 import '../../data/badges.dart';
@@ -388,7 +389,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     if (mounted) setState(() {});
     // La créature célèbre le défi complété et gagne +20 XP.
     _tamassiKey.currentState?.triggerCelebration();
-    _tamassiKey.currentState?.awardChallengeXp();
+    _tamassiKey.currentState?.awardChallengeXp(challengeId);
   }
 
   void _openPicker() {
@@ -474,7 +475,10 @@ class MyGardenScreenState extends State<MyGardenScreen> {
               challengesCount: 0,
               badgesCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
-              onChanged: (f) => setState(() => _filter = f),
+              onChanged: (f) {
+                setState(() => _filter = f);
+                TamassiStats.recordTab(f.name);
+              },
             ),
             // Boutons Arroser + Engrais centrés sous les onglets (Tamassi
             // uniquement).
@@ -624,6 +628,8 @@ class _TamassiViewState extends State<_TamassiView>
     _scheduleCrossing();
     _loadWeatherCache();
     _scheduleVisit();
+    TamassiStats.recordLogin();
+    TamassiStats.recordTab('tamassi');
     tamassiResetNotifier.addListener(_onResetRequested);
   }
 
@@ -663,6 +669,7 @@ class _TamassiViewState extends State<_TamassiView>
         _currentVisitor = visitors.first;
         _visitorLTR = !_visitorLTR;
       });
+      TamassiStats.incrementInt('visits');
       _visitCtrl.forward(from: 0).whenComplete(() {
         if (mounted) setState(() => _currentVisitor = null);
       });
@@ -675,7 +682,11 @@ class _TamassiViewState extends State<_TamassiView>
 
   Future<void> _loadWeatherCache() async {
     final w = await WeatherService.getWeather();
-    if (mounted) setState(() => _weatherCache = w);
+    if (!mounted) return;
+    setState(() => _weatherCache = w);
+    if (w != null) {
+      unawaited(TamassiStats.recordWeather(w.currentWeatherCode));
+    }
   }
 
   void _loadXp() {
@@ -827,6 +838,12 @@ class _TamassiViewState extends State<_TamassiView>
           _currentCrossing = animal;
           _crossingLTR = !_crossingLTR;
         });
+        // Track: pour débloquer "see_bee" / "see_butterfly".
+        if (animal.emoji == '🐝') {
+          TamassiStats.addToSet('animals', 'bee');
+        } else if (animal.emoji == '🦋') {
+          TamassiStats.addToSet('animals', 'butterfly');
+        }
         _crossingCtrl.duration =
             Duration(milliseconds: animal.durationMs);
         _crossingCtrl.forward(from: 0).whenComplete(() {
@@ -995,6 +1012,7 @@ class _TamassiViewState extends State<_TamassiView>
     if (effect == _TamassiEffect.water) {
       if (_canAct(_kLastWater)) {
         PrefsService.instance.setString(_kLastWater, todayKey);
+        TamassiStats.incrementInt('water');
         _gainXp(1, '💧 Arrosage quotidien');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1008,6 +1026,7 @@ class _TamassiViewState extends State<_TamassiView>
     } else {
       if (_canAct(_kLastFertilize)) {
         PrefsService.instance.setString(_kLastFertilize, todayKey);
+        TamassiStats.incrementInt('fertilize');
         _gainXp(2, '🌿 Engrais quotidien');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1021,8 +1040,9 @@ class _TamassiViewState extends State<_TamassiView>
     }
   }
 
-  /// Appelée quand un défi photo est complété (+3 XP).
-  void awardChallengeXp() {
+  /// Appelée quand un défi photo est complété (+3 XP + tracking).
+  void awardChallengeXp(String challengeId) {
+    TamassiStats.addToSet('completed_challenges', challengeId);
     _gainXp(3, '📸 Défi complété !');
   }
 
@@ -1030,6 +1050,7 @@ class _TamassiViewState extends State<_TamassiView>
   void _onPet() {
     if (_canAct(_kLastCaress)) {
       PrefsService.instance.setString(_kLastCaress, _todayKey());
+      TamassiStats.incrementInt('pet');
       _gainXp(3, '👋 Bonjour quotidien');
     }
     // Pas de snackbar "déjà fait" — sinon on spammerait à chaque tap.
