@@ -380,8 +380,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   /// Appelé quand l'user soumet une photo pour un défi.
   void _onChallengePhotoTaken(String challengeId, String photoPath) {
     if (mounted) setState(() {});
-    // La créature célèbre le défi complété.
+    // La créature célèbre le défi complété et gagne +20 XP.
     _tamassiKey.currentState?.triggerCelebration();
+    _tamassiKey.currentState?.awardChallengeXp();
   }
 
   void _openPicker() {
@@ -557,6 +558,13 @@ class _TamassiViewState extends State<_TamassiView>
   String _creatureName = '';
   int _streak = 0;
 
+  // XP réel (différent de _level qui vient du slider debug).
+  // Gagné via Arroser (+5), Engrais (+10), Défi complété (+20).
+  int _xp = 0;
+  static const _kXp = 'kultiva.creature.xp';
+  static const _kLastWater = 'kultiva.creature.lastWater';
+  static const _kLastFertilize = 'kultiva.creature.lastFertilize';
+
   String _prevStage = '';
   bool _showEvolve = false;
   bool _celebrating = false;
@@ -591,6 +599,7 @@ class _TamassiViewState extends State<_TamassiView>
       vsync: this,
     )..repeat();
     _loadCreature();
+    _loadXp();
     _prevStage = _stageName;
     _updateStreak();
     _showGreetingBubble();
@@ -598,12 +607,56 @@ class _TamassiViewState extends State<_TamassiView>
     tamassiResetNotifier.addListener(_onResetRequested);
   }
 
+  void _loadXp() {
+    final stored = PrefsService.instance.getString(_kXp);
+    final xp = stored == null ? 1 : int.tryParse(stored) ?? 1;
+    _xp = xp.clamp(1, 100);
+    _level = _xp.toDouble();
+  }
+
+  bool _canAct(String dayKeyPref) {
+    final todayKey = _todayKey();
+    return PrefsService.instance.getString(dayKeyPref) != todayKey;
+  }
+
+  String _todayKey() {
+    final d = DateTime.now();
+    return '${d.year}-${d.month}-${d.day}';
+  }
+
+  Future<void> _gainXp(int amount, String reason) async {
+    final oldLevel = _xp;
+    final newLevel = (_xp + amount).clamp(1, 100);
+    if (newLevel == oldLevel) return;
+    setState(() {
+      _xp = newLevel;
+      _level = _xp.toDouble();
+    });
+    await PrefsService.instance.setString(_kXp, _xp.toString());
+    _checkLevelUp();
+    // Toast "+X XP" en haut de l'écran.
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('+$amount XP · $reason'),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+          backgroundColor: KultivaColors.primaryGreen,
+        ),
+      );
+    }
+  }
+
   void _onResetRequested() {
     if (!mounted) return;
+    PrefsService.instance.setString(_kXp, '1');
+    PrefsService.instance.setString(_kLastWater, '');
+    PrefsService.instance.setString(_kLastFertilize, '');
     setState(() {
       _starter = null;
       _creatureName = '';
-      _level = 5;
+      _xp = 1;
+      _level = 1;
     });
   }
 
@@ -826,12 +879,47 @@ class _TamassiViewState extends State<_TamassiView>
     super.dispose();
   }
 
+  /// Déclenche l'effet visuel (gouttes/étincelles) et gagne de l'XP
+  /// si l'action n'a pas encore été faite aujourd'hui.
   void triggerEffect(_TamassiEffect effect) {
     HapticFeedback.mediumImpact();
     setState(() => _effect = effect);
     _effectCtrl.forward(from: 0).whenComplete(() {
       if (mounted) setState(() => _effect = null);
     });
+    final todayKey = _todayKey();
+    if (effect == _TamassiEffect.water) {
+      if (_canAct(_kLastWater)) {
+        PrefsService.instance.setString(_kLastWater, todayKey);
+        _gainXp(5, '💧 Arrosage quotidien');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('💧 Déjà arrosé aujourd\'hui — reviens demain !'),
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } else {
+      if (_canAct(_kLastFertilize)) {
+        PrefsService.instance.setString(_kLastFertilize, todayKey);
+        _gainXp(10, '🌿 Engrais quotidien');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('🌿 Déjà fertilisé aujourd\'hui — reviens demain !'),
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Appelée quand un défi photo est complété (+20 XP).
+  void awardChallengeXp() {
+    _gainXp(20, '📸 Défi complété !');
   }
 
   String get _stageName {
@@ -1251,7 +1339,12 @@ class _TamassiViewState extends State<_TamassiView>
                       label: '$lv',
                       activeColor: KultivaColors.primaryGreen,
                       onChanged: (v) {
-                        setState(() => _level = v);
+                        setState(() {
+                          _level = v;
+                          _xp = v.round();
+                        });
+                        PrefsService.instance
+                            .setString(_kXp, _xp.toString());
                         _checkLevelUp();
                       },
                     ),
