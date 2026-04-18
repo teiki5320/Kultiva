@@ -547,7 +547,7 @@ class _TamassiViewState extends State<_TamassiView>
 
   double _level = 5;
   late final AnimationController _effectCtrl;
-  late final AnimationController _butterflyCtrl;
+  late final AnimationController _crossingCtrl;
   late final AnimationController _evolveCtrl;
   late final AnimationController _celebrateCtrl;
   late final AnimationController _ambientCtrl;
@@ -563,9 +563,9 @@ class _TamassiViewState extends State<_TamassiView>
 
   bool _showGreeting = false;
   Timer? _greetingTimer;
-  Timer? _butterflyTimer;
-  bool _butterflyVisible = false;
-  bool _butterflyLTR = true;
+  Timer? _crossingTimer;
+  _CrossingAnimal? _currentCrossing;
+  bool _crossingLTR = true;
 
   @override
   void initState() {
@@ -574,7 +574,7 @@ class _TamassiViewState extends State<_TamassiView>
       duration: const Duration(milliseconds: 1400),
       vsync: this,
     );
-    _butterflyCtrl = AnimationController(
+    _crossingCtrl = AnimationController(
       duration: const Duration(milliseconds: 6000),
       vsync: this,
     );
@@ -594,7 +594,7 @@ class _TamassiViewState extends State<_TamassiView>
     _prevStage = _stageName;
     _updateStreak();
     _showGreetingBubble();
-    _scheduleButterfly();
+    _scheduleCrossing();
     tamassiResetNotifier.addListener(_onResetRequested);
   }
 
@@ -685,21 +685,63 @@ class _TamassiViewState extends State<_TamassiView>
     return 'Bonne nuit ! 💤';
   }
 
-  void _scheduleButterfly() {
-    _butterflyTimer = Timer(
+  void _scheduleCrossing() {
+    _crossingTimer = Timer(
       Duration(seconds: 25 + Random().nextInt(35)),
       () {
         if (!mounted) return;
+        final pool = _animalPoolForHour(effectiveHour());
+        final animal = pool[Random().nextInt(pool.length)];
         setState(() {
-          _butterflyVisible = true;
-          _butterflyLTR = !_butterflyLTR;
+          _currentCrossing = animal;
+          _crossingLTR = !_crossingLTR;
         });
-        _butterflyCtrl.forward(from: 0).whenComplete(() {
-          if (mounted) setState(() => _butterflyVisible = false);
+        _crossingCtrl.duration =
+            Duration(milliseconds: animal.durationMs);
+        _crossingCtrl.forward(from: 0).whenComplete(() {
+          if (mounted) setState(() => _currentCrossing = null);
         });
-        _scheduleButterfly();
+        _scheduleCrossing();
       },
     );
+  }
+
+  List<_CrossingAnimal> _animalPoolForHour(int hour) {
+    if (hour >= 6 && hour < 12) {
+      return const <_CrossingAnimal>[
+        _CrossingAnimal(
+            emoji: '🐦', style: _CrossingStyle.flyHigh, durationMs: 5000),
+        _CrossingAnimal(
+            emoji: '🐝', style: _CrossingStyle.zigzag, durationMs: 6000),
+      ];
+    }
+    if (hour >= 12 && hour < 18) {
+      return const <_CrossingAnimal>[
+        _CrossingAnimal(
+            emoji: '🦋', style: _CrossingStyle.zigzag, durationMs: 6000),
+        _CrossingAnimal(
+            emoji: '🐞', style: _CrossingStyle.groundSlow, durationMs: 8000),
+        _CrossingAnimal(
+            emoji: '🐛', style: _CrossingStyle.groundSlow, durationMs: 9000),
+      ];
+    }
+    if (hour >= 18 && hour < 21) {
+      return const <_CrossingAnimal>[
+        _CrossingAnimal(
+            emoji: '🦔', style: _CrossingStyle.groundSlow, durationMs: 8000),
+        _CrossingAnimal(
+            emoji: '🐸', style: _CrossingStyle.hop, durationMs: 5000),
+        _CrossingAnimal(
+            emoji: '🐿️', style: _CrossingStyle.groundSlow, durationMs: 4000),
+      ];
+    }
+    // Nuit : chouette + chauve-souris (lucioles déjà permanentes).
+    return const <_CrossingAnimal>[
+      _CrossingAnimal(
+          emoji: '🦉', style: _CrossingStyle.flyHigh, durationMs: 5500),
+      _CrossingAnimal(
+          emoji: '🦇', style: _CrossingStyle.zigzag, durationMs: 5000),
+    ];
   }
 
   void _loadCreature() {
@@ -774,9 +816,9 @@ class _TamassiViewState extends State<_TamassiView>
   @override
   void dispose() {
     _greetingTimer?.cancel();
-    _butterflyTimer?.cancel();
+    _crossingTimer?.cancel();
     _effectCtrl.dispose();
-    _butterflyCtrl.dispose();
+    _crossingCtrl.dispose();
     _evolveCtrl.dispose();
     _celebrateCtrl.dispose();
     _ambientCtrl.dispose();
@@ -918,32 +960,62 @@ class _TamassiViewState extends State<_TamassiView>
     return Stack(
       children: <Widget>[
         const Positioned.fill(child: _KawaiiBackground()),
-        // Papillon qui traverse l'écran.
-        if (_butterflyVisible)
+        // Animal qui traverse l'écran (selon l'heure).
+        if (_currentCrossing != null)
           AnimatedBuilder(
-            animation: _butterflyCtrl,
+            animation: _crossingCtrl,
             builder: (context, _) {
-              final p = _butterflyCtrl.value;
+              final anim = _currentCrossing!;
+              final p = _crossingCtrl.value;
               final w = MediaQuery.of(context).size.width;
-              final x = _butterflyLTR
-                  ? -60 + p * (w + 120)
-                  : w + 60 - p * (w + 120);
-              // Arc en sinusoïde.
-              final y = 140.0 +
-                  80.0 * (1 - (p - 0.5).abs() * 2) +
-                  18.0 * sin(p * pi * 6);
-              final flap = sin(p * pi * 12);
+              final h = MediaQuery.of(context).size.height;
+              final x = _crossingLTR
+                  ? -80 + p * (w + 160)
+                  : w + 80 - p * (w + 160);
+              late final double y;
+              late final double rotateZ;
+              late final double rotateY;
+              switch (anim.style) {
+                case _CrossingStyle.flyHigh:
+                  // Vol haut, ligne quasi droite avec léger bob.
+                  y = 100.0 + 18.0 * sin(p * pi * 4);
+                  rotateZ = _crossingLTR ? -0.08 : 0.08;
+                  rotateY = sin(p * pi * 8) * 0.3;
+                  break;
+                case _CrossingStyle.zigzag:
+                  // Vol moyen en arc + battement.
+                  y = 140.0 +
+                      80.0 * (1 - (p - 0.5).abs() * 2) +
+                      18.0 * sin(p * pi * 6);
+                  rotateZ = _crossingLTR ? -0.1 : 0.1;
+                  rotateY = sin(p * pi * 12) * 0.4;
+                  break;
+                case _CrossingStyle.groundSlow:
+                  // Déplacement au sol, légère ondulation.
+                  y = h * 0.78 + 4.0 * sin(p * pi * 10);
+                  rotateZ = 0;
+                  rotateY = _crossingLTR ? 0 : pi; // miroir
+                  break;
+                case _CrossingStyle.hop:
+                  // Série de bonds paraboliques.
+                  final hopPhase = (p * 4) % 1.0;
+                  final hopHeight = 40.0 * (1 - (hopPhase * 2 - 1) * (hopPhase * 2 - 1));
+                  y = h * 0.75 - hopHeight;
+                  rotateZ = 0;
+                  rotateY = _crossingLTR ? 0 : pi;
+                  break;
+              }
               return Positioned(
                 left: x,
                 top: y,
                 child: Transform(
                   alignment: Alignment.center,
                   transform: Matrix4.identity()
-                    ..rotateY(flap * 0.4)
-                    ..rotateZ(_butterflyLTR ? -0.1 : 0.1),
-                  child: const Text(
-                    '🦋',
-                    style: TextStyle(fontSize: 28),
+                    ..rotateZ(rotateZ)
+                    ..rotateY(rotateY),
+                  child: Text(
+                    anim.emoji,
+                    style: TextStyle(fontSize: anim.size),
                   ),
                 ),
               );
@@ -1279,6 +1351,25 @@ class _TamassiActionButton extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Style de trajectoire d'un animal qui traverse l'écran.
+enum _CrossingStyle { flyHigh, zigzag, groundSlow, hop }
+
+/// Animal qui traverse l'écran. L'emoji et la trajectoire dépendent
+/// de l'heure (pool dans `_animalPoolForHour`).
+class _CrossingAnimal {
+  final String emoji;
+  final _CrossingStyle style;
+  final double size;
+  final int durationMs;
+
+  const _CrossingAnimal({
+    required this.emoji,
+    required this.style,
+    this.size = 32,
+    this.durationMs = 6000,
+  });
 }
 
 /// Seuils d'évolution de la créature (11 stades).
