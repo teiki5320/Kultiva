@@ -550,6 +550,7 @@ class _TamassiViewState extends State<_TamassiView>
   late final AnimationController _butterflyCtrl;
   late final AnimationController _evolveCtrl;
   late final AnimationController _celebrateCtrl;
+  late final AnimationController _ambientCtrl;
   _TamassiEffect? _effect;
 
   CreatureStarter? _starter;
@@ -585,6 +586,10 @@ class _TamassiViewState extends State<_TamassiView>
       duration: const Duration(milliseconds: 1800),
       vsync: this,
     );
+    _ambientCtrl = AnimationController(
+      duration: const Duration(seconds: 8),
+      vsync: this,
+    )..repeat();
     _loadCreature();
     _prevStage = _stageName;
     _updateStreak();
@@ -656,6 +661,11 @@ class _TamassiViewState extends State<_TamassiView>
     if (_streak >= 3) return '😄';
     if (_streak >= 1) return '😊';
     return '😐';
+  }
+
+  bool get _isNight {
+    final h = effectiveHour();
+    return h >= 21 || h < 6;
   }
 
   void _showGreetingBubble() {
@@ -769,6 +779,7 @@ class _TamassiViewState extends State<_TamassiView>
     _butterflyCtrl.dispose();
     _evolveCtrl.dispose();
     _celebrateCtrl.dispose();
+    _ambientCtrl.dispose();
     tamassiResetNotifier.removeListener(_onResetRequested);
     super.dispose();
   }
@@ -955,6 +966,20 @@ class _TamassiViewState extends State<_TamassiView>
                       starter: _starter!,
                     ),
                   ),
+                  // Lucioles qui tournoient autour de la créature la nuit.
+                  if (_isNight)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: AnimatedBuilder(
+                          animation: _ambientCtrl,
+                          builder: (_, __) => CustomPaint(
+                            painter: _FireflyOrbitPainter(
+                              progress: _ambientCtrl.value,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   if (_effect != null)
                     Positioned.fill(
                       child: IgnorePointer(
@@ -1247,6 +1272,56 @@ class _TamassiActionButton extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Painter qui dessine 8 lucioles tournant lentement autour de la
+/// créature pendant la nuit. Chaque luciole a sa propre orbite, phase
+/// et clignotement indépendant.
+class _FireflyOrbitPainter extends CustomPainter {
+  final double progress;
+  _FireflyOrbitPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height * 0.55);
+    final baseRadius = size.width * 0.42;
+    const count = 8;
+    for (int i = 0; i < count; i++) {
+      final speed = 0.5 + (i % 3) * 0.15;
+      final angle = (progress * speed + i / count) * 2 * pi;
+      // Rayon variable sur chaque luciole.
+      final radiusVariation =
+          1.0 + 0.15 * sin(progress * 2 * pi + i * 1.1);
+      final r = baseRadius * (0.85 + (i % 2) * 0.1) * radiusVariation;
+      // Léger bob vertical.
+      final yBob = sin(progress * 4 * pi + i * 0.8) * size.height * 0.02;
+      final p = center + Offset(cos(angle) * r, sin(angle) * r * 0.6 + yBob);
+      // Clignotement : sinusoïde décalée pour chaque luciole.
+      final blink = (sin(progress * 4 * pi + i * 1.6) * 0.5 + 0.5);
+      final opacity = (0.3 + blink * 0.7).clamp(0.0, 1.0);
+      // Halo doux autour du point lumineux.
+      canvas.drawCircle(
+        p, 10,
+        Paint()
+          ..color = const Color(0xFFFFF3A0).withOpacity(opacity * 0.22)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6),
+      );
+      // Point lumineux.
+      canvas.drawCircle(
+        p, 3.2,
+        Paint()..color = const Color(0xFFFFE37A).withOpacity(opacity),
+      );
+      // Reflet blanc central.
+      canvas.drawCircle(
+        p, 1.4,
+        Paint()..color = Colors.white.withOpacity(opacity),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _FireflyOrbitPainter old) =>
+      old.progress != progress;
 }
 
 /// Confetti painter for the "Bravo !" celebration when a challenge is
