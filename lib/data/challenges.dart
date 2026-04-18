@@ -223,13 +223,6 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     tier: MedalTier.shiny,
   ),
   PhotoChallenge(
-    id: 'next_generation',
-    emoji: '👶',
-    name: 'La relève',
-    description: 'Un enfant qui jardine. Le futur est entre ses mains.',
-    tier: MedalTier.shiny,
-  ),
-  PhotoChallenge(
     id: 'dead_of_winter',
     emoji: '❄️',
     name: 'Saison morte',
