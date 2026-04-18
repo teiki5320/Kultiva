@@ -1393,29 +1393,51 @@ class _KawaiiBackgroundState extends State<_KawaiiBackground>
     final hour = DateTime.now().hour;
     final isNight = hour >= 21 || hour < 6;
     final gradient = _gradientForHour(hour);
+    final assetPath = _backgroundAssetForHour(hour);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(gradient: gradient),
-      child: Stack(
-        children: <Widget>[
-          // Déco statique adaptée au moment.
-          ..._staticDecorations(hour),
-          // Particules météo / saison.
-          Positioned.fill(
-            child: AnimatedBuilder(
-              animation: _particleCtrl,
-              builder: (_, __) => CustomPaint(
-                painter: _WeatherParticlePainter(
-                  weatherCode: _weather?.currentWeatherCode,
-                  progress: _particleCtrl.value,
-                  isNight: isNight,
-                ),
+    return Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        // Fond : image PNG si dispo, sinon gradient procédural.
+        Image.asset(
+          assetPath,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              DecoratedBox(decoration: BoxDecoration(gradient: gradient)),
+              ..._staticDecorations(hour),
+            ],
+          ),
+        ),
+        // Particules météo / saison (toujours par-dessus).
+        Positioned.fill(
+          child: AnimatedBuilder(
+            animation: _particleCtrl,
+            builder: (_, __) => CustomPaint(
+              painter: _WeatherParticlePainter(
+                weatherCode: _weather?.currentWeatherCode,
+                progress: _particleCtrl.value,
+                isNight: isNight,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
+  }
+
+  String _backgroundAssetForHour(int hour) {
+    if (hour >= 6 && hour < 12) {
+      return 'assets/images/backgrounds/morning.png';
+    }
+    if (hour >= 12 && hour < 18) {
+      return 'assets/images/backgrounds/afternoon.png';
+    }
+    if (hour >= 18 && hour < 21) {
+      return 'assets/images/backgrounds/evening.png';
+    }
+    return 'assets/images/backgrounds/night.png';
   }
 
   LinearGradient _gradientForHour(int hour) {
