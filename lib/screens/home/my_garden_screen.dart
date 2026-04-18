@@ -838,18 +838,18 @@ class _TamassiViewState extends State<_TamassiView>
                           Positioned.fill(
                             child: Row(
                               children: <Widget>[
-                                // Gauche : Spira.
-                                Expanded(
-                                  child: _StarterTapZone(
-                                    onTap: () => _selectStarter(
-                                        CreatureStarter.spira),
-                                  ),
-                                ),
-                                // Centre : Soleia.
+                                // Gauche : Soleia.
                                 Expanded(
                                   child: _StarterTapZone(
                                     onTap: () => _selectStarter(
                                         CreatureStarter.soleia),
+                                  ),
+                                ),
+                                // Centre : Spira.
+                                Expanded(
+                                  child: _StarterTapZone(
+                                    onTap: () => _selectStarter(
+                                        CreatureStarter.spira),
                                   ),
                                 ),
                                 // Droite : Poussia.
