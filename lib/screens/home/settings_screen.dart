@@ -8,6 +8,7 @@ import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
+import 'my_garden_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final VoidCallback onSignOut;
@@ -255,6 +256,64 @@ class SettingsScreen extends StatelessWidget {
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
                                 builder: (_) => const GardenTutorialSheet(),
+                              );
+                            },
+                          ),
+                          const Divider(height: 0, indent: 16),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.restart_alt,
+                              color: KultivaColors.primaryGreen,
+                            ),
+                            title: const Text(
+                              'Recommencer le Tamassi',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            subtitle: const Text(
+                              'Rechoisir ton starter et renommer ta créature',
+                              style: TextStyle(fontSize: 11),
+                            ),
+                            onTap: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text('Tout recommencer ?'),
+                                  content: const Text(
+                                    'Tu vas revenir à l\'écran de sélection '
+                                    'du starter. Ton niveau actuel sera '
+                                    'conservé.',
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(ctx, false),
+                                      child: const Text('Annuler'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () =>
+                                          Navigator.pop(ctx, true),
+                                      child: const Text('Recommencer'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              if (confirm != true || !context.mounted) return;
+                              await PrefsService.instance
+                                  .setString('kultiva.creature.starter', '');
+                              await PrefsService.instance
+                                  .setString('kultiva.creature.name', '');
+                              tamassiResetNotifier.value++;
+                              if (!context.mounted) return;
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      '🌱 Ouvre l\'onglet Poussidex pour '
+                                      'choisir ton nouveau compagnon !'),
+                                  duration: Duration(seconds: 3),
+                                ),
                               );
                             },
                           ),

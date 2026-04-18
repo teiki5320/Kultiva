@@ -27,6 +27,10 @@ import 'poussidex/poussidex_card.dart';
 import 'poussidex/poussidex_challenges.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
+/// Incrémenté à chaque reset du starter depuis les paramètres.
+/// Le [_TamassiView] l'écoute pour recharger l'état du starter.
+final ValueNotifier<int> tamassiResetNotifier = ValueNotifier<int>(0);
+
 /// Filtre actif dans le Poussidex.
 enum _AlbumFilter { tamassi, challenges, badges }
 
@@ -563,6 +567,16 @@ class _TamassiViewState extends State<_TamassiView>
     _updateStreak();
     _showGreetingBubble();
     _scheduleButterfly();
+    tamassiResetNotifier.addListener(_onResetRequested);
+  }
+
+  void _onResetRequested() {
+    if (!mounted) return;
+    setState(() {
+      _starter = null;
+      _creatureName = '';
+      _level = 5;
+    });
   }
 
   /// Déclenché par le parent quand un défi est complété.
@@ -728,6 +742,7 @@ class _TamassiViewState extends State<_TamassiView>
     _butterflyCtrl.dispose();
     _evolveCtrl.dispose();
     _celebrateCtrl.dispose();
+    tamassiResetNotifier.removeListener(_onResetRequested);
     super.dispose();
   }
 
@@ -793,40 +808,59 @@ class _TamassiViewState extends State<_TamassiView>
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Image.asset(
-                      'assets/images/creatures/3.png',
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) =>
-                          const Text('🌱🌻🌿', style: TextStyle(fontSize: 64)),
+                    child: AspectRatio(
+                      aspectRatio: 3 / 2,
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned.fill(
+                            child: Image.asset(
+                              'assets/images/creatures/3.png',
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) => const Center(
+                                child: Text('🌱🌻🌿',
+                                    style: TextStyle(fontSize: 64)),
+                              ),
+                            ),
+                          ),
+                          // Zones cliquables : 3 tiers de l'image.
+                          Positioned.fill(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: _StarterTapZone(
+                                    onTap: () => _selectStarter(
+                                        CreatureStarter.poussia),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _StarterTapZone(
+                                    onTap: () => _selectStarter(
+                                        CreatureStarter.soleia),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _StarterTapZone(
+                                    onTap: () => _selectStarter(
+                                        CreatureStarter.spira),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-                child: Row(
-                  children: <Widget>[
-                    _StarterButton(
-                      label: 'Poussia',
-                      emoji: '🌱',
-                      color: KultivaColors.primaryGreen,
-                      onTap: () => _selectStarter(CreatureStarter.poussia),
-                    ),
-                    const SizedBox(width: 10),
-                    _StarterButton(
-                      label: 'Soleia',
-                      emoji: '🌻',
-                      color: const Color(0xFFE8B923),
-                      onTap: () => _selectStarter(CreatureStarter.soleia),
-                    ),
-                    const SizedBox(width: 10),
-                    _StarterButton(
-                      label: 'Spira',
-                      emoji: '🌿',
-                      color: const Color(0xFF9B6B4A),
-                      onTap: () => _selectStarter(CreatureStarter.spira),
-                    ),
-                  ],
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 32),
+                child: Text(
+                  '👆 Tape sur ton compagnon',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -1096,6 +1130,40 @@ class _TamassiViewState extends State<_TamassiView>
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Zone cliquable transparente sur l'image de sélection du starter.
+/// Affiche un petit scale + glow au tap (press).
+class _StarterTapZone extends StatefulWidget {
+  final VoidCallback onTap;
+  const _StarterTapZone({required this.onTap});
+
+  @override
+  State<_StarterTapZone> createState() => _StarterTapZoneState();
+}
+
+class _StarterTapZoneState extends State<_StarterTapZone> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapCancel: () => setState(() => _pressed = false),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        widget.onTap();
+      },
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          color: _pressed ? Colors.white.withOpacity(0.25) : Colors.transparent,
+        ),
+      ),
     );
   }
 }
