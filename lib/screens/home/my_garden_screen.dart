@@ -503,10 +503,12 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   void _onWater() {
+    AudioService.instance.play(Sfx.water);
     _tamassiKey.currentState?.triggerEffect(_TamassiEffect.water);
   }
 
   void _onFertilize() {
+    AudioService.instance.play(Sfx.fertilize);
     _tamassiKey.currentState?.triggerEffect(_TamassiEffect.fertilize);
   }
 
@@ -603,6 +605,7 @@ class _TamassiViewState extends State<_TamassiView>
   /// Déclenché par le parent quand un défi est complété.
   void triggerCelebration() {
     HapticFeedback.heavyImpact();
+    AudioService.instance.play(Sfx.celebrate);
     setState(() => _celebrating = true);
     _celebrateCtrl.forward(from: 0).whenComplete(() {
       if (mounted) setState(() => _celebrating = false);
@@ -614,6 +617,7 @@ class _TamassiViewState extends State<_TamassiView>
     if (newStage != _prevStage) {
       _prevStage = newStage;
       HapticFeedback.mediumImpact();
+      AudioService.instance.play(Sfx.levelUp);
       setState(() => _showEvolve = true);
       _evolveCtrl.forward(from: 0).whenComplete(() {
         if (mounted) setState(() => _showEvolve = false);
@@ -700,8 +704,10 @@ class _TamassiViewState extends State<_TamassiView>
   }
 
   Future<void> _selectStarter(CreatureStarter starter) async {
+    AudioService.instance.play(Sfx.creatureTap);
     final name = await _askName(context, starter);
     if (name == null || name.trim().isEmpty) return;
+    AudioService.instance.play(Sfx.success);
     await PrefsService.instance.setString(_kStarter, starter.name);
     await PrefsService.instance.setString(_kName, name.trim());
     if (!mounted) return;
@@ -2122,7 +2128,10 @@ class _FilterBar extends StatelessWidget {
             hideCount: true,
             selected: filter == _AlbumFilter.tamassi,
             color: KultivaColors.primaryGreen,
-            onTap: () => onChanged(_AlbumFilter.tamassi),
+            onTap: () {
+              AudioService.instance.play(Sfx.tap);
+              onChanged(_AlbumFilter.tamassi);
+            },
           ),
           _FilterChip(
             label: '📸 Défis',
@@ -2130,7 +2139,10 @@ class _FilterBar extends StatelessWidget {
             hideCount: true,
             selected: filter == _AlbumFilter.challenges,
             color: const Color(0xFFFF8FAB),
-            onTap: () => onChanged(_AlbumFilter.challenges),
+            onTap: () {
+              AudioService.instance.play(Sfx.tap);
+              onChanged(_AlbumFilter.challenges);
+            },
           ),
           _FilterChip(
             label: '🏆 Badges',
@@ -2138,7 +2150,10 @@ class _FilterBar extends StatelessWidget {
             total: totalBadges,
             selected: filter == _AlbumFilter.badges,
             color: const Color(0xFFE8B923),
-            onTap: () => onChanged(_AlbumFilter.badges),
+            onTap: () {
+              AudioService.instance.play(Sfx.tap);
+              onChanged(_AlbumFilter.badges);
+            },
           ),
         ],
       ),

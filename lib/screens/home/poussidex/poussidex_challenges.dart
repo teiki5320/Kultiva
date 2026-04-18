@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
+import '../../../services/audio_service.dart';
 import '../../../services/cloud_sync_service.dart';
 import '../../../services/feed_service.dart';
 import '../../../services/photo_service.dart';
@@ -56,6 +57,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
   Future<void> _participate(PhotoChallenge challenge) async {
     final path = await PhotoService.pick(fromCamera: true);
     if (path == null) return;
+    AudioService.instance.play(Sfx.camera);
     setState(() => _completed[challenge.id] = path);
     await _saveCompleted();
     widget.onPhotoTaken?.call(challenge.id, path);

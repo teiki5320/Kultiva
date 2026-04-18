@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
+import '../services/audio_service.dart';
+
 /// Les 3 starters jouables (style Pokémon).
 enum CreatureStarter { poussia, soleia, spira }
 
@@ -132,6 +134,7 @@ class _PlantCreatureState extends State<PlantCreature>
 
   void _triggerShake() {
     HapticFeedback.mediumImpact();
+    AudioService.instance.play(Sfx.shake);
     setState(() => _shaking = true);
     _shakeCtrl.forward(from: 0).whenComplete(() {
       if (mounted) setState(() => _shaking = false);
@@ -181,6 +184,7 @@ class _PlantCreatureState extends State<PlantCreature>
 
   void _triggerSneeze() {
     HapticFeedback.lightImpact();
+    AudioService.instance.play(Sfx.sneeze);
     setState(() => _sneezing = true);
     _sneezeCtrl.forward(from: 0).whenComplete(() {
       if (mounted) setState(() => _sneezing = false);
@@ -227,6 +231,7 @@ class _PlantCreatureState extends State<PlantCreature>
   void _onTap() {
     _wake();
     HapticFeedback.lightImpact();
+    AudioService.instance.play(Sfx.creatureTap);
     setState(() {
       _tapEmoji = _tapEmojis[_rng.nextInt(_tapEmojis.length)];
       _showTapEmoji = true;
