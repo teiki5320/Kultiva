@@ -645,7 +645,7 @@ class _TamassiViewState extends State<_TamassiView>
 
   void _scheduleButterfly() {
     _butterflyTimer = Timer(
-      Duration(seconds: 25 + math.Random().nextInt(35)),
+      Duration(seconds: 25 + Random().nextInt(35)),
       () {
         if (!mounted) return;
         setState(() {
@@ -863,8 +863,8 @@ class _TamassiViewState extends State<_TamassiView>
               // Arc en sinusoïde.
               final y = 140.0 +
                   80.0 * (1 - (p - 0.5).abs() * 2) +
-                  18.0 * math.sin(p * math.pi * 6);
-              final flap = math.sin(p * math.pi * 12);
+                  18.0 * sin(p * pi * 6);
+              final flap = sin(p * pi * 12);
               return Positioned(
                 left: x,
                 top: y,
@@ -1114,7 +1114,7 @@ class _ConfettiPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rng = math.Random(314);
+    final rng = Random(314);
     const count = 28;
     final colors = <Color>[
       const Color(0xFFFF8FAB),
@@ -1124,15 +1124,15 @@ class _ConfettiPainter extends CustomPainter {
       const Color(0xFFC77DFF),
     ];
     for (int i = 0; i < count; i++) {
-      final angle = rng.nextDouble() * math.pi * 2;
+      final angle = rng.nextDouble() * pi * 2;
       final speed = 0.8 + rng.nextDouble() * 0.6;
       final dist = progress * size.width * 0.55 * speed;
-      final x = size.width / 2 + math.cos(angle) * dist;
+      final x = size.width / 2 + cos(angle) * dist;
       final y = size.height / 2 +
-          math.sin(angle) * dist +
+          sin(angle) * dist +
           progress * progress * size.height * 0.25; // gravity
       final c = colors[i % colors.length];
-      final rot = rng.nextDouble() * math.pi * 2 + progress * math.pi * 4;
+      final rot = rng.nextDouble() * pi * 2 + progress * pi * 4;
       canvas.save();
       canvas.translate(x, y);
       canvas.rotate(rot);
