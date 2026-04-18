@@ -924,7 +924,7 @@ class _TamassiViewState extends State<_TamassiView>
     if (effect == _TamassiEffect.water) {
       if (_canAct(_kLastWater)) {
         PrefsService.instance.setString(_kLastWater, todayKey);
-        _gainXp(5, '💧 Arrosage quotidien');
+        _gainXp(1, '💧 Arrosage quotidien');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -937,7 +937,7 @@ class _TamassiViewState extends State<_TamassiView>
     } else {
       if (_canAct(_kLastFertilize)) {
         PrefsService.instance.setString(_kLastFertilize, todayKey);
-        _gainXp(10, '🌿 Engrais quotidien');
+        _gainXp(2, '🌿 Engrais quotidien');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -950,9 +950,9 @@ class _TamassiViewState extends State<_TamassiView>
     }
   }
 
-  /// Appelée quand un défi photo est complété (+20 XP).
+  /// Appelée quand un défi photo est complété (+3 XP).
   void awardChallengeXp() {
-    _gainXp(20, '📸 Défi complété !');
+    _gainXp(3, '📸 Défi complété !');
   }
 
   /// Tap sur la créature — caresse quotidienne (+3 XP).
