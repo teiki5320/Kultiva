@@ -577,6 +577,12 @@ class _TamassiViewState extends State<_TamassiView>
   bool _crossingLTR = true;
   WeatherData? _weatherCache;
 
+  // Visites d'amis : un autre Tamassi traverse l'écran en bas.
+  Timer? _visitTimer;
+  late final AnimationController _visitCtrl;
+  TamassiVisitor? _currentVisitor;
+  bool _visitorLTR = true;
+
   @override
   void initState() {
     super.initState();
@@ -600,6 +606,10 @@ class _TamassiViewState extends State<_TamassiView>
       duration: const Duration(seconds: 8),
       vsync: this,
     )..repeat();
+    _visitCtrl = AnimationController(
+      duration: const Duration(milliseconds: 9000),
+      vsync: this,
+    );
     _loadCreature();
     _loadXp();
     _prevStage = _stageName;
@@ -607,7 +617,54 @@ class _TamassiViewState extends State<_TamassiView>
     _showGreetingBubble();
     _scheduleCrossing();
     _loadWeatherCache();
+    _scheduleVisit();
     tamassiResetNotifier.addListener(_onResetRequested);
+  }
+
+  void _scheduleVisit() {
+    // Première visite après 30-90s, puis toutes les 2-5 min.
+    final firstDelay = Duration(seconds: 30 + Random().nextInt(60));
+    _visitTimer = Timer(firstDelay, () async {
+      if (!mounted) return;
+      final visitors = await CloudSyncService.instance.fetchTamassiVisitors(
+        count: 1,
+      );
+      if (!mounted) return;
+      if (visitors.isNotEmpty) {
+        setState(() {
+          _currentVisitor = visitors.first;
+          _visitorLTR = !_visitorLTR;
+        });
+        _visitCtrl.forward(from: 0).whenComplete(() {
+          if (mounted) setState(() => _currentVisitor = null);
+        });
+      }
+      // Replanifie pour toutes les 2-5 min.
+      _visitTimer = Timer(
+        Duration(seconds: 120 + Random().nextInt(180)),
+        _scheduleVisitLoop,
+      );
+    });
+  }
+
+  void _scheduleVisitLoop() async {
+    if (!mounted) return;
+    final visitors =
+        await CloudSyncService.instance.fetchTamassiVisitors(count: 1);
+    if (!mounted) return;
+    if (visitors.isNotEmpty) {
+      setState(() {
+        _currentVisitor = visitors.first;
+        _visitorLTR = !_visitorLTR;
+      });
+      _visitCtrl.forward(from: 0).whenComplete(() {
+        if (mounted) setState(() => _currentVisitor = null);
+      });
+    }
+    _visitTimer = Timer(
+      Duration(seconds: 120 + Random().nextInt(180)),
+      _scheduleVisitLoop,
+    );
   }
 
   Future<void> _loadWeatherCache() async {
@@ -909,6 +966,8 @@ class _TamassiViewState extends State<_TamassiView>
   void dispose() {
     _greetingTimer?.cancel();
     _crossingTimer?.cancel();
+    _visitTimer?.cancel();
+    _visitCtrl.dispose();
     _effectCtrl.dispose();
     _crossingCtrl.dispose();
     _evolveCtrl.dispose();
@@ -1124,6 +1183,26 @@ class _TamassiViewState extends State<_TamassiView>
             ),
           ),
         ),
+        // Visite d'ami : un autre Tamassi traverse l'écran en bas.
+        if (_currentVisitor != null)
+          AnimatedBuilder(
+            animation: _visitCtrl,
+            builder: (context, _) {
+              final v = _currentVisitor!;
+              final p = _visitCtrl.value;
+              final w = MediaQuery.of(context).size.width;
+              final h = MediaQuery.of(context).size.height;
+              final x = _visitorLTR
+                  ? -120 + p * (w + 240)
+                  : w + 120 - p * (w + 240);
+              final y = h * 0.62 + 6.0 * sin(p * pi * 4);
+              return Positioned(
+                left: x,
+                top: y,
+                child: _VisitorBubble(visitor: v),
+              );
+            },
+          ),
         // Animal qui traverse l'écran (selon l'heure).
         if (_currentCrossing != null)
           AnimatedBuilder(
@@ -1863,6 +1942,94 @@ class _ConfettiPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _ConfettiPainter old) =>
       old.progress != progress;
+}
+
+/// Mini-Tamassi d'un autre joueur qui passe en visite, avec son nom.
+class _VisitorBubble extends StatelessWidget {
+  final TamassiVisitor visitor;
+  const _VisitorBubble({required this.visitor});
+
+  String _assetPath() {
+    final folder = switch (visitor.starter) {
+      'soleia' => 'Soleia',
+      'spira' => 'Spira',
+      _ => 'Poussia',
+    };
+    final prefix = switch (visitor.starter) {
+      'soleia' => 'S',
+      'spira' => 'SP',
+      _ => 'P',
+    };
+    final lv = visitor.xp;
+    final int n;
+    if (lv >= 100) {
+      n = 11;
+    } else if (lv >= 75) {
+      n = 10;
+    } else if (lv >= 60) {
+      n = 9;
+    } else if (lv >= 50) {
+      n = 8;
+    } else if (lv >= 40) {
+      n = 7;
+    } else if (lv >= 30) {
+      n = 6;
+    } else if (lv >= 20) {
+      n = 5;
+    } else if (lv >= 15) {
+      n = 4;
+    } else if (lv >= 10) {
+      n = 3;
+    } else if (lv >= 5) {
+      n = 2;
+    } else {
+      n = 1;
+    }
+    return 'assets/images/creatures/$folder/$prefix$n.png';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 6,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Text(
+            '👋 ${visitor.name}',
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 12,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        SizedBox(
+          width: 90,
+          height: 90,
+          child: Image.asset(
+            _assetPath(),
+            fit: BoxFit.contain,
+            errorBuilder: (_, __, ___) =>
+                const Text('🌱', style: TextStyle(fontSize: 50)),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 /// Petite bulle de dialogue kawaii pour les salutations.

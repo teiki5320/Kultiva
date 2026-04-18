@@ -9,6 +9,19 @@ import '../models/region_data.dart';
 import 'auth_service.dart';
 import 'prefs_service.dart';
 
+/// Données minimales d'un Tamassi d'un autre utilisateur, suffisantes
+/// pour l'afficher dans l'écran de visite.
+class TamassiVisitor {
+  final int xp;
+  final String starter; // 'poussia' / 'soleia' / 'spira'
+  final String name;
+  const TamassiVisitor({
+    required this.xp,
+    required this.starter,
+    required this.name,
+  });
+}
+
 /// Service de synchro cloud entre le Poussidex local (shared_preferences)
 /// et Supabase.
 ///
@@ -323,6 +336,35 @@ class CloudSyncService {
     final starter = prefs.getString('kultiva.creature.starter');
     final name = prefs.getString('kultiva.creature.name');
     await uploadXp(xp: xp, starter: starter, creatureName: name);
+  }
+
+  /// Récupère [count] Tamassi d'autres utilisateurs (visites aléatoires).
+  /// Filtre l'utilisateur courant. Retourne liste vide si pas connecté
+  /// ou si erreur (best-effort).
+  Future<List<TamassiVisitor>> fetchTamassiVisitors({int count = 5}) async {
+    if (!_signedIn) return <TamassiVisitor>[];
+    final uid = _userId;
+    if (uid == null) return <TamassiVisitor>[];
+    try {
+      final rows = await _client
+          .from('user_xp')
+          .select('xp, starter, creature_name, user_id')
+          .neq('user_id', uid)
+          .not('starter', 'is', null)
+          .limit(count * 4);
+      final visitors = rows
+          .map<TamassiVisitor>((r) => TamassiVisitor(
+                xp: (r['xp'] as int?) ?? 1,
+                starter: (r['starter'] as String?) ?? 'poussia',
+                name: (r['creature_name'] as String?) ?? 'Anonyme',
+              ))
+          .toList();
+      visitors.shuffle();
+      return visitors.take(count).toList();
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.fetchTamassiVisitors: $e');
+      return <TamassiVisitor>[];
+    }
   }
 
   // ══════════════════════════════════════════════════════════════════
