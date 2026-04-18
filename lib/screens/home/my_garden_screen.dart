@@ -81,6 +81,12 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _showTutorialIfNeeded();
   }
 
+  /// Lit l'XP courant depuis les prefs (partagé avec _TamassiViewState).
+  int _currentXp() {
+    final raw = PrefsService.instance.getString('kultiva.creature.xp') ?? '';
+    return int.tryParse(raw) ?? 1;
+  }
+
   @override
   void dispose() {
     tamassiResetNotifier.removeListener(_onTamassiResetExternal);
@@ -95,7 +101,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     // Met à jour (au cas où des badges seraient débloqués par la simple
     // lecture de données déjà présentes, sans déclencher de snackbar
     // historique — on se contente d'aligner l'état).
-    _unlockedBadges = computeUnlockedBadges(_plantations);
+    _unlockedBadges = computeUnlockedBadges(level: _currentXp());
     _medals = computeAllMedals(_plantations);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
     if (mounted) setState(() => _loaded = true);
@@ -112,7 +118,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   /// Appelée après chaque action qui modifie la collection — détecte les
   /// nouveaux badges débloqués et montre un snackbar kawaii pour chacun.
   void _refreshBadges() {
-    final next = computeUnlockedBadges(_plantations);
+    final next = computeUnlockedBadges(level: _currentXp());
     final newly = next.difference(_unlockedBadges);
     final nextMedals = computeAllMedals(_plantations);
     final newlyPromoted = <String, MedalTier>{};

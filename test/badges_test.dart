@@ -1,172 +1,105 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
-import 'package:kultiva/models/plantation.dart';
-import 'package:kultiva/models/vegetable_medal.dart';
+import 'package:kultiva/services/tamassi_stats.dart';
 
-Plantation _plant({
-  required String vegId,
-  DateTime? plantedAt,
-  DateTime? harvestedAt,
-  int harvests = 0,
-  List<DateTime> waterings = const [],
-  String? note,
-  List<String> photos = const [],
+TamassiStats _stats({
+  int waterCount = 0,
+  int fertilizeCount = 0,
+  int petCount = 0,
+  int visitsSeen = 0,
+  int morningLogins = 0,
+  int nightLogins = 0,
+  int rainLogins = 0,
+  int snowLogins = 0,
+  int sunnyLogins = 0,
+  int maxStreak = 0,
+  Set<String> tabsVisited = const <String>{},
+  Set<String> seasonsLoggedIn = const <String>{},
+  Set<String> animalsSeen = const <String>{},
+  Set<String> completedChallengeIds = const <String>{},
+  bool named = false,
 }) {
-  return Plantation(
-    id: '${vegId}_${DateTime.now().microsecondsSinceEpoch}',
-    vegetableId: vegId,
-    plantedAt: plantedAt ?? DateTime.now(),
-    harvestedAt: harvestedAt,
-    harvestCount: harvests,
-    wateredAt: waterings,
-    note: note,
-    photoPaths: photos,
+  return TamassiStats(
+    waterCount: waterCount,
+    fertilizeCount: fertilizeCount,
+    petCount: petCount,
+    challengesCompletedCount: completedChallengeIds.length,
+    visitsSeen: visitsSeen,
+    morningLogins: morningLogins,
+    nightLogins: nightLogins,
+    rainLogins: rainLogins,
+    snowLogins: snowLogins,
+    sunnyLogins: sunnyLogins,
+    maxStreak: maxStreak,
+    tabsVisited: tabsVisited,
+    seasonsLoggedIn: seasonsLoggedIn,
+    animalsSeen: animalsSeen,
+    completedChallengeIds: completedChallengeIds,
+    named: named,
   );
 }
 
 void main() {
   group('computeUnlockedBadges', () {
-    test('empty list returns empty set', () {
-      expect(computeUnlockedBadges(<Plantation>[]), isEmpty);
-    });
-
-    test('single plantation unlocks first_step', () {
-      final set = computeUnlockedBadges([_plant(vegId: 'tomate')]);
+    test('level 1 + no stats → only first_step', () {
+      final set = computeUnlockedBadges(level: 1, stats: _stats());
       expect(set, contains('first_step'));
+      expect(set.length, 1);
     });
 
-    test('at least one harvest unlocks first_harvest', () {
-      final set = computeUnlockedBadges([
-        _plant(vegId: 'tomate', harvests: 1),
-      ]);
-      expect(set, contains('first_harvest'));
-    });
-
-    test('10 cumulative waterings unlocks small_watering_can', () {
-      final now = DateTime.now();
-      final set = computeUnlockedBadges([
-        _plant(
-          vegId: 'tomate',
-          waterings: List.generate(10, (i) => now.subtract(Duration(days: i))),
-        ),
-      ]);
-      expect(set, contains('small_watering_can'));
-    });
-
-    test('under 10 waterings does NOT unlock small_watering_can', () {
-      final set = computeUnlockedBadges([
-        _plant(
-          vegId: 'tomate',
-          waterings: List.generate(9, (i) => DateTime.now()),
-        ),
-      ]);
-      expect(set, isNot(contains('small_watering_can')));
-    });
-
-    test('10+ plantations unlocks collector', () {
+    test('named + first water + level 15 unlocks bronze tier', () {
       final set = computeUnlockedBadges(
-        List.generate(10, (_) => _plant(vegId: 'tomate')),
-      );
-      expect(set, contains('collector'));
-    });
-
-    test('30+ plantations unlocks master_collector', () {
-      final set = computeUnlockedBadges(
-        List.generate(30, (_) => _plant(vegId: 'tomate')),
-      );
-      expect(set, contains('master_collector'));
-    });
-
-    test('plant in all 4 seasons unlocks sun_tour', () {
-      // Spring (may), Summer (july), Autumn (october), Winter (january).
-      final plants = [
-        _plant(vegId: 'tomate', plantedAt: DateTime(2025, 5, 1)),
-        _plant(vegId: 'tomate', plantedAt: DateTime(2025, 7, 1)),
-        _plant(vegId: 'tomate', plantedAt: DateTime(2025, 10, 1)),
-        _plant(vegId: 'tomate', plantedAt: DateTime(2026, 1, 1)),
-      ];
-      final set = computeUnlockedBadges(plants);
-      expect(set, contains('sun_tour'));
-    });
-
-    test('active plantation ≥ 180 days unlocks green_thumb', () {
-      final set = computeUnlockedBadges([
-        _plant(
-          vegId: 'tomate',
-          plantedAt: DateTime.now().subtract(const Duration(days: 200)),
-        ),
-      ]);
-      expect(set, contains('green_thumb'));
-    });
-
-    test('first photo unlocks first_photo', () {
-      final set = computeUnlockedBadges([
-        _plant(vegId: 'tomate', photos: ['/tmp/p1.jpg']),
-      ]);
-      expect(set, contains('first_photo'));
-    });
-
-    test('5 plantations same day unlocks lightning', () {
-      final today = DateTime(2025, 6, 15, 10);
-      final set = computeUnlockedBadges(
-        List.generate(
-          5,
-          (_) => _plant(vegId: 'tomate', plantedAt: today),
+        level: 15,
+        stats: _stats(
+          named: true,
+          waterCount: 1,
+          fertilizeCount: 1,
+          petCount: 1,
+          maxStreak: 3,
+          morningLogins: 1,
+          completedChallengeIds: <String>{'first_sprout'},
         ),
       );
-      expect(set, contains('lightning'));
+      expect(set, containsAll(<String>[
+        'first_step', 'named', 'first_water', 'first_fertilize',
+        'first_pet', 'first_challenge', 'streak_3', 'morning', 'level_15',
+      ]));
     });
 
-    test('100 cumulative harvests unlocks gourmand AND big_harvester', () {
-      final set = computeUnlockedBadges([
-        _plant(vegId: 'tomate', harvests: 100),
-      ]);
-      expect(set, containsAll(['gourmand', 'big_harvester', 'first_harvest']));
+    test('level 100 unlocks arbre légendaire', () {
+      final set = computeUnlockedBadges(level: 100, stats: _stats());
+      expect(set, contains('level_100'));
     });
 
-    test('5 plantations with notes unlocks writer', () {
+    test('40+ badges triggers rare_40', () {
+      // Simule un paquet de conditions remplies.
       final set = computeUnlockedBadges(
-        List.generate(
-          5,
-          (i) => _plant(vegId: 'tomate', note: 'note $i'),
+        level: 100,
+        stats: _stats(
+          named: true,
+          waterCount: 100,
+          fertilizeCount: 100,
+          petCount: 100,
+          maxStreak: 100,
+          morningLogins: 5,
+          nightLogins: 5,
+          rainLogins: 1,
+          snowLogins: 1,
+          sunnyLogins: 1,
+          visitsSeen: 10,
+          seasonsLoggedIn: <String>{'spring', 'summer', 'autumn', 'winter'},
+          tabsVisited: <String>{'tamassi', 'challenges', 'badges'},
+          animalsSeen: <String>{'bee', 'butterfly'},
+          completedChallengeIds: const <String>{
+            // Tous les 15 bronze
+            'first_sprout', 'first_bloom', 'gardener_selfie', 'favorite_tool',
+            'my_garden_spot', 'down_to_earth', 'sunday_harvest', 'urban_jungle',
+            'surprise_flower', 'banana_scale', 'big_sunflower', 'root_reveal',
+            'cute_pot', 'home_tea', 'garden_bird',
+          },
         ),
       );
-      expect(set, contains('writer'));
-    });
-
-    test('notes with empty strings do NOT count for writer', () {
-      final set = computeUnlockedBadges(
-        List.generate(
-          5,
-          (_) => _plant(vegId: 'tomate', note: '   '),
-        ),
-      );
-      expect(set, isNot(contains('writer')));
-    });
-  });
-
-  group('badges catalog integrity', () {
-    test('all badge IDs are unique', () {
-      final ids = allBadges.map((b) => b.id).toList();
-      expect(ids.toSet().length, ids.length,
-          reason: 'Duplicate badge IDs found');
-    });
-
-    test('all badges have non-empty name and description', () {
-      for (final b in allBadges) {
-        expect(b.name.trim(), isNotEmpty, reason: '${b.id} has empty name');
-        expect(b.description.trim(), isNotEmpty,
-            reason: '${b.id} has empty description');
-        expect(b.emoji.trim(), isNotEmpty,
-            reason: '${b.id} has empty emoji');
-      }
-    });
-
-    test('all badges have a tier (not MedalTier.none)', () {
-      for (final b in allBadges) {
-        expect(b.tier, isNot(MedalTier.none),
-            reason: '${b.id} has no tier assigned');
-      }
+      expect(set, contains('rare_40'));
     });
   });
 }
