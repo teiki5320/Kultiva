@@ -22,6 +22,7 @@ import '../../utils/category_colors.dart';
 import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/plant_creature.dart';
+import '../../widgets/tamassi_story_card.dart';
 import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_card.dart';
@@ -1185,6 +1186,51 @@ class _TamassiViewState extends State<_TamassiView>
     return Stack(
       children: <Widget>[
         const Positioned.fill(child: _KawaiiBackground()),
+        // Bouton "Partager Story" en haut à gauche.
+        Positioned(
+          top: 8,
+          left: 8,
+          child: SafeArea(
+            child: Material(
+              color: KultivaColors.primaryGreen,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: () {
+                  AudioService.instance.play(Sfx.tap);
+                  showTamassiStoryShare(
+                    context,
+                    starter: _starter!,
+                    creatureName: _creatureName,
+                    level: lv,
+                    stageName: _stageName,
+                  );
+                },
+                child: const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.share, color: Colors.white, size: 14),
+                      SizedBox(width: 4),
+                      Text(
+                        'Partager',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         // Bouton debug "+10 XP" en haut à droite (test d'évolution).
         Positioned(
           top: 8,
