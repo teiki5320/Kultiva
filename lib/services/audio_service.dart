@@ -16,7 +16,7 @@ enum Sfx {
   drop('sounds/sfx_drop.mp3'),
   rain('sounds/sfx_rain.mp3'),
   cart('sounds/sfx_cart.mp3'),
-  creatureTap('sounds/sfx_favorite.mp3'),
+  creatureTap('sounds/sfx_creature_tap.mp3'),
   water('sounds/sfx_drop.mp3'),
   fertilize('sounds/sfx_plant.mp3'),
   levelUp('sounds/sfx_favorite.mp3'),
