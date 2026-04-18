@@ -521,6 +521,8 @@ class _TamassiViewState extends State<_TamassiView>
     with TickerProviderStateMixin {
   static const _kStarter = 'kultiva.creature.starter';
   static const _kName = 'kultiva.creature.name';
+  static const _kStreak = 'kultiva.creature.streak';
+  static const _kLastSeen = 'kultiva.creature.lastSeen';
 
   double _level = 5;
   late final AnimationController _effectCtrl;
@@ -529,6 +531,7 @@ class _TamassiViewState extends State<_TamassiView>
 
   CreatureStarter? _starter;
   String _creatureName = '';
+  int _streak = 0;
 
   bool _showGreeting = false;
   Timer? _greetingTimer;
@@ -548,8 +551,42 @@ class _TamassiViewState extends State<_TamassiView>
       vsync: this,
     );
     _loadCreature();
+    _updateStreak();
     _showGreetingBubble();
     _scheduleButterfly();
+  }
+
+  void _updateStreak() {
+    final prefs = PrefsService.instance;
+    final lastSeenRaw = prefs.getString(_kLastSeen);
+    final storedStreak = int.tryParse(prefs.getString(_kStreak) ?? '') ?? 0;
+    final today = DateTime.now();
+    final todayKey = '${today.year}-${today.month}-${today.day}';
+    int next = storedStreak;
+    if (lastSeenRaw == null) {
+      next = 1;
+    } else if (lastSeenRaw == todayKey) {
+      // Déjà vu aujourd'hui : pas de changement.
+      next = storedStreak > 0 ? storedStreak : 1;
+    } else {
+      final last = DateTime.tryParse(lastSeenRaw);
+      if (last == null) {
+        next = 1;
+      } else {
+        final diff = today.difference(last).inDays;
+        next = diff == 1 ? storedStreak + 1 : 1;
+      }
+    }
+    prefs.setString(_kLastSeen, todayKey);
+    prefs.setString(_kStreak, next.toString());
+    _streak = next;
+  }
+
+  String get _moodEmoji {
+    if (_streak >= 7) return '🤩';
+    if (_streak >= 3) return '😄';
+    if (_streak >= 1) return '😊';
+    return '😐';
   }
 
   void _showGreetingBubble() {
@@ -846,15 +883,22 @@ class _TamassiViewState extends State<_TamassiView>
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              _creatureName,
-              style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.4,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(_moodEmoji, style: const TextStyle(fontSize: 22)),
+                const SizedBox(width: 8),
+                Text(
+                  _creatureName,
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.4,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               'Niveau $lv · $_stageName',
               style: TextStyle(
@@ -863,6 +907,27 @@ class _TamassiViewState extends State<_TamassiView>
                 fontWeight: FontWeight.w600,
               ),
             ),
+            if (_streak >= 2) ...<Widget>[
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                      color: Colors.orange.shade300, width: 1.2),
+                ),
+                child: Text(
+                  '🔥 $_streak jours',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12,
+                    color: Colors.orange.shade800,
+                  ),
+                ),
+              ),
+            ],
             const Spacer(),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 96),
