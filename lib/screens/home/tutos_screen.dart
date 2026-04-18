@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_theme.dart';
+import 'tuto_fiche_screen.dart';
 
 /// Catégorie de tuto avec ses vidéos.
 class _TutoCategory {
@@ -23,10 +24,12 @@ class _TutoItem {
   final String emoji;
   final String label;
   final String url;
+  final String? htmlAsset;
   const _TutoItem({
     required this.emoji,
     required this.label,
-    required this.url,
+    this.url = '',
+    this.htmlAsset,
   });
 }
 
@@ -67,10 +70,10 @@ const _categories = <_TutoCategory>[
     label: 'Arrosage',
     color: Color(0xFF4A90D9),
     items: [
-      _TutoItem(emoji: '💧', label: 'Bien arroser', url: ''),
-      _TutoItem(emoji: '🕐', label: 'Quand arroser ?', url: ''),
-      _TutoItem(emoji: '💦', label: 'Arrosage goutte à goutte', url: ''),
-      _TutoItem(emoji: '🌧️', label: 'Récupérer l\'eau de pluie', url: ''),
+      _TutoItem(emoji: '💧', label: 'Bien arroser', htmlAsset: 'assets/tutos/bien_arroser.html'),
+      _TutoItem(emoji: '🕐', label: 'Quand arroser ?', htmlAsset: 'assets/tutos/quand_arroser.html'),
+      _TutoItem(emoji: '💦', label: 'Arrosage goutte à goutte', htmlAsset: 'assets/tutos/goutte_a_goutte.html'),
+      _TutoItem(emoji: '🌧️', label: 'Récupérer l\'eau de pluie', htmlAsset: 'assets/tutos/eau_de_pluie.html'),
     ],
   ),
   _TutoCategory(
@@ -267,12 +270,21 @@ class _TutoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (item.url.isNotEmpty) {
+        if (item.htmlAsset != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => TutoFicheScreen(
+                titre: item.label,
+                assetPath: item.htmlAsset!,
+              ),
+            ),
+          );
+        } else if (item.url.isNotEmpty) {
           launchUrl(Uri.parse(item.url),
               mode: LaunchMode.externalApplication);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Vidéo bientôt disponible !')),
+            const SnackBar(content: Text('Bientôt disponible !')),
           );
         }
       },

@@ -62,6 +62,9 @@ dependencies:
   # Capteurs (inclinaison + secouer pour les animations de la créature)
   sensors_plus: ^6.0.0
 
+  # WebView pour les fiches tuto HTML
+  webview_flutter: ^4.10.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,6 +83,7 @@ flutter:
     - assets/images/creatures/Soleia/
     - assets/images/creatures/Spira/
     - assets/images/backgrounds/
+    - assets/tutos/
     - assets/sounds/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───
