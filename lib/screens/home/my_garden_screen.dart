@@ -1313,6 +1313,26 @@ class _XpBar extends StatelessWidget {
     final progress = maxed
         ? 1.0
         : ((level - cur) / (next - cur)).clamp(0.0, 1.0);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final trackColor = isDark
+        ? Colors.white.withOpacity(0.12)
+        : Colors.white.withOpacity(0.6);
+    final labelColor = isDark
+        ? Colors.white.withOpacity(0.75)
+        : KultivaColors.textSecondary;
+    final fillGradient = isDark
+        ? const LinearGradient(
+            colors: <Color>[
+              Color(0xFFFFC5DA), // rose pastel
+              Color(0xFFF58BB2), // rose plus soutenu
+            ],
+          )
+        : const LinearGradient(
+            colors: <Color>[
+              Color(0xFF8EDC99),
+              Color(0xFF4A9B5A),
+            ],
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -1324,7 +1344,7 @@ class _XpBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
-                color: KultivaColors.textSecondary,
+                color: labelColor,
               ),
             ),
             if (!maxed)
@@ -1333,7 +1353,7 @@ class _XpBar extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
-                  color: KultivaColors.textSecondary,
+                  color: labelColor,
                 ),
               ),
           ],
@@ -1343,10 +1363,7 @@ class _XpBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: Stack(
             children: <Widget>[
-              Container(
-                height: 10,
-                color: Colors.white.withOpacity(0.6),
-              ),
+              Container(height: 10, color: trackColor),
               TweenAnimationBuilder<double>(
                 duration: const Duration(milliseconds: 400),
                 curve: Curves.easeOut,
@@ -1357,14 +1374,7 @@ class _XpBar extends StatelessWidget {
                     widthFactor: value.clamp(0.0, 1.0),
                     child: Container(
                       height: 10,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF8EDC99),
-                            Color(0xFF4A9B5A),
-                          ],
-                        ),
-                      ),
+                      decoration: BoxDecoration(gradient: fillGradient),
                     ),
                   );
                 },
