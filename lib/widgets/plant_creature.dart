@@ -31,9 +31,27 @@ class _PlantCreatureState extends State<PlantCreature>
   late final AnimationController _blinkCtrl;
   late final AnimationController _swayCtrl;
   late final AnimationController _tapCtrl;
+  late final AnimationController _danceCtrl;
+  late final AnimationController _sneezeCtrl;
+  late final AnimationController _sleepCtrl; // pour fade in/out du "Zzz"
+
   Timer? _blinkTimer;
+  Timer? _danceTimer;
+  Timer? _sneezeTimer;
+  Timer? _sleepTimer;
+
   final math.Random _rng = math.Random();
-  bool _showHeart = false;
+
+  // Variante d'emoji affiché au tap.
+  String _tapEmoji = '❤️';
+  bool _showTapEmoji = false;
+
+  bool _sleeping = false;
+  bool _sneezing = false;
+
+  // Position normalisée du dernier drag pour les yeux qui suivent.
+  // (-1..1 en x et y, relatif au centre de la créature.)
+  Offset _eyeLook = Offset.zero;
 
   @override
   void initState() {
@@ -54,7 +72,22 @@ class _PlantCreatureState extends State<PlantCreature>
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
+    _danceCtrl = AnimationController(
+      duration: const Duration(milliseconds: 900),
+      vsync: this,
+    );
+    _sneezeCtrl = AnimationController(
+      duration: const Duration(milliseconds: 700),
+      vsync: this,
+    );
+    _sleepCtrl = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
     _scheduleBlink();
+    _scheduleDance();
+    _scheduleSneeze();
+    _armSleepTimer();
   }
 
   void _scheduleBlink() {
@@ -62,30 +95,109 @@ class _PlantCreatureState extends State<PlantCreature>
       Duration(milliseconds: 2500 + _rng.nextInt(3000)),
       () {
         if (!mounted) return;
-        _blinkCtrl.forward().then((_) {
-          if (mounted) _blinkCtrl.reverse();
-        });
+        if (!_sleeping) {
+          _blinkCtrl.forward().then((_) {
+            if (mounted) _blinkCtrl.reverse();
+          });
+        }
         _scheduleBlink();
       },
     );
   }
 
+  void _scheduleDance() {
+    _danceTimer = Timer(
+      Duration(seconds: 20 + _rng.nextInt(15)),
+      () {
+        if (!mounted) return;
+        if (!_sleeping) _danceCtrl.forward(from: 0);
+        _scheduleDance();
+      },
+    );
+  }
+
+  void _scheduleSneeze() {
+    // Éternuement rare : toutes les 45-90s, 30% de chance.
+    _sneezeTimer = Timer(
+      Duration(seconds: 45 + _rng.nextInt(45)),
+      () {
+        if (!mounted) return;
+        if (!_sleeping && _rng.nextDouble() < 0.30) {
+          _triggerSneeze();
+        }
+        _scheduleSneeze();
+      },
+    );
+  }
+
+  void _triggerSneeze() {
+    HapticFeedback.lightImpact();
+    setState(() => _sneezing = true);
+    _sneezeCtrl.forward(from: 0).whenComplete(() {
+      if (mounted) setState(() => _sneezing = false);
+    });
+  }
+
+  void _armSleepTimer() {
+    _sleepTimer?.cancel();
+    _sleepTimer = Timer(const Duration(seconds: 30), () {
+      if (!mounted) return;
+      setState(() => _sleeping = true);
+      _sleepCtrl.forward();
+    });
+  }
+
+  void _wake() {
+    if (_sleeping) {
+      setState(() => _sleeping = false);
+      _sleepCtrl.reverse();
+    }
+    _armSleepTimer();
+  }
+
   @override
   void dispose() {
     _blinkTimer?.cancel();
+    _danceTimer?.cancel();
+    _sneezeTimer?.cancel();
+    _sleepTimer?.cancel();
     _breathCtrl.dispose();
     _blinkCtrl.dispose();
     _swayCtrl.dispose();
     _tapCtrl.dispose();
+    _danceCtrl.dispose();
+    _sneezeCtrl.dispose();
+    _sleepCtrl.dispose();
     super.dispose();
   }
 
+  static const _tapEmojis = <String>['❤️', '🎵', '✨', '⭐', '💕', '🌟'];
+
   void _onTap() {
+    _wake();
     HapticFeedback.lightImpact();
-    _tapCtrl.forward(from: 0).then((_) {
-      if (mounted) setState(() => _showHeart = false);
+    setState(() {
+      _tapEmoji = _tapEmojis[_rng.nextInt(_tapEmojis.length)];
+      _showTapEmoji = true;
     });
-    setState(() => _showHeart = true);
+    _tapCtrl.forward(from: 0).then((_) {
+      if (mounted) setState(() => _showTapEmoji = false);
+    });
+  }
+
+  void _onPanUpdate(DragUpdateDetails details) {
+    _wake();
+    // Position locale (0..widget.size) → normalisée autour du centre.
+    final cx = widget.size / 2;
+    final cy = widget.size / 2;
+    final dx = ((details.localPosition.dx - cx) / cx).clamp(-1.0, 1.0);
+    final dy = ((details.localPosition.dy - cy) / cy).clamp(-1.0, 1.0);
+    setState(() => _eyeLook = Offset(dx, dy));
+  }
+
+  void _onPanEnd(_) {
+    // Les yeux reviennent lentement au centre.
+    setState(() => _eyeLook = Offset.zero);
   }
 
   /// Mapping niveau → chemin d'asset PNG (null si pas d'illustration
@@ -178,18 +290,26 @@ class _PlantCreatureState extends State<PlantCreature>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _onTap,
+      onPanUpdate: _onPanUpdate,
+      onPanEnd: _onPanEnd,
       behavior: HitTestBehavior.opaque,
       child: SizedBox.square(
         dimension: widget.size,
         child: Stack(
           alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: <Widget>[
             AnimatedBuilder(
-              animation: Listenable.merge(
-                  <Listenable>[_breathCtrl, _blinkCtrl, _swayCtrl, _tapCtrl]),
+              animation: Listenable.merge(<Listenable>[
+                _breathCtrl, _blinkCtrl, _swayCtrl, _tapCtrl,
+                _danceCtrl, _sneezeCtrl,
+              ]),
               builder: (context, _) {
                 final t = _breathCtrl.value;
-                final breathScale = 1.0 + 0.03 * math.sin(t * math.pi);
+                // Respiration plus lente quand dodo.
+                final breathScale = _sleeping
+                    ? 1.0 + 0.015 * math.sin(t * math.pi)
+                    : 1.0 + 0.03 * math.sin(t * math.pi);
                 final sway =
                     0.03 * math.sin(_swayCtrl.value * math.pi * 2 - math.pi);
                 final tap = _tapCtrl.value;
@@ -199,16 +319,35 @@ class _PlantCreatureState extends State<PlantCreature>
                 final stretch = tap < 0.3
                     ? 1.0 + 0.08 * (tap / 0.3)
                     : 1.0 + 0.08 * (1.0 - (tap - 0.3) / 0.7);
-                return Transform(
-                  alignment: Alignment.bottomCenter,
-                  transform: Matrix4.identity()
-                    ..rotateZ(sway)
-                    ..scale(squash * breathScale, stretch * breathScale),
-                  child: _buildCreatureVisual(),
+                // Danse : wiggle rapide gauche-droite.
+                final dance = _danceCtrl.value > 0
+                    ? math.sin(_danceCtrl.value * math.pi * 4) * 0.12
+                    : 0.0;
+                // Éternuement : recul brutal puis rebond.
+                final sneeze = _sneezeCtrl.value;
+                final sneezeScale = sneeze < 0.3
+                    ? 1.0 - 0.10 * (sneeze / 0.3)
+                    : 1.0 + 0.10 * math.sin((sneeze - 0.3) / 0.7 * math.pi);
+                // "Regard" : translation subtile vers le doigt (max ~5% size).
+                final lookDx = _eyeLook.dx * widget.size * 0.04;
+                final lookDy = _eyeLook.dy * widget.size * 0.02;
+                return Transform.translate(
+                  offset: Offset(lookDx, lookDy),
+                  child: Transform(
+                    alignment: Alignment.bottomCenter,
+                    transform: Matrix4.identity()
+                      ..rotateZ(sway + dance)
+                      ..scale(
+                        squash * breathScale * sneezeScale,
+                        stretch * breathScale * sneezeScale,
+                      ),
+                    child: _buildCreatureVisual(),
+                  ),
                 );
               },
             ),
-            if (_showHeart)
+            // Emoji flottant au tap.
+            if (_showTapEmoji)
               AnimatedBuilder(
                 animation: _tapCtrl,
                 builder: (context, child) {
@@ -219,8 +358,65 @@ class _PlantCreatureState extends State<PlantCreature>
                       opacity: (1.0 - p).clamp(0.0, 1.0),
                       child: Transform.scale(
                         scale: 0.5 + p * 0.8,
-                        child: const Text('❤️',
-                            style: TextStyle(fontSize: 28)),
+                        child: Text(_tapEmoji,
+                            style: const TextStyle(fontSize: 30)),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            // "Zzz" quand dort.
+            AnimatedBuilder(
+              animation: _sleepCtrl,
+              builder: (_, __) {
+                if (_sleepCtrl.value == 0) return const SizedBox.shrink();
+                return Positioned(
+                  top: -8,
+                  right: widget.size * 0.10,
+                  child: Opacity(
+                    opacity: _sleepCtrl.value,
+                    child: const Text(
+                      '💤',
+                      style: TextStyle(fontSize: 32),
+                    ),
+                  ),
+                );
+              },
+            ),
+            // Bulle "Atchoum!" + goutte lors de l'éternuement.
+            if (_sneezing)
+              AnimatedBuilder(
+                animation: _sneezeCtrl,
+                builder: (_, __) {
+                  final p = _sneezeCtrl.value;
+                  final opacity =
+                      p < 0.1 ? p / 0.1 : (1 - (p - 0.5) / 0.5).clamp(0.0, 1.0);
+                  return Positioned(
+                    top: widget.size * 0.05,
+                    right: -widget.size * 0.05,
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: const <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: const Text(
+                          'Atchoum !',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
                     ),
                   );
