@@ -31,6 +31,15 @@ import 'poussidex/vegetable_picker_sheet.dart';
 /// Le [_TamassiView] l'écoute pour recharger l'état du starter.
 final ValueNotifier<int> tamassiResetNotifier = ValueNotifier<int>(0);
 
+/// Heure forcée pour le debug (0-23) ou null = heure réelle.
+/// Utilisée par le fond kawaii + la bulle de greeting pour pouvoir
+/// vérifier les 4 ambiances sans attendre.
+final ValueNotifier<int?> debugHourOverride = ValueNotifier<int?>(null);
+
+/// Heure effective : override si set, sinon heure système.
+int effectiveHour() =>
+    debugHourOverride.value ?? DateTime.now().hour;
+
 /// Filtre actif dans le Poussidex.
 enum _AlbumFilter { tamassi, challenges, badges }
 
@@ -654,7 +663,7 @@ class _TamassiViewState extends State<_TamassiView>
   }
 
   String _greetingText() {
-    final hour = DateTime.now().hour;
+    final hour = effectiveHour();
     if (hour < 6) return 'Chut… 💤';
     if (hour < 12) return 'Bonjour ! ☀️';
     if (hour < 18) return 'Coucou ! 🌸';
@@ -1375,10 +1384,16 @@ class _KawaiiBackgroundState extends State<_KawaiiBackground>
       vsync: this,
     )..repeat();
     _loadWeather();
+    debugHourOverride.addListener(_onHourChanged);
+  }
+
+  void _onHourChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
+    debugHourOverride.removeListener(_onHourChanged);
     _particleCtrl.dispose();
     super.dispose();
   }
@@ -1390,7 +1405,7 @@ class _KawaiiBackgroundState extends State<_KawaiiBackground>
 
   @override
   Widget build(BuildContext context) {
-    final hour = DateTime.now().hour;
+    final hour = effectiveHour();
     final isNight = hour >= 21 || hour < 6;
     final gradient = _gradientForHour(hour);
     final assetPath = _backgroundAssetForHour(hour);

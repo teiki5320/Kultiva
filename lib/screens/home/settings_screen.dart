@@ -238,6 +238,89 @@ class SettingsScreen extends StatelessWidget {
                             },
                           ),
                           const Divider(height: 0, indent: 16),
+                          ValueListenableBuilder<int?>(
+                            valueListenable: debugHourOverride,
+                            builder: (context, override, _) {
+                              final isAuto = override == null;
+                              final displayHour =
+                                  override ?? DateTime.now().hour;
+                              final period = isAuto
+                                  ? 'auto'
+                                  : '${displayHour.toString().padLeft(2, '0')}h';
+                              return ExpansionTile(
+                                leading: const Icon(
+                                  Icons.wb_sunny_outlined,
+                                  color: KultivaColors.primaryGreen,
+                                ),
+                                title: const Text(
+                                  'Heure de test (debug)',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                subtitle: Text(
+                                  'Force l\'heure du fond Tamassi · $period',
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                                children: <Widget>[
+                                  SwitchListTile(
+                                    dense: true,
+                                    title: const Text('Mode automatique'),
+                                    subtitle: const Text(
+                                      'Utilise l\'heure réelle du téléphone',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
+                                    value: isAuto,
+                                    onChanged: (v) => debugHourOverride.value =
+                                        v ? null : DateTime.now().hour,
+                                  ),
+                                  if (!isAuto)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Row(
+                                        children: <Widget>[
+                                          const Text('0h',
+                                              style: TextStyle(fontSize: 12)),
+                                          Expanded(
+                                            child: Slider(
+                                              value: displayHour.toDouble(),
+                                              min: 0,
+                                              max: 23,
+                                              divisions: 23,
+                                              label: '${displayHour}h',
+                                              activeColor:
+                                                  KultivaColors.primaryGreen,
+                                              onChanged: (v) =>
+                                                  debugHourOverride.value =
+                                                      v.round(),
+                                            ),
+                                          ),
+                                          const Text('23h',
+                                              style: TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                    ),
+                                  if (!isAuto)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16, 0, 16, 12),
+                                      child: Wrap(
+                                        spacing: 8,
+                                        children: <int>[7, 14, 19, 23]
+                                            .map((h) => ActionChip(
+                                                  label: Text(
+                                                      '${h.toString().padLeft(2, '0')}h'),
+                                                  onPressed: () =>
+                                                      debugHourOverride.value =
+                                                          h,
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                          const Divider(height: 0, indent: 16),
                           ListTile(
                             leading: const Icon(
                               Icons.restart_alt,
