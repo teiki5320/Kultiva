@@ -7,7 +7,6 @@ import '../../services/cloud_sync_service.dart';
 import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/garden_tutorial_sheet.dart';
 import 'my_garden_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -241,27 +240,6 @@ class SettingsScreen extends StatelessWidget {
                           const Divider(height: 0, indent: 16),
                           ListTile(
                             leading: const Icon(
-                              Icons.school_outlined,
-                              color: KultivaColors.primaryGreen,
-                            ),
-                            title: const Text(
-                              'Revoir le tuto Poussidex',
-                              style: TextStyle(fontWeight: FontWeight.w700),
-                            ),
-                            subtitle: const Text(
-                                "Les 3 slides d'explication du Poussidex"),
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) => const GardenTutorialSheet(),
-                              );
-                            },
-                          ),
-                          const Divider(height: 0, indent: 16),
-                          ListTile(
-                            leading: const Icon(
                               Icons.restart_alt,
                               color: KultivaColors.primaryGreen,
                             ),
@@ -304,6 +282,9 @@ class SettingsScreen extends StatelessWidget {
                                   .setString('kultiva.creature.starter', '');
                               await PrefsService.instance
                                   .setString('kultiva.creature.name', '');
+                              // Relance le tuto Poussidex.
+                              await PrefsService.instance
+                                  .setGardenTutorialDone(false);
                               tamassiResetNotifier.value++;
                               if (!context.mounted) return;
                               Navigator.of(context).pop();

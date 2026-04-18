@@ -64,6 +64,18 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   void initState() {
     super.initState();
     _bootstrap();
+    tamassiResetNotifier.addListener(_onTamassiResetExternal);
+  }
+
+  void _onTamassiResetExternal() {
+    // Après un reset depuis les paramètres : relance le tuto.
+    _showTutorialIfNeeded();
+  }
+
+  @override
+  void dispose() {
+    tamassiResetNotifier.removeListener(_onTamassiResetExternal);
+    super.dispose();
   }
 
   Future<void> _bootstrap() async {
