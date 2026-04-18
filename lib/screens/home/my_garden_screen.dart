@@ -1313,73 +1313,106 @@ class _XpBar extends StatelessWidget {
     final progress = maxed
         ? 1.0
         : ((level - cur) / (next - cur)).clamp(0.0, 1.0);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final trackColor = isDark
-        ? Colors.white.withOpacity(0.12)
-        : Colors.white.withOpacity(0.6);
-    final labelColor = isDark
-        ? Colors.white.withOpacity(0.75)
-        : KultivaColors.textSecondary;
-    final fillGradient = isDark
-        ? const LinearGradient(
-            colors: <Color>[
-              Color(0xFFFFC5DA), // rose pastel
-              Color(0xFFF58BB2), // rose plus soutenu
-            ],
-          )
-        : const LinearGradient(
-            colors: <Color>[
-              Color(0xFF8EDC99),
-              Color(0xFF4A9B5A),
-            ],
-          );
+    const accent = Color(0xFFE8808E); // rose-rouge du contour
+    const fill = Color(0xFFE8A8B0); // rose rempli
+    const track = Color(0xFFFFF5F5); // blanc rosé (fond de barre)
+    const barHeight = 22.0;
+    const peachSize = 42.0;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              maxed ? 'Niveau max' : 'Prochaine évolution : $next',
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: labelColor,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final barWidth = constraints.maxWidth;
+            return SizedBox(
+              height: peachSize + 4,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: <Widget>[
+                  // Barre (fond + remplissage + contour).
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: barHeight,
+                      decoration: BoxDecoration(
+                        color: track,
+                        borderRadius: BorderRadius.circular(barHeight / 2),
+                        border: Border.all(color: accent, width: 2),
+                      ),
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(barHeight / 2),
+                        child: TweenAnimationBuilder<double>(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeOut,
+                          tween: Tween<double>(begin: 0, end: progress),
+                          builder: (context, value, _) {
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: FractionallySizedBox(
+                                widthFactor: value.clamp(0.0, 1.0),
+                                heightFactor: 1.0,
+                                child: Container(color: fill),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Texte "Prochain niveau : N" à droite dans la barre.
+                  Positioned(
+                    right: 12,
+                    bottom: 0,
+                    height: barHeight,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        maxed ? 'Niveau max' : 'Prochain niveau : $next',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 12,
+                          color: accent,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // 🍑 Pêche qui se déplace avec la progression.
+                  TweenAnimationBuilder<double>(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeOut,
+                    tween: Tween<double>(begin: 0, end: progress),
+                    builder: (context, value, _) {
+                      final x = (barWidth * value.clamp(0.0, 1.0)) -
+                          peachSize / 2;
+                      return Positioned(
+                        left: x.clamp(-peachSize / 2,
+                            barWidth - peachSize / 2),
+                        top: 0,
+                        child: const Text(
+                          '🍑',
+                          style: TextStyle(fontSize: peachSize),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ),
-            if (!maxed)
-              Text(
-                '${level - cur} / ${next - cur} XP',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: labelColor,
-                ),
-              ),
-          ],
+            );
+          },
         ),
         const SizedBox(height: 4),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Stack(
-            children: <Widget>[
-              Container(height: 10, color: trackColor),
-              TweenAnimationBuilder<double>(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeOut,
-                tween: Tween<double>(begin: 0, end: progress),
-                builder: (context, value, _) {
-                  return FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: value.clamp(0.0, 1.0),
-                    child: Container(
-                      height: 10,
-                      decoration: BoxDecoration(gradient: fillGradient),
-                    ),
-                  );
-                },
-              ),
-            ],
+        Center(
+          child: Text(
+            maxed ? '100%' : '${(progress * 100).round()}%',
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+              color: accent,
+            ),
           ),
         ),
       ],
