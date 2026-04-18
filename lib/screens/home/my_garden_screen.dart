@@ -951,7 +951,53 @@ class _TamassiViewState extends State<_TamassiView>
           ),
         Column(
           children: <Widget>[
-            // Espace important en haut pour pousser la créature vers le bas.
+            // En-tête : nom de la créature (petit, centré, en haut).
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(_moodEmoji, style: const TextStyle(fontSize: 16)),
+                const SizedBox(width: 6),
+                Text(
+                  _creatureName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Text(
+              'Niveau $lv · $_stageName',
+              style: TextStyle(
+                fontSize: 11,
+                color: KultivaColors.textSecondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            if (_streak >= 2) ...<Widget>[
+              const SizedBox(height: 4),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                      color: Colors.orange.shade300, width: 1),
+                ),
+                child: Text(
+                  '🔥 $_streak jours',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 10,
+                    color: Colors.orange.shade800,
+                  ),
+                ),
+              ),
+            ],
             const Spacer(flex: 12),
             SizedBox(
               width: creatureSize,
@@ -1110,53 +1156,7 @@ class _TamassiViewState extends State<_TamassiView>
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(_moodEmoji, style: const TextStyle(fontSize: 22)),
-                const SizedBox(width: 8),
-                Text(
-                  _creatureName,
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1.4,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Niveau $lv · $_stageName',
-              style: TextStyle(
-                fontSize: 13,
-                color: KultivaColors.textSecondary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            if (_streak >= 2) ...<Widget>[
-              const SizedBox(height: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                      color: Colors.orange.shade300, width: 1.2),
-                ),
-                child: Text(
-                  '🔥 $_streak jours',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 12,
-                    color: Colors.orange.shade800,
-                  ),
-                ),
-              ),
-            ],
-            const Spacer(flex: 1),
+            const Spacer(flex: 2),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: Row(
