@@ -66,6 +66,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       localPath: path,
       plantationId: 'challenge_${challenge.id}',
     );
+    String? feedError;
     if (url != null) {
       setState(() => _completed[challenge.id] = url);
       await _saveCompleted();
@@ -76,24 +77,14 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
           photoUrl: url,
         );
       } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Feed publish error: $e')),
-          );
-        }
+        feedError = e.toString();
       }
-    } else if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('⚠️ Upload photo échoué — le défi est validé '
-              'localement mais ne sera pas visible dans le Feed.'),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 5),
-        ),
-      );
+    } else {
+      feedError = 'Upload photo vers le cloud échoué';
     }
     if (!mounted) return;
-    // Montrer la carte du défi complété avec l'animation pack-opening.
+    // Montrer l'animation d'abord, PUIS le message d'erreur (sinon
+    // le snackbar est masqué par l'overlay de l'animation).
     final badge = PoussidexBadge(
       id: challenge.id,
       emoji: challenge.emoji,
@@ -103,13 +94,22 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
     );
     await showBadgeUnlockedAnimation(context, badge: badge);
     if (!mounted) return;
-    // Proposer le partage Story Instagram.
     final finalPath = _completed[challenge.id] ?? path;
     await showChallengeStoryShare(
       context,
       challenge: challenge,
       photoPath: finalPath,
     );
+    // Snackbar d'erreur APRÈS les animations.
+    if (feedError != null && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('⚠️ Feed : $feedError'),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 5),
+        ),
+      );
+    }
   }
 
   @override
