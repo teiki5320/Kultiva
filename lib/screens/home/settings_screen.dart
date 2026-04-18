@@ -333,7 +333,7 @@ class SettingsScreen extends StatelessWidget {
                               ),
                             ),
                             subtitle: const Text(
-                              'Rechoisir ton starter et renommer ta créature',
+                              'Rechoisir ton starter et renommer ton Tamassi',
                               style: TextStyle(fontSize: 11),
                             ),
                             onTap: () async {

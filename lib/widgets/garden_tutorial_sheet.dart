@@ -32,14 +32,14 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
       subtitle:
           "Complète des défis dans l'onglet Défis : plante la plus "
           "moche, plus grande courgette, night garden… Chaque photo "
-          "partagée fait gagner de l'XP à ta créature.",
+          "partagée fait gagner de l'XP à ton Tamassi.",
       gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
     ),
     _TutoSlide(
       emoji: '💧',
       title: 'Arrose et fertilise',
       subtitle:
-          "Les boutons Arroser et Engrais au-dessus de ta créature "
+          "Les boutons Arroser et Engrais au-dessus de ton Tamassi "
           "lui donnent un petit boost d'XP. Pas de pénalité si tu "
           "oublies — c'est juste un coup de pouce.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],

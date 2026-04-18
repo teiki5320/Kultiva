@@ -33,9 +33,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       imagePath: 'assets/images/onboarding_poussidex.png',
       title: 'Ton Poussidex',
       subtitle:
-          "Adopte ton compagnon — Poussia, Soleia ou Spira — et fais-le "
+          "Adopte ton Tamassi — Poussia, Soleia ou Spira — et fais-le "
           "évoluer à travers 11 stades. Relève des défis photo, gagne "
-          "des badges façon Pokémon et monte ta créature jusqu'au "
+          "des badges façon Pokémon et monte ton Tamassi jusqu'au "
           "niveau 100 !",
     ),
     _OnboardingContent(
