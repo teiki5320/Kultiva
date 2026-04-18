@@ -532,7 +532,10 @@ class MyGardenScreenState extends State<MyGardenScreen> {
           onPhotoTaken: _onChallengePhotoTaken,
         );
       case _AlbumFilter.badges:
-        return PoussidexBadgesGrid(unlocked: _unlockedBadges);
+        // Recalcul live à chaque ouverture de l'onglet pour refléter
+        // les dernières stats (water, pet, challenges, etc.).
+        final live = computeUnlockedBadges(level: _currentXp());
+        return PoussidexBadgesGrid(unlocked: live);
     }
   }
 }
