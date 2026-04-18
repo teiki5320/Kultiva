@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 /// Les 3 starters jouables (style Pokémon).
 enum CreatureStarter { poussia, soleia, spira }
@@ -39,8 +40,17 @@ class _PlantCreatureState extends State<PlantCreature>
   Timer? _danceTimer;
   Timer? _sneezeTimer;
   Timer? _sleepTimer;
+  StreamSubscription<AccelerometerEvent>? _accelSub;
 
   final math.Random _rng = math.Random();
+
+  // Inclinaison du téléphone (−1..1 sur x, filtrée).
+  double _tiltX = 0;
+  // Dernière magnitude pour détecter le "shake".
+  double _lastAccelMagnitude = 9.8;
+  bool _shaking = false;
+  DateTime? _lastShake;
+  late final AnimationController _shakeCtrl;
 
   // Variante d'emoji affiché au tap.
   String _tapEmoji = '❤️';
@@ -84,10 +94,49 @@ class _PlantCreatureState extends State<PlantCreature>
       duration: const Duration(milliseconds: 600),
       vsync: this,
     );
+    _shakeCtrl = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    );
     _scheduleBlink();
     _scheduleDance();
     _scheduleSneeze();
     _armSleepTimer();
+    _startAccelListener();
+  }
+
+  void _startAccelListener() {
+    _accelSub = accelerometerEventStream(
+      samplingPeriod: const Duration(milliseconds: 100),
+    ).listen((event) {
+      if (!mounted) return;
+      // Inclinaison : x négatif = penche à gauche.
+      final filtered = _tiltX * 0.8 + (event.x / 9.8) * 0.2;
+      _tiltX = filtered.clamp(-1.0, 1.0);
+      // Shake : magnitude globale d'accélération.
+      final mag = math.sqrt(
+          event.x * event.x + event.y * event.y + event.z * event.z);
+      final delta = (mag - _lastAccelMagnitude).abs();
+      _lastAccelMagnitude = mag;
+      if (delta > 18 && !_shaking) {
+        final now = DateTime.now();
+        if (_lastShake == null ||
+            now.difference(_lastShake!).inMilliseconds > 2000) {
+          _lastShake = now;
+          _triggerShake();
+        }
+      }
+      setState(() {});
+    });
+  }
+
+  void _triggerShake() {
+    HapticFeedback.mediumImpact();
+    setState(() => _shaking = true);
+    _shakeCtrl.forward(from: 0).whenComplete(() {
+      if (mounted) setState(() => _shaking = false);
+    });
+    _wake();
   }
 
   void _scheduleBlink() {
@@ -161,6 +210,7 @@ class _PlantCreatureState extends State<PlantCreature>
     _danceTimer?.cancel();
     _sneezeTimer?.cancel();
     _sleepTimer?.cancel();
+    _accelSub?.cancel();
     _breathCtrl.dispose();
     _blinkCtrl.dispose();
     _swayCtrl.dispose();
@@ -168,6 +218,7 @@ class _PlantCreatureState extends State<PlantCreature>
     _danceCtrl.dispose();
     _sneezeCtrl.dispose();
     _sleepCtrl.dispose();
+    _shakeCtrl.dispose();
     super.dispose();
   }
 
@@ -302,11 +353,10 @@ class _PlantCreatureState extends State<PlantCreature>
             AnimatedBuilder(
               animation: Listenable.merge(<Listenable>[
                 _breathCtrl, _blinkCtrl, _swayCtrl, _tapCtrl,
-                _danceCtrl, _sneezeCtrl,
+                _danceCtrl, _sneezeCtrl, _shakeCtrl,
               ]),
               builder: (context, _) {
                 final t = _breathCtrl.value;
-                // Respiration plus lente quand dodo.
                 final breathScale = _sleeping
                     ? 1.0 + 0.015 * math.sin(t * math.pi)
                     : 1.0 + 0.03 * math.sin(t * math.pi);
@@ -319,24 +369,27 @@ class _PlantCreatureState extends State<PlantCreature>
                 final stretch = tap < 0.3
                     ? 1.0 + 0.08 * (tap / 0.3)
                     : 1.0 + 0.08 * (1.0 - (tap - 0.3) / 0.7);
-                // Danse : wiggle rapide gauche-droite.
                 final dance = _danceCtrl.value > 0
                     ? math.sin(_danceCtrl.value * math.pi * 4) * 0.12
                     : 0.0;
-                // Éternuement : recul brutal puis rebond.
                 final sneeze = _sneezeCtrl.value;
                 final sneezeScale = sneeze < 0.3
                     ? 1.0 - 0.10 * (sneeze / 0.3)
                     : 1.0 + 0.10 * math.sin((sneeze - 0.3) / 0.7 * math.pi);
-                // "Regard" : translation subtile vers le doigt (max ~5% size).
                 final lookDx = _eyeLook.dx * widget.size * 0.04;
                 final lookDy = _eyeLook.dy * widget.size * 0.02;
+                // Inclinaison du téléphone : rotation douce.
+                final tilt = -_tiltX * 0.18;
+                // Shake : spin 360° quand secoué.
+                final shakeSpin = _shakeCtrl.value > 0
+                    ? _shakeCtrl.value * math.pi * 2
+                    : 0.0;
                 return Transform.translate(
                   offset: Offset(lookDx, lookDy),
                   child: Transform(
                     alignment: Alignment.bottomCenter,
                     transform: Matrix4.identity()
-                      ..rotateZ(sway + dance)
+                      ..rotateZ(sway + dance + tilt + shakeSpin)
                       ..scale(
                         squash * breathScale * sneezeScale,
                         stretch * breathScale * sneezeScale,
