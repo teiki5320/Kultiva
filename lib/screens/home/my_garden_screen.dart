@@ -641,6 +641,12 @@ class _TamassiViewState extends State<_TamassiView>
       _level = _xp.toDouble();
     });
     await PrefsService.instance.setString(_kXp, _xp.toString());
+    // Cloud sync (fire-and-forget).
+    unawaited(CloudSyncService.instance.uploadXp(
+      xp: _xp,
+      starter: _starter?.name,
+      creatureName: _creatureName,
+    ));
     _checkLevelUp();
     // Toast "+X XP" en haut de l'écran.
     if (mounted) {

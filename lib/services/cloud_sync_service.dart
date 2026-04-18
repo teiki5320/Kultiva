@@ -261,8 +261,68 @@ class CloudSyncService {
     await uploadBadges(merged);
     // 3. Plantations.
     await mergeOnLogin();
-    // 4. Photos en attente (chemins locaux à uploader vers Storage).
+    // 4. XP de la créature Tamassi.
+    await fetchAndApplyXp();
+    await _uploadCurrentXp();
+    // 5. Photos en attente (chemins locaux à uploader vers Storage).
     unawaited(syncPendingPhotos());
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  // XP de la créature Tamassi (table user_xp)
+  // ══════════════════════════════════════════════════════════════════
+
+  /// Push l'XP + starter + nom vers le cloud. Fire-and-forget.
+  Future<void> uploadXp({
+    required int xp,
+    String? starter,
+    String? creatureName,
+  }) async {
+    if (!_signedIn) return;
+    final uid = _userId;
+    if (uid == null) return;
+    try {
+      await _client.from('user_xp').upsert(<String, dynamic>{
+        'user_id': uid,
+        'xp': xp,
+        if (starter != null) 'starter': starter,
+        if (creatureName != null) 'creature_name': creatureName,
+      });
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.uploadXp error: $e');
+    }
+  }
+
+  /// Charge l'XP depuis le cloud et l'applique dans les prefs locales.
+  Future<void> fetchAndApplyXp() async {
+    if (!_signedIn) return;
+    try {
+      final rows = await _client.from('user_xp').select().limit(1);
+      if (rows.isEmpty) return;
+      final row = rows.first;
+      final xp = (row['xp'] as int?) ?? 1;
+      final starter = row['starter'] as String?;
+      final name = row['creature_name'] as String?;
+      final prefs = PrefsService.instance;
+      await prefs.setString('kultiva.creature.xp', xp.toString());
+      if (starter != null && starter.isNotEmpty) {
+        await prefs.setString('kultiva.creature.starter', starter);
+      }
+      if (name != null && name.isNotEmpty) {
+        await prefs.setString('kultiva.creature.name', name);
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('CloudSync.fetchXp error: $e');
+    }
+  }
+
+  Future<void> _uploadCurrentXp() async {
+    final prefs = PrefsService.instance;
+    final xp =
+        int.tryParse(prefs.getString('kultiva.creature.xp') ?? '') ?? 1;
+    final starter = prefs.getString('kultiva.creature.starter');
+    final name = prefs.getString('kultiva.creature.name');
+    await uploadXp(xp: xp, starter: starter, creatureName: name);
   }
 
   // ══════════════════════════════════════════════════════════════════
