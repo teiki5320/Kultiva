@@ -960,17 +960,18 @@ class _TamassiViewState extends State<_TamassiView>
                 const SizedBox(width: 6),
                 Text(
                   _creatureName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 1.2,
+                    color: KultivaColors.textSecondary,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 2),
             Text(
-              'Niveau $lv · $_stageName',
+              'Niveau $lv',
               style: TextStyle(
                 fontSize: 11,
                 color: KultivaColors.textSecondary,
