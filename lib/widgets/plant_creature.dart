@@ -305,8 +305,8 @@ class _PlantCreatureState extends State<PlantCreature>
     final assetPath = _assetPathForLevel();
     if (assetPath != null) {
       // Les 4 premiers stades (graines + germe) sont visuellement plus
-      // petits → on les zoom pour qu'ils remplissent mieux l'espace.
-      final scale = widget.level < 20 ? 1.45 : 1.0;
+      // petits → léger zoom pour remplir mieux l'espace sans déborder.
+      final scale = widget.level < 20 ? 1.15 : 1.0;
       Widget image = SizedBox.square(
         dimension: widget.size,
         child: Image.asset(
