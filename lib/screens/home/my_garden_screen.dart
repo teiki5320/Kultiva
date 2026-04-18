@@ -354,8 +354,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
 
   /// Appelé quand l'user soumet une photo pour un défi.
   void _onChallengePhotoTaken(String challengeId, String photoPath) {
-    // On rebuild le grid pour montrer la photo tout de suite.
     if (mounted) setState(() {});
+    // La créature célèbre le défi complété.
+    _tamassiKey.currentState?.triggerCelebration();
   }
 
   void _openPicker() {
@@ -527,11 +528,17 @@ class _TamassiViewState extends State<_TamassiView>
   double _level = 5;
   late final AnimationController _effectCtrl;
   late final AnimationController _butterflyCtrl;
+  late final AnimationController _evolveCtrl;
+  late final AnimationController _celebrateCtrl;
   _TamassiEffect? _effect;
 
   CreatureStarter? _starter;
   String _creatureName = '';
   int _streak = 0;
+
+  String _prevStage = '';
+  bool _showEvolve = false;
+  bool _celebrating = false;
 
   bool _showGreeting = false;
   Timer? _greetingTimer;
@@ -550,10 +557,40 @@ class _TamassiViewState extends State<_TamassiView>
       duration: const Duration(milliseconds: 6000),
       vsync: this,
     );
+    _evolveCtrl = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _celebrateCtrl = AnimationController(
+      duration: const Duration(milliseconds: 1800),
+      vsync: this,
+    );
     _loadCreature();
+    _prevStage = _stageName;
     _updateStreak();
     _showGreetingBubble();
     _scheduleButterfly();
+  }
+
+  /// Déclenché par le parent quand un défi est complété.
+  void triggerCelebration() {
+    HapticFeedback.heavyImpact();
+    setState(() => _celebrating = true);
+    _celebrateCtrl.forward(from: 0).whenComplete(() {
+      if (mounted) setState(() => _celebrating = false);
+    });
+  }
+
+  void _checkLevelUp() {
+    final newStage = _stageName;
+    if (newStage != _prevStage) {
+      _prevStage = newStage;
+      HapticFeedback.mediumImpact();
+      setState(() => _showEvolve = true);
+      _evolveCtrl.forward(from: 0).whenComplete(() {
+        if (mounted) setState(() => _showEvolve = false);
+      });
+    }
   }
 
   void _updateStreak() {
@@ -696,6 +733,8 @@ class _TamassiViewState extends State<_TamassiView>
     _butterflyTimer?.cancel();
     _effectCtrl.dispose();
     _butterflyCtrl.dispose();
+    _evolveCtrl.dispose();
+    _celebrateCtrl.dispose();
     super.dispose();
   }
 
@@ -879,6 +918,112 @@ class _TamassiViewState extends State<_TamassiView>
                       left: creatureSize * 0.55,
                       child: _SpeechBubble(text: _greetingText()),
                     ),
+                  // Flash + bandeau "Évolution !".
+                  if (_showEvolve)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: AnimatedBuilder(
+                          animation: _evolveCtrl,
+                          builder: (_, __) {
+                            final p = _evolveCtrl.value;
+                            final opacity = (1 - p).clamp(0.0, 1.0);
+                            return Stack(
+                              children: <Widget>[
+                                Positioned.fill(
+                                  child: Opacity(
+                                    opacity: (p < 0.15 ? p / 0.15 : 1 - p) *
+                                        0.55,
+                                    child: Container(color: Colors.white),
+                                  ),
+                                ),
+                                Center(
+                                  child: Transform.scale(
+                                    scale: 0.5 + p * 0.8,
+                                    child: Opacity(
+                                      opacity: opacity,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            colors: <Color>[
+                                              Color(0xFFFFE066),
+                                              Color(0xFFFFB04C),
+                                            ],
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          boxShadow: const <BoxShadow>[
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              blurRadius: 10,
+                                            ),
+                                          ],
+                                        ),
+                                        child: const Text(
+                                          '✨ ÉVOLUTION ✨',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 18,
+                                            letterSpacing: 1.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  // "Bravo !" sur célébration (défi complété).
+                  if (_celebrating)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: AnimatedBuilder(
+                          animation: _celebrateCtrl,
+                          builder: (_, __) {
+                            final p = _celebrateCtrl.value;
+                            return CustomPaint(
+                              painter: _ConfettiPainter(progress: p),
+                              child: Center(
+                                child: Transform.scale(
+                                  scale: 0.6 + (1 - (p - 0.5).abs() * 2) * 0.5,
+                                  child: Opacity(
+                                    opacity: (1 - p).clamp(0.0, 1.0),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 22, vertical: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(20),
+                                        boxShadow: const <BoxShadow>[
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            blurRadius: 8,
+                                          ),
+                                        ],
+                                      ),
+                                      child: const Text(
+                                        '🎉 Bravo ! 🎉',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -943,7 +1088,10 @@ class _TamassiViewState extends State<_TamassiView>
                       divisions: 99,
                       label: '$lv',
                       activeColor: KultivaColors.primaryGreen,
-                      onChanged: (v) => setState(() => _level = v),
+                      onChanged: (v) {
+                        setState(() => _level = v);
+                        _checkLevelUp();
+                      },
                     ),
                   ),
                   const Text('100',
@@ -956,6 +1104,49 @@ class _TamassiViewState extends State<_TamassiView>
       ],
     );
   }
+}
+
+/// Confetti painter for the "Bravo !" celebration when a challenge is
+/// completed.
+class _ConfettiPainter extends CustomPainter {
+  final double progress;
+  _ConfettiPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rng = math.Random(314);
+    const count = 28;
+    final colors = <Color>[
+      const Color(0xFFFF8FAB),
+      const Color(0xFFFFE066),
+      const Color(0xFF6FB87A),
+      const Color(0xFF7BAFD4),
+      const Color(0xFFC77DFF),
+    ];
+    for (int i = 0; i < count; i++) {
+      final angle = rng.nextDouble() * math.pi * 2;
+      final speed = 0.8 + rng.nextDouble() * 0.6;
+      final dist = progress * size.width * 0.55 * speed;
+      final x = size.width / 2 + math.cos(angle) * dist;
+      final y = size.height / 2 +
+          math.sin(angle) * dist +
+          progress * progress * size.height * 0.25; // gravity
+      final c = colors[i % colors.length];
+      final rot = rng.nextDouble() * math.pi * 2 + progress * math.pi * 4;
+      canvas.save();
+      canvas.translate(x, y);
+      canvas.rotate(rot);
+      canvas.drawRect(
+        Rect.fromCenter(center: Offset.zero, width: 9, height: 4),
+        Paint()..color = c.withOpacity((1 - progress).clamp(0.0, 1.0)),
+      );
+      canvas.restore();
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ConfettiPainter old) =>
+      old.progress != progress;
 }
 
 /// Petite bulle de dialogue kawaii pour les salutations.
