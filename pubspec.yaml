@@ -59,6 +59,9 @@ dependencies:
   # Partage d'images (cartes Poussidex sur Instagram / Stories)
   share_plus: ^7.2.1
 
+  # Capteurs (inclinaison + secouer pour les animations de la créature)
+  sensors_plus: ^6.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

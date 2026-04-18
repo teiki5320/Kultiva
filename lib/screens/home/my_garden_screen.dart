@@ -518,16 +518,23 @@ class _TamassiView extends StatefulWidget {
 }
 
 class _TamassiViewState extends State<_TamassiView>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   static const _kStarter = 'kultiva.creature.starter';
   static const _kName = 'kultiva.creature.name';
 
   double _level = 5;
   late final AnimationController _effectCtrl;
+  late final AnimationController _butterflyCtrl;
   _TamassiEffect? _effect;
 
   CreatureStarter? _starter;
   String _creatureName = '';
+
+  bool _showGreeting = false;
+  Timer? _greetingTimer;
+  Timer? _butterflyTimer;
+  bool _butterflyVisible = false;
+  bool _butterflyLTR = true;
 
   @override
   void initState() {
@@ -536,7 +543,47 @@ class _TamassiViewState extends State<_TamassiView>
       duration: const Duration(milliseconds: 1400),
       vsync: this,
     );
+    _butterflyCtrl = AnimationController(
+      duration: const Duration(milliseconds: 6000),
+      vsync: this,
+    );
     _loadCreature();
+    _showGreetingBubble();
+    _scheduleButterfly();
+  }
+
+  void _showGreetingBubble() {
+    if (_starter == null) return;
+    setState(() => _showGreeting = true);
+    _greetingTimer = Timer(const Duration(seconds: 4), () {
+      if (mounted) setState(() => _showGreeting = false);
+    });
+  }
+
+  String _greetingText() {
+    final hour = DateTime.now().hour;
+    if (hour < 6) return 'Chut… 💤';
+    if (hour < 12) return 'Bonjour ! ☀️';
+    if (hour < 18) return 'Coucou ! 🌸';
+    if (hour < 22) return 'Bonsoir ! 🌙';
+    return 'Bonne nuit ! 💤';
+  }
+
+  void _scheduleButterfly() {
+    _butterflyTimer = Timer(
+      Duration(seconds: 25 + math.Random().nextInt(35)),
+      () {
+        if (!mounted) return;
+        setState(() {
+          _butterflyVisible = true;
+          _butterflyLTR = !_butterflyLTR;
+        });
+        _butterflyCtrl.forward(from: 0).whenComplete(() {
+          if (mounted) setState(() => _butterflyVisible = false);
+        });
+        _scheduleButterfly();
+      },
+    );
   }
 
   void _loadCreature() {
@@ -560,6 +607,7 @@ class _TamassiViewState extends State<_TamassiView>
       _starter = starter;
       _creatureName = name.trim();
     });
+    _showGreetingBubble();
   }
 
   Future<String?> _askName(
@@ -607,7 +655,10 @@ class _TamassiViewState extends State<_TamassiView>
 
   @override
   void dispose() {
+    _greetingTimer?.cancel();
+    _butterflyTimer?.cancel();
     _effectCtrl.dispose();
+    _butterflyCtrl.dispose();
     super.dispose();
   }
 
@@ -723,6 +774,37 @@ class _TamassiViewState extends State<_TamassiView>
     return Stack(
       children: <Widget>[
         const Positioned.fill(child: _KawaiiBackground()),
+        // Papillon qui traverse l'écran.
+        if (_butterflyVisible)
+          AnimatedBuilder(
+            animation: _butterflyCtrl,
+            builder: (context, _) {
+              final p = _butterflyCtrl.value;
+              final w = MediaQuery.of(context).size.width;
+              final x = _butterflyLTR
+                  ? -60 + p * (w + 120)
+                  : w + 60 - p * (w + 120);
+              // Arc en sinusoïde.
+              final y = 140.0 +
+                  80.0 * (1 - (p - 0.5).abs() * 2) +
+                  18.0 * math.sin(p * math.pi * 6);
+              final flap = math.sin(p * math.pi * 12);
+              return Positioned(
+                left: x,
+                top: y,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..rotateY(flap * 0.4)
+                    ..rotateZ(_butterflyLTR ? -0.1 : 0.1),
+                  child: const Text(
+                    '🦋',
+                    style: TextStyle(fontSize: 28),
+                  ),
+                ),
+              );
+            },
+          ),
         Column(
           children: <Widget>[
             const Spacer(),
@@ -730,6 +812,7 @@ class _TamassiViewState extends State<_TamassiView>
               width: creatureSize,
               height: creatureSize,
               child: Stack(
+                clipBehavior: Clip.none,
                 children: <Widget>[
                   Positioned.fill(
                     child: PlantCreature(
@@ -751,6 +834,13 @@ class _TamassiViewState extends State<_TamassiView>
                           ),
                         ),
                       ),
+                    ),
+                  // Bulle de greeting (Bonjour/Coucou/Bonsoir...).
+                  if (_showGreeting)
+                    Positioned(
+                      top: -8,
+                      left: creatureSize * 0.55,
+                      child: _SpeechBubble(text: _greetingText()),
                     ),
                 ],
               ),
@@ -799,6 +889,37 @@ class _TamassiViewState extends State<_TamassiView>
           ],
         ),
       ],
+    );
+  }
+}
+
+/// Petite bulle de dialogue kawaii pour les salutations.
+class _SpeechBubble extends StatelessWidget {
+  final String text;
+  const _SpeechBubble({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: const <BoxShadow>[
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 8,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w800,
+          fontSize: 14,
+        ),
+      ),
     );
   }
 }
