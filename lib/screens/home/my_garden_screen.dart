@@ -564,6 +564,7 @@ class _TamassiViewState extends State<_TamassiView>
   static const _kXp = 'kultiva.creature.xp';
   static const _kLastWater = 'kultiva.creature.lastWater';
   static const _kLastFertilize = 'kultiva.creature.lastFertilize';
+  static const _kLastCaress = 'kultiva.creature.lastCaress';
 
   String _prevStage = '';
   bool _showEvolve = false;
@@ -574,6 +575,7 @@ class _TamassiViewState extends State<_TamassiView>
   Timer? _crossingTimer;
   _CrossingAnimal? _currentCrossing;
   bool _crossingLTR = true;
+  WeatherData? _weatherCache;
 
   @override
   void initState() {
@@ -587,7 +589,7 @@ class _TamassiViewState extends State<_TamassiView>
       vsync: this,
     );
     _evolveCtrl = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 4500),
       vsync: this,
     );
     _celebrateCtrl = AnimationController(
@@ -604,7 +606,13 @@ class _TamassiViewState extends State<_TamassiView>
     _updateStreak();
     _showGreetingBubble();
     _scheduleCrossing();
+    _loadWeatherCache();
     tamassiResetNotifier.addListener(_onResetRequested);
+  }
+
+  Future<void> _loadWeatherCache() async {
+    final w = await WeatherService.getWeather();
+    if (mounted) setState(() => _weatherCache = w);
   }
 
   void _loadXp() {
@@ -652,6 +660,7 @@ class _TamassiViewState extends State<_TamassiView>
     PrefsService.instance.setString(_kXp, '1');
     PrefsService.instance.setString(_kLastWater, '');
     PrefsService.instance.setString(_kLastFertilize, '');
+    PrefsService.instance.setString(_kLastCaress, '');
     setState(() {
       _starter = null;
       _creatureName = '';
@@ -760,41 +769,65 @@ class _TamassiViewState extends State<_TamassiView>
   }
 
   List<_CrossingAnimal> _animalPoolForHour(int hour) {
+    final pool = <_CrossingAnimal>[];
     if (hour >= 6 && hour < 12) {
-      return const <_CrossingAnimal>[
+      pool.addAll(const <_CrossingAnimal>[
         _CrossingAnimal(
             emoji: '🐦', style: _CrossingStyle.flyHigh, durationMs: 5000),
         _CrossingAnimal(
             emoji: '🐝', style: _CrossingStyle.zigzag, durationMs: 6000),
-      ];
-    }
-    if (hour >= 12 && hour < 18) {
-      return const <_CrossingAnimal>[
+      ]);
+    } else if (hour >= 12 && hour < 18) {
+      pool.addAll(const <_CrossingAnimal>[
         _CrossingAnimal(
             emoji: '🦋', style: _CrossingStyle.zigzag, durationMs: 6000),
         _CrossingAnimal(
             emoji: '🐞', style: _CrossingStyle.groundSlow, durationMs: 8000),
         _CrossingAnimal(
             emoji: '🐛', style: _CrossingStyle.groundSlow, durationMs: 9000),
-      ];
-    }
-    if (hour >= 18 && hour < 21) {
-      return const <_CrossingAnimal>[
+      ]);
+    } else if (hour >= 18 && hour < 21) {
+      pool.addAll(const <_CrossingAnimal>[
         _CrossingAnimal(
             emoji: '🦔', style: _CrossingStyle.groundSlow, durationMs: 8000),
         _CrossingAnimal(
             emoji: '🐸', style: _CrossingStyle.hop, durationMs: 5000),
         _CrossingAnimal(
             emoji: '🐿️', style: _CrossingStyle.groundSlow, durationMs: 4000),
-      ];
+      ]);
+    } else {
+      // Nuit : chouette + chauve-souris (lucioles permanentes).
+      pool.addAll(const <_CrossingAnimal>[
+        _CrossingAnimal(
+            emoji: '🦉', style: _CrossingStyle.flyHigh, durationMs: 5500),
+        _CrossingAnimal(
+            emoji: '🦇', style: _CrossingStyle.zigzag, durationMs: 5000),
+      ]);
     }
-    // Nuit : chouette + chauve-souris (lucioles déjà permanentes).
-    return const <_CrossingAnimal>[
-      _CrossingAnimal(
-          emoji: '🦉', style: _CrossingStyle.flyHigh, durationMs: 5500),
-      _CrossingAnimal(
-          emoji: '🦇', style: _CrossingStyle.zigzag, durationMs: 5000),
-    ];
+    // Bonus météo : renforce la cohérence avec le fond.
+    final code = _weatherCache?.currentWeatherCode;
+    if (code != null) {
+      if (code >= 51 && code <= 67 || code >= 80 && code <= 82) {
+        // Pluie : grenouille + escargot.
+        pool.addAll(const <_CrossingAnimal>[
+          _CrossingAnimal(
+              emoji: '🐸', style: _CrossingStyle.hop, durationMs: 5000),
+          _CrossingAnimal(
+              emoji: '🐌',
+              style: _CrossingStyle.groundSlow,
+              durationMs: 11000),
+        ]);
+      } else if (code >= 71 && code <= 77) {
+        // Neige : pingouin qui glisse.
+        pool.add(const _CrossingAnimal(
+            emoji: '🐧', style: _CrossingStyle.groundSlow, durationMs: 6500));
+      } else if (code == 0 || code == 1) {
+        // Grand soleil : abeille supplémentaire.
+        pool.add(const _CrossingAnimal(
+            emoji: '🐝', style: _CrossingStyle.zigzag, durationMs: 6000));
+      }
+    }
+    return pool;
   }
 
   void _loadCreature() {
@@ -920,6 +953,15 @@ class _TamassiViewState extends State<_TamassiView>
   /// Appelée quand un défi photo est complété (+20 XP).
   void awardChallengeXp() {
     _gainXp(20, '📸 Défi complété !');
+  }
+
+  /// Tap sur la créature — caresse quotidienne (+3 XP).
+  void _onCaress() {
+    if (_canAct(_kLastCaress)) {
+      PrefsService.instance.setString(_kLastCaress, _todayKey());
+      _gainXp(3, '💕 Caresse quotidienne');
+    }
+    // Pas de snackbar "déjà caressé" — sinon on spammerait à chaque tap.
   }
 
   String get _stageName {
@@ -1113,21 +1155,15 @@ class _TamassiViewState extends State<_TamassiView>
           children: <Widget>[
             // En-tête : nom de la créature (petit, centré, en haut).
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(_moodEmoji, style: const TextStyle(fontSize: 16)),
-                const SizedBox(width: 6),
-                Text(
-                  _creatureName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1.2,
-                    color: KultivaColors.textSecondary,
-                  ),
-                ),
-              ],
+            Text(
+              _creatureName,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.2,
+                color: KultivaColors.textSecondary,
+              ),
             ),
             const SizedBox(height: 2),
             Text(
@@ -1171,6 +1207,7 @@ class _TamassiViewState extends State<_TamassiView>
                       level: lv,
                       size: creatureSize,
                       starter: _starter!,
+                      onTap: _onCaress,
                     ),
                   ),
                   // Lucioles qui tournoient autour de la créature la nuit.
@@ -1208,7 +1245,7 @@ class _TamassiViewState extends State<_TamassiView>
                       left: creatureSize * 0.55,
                       child: _SpeechBubble(text: _greetingText()),
                     ),
-                  // Flash + bandeau "Évolution !".
+                  // Évolution : grande animation cinématique (4.5s).
                   if (_showEvolve)
                     Positioned.fill(
                       child: IgnorePointer(
@@ -1216,24 +1253,68 @@ class _TamassiViewState extends State<_TamassiView>
                           animation: _evolveCtrl,
                           builder: (_, __) {
                             final p = _evolveCtrl.value;
-                            final opacity = (1 - p).clamp(0.0, 1.0);
+                            // Phase 1 : flash blanc (0-0.15)
+                            // Phase 2 : rayons magiques qui tournent (0.05-0.85)
+                            // Phase 3 : bandeau ÉVOLUTION qui grandit (0.2-0.9)
+                            // Phase 4 : fade out tout (0.85-1.0)
+                            final flashOpacity = p < 0.15
+                                ? (p / 0.15) * 0.9
+                                : p < 0.35
+                                    ? 0.9 - ((p - 0.15) / 0.2) * 0.6
+                                    : p > 0.85
+                                        ? (1 - p) / 0.15 * 0.3
+                                        : 0.3;
+                            final raysProgress = (p - 0.05).clamp(0.0, 0.85);
+                            final raysOpacity = p < 0.85
+                                ? (raysProgress * 2).clamp(0.0, 1.0) *
+                                    (p > 0.7 ? (0.85 - p) / 0.15 : 1.0)
+                                : 0.0;
+                            final bannerP = ((p - 0.2) / 0.65).clamp(0.0, 1.0);
+                            final bannerOpacity = p < 0.9
+                                ? bannerP.clamp(0.0, 1.0) *
+                                    (p > 0.8 ? (0.9 - p) / 0.1 : 1.0)
+                                : 0.0;
+                            final bannerScale = 0.3 +
+                                bannerP * 1.0 +
+                                sin(bannerP * pi) * 0.05;
                             return Stack(
                               children: <Widget>[
+                                // Flash blanc.
                                 Positioned.fill(
-                                  child: Opacity(
-                                    opacity: (p < 0.15 ? p / 0.15 : 1 - p) *
-                                        0.55,
-                                    child: Container(color: Colors.white),
+                                  child: Container(
+                                    color: Colors.white
+                                        .withOpacity(flashOpacity),
                                   ),
                                 ),
+                                // Rayons lumineux rotatifs.
+                                if (raysOpacity > 0)
+                                  Positioned.fill(
+                                    child: CustomPaint(
+                                      painter: _EvolutionRaysPainter(
+                                        progress: raysProgress,
+                                        opacity: raysOpacity,
+                                      ),
+                                    ),
+                                  ),
+                                // Particules qui explosent.
+                                if (p > 0.1 && p < 0.95)
+                                  Positioned.fill(
+                                    child: CustomPaint(
+                                      painter: _ConfettiPainter(
+                                        progress: ((p - 0.1) / 0.85)
+                                            .clamp(0.0, 1.0),
+                                      ),
+                                    ),
+                                  ),
+                                // Bandeau "ÉVOLUTION !".
                                 Center(
                                   child: Transform.scale(
-                                    scale: 0.5 + p * 0.8,
+                                    scale: bannerScale,
                                     child: Opacity(
-                                      opacity: opacity,
+                                      opacity: bannerOpacity,
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
+                                            horizontal: 26, vertical: 14),
                                         decoration: BoxDecoration(
                                           gradient: const LinearGradient(
                                             colors: <Color>[
@@ -1242,22 +1323,39 @@ class _TamassiViewState extends State<_TamassiView>
                                             ],
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(18),
-                                          boxShadow: const <BoxShadow>[
+                                              BorderRadius.circular(22),
+                                          boxShadow: <BoxShadow>[
                                             BoxShadow(
-                                              color: Colors.black26,
-                                              blurRadius: 10,
+                                              color: const Color(0xFFFFB04C)
+                                                  .withOpacity(0.7),
+                                              blurRadius: 24,
+                                              spreadRadius: 4,
                                             ),
                                           ],
                                         ),
-                                        child: const Text(
-                                          '✨ ÉVOLUTION ✨',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900,
-                                            fontSize: 18,
-                                            letterSpacing: 1.5,
-                                          ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            const Text(
+                                              '✨ ÉVOLUTION ✨',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 26,
+                                                letterSpacing: 2,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              _stageName,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 16,
+                                                letterSpacing: 1,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -1588,17 +1686,6 @@ class _XpBar extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: 4),
-        Center(
-          child: Text(
-            maxed ? '100%' : '${(progress * 100).round()}%',
-            style: const TextStyle(
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
-              color: accent,
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -1652,6 +1739,53 @@ class _FireflyOrbitPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _FireflyOrbitPainter old) =>
       old.progress != progress;
+}
+
+/// Rayons lumineux qui tournent pendant l'animation d'évolution.
+class _EvolutionRaysPainter extends CustomPainter {
+  final double progress;
+  final double opacity;
+  _EvolutionRaysPainter({required this.progress, required this.opacity});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height * 0.45);
+    final maxRadius = size.longestSide;
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(progress * pi * 2);
+    const rayCount = 14;
+    for (int i = 0; i < rayCount; i++) {
+      final angle = (i * 2 * pi / rayCount);
+      final rayPath = Path()
+        ..moveTo(0, 0)
+        ..lineTo(cos(angle - 0.04) * maxRadius,
+            sin(angle - 0.04) * maxRadius)
+        ..lineTo(
+            cos(angle + 0.04) * maxRadius, sin(angle + 0.04) * maxRadius)
+        ..close();
+      canvas.drawPath(
+        rayPath,
+        Paint()
+          ..shader = RadialGradient(
+            colors: <Color>[
+              Color.lerp(
+                      const Color(0xFFFFE066),
+                      const Color(0xFFFFB04C),
+                      (i % 2).toDouble())!
+                  .withOpacity(opacity * 0.7),
+              Colors.transparent,
+            ],
+          ).createShader(
+              Rect.fromCircle(center: Offset.zero, radius: maxRadius)),
+      );
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant _EvolutionRaysPainter old) =>
+      old.progress != progress || old.opacity != opacity;
 }
 
 /// Confetti painter for the "Bravo !" celebration when a challenge is

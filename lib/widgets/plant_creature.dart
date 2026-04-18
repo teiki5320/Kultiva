@@ -16,12 +16,14 @@ class PlantCreature extends StatefulWidget {
   final int level;
   final CreatureStarter starter;
   final double size;
+  final VoidCallback? onTap;
 
   const PlantCreature({
     super.key,
     required this.level,
     this.starter = CreatureStarter.poussia,
     this.size = 220,
+    this.onTap,
   });
 
   @override
@@ -232,6 +234,7 @@ class _PlantCreatureState extends State<PlantCreature>
     _wake();
     HapticFeedback.lightImpact();
     AudioService.instance.play(Sfx.creatureTap);
+    widget.onTap?.call();
     setState(() {
       _tapEmoji = _tapEmojis[_rng.nextInt(_tapEmojis.length)];
       _showTapEmoji = true;
