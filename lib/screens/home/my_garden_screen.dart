@@ -1158,6 +1158,12 @@ class _TamassiViewState extends State<_TamassiView>
               ),
             ),
             const Spacer(flex: 2),
+            // Barre d'XP : progression vers la prochaine évolution.
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 4),
+              child: _XpBar(level: lv),
+            ),
+            // Slider debug (à retirer quand le système XP sera branché).
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
               child: Row(
@@ -1271,6 +1277,102 @@ class _TamassiActionButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Seuils d'évolution de la créature (11 stades).
+const List<int> _kEvolutionThresholds = <int>[
+  1, 5, 10, 15, 20, 30, 40, 50, 60, 75, 100,
+];
+
+/// Barre de progression XP vers la prochaine évolution.
+class _XpBar extends StatelessWidget {
+  final int level;
+  const _XpBar({required this.level});
+
+  (int, int) get _bounds {
+    int cur = _kEvolutionThresholds.first;
+    int next = _kEvolutionThresholds.last;
+    for (int i = 0; i < _kEvolutionThresholds.length; i++) {
+      final t = _kEvolutionThresholds[i];
+      if (t <= level) {
+        cur = t;
+        next = i + 1 < _kEvolutionThresholds.length
+            ? _kEvolutionThresholds[i + 1]
+            : t;
+      }
+    }
+    return (cur, next);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final (cur, next) = _bounds;
+    final maxed = cur == next;
+    final progress = maxed
+        ? 1.0
+        : ((level - cur) / (next - cur)).clamp(0.0, 1.0);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              maxed ? 'Niveau max' : 'Prochaine évolution : $next',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+            if (!maxed)
+              Text(
+                '${level - cur} / ${next - cur} XP',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: KultivaColors.textSecondary,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: 10,
+                color: Colors.white.withOpacity(0.6),
+              ),
+              TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeOut,
+                tween: Tween<double>(begin: 0, end: progress),
+                builder: (context, value, _) {
+                  return FractionallySizedBox(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: value.clamp(0.0, 1.0),
+                    child: Container(
+                      height: 10,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF8EDC99),
+                            Color(0xFF4A9B5A),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
