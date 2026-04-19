@@ -118,10 +118,10 @@ const _categories = <_TutoCategory>[
     label: 'Aménagement',
     color: Color(0xFF7BAFD4),
     items: [
-      _TutoItem(emoji: '📦', label: 'Potager surélevé', url: ''),
-      _TutoItem(emoji: '🏡', label: 'Potager en carrés', url: ''),
-      _TutoItem(emoji: '🌻', label: 'Associations de plantes', url: ''),
-      _TutoItem(emoji: '🪴', label: 'Potager en balcon', url: ''),
+      _TutoItem(emoji: '📦', label: 'Potager surélevé', htmlAsset: 'assets/tutos/potager_sureleve.html'),
+      _TutoItem(emoji: '🏡', label: 'Potager en carrés', htmlAsset: 'assets/tutos/potager_carres.html'),
+      _TutoItem(emoji: '🌻', label: 'Associations de plantes', htmlAsset: 'assets/tutos/associations_plantes.html'),
+      _TutoItem(emoji: '🪴', label: 'Potager en balcon', htmlAsset: 'assets/tutos/potager_balcon.html'),
     ],
   ),
 ];
