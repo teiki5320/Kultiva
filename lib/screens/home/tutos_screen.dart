@@ -58,10 +58,10 @@ const _categories = <_TutoCategory>[
     label: 'Semis',
     color: Color(0xFF4A9B5A),
     items: [
-      _TutoItem(emoji: '🌱', label: 'Réussir ses semis', url: ''),
-      _TutoItem(emoji: '🏠', label: 'Semis en intérieur', url: ''),
-      _TutoItem(emoji: '📅', label: 'Quand semer ?', url: ''),
-      _TutoItem(emoji: '🌡️', label: 'Température de germination', url: ''),
+      _TutoItem(emoji: '🌱', label: 'Réussir ses semis', htmlAsset: 'assets/tutos/reussir_semis.html'),
+      _TutoItem(emoji: '🏠', label: 'Semis en intérieur', htmlAsset: 'assets/tutos/semis_interieur.html'),
+      _TutoItem(emoji: '📅', label: 'Quand semer ?', htmlAsset: 'assets/tutos/quand_semer.html'),
+      _TutoItem(emoji: '🌡️', label: 'Température de germination', htmlAsset: 'assets/tutos/temperature_germination.html'),
     ],
   ),
   _TutoCategory(
