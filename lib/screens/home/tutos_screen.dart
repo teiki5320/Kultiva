@@ -82,10 +82,10 @@ const _categories = <_TutoCategory>[
     label: 'Récolte',
     color: Color(0xFFE8A87C),
     items: [
-      _TutoItem(emoji: '🍅', label: 'Quand récolter ?', url: ''),
-      _TutoItem(emoji: '🥫', label: 'Conserver ses légumes', url: ''),
-      _TutoItem(emoji: '🌿', label: 'Récolter les aromatiques', url: ''),
-      _TutoItem(emoji: '🥕', label: 'Récolter les racines', url: ''),
+      _TutoItem(emoji: '🍅', label: 'Quand récolter ?', htmlAsset: 'assets/tutos/quand_recolter.html'),
+      _TutoItem(emoji: '🥫', label: 'Conserver ses légumes', htmlAsset: 'assets/tutos/conserver_legumes.html'),
+      _TutoItem(emoji: '🌿', label: 'Récolter les aromatiques', htmlAsset: 'assets/tutos/recolter_aromatiques.html'),
+      _TutoItem(emoji: '🥕', label: 'Récolter les racines', htmlAsset: 'assets/tutos/recolter_racines.html'),
     ],
   ),
   _TutoCategory(
