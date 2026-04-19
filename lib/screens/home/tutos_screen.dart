@@ -106,10 +106,10 @@ const _categories = <_TutoCategory>[
     label: 'Maladies & Nuisibles',
     color: Color(0xFFCC4444),
     items: [
-      _TutoItem(emoji: '🐌', label: 'Lutter contre les limaces', url: ''),
-      _TutoItem(emoji: '🍄', label: 'Mildiou', url: ''),
-      _TutoItem(emoji: '🐛', label: 'Pucerons', url: ''),
-      _TutoItem(emoji: '🌿', label: 'Traitements bio', url: ''),
+      _TutoItem(emoji: '🐌', label: 'Lutter contre les limaces', htmlAsset: 'assets/tutos/lutter_limaces.html'),
+      _TutoItem(emoji: '🍄', label: 'Mildiou', htmlAsset: 'assets/tutos/mildiou.html'),
+      _TutoItem(emoji: '🐛', label: 'Pucerons', htmlAsset: 'assets/tutos/pucerons.html'),
+      _TutoItem(emoji: '🌿', label: 'Traitements bio', htmlAsset: 'assets/tutos/traitements_bio.html'),
     ],
   ),
   _TutoCategory(
