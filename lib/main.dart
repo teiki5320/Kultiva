@@ -1,20 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'config/supabase_config.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
 import 'screens/splash_screen.dart';
 import 'services/audio_service.dart';
 import 'services/auth_service.dart';
+import 'services/cloud_sync_service.dart';
 import 'services/notification_service.dart';
 import 'services/prefs_service.dart';
 import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialise Supabase (auth + sync cloud). Doit être fait avant
+  // AuthService.load() qui pioche la session courante dans Supabase.
+  await Supabase.initialize(
+    url: SupabaseConfig.url,
+    anonKey: SupabaseConfig.anonKey,
+  );
   await PrefsService.instance.load();
+  // Dès qu'une préférence change, on la pousse vers le cloud (si
+  // l'utilisateur est connecté). Fire-and-forget — l'UI ne bloque pas.
+  PrefsService.instance.onPreferencesChanged = () {
+    CloudSyncService.instance.uploadPreferences();
+  };
   await AuthService.instance.load();
   await NotificationService.init();
+  // Si l'utilisateur a déjà une session (il avait ouvert l'app avant),
+  // on synchronise plants + badges + prefs avec le cloud en arrière-
+  // plan. Pas de await : l'UI démarre tout de suite.
+  if (AuthService.instance.isSignedIn) {
+    CloudSyncService.instance.syncAllOnLogin();
+  }
+  // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
+  if (PrefsService.instance.notifications.value) {
+    await NotificationService.scheduleMonthlyReminder();
+  }
+  // Re-programme le rappel quotidien Tamassi si activé.
+  if (PrefsService.instance.tamassiDailyReminder.value) {
+    await NotificationService.scheduleDailyTamassiReminder();
+  }
   if (PrefsService.instance.musicEnabled.value) {
     AudioService.instance.startMusic();
   }

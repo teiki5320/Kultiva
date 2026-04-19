@@ -15,19 +15,26 @@ dependencies:
   # UI
   google_fonts: ^6.1.0
 
-  # Auth & Backend
-  supabase_flutter: ^2.0.0
-  google_sign_in: ^6.1.6
-  sign_in_with_apple: ^5.0.0
-
   # Préférences locales
   shared_preferences: ^2.2.2
+
+  # Backend : auth + sync cloud du Poussidex
+  supabase_flutter: ^2.5.0
+  # OAuth natif pour Google / Apple Sign-In (échange d'idToken avec
+  # Supabase.auth.signInWithIdToken).
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.3
+  # Nonce hashé en SHA-256 pour Sign in with Apple.
+  crypto: ^3.0.3
 
   # Navigation
   go_router: ^12.0.0
 
-  # Notifications
+  # Notifications (planification mensuelle + alertes météo)
+  # TODO: flutter_local_notifications 16 → 21 dispo mais breaking API.
+  # Tant qu'on est sur 16.x, timezone est bloqué sur 0.9.x.
   flutter_local_notifications: ^16.1.0
+  timezone: ^0.9.4
 
   # URL launcher (liens Amazon)
   url_launcher: ^6.2.2
@@ -52,19 +59,44 @@ dependencies:
   # Partage d'images (cartes Poussidex sur Instagram / Stories)
   share_plus: ^7.2.1
 
+  # Capteurs (inclinaison + secouer pour les animations de la créature)
+  sensors_plus: ^6.0.0
+
+  # WebView pour les fiches tuto HTML
+  webview_flutter: ^4.10.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
   # Génération des icônes iOS + Android à partir de assets/images/app_icon.png
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.0
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/images/badges/
+    - assets/images/creatures/
+    - assets/images/creatures/Poussia/
+    - assets/images/creatures/Soleia/
+    - assets/images/creatures/Spira/
+    - assets/images/backgrounds/
+    - assets/tutos/
     - assets/sounds/
+
+# ─── Packages intentionnellement non-majorés (breaking API) ───
+#
+# Les majeures suivantes sont disponibles mais demandent une
+# migration non-triviale. À reprendre quand on a du temps :
+#   flutter_local_notifications 16 → 21 (schéma channels / perms)
+#   geolocator 11 → 14               (API position async)
+#   go_router 12 → 17                (plusieurs breaks typed routes)
+#   share_plus 7 → 13                (API Share change)
+#   google_fonts 6 → 8               (à vérifier)
+#   printing 5 → dernière            (Dart 3+ stricter)
+# Vérifier en lançant `flutter pub outdated --show-all`.
 
 flutter_launcher_icons:
   image_path: "assets/images/app_icon.png"

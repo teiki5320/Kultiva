@@ -18,30 +18,39 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
 
   static const List<_TutoSlide> _slides = <_TutoSlide>[
     _TutoSlide(
-      emoji: '🪴',
-      title: 'Collectionne tes légumes',
+      emoji: '🌱',
+      title: 'Bienvenue dans ton Poussidex',
       subtitle:
-          "Chaque fois que tu plantes un légume, une carte unique "
-          "s'ajoute à ton Poussidex. Une barre de progression te montre "
-          "combien de jours il reste avant la récolte.",
+          "Choisis ton compagnon de jardin parmi Spira, Soleia et "
+          "Poussia. Il t'accompagnera de la graine à l'arbre "
+          "légendaire à travers 11 stades d'évolution.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _TutoSlide(
-      emoji: '💧',
-      title: 'Prends-en soin',
+      emoji: '📸',
+      title: 'Relève des défis photo',
       subtitle:
-          "Tape une carte pour ouvrir sa fiche. Arrose, récolte, "
-          "ajoute des notes ou termine la culture. Les plantes qui "
-          "ont soif sont marquées d'une goutte 💧 sur leur carte.",
+          "Complète des défis dans l'onglet Défis : plante la plus "
+          "moche, plus grande courgette, night garden… Chaque photo "
+          "partagée fait gagner de l'XP à ton Tamassi.",
+      gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
+    ),
+    _TutoSlide(
+      emoji: '💧',
+      title: 'Arrose et fertilise',
+      subtitle:
+          "Les boutons Arroser et Engrais au-dessus de ton Tamassi "
+          "lui donnent un petit boost d'XP. Pas de pénalité si tu "
+          "oublies — c'est juste un coup de pouce.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
     ),
     _TutoSlide(
       emoji: '🏆',
-      title: 'Débloque des badges',
+      title: 'Collection de badges',
       subtitle:
-          "10 badges à gagner : premier pas, diversifié, tour du "
-          "soleil, main verte… Chaque action rapporte, et un kawaii "
-          "te prévient à chaque nouveau déblocage.",
+          "Dans l'onglet Badges, retrouve toutes tes cartes façon "
+          "Pokémon gagnées en complétant des défis. Bronze, argent, "
+          "or et shiny t'attendent !",
       gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
     ),
   ];

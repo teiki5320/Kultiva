@@ -10,6 +10,8 @@ import 'package:share_plus/share_plus.dart';
 import '../models/plantation.dart';
 import '../models/vegetable.dart';
 import '../theme/app_theme.dart';
+import '../utils/months.dart';
+import 'plantation_photo.dart';
 
 /// Dialog qui affiche une prévisualisation "partage" d'une carte Poussidex
 /// et propose de l'exporter comme image (via RepaintBoundary) puis de
@@ -141,12 +143,7 @@ class _ShareCardContent extends StatelessWidget {
     required this.familyColor,
   });
 
-  static const List<String> _monthsLong = <String>[
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
-  ];
-
-  String _fmt(DateTime d) => '${d.day} ${_monthsLong[d.month - 1]}';
+  String _fmt(DateTime d) => '${d.day} ${monthNamesLong[d.month - 1]}';
 
   @override
   Widget build(BuildContext context) {
@@ -207,8 +204,8 @@ class _ShareCardContent extends StatelessWidget {
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: hasPhoto
-                    ? Image.file(
-                        File(plantation.photoPaths.last),
+                    ? PlantationPhoto(
+                        pathOrUrl: plantation.photoPaths.last,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Center(
                           child: Text(vegetable.emoji,

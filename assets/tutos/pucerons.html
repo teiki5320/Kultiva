@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pucerons</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf5f5;--texte:#524045;--texte-doux:#927880;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#e4a8b0;--accent-soft:#f0c8cc;--accent-bg:#f8dfe2}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:'Fredoka',sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+.alerte{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.alerte-icone{font-size:22px;flex-shrink:0}
+.alerte-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;margin-bottom:2px}
+.alerte-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Maladies & Nuisibles</div>
+    <div class="icone-principale">🐛</div>
+    <div class="titre-fiche">Pucerons</div>
+    <div class="sous-titre-fiche">Les suceurs de sève</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">Les pucerons sucent la sève des jeunes pousses et affaiblissent les plantes. Ils se reproduisent très vite mais ont beaucoup de prédateurs naturels.</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🔍</span> Identifier les pucerons</div>
+    <div class="alerte"><div class="alerte-icone">🟢</div><div><div class="alerte-titre">Colonies</div><div class="alerte-texte">Des grappes de petits insectes verts, noirs ou roses s'agglutinent sur les tiges tendres et sous les feuilles.</div></div></div>
+    <div class="alerte"><div class="alerte-icone">🍯</div><div><div class="alerte-titre">Miellat collant</div><div class="alerte-texte">Les pucerons excrètent un liquide sucré et collant qui recouvre les feuilles et attire un champignon noir : la fumagine.</div></div></div>
+    <div class="alerte"><div class="alerte-icone">🌿</div><div><div class="alerte-titre">Feuilles déformées</div><div class="alerte-texte">Les feuilles s'enroulent, se crispent et se déforment. Les jeunes pousses sont rabougries et les bourgeons avortent.</div></div></div>
+    <div class="alerte"><div class="alerte-icone">🐜</div><div><div class="alerte-titre">Fourmis</div><div class="alerte-texte">Les fourmis élèvent les pucerons pour récolter leur miellat. Leur va-et-vient sur les tiges est un signe révélateur.</div></div></div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🌱</span> Solutions naturelles</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Jet d'eau</div><div class="etape-texte">Un simple jet d'eau puissant décroche les pucerons des tiges. Répète tous les 2-3 jours sur les petites colonies.</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Savon noir</div><div class="etape-texte">Dilue 3 cuillères à soupe de savon noir liquide dans 1 litre d'eau tiède. Pulvérise sur et sous les feuilles.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Purin d'ortie</div><div class="etape-texte">Dilué à 5%, le purin d'ortie renforce les plantes et repousse les pucerons. Pulvérise tous les 10 jours.</div></div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Prédateurs 🐞</div><div class="etape-texte">Attire les coccinelles, syrphes et chrysopes en laissant des zones fleuries. Une larve de coccinelle mange 150 pucerons par jour.</div></div></div>
+    <div class="etape"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Associations répulsives</div><div class="etape-texte">Plante de la lavande, de la menthe, du basilic ou des capucines près des cultures sensibles. Les pucerons détestent leurs odeurs.</div></div></div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">🐞</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">Les coccinelles et leurs larves mangent des centaines de pucerons par jour. Installe un hôtel à insectes et laisse quelques zones sauvages pour les accueillir.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🧪</div><div class="eviter-texte"><strong>Insecticides chimiques :</strong> ils tuent aussi les coccinelles et les syrphes, tes meilleurs alliés contre les pucerons.</div></div>
+    <div class="eviter"><div class="eviter-icone">💧</div><div class="eviter-texte"><strong>Trop d'azote :</strong> un excès d'engrais azoté produit des pousses tendres qui attirent massivement les pucerons.</div></div>
+    <div class="eviter"><div class="eviter-icone">😱</div><div class="eviter-texte"><strong>Paniquer :</strong> quelques pucerons ne sont pas graves. Laisse le temps aux prédateurs naturels d'intervenir avant de traiter.</div></div>
+    <div class="eviter"><div class="eviter-icone">🐜</div><div class="eviter-texte"><strong>Ignorer les fourmis :</strong> tant que les fourmis protègent les pucerons, les prédateurs ne pourront pas faire leur travail.</div></div>
+  </div>
+</div>
+</body>
+</html>

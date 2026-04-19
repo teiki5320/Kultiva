@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrosage goutte à goutte</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f4f7fa;--texte:#3d4a52;--texte-doux:#7a8a92;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#a8c8e0;--accent-soft:#d4e4f0;--accent-bg:#e8f0f8}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:'Fredoka',sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.tableau{background:var(--blanc);border-radius:18px;padding:8px;margin-bottom:10px;box-shadow:var(--ombre)}
+.tableau-ligne{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;padding:10px 12px;align-items:center;border-bottom:1px solid var(--accent-bg)}
+.tableau-ligne:last-child{border-bottom:none}
+.tableau-entete{background:var(--accent-bg);border-radius:12px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px}
+.tableau-legume{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px}
+.tableau-valeur{font-size:12px;color:var(--texte-doux);font-weight:500}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+.app-link{display:inline-flex;align-items:center;gap:4px;background:var(--accent-bg);color:var(--accent);padding:2px 10px;border-radius:10px;text-decoration:none;font-weight:600;font-size:12px;border:1px solid var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Arrosage</div>
+    <div class="icone-principale">💦</div>
+    <div class="titre-fiche">Arrosage goutte à goutte</div>
+    <div class="sous-titre-fiche">Économe, automatique et efficace</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">Le goutte à goutte délivre l'eau directement au pied des plants, en petite quantité et lentement. Il économise 30 à 50% d'eau et évite les maladies foliaires.</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🔧</span> Installer son système</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Choisis le bon kit</div><div class="etape-texte">Un tuyau principal de 16 mm, des goutteurs réglables (2 à 8 L/h), des raccords en T et un filtre à tamis. Prévois un réducteur de pression si tu branches sur le réseau.</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Planifie ton circuit</div><div class="etape-texte">Dessine ton potager et le trajet du tuyau. Prévois un goutteur par plant pour les tomates et courgettes, et un tuyau poreux pour les lignes de salades.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Connecte le réseau</div><div class="etape-texte">Branche le filtre puis le réducteur de pression sur le robinet. Déroule le tuyau principal et perce-le aux emplacements des goutteurs.</div></div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Règle le débit</div><div class="etape-texte">Ouvre le robinet et ajuste chaque goutteur. Vérifie que l'eau perle lentement (une goutte par seconde environ) et que tous les goutteurs fonctionnent.</div></div></div>
+    <div class="etape"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Programme un minuteur</div><div class="etape-texte">Un programmateur à pile sur le robinet te permet d'automatiser. Programme un arrosage tôt le matin ou en soirée, 30 à 60 minutes selon tes plants.</div></div></div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🥒</span> Adapter à chaque légume</div>
+    <div class="tableau">
+      <div class="tableau-ligne tableau-entete"><div>Légume</div><div>Goutteurs</div><div>Durée</div></div>
+      <div class="tableau-ligne"><div class="tableau-legume">🍅 Tomate</div><div class="tableau-valeur">1 × 4 L/h</div><div class="tableau-valeur">45 min</div></div>
+      <div class="tableau-ligne"><div class="tableau-legume">🥒 Courgette</div><div class="tableau-valeur">1 × 8 L/h</div><div class="tableau-valeur">30 min</div></div>
+      <div class="tableau-ligne"><div class="tableau-legume">🥬 Salade</div><div class="tableau-valeur">Tuyau poreux</div><div class="tableau-valeur">20 min</div></div>
+      <div class="tableau-ligne"><div class="tableau-legume">🌶️ Poivron</div><div class="tableau-valeur">1 × 4 L/h</div><div class="tableau-valeur">40 min</div></div>
+      <div class="tableau-ligne"><div class="tableau-legume">🍓 Fraisier</div><div class="tableau-valeur">1 × 2 L/h</div><div class="tableau-valeur">30 min</div></div>
+    </div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">🌿</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">Combine goutte à goutte et paillage : tu peux descendre à 1 seul arrosage par semaine sur les tomates, même en plein été.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🪤</div><div class="eviter-texte"><strong>Oublier le filtre :</strong> les goutteurs se bouchent très vite avec le calcaire et les impuretés de l'eau.</div></div>
+    <div class="eviter"><div class="eviter-icone">💥</div><div class="eviter-texte"><strong>Négliger le réducteur de pression :</strong> la pression du réseau (3-5 bars) fait éclater les raccords. Le goutte à goutte fonctionne à 1-1,5 bar.</div></div>
+    <div class="eviter"><div class="eviter-icone">⏱️</div><div class="eviter-texte"><strong>Arroser trop peu de temps :</strong> 10 minutes ne suffisent pas, l'eau reste en surface. Préfère 30-60 minutes à faible débit.</div></div>
+    <div class="eviter"><div class="eviter-icone">❄️</div><div class="eviter-texte"><strong>Oublier la purge hivernale :</strong> vidange tout le circuit avant les gelées pour éviter que les tuyaux n'éclatent.</div></div>
+  </div>
+</div>
+</body>
+</html>

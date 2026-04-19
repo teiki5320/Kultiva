@@ -6,6 +6,7 @@ import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
+import '../../utils/months.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
@@ -21,14 +22,8 @@ class CalendarGridScreen extends StatefulWidget {
 }
 
 class _CalendarGridScreenState extends State<CalendarGridScreen> {
-  static const List<String> _shortMonths = [
-    'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
-    'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc',
-  ];
-  static const List<String> _fullMonths = [
-    'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-    'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-  ];
+  static const List<String> _shortMonths = monthNamesShortCap;
+  static const List<String> _fullMonths = monthNamesLongCap;
 
   /// Filtre actif — null = tout afficher, sinon ne montre que les légumes
   /// avec une activité (semis ou récolte) durant ce mois.

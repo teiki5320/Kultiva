@@ -27,7 +27,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Riche, bien drainé, légèrement acide",
     yieldEstimate: "3 à 5 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+tomate",
-    youtubeUrl: "https://www.youtube.com/results?search_query=semer+tomates+potager",
     harvestTimeBySeason: {
       'spring': '90 à 110 jours (semis précoce sous abri)',
       'summer': '70 à 90 jours (plein champ)',
@@ -56,7 +55,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Meuble, sableux, sans cailloux",
     yieldEstimate: "3 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+carotte",
-    youtubeUrl: "https://www.youtube.com/results?search_query=semer+carottes+potager",
     harvestTimeBySeason: {
       'spring': '75 à 90 jours',
       'summer': '90 à 110 jours',
@@ -163,7 +161,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Riche, profond, bien drainé",
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+aubergine",
-    youtubeUrl: "https://www.youtube.com/results?search_query=cultiver+aubergine+potager",
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -352,7 +349,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Meuble, profond, légèrement acide",
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=pomme+de+terre+a+planter",
-    youtubeUrl: "https://www.youtube.com/results?search_query=planter+pomme+de+terre+potager",
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -496,7 +492,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Riche, bien drainé, chaud",
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+gombo",
-    youtubeUrl: "https://www.youtube.com/results?search_query=cultiver+gombo+okra",
   ),
   // ════════════════════════════════════════════════════════════════════════
   // LÉGUMES 21–40

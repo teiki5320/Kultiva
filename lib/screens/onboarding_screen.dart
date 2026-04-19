@@ -33,8 +33,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       imagePath: 'assets/images/onboarding_poussidex.png',
       title: 'Ton Poussidex',
       subtitle:
-          "Chaque légume que tu plantes devient une carte unique dans ton album. "
-          "Ajoute des photos, suis la croissance et débloque 21 badges au fil de tes récoltes.",
+          "Adopte ton Tamassi — Poussia, Soleia ou Spira — et fais-le "
+          "évoluer à travers 11 stades. Relève des défis photo, gagne "
+          "des badges façon Pokémon et monte ton Tamassi jusqu'au "
+          "niveau 100 !",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_tutos.png',

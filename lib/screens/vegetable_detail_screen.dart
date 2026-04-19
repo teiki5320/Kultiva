@@ -15,6 +15,7 @@ import '../models/vegetable_medal.dart';
 import '../services/pdf_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
+import '../utils/months.dart';
 import '../widgets/lexicon_text.dart';
 import '../widgets/medal_badge.dart';
 
@@ -42,10 +43,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
   late int _currentIndex;
   late List<Vegetable> _list;
 
-  static const List<String> _shortMonths = <String>[
-    'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
-    'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc',
-  ];
 
   @override
   void initState() {
@@ -151,7 +148,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             title: 'Semis — ${region.label}',
             months: data.sowingMonths,
             color: KultivaColors.primaryGreen,
-            shortMonths: _shortMonths,
+            shortMonths: monthNamesShortCap,
           ),
         if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
           const SizedBox(height: 12),
@@ -159,7 +156,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             title: 'Récolte — ${region.label}',
             months: data.harvestMonths,
             color: KultivaColors.terracotta,
-            shortMonths: _shortMonths,
+            shortMonths: monthNamesShortCap,
           ),
         ],
         if (data != null && data.regionalNote != null) ...<Widget>[
@@ -209,21 +206,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             ids: incompatibleMap[vegetable.id]!,
             color: KultivaColors.terracotta,
           ),
-        if (vegetable.youtubeUrl != null) ...[
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => _openUrl(context, vegetable.youtubeUrl!),
-              icon: const Text('🎬', style: TextStyle(fontSize: 18)),
-              label: const Text('Voir la vidéo tuto'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: KultivaColors.primaryGreen,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-            ),
-          ),
-        ],
         if (diseaseMap.containsKey(vegetable.id))
           _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
         if (rotationMap.containsKey(vegetable.id))

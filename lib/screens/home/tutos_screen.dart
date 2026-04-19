@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_theme.dart';
+import 'tuto_fiche_screen.dart';
 
 /// Catégorie de tuto avec ses vidéos.
 class _TutoCategory {
@@ -23,102 +24,104 @@ class _TutoItem {
   final String emoji;
   final String label;
   final String url;
+  final String? htmlAsset;
   const _TutoItem({
     required this.emoji,
     required this.label,
-    required this.url,
+    this.url = '',
+    this.htmlAsset,
   });
 }
 
 const _categories = <_TutoCategory>[
   _TutoCategory(
     emoji: '💡',
-    imagePath: 'assets/images/tuto_astuces.PNG',
+    imagePath: 'assets/images/tuto_astuces.png',
     label: 'Astuces',
     color: Color(0xFFFFB74D),
     items: [
       // 4 premiers tutos = comment utiliser l'app Kultiva.
-      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', url: ''),
-      _TutoItem(emoji: '🪴', label: 'Utiliser le Poussidex', url: ''),
-      _TutoItem(emoji: '📷', label: 'Ajouter des photos', url: ''),
-      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', url: ''),
+      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
+      _TutoItem(emoji: '🪴', label: 'Ton Tamassi', htmlAsset: 'assets/tutos/utiliser_poussidex.html'),
+      _TutoItem(emoji: '📷', label: 'Les défis photo', htmlAsset: 'assets/tutos/ajouter_photos.html'),
+      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', htmlAsset: 'assets/tutos/debloquer_badges.html'),
       // Astuces jardinage.
-      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
-      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
-      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', url: ''),
-      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', url: ''),
+      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', htmlAsset: 'assets/tutos/jardiner_avec_lune.html'),
+      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', htmlAsset: 'assets/tutos/attirer_pollinisateurs.html'),
+      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', htmlAsset: 'assets/tutos/reutiliser_dechets.html'),
+      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', htmlAsset: 'assets/tutos/gain_temps_jardin.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🌱',
-    imagePath: 'assets/images/tuto_semis.PNG',
+    imagePath: 'assets/images/tuto_semis.png',
     label: 'Semis',
     color: Color(0xFF4A9B5A),
     items: [
-      _TutoItem(emoji: '🌱', label: 'Réussir ses semis', url: ''),
-      _TutoItem(emoji: '🏠', label: 'Semis en intérieur', url: ''),
-      _TutoItem(emoji: '📅', label: 'Quand semer ?', url: ''),
-      _TutoItem(emoji: '🌡️', label: 'Température de germination', url: ''),
+      _TutoItem(emoji: '🌱', label: 'Réussir ses semis', htmlAsset: 'assets/tutos/reussir_semis.html'),
+      _TutoItem(emoji: '🏠', label: 'Semis en intérieur', htmlAsset: 'assets/tutos/semis_interieur.html'),
+      _TutoItem(emoji: '📅', label: 'Quand semer ?', htmlAsset: 'assets/tutos/quand_semer.html'),
+      _TutoItem(emoji: '🌡️', label: 'Température de germination', htmlAsset: 'assets/tutos/temperature_germination.html'),
     ],
   ),
   _TutoCategory(
     emoji: '💧',
-    imagePath: 'assets/images/tuto_arrosage.PNG',
+    imagePath: 'assets/images/tuto_arrosage.png',
     label: 'Arrosage',
     color: Color(0xFF4A90D9),
     items: [
-      _TutoItem(emoji: '💧', label: 'Bien arroser', url: ''),
-      _TutoItem(emoji: '🕐', label: 'Quand arroser ?', url: ''),
-      _TutoItem(emoji: '💦', label: 'Arrosage goutte à goutte', url: ''),
-      _TutoItem(emoji: '🌧️', label: 'Récupérer l\'eau de pluie', url: ''),
+      _TutoItem(emoji: '💧', label: 'Bien arroser', htmlAsset: 'assets/tutos/bien_arroser.html'),
+      _TutoItem(emoji: '🕐', label: 'Quand arroser ?', htmlAsset: 'assets/tutos/quand_arroser.html'),
+      _TutoItem(emoji: '💦', label: 'Arrosage goutte à goutte', htmlAsset: 'assets/tutos/goutte_a_goutte.html'),
+      _TutoItem(emoji: '🌧️', label: 'Récupérer l\'eau de pluie', htmlAsset: 'assets/tutos/eau_de_pluie.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🧺',
-    imagePath: 'assets/images/tuto_recolte.PNG',
+    imagePath: 'assets/images/tuto_recolte.png',
     label: 'Récolte',
     color: Color(0xFFE8A87C),
     items: [
-      _TutoItem(emoji: '🍅', label: 'Quand récolter ?', url: ''),
-      _TutoItem(emoji: '🥫', label: 'Conserver ses légumes', url: ''),
-      _TutoItem(emoji: '🌿', label: 'Récolter les aromatiques', url: ''),
-      _TutoItem(emoji: '🥕', label: 'Récolter les racines', url: ''),
+      _TutoItem(emoji: '🍅', label: 'Quand récolter ?', htmlAsset: 'assets/tutos/quand_recolter.html'),
+      _TutoItem(emoji: '🥫', label: 'Conserver ses légumes', htmlAsset: 'assets/tutos/conserver_legumes.html'),
+      _TutoItem(emoji: '🌿', label: 'Récolter les aromatiques', htmlAsset: 'assets/tutos/recolter_aromatiques.html'),
+      _TutoItem(emoji: '🥕', label: 'Récolter les racines', htmlAsset: 'assets/tutos/recolter_racines.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🌍',
-    imagePath: 'assets/images/tuto_sol.PNG',
+    imagePath: 'assets/images/tuto_sol.png',
     label: 'Sol & Compost',
     color: Color(0xFF8B6914),
     items: [
-      _TutoItem(emoji: '🪱', label: 'Faire son compost', url: ''),
-      _TutoItem(emoji: '🌍', label: 'Préparer le sol', url: ''),
-      _TutoItem(emoji: '🧪', label: 'Engrais naturels', url: ''),
-      _TutoItem(emoji: '🍂', label: 'Paillage', url: ''),
+      _TutoItem(emoji: '🪱', label: 'Faire son compost', htmlAsset: 'assets/tutos/faire_compost.html'),
+      _TutoItem(emoji: '🌍', label: 'Préparer le sol', htmlAsset: 'assets/tutos/preparer_sol.html'),
+      _TutoItem(emoji: '🧪', label: 'Engrais naturels', htmlAsset: 'assets/tutos/engrais_naturels.html'),
+      _TutoItem(emoji: '🍂', label: 'Paillage', htmlAsset: 'assets/tutos/paillage.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🐛',
-    imagePath: 'assets/images/tuto_maladies.PNG',
+    imagePath: 'assets/images/tuto_maladies.png',
     label: 'Maladies & Nuisibles',
     color: Color(0xFFCC4444),
     items: [
-      _TutoItem(emoji: '🐌', label: 'Lutter contre les limaces', url: ''),
-      _TutoItem(emoji: '🍄', label: 'Mildiou', url: ''),
-      _TutoItem(emoji: '🐛', label: 'Pucerons', url: ''),
-      _TutoItem(emoji: '🌿', label: 'Traitements bio', url: ''),
+      _TutoItem(emoji: '🐌', label: 'Lutter contre les limaces', htmlAsset: 'assets/tutos/lutter_limaces.html'),
+      _TutoItem(emoji: '🍄', label: 'Mildiou', htmlAsset: 'assets/tutos/mildiou.html'),
+      _TutoItem(emoji: '🐛', label: 'Pucerons', htmlAsset: 'assets/tutos/pucerons.html'),
+      _TutoItem(emoji: '🌿', label: 'Traitements bio', htmlAsset: 'assets/tutos/traitements_bio.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🏡',
-    imagePath: 'assets/images/tuto_amenagement.PNG',
+    imagePath: 'assets/images/tuto_amenagement.png',
     label: 'Aménagement',
     color: Color(0xFF7BAFD4),
     items: [
-      _TutoItem(emoji: '📦', label: 'Potager surélevé', url: ''),
-      _TutoItem(emoji: '🏡', label: 'Potager en carrés', url: ''),
-      _TutoItem(emoji: '🌻', label: 'Associations de plantes', url: ''),
-      _TutoItem(emoji: '🪴', label: 'Potager en balcon', url: ''),
+      _TutoItem(emoji: '📦', label: 'Potager surélevé', htmlAsset: 'assets/tutos/potager_sureleve.html'),
+      _TutoItem(emoji: '🏡', label: 'Potager en carrés', htmlAsset: 'assets/tutos/potager_carres.html'),
+      _TutoItem(emoji: '🌻', label: 'Associations de plantes', htmlAsset: 'assets/tutos/associations_plantes.html'),
+      _TutoItem(emoji: '🪴', label: 'Potager en balcon', htmlAsset: 'assets/tutos/potager_balcon.html'),
     ],
   ),
 ];
@@ -267,12 +270,21 @@ class _TutoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (item.url.isNotEmpty) {
+        if (item.htmlAsset != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => TutoFicheScreen(
+                titre: item.label,
+                assetPath: item.htmlAsset!,
+              ),
+            ),
+          );
+        } else if (item.url.isNotEmpty) {
           launchUrl(Uri.parse(item.url),
               mode: LaunchMode.externalApplication);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Vidéo bientôt disponible !')),
+            const SnackBar(content: Text('Bientôt disponible !')),
           );
         }
       },

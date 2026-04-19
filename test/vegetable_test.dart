@@ -1,9 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kultiva/models/vegetable.dart';
-import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/data/companions.dart';
 import 'package:kultiva/data/regions/france.dart';
 import 'package:kultiva/data/regions/west_africa.dart';
+import 'package:kultiva/data/vegetables_base.dart';
+import 'package:kultiva/models/region_data.dart';
+import 'package:kultiva/models/vegetable.dart';
 
 void main() {
   group('VegetableCategory', () {

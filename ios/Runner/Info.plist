@@ -66,6 +66,24 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- URL schemes pour OAuth.
+	     Pour activer Sign in with Google, remplace la chaîne vide dans
+	     CFBundleURLSchemes ci-dessous par ton REVERSED_CLIENT_ID de
+	     Google Cloud (OAuth client iOS). Il ressemble à :
+	     com.googleusercontent.apps.1234567890-abcdef.
+	     Tant que la valeur reste vide, le bouton Google est caché
+	     côté app. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.56977548622-fokr6eq79msehbmphcler1pldmokg8fv</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Kultiva utilise la caméra pour que tu puisses photographier tes plants du Poussidex.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

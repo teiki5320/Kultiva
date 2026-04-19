@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
 import '../../services/auth_service.dart';
+import '../../services/cloud_sync_service.dart';
 import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/garden_tutorial_sheet.dart';
+import 'my_garden_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final VoidCallback onSignOut;
@@ -93,23 +94,50 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 _SectionTitle(title: '🔔  Notifications'),
                 Card(
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: PrefsService.instance.notifications,
-                    builder: (context, value, _) {
-                      return SwitchListTile(
-                        value: value,
-                        onChanged:
-                            PrefsService.instance.setNotifications,
-                        activeColor: KultivaColors.primaryGreen,
-                        title: const Text(
-                          'Rappel mensuel',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        subtitle: const Text(
-                          "Une notification le 1er de chaque mois",
-                        ),
-                      );
-                    },
+                  child: Column(
+                    children: <Widget>[
+                      ValueListenableBuilder<bool>(
+                        valueListenable:
+                            PrefsService.instance.notifications,
+                        builder: (context, value, _) {
+                          return SwitchListTile(
+                            value: value,
+                            onChanged:
+                                PrefsService.instance.setNotifications,
+                            activeColor: KultivaColors.primaryGreen,
+                            title: const Text(
+                              'Rappel mensuel',
+                              style:
+                                  TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            subtitle: const Text(
+                              "Une notification le 1er de chaque mois",
+                            ),
+                          );
+                        },
+                      ),
+                      const Divider(height: 0, indent: 16),
+                      ValueListenableBuilder<bool>(
+                        valueListenable:
+                            PrefsService.instance.tamassiDailyReminder,
+                        builder: (context, value, _) {
+                          return SwitchListTile(
+                            value: value,
+                            onChanged: PrefsService
+                                .instance.setTamassiDailyReminder,
+                            activeColor: KultivaColors.primaryGreen,
+                            title: const Text(
+                              'Rappel Tamassi quotidien',
+                              style:
+                                  TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            subtitle: const Text(
+                              "Tous les jours à 19h",
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -237,23 +265,146 @@ class SettingsScreen extends StatelessWidget {
                             },
                           ),
                           const Divider(height: 0, indent: 16),
+                          ValueListenableBuilder<int?>(
+                            valueListenable: debugHourOverride,
+                            builder: (context, override, _) {
+                              final isAuto = override == null;
+                              final displayHour =
+                                  override ?? DateTime.now().hour;
+                              final period = isAuto
+                                  ? 'auto'
+                                  : '${displayHour.toString().padLeft(2, '0')}h';
+                              return ExpansionTile(
+                                leading: const Icon(
+                                  Icons.wb_sunny_outlined,
+                                  color: KultivaColors.primaryGreen,
+                                ),
+                                title: const Text(
+                                  'Heure de test (debug)',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                subtitle: Text(
+                                  'Force l\'heure du fond Tamassi · $period',
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                                children: <Widget>[
+                                  SwitchListTile(
+                                    dense: true,
+                                    title: const Text('Mode automatique'),
+                                    subtitle: const Text(
+                                      'Utilise l\'heure réelle du téléphone',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
+                                    value: isAuto,
+                                    onChanged: (v) => debugHourOverride.value =
+                                        v ? null : DateTime.now().hour,
+                                  ),
+                                  if (!isAuto)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Row(
+                                        children: <Widget>[
+                                          const Text('0h',
+                                              style: TextStyle(fontSize: 12)),
+                                          Expanded(
+                                            child: Slider(
+                                              value: displayHour.toDouble(),
+                                              min: 0,
+                                              max: 23,
+                                              divisions: 23,
+                                              label: '${displayHour}h',
+                                              activeColor:
+                                                  KultivaColors.primaryGreen,
+                                              onChanged: (v) =>
+                                                  debugHourOverride.value =
+                                                      v.round(),
+                                            ),
+                                          ),
+                                          const Text('23h',
+                                              style: TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                    ),
+                                  if (!isAuto)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16, 0, 16, 12),
+                                      child: Wrap(
+                                        spacing: 8,
+                                        children: <int>[7, 14, 19, 23]
+                                            .map((h) => ActionChip(
+                                                  label: Text(
+                                                      '${h.toString().padLeft(2, '0')}h'),
+                                                  onPressed: () =>
+                                                      debugHourOverride.value =
+                                                          h,
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                          const Divider(height: 0, indent: 16),
                           ListTile(
                             leading: const Icon(
-                              Icons.school_outlined,
+                              Icons.restart_alt,
                               color: KultivaColors.primaryGreen,
                             ),
                             title: const Text(
-                              'Revoir le tuto Poussidex',
-                              style: TextStyle(fontWeight: FontWeight.w700),
+                              'Recommencer le Tamassi',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                             subtitle: const Text(
-                                "Les 3 slides d'explication du Poussidex"),
-                            onTap: () {
-                              showModalBottomSheet<void>(
+                              'Rechoisir ton starter et renommer ton Tamassi',
+                              style: TextStyle(fontSize: 11),
+                            ),
+                            onTap: () async {
+                              final confirm = await showDialog<bool>(
                                 context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (_) => const GardenTutorialSheet(),
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text('Tout recommencer ?'),
+                                  content: const Text(
+                                    'Tu vas revenir à l\'écran de sélection '
+                                    'du starter. Ton niveau actuel sera '
+                                    'conservé.',
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(ctx, false),
+                                      child: const Text('Annuler'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () =>
+                                          Navigator.pop(ctx, true),
+                                      child: const Text('Recommencer'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              if (confirm != true || !context.mounted) return;
+                              await PrefsService.instance
+                                  .setString('kultiva.creature.starter', '');
+                              await PrefsService.instance
+                                  .setString('kultiva.creature.name', '');
+                              // Relance le tuto Poussidex.
+                              await PrefsService.instance
+                                  .setGardenTutorialDone(false);
+                              tamassiResetNotifier.value++;
+                              if (!context.mounted) return;
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      '🌱 Ouvre l\'onglet Poussidex pour '
+                                      'choisir ton nouveau compagnon !'),
+                                  duration: Duration(seconds: 3),
+                                ),
                               );
                             },
                           ),
@@ -271,6 +422,8 @@ class SettingsScreen extends StatelessWidget {
                             ),
                             onTap: () async {
                               await AuthService.instance.signOut();
+                              await CloudSyncService.instance
+                                  .clearLocalData();
                               onSignOut();
                             },
                           ),

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/region_data.dart';
+import 'notification_service.dart';
 
 /// Service de persistance locale + état réactif de l'application.
 ///
@@ -28,6 +29,8 @@ class PrefsService {
   static const _kPlantations = 'kultiva.plantations.v1';
   static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
   static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
+  static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
+  static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
 
   SharedPreferences? _prefs;
 
@@ -39,12 +42,24 @@ class PrefsService {
   final ValueNotifier<bool> soundEnabled = ValueNotifier<bool>(true);
   final ValueNotifier<bool> musicEnabled = ValueNotifier<bool>(false);
   final ValueNotifier<double> soundVolume = ValueNotifier<double>(0.7);
+  final ValueNotifier<bool> tamassiDailyReminder = ValueNotifier<bool>(true);
 
   /// Notifier incrémenté à chaque écriture de la collection de
   /// plantations. Les écrans qui dépendent des médailles (Étal) s'y
   /// abonnent pour se rafraîchir sans avoir à importer l'état du
   /// Poussidex.
   final ValueNotifier<int> plantationsVersion = ValueNotifier<int>(0);
+
+  /// Callback appelé après chaque changement de préférence. Permet
+  /// à CloudSyncService de re-uploader les prefs sans créer de
+  /// dépendance circulaire. Réglé une fois dans main().
+  VoidCallback? onPreferencesChanged;
+
+  void _notifyPrefsChanged() {
+    try {
+      onPreferencesChanged?.call();
+    } catch (_) {}
+  }
 
   bool _loaded = false;
   bool get isLoaded => _loaded;
@@ -59,39 +74,69 @@ class PrefsService {
     soundEnabled.value = _prefs!.getBool(_kSoundEnabled) ?? true;
     musicEnabled.value = _prefs!.getBool(_kMusicEnabled) ?? false;
     soundVolume.value = _prefs!.getDouble(_kSoundVolume) ?? 0.7;
+    tamassiDailyReminder.value =
+        _prefs!.getBool(_kTamassiDailyReminder) ?? true;
     _loaded = true;
+  }
+
+  Future<void> setTamassiDailyReminder(bool value) async {
+    tamassiDailyReminder.value = value;
+    await _prefs?.setBool(_kTamassiDailyReminder, value);
+    if (value) {
+      await NotificationService.scheduleDailyTamassiReminder();
+    } else {
+      await NotificationService.cancelDailyTamassiReminder();
+    }
+    _notifyPrefsChanged();
+  }
+
+  /// Lecture/écriture générique pour stocker des données arbitraires
+  /// (ex: défis complétés). Pour des champs typés, utiliser les
+  /// getters/setters dédiés ci-dessous.
+  String? getString(String key) => _prefs?.getString(key);
+  Future<void> setString(String key, String value) async {
+    await _prefs?.setString(key, value);
   }
 
   Future<void> setRegion(Region value) async {
     region.value = value;
     await _prefs?.setString(_kRegion, value.id);
+    _notifyPrefsChanged();
   }
 
   Future<void> setDarkMode(bool value) async {
     darkMode.value = value;
     await _prefs?.setBool(_kDarkMode, value);
+    _notifyPrefsChanged();
   }
 
   Future<void> setNotifications(bool value) async {
     notifications.value = value;
     await _prefs?.setBool(_kNotifications, value);
-    // TODO: brancher flutter_local_notifications pour planifier/annuler
-    // la notification mensuelle (le 1er de chaque mois).
+    if (value) {
+      await NotificationService.scheduleMonthlyReminder();
+    } else {
+      await NotificationService.cancelMonthlyReminder();
+    }
+    _notifyPrefsChanged();
   }
 
   Future<void> setSoundEnabled(bool value) async {
     soundEnabled.value = value;
     await _prefs?.setBool(_kSoundEnabled, value);
+    _notifyPrefsChanged();
   }
 
   Future<void> setMusicEnabled(bool value) async {
     musicEnabled.value = value;
     await _prefs?.setBool(_kMusicEnabled, value);
+    _notifyPrefsChanged();
   }
 
   Future<void> setSoundVolume(double value) async {
     soundVolume.value = value;
     await _prefs?.setDouble(_kSoundVolume, value);
+    _notifyPrefsChanged();
   }
 
   bool get onboardingDone => _prefs?.getBool(_kOnboardingDone) ?? false;
@@ -151,6 +196,18 @@ class PrefsService {
 
   Future<void> setGridMigrated(bool value) async {
     await _prefs?.setBool(_kGridMigrated, value);
+  }
+
+  /// Dernier moment où une notification d'alerte d'arrosage a été
+  /// envoyée. Utilisé pour throttler à max 1 notif par 24h.
+  DateTime? get lastWateringNotificationCheck {
+    final iso = _prefs?.getString(_kLastWateringCheck);
+    if (iso == null) return null;
+    return DateTime.tryParse(iso);
+  }
+
+  Future<void> setLastWateringNotificationCheck(DateTime t) async {
+    await _prefs?.setString(_kLastWateringCheck, t.toIso8601String());
   }
 
   // --- Watering history ---
