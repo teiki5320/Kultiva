@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Débloquer les badges</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf7f0;--texte:#524a3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#e8c878;--accent-soft:#f4e4b8;--accent-bg:#faecc8}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:'Fredoka',sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:#927838;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Astuces</div>
+    <div class="icone-principale">🏆</div>
+    <div class="titre-fiche">Débloquer les badges</div>
+    <div class="sous-titre-fiche">50 badges à collectionner</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">Les badges récompensent ta fidélité, tes actions quotidiennes et tes défis complétés. 50 badges répartis en 4 tiers : bronze (15), silver (15), gold (12), shiny (8). Chacun a sa propre carte kawaii style Pokémon.</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🎖️</span> Les types de badges</div>
+    <div class="etape"><div class="etape-num" style="background:#a8d5a8">1</div><div class="etape-content"><div class="etape-titre">Badges d'action 🌱</div><div class="etape-texte">Premier arrosage, premier engrais, premier bonjour, premier défi...</div></div></div>
+    <div class="etape"><div class="etape-num" style="background:#e8c878">2</div><div class="etape-content"><div class="etape-titre">Badges de niveau ⭐</div><div class="etape-texte">Atteindre les paliers 15, 20, 30, 40, 50, 60, 75 et 100.</div></div></div>
+    <div class="etape"><div class="etape-num" style="background:#e8b89a">3</div><div class="etape-content"><div class="etape-titre">Badges de régularité 🔥</div><div class="etape-texte">Streak 3, 7, 30 et 100 jours d'affilée.</div></div></div>
+    <div class="etape"><div class="etape-num" style="background:#a8c8e0">4</div><div class="etape-content"><div class="etape-titre">Badges météo/nature 🌧️</div><div class="etape-texte">Se connecter sous la pluie, la neige, le grand soleil, voir un papillon...</div></div></div>
+    <div class="etape"><div class="etape-num" style="background:#c4a8d5">5</div><div class="etape-content"><div class="etape-titre">Badges de complétion 🌟</div><div class="etape-texte">Tous les défis bronze, silver, gold, shiny, ou les 50 badges.</div></div></div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">👀</span> Comment les voir</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Onglet Badges dans le Poussidex 🏆</div><div class="etape-texte">Grille de 50 badges : en couleur si débloqué, grisé sinon.</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Tape sur un badge</div><div class="etape-texte">Ouvre la carte façon Pokémon avec le détail et la condition de déblocage.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Animation de déblocage ✨</div><div class="etape-texte">Quand tu déverrouilles un badge, une animation pack-opening apparaît avec son et haptic.</div></div></div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">🌸</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">Vise un badge à la fois. Les badges saisonniers (4 saisons) demandent de jouer toute l'année — ne les rate pas !</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🎯</div><div class="eviter-texte"><strong>Se focaliser sur les badges au point d'oublier le jardin réel :</strong> les badges récompensent la pratique, pas l'inverse.</div></div>
+    <div class="eviter"><div class="eviter-icone">🏆</div><div class="eviter-texte"><strong>Ignorer l'onglet Badges :</strong> il recalcule à chaque ouverture, tu pourrais avoir des surprises.</div></div>
+    <div class="eviter"><div class="eviter-icone">🔔</div><div class="eviter-texte"><strong>Désactiver les notifications :</strong> tu rates l'animation festive de déblocage.</div></div>
+  </div>
+</div>
+</body>
+</html>
