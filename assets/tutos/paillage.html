@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paillage</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf8f4;--texte:#524c3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#c8b894;--accent-soft:#e0d4b8;--accent-bg:#eee5d2}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:'Fredoka',sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Sol & Compost</div>
+    <div class="icone-principale">🍂</div>
+    <div class="titre-fiche">Paillage</div>
+    <div class="sous-titre-fiche">Protéger et nourrir la terre</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">Le paillage, c'est recouvrir le sol de matière organique. Il garde l'humidité, limite les mauvaises herbes, nourrit le sol en se décomposant et protège la vie souterraine.</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🧰</span> Quels matériaux choisir</div>
+    <div class="etape" style="background:#c8b894"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Feuilles mortes 🍂</div><div class="etape-texte">Gratuites et abondantes en automne. Se décomposent lentement et enrichissent le sol en humus. Idéal partout.</div></div></div>
+    <div class="etape" style="background:#a8d5a8"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Tonte de gazon 🌿</div><div class="etape-texte">Riche en azote, se décompose vite. À étaler en couche fine (2-3 cm) et séchée pour éviter la fermentation.</div></div></div>
+    <div class="etape" style="background:#e0d4b8"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">BRF (Bois Raméal Fragmenté) 🌳</div><div class="etape-texte">Branches broyées de moins de 7 cm de diamètre. Excellent pour les allées et les arbustes. Dure longtemps.</div></div></div>
+    <div class="etape" style="background:#e8b89a"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Paille 🌾</div><div class="etape-texte">Légère, aérée et facile à poser. Parfaite pour les fraisiers, tomates et courgettes. Attention aux graines de céréales.</div></div></div>
+    <div class="etape" style="background:#a8c8e0"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Carton brun 📦</div><div class="etape-texte">Sans encre ni scotch. Excellent pour étouffer les herbes avant de créer une nouvelle parcelle. Recouvre de paillis.</div></div></div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">📋</span> Comment bien pailler</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Désherbe avant de pailler</div><div class="etape-texte">Retire les mauvaises herbes existantes. Le paillage empêche les nouvelles mais n'élimine pas celles en place.</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Arrose le sol</div><div class="etape-texte">Paille toujours sur un sol humide. L'eau pénètre moins bien à travers une couche de paillis sec.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Étale une couche de 5 à 10 cm</div><div class="etape-texte">Trop fin, le paillis est inefficace. Trop épais, il peut étouffer les jeunes plants et favoriser les limaces.</div></div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Dégage le collet des plants</div><div class="etape-texte">Laisse 2-3 cm d'espace autour des tiges pour éviter la pourriture au contact du paillis humide.</div></div></div>
+    <div class="etape"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Renouvelle régulièrement</div><div class="etape-texte">Le paillis se décompose et nourrit le sol. Rajoute une couche dès qu'il s'amincit sous les 3-4 cm.</div></div></div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">❄️</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">En hiver, pense au paillage épais (20-30 cm de feuilles). Il protège le sol du gel, abrite les auxiliaires et se transforme en humus pour le printemps.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🐌</div><div class="eviter-texte"><strong>Limaces sous le paillis :</strong> en cas d'invasion, écarte le paillis temporairement et pose des pièges à bière.</div></div>
+    <div class="eviter"><div class="eviter-icone">🌿</div><div class="eviter-texte"><strong>Tonte fraîche en couche épaisse :</strong> elle fermente, chauffe et peut brûler les racines. Sèche-la d'abord.</div></div>
+    <div class="eviter"><div class="eviter-icone">🌱</div><div class="eviter-texte"><strong>Pailler sur des semis :</strong> les graines ont besoin de lumière et de chaleur pour germer. Attends que les plants aient 10 cm.</div></div>
+    <div class="eviter"><div class="eviter-icone">📰</div><div class="eviter-texte"><strong>Carton imprimé ou plastifié :</strong> les encres et revêtements contiennent des substances nocives pour le sol.</div></div>
+  </div>
+</div>
+</body>
+</html>
