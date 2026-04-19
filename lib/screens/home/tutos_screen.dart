@@ -94,10 +94,10 @@ const _categories = <_TutoCategory>[
     label: 'Sol & Compost',
     color: Color(0xFF8B6914),
     items: [
-      _TutoItem(emoji: '🪱', label: 'Faire son compost', url: ''),
-      _TutoItem(emoji: '🌍', label: 'Préparer le sol', url: ''),
-      _TutoItem(emoji: '🧪', label: 'Engrais naturels', url: ''),
-      _TutoItem(emoji: '🍂', label: 'Paillage', url: ''),
+      _TutoItem(emoji: '🪱', label: 'Faire son compost', htmlAsset: 'assets/tutos/faire_compost.html'),
+      _TutoItem(emoji: '🌍', label: 'Préparer le sol', htmlAsset: 'assets/tutos/preparer_sol.html'),
+      _TutoItem(emoji: '🧪', label: 'Engrais naturels', htmlAsset: 'assets/tutos/engrais_naturels.html'),
+      _TutoItem(emoji: '🍂', label: 'Paillage', htmlAsset: 'assets/tutos/paillage.html'),
     ],
   ),
   _TutoCategory(
