@@ -41,15 +41,15 @@ const _categories = <_TutoCategory>[
     color: Color(0xFFFFB74D),
     items: [
       // 4 premiers tutos = comment utiliser l'app Kultiva.
-      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', url: ''),
-      _TutoItem(emoji: '🪴', label: 'Utiliser le Poussidex', url: ''),
-      _TutoItem(emoji: '📷', label: 'Ajouter des photos', url: ''),
-      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', url: ''),
+      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
+      _TutoItem(emoji: '🪴', label: 'Ton Tamassi', htmlAsset: 'assets/tutos/utiliser_poussidex.html'),
+      _TutoItem(emoji: '📷', label: 'Les défis photo', htmlAsset: 'assets/tutos/ajouter_photos.html'),
+      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', htmlAsset: 'assets/tutos/debloquer_badges.html'),
       // Astuces jardinage.
-      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', url: ''),
-      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', url: ''),
-      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', url: ''),
-      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', url: ''),
+      _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', htmlAsset: 'assets/tutos/jardiner_avec_lune.html'),
+      _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', htmlAsset: 'assets/tutos/attirer_pollinisateurs.html'),
+      _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', htmlAsset: 'assets/tutos/reutiliser_dechets.html'),
+      _TutoItem(emoji: '⏰', label: 'Gain de temps au jardin', htmlAsset: 'assets/tutos/gain_temps_jardin.html'),
     ],
   ),
   _TutoCategory(
