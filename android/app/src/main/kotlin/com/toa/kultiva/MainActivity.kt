@@ -1,4 +1,4 @@
-package com.example.kultiva
+package com.toa.kultiva
 
 import io.flutter.embedding.android.FlutterActivity
 
