@@ -3,7 +3,10 @@ enum AccessorySubCategory {
   tools,
   pots,
   soil,
-  seeds;
+  seeds,
+  watering,
+  protection,
+  structures;
 
   String get label {
     switch (this) {
@@ -15,6 +18,12 @@ enum AccessorySubCategory {
         return 'Terreau & Engrais';
       case AccessorySubCategory.seeds:
         return 'Semences';
+      case AccessorySubCategory.watering:
+        return 'Arrosage';
+      case AccessorySubCategory.protection:
+        return 'Protection';
+      case AccessorySubCategory.structures:
+        return 'Structures';
     }
   }
 
@@ -28,6 +37,12 @@ enum AccessorySubCategory {
         return '🌱';
       case AccessorySubCategory.seeds:
         return '🌾';
+      case AccessorySubCategory.watering:
+        return '💧';
+      case AccessorySubCategory.protection:
+        return '🛡️';
+      case AccessorySubCategory.structures:
+        return '🏡';
     }
   }
 }
