@@ -7,6 +7,7 @@ import '../data/badges.dart';
 import '../models/vegetable_medal.dart';
 import '../services/audio_service.dart';
 import '../theme/app_theme.dart';
+import 'lexicon_text.dart';
 
 /// Ouvre un overlay plein écran qui affiche une grande carte "Pokemon"
 /// pour un badge donné. La carte tourne légèrement en idle sur l'axe Y,
@@ -328,7 +329,7 @@ class _BadgeCardVisual extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: frameColor.withOpacity(0.25)),
               ),
-              child: Text(
+              child: LexiconText(
                 badge.description,
                 textAlign: TextAlign.center,
                 style: TextStyle(

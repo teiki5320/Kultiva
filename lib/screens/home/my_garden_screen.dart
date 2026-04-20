@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import '../../services/tamassi_stats.dart';
 import '../../services/weather_service.dart';
+import '../root_tabs.dart';
 
 import '../../data/badges.dart';
 import '../../data/vegetables_base.dart';
@@ -76,11 +77,37 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     super.initState();
     _bootstrap();
     tamassiResetNotifier.addListener(_onTamassiResetExternal);
+    RootTabs.poussidexFilter.addListener(_onPoussidexFilterExternal);
   }
 
   void _onTamassiResetExternal() {
     // Après un reset depuis les paramètres : relance le tuto.
     _showTutorialIfNeeded();
+  }
+
+  /// Un deep-link `kultiva://poussidex/<section>` a demandé à basculer
+  /// sur une section précise (tamassi / challenges / badges).
+  void _onPoussidexFilterExternal() {
+    final name = RootTabs.poussidexFilter.value;
+    if (name == null || !mounted) return;
+    _AlbumFilter? next;
+    switch (name) {
+      case 'tamassi':
+        next = _AlbumFilter.tamassi;
+        break;
+      case 'challenges':
+      case 'feed':
+        next = _AlbumFilter.challenges;
+        break;
+      case 'badges':
+        next = _AlbumFilter.badges;
+        break;
+    }
+    if (next != null && next != _filter) {
+      setState(() => _filter = next!);
+    }
+    // Consomme la demande pour ne pas re-déclencher.
+    RootTabs.poussidexFilter.value = null;
   }
 
   /// Lit l'XP courant depuis les prefs (partagé avec _TamassiViewState).
@@ -92,6 +119,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   @override
   void dispose() {
     tamassiResetNotifier.removeListener(_onTamassiResetExternal);
+    RootTabs.poussidexFilter.removeListener(_onPoussidexFilterExternal);
     super.dispose();
   }
 

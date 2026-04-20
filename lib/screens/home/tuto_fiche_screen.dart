@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../theme/app_theme.dart';
+import '../root_tabs.dart';
 
 /// Affiche une fiche tuto HTML (stockée dans assets/tutos/) dans un
 /// WebView plein écran. Intercepte les liens `kultiva://` pour
@@ -39,7 +40,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
           onNavigationRequest: (request) {
             final uri = Uri.tryParse(request.url);
             if (uri != null && uri.scheme == 'kultiva') {
-              _handleDeepLink(uri.host);
+              _handleDeepLink(uri);
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
@@ -63,9 +64,61 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
     }
   }
 
-  void _handleDeepLink(String target) {
-    Navigator.of(context).pop();
-    // TODO: naviguer vers l'écran correspondant via RootTabs.
+  /// Intercepte les liens `kultiva://<route>` cliqués dans une fiche HTML
+  /// et bascule l'app sur l'écran cible. Routes supportées :
+  ///   kultiva://home                → onglet Home (semis)
+  ///   kultiva://vegetables          → onglet Étal
+  ///   kultiva://poussidex           → onglet Poussidex (section Tamassi)
+  ///   kultiva://poussidex/badges    → Poussidex section Badges
+  ///   kultiva://poussidex/challenges→ Poussidex section Défis
+  ///   kultiva://tutos               → onglet Tutos
+  ///   kultiva://tuto/<nom>          → remplace la fiche par une autre
+  void _handleDeepLink(Uri uri) {
+    final host = uri.host;
+    final segments = uri.pathSegments;
+    switch (host) {
+      case 'home':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 0;
+        return;
+      case 'vegetables':
+      case 'etal':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 1;
+        return;
+      case 'poussidex':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 2;
+        if (segments.isNotEmpty) {
+          RootTabs.poussidexFilter.value = segments.first;
+        }
+        return;
+      case 'tutos':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 3;
+        return;
+      case 'tuto':
+        if (segments.isNotEmpty) {
+          final name = segments.first;
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<void>(
+              builder: (_) => TutoFicheScreen(
+                titre: _humanize(name),
+                assetPath: 'assets/tutos/$name.html',
+              ),
+            ),
+          );
+        }
+        return;
+    }
+  }
+
+  static String _humanize(String slug) {
+    return slug
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
+        .join(' ');
   }
 
   @override

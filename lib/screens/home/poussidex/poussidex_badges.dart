@@ -61,11 +61,13 @@ class _BadgeTile extends StatelessWidget {
         ? base
         : (Color.lerp(base, Colors.grey.shade400, 0.55) ?? base);
     return GestureDetector(
-      onTap: () => showBadgeCard(
-        context,
-        badge: badge,
-        unlocked: unlocked,
-      ),
+      onTap: unlocked
+          ? () => showBadgeCard(
+                context,
+                badge: badge,
+                unlocked: unlocked,
+              )
+          : null,
       child: Container(
         decoration: BoxDecoration(
           color: c.withOpacity(unlocked ? 0.12 : 0.06),
