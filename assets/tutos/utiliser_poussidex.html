@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ton Tamassi</title>
 <style>
+a[href^="kultiva://"] {
+  color: #4A9B5A;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #4A9B5A;
+  text-underline-offset: 2px;
+}
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#faf7f0;--texte:#524a3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#e8c878;--accent-soft:#f4e4b8;--accent-bg:#faecc8}
@@ -45,7 +53,7 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);
   </div>
   <div class="essentiel">
     <div class="essentiel-label">L'essentiel</div>
-    <div class="essentiel-texte">Le Poussidex est devenu le Tamassi : un compagnon végétal qui grandit avec toi. Choisis ton starter (Poussia, Soleia ou Spira), nomme-le, et fais-le évoluer à travers 11 stades en gagnant de l'XP.</div>
+    <div class="essentiel-texte">Le <a href="kultiva://poussidex">Poussidex</a> est devenu le Tamassi : un compagnon végétal qui grandit avec toi. Choisis ton starter (Poussia, Soleia ou Spira), nomme-le, et fais-le évoluer à travers 11 stades en gagnant de l'XP.</div>
   </div>
   <div class="section">
     <div class="section-titre"><span style="font-size:22px">⚙️</span> Comment ça marche</div>
@@ -59,7 +67,7 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);
     <div class="section-titre"><span style="font-size:22px">📑</span> Les 3 onglets du Poussidex</div>
     <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Tamassi 🌱</div><div class="etape-texte">Ton compagnon avec ses animations, le fond dynamique selon la météo et l'heure.</div></div></div>
     <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Défis 📸</div><div class="etape-texte">Grille de 50 défis photo classés par difficulté (bronze, silver, gold, shiny).</div></div></div>
-    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Badges 🏆</div><div class="etape-texte">Collection de 50 badges à débloquer en jouant, classés par rareté.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre"><a href="kultiva://poussidex/badges">Badges</a> 🏆</div><div class="etape-texte">Collection de 50 badges à débloquer en jouant, classés par rareté.</div></div></div>
   </div>
   <div class="conseil">
     <div class="conseil-icone">🌟</div>

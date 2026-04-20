@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Débloquer les badges</title>
 <style>
+a[href^="kultiva://"] {
+  color: #4A9B5A;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #4A9B5A;
+  text-underline-offset: 2px;
+}
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#faf7f0;--texte:#524a3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#e8c878;--accent-soft:#f4e4b8;--accent-bg:#faecc8}
@@ -57,7 +65,7 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);
   </div>
   <div class="section">
     <div class="section-titre"><span style="font-size:22px">👀</span> Comment les voir</div>
-    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Onglet Badges dans le Poussidex 🏆</div><div class="etape-texte">Grille de 50 badges : en couleur si débloqué, grisé sinon.</div></div></div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre"><a href="kultiva://poussidex/badges">Onglet Badges</a> dans le <a href="kultiva://poussidex">Poussidex</a> 🏆</div><div class="etape-texte">Grille de 50 badges : en couleur si débloqué, grisé sinon.</div></div></div>
     <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Tape sur un badge</div><div class="etape-texte">Ouvre la carte façon Pokémon avec le détail et la condition de déblocage.</div></div></div>
     <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Animation de déblocage ✨</div><div class="etape-texte">Quand tu déverrouilles un badge, une animation pack-opening apparaît avec son et haptic.</div></div></div>
   </div>
