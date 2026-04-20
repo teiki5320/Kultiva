@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kultiva — le potager kawaii dans ta poche</title>
+<meta name="description" content="Kultiva : ton calendrier de semis, ton Tamassi à élever, et 50 défis pour devenir le maître du potager. Bientôt sur iOS et Android.">
+<link rel="icon" href="img/app_icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(180deg, #FCF4E1 0%, #F4E8D0 100%);
+    color: #3d4a3d;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  header { padding: 64px 0 24px; text-align: center; }
+  header img.logo {
+    width: 120px; height: 120px;
+    border-radius: 28px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 56px;
+    color: #4A9B5A;
+    margin-bottom: 8px;
+  }
+  header .tagline {
+    font-size: 20px;
+    color: #6e7a6e;
+    font-weight: 500;
+  }
+
+  .hero-cta {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 26px;
+    border-radius: 18px;
+    background: #ffffff;
+    color: #3d4a3d;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    border: 2px solid #e8d8b8;
+  }
+  .btn.primary {
+    background: #4A9B5A;
+    color: #fff;
+    border-color: #4A9B5A;
+  }
+
+  section { padding: 60px 0; }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding-top: 24px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px 24px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  .card .emoji { font-size: 44px; margin-bottom: 14px; }
+  .card h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #3d4a3d;
+  }
+  .card p { font-size: 14.5px; color: #6e7a6e; }
+
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding-top: 24px;
+  }
+  .screens img {
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.1);
+  }
+
+  h2.section-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #4A9B5A;
+    text-align: center;
+  }
+  h2.section-title + p.section-sub {
+    text-align: center;
+    color: #6e7a6e;
+    margin-top: 8px;
+  }
+
+  footer {
+    padding: 40px 0 32px;
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    margin-top: 40px;
+    font-size: 13px;
+    color: #8a8c80;
+  }
+  footer a { color: #4A9B5A; text-decoration: none; }
+  footer .legal { margin-top: 12px; font-size: 12px; line-height: 1.6; }
+
+  @media (max-width: 600px) {
+    header { padding: 48px 0 16px; }
+    header h1 { font-size: 42px; }
+    header .tagline { font-size: 17px; }
+    h2.section-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <img src="img/app_icon.png" alt="Logo Kultiva" class="logo">
+    <h1>Kultiva</h1>
+    <p class="tagline">Le potager kawaii dans ta poche 🌱</p>
+    <div class="hero-cta">
+      <a href="#" class="btn primary">Bientôt sur l'App Store</a>
+      <a href="#" class="btn">Bientôt sur Google Play</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2 class="section-title">Ton potager, en mode jeu</h2>
+    <p class="section-sub">Trois modules pour t'accompagner du semis à la récolte.</p>
+    <div class="features">
+      <div class="card">
+        <div class="emoji">🪴</div>
+        <h3>Ton Tamassi</h3>
+        <p>Une petite créature virtuelle liée à ton potager. Arrose-la, dis-lui bonjour, fais-lui plaisir, et regarde-la évoluer au fil des saisons.</p>
+      </div>
+      <div class="card">
+        <div class="emoji">📅</div>
+        <h3>Calendrier de semis</h3>
+        <p>Sache quand semer chacun de tes légumes selon ta région et la météo. Plus de 60 légumes répertoriés avec leurs besoins.</p>
+      </div>
+      <div class="card">
+        <div class="emoji">🏆</div>
+        <h3>Poussidex</h3>
+        <p>50 défis photo, 50 badges à débloquer. Une aventure complète pour tracer tous tes progrès au jardin.</p>
+      </div>
+      <div class="card">
+        <div class="emoji">📚</div>
+        <h3>32 tutos jardinage</h3>
+        <p>Arrosage, semis, compost, maladies, aménagement… tout ce qu'il faut savoir pour démarrer en douceur.</p>
+      </div>
+      <div class="card">
+        <div class="emoji">🛒</div>
+        <h3>Acheter en 1 clic</h3>
+        <p>Des liens directs vers les graines et le matériel sur Amazon, sélectionnés pour chaque légume.</p>
+      </div>
+      <div class="card">
+        <div class="emoji">🌍</div>
+        <h3>Météo & saisons</h3>
+        <p>Géolocalisation pour adapter les conseils à ta région. Notifications quand il faut arroser ou récolter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background: #fff;">
+  <div class="container">
+    <h2 class="section-title">Aperçu de l'app</h2>
+    <p class="section-sub">Une expérience pensée pour les jardiniers débutants.</p>
+    <div class="screens">
+      <img src="img/screen-1.png" alt="Écran d'accueil de Kultiva">
+      <img src="img/screen-2.png" alt="Le Poussidex de Kultiva">
+      <img src="img/screen-3.png" alt="Les tutos de Kultiva">
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Kultiva — Une app de Jean Perraudeau</p>
+    <p class="legal">
+      Contact : <a href="mailto:contact@kultiva.app">contact@kultiva.app</a><br>
+      En tant que Partenaire Amazon, Kultiva réalise un bénéfice sur les achats remplissant les conditions requises.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
