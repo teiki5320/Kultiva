@@ -21,6 +21,7 @@ import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../widgets/badge_card.dart';
+import '../../widgets/camera_permission_dialog.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/plant_creature.dart';
 import '../../widgets/tamassi_story_card.dart';
@@ -360,7 +361,13 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   Future<void> _addPhoto(Plantation p, {required bool fromCamera}) async {
-    final localPath = await PhotoService.pick(fromCamera: fromCamera);
+    final result = await PhotoService.pickDetailed(fromCamera: fromCamera);
+    if (result.status == PhotoPickStatus.permissionDenied) {
+      if (!mounted) return;
+      await showCameraPermissionDialog(context);
+      return;
+    }
+    final localPath = result.path;
     if (localPath == null) return;
     // Ajoute la photo immédiatement (chemin local) pour que l'UI
     // affiche la miniature sans attendre le réseau.

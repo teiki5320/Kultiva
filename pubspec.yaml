@@ -44,6 +44,9 @@ dependencies:
   # Géolocalisation
   geolocator: ^11.0.0
 
+  # Gestion des permissions (caméra, etc.) avec accès direct aux réglages OS
+  permission_handler: ^11.3.1
+
   # HTTP (météo Open-Meteo)
   http: ^1.2.0
 

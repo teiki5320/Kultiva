@@ -27,6 +27,11 @@ class WeatherData {
   /// Températures min journalières.
   final List<double> dailyTempMin;
 
+  /// True si la géolocalisation n'a pas été accordée / disponible et qu'on
+  /// est retombé sur Paris (48.8566, 2.3522). Permet d'afficher un badge
+  /// "Paris (localisation désactivée)" dans l'écran météo.
+  final bool isFallbackLocation;
+
   const WeatherData({
     required this.latitude,
     required this.longitude,
@@ -36,6 +41,7 @@ class WeatherData {
     required this.dailyDates,
     required this.dailyTempMax,
     required this.dailyTempMin,
+    this.isFallbackLocation = false,
   });
 
   /// Nombre de jours consécutifs sans pluie significative (< 1 mm)
@@ -119,10 +125,20 @@ class WeatherData {
 class WeatherService {
   WeatherService._();
 
+  /// Coordonnées de Paris, utilisées si la géoloc n'est pas dispo.
+  static const double _fallbackLat = 48.8566;
+  static const double _fallbackLon = 2.3522;
+
   static WeatherData? _cached;
   static DateTime? _lastFetch;
 
   /// Récupère les données météo. Met en cache pendant 30 minutes.
+  ///
+  /// Comportement :
+  /// 1. Tente de lire la position utilisateur (services + permission OK).
+  /// 2. Si échec pour n'importe quelle raison → retombe sur Paris et
+  ///    renvoie quand même des données (avec `isFallbackLocation = true`).
+  /// 3. Retourne `null` uniquement si l'appel API Open-Meteo échoue.
   static Future<WeatherData?> getWeather() async {
     // Cache de 30 min.
     if (_cached != null &&
@@ -131,30 +147,16 @@ class WeatherService {
       return _cached;
     }
 
+    final coords = await _resolveCoordinates();
+    final lat = coords.$1;
+    final lon = coords.$2;
+    final isFallback = coords.$3;
+
     try {
-      // Récupérer la position.
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return _cached;
-
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied ||
-            permission == LocationPermission.deniedForever) {
-          return _cached;
-        }
-      }
-      if (permission == LocationPermission.deniedForever) return _cached;
-
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
-      );
-
-      // Appel Open-Meteo.
       final url = Uri.parse(
         'https://api.open-meteo.com/v1/forecast'
-        '?latitude=${position.latitude}'
-        '&longitude=${position.longitude}'
+        '?latitude=$lat'
+        '&longitude=$lon'
         '&current=temperature_2m,weather_code'
         '&daily=precipitation_sum,temperature_2m_max,temperature_2m_min'
         '&timezone=auto'
@@ -170,8 +172,8 @@ class WeatherService {
       final daily = data['daily'] as Map<String, dynamic>;
 
       _cached = WeatherData(
-        latitude: position.latitude,
-        longitude: position.longitude,
+        latitude: lat,
+        longitude: lon,
         currentTemp: (current['temperature_2m'] as num).toDouble(),
         currentWeatherCode: current['weather_code'] as int,
         dailyPrecipitation: (daily['precipitation_sum'] as List)
@@ -184,6 +186,7 @@ class WeatherService {
         dailyTempMin: (daily['temperature_2m_min'] as List)
             .map((e) => (e as num).toDouble())
             .toList(),
+        isFallbackLocation: isFallback,
       );
       _lastFetch = DateTime.now();
       return _cached;
@@ -191,6 +194,38 @@ class WeatherService {
       return _cached;
     }
   }
+
+  /// Tente de résoudre la position utilisateur. Si la géoloc est
+  /// indisponible (service off, permission refusée, timeout, erreur),
+  /// renvoie les coords de Paris avec `isFallback = true`.
+  ///
+  /// Tuple : (latitude, longitude, isFallback).
+  static Future<(double, double, bool)> _resolveCoordinates() async {
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return _parisFallback();
+
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return _parisFallback();
+      }
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+        timeLimit: const Duration(seconds: 8),
+      );
+      return (position.latitude, position.longitude, false);
+    } catch (_) {
+      return _parisFallback();
+    }
+  }
+
+  static (double, double, bool) _parisFallback() =>
+      (_fallbackLat, _fallbackLon, true);
 
   /// Force un rafraîchissement au prochain appel.
   static void invalidateCache() {

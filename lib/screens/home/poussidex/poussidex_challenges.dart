@@ -12,6 +12,7 @@ import '../../../services/photo_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/badge_card.dart';
+import '../../../widgets/camera_permission_dialog.dart';
 import '../../../widgets/challenge_story_card.dart';
 import '../../../widgets/plantation_photo.dart';
 
@@ -55,7 +56,13 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
   }
 
   Future<void> _participate(PhotoChallenge challenge) async {
-    final path = await PhotoService.pick(fromCamera: true);
+    final result = await PhotoService.pickDetailed(fromCamera: true);
+    if (result.status == PhotoPickStatus.permissionDenied) {
+      if (!mounted) return;
+      await showCameraPermissionDialog(context);
+      return;
+    }
+    final path = result.path;
     if (path == null) return;
     AudioService.instance.play(Sfx.camera);
     setState(() => _completed[challenge.id] = path);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/photo_service.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
@@ -31,6 +32,56 @@ class _WeatherScreenState extends State<WeatherScreen> {
       _weather = await WeatherService.getWeather();
     } catch (_) {}
     if (mounted) setState(() => _loading = false);
+  }
+
+  Future<void> _showFallbackInfo() async {
+    return showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: <Widget>[
+            Text('📍', style: TextStyle(fontSize: 26)),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text('Localisation désactivée',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 17)),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Pour te montrer la météo de ton jardin, Kultiva a besoin '
+          'd\'accéder à ta position.\n\n'
+          'En attendant, on affiche la météo de Paris par défaut. '
+          'Tu peux autoriser la localisation dans les réglages.',
+          style: TextStyle(fontSize: 14, height: 1.4),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Plus tard'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: KultivaColors.primaryGreen,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            onPressed: () async {
+              Navigator.of(ctx).pop();
+              await PhotoService.openSettings();
+            },
+            child: const Text('Ouvrir les Réglages',
+                style: TextStyle(fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -99,15 +150,55 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
               ),
-              const Positioned(
-                bottom: 16, left: 20,
-                child: Text('🌤 Météo',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 22,
-                      shadows: [Shadow(color: Colors.black45, blurRadius: 8)],
-                    )),
+              Positioned(
+                bottom: 16, left: 20, right: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text('🌤 Météo',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 22,
+                          shadows: [
+                            Shadow(color: Colors.black45, blurRadius: 8),
+                          ],
+                        )),
+                    if (_weather?.isFallbackLocation ?? false) ...<Widget>[
+                      const SizedBox(height: 6),
+                      GestureDetector(
+                        onTap: _showFallbackInfo,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.35),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text('📍',
+                                  style: TextStyle(fontSize: 12)),
+                              SizedBox(width: 6),
+                              Flexible(
+                                child: Text(
+                                  'Paris (localisation désactivée) · Toucher',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ],
           ),
