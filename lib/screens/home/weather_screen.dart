@@ -34,6 +34,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
     if (mounted) setState(() => _loading = false);
   }
 
+  /// Recharge la météo en invalidant le cache. Utile si l'utilisateur
+  /// vient d'activer la géoloc dans les réglages.
+  Future<void> _refreshWeather() async {
+    WeatherService.invalidateCache();
+    setState(() => _loading = true);
+    await _load();
+  }
+
   /// Pill "📍 <ville>" affichée sous "🌤 Météo". Cliquable seulement si
   /// on est en fallback Paris (propose d'ouvrir les Réglages pour la
   /// géolocalisation).
@@ -184,6 +192,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.arrow_back,
+                          color: Colors.white, size: 20),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 8, right: 8,
+                child: SafeArea(
+                  child: GestureDetector(
+                    onTap: _refreshWeather,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.25),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.refresh,
                           color: Colors.white, size: 20),
                     ),
                   ),

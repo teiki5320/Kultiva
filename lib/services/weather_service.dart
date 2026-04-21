@@ -145,12 +145,19 @@ class WeatherService {
   /// 2. Si échec pour n'importe quelle raison → retombe sur Paris et
   ///    renvoie quand même des données (avec `isFallbackLocation = true`).
   /// 3. Retourne `null` uniquement si l'appel API Open-Meteo échoue.
+  ///
+  /// Le cache n'est PAS utilisé quand on est en fallback Paris, pour
+  /// que chaque ouverture de l'écran météo retente la vraie geoloc si
+  /// l'utilisateur l'a entre-temps ré-autorisée.
   static Future<WeatherData?> getWeather() async {
-    // Cache de 30 min.
-    if (_cached != null &&
+    // Cache de 30 min — uniquement si on avait une vraie position la
+    // dernière fois (sinon on retente la geoloc à chaque appel).
+    final cache = _cached;
+    if (cache != null &&
+        !cache.isFallbackLocation &&
         _lastFetch != null &&
         DateTime.now().difference(_lastFetch!) < const Duration(minutes: 30)) {
-      return _cached;
+      return cache;
     }
 
     final coords = await _resolveCoordinates();
@@ -207,29 +214,44 @@ class WeatherService {
   /// indisponible (service off, permission refusée, timeout, erreur),
   /// renvoie les coords de Paris avec `isFallback = true`.
   ///
+  /// Stratégie :
+  /// 1. Tente `getCurrentPosition` (fraîche, jusqu'à 15 s).
+  /// 2. Si timeout/erreur : tente `getLastKnownPosition` (instantané,
+  ///    utilise le dernier fix mémorisé par l'OS).
+  /// 3. Si toujours rien : Paris fallback.
+  ///
   /// Tuple : (latitude, longitude, isFallback).
   static Future<(double, double, bool)> _resolveCoordinates() async {
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return _parisFallback();
+
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      return _parisFallback();
+    }
+
+    // 1. Fraîche — avec 15 s de timeout.
     try {
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return _parisFallback();
-
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        return _parisFallback();
-      }
-
       final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low,
-        timeLimit: const Duration(seconds: 8),
+        timeLimit: const Duration(seconds: 15),
       );
       return (position.latitude, position.longitude, false);
     } catch (_) {
-      return _parisFallback();
+      // 2. Dernier fix connu (souvent dispo si l'user a utilisé la
+      //    geoloc ailleurs récemment).
+      try {
+        final last = await Geolocator.getLastKnownPosition();
+        if (last != null) {
+          return (last.latitude, last.longitude, false);
+        }
+      } catch (_) {}
     }
+    return _parisFallback();
   }
 
   static (double, double, bool) _parisFallback() =>
