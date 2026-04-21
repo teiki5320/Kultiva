@@ -47,7 +47,10 @@ android {
             if (keystorePropertiesFile.exists()) {
                 keyAlias = keystoreProperties["keyAlias"] as String?
                 keyPassword = keystoreProperties["keyPassword"] as String?
-                storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+                // Résolu relativement au dossier android/ (pas android/app/)
+                // pour que 'kultiva-upload-key.jks' pointe sur le bon fichier.
+                storeFile = keystoreProperties["storeFile"]
+                    ?.let { rootProject.file(it) }
                 storePassword = keystoreProperties["storePassword"] as String?
             }
         }
