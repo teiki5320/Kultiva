@@ -34,6 +34,43 @@ class _WeatherScreenState extends State<WeatherScreen> {
     if (mounted) setState(() => _loading = false);
   }
 
+  /// Pill "📍 <ville>" affichée sous "🌤 Météo". Cliquable seulement si
+  /// on est en fallback Paris (propose d'ouvrir les Réglages pour la
+  /// géolocalisation).
+  Widget _buildLocationPill() {
+    final isFallback = _weather?.isFallbackLocation ?? false;
+    final String text;
+    if (_weather == null) {
+      text = '📍 …';
+    } else if (isFallback) {
+      text = '📍 ${_weather!.locationName ?? 'Paris'} · '
+          'localisation désactivée';
+    } else {
+      text = '📍 ${_weather!.locationName ?? 'Ma position'}';
+    }
+
+    final pill = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 11,
+        ),
+      ),
+    );
+
+    if (isFallback) {
+      return GestureDetector(onTap: _showFallbackInfo, child: pill);
+    }
+    return pill;
+  }
+
   Future<void> _showFallbackInfo() async {
     return showDialog<void>(
       context: context,
@@ -125,13 +162,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Scaffold(
       body: Column(
         children: [
-          // Header saisonnier.
+          // Header saisonnier — mois masqué, on injecte notre propre
+          // titre "🌤 Météo" + localisation à la place.
           Stack(
             children: [
               SeasonHeader(
                 season: Season.fromMonth(DateTime.now().month),
                 month: DateTime.now().month,
                 height: 160,
+                hideLabel: true,
               ),
               Positioned(
                 top: 8, left: 8,
@@ -165,38 +204,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                             Shadow(color: Colors.black45, blurRadius: 8),
                           ],
                         )),
-                    if (_weather?.isFallbackLocation ?? false) ...<Widget>[
-                      const SizedBox(height: 6),
-                      GestureDetector(
-                        onTap: _showFallbackInfo,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.35),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text('📍',
-                                  style: TextStyle(fontSize: 12)),
-                              SizedBox(width: 6),
-                              Flexible(
-                                child: Text(
-                                  'Paris (localisation désactivée) · Toucher',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                    const SizedBox(height: 6),
+                    _buildLocationPill(),
                   ],
                 ),
               ),

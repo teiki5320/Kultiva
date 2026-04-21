@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +33,10 @@ class WeatherData {
   /// "Paris (localisation désactivée)" dans l'écran météo.
   final bool isFallbackLocation;
 
+  /// Nom de la ville (reverse-geocodé). Null tant que le geocoding n'a
+  /// pas répondu ; `'Paris'` quand on est en fallback.
+  final String? locationName;
+
   const WeatherData({
     required this.latitude,
     required this.longitude,
@@ -42,6 +47,7 @@ class WeatherData {
     required this.dailyTempMax,
     required this.dailyTempMin,
     this.isFallbackLocation = false,
+    this.locationName,
   });
 
   /// Nombre de jours consécutifs sans pluie significative (< 1 mm)
@@ -171,6 +177,7 @@ class WeatherService {
       final current = data['current'] as Map<String, dynamic>;
       final daily = data['daily'] as Map<String, dynamic>;
 
+      final name = isFallback ? 'Paris' : await _reverseGeocode(lat, lon);
       _cached = WeatherData(
         latitude: lat,
         longitude: lon,
@@ -187,6 +194,7 @@ class WeatherService {
             .map((e) => (e as num).toDouble())
             .toList(),
         isFallbackLocation: isFallback,
+        locationName: name,
       );
       _lastFetch = DateTime.now();
       return _cached;
@@ -226,6 +234,27 @@ class WeatherService {
 
   static (double, double, bool) _parisFallback() =>
       (_fallbackLat, _fallbackLon, true);
+
+  /// Reverse-geocode les coords en nom de ville via les APIs natives
+  /// (CLGeocoder iOS, Geocoder Android). Retourne null si le lookup
+  /// échoue ; l'écran météo affichera alors simplement "Ma position".
+  static Future<String?> _reverseGeocode(double lat, double lon) async {
+    try {
+      final placemarks = await placemarkFromCoordinates(lat, lon)
+          .timeout(const Duration(seconds: 5));
+      if (placemarks.isEmpty) return null;
+      final p = placemarks.first;
+      // Priorité au nom le plus humainement pertinent.
+      final candidate = p.locality?.isNotEmpty == true
+          ? p.locality
+          : (p.subAdministrativeArea?.isNotEmpty == true
+              ? p.subAdministrativeArea
+              : p.administrativeArea);
+      return (candidate?.isNotEmpty ?? false) ? candidate : null;
+    } catch (_) {
+      return null;
+    }
+  }
 
   /// Force un rafraîchissement au prochain appel.
   static void invalidateCache() {

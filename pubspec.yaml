@@ -44,6 +44,9 @@ dependencies:
   # Géolocalisation
   geolocator: ^11.0.0
 
+  # Reverse geocoding (coords → nom de ville) pour la météo
+  geocoding: ^3.0.0
+
   # Gestion des permissions (caméra, etc.) avec accès direct aux réglages OS
   permission_handler: ^11.3.1
 
