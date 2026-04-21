@@ -294,6 +294,7 @@ class _HeaderCard extends StatelessWidget {
               children: <Widget>[
                 MedalBadge(
                   emoji: vegetable.emoji,
+                  imageAsset: vegetable.imageAsset,
                   tier: tier,
                   familyColor: KultivaColors.primaryGreen,
                   size: 72,

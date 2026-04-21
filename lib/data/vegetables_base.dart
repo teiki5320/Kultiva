@@ -1349,6 +1349,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.',
     amazonUrl: 'https://www.amazon.fr/s?k=sécateur+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/secateur.png',
   ),
   Vegetable(
     id: 'acc_arrosoir',
@@ -1359,6 +1360,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.',
     amazonUrl: 'https://www.amazon.fr/s?k=arrosoir+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/arrosoir.png',
   ),
   Vegetable(
     id: 'acc_terreau',
@@ -1369,6 +1371,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.',
     amazonUrl: 'https://www.amazon.fr/s?k=terreau+bio+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/terreau.png',
   ),
   Vegetable(
     id: 'acc_engrais',
@@ -1379,6 +1382,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.',
     amazonUrl: 'https://www.amazon.fr/s?k=engrais+bio+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/engrais.png',
   ),
   Vegetable(
     id: 'acc_bac',
@@ -1389,6 +1393,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.',
     amazonUrl: 'https://www.amazon.fr/s?k=bac+potager+surélevé&tag=kultiva-21',
     accessorySub: AccessorySubCategory.pots,
+    imageAsset: 'assets/images/accessories/bac.png',
   ),
   Vegetable(
     id: 'acc_tuteur',
@@ -1399,6 +1404,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.',
     amazonUrl: 'https://www.amazon.fr/s?k=tuteur+potager+bambou&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/tuteur.png',
   ),
   Vegetable(
     id: 'acc_graines',
@@ -1409,6 +1415,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.',
     amazonUrl: 'https://www.amazon.fr/s?k=kit+graines+potager+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.seeds,
+    imageAsset: 'assets/images/accessories/graines.png',
   ),
   Vegetable(
     id: 'acc_gants',
@@ -1419,6 +1426,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: 'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.',
     amazonUrl: 'https://www.amazon.fr/s?k=gants+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/gants.png',
   ),
   // ── Structures & Aménagement ──
   Vegetable(
@@ -1430,6 +1438,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Petit tunnel en plastique avec armature métallique : protège les jeunes plants du froid au printemps et permet de cultiver tomates, poivrons même dans le nord.",
     amazonUrl: 'https://www.amazon.fr/s?k=serre+jardin+tunnel&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/serre_tunnel.png',
   ),
   Vegetable(
     id: 'acc_chassis',
@@ -1440,6 +1449,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Couche froide vitrée, idéale pour les semis précoces de février à avril. Permet de gagner 4-6 semaines sur le calendrier.",
     amazonUrl: 'https://www.amazon.fr/s?k=chassis+culture+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/chassis.png',
   ),
   Vegetable(
     id: 'acc_carre_potager',
@@ -1450,6 +1460,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Cadre en bois posé au sol, divisé en cases de 30×30 cm. Méthode simple, esthétique et productive — parfait pour un petit jardin.",
     amazonUrl: 'https://www.amazon.fr/s?k=carre+potager+bois&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/carre_potager.png',
   ),
   Vegetable(
     id: 'acc_table_culture',
@@ -1460,6 +1471,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Bac surélevé sur pieds (60-90 cm de haut). Idéal balcon, terrasse ou personnes à mobilité réduite. Profondeur min 30 cm pour les légumes.",
     amazonUrl: 'https://www.amazon.fr/s?k=table+culture+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/table_culture.png',
   ),
   Vegetable(
     id: 'acc_cloche',
@@ -1470,6 +1482,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Cloche transparente à poser sur un plant fragile : forçage de printemps, protection contre le gel ou les limaces. Réutilisable saison après saison.",
     amazonUrl: 'https://www.amazon.fr/s?k=cloche+horticole+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/cloche.png',
   ),
   // ── Arrosage ──
   Vegetable(
@@ -1481,6 +1494,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Système d'arrosage automatique avec tuyaux et goutteurs. Délivre l'eau directement au pied des plants, idéal en été et pour partir en vacances.",
     amazonUrl: 'https://www.amazon.fr/s?k=kit+goutte+a+goutte+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
+    imageAsset: 'assets/images/accessories/goutte_a_goutte.png',
   ),
   Vegetable(
     id: 'acc_programmateur',
@@ -1491,6 +1505,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Se branche sur le robinet et programme l'arrosage automatiquement (durée + créneau). À combiner avec un kit goutte à goutte ou un tuyau perforé.",
     amazonUrl: 'https://www.amazon.fr/s?k=programmateur+arrosage+robinet&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
+    imageAsset: 'assets/images/accessories/programmateur.png',
   ),
   Vegetable(
     id: 'acc_recuperateur',
@@ -1501,6 +1516,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Cuve 200-500 L à raccorder sur une descente de gouttière. L'eau de pluie est sans calcaire, à température ambiante : parfaite pour le potager.",
     amazonUrl: 'https://www.amazon.fr/s?k=recuperateur+eau+pluie+300L&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
+    imageAsset: 'assets/images/accessories/recuperateur.png',
   ),
   Vegetable(
     id: 'acc_oyas',
@@ -1511,6 +1527,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Pot en terre cuite poreuse à enterrer entre les plants : se remplit d'eau et la diffuse lentement. Réduit l'arrosage à 1 fois par semaine.",
     amazonUrl: 'https://www.amazon.fr/s?k=oyas+terre+cuite+arrosage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
+    imageAsset: 'assets/images/accessories/oyas.png',
   ),
   Vegetable(
     id: 'acc_tuyau_microporeux',
@@ -1521,6 +1538,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Tuyau qui suinte sur toute sa longueur et arrose les plants en ligne. Facile à installer, idéal pour les rangs de salades, carottes, fraisiers.",
     amazonUrl: 'https://www.amazon.fr/s?k=tuyau+microporeux+arrosage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
+    imageAsset: 'assets/images/accessories/tuyau_microporeux.png',
   ),
   // ── Protection des cultures ──
   Vegetable(
@@ -1532,6 +1550,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Voile à fines mailles à poser sur les cultures. Empêche piéride du chou, mouche de la carotte, altises et pucerons sans aucun traitement.",
     amazonUrl: 'https://www.amazon.fr/s?k=filet+anti+insectes+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
+    imageAsset: 'assets/images/accessories/filet_insectes.png',
   ),
   Vegetable(
     id: 'acc_voile_hivernage',
@@ -1542,6 +1561,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Voile blanc épais (P30) à poser sur les plants sensibles en hiver. Protège artichauts, poireaux, choux, oliviers, agrumes en pots.",
     amazonUrl: 'https://www.amazon.fr/s?k=voile+hivernage+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
+    imageAsset: 'assets/images/accessories/voile_hivernage.png',
   ),
   Vegetable(
     id: 'acc_voile_forcage',
@@ -1552,6 +1572,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Voile léger (P17) à poser au printemps pour réchauffer le sol et démarrer plus tôt salades, radis, carottes. Laisse passer pluie et lumière.",
     amazonUrl: 'https://www.amazon.fr/s?k=voile+forcage+printemps&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
+    imageAsset: 'assets/images/accessories/voile_forcage.png',
   ),
   Vegetable(
     id: 'acc_filet_oiseaux',
@@ -1562,6 +1583,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Filet à mailles larges à tendre au-dessus des fraisiers, des arbres fruitiers ou des semis. Empêche merles et étourneaux de tout picorer.",
     amazonUrl: 'https://www.amazon.fr/s?k=filet+anti+oiseaux+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
+    imageAsset: 'assets/images/accessories/filet_oiseaux.png',
   ),
   Vegetable(
     id: 'acc_anti_limaces',
@@ -1572,6 +1594,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Granulés à base de phosphate de fer, autorisés en agriculture biologique. Non toxiques pour hérissons, oiseaux et animaux domestiques.",
     amazonUrl: 'https://www.amazon.fr/s?k=ferramol+anti+limaces+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
+    imageAsset: 'assets/images/accessories/anti_limaces.png',
   ),
   // ── Tuteurage & support (sous catégorie structures) ──
   Vegetable(
@@ -1583,6 +1606,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Grille rigide à planter derrière les tomates. Permet de palisser les branches au fur et à mesure, plus solide que les tuteurs simples.",
     amazonUrl: 'https://www.amazon.fr/s?k=treillis+tomates+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/treillis_tomate.png',
   ),
   Vegetable(
     id: 'acc_arche',
@@ -1593,6 +1617,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Arche métallique 2 m de haut : parfaite pour faire grimper haricots à rames, courges, concombres, kiwis. Décoratif et productif.",
     amazonUrl: 'https://www.amazon.fr/s?k=arche+jardin+plantes+grimpantes&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/arche.png',
   ),
   Vegetable(
     id: 'acc_tuteurs_spirales',
@@ -1603,6 +1628,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Tuteur en métal en forme de spirale : la tige de tomate s'enroule naturellement dedans. Pas besoin de ficelle ni d'attaches, gain de temps énorme.",
     amazonUrl: 'https://www.amazon.fr/s?k=tuteurs+spirale+tomate&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/tuteurs_spirales.png',
   ),
   Vegetable(
     id: 'acc_rames_bambou',
@@ -1613,6 +1639,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Bambous longs (1,80 à 2,40 m) à planter en tipi ou en ligne. Naturels, robustes et réutilisables plusieurs années.",
     amazonUrl: 'https://www.amazon.fr/s?k=rames+bambou+haricot&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/rames_bambou.png',
   ),
   // ── Sol & compost ──
   Vegetable(
@@ -1624,6 +1651,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Bac de 300-600 L pour transformer épluchures et déchets verts en compost. Volume conseillé : 1 m³ pour un jardin moyen.",
     amazonUrl: 'https://www.amazon.fr/s?k=composteur+jardin+400L&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/composteur.png',
   ),
   Vegetable(
     id: 'acc_lombricomposteur',
@@ -1634,6 +1662,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Bac compact pour appartement : les vers décomposent les déchets de cuisine et produisent un engrais liquide ultra-puissant. Sans odeur.",
     amazonUrl: 'https://www.amazon.fr/s?k=lombricomposteur+appartement&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/lombricomposteur.png',
   ),
   Vegetable(
     id: 'acc_activateur_compost',
@@ -1644,6 +1673,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Mélange de micro-organismes à saupoudrer sur le compost. Réduit le temps de maturation de 12 à 6 mois et limite les odeurs.",
     amazonUrl: 'https://www.amazon.fr/s?k=activateur+compost+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/activateur_compost.png',
   ),
   Vegetable(
     id: 'acc_paillis_chanvre',
@@ -1654,6 +1684,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Paillis 100% végétal à étaler en couche de 5-7 cm autour des plants. Garde le sol humide, freine les mauvaises herbes, se décompose en humus.",
     amazonUrl: 'https://www.amazon.fr/s?k=paillis+chanvre+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/paillis_chanvre.png',
   ),
   Vegetable(
     id: 'acc_mulch_ecorces',
@@ -1664,6 +1695,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Écorces de pin maritime, idéales pour les massifs et arbres fruitiers. Décoratif, dure 2-3 ans, acidifie légèrement le sol (parfait pour fraisiers).",
     amazonUrl: 'https://www.amazon.fr/s?k=mulch+ecorces+pin+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
+    imageAsset: 'assets/images/accessories/mulch_ecorces.png',
   ),
   Vegetable(
     id: 'acc_grelinette',
@@ -1674,6 +1706,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Fourche à 4-5 dents : ameublit la terre en profondeur sans détruire la vie du sol. Indispensable pour qui pratique le \"sol vivant\".",
     amazonUrl: 'https://www.amazon.fr/s?k=grelinette+fourche+beche&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/grelinette.png',
   ),
   // ── Petits outils ──
   Vegetable(
@@ -1685,6 +1718,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Petit outil à main pour gratter la surface du sol et casser la croûte. Permet d'aérer la terre et d'arracher les jeunes herbes.",
     amazonUrl: 'https://www.amazon.fr/s?k=binette+serfouette+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/binette.png',
   ),
   Vegetable(
     id: 'acc_plantoir',
@@ -1695,6 +1729,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Outil cylindrique qui creuse un trou parfait à la bonne profondeur. Idéal pour planter ail, échalotes, tulipes, jacinthes en quantité.",
     amazonUrl: 'https://www.amazon.fr/s?k=plantoir+bulbes+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/plantoir.png',
   ),
   Vegetable(
     id: 'acc_transplantoir',
@@ -1705,6 +1740,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Petite pelle étroite pour repiquer les semis sans abîmer les racines. Indispensable au printemps pour la mise en place du potager.",
     amazonUrl: 'https://www.amazon.fr/s?k=transplantoir+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/transplantoir.png',
   ),
   Vegetable(
     id: 'acc_etiquettes',
@@ -1715,6 +1751,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Lot d'étiquettes en ardoise ou plastique avec marqueur. Indispensable pour ne pas oublier ce que tu as semé et où.",
     amazonUrl: 'https://www.amazon.fr/s?k=etiquettes+plantes+ardoise&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/etiquettes.png',
   ),
   Vegetable(
     id: 'acc_panier_recolte',
@@ -1725,5 +1762,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description: "Panier en osier ou plastique aéré pour récolter et transporter tes légumes du jardin à la cuisine sans les abîmer.",
     amazonUrl: 'https://www.amazon.fr/s?k=panier+recolte+osier+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
+    imageAsset: 'assets/images/accessories/panier_recolte.png',
   ),
 ];
