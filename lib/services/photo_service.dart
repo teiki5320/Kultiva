@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -12,8 +13,8 @@ enum PhotoPickStatus {
   /// L'utilisateur a explicitement annulé dans le picker.
   cancelled,
 
-  /// La permission caméra est refusée (l'utilisateur doit aller dans
-  /// les réglages OS pour l'autoriser).
+  /// La permission caméra / galerie est refusée (l'utilisateur doit
+  /// aller dans les réglages OS pour l'autoriser).
   permissionDenied,
 
   /// Toute autre erreur (IO, picker qui crashe, etc.).
@@ -40,26 +41,14 @@ class PhotoService {
   /// puis copie le fichier retourné dans `Documents/plant_photos/` avec un
   /// nom unique basé sur le timestamp.
   ///
-  /// Retourne un [PhotoPickResult] permettant de distinguer les cas
-  /// succès / annulation / permission refusée / erreur.
+  /// On laisse `image_picker` gérer lui-même la demande de permission
+  /// (natif iOS/Android) et on détecte le refus via l'exception qu'il
+  /// lance (`PlatformException('camera_access_denied')` etc.).
+  /// Ça évite les faux refus liés à la configuration du Podfile de
+  /// permission_handler.
   static Future<PhotoPickResult> pickDetailed({
     required bool fromCamera,
   }) async {
-    // Pré-check permission caméra : si déjà refusée définitivement, on
-    // court-circuite le picker pour afficher notre dialog.
-    if (fromCamera) {
-      final status = await Permission.camera.status;
-      if (status.isPermanentlyDenied || status.isRestricted) {
-        return const PhotoPickResult(PhotoPickStatus.permissionDenied);
-      }
-      if (status.isDenied) {
-        final result = await Permission.camera.request();
-        if (!result.isGranted) {
-          return const PhotoPickResult(PhotoPickStatus.permissionDenied);
-        }
-      }
-    }
-
     try {
       final XFile? picked = await _picker.pickImage(
         source: fromCamera ? ImageSource.camera : ImageSource.gallery,
@@ -80,9 +69,13 @@ class PhotoService {
       final dest = '${photosDir.path}/plant_$ts$ext';
       await File(picked.path).copy(dest);
       return PhotoPickResult(PhotoPickStatus.success, path: dest);
+    } on PlatformException catch (e) {
+      final code = e.code.toLowerCase();
+      if (code.contains('denied') || code.contains('permission')) {
+        return const PhotoPickResult(PhotoPickStatus.permissionDenied);
+      }
+      return const PhotoPickResult(PhotoPickStatus.error);
     } catch (e) {
-      // image_picker lance une PlatformException avec code
-      // 'camera_access_denied' si l'utilisateur refuse au moment du prompt.
       final msg = e.toString().toLowerCase();
       if (msg.contains('denied') || msg.contains('permission')) {
         return const PhotoPickResult(PhotoPickStatus.permissionDenied);
