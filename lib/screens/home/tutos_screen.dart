@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_theme.dart';
-import '../tuto_image_screen.dart';
-import '../tuto_pdf_screen.dart';
 import 'tuto_fiche_screen.dart';
 
 /// Catégorie de tuto avec ses vidéos.
@@ -27,15 +25,11 @@ class _TutoItem {
   final String label;
   final String url;
   final String? htmlAsset;
-  final String? pdfAsset;
-  final String? pngAsset;
   const _TutoItem({
     required this.emoji,
     required this.label,
     this.url = '',
     this.htmlAsset,
-    this.pdfAsset,
-    this.pngAsset,
   });
 }
 
@@ -64,7 +58,7 @@ const _categories = <_TutoCategory>[
     label: 'Semis',
     color: Color(0xFF4A9B5A),
     items: [
-      _TutoItem(emoji: '🌱', label: 'Réussir ses semis', htmlAsset: 'assets/tutos/reussir_semis.html', pdfAsset: 'assets/tutos/reussir_semis.pdf', pngAsset: 'assets/tutos/reussir_semis.png'),
+      _TutoItem(emoji: '🌱', label: 'Réussir ses semis', htmlAsset: 'assets/tutos/reussir_semis.html'),
       _TutoItem(emoji: '🏠', label: 'Semis en intérieur', htmlAsset: 'assets/tutos/semis_interieur.html'),
       _TutoItem(emoji: '📅', label: 'Quand semer ?', htmlAsset: 'assets/tutos/quand_semer.html'),
       _TutoItem(emoji: '🌡️', label: 'Température de germination', htmlAsset: 'assets/tutos/temperature_germination.html'),
@@ -276,25 +270,7 @@ class _TutoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (item.pngAsset != null) {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => TutoImageScreen(
-                titre: item.label,
-                assetPath: item.pngAsset!,
-              ),
-            ),
-          );
-        } else if (item.pdfAsset != null) {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => TutoPdfScreen(
-                titre: item.label,
-                assetPath: item.pdfAsset!,
-              ),
-            ),
-          );
-        } else if (item.htmlAsset != null) {
+        if (item.htmlAsset != null) {
           Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => TutoFicheScreen(
