@@ -189,7 +189,7 @@
     <span class="tag">Ton jardin kawaii, au creux de la main ✿</span>
   </div>
 
-  <div class="scene-badge" id="sceneBadge">SCÈNE 1 / 6</div>
+  <div class="scene-badge" id="sceneBadge">SCÈNE 1 / 10</div>
 
   <div class="phone-wrap" id="phoneWrap">
     <div class="phone-shadow"></div>
@@ -203,6 +203,10 @@
         <img class="shot" id="shot4" src="screens/dashboard/04_recolter.png" alt="Récolter"/>
         <img class="shot" id="shot5" src="screens/dashboard/05_calendrier.png" alt="Calendrier"/>
         <img class="shot" id="shot6" src="screens/dashboard/06_legume_du_jour.png" alt="Légume du jour"/>
+        <img class="shot" id="shot7" src="screens/dashboard/07_etal.png" alt="Étal"/>
+        <img class="shot" id="shot8" src="screens/dashboard/08_poussidex_tamassi.png" alt="Poussidex Tamassi"/>
+        <img class="shot" id="shot9" src="screens/dashboard/09_poussidex_defis.png" alt="Poussidex Défis"/>
+        <img class="shot" id="shot10" src="screens/dashboard/10_poussidex_badges.png" alt="Poussidex Badges"/>
 
         <div class="halo" id="halo1" style="left:14px;top:60px;width:calc(100% - 28px);height:1300px;border-radius:40px;"><div class="pulse"></div></div>
         <div class="halo blue" id="haloMeteo" style="left:28px;top:760px;width:644px;height:170px;border-radius:30px;"><div class="pulse"></div></div>
@@ -216,6 +220,16 @@
         <div class="halo terra" id="haloFull4" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
         <div class="halo rose" id="haloFull5" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
         <div class="halo gold" id="haloFull6" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
+        <div class="halo" id="haloFull7" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
+        <div class="halo" id="haloFull8" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloFull9" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloFull10" style="left:14px;top:14px;width:calc(100% - 28px);height:calc(100% - 28px);border-radius:62px;"><div class="pulse"></div></div>
+
+        <!-- Nav bar halos (pointent sur les icônes cibles avant chaque transition) -->
+        <div class="halo" id="haloNavEtal" style="left:190px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo" id="haloNavPoussidex" style="left:360px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloTabDefis" style="left:230px;top:200px;width:120px;height:60px;border-radius:20px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloTabBadges" style="left:370px;top:200px;width:120px;height:60px;border-radius:20px;"><div class="pulse"></div></div>
 
         <div class="cursor" id="cursor" style="left:300px;top:380px;">
           <svg width="70" height="80" viewBox="0 0 70 80">
@@ -263,6 +277,30 @@
     <span class="emoji">✨</span>
     <span class="content">Le légume du jour
       <span class="sub">Chaque jour, une fiche kawaii complète — semis, culture, récolte.</span>
+    </span>
+  </div>
+  <div class="caption green" id="cap7" style="left:60px;top:330px;">
+    <span class="emoji">🛒</span>
+    <span class="content">L'Étal, ton marché kawaii
+      <span class="sub">Le catalogue complet : 10 rayons de légumes, aromatiques et 38 accessoires.</span>
+    </span>
+  </div>
+  <div class="caption terra" id="cap8" style="left:60px;top:330px;">
+    <span class="emoji">🌿</span>
+    <span class="content">Ton Tamassi
+      <span class="sub">La créature kawaii qui évolue avec tes actions au jardin.</span>
+    </span>
+  </div>
+  <div class="caption rose" id="cap9" style="left:60px;top:330px;">
+    <span class="emoji">📸</span>
+    <span class="content">30 défis photo
+      <span class="sub">Une photo, un badge, de l'XP pour ton Tamassi.</span>
+    </span>
+  </div>
+  <div class="caption gold" id="cap10" style="left:60px;top:330px;">
+    <span class="emoji">🏆</span>
+    <span class="content">Les badges
+      <span class="sub">Collectionne-les tous en jardinant.</span>
     </span>
   </div>
 
@@ -335,9 +373,9 @@ gsap.to('#glare',{x:1200,duration:4.5,repeat:-1,ease:'power1.inOut',repeatDelay:
 gsap.to('#header',{y:6,duration:2.2,yoyo:true,repeat:-1,ease:'sine.inOut'});
 gsap.to('#footer',{y:-4,duration:2.4,yoyo:true,repeat:-1,ease:'sine.inOut'});
 
-const CAPS=['#cap1','#cap2','#cap3','#cap4','#cap5','#cap6'];
-const HALOS_ALL=['#halo1','#haloMeteo','#haloSemer','#haloRecolter','#haloCalendrier','#haloJour','#haloFull2','#haloFull3','#haloFull4','#haloFull5','#haloFull6'];
-const SHOTS=['#shot1','#shot2','#shot3','#shot4','#shot5','#shot6'];
+const CAPS=['#cap1','#cap2','#cap3','#cap4','#cap5','#cap6','#cap7','#cap8','#cap9','#cap10'];
+const HALOS_ALL=['#halo1','#haloMeteo','#haloSemer','#haloRecolter','#haloCalendrier','#haloJour','#haloFull2','#haloFull3','#haloFull4','#haloFull5','#haloFull6','#haloFull7','#haloFull8','#haloFull9','#haloFull10','#haloNavEtal','#haloNavPoussidex','#haloTabDefis','#haloTabBadges'];
+const SHOTS=['#shot1','#shot2','#shot3','#shot4','#shot5','#shot6','#shot7','#shot8','#shot9','#shot10'];
 
 gsap.set('#phoneWrap',{scale:.8,opacity:0,y:30});
 gsap.set('#header',{y:-60,opacity:0});
@@ -353,7 +391,7 @@ function showShot(idx){
   SHOTS.forEach((s,i)=>gsap.to(s,{opacity:i===idx?1:0,scale:i===idx?1:1.03,duration:.35,ease:'sine.out'}));
 }
 function setBadge(n){
-  document.getElementById('sceneBadge').textContent = `SCÈNE ${n} / 6`;
+  document.getElementById('sceneBadge').textContent = `SCÈNE ${n} / 10`;
 }
 
 function buildTL(){
@@ -466,14 +504,95 @@ function buildTL(){
   tl.fromTo('#cap6',{scale:.6,opacity:0,y:10},{scale:1,opacity:1,y:0,duration:.45,ease:'back.out(2)'},14.1);
   tl.to('#cap6 .emoji',{scale:1.25,duration:.3,yoyo:true,repeat:2,ease:'sine.inOut'},14.4);
 
-  tl.to(['#cap6','#haloFull6'],{opacity:0,duration:.4},15.4);
-  tl.to(['#header','#footer','#sceneBadge'],{opacity:0,duration:.4},15.4);
-  tl.fromTo('#outro',{opacity:0,scale:.85},{opacity:1,scale:1,duration:.6,ease:'back.out(1.6)'},15.6);
-  tl.to('#outro',{opacity:0,scale:.95,duration:.4,ease:'power2.in'},17.0);
-  tl.to('#phoneWrap',{scale:.8,opacity:0,y:30,duration:.6,ease:'power2.in'},17.0);
-  tl.call(()=>showShot(0),null,17.6);
+  // Exit scene 6 → back to home for bottom-nav tap
+  tl.to(['#cap6','#haloFull6'],{opacity:0,duration:.4},15.3);
+  tl.call(()=>showShot(0),null,15.45);
+
+  // ----- Scene 7 (15.5 - 18.0): Étal — tap bottom nav Étal -----
+  tl.call(()=>setBadge(7),null,15.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:220,y:1310},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},15.5);
+  tl.to('#haloNavEtal',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},15.55);
+  tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},15.8);
+  tl.to('#haloNavEtal',{scale:1.05,duration:.15,yoyo:true,repeat:1},15.8);
+  tl.to('#cursor',{scale:1,duration:.15,ease:'back.out(2)'},15.95);
+  tl.to('#cursor',{opacity:0,scale:.6,duration:.2},16.1);
+  tl.to('#haloNavEtal',{opacity:0,duration:.2},16.1);
+  tl.call(()=>showShot(6),null,16.25);
+  tl.to('#phoneWrap',{scale:1.02,duration:.2,yoyo:true,repeat:1,ease:'sine.inOut'},16.25);
+  tl.to('#haloFull7',{opacity:1,scale:1,duration:.35,ease:'back.out(1.8)'},16.5);
+  tl.to('#haloFull7 .pulse',{opacity:1,scale:1.03,duration:.8,ease:'sine.out'},16.5);
+  tl.to('#haloFull7 .pulse',{opacity:0,duration:.35},17.2);
+  tl.fromTo('#cap7',{scale:.6,opacity:0,y:10},{scale:1,opacity:1,y:0,duration:.45,ease:'back.out(2)'},16.6);
+  tl.to('#cap7 .emoji',{scale:1.25,duration:.3,yoyo:true,repeat:2,ease:'sine.inOut'},16.9);
+  tl.to('#haloFull7',{opacity:0,duration:.3},17.6);
+  tl.to('#cap7',{scale:.7,opacity:0,duration:.3,ease:'back.in(1.6)'},17.6);
+  tl.call(()=>showShot(0),null,17.75);
+
+  // ----- Scene 8 (18.0 - 20.5): Poussidex Tamassi — tap bottom nav Poussidex -----
+  tl.call(()=>setBadge(8),null,18.0);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:390,y:1310},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},18.0);
+  tl.to('#haloNavPoussidex',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},18.05);
+  tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},18.3);
+  tl.to('#haloNavPoussidex',{scale:1.05,duration:.15,yoyo:true,repeat:1},18.3);
+  tl.to('#cursor',{scale:1,duration:.15,ease:'back.out(2)'},18.45);
+  tl.to('#cursor',{opacity:0,scale:.6,duration:.2},18.6);
+  tl.to('#haloNavPoussidex',{opacity:0,duration:.2},18.6);
+  tl.call(()=>showShot(7),null,18.75);
+  tl.to('#phoneWrap',{scale:1.02,duration:.2,yoyo:true,repeat:1,ease:'sine.inOut'},18.75);
+  tl.to('#haloFull8',{opacity:1,scale:1,duration:.35,ease:'back.out(1.8)'},19.0);
+  tl.to('#haloFull8 .pulse',{opacity:1,scale:1.03,duration:.8,ease:'sine.out'},19.0);
+  tl.to('#haloFull8 .pulse',{opacity:0,duration:.35},19.7);
+  tl.fromTo('#cap8',{scale:.6,opacity:0,y:10},{scale:1,opacity:1,y:0,duration:.45,ease:'back.out(2)'},19.1);
+  tl.to('#cap8 .emoji',{scale:1.25,duration:.3,yoyo:true,repeat:2,ease:'sine.inOut'},19.4);
+  tl.to('#haloFull8',{opacity:0,duration:.3},20.1);
+  tl.to('#cap8',{scale:.7,opacity:0,duration:.3,ease:'back.in(1.6)'},20.1);
+  // stay on Poussidex (shot8) for the Défis sub-tab tap
+
+  // ----- Scene 9 (20.5 - 23.0): Poussidex Défis — tap sub-tab -----
+  tl.call(()=>setBadge(9),null,20.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:250,y:220},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
+  tl.to('#haloTabDefis',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},20.55);
+  tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},20.8);
+  tl.to('#haloTabDefis',{scale:1.05,duration:.15,yoyo:true,repeat:1},20.8);
+  tl.to('#cursor',{scale:1,duration:.15,ease:'back.out(2)'},20.95);
+  tl.to('#cursor',{opacity:0,scale:.6,duration:.2},21.1);
+  tl.to('#haloTabDefis',{opacity:0,duration:.2},21.1);
+  tl.call(()=>showShot(8),null,21.25);
+  tl.to('#phoneWrap',{scale:1.02,duration:.2,yoyo:true,repeat:1,ease:'sine.inOut'},21.25);
+  tl.to('#haloFull9',{opacity:1,scale:1,duration:.35,ease:'back.out(1.8)'},21.5);
+  tl.to('#haloFull9 .pulse',{opacity:1,scale:1.03,duration:.8,ease:'sine.out'},21.5);
+  tl.to('#haloFull9 .pulse',{opacity:0,duration:.35},22.2);
+  tl.fromTo('#cap9',{scale:.6,opacity:0,y:10},{scale:1,opacity:1,y:0,duration:.45,ease:'back.out(2)'},21.6);
+  tl.to('#cap9 .emoji',{scale:1.25,duration:.3,yoyo:true,repeat:2,ease:'sine.inOut'},21.9);
+  tl.to('#haloFull9',{opacity:0,duration:.3},22.6);
+  tl.to('#cap9',{scale:.7,opacity:0,duration:.3,ease:'back.in(1.6)'},22.6);
+
+  // ----- Scene 10 (23.0 - 25.5): Poussidex Badges — tap sub-tab -----
+  tl.call(()=>setBadge(10),null,23.0);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:390,y:220},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
+  tl.to('#haloTabBadges',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},23.05);
+  tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},23.3);
+  tl.to('#haloTabBadges',{scale:1.05,duration:.15,yoyo:true,repeat:1},23.3);
+  tl.to('#cursor',{scale:1,duration:.15,ease:'back.out(2)'},23.45);
+  tl.to('#cursor',{opacity:0,scale:.6,duration:.2},23.6);
+  tl.to('#haloTabBadges',{opacity:0,duration:.2},23.6);
+  tl.call(()=>showShot(9),null,23.75);
+  tl.to('#phoneWrap',{scale:1.02,duration:.2,yoyo:true,repeat:1,ease:'sine.inOut'},23.75);
+  tl.to('#haloFull10',{opacity:1,scale:1,duration:.35,ease:'back.out(1.8)'},24.0);
+  tl.to('#haloFull10 .pulse',{opacity:1,scale:1.03,duration:.8,ease:'sine.out'},24.0);
+  tl.to('#haloFull10 .pulse',{opacity:0,duration:.35},24.7);
+  tl.fromTo('#cap10',{scale:.6,opacity:0,y:10},{scale:1,opacity:1,y:0,duration:.45,ease:'back.out(2)'},24.1);
+  tl.to('#cap10 .emoji',{scale:1.25,duration:.3,yoyo:true,repeat:2,ease:'sine.inOut'},24.4);
+
+  // Outro (shifted to ~25.4)
+  tl.to(['#cap10','#haloFull10'],{opacity:0,duration:.4},25.4);
+  tl.to(['#header','#footer','#sceneBadge'],{opacity:0,duration:.4},25.4);
+  tl.fromTo('#outro',{opacity:0,scale:.85},{opacity:1,scale:1,duration:.6,ease:'back.out(1.6)'},25.6);
+  tl.to('#outro',{opacity:0,scale:.95,duration:.4,ease:'power2.in'},27.0);
+  tl.to('#phoneWrap',{scale:.8,opacity:0,y:30,duration:.6,ease:'power2.in'},27.0);
+  tl.call(()=>showShot(0),null,27.6);
   tl.set('#sceneBadge',{y:-20,opacity:0});
-  tl.to({},{duration:.2},17.7);
+  tl.to({},{duration:.2},27.7);
 
   return tl;
 }
