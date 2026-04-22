@@ -31,9 +31,7 @@ dependencies:
   go_router: ^12.0.0
 
   # Notifications (planification mensuelle + alertes météo)
-  # TODO: flutter_local_notifications 16 → 21 dispo mais breaking API.
-  # Tant qu'on est sur 16.x, timezone est bloqué sur 0.9.x.
-  flutter_local_notifications: ^16.1.0
+  flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4
 
   # URL launcher (liens Amazon)
@@ -45,6 +43,12 @@ dependencies:
 
   # Géolocalisation
   geolocator: ^11.0.0
+
+  # Reverse geocoding (coords → nom de ville) pour la météo
+  geocoding: ^3.0.0
+
+  # Gestion des permissions (caméra, etc.) avec accès direct aux réglages OS
+  permission_handler: ^11.3.1
 
   # HTTP (météo Open-Meteo)
   http: ^1.2.0
@@ -78,12 +82,14 @@ flutter:
   assets:
     - assets/images/
     - assets/images/badges/
+    - assets/images/accessories/
     - assets/images/creatures/
     - assets/images/creatures/Poussia/
     - assets/images/creatures/Soleia/
     - assets/images/creatures/Spira/
     - assets/images/backgrounds/
     - assets/tutos/
+    - assets/tutos/screens/
     - assets/sounds/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───

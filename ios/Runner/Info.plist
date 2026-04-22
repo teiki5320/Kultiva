@@ -90,5 +90,7 @@
 	<string>Kultiva utilise ta galerie pour que tu puisses ajouter des photos existantes à tes plants.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Kultiva peut enregistrer une copie de tes photos de plants dans ta galerie.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Kultiva utilise ta localisation pour afficher la météo de ton jardin (prévisions pluie + températures).</string>
 </dict>
 </plist>

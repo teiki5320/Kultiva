@@ -3,7 +3,10 @@ enum AccessorySubCategory {
   tools,
   pots,
   soil,
-  seeds;
+  seeds,
+  watering,
+  protection,
+  structures;
 
   String get label {
     switch (this) {
@@ -15,6 +18,12 @@ enum AccessorySubCategory {
         return 'Terreau & Engrais';
       case AccessorySubCategory.seeds:
         return 'Semences';
+      case AccessorySubCategory.watering:
+        return 'Arrosage';
+      case AccessorySubCategory.protection:
+        return 'Protection';
+      case AccessorySubCategory.structures:
+        return 'Structures';
     }
   }
 
@@ -28,6 +37,12 @@ enum AccessorySubCategory {
         return '🌱';
       case AccessorySubCategory.seeds:
         return '🌾';
+      case AccessorySubCategory.watering:
+        return '💧';
+      case AccessorySubCategory.protection:
+        return '🛡️';
+      case AccessorySubCategory.structures:
+        return '🏡';
     }
   }
 }
@@ -136,6 +151,10 @@ class Vegetable {
   // --- Accessoires : sous-catégorie (uniquement si category == accessories) ---
   final AccessorySubCategory? accessorySub;
 
+  /// Chemin de l'image kawaii (fallback emoji si null).
+  /// Ex: 'assets/images/accessories/secateur.png'.
+  final String? imageAsset;
+
   // --- Temps avant récolte par saison (si renseigné) ---
   /// Ex. {Season.spring: '60-80 jours', Season.summer: '50-70 jours'}.
   final Map<String, String>? harvestTimeBySeason;
@@ -159,6 +178,7 @@ class Vegetable {
     this.yieldEstimate,
     this.amazonUrl,
     this.accessorySub,
+    this.imageAsset,
     this.harvestTimeBySeason,
   });
 

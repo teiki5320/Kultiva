@@ -10,11 +10,16 @@ class SeasonHeader extends StatelessWidget {
   final int month;
   final double height;
 
+  /// Masque le libellé saison + mois (utilisé par l'écran météo qui
+  /// injecte son propre titre + localisation à la place).
+  final bool hideLabel;
+
   const SeasonHeader({
     super.key,
     required this.season,
     required this.month,
     this.height = 220,
+    this.hideLabel = false,
   });
 
   static const List<String> _months = <String>[
@@ -76,8 +81,9 @@ class SeasonHeader extends StatelessWidget {
             ),
             // Particules animées.
             SeasonParticleAnimation(season: season),
-            // Libellé.
-            Positioned(
+            // Libellé (masqué si hideLabel=true, pour que l'écran météo
+            // puisse afficher son propre titre/localisation à la place).
+            if (!hideLabel) Positioned(
               left: 20,
               right: 20,
               bottom: 20,

@@ -14,6 +14,10 @@ class MedalBadge extends StatelessWidget {
   final double size;
   final Color familyColor;
 
+  /// Image kawaii affichée à la place de l'emoji si renseignée
+  /// (ex. fiches accessoires). Fallback emoji si null ou si le load échoue.
+  final String? imageAsset;
+
   /// Si [showCornerMedal] est true, une petite pastille emoji
   /// (🥉/🥈/🥇/✨) est posée dans le coin en haut à droite.
   final bool showCornerMedal;
@@ -25,6 +29,7 @@ class MedalBadge extends StatelessWidget {
     required this.familyColor,
     this.size = 70,
     this.showCornerMedal = true,
+    this.imageAsset,
   });
 
   static const List<Color> _shinyGradient = <Color>[
@@ -180,7 +185,7 @@ class MedalBadge extends StatelessWidget {
           color: familyColor.withOpacity(0.15),
         ),
         alignment: Alignment.center,
-        child: Text(emoji, style: TextStyle(fontSize: emojiSize)),
+        child: _buildCenterContent(emojiSize),
       );
     }
 
@@ -257,10 +262,28 @@ class MedalBadge extends StatelessWidget {
               ),
             ),
           ),
-          // 4. Emoji centré.
-          Text(emoji, style: TextStyle(fontSize: emojiSize)),
+          // 4. Emoji (ou image kawaii) centré.
+          _buildCenterContent(emojiSize),
         ],
       ),
+    );
+  }
+
+  /// Affiche l'image kawaii si fournie, sinon l'emoji.
+  /// L'image est insérée dans un padding interne pour laisser un petit
+  /// espace autour, et basculée en emoji si le chargement échoue.
+  Widget _buildCenterContent(double emojiSize) {
+    if (imageAsset == null) {
+      return Text(emoji, style: TextStyle(fontSize: emojiSize));
+    }
+    final double imgSize = size * 0.82;
+    return Image.asset(
+      imageAsset!,
+      width: imgSize,
+      height: imgSize,
+      fit: BoxFit.contain,
+      errorBuilder: (_, __, ___) =>
+          Text(emoji, style: TextStyle(fontSize: emojiSize)),
     );
   }
 }

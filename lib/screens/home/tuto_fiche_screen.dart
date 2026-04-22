@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../theme/app_theme.dart';
+import '../root_tabs.dart';
 
 /// Affiche une fiche tuto HTML (stockée dans assets/tutos/) dans un
 /// WebView plein écran. Intercepte les liens `kultiva://` pour
@@ -39,7 +42,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
           onNavigationRequest: (request) {
             final uri = Uri.tryParse(request.url);
             if (uri != null && uri.scheme == 'kultiva') {
-              _handleDeepLink(uri.host);
+              _handleDeepLink(uri);
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
@@ -51,7 +54,8 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
 
   Future<void> _loadHtml() async {
     try {
-      final html = await rootBundle.loadString(widget.assetPath);
+      var html = await rootBundle.loadString(widget.assetPath);
+      html = await _inlineAssetImages(html);
       await _controller.loadHtmlString(html);
     } catch (e) {
       if (mounted) {
@@ -63,9 +67,96 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
     }
   }
 
-  void _handleDeepLink(String target) {
-    Navigator.of(context).pop();
-    // TODO: naviguer vers l'écran correspondant via RootTabs.
+  /// Remplace les `<img src="screens/xxx.png">` relatifs par des data-URL
+  /// base64 pour qu'ils s'affichent dans le WebView (`loadHtmlString` n'a
+  /// pas d'URL de base donc les chemins relatifs ne sont pas résolus).
+  /// Les images doivent être dans `assets/tutos/screens/`.
+  Future<String> _inlineAssetImages(String html) async {
+    final regex = RegExp(
+      '''<img([^>]*?)src=["'](screens/[^"']+)["']([^>]*?)>''',
+    );
+    final matches = regex.allMatches(html).toList();
+    var result = html;
+    for (final m in matches) {
+      final relPath = m.group(2)!; // ex: screens/decouvrir_dashboard.png
+      final bundlePath = 'assets/tutos/$relPath';
+      try {
+        final bytes = await rootBundle.load(bundlePath);
+        final b64 = base64Encode(bytes.buffer.asUint8List());
+        final ext = relPath.split('.').last.toLowerCase();
+        final mime = (ext == 'jpg' || ext == 'jpeg')
+            ? 'image/jpeg'
+            : (ext == 'webp' ? 'image/webp' : 'image/png');
+        final dataUrl = 'data:$mime;base64,$b64';
+        final before = m.group(1) ?? '';
+        final after = m.group(3) ?? '';
+        result = result.replaceFirst(
+          m.group(0)!,
+          '<img${before}src="$dataUrl"$after>',
+        );
+      } catch (_) {
+        // Image introuvable — on laisse tel quel (affichera un placeholder
+        // cassé mais le reste du HTML continue de charger).
+      }
+    }
+    return result;
+  }
+
+  /// Intercepte les liens `kultiva://<route>` cliqués dans une fiche HTML
+  /// et bascule l'app sur l'écran cible. Routes supportées :
+  ///   kultiva://home                → onglet Home (semis)
+  ///   kultiva://vegetables          → onglet Étal
+  ///   kultiva://poussidex           → onglet Poussidex (section Tamassi)
+  ///   kultiva://poussidex/badges    → Poussidex section Badges
+  ///   kultiva://poussidex/challenges→ Poussidex section Défis
+  ///   kultiva://tutos               → onglet Tutos
+  ///   kultiva://tuto/<nom>          → remplace la fiche par une autre
+  void _handleDeepLink(Uri uri) {
+    final host = uri.host;
+    final segments = uri.pathSegments;
+    switch (host) {
+      case 'home':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 0;
+        return;
+      case 'vegetables':
+      case 'etal':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 1;
+        return;
+      case 'poussidex':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 2;
+        if (segments.isNotEmpty) {
+          RootTabs.poussidexFilter.value = segments.first;
+        }
+        return;
+      case 'tutos':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 3;
+        return;
+      case 'tuto':
+        if (segments.isNotEmpty) {
+          final name = segments.first;
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<void>(
+              builder: (_) => TutoFicheScreen(
+                titre: _humanize(name),
+                assetPath: 'assets/tutos/$name.html',
+              ),
+            ),
+          );
+        }
+        return;
+    }
+  }
+
+  static String _humanize(String slug) {
+    return slug
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
+        .join(' ');
   }
 
   @override

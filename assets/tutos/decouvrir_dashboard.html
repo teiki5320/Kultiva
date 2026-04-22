@@ -1,72 +1,235 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Découvrir le dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kultiva — Découvrir le dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#faf7f0;--texte:#524a3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#e8c878;--accent-soft:#f4e4b8;--accent-bg:#faecc8}
-body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
-.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
-.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
-.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
-.categorie{display:inline-block;background:var(--blanc);font-family:'Fredoka',sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
-.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
-.titre-fiche{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
-.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
-.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
-.essentiel-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
-.essentiel-texte{font-size:15px;font-weight:500}
-.section{margin-bottom:24px}
-.section-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
-.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px}
-.etape-content{flex:1}
-.etape-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
-.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
-.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
-.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
-.conseil-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:#927838;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
-.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
-.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
-.eviter-icone{font-size:18px;flex-shrink:0}
-.eviter-texte{font-size:13px;line-height:1.4}
+:root{--beige:#FCF4E1;--beige-2:#F5E9CE;--cream:#FFF9EC;--green:#4A9B5A;--green-soft:#B8DCBE;--green-deep:#357A44;--rose:#F4C6C0;--rose-deep:#D98A85;--terracotta:#D88661;--terracotta-soft:#F2C6AE;--ink:#3D4A3F;--ink-soft:#6B7A6F;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{height:100%;width:100%;overflow:hidden;background:#0a0a0a}
+body{font-family:'Quicksand', system-ui, sans-serif;color:var(--ink);}
+#scaler{position:fixed;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;}
+#stage{position:absolute;inset:0;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(ellipse 90% 60% at 50% 40%, #FFFBEF 0%, var(--beige) 50%, var(--beige-2) 100%);}
+.blob{position:absolute;border-radius:50%;filter:blur(40px);pointer-events:none;}
+.blob.b1{width:620px;height:620px;top:-120px;left:-140px;background:radial-gradient(circle, rgba(244,198,192,.55), rgba(244,198,192,0) 70%);}
+.blob.b2{width:720px;height:720px;bottom:-180px;right:-180px;background:radial-gradient(circle, rgba(184,220,190,.55), rgba(184,220,190,0) 70%);}
+.blob.b3{width:420px;height:420px;top:45%;left:-120px;background:radial-gradient(circle, rgba(242,198,174,.45), rgba(242,198,174,0) 70%);}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+.header{position:absolute;left:0;right:0;top:70px;text-align:center;z-index:5;pointer-events:none;}
+.header .logo-row{display:inline-flex;align-items:center;gap:18px;padding:14px 32px 14px 22px;background:#fff;border-radius:999px;box-shadow:0 8px 0 rgba(74,155,90,.15), 0 14px 30px -10px rgba(74,155,90,.25);}
+.header .logo{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#6BBF7A 0%, #4A9B5A 100%);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -4px 0 rgba(0,0,0,.1);position:relative;}
+.header .logo svg{width:34px;height:34px}
+.header h1{font-family:'Fredoka', sans-serif;font-weight:600;font-size:40px;color:var(--green-deep);letter-spacing:.02em;}
+.header .tag{display:block;margin-top:18px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:24px;color:var(--terracotta);letter-spacing:.04em;}
+.footer{position:absolute;left:0;right:0;bottom:60px;text-align:center;z-index:5;pointer-events:none;}
+.footer .pill{display:inline-flex;align-items:center;gap:12px;padding:14px 28px;background:#fff;border-radius:999px;box-shadow:0 6px 0 rgba(74,155,90,.15), 0 14px 30px -10px rgba(0,0,0,.15);font-family:'Fredoka',sans-serif;font-weight:500;font-size:26px;color:var(--green-deep);}
+.footer .pill .heart{width:22px;height:22px;}
+.phone-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;will-change:transform, opacity;}
+.phone-shadow{position:absolute;left:50%;bottom:-40px;width:660px;height:50px;transform:translateX(-50%);background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(61,74,63,.25), transparent 70%);filter:blur(18px);z-index:-1;}
+.phone{position:relative;width:700px;height:1420px;background:linear-gradient(180deg, #FFFFFF 0%, #FDF6E3 100%);border-radius:90px;padding:18px;box-shadow:inset 0 0 0 4px #F4E3B8,inset 0 0 0 8px #FFF,0 30px 60px -20px rgba(60,80,60,.30),0 14px 0 rgba(244,198,192,.35);border:5px solid #4A9B5A;}
+.phone::before{content:"";position:absolute;inset:12px;border-radius:80px;background:linear-gradient(180deg, rgba(255,255,255,.6), transparent 30%);pointer-events:none;z-index:2;}
+.phone-ear{position:absolute;top:-28px;width:60px;height:60px;border-radius:50%;background:#4A9B5A;box-shadow:inset 0 -6px 0 rgba(0,0,0,.1);}
+.phone-ear.l{left:120px;transform:rotate(-15deg);}
+.phone-ear.r{right:120px;transform:rotate(15deg);}
+.phone-ear::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#F4C6C0;}
+.screen{position:relative;width:100%;height:100%;border-radius:72px;overflow:hidden;background:#F7F6F1;box-shadow:inset 0 0 0 2px rgba(0,0,0,.06);}
+.screen img.shot{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.glare{position:absolute;top:-8%;left:-30%;width:45%;height:120%;background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%);transform:rotate(14deg);pointer-events:none;z-index:5;mix-blend-mode:screen;}
+.halo{position:absolute;border-radius:34px;pointer-events:none;z-index:6;box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 8px rgba(74,155,90,.55),0 0 30px 10px rgba(74,155,90,.35),0 0 0 9999px rgba(252,244,225,.0);opacity:0;transform:scale(.96);}
+.halo.round{border-radius:999px;}
+.pulse{position:absolute;border-radius:inherit;border:3px solid rgba(74,155,90,.65);pointer-events:none;inset:-6px;opacity:0;}
+.caption{position:absolute;z-index:20;display:inline-flex;align-items:center;gap:14px;padding:22px 30px;background:#fff;border-radius:30px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:34px;color:var(--ink);box-shadow:0 8px 0 rgba(74,155,90,.18),0 18px 40px -10px rgba(0,0,0,.18);border:3px solid #fff;white-space:nowrap;opacity:0;transform-origin:center center;}
+.caption .emoji{font-size:40px;display:inline-block;transform-origin:center;}
+.caption.rose{background:#FFF0ED;border-color:#F4C6C0;color:#B85A4D;box-shadow:0 8px 0 rgba(217,138,133,.25), 0 18px 40px -10px rgba(0,0,0,.18);}
+.caption.green{background:#EAF6EC;border-color:#B8DCBE;color:var(--green-deep);box-shadow:0 8px 0 rgba(74,155,90,.22), 0 18px 40px -10px rgba(0,0,0,.18);}
+.caption.terra{background:#FDEEE3;border-color:#F2C6AE;color:#B2633C;box-shadow:0 8px 0 rgba(216,134,97,.25), 0 18px 40px -10px rgba(0,0,0,.18);}
+.caption.cream{background:#FFF7E0;border-color:#F4E3B8;color:#8A6A2E;box-shadow:0 8px 0 rgba(212,180,110,.30), 0 18px 40px -10px rgba(0,0,0,.18);}
+.caption .tail{position:absolute;width:22px;height:22px;background:inherit;border:inherit;border-top:none;border-left:none;transform:rotate(45deg);}
+.caption .tail.left{left:-12px;top:50%;margin-top:-11px;border-right:none;border-bottom:none;border-top:3px solid;border-left:3px solid;border-color:inherit;}
+.caption .tail.right{right:-12px;top:50%;margin-top:-11px;}
+.caption .tail.bot{bottom:-12px;left:50%;margin-left:-11px;}
+.caption .tail.top{top:-12px;left:50%;margin-left:-11px;transform:rotate(225deg);}
+.arrow{position:absolute;z-index:19;pointer-events:none;opacity:0;}
+.arrow svg{display:block;overflow:visible;}
+.deco{position:absolute;pointer-events:none;z-index:3;}
+.deco svg{display:block}
+.replay{position:absolute;right:36px;top:36px;z-index:60;background:#fff;border:2px solid rgba(74,155,90,.25);padding:12px 20px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:20px;color:var(--green-deep);cursor:pointer;box-shadow:0 4px 0 rgba(74,155,90,.18);opacity:.8;}
+.replay:hover{opacity:1}
 </style>
 </head>
 <body>
-<div class="fiche">
-  <div class="fiche-header">
-    <div class="categorie">Astuces</div>
-    <div class="icone-principale">🏠</div>
-    <div class="titre-fiche">Découvrir le dashboard</div>
-    <div class="sous-titre-fiche">Ton tableau de bord Kultiva</div>
-  </div>
-  <div class="essentiel">
-    <div class="essentiel-label">L'essentiel</div>
-    <div class="essentiel-texte">Le dashboard est ton point d'entrée dans Kultiva. Il rassemble le calendrier des semis adapté à ta région et à la saison, la météo locale, et les cartes du mois.</div>
-  </div>
-  <div class="section">
-    <div class="section-titre"><span style="font-size:22px">📍</span> Les zones du dashboard</div>
-    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Bandeau météo ☀️</div><div class="etape-texte">En haut, la météo du jour avec température et prévisions pour adapter tes gestes au jardin.</div></div></div>
-    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Calendrier des semis 📅</div><div class="etape-texte">Mois par mois, les légumes à semer, planter et récolter selon ta région.</div></div></div>
-    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Cartes pratiques 📋</div><div class="etape-texte">Légume du jour, conseil saisonnier, rappels d'actions à faire ce mois-ci.</div></div></div>
-    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Navigation en bas 🧭</div><div class="etape-texte">4 onglets : Home (calendrier), Étal (fiches légumes), Poussidex (ton Tamassi), Tutos (fiches pratiques).</div></div></div>
-  </div>
-  <div class="conseil">
-    <div class="conseil-icone">☕</div>
-    <div>
-      <div class="conseil-label">Le conseil du jardinier</div>
-      <div class="conseil-texte">Consulte ton dashboard chaque matin : tu verras en 30 secondes ce que tu peux semer ou récolter ce mois-ci.</div>
+<div id="scaler">
+  <div id="stage">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div id="decoLayer"></div>
+    <div class="header" id="header">
+      <div class="logo-row">
+        <div class="logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 28 V14" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            <path d="M16 16 C10 16 7 12 7 8 C12 8 16 10 16 16 Z" fill="#fff"/>
+            <path d="M16 14 C22 14 25 10 25 6 C20 6 16 8 16 14 Z" fill="#fff"/>
+          </svg>
+        </div>
+        <h1>Kultiva</h1>
+      </div>
+      <span class="tag">Ton jardin kawaii, au creux de la main &#10047;</span>
     </div>
-  </div>
-  <div class="section">
-    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
-    <div class="eviter"><div class="eviter-icone">🌦️</div><div class="eviter-texte"><strong>Ignorer la météo affichée :</strong> elle est là pour t'aider à adapter tes gestes du jour.</div></div>
-    <div class="eviter"><div class="eviter-icone">📅</div><div class="eviter-texte"><strong>Ne pas changer de mois pour anticiper :</strong> prépare le mois suivant en avance pour ne rien rater.</div></div>
-    <div class="eviter"><div class="eviter-icone">⚙️</div><div class="eviter-texte"><strong>Oublier de régler ta région dans les paramètres :</strong> le calendrier ne sera pas adapté à ton climat.</div></div>
+    <div class="phone-wrap" id="phoneWrap">
+      <div class="phone-shadow"></div>
+      <div class="phone">
+        <div class="phone-ear l"></div>
+        <div class="phone-ear r"></div>
+        <div class="screen" id="screen">
+          <img class="shot" src="screens/decouvrir_dashboard.png" alt="Kultiva dashboard" />
+          <div class="halo" id="halo1" style="left:14px;top:60px;width:calc(100% - 28px);height:240px;border-radius:30px;"><div class="pulse"></div></div>
+          <div class="halo" id="halo2" style="left:14px;top:310px;width:calc(100% - 28px);height:370px;border-radius:24px;"><div class="pulse"></div></div>
+          <div class="halo round" id="halo3" style="right:30px;top:90px;width:120px;height:64px;"><div class="pulse"></div></div>
+          <div class="halo" id="halo4" style="left:14px;top:700px;width:calc(100% - 28px);height:240px;border-radius:28px;"><div class="pulse"></div></div>
+          <div class="halo" id="halo5" style="left:14px;bottom:14px;width:calc(100% - 28px);height:150px;border-radius:24px;"><div class="pulse"></div></div>
+          <div class="glare" id="glare"></div>
+        </div>
+      </div>
+    </div>
+    <div class="caption rose" id="cap1" style="left:60px;top:360px;"><span class="emoji">🌸</span><span>Ta saison &amp; ton mois</span><span class="tail bot"></span></div>
+    <div class="caption green" id="cap2" style="right:50px;top:640px;"><span class="emoji">🌱</span><span>4 raccourcis essentiels</span><span class="tail left"></span></div>
+    <div class="caption cream" id="cap3" style="left:60px;top:500px;"><span class="emoji">☀️</span><span>Météo de ton jardin</span><span class="tail right"></span></div>
+    <div class="caption terra" id="cap4" style="left:60px;top:1080px;"><span class="emoji">✨</span><span>Conseils du jour qui défilent</span><span class="tail right"></span></div>
+    <div class="caption green" id="cap5" style="right:50px;bottom:260px;"><span class="emoji">🧭</span><span>4 onglets pour tout explorer</span><span class="tail bot"></span></div>
+    <div class="arrow" id="arr1" style="left:260px;top:460px;"><svg width="200" height="120"><path d="M10,10 C 60,100 120,100 180,40" fill="none" stroke="#D98A85" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/><path d="M178,44 l-14,-6 l4,14 z" fill="#D98A85"/></svg></div>
+    <div class="arrow" id="arr2" style="right:260px;top:720px;"><svg width="210" height="110"><path d="M200,10 C 130,80 80,90 20,50" fill="none" stroke="#4A9B5A" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/><path d="M22,54 l14,-4 l-2,14 z" fill="#4A9B5A"/></svg></div>
+    <div class="arrow" id="arr3" style="left:290px;top:540px;"><svg width="180" height="100"><path d="M10,50 C 60,10 120,0 170,30" fill="none" stroke="#C9A43B" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/><path d="M168,32 l-14,-6 l4,14 z" fill="#C9A43B"/></svg></div>
+    <div class="arrow" id="arr4" style="left:300px;top:1150px;"><svg width="170" height="110"><path d="M10,10 C 60,90 110,100 160,60" fill="none" stroke="#B2633C" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/><path d="M158,64 l-14,-4 l2,14 z" fill="#B2633C"/></svg></div>
+    <div class="arrow" id="arr5" style="right:260px;bottom:330px;"><svg width="200" height="120"><path d="M190,10 C 130,90 80,110 20,80" fill="none" stroke="#4A9B5A" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/><path d="M22,84 l14,-2 l-4,14 z" fill="#4A9B5A"/></svg></div>
+    <div class="footer" id="footer">
+      <div class="pill">
+        <svg class="heart" viewBox="0 0 24 24"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" fill="#D98A85"/></svg>
+        <span>Cultive, récolte, répète 🌱</span>
+      </div>
+    </div>
+    <div class="grain"></div>
+    <button class="replay" id="replay">↻ Rejouer</button>
   </div>
 </div>
+<script>
+function fitStage(){
+  const s = document.getElementById('scaler');
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const k = Math.min(vw/1080, vh/1920);
+  // Compute pixel offsets for top-left origin scaling so the stage is
+  // truly centered in any viewport (flex-centering breaks when the
+  // child is larger than the container).
+  const left = Math.max(0, (vw - 1080 * k) / 2);
+  const top  = Math.max(0, (vh - 1920 * k) / 2);
+  s.style.left = left + 'px';
+  s.style.top  = top + 'px';
+  s.style.transform = `scale(${k})`;
+}
+window.addEventListener('resize', fitStage); fitStage();
+window.addEventListener('load', fitStage);
+
+const decoLayer = document.getElementById('decoLayer');
+const decoSVGs = {
+  flower:(c1,c2)=>`<svg width="70" height="70" viewBox="0 0 70 70"><g><circle cx="35" cy="15" r="12" fill="${c1}"/><circle cx="55" cy="35" r="12" fill="${c1}"/><circle cx="35" cy="55" r="12" fill="${c1}"/><circle cx="15" cy="35" r="12" fill="${c1}"/><circle cx="35" cy="35" r="10" fill="${c2}"/></g></svg>`,
+  leaf:(c)=>`<svg width="60" height="60" viewBox="0 0 60 60"><path d="M10 50 C 10 20, 30 10, 50 10 C 50 30, 40 50, 10 50 Z" fill="${c}"/><path d="M12 48 C 25 35, 38 22, 48 12" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/></svg>`,
+  petal:(c)=>`<svg width="40" height="40" viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="10" ry="18" fill="${c}"/></svg>`,
+  star:(c)=>`<svg width="44" height="44" viewBox="0 0 44 44"><path d="M22 6 L26 18 L38 20 L28 28 L31 40 L22 33 L13 40 L16 28 L6 20 L18 18 Z" fill="${c}"/></svg>`,
+  sparkle:(c)=>`<svg width="30" height="30" viewBox="0 0 30 30"><path d="M15 2 C 16 12, 18 14, 28 15 C 18 16, 16 18, 15 28 C 14 18, 12 16, 2 15 C 12 14, 14 12, 15 2 Z" fill="${c}"/></svg>`
+};
+const decoSpecs = [
+  [90, 300, 'flower', ['#F4C6C0','#FCF4E1'], 1.0, -12, 18, 0],
+  [60, 720, 'leaf',   ['#B8DCBE'],           1.1,  20, 22, 1.2],
+  [120,1200,'petal',  ['#F4C6C0'],           1.0,  30, 14, .6],
+  [80, 1520,'flower', ['#F4E3B8','#D88661'], 0.9,  10, 16, 2.1],
+  [940,260, 'leaf',   ['#B8DCBE'],           1.2, -30, 20, .3],
+  [970,560, 'petal',  ['#F2C6AE'],           1.0,  15, 16, 1.8],
+  [930,980, 'flower', ['#F4C6C0','#FFF'],    1.0,   0, 22, .9],
+  [950,1420,'star',   ['#F4E3B8'],           1.0,  10, 14, 2.4],
+  [900,1700,'leaf',   ['#4A9B5A'],           0.9,  30, 18, 1.4],
+  [520,180, 'sparkle',['#D98A85'],           1.0,   0, 10, .2],
+  [740,230, 'sparkle',['#4A9B5A'],           0.9,   0, 12, 1.1],
+  [300,180, 'star',   ['#F2C6AE'],           0.8, -10, 12, 1.7],
+  [180,1000,'sparkle',['#C9A43B'],           1.0,   0, 12, 2.0],
+  [920,1150,'sparkle',['#D98A85'],           1.0,   0, 12, 0.5],
+  [60, 1380,'star',   ['#B8DCBE'],           0.8,   0, 12, 1.5],
+  [500,1780,'petal',  ['#F4C6C0'],           0.9,  20, 14, 2.2],
+  [620,200, 'petal',  ['#F2C6AE'],           0.7, -20, 12, 1.9]
+];
+decoSpecs.forEach((d,i)=>{
+  const [x,y,type,args,scale,rot,drift,phase] = d;
+  const el = document.createElement('div');
+  el.className = 'deco';
+  el.style.left = x+'px';
+  el.style.top = y+'px';
+  el.style.transform = `rotate(${rot}deg) scale(${scale})`;
+  el.innerHTML = decoSVGs[type](...args);
+  el.dataset.rot = rot;
+  el.dataset.drift = drift;
+  el.dataset.phase = phase;
+  decoLayer.appendChild(el);
+});
+document.querySelectorAll('.deco').forEach((el,i)=>{
+  const drift = parseFloat(el.dataset.drift);
+  const phase = parseFloat(el.dataset.phase);
+  gsap.to(el, { y:`+=${drift}`, duration: 2.8 + (i%3)*0.4, yoyo:true, repeat:-1, ease:'sine.inOut', delay:phase });
+  gsap.to(el, { rotation:`+=${drift>16?8:-8}`, duration: 4 + (i%4)*0.5, yoyo:true, repeat:-1, ease:'sine.inOut', delay: phase*0.5, transformOrigin:'50% 50%' });
+});
+gsap.to('#glare', { x: 1200, duration: 4.5, repeat:-1, ease:'power1.inOut', repeatDelay: 3 });
+gsap.to('#header', { y: 6, duration: 2.2, yoyo:true, repeat:-1, ease:'sine.inOut' });
+gsap.to('#footer', { y: -4, duration: 2.4, yoyo:true, repeat:-1, ease:'sine.inOut' });
+
+const ALL_CAPS   = ['#cap1','#cap2','#cap3','#cap4','#cap5'];
+const ALL_HALOS  = ['#halo1','#halo2','#halo3','#halo4','#halo5'];
+const ALL_ARROWS = ['#arr1','#arr2','#arr3','#arr4','#arr5'];
+gsap.set('#phoneWrap', {scale:0.8, opacity:0, y:30});
+gsap.set('#header', {y:-60, opacity:0});
+gsap.set('#footer', {y:60, opacity:0});
+ALL_CAPS.forEach(s=>gsap.set(s,{scale:.6,opacity:0, y:10}));
+ALL_HALOS.forEach(s=>gsap.set(s,{scale:.96, opacity:0}));
+ALL_ARROWS.forEach(s=>gsap.set(s,{opacity:0, scale:.8, transformOrigin:'0 50%'}));
+
+function buildTL(){
+  const tl = gsap.timeline({ repeat:-1, repeatDelay:0.2 });
+  tl.to('#phoneWrap', { scale:1, opacity:1, y:0, duration:1.0, ease:'back.out(1.5)' }, 0);
+  tl.to('#header',    { y:0, opacity:1, duration:0.8, ease:'back.out(1.6)' }, 0.2);
+  tl.to('#footer',    { y:0, opacity:1, duration:0.8, ease:'back.out(1.6)' }, 0.3);
+  gsap.to('#phoneWrap', { y:-8, duration:2.4, yoyo:true, repeat:-1, ease:'sine.inOut' });
+  function beat(startAt, haloSel, capSel, arrSel){
+    const t = tl;
+    t.to(haloSel, { opacity:1, scale:1, duration:.4, ease:'back.out(1.8)' }, startAt);
+    t.to(`${haloSel} .pulse`, { opacity:1, scale:1.15, duration:.9, ease:'sine.out' }, startAt);
+    t.to(`${haloSel} .pulse`, { opacity:0, duration:.4 }, startAt+.9);
+    t.fromTo(capSel, {scale:.6, opacity:0, y:10}, {scale:1, opacity:1, y:0, duration:.55, ease:'back.out(2)'}, startAt+.15);
+    t.to(capSel, { rotation:-2, duration:.25, yoyo:true, repeat:3, ease:'sine.inOut' }, startAt+.7);
+    t.to(`${capSel} .emoji`, { scale:1.25, duration:.3, yoyo:true, repeat:3, ease:'sine.inOut'}, startAt+.7);
+    if(arrSel){ t.to(arrSel, { opacity:1, scale:1, duration:.4, ease:'back.out(1.8)' }, startAt+.25); }
+    t.to(haloSel, { scale:1.02, duration:.35, yoyo:true, repeat:1, ease:'sine.inOut' }, startAt+1.1);
+    const exitAt = startAt + 2.2;
+    t.to(capSel, { scale:.7, opacity:0, duration:.35, ease:'back.in(1.6)' }, exitAt);
+    if(arrSel) t.to(arrSel, { opacity:0, scale:.8, duration:.3 }, exitAt);
+    t.to(haloSel, { opacity:0, scale:.96, duration:.35 }, exitAt);
+  }
+  beat(1.2,  '#halo1', '#cap1', '#arr1');
+  beat(3.6,  '#halo2', '#cap2', '#arr2');
+  beat(6.0,  '#halo3', '#cap3', '#arr3');
+  beat(8.4,  '#halo4', '#cap4', '#arr4');
+  beat(10.8, '#halo5', '#cap5', '#arr5');
+  tl.to('#phoneWrap', { scale:1.02, duration:.8, ease:'sine.inOut', yoyo:true, repeat:1 }, 13.2);
+  tl.to('#phoneWrap', { scale:0.8, opacity:0, y:30, duration:0.8, ease:'power2.in' }, 14.2);
+  tl.to('#header', { y:-40, opacity:0, duration:0.6, ease:'power2.in' }, 14.2);
+  tl.to('#footer', { y:40,  opacity:0, duration:0.6, ease:'power2.in' }, 14.2);
+  tl.set({}, {}, 15.0);
+  return tl;
+}
+let TL = buildTL();
+document.getElementById('replay').addEventListener('click', ()=>{ TL.restart(true); });
+</script>
 </body>
 </html>

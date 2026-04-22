@@ -35,17 +35,23 @@ class _TutoItem {
 
 const _categories = <_TutoCategory>[
   _TutoCategory(
+    emoji: '🎒',
+    imagePath: 'assets/images/tuto_prise_en_main.png',
+    label: 'Prise en main',
+    color: Color(0xFFB565F2),
+    items: [
+      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
+      _TutoItem(emoji: '🪴', label: 'Ton Tamassi', htmlAsset: 'assets/tutos/utiliser_poussidex.html'),
+      _TutoItem(emoji: '📷', label: 'Les défis photo', htmlAsset: 'assets/tutos/ajouter_photos.html'),
+      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', htmlAsset: 'assets/tutos/debloquer_badges.html'),
+    ],
+  ),
+  _TutoCategory(
     emoji: '💡',
     imagePath: 'assets/images/tuto_astuces.png',
     label: 'Astuces',
     color: Color(0xFFFFB74D),
     items: [
-      // 4 premiers tutos = comment utiliser l'app Kultiva.
-      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
-      _TutoItem(emoji: '🪴', label: 'Ton Tamassi', htmlAsset: 'assets/tutos/utiliser_poussidex.html'),
-      _TutoItem(emoji: '📷', label: 'Les défis photo', htmlAsset: 'assets/tutos/ajouter_photos.html'),
-      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', htmlAsset: 'assets/tutos/debloquer_badges.html'),
-      // Astuces jardinage.
       _TutoItem(emoji: '🌙', label: 'Jardiner avec la lune', htmlAsset: 'assets/tutos/jardiner_avec_lune.html'),
       _TutoItem(emoji: '🐝', label: 'Attirer les pollinisateurs', htmlAsset: 'assets/tutos/attirer_pollinisateurs.html'),
       _TutoItem(emoji: '♻️', label: 'Réutiliser ses déchets', htmlAsset: 'assets/tutos/reutiliser_dechets.html'),

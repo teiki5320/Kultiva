@@ -490,6 +490,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                       // déjà collectionnée.
                       MedalBadge(
                         emoji: v.emoji,
+                        imageAsset: v.imageAsset,
                         tier: tier,
                         familyColor: cc,
                         size: 48,

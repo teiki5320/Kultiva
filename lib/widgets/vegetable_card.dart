@@ -46,6 +46,7 @@ class VegetableCard extends StatelessWidget {
               // déjà collectionnée.
               MedalBadge(
                 emoji: vegetable.emoji,
+                imageAsset: vegetable.imageAsset,
                 tier: medalTier,
                 familyColor: cc,
                 size: 54,

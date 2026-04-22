@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../services/photo_service.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
@@ -31,6 +32,101 @@ class _WeatherScreenState extends State<WeatherScreen> {
       _weather = await WeatherService.getWeather();
     } catch (_) {}
     if (mounted) setState(() => _loading = false);
+  }
+
+  /// Recharge la météo en invalidant le cache. Utile si l'utilisateur
+  /// vient d'activer la géoloc dans les réglages.
+  Future<void> _refreshWeather() async {
+    WeatherService.invalidateCache();
+    setState(() => _loading = true);
+    await _load();
+  }
+
+  /// Pill "📍 <ville>" affichée sous "🌤 Météo". Cliquable seulement si
+  /// on est en fallback Paris (propose d'ouvrir les Réglages pour la
+  /// géolocalisation).
+  Widget _buildLocationPill() {
+    final isFallback = _weather?.isFallbackLocation ?? false;
+    final String text;
+    if (_weather == null) {
+      text = '📍 …';
+    } else if (isFallback) {
+      text = '📍 ${_weather!.locationName ?? 'Paris'} · '
+          'localisation désactivée';
+    } else {
+      text = '📍 ${_weather!.locationName ?? 'Ma position'}';
+    }
+
+    final pill = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.35),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+          fontSize: 11,
+        ),
+      ),
+    );
+
+    if (isFallback) {
+      return GestureDetector(onTap: _showFallbackInfo, child: pill);
+    }
+    return pill;
+  }
+
+  Future<void> _showFallbackInfo() async {
+    return showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Row(
+          children: <Widget>[
+            Text('📍', style: TextStyle(fontSize: 26)),
+            SizedBox(width: 10),
+            Expanded(
+              child: Text('Localisation désactivée',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 17)),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Pour te montrer la météo de ton jardin, Kultiva a besoin '
+          'd\'accéder à ta position.\n\n'
+          'En attendant, on affiche la météo de Paris par défaut. '
+          'Tu peux autoriser la localisation dans les réglages.',
+          style: TextStyle(fontSize: 14, height: 1.4),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Plus tard'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: KultivaColors.primaryGreen,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ),
+            onPressed: () async {
+              Navigator.of(ctx).pop();
+              await PhotoService.openSettings();
+            },
+            child: const Text('Ouvrir les Réglages',
+                style: TextStyle(fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -74,13 +170,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Scaffold(
       body: Column(
         children: [
-          // Header saisonnier.
+          // Header saisonnier — mois masqué, on injecte notre propre
+          // titre "🌤 Météo" + localisation à la place.
           Stack(
             children: [
               SeasonHeader(
                 season: Season.fromMonth(DateTime.now().month),
                 month: DateTime.now().month,
                 height: 160,
+                hideLabel: true,
               ),
               Positioned(
                 top: 8, left: 8,
@@ -99,15 +197,42 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
                 ),
               ),
-              const Positioned(
-                bottom: 16, left: 20,
-                child: Text('🌤 Météo',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 22,
-                      shadows: [Shadow(color: Colors.black45, blurRadius: 8)],
-                    )),
+              Positioned(
+                top: 8, right: 8,
+                child: SafeArea(
+                  child: GestureDetector(
+                    onTap: _refreshWeather,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.25),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.refresh,
+                          color: Colors.white, size: 20),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 16, left: 20, right: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text('🌤 Météo',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 22,
+                          shadows: [
+                            Shadow(color: Colors.black45, blurRadius: 8),
+                          ],
+                        )),
+                    const SizedBox(height: 6),
+                    _buildLocationPill(),
+                  ],
+                ),
               ),
             ],
           ),

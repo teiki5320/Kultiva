@@ -16,6 +16,16 @@ class RootTabs extends StatefulWidget {
   final VoidCallback onSignOut;
   const RootTabs({super.key, required this.onSignOut});
 
+  /// Onglet actif (0=Home, 1=Étal, 2=Poussidex, 3=Tutos). Permet aux
+  /// deep-links des tutos HTML (`kultiva://poussidex`, etc.) de basculer
+  /// sur l'onglet cible.
+  static final ValueNotifier<int> tabIndex = ValueNotifier<int>(0);
+
+  /// Sous-onglet Poussidex demandé par un deep-link ('tamassi',
+  /// 'challenges' ou 'badges'). `null` = pas de changement.
+  static final ValueNotifier<String?> poussidexFilter =
+      ValueNotifier<String?>(null);
+
   @override
   State<RootTabs> createState() => _RootTabsState();
 }
@@ -29,6 +39,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    RootTabs.tabIndex.addListener(_onTabIndexExternalChange);
     // Premier check juste après le boot — si des plants ont soif, notif.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _runWateringCheck();
@@ -38,7 +49,18 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    RootTabs.tabIndex.removeListener(_onTabIndexExternalChange);
     super.dispose();
+  }
+
+  /// Un deep-link (depuis un tuto HTML) a demandé un changement d'onglet.
+  void _onTabIndexExternalChange() {
+    final target = RootTabs.tabIndex.value;
+    if (target == _index || !mounted) return;
+    setState(() => _index = target);
+    if (target == 2) {
+      _poussidexKey.currentState?.onBecameVisible();
+    }
   }
 
   @override
@@ -93,6 +115,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
         onTap: (i) {
           AudioService.instance.play(Sfx.tap);
           setState(() => _index = i);
+          RootTabs.tabIndex.value = i;
           if (i == 2) {
             _poussidexKey.currentState?.onBecameVisible();
           }

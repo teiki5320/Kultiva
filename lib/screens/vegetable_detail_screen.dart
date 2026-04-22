@@ -230,17 +230,28 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () => _openUrl(context, vegetable.amazonUrl!),
-              icon: const Text('🛒', style: TextStyle(fontSize: 22)),
-              label: const Text('Acheter des graines',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+              icon: const Text('🛒', style: TextStyle(fontSize: 24)),
+              label: const Text('Acheter sur Amazon',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: KultivaColors.terracotta,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 18),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(18),
                 ),
+                elevation: 3,
               ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Lien partenaire · Kultiva touche une petite commission si tu achètes.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 11,
+              color: Color(0xFF8a8c80),
+              fontStyle: FontStyle.italic,
             ),
           ),
         ],
@@ -283,6 +294,7 @@ class _HeaderCard extends StatelessWidget {
               children: <Widget>[
                 MedalBadge(
                   emoji: vegetable.emoji,
+                  imageAsset: vegetable.imageAsset,
                   tier: tier,
                   familyColor: KultivaColors.primaryGreen,
                   size: 72,
@@ -335,88 +347,63 @@ class _HeaderCard extends StatelessWidget {
                   ),
                 ),
                 if (vegetable.amazonUrl != null)
-                  GestureDetector(
-                    onTap: () {
-                      AudioService.instance.play(Sfx.cart);
-                      launchUrl(
-                        Uri.parse(vegetable.amazonUrl!),
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
-                    child: Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            KultivaColors.terracotta.withOpacity(0.25),
-                            KultivaColors.summerA.withOpacity(0.35),
+                  Tooltip(
+                    message: 'Lien partenaire Amazon — Kultiva touche '
+                        'une petite commission si tu achètes.',
+                    child: GestureDetector(
+                      onTap: () {
+                        AudioService.instance.play(Sfx.cart);
+                        launchUrl(
+                          Uri.parse(vegetable.amazonUrl!),
+                          mode: LaunchMode.externalApplication,
+                        );
+                      },
+                      child: Container(
+                        width: 78,
+                        height: 78,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              KultivaColors.terracotta.withOpacity(0.28),
+                              KultivaColors.summerA.withOpacity(0.4),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(22),
+                          boxShadow: [
+                            BoxShadow(
+                              color: KultivaColors.terracotta.withOpacity(0.22),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('🛒', style: TextStyle(fontSize: 28)),
-                          Text('Acheter',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w800,
-                              color: KultivaColors.terracotta,
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('🛒', style: TextStyle(fontSize: 28)),
+                            const SizedBox(height: 2),
+                            Text('Acheter',
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w800,
+                                color: KultivaColors.terracotta,
+                              ),
                             ),
-                          ),
-                        ],
+                            Text('Lien partenaire',
+                              style: TextStyle(
+                                fontSize: 7.5,
+                                fontWeight: FontWeight.w500,
+                                color: KultivaColors.terracotta
+                                    .withOpacity(0.7),
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                if (false) ...[
-                  const SizedBox(width: 12),
-                  GestureDetector(
-                    onTap: () {
-                      AudioService.instance.play(Sfx.cart);
-                      launchUrl(
-                        Uri.parse(vegetable.amazonUrl!),
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
-                    child: Container(
-                      width: 72,
-                      height: 72,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            KultivaColors.primaryGreen.withOpacity(0.15),
-                            KultivaColors.springB.withOpacity(0.25),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(22),
-                        boxShadow: [
-                          BoxShadow(
-                            color: KultivaColors.primaryGreen.withOpacity(0.15),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('🛒', style: TextStyle(fontSize: 28)),
-                          const SizedBox(height: 2),
-                          Text('Acheter',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w800,
-                              color: KultivaColors.primaryGreen,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
             if (vegetable.description != null) ...<Widget>[
