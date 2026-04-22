@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -52,7 +54,8 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
 
   Future<void> _loadHtml() async {
     try {
-      final html = await rootBundle.loadString(widget.assetPath);
+      var html = await rootBundle.loadString(widget.assetPath);
+      html = await _inlineAssetImages(html);
       await _controller.loadHtmlString(html);
     } catch (e) {
       if (mounted) {
@@ -62,6 +65,41 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
         );
       }
     }
+  }
+
+  /// Remplace les `<img src="screens/xxx.png">` relatifs par des data-URL
+  /// base64 pour qu'ils s'affichent dans le WebView (`loadHtmlString` n'a
+  /// pas d'URL de base donc les chemins relatifs ne sont pas résolus).
+  /// Les images doivent être dans `assets/tutos/screens/`.
+  Future<String> _inlineAssetImages(String html) async {
+    final regex = RegExp(
+      '''<img([^>]*?)src=["'](screens/[^"']+)["']([^>]*?)>''',
+    );
+    final matches = regex.allMatches(html).toList();
+    var result = html;
+    for (final m in matches) {
+      final relPath = m.group(2)!; // ex: screens/decouvrir_dashboard.png
+      final bundlePath = 'assets/tutos/$relPath';
+      try {
+        final bytes = await rootBundle.load(bundlePath);
+        final b64 = base64Encode(bytes.buffer.asUint8List());
+        final ext = relPath.split('.').last.toLowerCase();
+        final mime = (ext == 'jpg' || ext == 'jpeg')
+            ? 'image/jpeg'
+            : (ext == 'webp' ? 'image/webp' : 'image/png');
+        final dataUrl = 'data:$mime;base64,$b64';
+        final before = m.group(1) ?? '';
+        final after = m.group(3) ?? '';
+        result = result.replaceFirst(
+          m.group(0)!,
+          '<img${before}src="$dataUrl"$after>',
+        );
+      } catch (_) {
+        // Image introuvable — on laisse tel quel (affichera un placeholder
+        // cassé mais le reste du HTML continue de charger).
+      }
+    }
+    return result;
   }
 
   /// Intercepte les liens `kultiva://<route>` cliqués dans une fiche HTML

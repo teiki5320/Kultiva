@@ -89,6 +89,7 @@ flutter:
     - assets/images/creatures/Spira/
     - assets/images/backgrounds/
     - assets/tutos/
+    - assets/tutos/screens/
     - assets/sounds/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───
