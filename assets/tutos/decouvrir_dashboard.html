@@ -11,9 +11,9 @@
 <style>
 :root{--beige:#FCF4E1;--beige-2:#F5E9CE;--cream:#FFF9EC;--green:#4A9B5A;--green-soft:#B8DCBE;--green-deep:#357A44;--rose:#F4C6C0;--rose-deep:#D98A85;--terracotta:#D88661;--terracotta-soft:#F2C6AE;--ink:#3D4A3F;--ink-soft:#6B7A6F;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
-html,body{height:100%;overflow:hidden;background:#0a0a0a}
-body{display:flex;align-items:center;justify-content:center;font-family:'Quicksand', system-ui, sans-serif;color:var(--ink);}
-#scaler{position:relative;width:1080px;height:1920px;transform-origin:center center;}
+html,body{height:100%;width:100%;overflow:hidden;background:#0a0a0a}
+body{font-family:'Quicksand', system-ui, sans-serif;color:var(--ink);}
+#scaler{position:fixed;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;}
 #stage{position:absolute;inset:0;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(ellipse 90% 60% at 50% 40%, #FFFBEF 0%, var(--beige) 50%, var(--beige-2) 100%);}
 .blob{position:absolute;border-radius:50%;filter:blur(40px);pointer-events:none;}
 .blob.b1{width:620px;height:620px;top:-120px;left:-140px;background:radial-gradient(circle, rgba(244,198,192,.55), rgba(244,198,192,0) 70%);}
@@ -123,9 +123,17 @@ function fitStage(){
   const s = document.getElementById('scaler');
   const vw = window.innerWidth, vh = window.innerHeight;
   const k = Math.min(vw/1080, vh/1920);
+  // Compute pixel offsets for top-left origin scaling so the stage is
+  // truly centered in any viewport (flex-centering breaks when the
+  // child is larger than the container).
+  const left = Math.max(0, (vw - 1080 * k) / 2);
+  const top  = Math.max(0, (vh - 1920 * k) / 2);
+  s.style.left = left + 'px';
+  s.style.top  = top + 'px';
   s.style.transform = `scale(${k})`;
 }
 window.addEventListener('resize', fitStage); fitStage();
+window.addEventListener('load', fitStage);
 
 const decoLayer = document.getElementById('decoLayer');
 const decoSVGs = {
