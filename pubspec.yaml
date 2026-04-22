@@ -90,6 +90,7 @@ flutter:
     - assets/images/backgrounds/
     - assets/tutos/
     - assets/tutos/screens/
+    - assets/tutos/screens/dashboard/
     - assets/sounds/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───
