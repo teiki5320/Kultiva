@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../theme/app_theme.dart';
 import '../root_tabs.dart';
@@ -31,7 +34,21 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
+    // Autorise l'autoplay des médias (audio voix-off des tutos animés) :
+    // sur iOS il faut désactiver le requis d'interaction utilisateur via
+    // WebKitWebViewControllerCreationParams ; sur Android via
+    // setMediaPlaybackRequiresUserGesture. Sans ça l'audio reste en
+    // pause au chargement même si l'HTML lance play() au bon moment.
+    late final PlatformWebViewControllerCreationParams params;
+    if (Platform.isIOS || Platform.isMacOS) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
+    _controller = WebViewController.fromPlatformCreationParams(params)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0xFFF4F7FA))
       ..setNavigationDelegate(
@@ -49,6 +66,10 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
           },
         ),
       );
+    if (Platform.isAndroid) {
+      (_controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
+    }
     _loadHtml();
   }
 

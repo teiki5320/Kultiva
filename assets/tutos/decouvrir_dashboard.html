@@ -624,12 +624,30 @@ let voMode = 'tts';     // 'audio' ou 'tts'
 const voAudio = document.getElementById('voAudio');
 const voToggle = document.getElementById('voToggle');
 
-// Détecte si un vrai MP3 est disponible (inliné en data: par Flutter).
+// Détecte si un vrai MP3/MP4/etc est disponible (inliné en data: par Flutter).
 // Si l'audio charge correctement → mode 'audio'. Sinon → TTS.
-voAudio.addEventListener('canplay', () => { voMode = 'audio'; }, {once:true});
+voAudio.addEventListener('canplay', () => {
+  voMode = 'audio';
+  // Coupe le TTS éventuellement lancé, et démarre le vrai audio si voix ON.
+  if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch(e){} }
+  if (voEnabled) {
+    voAudio.currentTime = 0;
+    voAudio.play().catch(() => {
+      // Si WKWebView bloque l'autoplay, on reviendra ici après un 1er tap.
+    });
+  }
+}, {once:true});
 voAudio.addEventListener('error',    () => { voMode = 'tts'; },   {once:true});
 // Essaie de charger maintenant (si src est toujours "audio/xxx.mp3" non inliné, ça échoue silencieusement → TTS).
 try { voAudio.load(); } catch(e) {}
+
+// Fallback autoplay iOS : au 1er tap sur l'écran, on retente de lancer l'audio.
+document.addEventListener('click', () => {
+  if (voEnabled && voMode === 'audio' && voAudio.paused) {
+    voAudio.currentTime = 0;
+    voAudio.play().catch(()=>{});
+  }
+}, {once:false});
 
 // Voix TTS : choisit une voix FÉMININE française en priorité.
 // Sur iOS les voix françaises féminines sont Amélie, Aurélie, Marie,
