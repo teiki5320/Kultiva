@@ -2970,43 +2970,51 @@ class _FilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 56,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _FilterChip(
-            label: '🌱 Tamassi',
-            count: 0,
-            hideCount: true,
-            selected: filter == _AlbumFilter.tamassi,
-            color: KultivaColors.primaryGreen,
-            onTap: () {
-              AudioService.instance.play(Sfx.tap);
-              onChanged(_AlbumFilter.tamassi);
-            },
-          ),
-          _FilterChip(
-            label: '📸 Défis',
-            count: 0,
-            hideCount: true,
-            selected: filter == _AlbumFilter.challenges,
-            color: const Color(0xFFFF8FAB),
-            onTap: () {
-              AudioService.instance.play(Sfx.tap);
-              onChanged(_AlbumFilter.challenges);
-            },
-          ),
-          _FilterChip(
-            label: '🏆 Badges',
-            count: badgesCount,
-            total: totalBadges,
-            selected: filter == _AlbumFilter.badges,
-            color: const Color(0xFFE8B923),
-            onTap: () {
-              AudioService.instance.play(Sfx.tap);
-              onChanged(_AlbumFilter.badges);
-            },
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: _FilterChip(
+                label: '🌱 Tamassi',
+                count: 0,
+                hideCount: true,
+                selected: filter == _AlbumFilter.tamassi,
+                color: KultivaColors.primaryGreen,
+                onTap: () {
+                  AudioService.instance.play(Sfx.tap);
+                  onChanged(_AlbumFilter.tamassi);
+                },
+              ),
+            ),
+            Expanded(
+              child: _FilterChip(
+                label: '📸 Défis',
+                count: 0,
+                hideCount: true,
+                selected: filter == _AlbumFilter.challenges,
+                color: const Color(0xFFFF8FAB),
+                onTap: () {
+                  AudioService.instance.play(Sfx.tap);
+                  onChanged(_AlbumFilter.challenges);
+                },
+              ),
+            ),
+            Expanded(
+              child: _FilterChip(
+                label: '🏆 Badges',
+                count: badgesCount,
+                total: totalBadges,
+                selected: filter == _AlbumFilter.badges,
+                color: const Color(0xFFE8B923),
+                onTap: () {
+                  AudioService.instance.play(Sfx.tap);
+                  onChanged(_AlbumFilter.badges);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -3042,7 +3050,7 @@ class _FilterChip extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
             color: selected ? color.withOpacity(0.2) : Colors.white,
             borderRadius: BorderRadius.circular(18),
@@ -3051,12 +3059,17 @@ class _FilterChip extends StatelessWidget {
               width: selected ? 2.5 : 2,
             ),
           ),
-          child: Text(
-            '$label$suffix',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
-              color: color,
+          alignment: Alignment.center,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              '$label$suffix',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+                color: color,
+              ),
+              maxLines: 1,
             ),
           ),
         ),
