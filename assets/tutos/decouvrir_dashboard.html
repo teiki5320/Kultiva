@@ -61,14 +61,14 @@
   .halo.gold{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 8px rgba(201,164,59,.65),0 0 30px 10px rgba(201,164,59,.45)}
   .halo.blue{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 8px rgba(110,155,200,.55),0 0 30px 10px rgba(110,155,200,.35)}
   .pulse{position:absolute;border-radius:inherit;border:3px solid rgba(74,155,90,.65);pointer-events:none;inset:-6px;opacity:0}
-  .caption{position:absolute;z-index:20;display:inline-flex;align-items:flex-start;gap:18px;
-    padding:28px 38px;background:#fff;border-radius:34px;
-    font-family:'Fredoka',sans-serif;font-weight:600;font-size:38px;color:var(--ink);
-    box-shadow:0 10px 0 rgba(74,155,90,.18),0 22px 48px -10px rgba(0,0,0,.22);
-    border:3px solid #fff;opacity:0;transform-origin:center center;max-width:760px;text-align:left;line-height:1.15}
-  .caption .emoji{font-size:52px;display:inline-block;transform-origin:center;flex:none;line-height:1}
+  .caption{position:absolute;z-index:20;display:inline-flex;align-items:flex-start;gap:20px;
+    padding:32px 42px;background:#fff;border-radius:36px;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:44px;color:var(--ink);
+    box-shadow:0 12px 0 rgba(74,155,90,.18),0 24px 52px -10px rgba(0,0,0,.22);
+    border:3px solid #fff;opacity:0;transform-origin:center center;max-width:820px;text-align:left;line-height:1.15}
+  .caption .emoji{font-size:58px;display:inline-block;transform-origin:center;flex:none;line-height:1}
   .caption .content{display:block}
-  .caption .sub{display:block;margin-top:10px;font-size:26px;font-weight:500;opacity:.82;white-space:normal;line-height:1.35;font-family:'Quicksand',sans-serif}
+  .caption .sub{display:block;margin-top:12px;font-size:30px;font-weight:500;opacity:.82;white-space:normal;line-height:1.35;font-family:'Quicksand',sans-serif}
   .caption.rose{background:#FFF0ED;border-color:#F4C6C0;color:#B85A4D;box-shadow:0 8px 0 rgba(217,138,133,.25),0 18px 40px -10px rgba(0,0,0,.18)}
   .caption.green{background:#EAF6EC;border-color:#B8DCBE;color:var(--green-deep);box-shadow:0 8px 0 rgba(74,155,90,.22),0 18px 40px -10px rgba(0,0,0,.18)}
   .caption.terra{background:#FDEEE3;border-color:#F2C6AE;color:#B2633C;box-shadow:0 8px 0 rgba(216,134,97,.25),0 18px 40px -10px rgba(0,0,0,.18)}
@@ -77,12 +77,12 @@
   .caption.gold{background:#FFF3D0;border-color:#E8C96A;color:#7A5A1E;box-shadow:0 8px 0 rgba(201,164,59,.35),0 18px 40px -10px rgba(0,0,0,.18)}
   .cursor{position:absolute;z-index:22;pointer-events:none;opacity:0;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
   .outro{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:30;
-    background:#fff;border:4px solid #B8DCBE;border-radius:40px;padding:50px 60px;
+    background:#fff;border:4px solid #B8DCBE;border-radius:44px;padding:58px 68px;
     box-shadow:0 14px 0 rgba(74,155,90,.18),0 24px 50px -10px rgba(0,0,0,.25);
-    font-family:'Fredoka',sans-serif;font-weight:500;font-size:44px;color:var(--green-deep);
-    text-align:center;max-width:820px;opacity:0;line-height:1.25}
-  .outro .emoji{font-size:60px;display:block;margin-bottom:18px}
-  .outro .small{display:block;margin-top:16px;font-size:24px;font-weight:400;color:var(--ink-soft);font-family:'Quicksand',sans-serif;line-height:1.4}
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:54px;color:var(--green-deep);
+    text-align:center;max-width:880px;opacity:0;line-height:1.2}
+  .outro .emoji{font-size:72px;display:block;margin-bottom:22px}
+  .outro .small{display:block;margin-top:20px;font-size:30px;font-weight:500;color:var(--ink-soft);font-family:'Quicksand',sans-serif;line-height:1.4}
   .deco{position:absolute;pointer-events:none;z-index:3}
   .deco svg{display:block}
   .replay{position:fixed;right:20px;top:20px;z-index:100;background:#fff;border:2px solid rgba(74,155,90,.25);padding:10px 18px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#357A44;cursor:pointer;box-shadow:0 4px 0 rgba(74,155,90,.18);opacity:.9}
@@ -118,8 +118,7 @@
 <audio id="voAudio" preload="auto" playsinline>
   <source id="voSource" src="audio/decouvrir_dashboard.mp3" type="audio/mpeg">
 </audio>
-<button class="replay" id="replay">↻ Rejouer</button>
-<button class="replay" id="voToggle" style="top:70px;">🔇 Voix</button>
+<button class="replay" id="voToggle">🔊 Voix</button>
 <div id="tweaks">
   <h3>Tweaks <span class="hint">positions des halos</span></h3>
   <div class="group">
@@ -232,8 +231,8 @@
         <!-- Nav bar halos (pointent sur les icônes cibles avant chaque transition) -->
         <div class="halo" id="haloNavEtal" style="left:190px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
         <div class="halo" id="haloNavPoussidex" style="left:360px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo rose" id="haloTabDefis" style="left:260px;top:820px;width:175px;height:70px;border-radius:22px;"><div class="pulse"></div></div>
-        <div class="halo gold" id="haloTabBadges" style="left:450px;top:820px;width:210px;height:70px;border-radius:22px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloTabDefis" style="left:235px;top:660px;width:185px;height:85px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloTabBadges" style="left:430px;top:660px;width:225px;height:85px;border-radius:24px;"><div class="pulse"></div></div>
 
         <div class="cursor" id="cursor" style="left:300px;top:380px;">
           <svg width="70" height="80" viewBox="0 0 70 80">
@@ -555,7 +554,7 @@ function buildTL(){
 
   // ----- Scene 9 (20.5 - 23.0): Poussidex Défis — tap sub-tab -----
   tl.call(()=>setBadge(9),null,20.5);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:320,y:840},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:325,y:685},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
   tl.to('#haloTabDefis',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},20.55);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},20.8);
   tl.to('#haloTabDefis',{scale:1.05,duration:.15,yoyo:true,repeat:1},20.8);
@@ -574,7 +573,7 @@ function buildTL(){
 
   // ----- Scene 10 (23.0 - 25.5): Poussidex Badges — tap sub-tab -----
   tl.call(()=>setBadge(10),null,23.0);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:520,y:840},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:540,y:685},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
   tl.to('#haloTabBadges',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},23.05);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},23.3);
   tl.to('#haloTabBadges',{scale:1.05,duration:.15,yoyo:true,repeat:1},23.3);
@@ -614,8 +613,8 @@ const VO_LINES = {
   9: "Trente défis photo. Une photo, un badge, de l'XP pour ton Tamassi.",
   10: "Les badges. Collectionne-les tous en jardinant."
 };
-let voEnabled = false;
-let voMode = 'tts'; // 'audio' ou 'tts'
+let voEnabled = true;   // voix ON par défaut, bouton permet de couper
+let voMode = 'tts';     // 'audio' ou 'tts'
 const voAudio = document.getElementById('voAudio');
 const voToggle = document.getElementById('voToggle');
 
@@ -683,14 +682,22 @@ if ('speechSynthesis' in window) {
   speechSynthesis.addEventListener?.('voiceschanged', () => { /* warm up */ });
 }
 
+// État initial : voix ON (bouton reflète ça, TTS prête à parler).
+voToggle.textContent = '🔊 Voix ON';
+
 let TL=buildTL();
-document.getElementById('replay').addEventListener('click',()=>{
-  TL.restart(true);
-  if (voEnabled && voMode === 'audio') { voAudio.currentTime = 0; voAudio.play().catch(()=>{}); }
+
+// Redémarre la voix audio à chaque itération de la boucle (sinon
+// l'audio s'arrête au premier tour alors que l'animation loop).
+TL.eventCallback('onRepeat', () => {
+  if (voEnabled && voMode === 'audio') {
+    voAudio.currentTime = 0;
+    voAudio.play().catch(()=>{});
+  }
 });
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "speed": 0.60,
+  "speed": 0.50,
   "halo1_x": 5, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
   "haloMeteo_x": 21, "haloMeteo_y": 820, "haloMeteo_w": 608, "haloMeteo_h": 255,
   "haloSemer_x": 13, "haloSemer_y": 374, "haloSemer_w": 315, "haloSemer_h": 200,
@@ -767,7 +774,7 @@ document.getElementById('tw-preview').addEventListener('click',()=>{
 });
 document.getElementById('tw-reset').addEventListener('click',()=>{
   Object.assign(TWEAKS, {
-    "speed": 0.60,
+    "speed": 0.50,
     "halo1_x": 14, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
     "haloMeteo_x": 28, "haloMeteo_y": 760, "haloMeteo_w": 644, "haloMeteo_h": 170,
     "haloSemer_x": 28, "haloSemer_y": 300, "haloSemer_w": 315, "haloSemer_h": 200,
