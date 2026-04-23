@@ -231,8 +231,8 @@
         <!-- Nav bar halos (pointent sur les icônes cibles avant chaque transition) -->
         <div class="halo" id="haloNavEtal" style="left:190px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
         <div class="halo" id="haloNavPoussidex" style="left:360px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo rose" id="haloTabDefis" style="left:235px;top:660px;width:185px;height:85px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo gold" id="haloTabBadges" style="left:430px;top:660px;width:225px;height:85px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloTabDefis" style="left:210px;top:315px;width:185px;height:75px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloTabBadges" style="left:405px;top:315px;width:230px;height:75px;border-radius:24px;"><div class="pulse"></div></div>
 
         <div class="cursor" id="cursor" style="left:300px;top:380px;">
           <svg width="70" height="80" viewBox="0 0 70 80">
@@ -554,7 +554,7 @@ function buildTL(){
 
   // ----- Scene 9 (20.5 - 23.0): Poussidex Défis — tap sub-tab -----
   tl.call(()=>setBadge(9),null,20.5);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:325,y:685},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:300,y:340},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
   tl.to('#haloTabDefis',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},20.55);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},20.8);
   tl.to('#haloTabDefis',{scale:1.05,duration:.15,yoyo:true,repeat:1},20.8);
@@ -573,7 +573,7 @@ function buildTL(){
 
   // ----- Scene 10 (23.0 - 25.5): Poussidex Badges — tap sub-tab -----
   tl.call(()=>setBadge(10),null,23.0);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:540,y:685},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:520,y:340},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
   tl.to('#haloTabBadges',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},23.05);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},23.3);
   tl.to('#haloTabBadges',{scale:1.05,duration:.15,yoyo:true,repeat:1},23.3);
