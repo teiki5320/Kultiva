@@ -123,7 +123,7 @@
   <h3>Tweaks <span class="hint">positions des halos</span></h3>
   <div class="group">
     <div class="group-title"><span>⏱ Vitesse &amp; timing</span></div>
-    <div class="row speed-row"><label>Durée totale</label><input type="range" id="tw-speed" min="0.4" max="1.2" step="0.02"/><span class="val" id="tw-speed-v"></span></div>
+    <div class="row speed-row"><label>Durée totale</label><input type="range" id="tw-speed" min="0.25" max="1.2" step="0.02"/><span class="val" id="tw-speed-v"></span></div>
   </div>
   <div class="group" data-halo="halo1">
     <div class="group-title"><span><span class="chip" style="background:#4A9B5A"></span>Vue d'ensemble</span><span class="hint">scène 1</span></div>
@@ -704,7 +704,7 @@ TL.eventCallback('onRepeat', () => {
 });
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "speed": 0.50,
+  "speed": 0.40,
   "halo1_x": 5, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
   "haloMeteo_x": 21, "haloMeteo_y": 820, "haloMeteo_w": 608, "haloMeteo_h": 255,
   "haloSemer_x": 13, "haloSemer_y": 374, "haloSemer_w": 315, "haloSemer_h": 200,
@@ -781,7 +781,7 @@ document.getElementById('tw-preview').addEventListener('click',()=>{
 });
 document.getElementById('tw-reset').addEventListener('click',()=>{
   Object.assign(TWEAKS, {
-    "speed": 0.50,
+    "speed": 0.40,
     "halo1_x": 14, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
     "haloMeteo_x": 28, "haloMeteo_y": 760, "haloMeteo_w": 644, "haloMeteo_h": 170,
     "haloSemer_x": 28, "haloSemer_y": 300, "haloSemer_w": 315, "haloSemer_h": 200,
