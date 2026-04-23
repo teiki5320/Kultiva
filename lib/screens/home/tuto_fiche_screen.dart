@@ -56,6 +56,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
     try {
       var html = await rootBundle.loadString(widget.assetPath);
       html = await _inlineAssetImages(html);
+      html = await _inlineAssetAudio(html);
       await _controller.loadHtmlString(html);
     } catch (e) {
       if (mounted) {
@@ -65,6 +66,42 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
         );
       }
     }
+  }
+
+  /// Inline les `<source src="audio/xxx.mp3">` (et autres extensions audio)
+  /// en data-URL base64 pour la voix off des tutos animés. Même mécanisme
+  /// que [_inlineAssetImages] mais pour les balises `<source>` dans un
+  /// `<audio>`. Si le fichier n'existe pas on laisse le src intact (le
+  /// HTML basculera alors sur la synthèse vocale TTS côté JS).
+  Future<String> _inlineAssetAudio(String html) async {
+    final regex = RegExp(
+      '''<source([^>]*?)src=["'](audio/[^"']+)["']([^>]*?)>''',
+    );
+    final matches = regex.allMatches(html).toList();
+    var result = html;
+    for (final m in matches) {
+      final relPath = m.group(2)!;
+      final bundlePath = 'assets/tutos/$relPath';
+      try {
+        final bytes = await rootBundle.load(bundlePath);
+        final b64 = base64Encode(bytes.buffer.asUint8List());
+        final ext = relPath.split('.').last.toLowerCase();
+        final mime = (ext == 'ogg')
+            ? 'audio/ogg'
+            : (ext == 'wav' ? 'audio/wav' : 'audio/mpeg');
+        final dataUrl = 'data:$mime;base64,$b64';
+        final before = m.group(1) ?? '';
+        final after = m.group(3) ?? '';
+        result = result.replaceFirst(
+          m.group(0)!,
+          '<source${before}src="$dataUrl"$after>',
+        );
+      } catch (_) {
+        // Pas de fichier audio — on laisse le src relatif, le JS basculera
+        // sur TTS (SpeechSynthesis).
+      }
+    }
+    return result;
   }
 
   /// Remplace les `<img src="screens/xxx.png">` relatifs par des data-URL

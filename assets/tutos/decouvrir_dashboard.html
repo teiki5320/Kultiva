@@ -115,7 +115,11 @@
 </style>
 </head>
 <body>
+<audio id="voAudio" preload="auto" playsinline>
+  <source id="voSource" src="audio/decouvrir_dashboard.mp3" type="audio/mpeg">
+</audio>
 <button class="replay" id="replay">↻ Rejouer</button>
+<button class="replay" id="voToggle" style="top:70px;">🔇 Voix</button>
 <div id="tweaks">
   <h3>Tweaks <span class="hint">positions des halos</span></h3>
   <div class="group">
@@ -392,6 +396,7 @@ function showShot(idx){
 }
 function setBadge(n){
   document.getElementById('sceneBadge').textContent = `SCÈNE ${n} / 10`;
+  if (typeof speak === 'function') speak(n);
 }
 
 function buildTL(){
@@ -596,8 +601,93 @@ function buildTL(){
 
   return tl;
 }
+/* ============ VOICE OVER (Option C : TTS par défaut, MP3 si dispo) ============ */
+const VO_LINES = {
+  1: "Ton tableau de bord Kultiva. Le hero saison, la météo, 4 cartes d'accès rapide et le carrousel des conseils du jour.",
+  2: "La météo de ton jardin. Température, pluie prévue, 7 jours à venir pour savoir quand arroser ou protéger.",
+  3: "À semer ce mois-ci. La liste kawaii des légumes à planter maintenant, adaptée à la saison.",
+  4: "Et à récolter. Les légumes prêts pour la récolte — ne rate plus jamais le bon moment.",
+  5: "Vue annuelle. Le calendrier complet sur douze mois. Planifie toute ta saison d'un coup d'œil.",
+  6: "Le légume du jour. Chaque jour, une fiche kawaii complète : semis, culture, récolte.",
+  7: "L'Étal, ton marché kawaii. Dix rayons : légumes, aromatiques et trente-huit accessoires.",
+  8: "Ton Tamassi. La créature kawaii qui évolue avec tes actions au jardin.",
+  9: "Trente défis photo. Une photo, un badge, de l'XP pour ton Tamassi.",
+  10: "Les badges. Collectionne-les tous en jardinant."
+};
+let voEnabled = false;
+let voMode = 'tts'; // 'audio' ou 'tts'
+const voAudio = document.getElementById('voAudio');
+const voToggle = document.getElementById('voToggle');
+
+// Détecte si un vrai MP3 est disponible (inliné en data: par Flutter).
+// Si l'audio charge correctement → mode 'audio'. Sinon → TTS.
+voAudio.addEventListener('canplay', () => { voMode = 'audio'; }, {once:true});
+voAudio.addEventListener('error',    () => { voMode = 'tts'; },   {once:true});
+// Essaie de charger maintenant (si src est toujours "audio/xxx.mp3" non inliné, ça échoue silencieusement → TTS).
+try { voAudio.load(); } catch(e) {}
+
+// Voix TTS : choisit une voix française si dispo.
+function pickFrenchVoice(){
+  if (!('speechSynthesis' in window)) return null;
+  const voices = speechSynthesis.getVoices();
+  return voices.find(v => /fr[-_]/i.test(v.lang)) || voices[0] || null;
+}
+
+function speak(n){
+  if (!voEnabled) return;
+  if (voMode === 'audio') {
+    // Le MP3 joue en continu — on ne fait rien par scène.
+    return;
+  }
+  if (!('speechSynthesis' in window) || !VO_LINES[n]) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(VO_LINES[n]);
+    u.lang = 'fr-FR';
+    u.rate = 0.98;
+    u.pitch = 1.05;
+    const v = pickFrenchVoice();
+    if (v) u.voice = v;
+    speechSynthesis.speak(u);
+  } catch(e) {}
+}
+
+function enableVoice(){
+  voEnabled = true;
+  voToggle.textContent = '🔊 Voix ON';
+  if (voMode === 'audio') {
+    voAudio.currentTime = 0;
+    voAudio.play().catch(() => { voMode = 'tts'; });
+  } else if ('speechSynthesis' in window) {
+    // Prime la liste des voix (lazy sur certains navigateurs).
+    speechSynthesis.getVoices();
+    // Relance la scène courante au cas où.
+    const m = (document.getElementById('sceneBadge').textContent.match(/(\d+)/) || [])[1];
+    if (m) speak(+m);
+  }
+}
+
+function disableVoice(){
+  voEnabled = false;
+  voToggle.textContent = '🔇 Voix';
+  if (voMode === 'audio') voAudio.pause();
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+}
+
+voToggle.addEventListener('click', () => {
+  if (!voEnabled) enableVoice(); else disableVoice();
+});
+
+// Certaines WebViews ne renseignent getVoices() qu'après un event 'voiceschanged'.
+if ('speechSynthesis' in window) {
+  speechSynthesis.addEventListener?.('voiceschanged', () => { /* warm up */ });
+}
+
 let TL=buildTL();
-document.getElementById('replay').addEventListener('click',()=>TL.restart(true));
+document.getElementById('replay').addEventListener('click',()=>{
+  TL.restart(true);
+  if (voEnabled && voMode === 'audio') { voAudio.currentTime = 0; voAudio.play().catch(()=>{}); }
+});
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "speed": 0.60,

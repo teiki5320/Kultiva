@@ -91,6 +91,7 @@ flutter:
     - assets/tutos/
     - assets/tutos/screens/
     - assets/tutos/screens/dashboard/
+    - assets/tutos/audio/
     - assets/sounds/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───
