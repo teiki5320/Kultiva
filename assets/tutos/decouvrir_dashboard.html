@@ -237,8 +237,8 @@
         <!-- Nav bar halos (pointent sur les icônes cibles avant chaque transition) -->
         <div class="halo" id="haloNavEtal" style="left:190px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
         <div class="halo" id="haloNavPoussidex" style="left:360px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo rose" id="haloTabDefis" style="left:210px;top:315px;width:185px;height:75px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo gold" id="haloTabBadges" style="left:405px;top:315px;width:230px;height:75px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloTabDefis" style="left:220px;top:350px;width:180px;height:80px;border-radius:24px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloTabBadges" style="left:420px;top:350px;width:225px;height:80px;border-radius:24px;"><div class="pulse"></div></div>
 
         <div class="cursor" id="cursor" style="left:300px;top:380px;">
           <svg width="70" height="80" viewBox="0 0 70 80">
@@ -255,7 +255,7 @@
   <div class="caption green" id="cap1" style="left:60px;top:360px;">
     <span class="emoji">🏠</span>
     <span class="content">Ton tableau de bord
-      <span class="sub">Le hero saison, la météo, 4 cartes d'accès rapide et le carrousel des conseils du jour.</span>
+      <span class="sub">La saison, la météo, 4 cartes d'accès rapide et le carrousel des conseils du jour.</span>
     </span>
   </div>
   <div class="caption blue" id="cap2" style="left:60px;top:330px;">
@@ -272,7 +272,7 @@
   </div>
   <div class="caption terra" id="cap4" style="left:60px;top:330px;">
     <span class="emoji">🧺</span>
-    <span class="content">Et à récolter
+    <span class="content">À récolter ce mois-ci
       <span class="sub">Les légumes prêts pour la récolte — ne rate plus jamais le bon moment.</span>
     </span>
   </div>
@@ -560,7 +560,7 @@ function buildTL(){
 
   // ----- Scene 9 (20.5 - 23.0): Poussidex Défis — tap sub-tab -----
   tl.call(()=>setBadge(9),null,20.5);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:300,y:340},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:310,y:380},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
   tl.to('#haloTabDefis',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},20.55);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},20.8);
   tl.to('#haloTabDefis',{scale:1.05,duration:.15,yoyo:true,repeat:1},20.8);
@@ -579,7 +579,7 @@ function buildTL(){
 
   // ----- Scene 10 (23.0 - 25.5): Poussidex Badges — tap sub-tab -----
   tl.call(()=>setBadge(10),null,23.0);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:520,y:340},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:530,y:380},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
   tl.to('#haloTabBadges',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},23.05);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},23.3);
   tl.to('#haloTabBadges',{scale:1.05,duration:.15,yoyo:true,repeat:1},23.3);
@@ -608,10 +608,10 @@ function buildTL(){
 }
 /* ============ VOICE OVER (Option C : TTS par défaut, MP3 si dispo) ============ */
 const VO_LINES = {
-  1: "Ton tableau de bord. Le hero saison, la météo, 4 cartes d'accès rapide et le carrousel des conseils du jour.",
+  1: "Ton tableau de bord. La saison, la météo, 4 cartes d'accès rapide et le carrousel des conseils du jour.",
   2: "La météo de ton jardin. Température, pluie prévue, 7 jours à venir pour savoir quand arroser ou protéger.",
   3: "À semer ce mois-ci. La liste kawaii des légumes à planter maintenant, adaptée à la saison.",
-  4: "Et à récolter. Les légumes prêts pour la récolte. Ne rate plus jamais le bon moment.",
+  4: "À récolter ce mois-ci. Les légumes prêts pour la récolte, ne rate plus jamais le bon moment.",
   5: "Vue annuelle. Le calendrier complet sur douze mois. Planifie toute ta saison d'un coup d'œil.",
   6: "Le légume du jour. Chaque jour, une fiche kawaii complète : semis, culture, récolte.",
   7: "L'Étal, ton marché kawaii. Le catalogue complet : dix rayons de légumes, aromatiques et trente-huit accessoires.",
@@ -728,7 +728,7 @@ TL.eventCallback('onRepeat', () => {
 });
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "speed": 0.30,
+  "speed": 0.40,
   "halo1_x": 5, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
   "haloMeteo_x": 21, "haloMeteo_y": 820, "haloMeteo_w": 608, "haloMeteo_h": 255,
   "haloSemer_x": 13, "haloSemer_y": 374, "haloSemer_w": 315, "haloSemer_h": 200,
@@ -805,7 +805,7 @@ document.getElementById('tw-preview').addEventListener('click',()=>{
 });
 document.getElementById('tw-reset').addEventListener('click',()=>{
   Object.assign(TWEAKS, {
-    "speed": 0.30,
+    "speed": 0.40,
     "halo1_x": 14, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
     "haloMeteo_x": 28, "haloMeteo_y": 760, "haloMeteo_w": 644, "haloMeteo_h": 170,
     "haloSemer_x": 28, "haloSemer_y": 300, "haloSemer_w": 315, "haloSemer_h": 200,
