@@ -2969,7 +2969,7 @@ class _FilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 56,
+      height: 46,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Row(
@@ -3050,13 +3050,13 @@ class _FilterChip extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             color: selected ? color.withOpacity(0.2) : Colors.white,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: color,
-              width: selected ? 2.5 : 2,
+              width: selected ? 2 : 1.6,
             ),
           ),
           alignment: Alignment.center,
@@ -3065,7 +3065,7 @@ class _FilterChip extends StatelessWidget {
             child: Text(
               '$label$suffix',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
                 color: color,
               ),
