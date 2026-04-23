@@ -602,16 +602,16 @@ function buildTL(){
 }
 /* ============ VOICE OVER (Option C : TTS par défaut, MP3 si dispo) ============ */
 const VO_LINES = {
-  1: "Ton tableau de bord Kultiva. Le hero saison, la météo, 4 cartes d'accès rapide et le carrousel des conseils du jour.",
-  2: "La météo de ton jardin. Température, pluie prévue, 7 jours à venir pour savoir quand arroser ou protéger.",
-  3: "À semer ce mois-ci. La liste kawaii des légumes à planter maintenant, adaptée à la saison.",
-  4: "Et à récolter. Les légumes prêts pour la récolte — ne rate plus jamais le bon moment.",
-  5: "Vue annuelle. Le calendrier complet sur douze mois. Planifie toute ta saison d'un coup d'œil.",
-  6: "Le légume du jour. Chaque jour, une fiche kawaii complète : semis, culture, récolte.",
-  7: "L'Étal, ton marché kawaii. Dix rayons : légumes, aromatiques et trente-huit accessoires.",
-  8: "Ton Tamassi. La créature kawaii qui évolue avec tes actions au jardin.",
-  9: "Trente défis photo. Une photo, un badge, de l'XP pour ton Tamassi.",
-  10: "Les badges. Collectionne-les tous en jardinant."
+  1: "Ton tableau de bord. Tout commence ici.",
+  2: "La météo de ton jardin.",
+  3: "Les légumes à semer ce mois-ci.",
+  4: "Et ceux à récolter.",
+  5: "Le calendrier sur douze mois.",
+  6: "Le légume du jour, avec sa fiche.",
+  7: "L'Étal, ton marché kawaii.",
+  8: "Ton Tamassi kawaii.",
+  9: "Les défis photo du mois.",
+  10: "Les badges à collectionner."
 };
 let voEnabled = true;   // voix ON par défaut, bouton permet de couper
 let voMode = 'tts';     // 'audio' ou 'tts'
@@ -625,26 +625,33 @@ voAudio.addEventListener('error',    () => { voMode = 'tts'; },   {once:true});
 // Essaie de charger maintenant (si src est toujours "audio/xxx.mp3" non inliné, ça échoue silencieusement → TTS).
 try { voAudio.load(); } catch(e) {}
 
-// Voix TTS : choisit une voix française si dispo.
+// Voix TTS : choisit une voix FÉMININE française en priorité.
+// Sur iOS les voix françaises féminines sont Amélie, Aurélie, Marie,
+// Audrey. Sur Android / Chrome desktop, on cherche "female" ou un
+// nom connu. Fallback : première voix fr, sinon n'importe quelle voix.
 function pickFrenchVoice(){
   if (!('speechSynthesis' in window)) return null;
   const voices = speechSynthesis.getVoices();
-  return voices.find(v => /fr[-_]/i.test(v.lang)) || voices[0] || null;
+  const french = voices.filter(v => /fr[-_]/i.test(v.lang));
+  const femaleNames = /amélie|aurélie|marie|audrey|sandy|virginie|chantal|female|femme|f[ée]minine/i;
+  const female = french.find(v => femaleNames.test(v.name));
+  if (female) return female;
+  // 2e chance : voix non-"Thomas" (voix masculine iOS la plus courante)
+  const notThomas = french.find(v => !/thomas|daniel|nicolas|paul/i.test(v.name));
+  if (notThomas) return notThomas;
+  return french[0] || voices[0] || null;
 }
 
 function speak(n){
   if (!voEnabled) return;
-  if (voMode === 'audio') {
-    // Le MP3 joue en continu — on ne fait rien par scène.
-    return;
-  }
+  if (voMode === 'audio') return; // MP3 joue en continu
   if (!('speechSynthesis' in window) || !VO_LINES[n]) return;
   try {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(VO_LINES[n]);
     u.lang = 'fr-FR';
-    u.rate = 0.98;
-    u.pitch = 1.05;
+    u.rate = 1.0;
+    u.pitch = 1.15;  // un peu plus haut → rendu plus doux / féminin
     const v = pickFrenchVoice();
     if (v) u.voice = v;
     speechSynthesis.speak(u);
