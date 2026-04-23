@@ -2971,7 +2971,7 @@ class _FilterBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 4),
       child: SizedBox(
-        height: 46,
+        height: 36,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
@@ -3053,13 +3053,13 @@ class _FilterChip extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
             color: selected ? color.withOpacity(0.2) : Colors.white,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: color,
-              width: selected ? 2 : 1.6,
+              width: selected ? 1.8 : 1.4,
             ),
           ),
           alignment: Alignment.center,
@@ -3068,7 +3068,7 @@ class _FilterChip extends StatelessWidget {
             child: Text(
               '$label$suffix',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
                 color: color,
               ),
