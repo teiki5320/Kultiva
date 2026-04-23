@@ -2968,11 +2968,13 @@ class _FilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 46,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(top: 14, bottom: 4),
+      child: SizedBox(
+        height: 46,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
           children: <Widget>[
             Expanded(
               child: _FilterChip(
@@ -3014,6 +3016,7 @@ class _FilterBar extends StatelessWidget {
               ),
             ),
           ],
+          ),
         ),
       ),
     );
