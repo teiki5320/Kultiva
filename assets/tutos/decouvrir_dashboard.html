@@ -61,14 +61,14 @@
   .halo.gold{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 8px rgba(201,164,59,.65),0 0 30px 10px rgba(201,164,59,.45)}
   .halo.blue{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 8px rgba(110,155,200,.55),0 0 30px 10px rgba(110,155,200,.35)}
   .pulse{position:absolute;border-radius:inherit;border:3px solid rgba(74,155,90,.65);pointer-events:none;inset:-6px;opacity:0}
-  .caption{position:absolute;z-index:20;display:inline-flex;align-items:flex-start;gap:14px;
-    padding:22px 30px;background:#fff;border-radius:30px;
-    font-family:'Fredoka',sans-serif;font-weight:500;font-size:30px;color:var(--ink);
-    box-shadow:0 8px 0 rgba(74,155,90,.18),0 18px 40px -10px rgba(0,0,0,.18);
-    border:3px solid #fff;opacity:0;transform-origin:center center;max-width:620px;text-align:left}
-  .caption .emoji{font-size:40px;display:inline-block;transform-origin:center;flex:none;line-height:1}
+  .caption{position:absolute;z-index:20;display:inline-flex;align-items:flex-start;gap:18px;
+    padding:28px 38px;background:#fff;border-radius:34px;
+    font-family:'Fredoka',sans-serif;font-weight:600;font-size:38px;color:var(--ink);
+    box-shadow:0 10px 0 rgba(74,155,90,.18),0 22px 48px -10px rgba(0,0,0,.22);
+    border:3px solid #fff;opacity:0;transform-origin:center center;max-width:760px;text-align:left;line-height:1.15}
+  .caption .emoji{font-size:52px;display:inline-block;transform-origin:center;flex:none;line-height:1}
   .caption .content{display:block}
-  .caption .sub{display:block;margin-top:6px;font-size:20px;font-weight:400;opacity:.78;white-space:normal;line-height:1.3;font-family:'Quicksand',sans-serif}
+  .caption .sub{display:block;margin-top:10px;font-size:26px;font-weight:500;opacity:.82;white-space:normal;line-height:1.35;font-family:'Quicksand',sans-serif}
   .caption.rose{background:#FFF0ED;border-color:#F4C6C0;color:#B85A4D;box-shadow:0 8px 0 rgba(217,138,133,.25),0 18px 40px -10px rgba(0,0,0,.18)}
   .caption.green{background:#EAF6EC;border-color:#B8DCBE;color:var(--green-deep);box-shadow:0 8px 0 rgba(74,155,90,.22),0 18px 40px -10px rgba(0,0,0,.18)}
   .caption.terra{background:#FDEEE3;border-color:#F2C6AE;color:#B2633C;box-shadow:0 8px 0 rgba(216,134,97,.25),0 18px 40px -10px rgba(0,0,0,.18)}
@@ -228,8 +228,8 @@
         <!-- Nav bar halos (pointent sur les icônes cibles avant chaque transition) -->
         <div class="halo" id="haloNavEtal" style="left:190px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
         <div class="halo" id="haloNavPoussidex" style="left:360px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo rose" id="haloTabDefis" style="left:230px;top:200px;width:120px;height:60px;border-radius:20px;"><div class="pulse"></div></div>
-        <div class="halo gold" id="haloTabBadges" style="left:370px;top:200px;width:120px;height:60px;border-radius:20px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloTabDefis" style="left:260px;top:820px;width:175px;height:70px;border-radius:22px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloTabBadges" style="left:450px;top:820px;width:210px;height:70px;border-radius:22px;"><div class="pulse"></div></div>
 
         <div class="cursor" id="cursor" style="left:300px;top:380px;">
           <svg width="70" height="80" viewBox="0 0 70 80">
@@ -550,7 +550,7 @@ function buildTL(){
 
   // ----- Scene 9 (20.5 - 23.0): Poussidex Défis — tap sub-tab -----
   tl.call(()=>setBadge(9),null,20.5);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:250,y:220},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:320,y:840},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
   tl.to('#haloTabDefis',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},20.55);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},20.8);
   tl.to('#haloTabDefis',{scale:1.05,duration:.15,yoyo:true,repeat:1},20.8);
@@ -569,7 +569,7 @@ function buildTL(){
 
   // ----- Scene 10 (23.0 - 25.5): Poussidex Badges — tap sub-tab -----
   tl.call(()=>setBadge(10),null,23.0);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:390,y:220},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:520,y:840},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23.0);
   tl.to('#haloTabBadges',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},23.05);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},23.3);
   tl.to('#haloTabBadges',{scale:1.05,duration:.15,yoyo:true,repeat:1},23.3);
@@ -600,7 +600,7 @@ let TL=buildTL();
 document.getElementById('replay').addEventListener('click',()=>TL.restart(true));
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "speed": 0.78,
+  "speed": 0.60,
   "halo1_x": 5, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
   "haloMeteo_x": 21, "haloMeteo_y": 820, "haloMeteo_w": 608, "haloMeteo_h": 255,
   "haloSemer_x": 13, "haloSemer_y": 374, "haloSemer_w": 315, "haloSemer_h": 200,
@@ -677,7 +677,7 @@ document.getElementById('tw-preview').addEventListener('click',()=>{
 });
 document.getElementById('tw-reset').addEventListener('click',()=>{
   Object.assign(TWEAKS, {
-    "speed": 0.78,
+    "speed": 0.60,
     "halo1_x": 14, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
     "haloMeteo_x": 28, "haloMeteo_y": 760, "haloMeteo_w": 644, "haloMeteo_h": 170,
     "haloSemer_x": 28, "haloSemer_y": 300, "haloSemer_w": 315, "haloSemer_h": 200,
