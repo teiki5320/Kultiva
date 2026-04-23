@@ -116,7 +116,13 @@
 </head>
 <body>
 <audio id="voAudio" preload="auto" playsinline>
-  <source id="voSource" src="audio/decouvrir_dashboard.mp3" type="audio/mpeg">
+  <!-- L'inliner Dart remplace le src matchant un fichier existant dans
+       assets/tutos/audio/ par une data-URL. Les autres sont ignorées. -->
+  <source src="audio/decouvrir_dashboard.mp3" type="audio/mpeg">
+  <source src="audio/decouvrir_dashboard.m4a" type="audio/mp4">
+  <source src="audio/decouvrir_dashboard.mp4" type="audio/mp4">
+  <source src="audio/decouvrir_dashboard.wav" type="audio/wav">
+  <source src="audio/decouvrir_dashboard.ogg" type="audio/ogg">
 </audio>
 <button class="replay" id="voToggle">🔊 Voix</button>
 <div id="tweaks">

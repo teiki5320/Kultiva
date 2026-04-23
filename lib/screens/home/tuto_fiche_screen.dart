@@ -86,9 +86,22 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
         final bytes = await rootBundle.load(bundlePath);
         final b64 = base64Encode(bytes.buffer.asUint8List());
         final ext = relPath.split('.').last.toLowerCase();
-        final mime = (ext == 'ogg')
-            ? 'audio/ogg'
-            : (ext == 'wav' ? 'audio/wav' : 'audio/mpeg');
+        final String mime;
+        switch (ext) {
+          case 'ogg':
+            mime = 'audio/ogg';
+            break;
+          case 'wav':
+            mime = 'audio/wav';
+            break;
+          case 'm4a':
+          case 'mp4':
+          case 'aac':
+            mime = 'audio/mp4';
+            break;
+          default:
+            mime = 'audio/mpeg';
+        }
         final dataUrl = 'data:$mime;base64,$b64';
         final before = m.group(1) ?? '';
         final after = m.group(3) ?? '';
