@@ -237,8 +237,8 @@
         <!-- Nav bar halos (pointent sur les icônes cibles avant chaque transition) -->
         <div class="halo" id="haloNavEtal" style="left:190px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
         <div class="halo" id="haloNavPoussidex" style="left:360px;top:1290px;width:140px;height:100px;border-radius:24px;"><div class="pulse"></div></div>
-        <div class="halo rose" id="haloTabDefis" style="left:235px;top:348px;width:160px;height:72px;border-radius:22px;"><div class="pulse"></div></div>
-        <div class="halo gold" id="haloTabBadges" style="left:435px;top:348px;width:205px;height:72px;border-radius:22px;"><div class="pulse"></div></div>
+        <div class="halo rose" id="haloTabDefis" style="left:240px;top:378px;width:195px;height:62px;border-radius:22px;"><div class="pulse"></div></div>
+        <div class="halo gold" id="haloTabBadges" style="left:430px;top:378px;width:225px;height:62px;border-radius:22px;"><div class="pulse"></div></div>
 
         <div class="cursor" id="cursor" style="left:300px;top:380px;">
           <svg width="70" height="80" viewBox="0 0 70 80">
@@ -560,7 +560,7 @@ function buildTL(){
 
   // ----- Scene 9 (20.5 - 23.0): Poussidex Défis — tap sub-tab -----
   tl.call(()=>setBadge(9),null,20.5);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:310,y:380},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:337,y:410},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},20.5);
   tl.to('#haloTabDefis',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},20.55);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},20.8);
   tl.to('#haloTabDefis',{scale:1.05,duration:.15,yoyo:true,repeat:1},20.8);
@@ -579,7 +579,7 @@ function buildTL(){
 
   // ----- Scene 10 (23.0 - 25.5): Poussidex Badges — tap sub-tab -----
   tl.call(()=>setBadge(10),null,23);
-  tl.fromTo('#cursor',{opacity:0,scale:.6,x:530,y:380},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23);
+  tl.fromTo('#cursor',{opacity:0,scale:.6,x:542,y:410},{opacity:1,scale:1,duration:.3,ease:'back.out(1.8)'},23);
   tl.to('#haloTabBadges',{opacity:1,scale:1,duration:.25,ease:'back.out(1.8)'},23.05);
   tl.to('#cursor',{scale:.8,duration:.12,ease:'power2.in'},23.3);
   tl.to('#haloTabBadges',{scale:1.05,duration:.15,yoyo:true,repeat:1},23.3);
