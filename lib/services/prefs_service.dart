@@ -31,6 +31,7 @@ class PrefsService {
   static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
   static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
   static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
+  static const _kCultures = 'kultiva.cultures.v1';
 
   SharedPreferences? _prefs;
 
@@ -49,6 +50,10 @@ class PrefsService {
   /// abonnent pour se rafraîchir sans avoir à importer l'état du
   /// Poussidex.
   final ValueNotifier<int> plantationsVersion = ValueNotifier<int>(0);
+
+  /// Même pattern que [plantationsVersion], pour le cahier de culture
+  /// (séparé du Poussidex).
+  final ValueNotifier<int> culturesVersion = ValueNotifier<int>(0);
 
   /// Callback appelé après chaque changement de préférence. Permet
   /// à CloudSyncService de re-uploader les prefs sans créer de
@@ -183,6 +188,14 @@ class PrefsService {
   Future<void> setPlantationsJson(String json) async {
     await _prefs?.setString(_kPlantations, json);
     plantationsVersion.value = plantationsVersion.value + 1;
+  }
+
+  // --- Cahier de culture (séparé du Poussidex) ---
+  String? get culturesJson => _prefs?.getString(_kCultures);
+
+  Future<void> setCulturesJson(String json) async {
+    await _prefs?.setString(_kCultures, json);
+    culturesVersion.value = culturesVersion.value + 1;
   }
 
   Set<String> get unlockedBadges =>
