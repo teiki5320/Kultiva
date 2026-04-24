@@ -19,6 +19,9 @@ import '../utils/months.dart';
 import '../widgets/lexicon_text.dart';
 import '../widgets/medal_badge.dart';
 
+// TODO: remplacer par l'URL réelle du comparateur de prix quand le site sera en ligne.
+const String _kComparateurUrl = 'https://kultiva-comparateur.fr';
+
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
 /// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
 /// les légumes quand une liste est fournie.
@@ -222,7 +225,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
-        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier en haut).
+        // Boutons Acheter + Comparateur en bas (sauf accessoires qui ont déjà le panier en haut).
         if (vegetable.amazonUrl != null &&
             vegetable.category != VegetableCategory.accessories) ...[
           const SizedBox(height: 20),
@@ -231,7 +234,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             child: ElevatedButton.icon(
               onPressed: () => _openUrl(context, vegetable.amazonUrl!),
               icon: const Text('🛒', style: TextStyle(fontSize: 24)),
-              label: const Text('Acheter sur Amazon',
+              label: const Text('Acheter',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: KultivaColors.terracotta,
@@ -241,6 +244,27 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
                   borderRadius: BorderRadius.circular(18),
                 ),
                 elevation: 3,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => _openUrl(context, _kComparateurUrl),
+              icon: const Text('💰', style: TextStyle(fontSize: 22)),
+              label: const Text('Comparateur de prix',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: KultivaColors.primaryGreen,
+                side: BorderSide(
+                  color: KultivaColors.primaryGreen,
+                  width: 2,
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
               ),
             ),
           ),
@@ -287,9 +311,48 @@ class _HeaderCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Text(
+              vegetable.name,
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.w800),
+            ),
+            Text(
+              vegetable.category.label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: KultivaColors.textSecondary,
+                  ),
+            ),
+            if (tier != MedalTier.none) ...<Widget>[
+              const SizedBox(height: 6),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: tier.color.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: tier.color, width: 1.2),
+                  ),
+                  child: Text(
+                    '${tier.emoji}  ${tier.label}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: tier.color,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 MedalBadge(
@@ -297,112 +360,46 @@ class _HeaderCard extends StatelessWidget {
                   imageAsset: vegetable.imageAsset,
                   tier: tier,
                   familyColor: KultivaColors.primaryGreen,
-                  size: 72,
+                  size: 78,
                   showCornerMedal: tier != MedalTier.none,
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        vegetable.name,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.w800),
-                      ),
-                      Text(
-                        vegetable.category.label,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
-                              color: KultivaColors.textSecondary,
-                            ),
-                      ),
-                      if (tier != MedalTier.none) ...<Widget>[
-                        const SizedBox(height: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: tier.color.withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: tier.color, width: 1.2),
-                          ),
-                          child: Text(
-                            '${tier.emoji}  ${tier.label}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: tier.color,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
+                _MiniActionBlock(
+                  emoji: '💰',
+                  label: 'Comparer',
+                  sublabel: 'Prix en ligne',
+                  gradientColors: [
+                    KultivaColors.primaryGreen.withOpacity(0.22),
+                    KultivaColors.springA.withOpacity(0.4),
+                  ],
+                  foreground: KultivaColors.primaryGreen,
+                  tooltip: 'Comparateur de prix Kultiva',
+                  onTap: () {
+                    AudioService.instance.play(Sfx.cart);
+                    launchUrl(
+                      Uri.parse(_kComparateurUrl),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
                 ),
                 if (vegetable.amazonUrl != null)
-                  Tooltip(
-                    message: 'Lien partenaire Amazon — Kultiva touche '
+                  _MiniActionBlock(
+                    emoji: '🛒',
+                    label: 'Acheter',
+                    sublabel: 'Lien partenaire',
+                    gradientColors: [
+                      KultivaColors.terracotta.withOpacity(0.28),
+                      KultivaColors.summerA.withOpacity(0.4),
+                    ],
+                    foreground: KultivaColors.terracotta,
+                    tooltip: 'Lien partenaire Amazon — Kultiva touche '
                         'une petite commission si tu achètes.',
-                    child: GestureDetector(
-                      onTap: () {
-                        AudioService.instance.play(Sfx.cart);
-                        launchUrl(
-                          Uri.parse(vegetable.amazonUrl!),
-                          mode: LaunchMode.externalApplication,
-                        );
-                      },
-                      child: Container(
-                        width: 78,
-                        height: 78,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              KultivaColors.terracotta.withOpacity(0.28),
-                              KultivaColors.summerA.withOpacity(0.4),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(22),
-                          boxShadow: [
-                            BoxShadow(
-                              color: KultivaColors.terracotta.withOpacity(0.22),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('🛒', style: TextStyle(fontSize: 28)),
-                            const SizedBox(height: 2),
-                            Text('Acheter',
-                              style: TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w800,
-                                color: KultivaColors.terracotta,
-                              ),
-                            ),
-                            Text('Lien partenaire',
-                              style: TextStyle(
-                                fontSize: 7.5,
-                                fontWeight: FontWeight.w500,
-                                color: KultivaColors.terracotta
-                                    .withOpacity(0.7),
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    onTap: () {
+                      AudioService.instance.play(Sfx.cart);
+                      launchUrl(
+                        Uri.parse(vegetable.amazonUrl!),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
                   ),
               ],
             ),
@@ -887,6 +884,76 @@ class _RegionalNoteCard extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MiniActionBlock extends StatelessWidget {
+  final String emoji;
+  final String label;
+  final String sublabel;
+  final List<Color> gradientColors;
+  final Color foreground;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  const _MiniActionBlock({
+    required this.emoji,
+    required this.label,
+    required this.sublabel,
+    required this.gradientColors,
+    required this.foreground,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 78,
+          height: 78,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: gradientColors),
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: foreground.withOpacity(0.22),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(emoji, style: const TextStyle(fontSize: 28)),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w800,
+                  color: foreground,
+                ),
+              ),
+              Text(
+                sublabel,
+                style: TextStyle(
+                  fontSize: 7.5,
+                  fontWeight: FontWeight.w500,
+                  color: foreground.withOpacity(0.7),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
