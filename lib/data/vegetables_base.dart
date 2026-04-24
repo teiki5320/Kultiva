@@ -1764,4 +1764,15 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/panier_recolte.png',
   ),
+  Vegetable(
+    id: 'acc_hydroponie',
+    name: 'Système hydroponie',
+    emoji: '💧',
+    category: VegetableCategory.accessories,
+    note: 'Cultiver sans terre, en eau nutritive',
+    description: "Kit hydroponie pour faire pousser légumes et aromates sans terre, directement dans une solution nutritive. Idéal pour balcon ou intérieur. Économie d'eau jusqu'à 90 %, croissance rapide et zéro maladies du sol.",
+    amazonUrl: 'https://www.amazon.fr/s?k=hydroponie+kit&tag=kultiva-21',
+    accessorySub: AccessorySubCategory.structures,
+    imageAsset: 'assets/images/accessories/hydroponie.png',
+  ),
 ];
