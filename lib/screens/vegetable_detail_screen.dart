@@ -19,8 +19,14 @@ import '../utils/months.dart';
 import '../widgets/lexicon_text.dart';
 import '../widgets/medal_badge.dart';
 
-// TODO: remplacer par l'URL réelle du comparateur de prix quand le site sera en ligne.
-const String _kComparateurUrl = 'https://kultiva-comparateur.fr';
+// Comparateur de prix officiel de Kultiva (site séparé).
+const String _kComparateurBaseUrl = 'https://kultivaprix.vercel.app';
+
+/// Construit l'URL du comparateur avec le nom du légume en paramètre de
+/// recherche (recherche pré-remplie si le site supporte `?q=`).
+String _comparateurUrlFor(Vegetable v) {
+  return '$_kComparateurBaseUrl/?q=${Uri.encodeComponent(v.name)}';
+}
 
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
 /// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
@@ -251,7 +257,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
-              onPressed: () => _openUrl(context, _kComparateurUrl),
+              onPressed: () => _openUrl(context, _comparateurUrlFor(vegetable)),
               icon: const Text('💰', style: TextStyle(fontSize: 22)),
               label: const Text('Comparateur de prix',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
@@ -376,7 +382,7 @@ class _HeaderCard extends StatelessWidget {
                   onTap: () {
                     AudioService.instance.play(Sfx.cart);
                     launchUrl(
-                      Uri.parse(_kComparateurUrl),
+                      Uri.parse(_comparateurUrlFor(vegetable)),
                       mode: LaunchMode.externalApplication,
                     );
                   },
