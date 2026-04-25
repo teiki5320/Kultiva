@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
+import '../../models/culture_reading.dart';
 import '../../models/vegetable.dart';
+import '../../services/culture_reading_service.dart';
 import '../../services/culture_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/reading_targets.dart';
+import '../../widgets/reading_sparkline.dart';
 import '../vegetable_detail_screen.dart';
+import 'culture_reading_sheet.dart';
 import 'culture_start_sheet.dart';
 
 /// Cahier de culture hydroponique : suivi sérieux des cultures sans terre,
@@ -245,6 +250,8 @@ class _CultureCard extends StatelessWidget {
                   ],
                 ),
               ],
+              const SizedBox(height: 12),
+              _ReadingsRow(cultureId: culture.id),
               if (culture.note != null && culture.note!.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 8),
                 Text(
@@ -322,6 +329,164 @@ class _InfoChip extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// Rangée des 4 mesures hydro (pH, EC, température solution, niveau
+/// réservoir). Tap = ouvre la sheet pour ajouter une nouvelle mesure.
+class _ReadingsRow extends StatelessWidget {
+  final String cultureId;
+  const _ReadingsRow({required this.cultureId});
+
+  static const _types = <ReadingType>[
+    ReadingType.ph,
+    ReadingType.ec,
+    ReadingType.waterTemp,
+    ReadingType.reservoirLevel,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.cultureReadingsVersion,
+      builder: (ctx, _, __) {
+        return Row(
+          children: <Widget>[
+            for (var i = 0; i < _types.length; i++) ...<Widget>[
+              if (i > 0) const SizedBox(width: 6),
+              Expanded(
+                child: _ReadingChip(
+                  cultureId: cultureId,
+                  type: _types[i],
+                ),
+              ),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ReadingChip extends StatelessWidget {
+  final String cultureId;
+  final ReadingType type;
+  const _ReadingChip({required this.cultureId, required this.type});
+
+  Color _statusColor(ReadingStatus s) {
+    switch (s) {
+      case ReadingStatus.ok:
+        return KultivaColors.primaryGreen;
+      case ReadingStatus.warn:
+        return const Color(0xFFE8A87C);
+      case ReadingStatus.bad:
+        return const Color(0xFFD4564A);
+      case ReadingStatus.unknown:
+        return const Color(0xFF4A9BBF);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final svc = CultureReadingService.instance;
+    final latest = svc.latest(cultureId, type);
+    final recent = svc.recent(cultureId, type, days: 14);
+    final tgt = defaultHydroTarget(type);
+    final status = tgt?.statusFor(latest?.value) ?? ReadingStatus.unknown;
+    final color = _statusColor(status);
+    final values = recent
+        .where((r) => r.value != null)
+        .map((r) => r.value!)
+        .toList();
+
+    return InkWell(
+      onTap: () async {
+        await showModalBottomSheet<bool>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          builder: (_) => CultureReadingSheet(
+            cultureId: cultureId,
+            type: type,
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.4), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(type.emoji, style: const TextStyle(fontSize: 14)),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    _shortLabel(type),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.textPrimary.withOpacity(0.7),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Text(
+              latest?.value == null
+                  ? '—'
+                  : _fmtValue(latest!.value!, type),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 2),
+            ReadingSparkline(values: values, color: color, height: 18),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static String _shortLabel(ReadingType t) {
+    switch (t) {
+      case ReadingType.ph:
+        return 'pH';
+      case ReadingType.ec:
+        return 'EC';
+      case ReadingType.waterTemp:
+        return 'Temp.';
+      case ReadingType.reservoirLevel:
+        return 'Niveau';
+      default:
+        return t.label;
+    }
+  }
+
+  static String _fmtValue(double v, ReadingType t) {
+    switch (t) {
+      case ReadingType.ph:
+        return v.toStringAsFixed(1);
+      case ReadingType.ec:
+        return '${v.toStringAsFixed(1)} mS';
+      case ReadingType.waterTemp:
+        return '${v.toStringAsFixed(0)}°';
+      case ReadingType.reservoirLevel:
+        return '${v.toStringAsFixed(0)}%';
+      default:
+        return v.toStringAsFixed(1);
+    }
   }
 }
 
