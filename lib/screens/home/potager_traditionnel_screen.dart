@@ -8,6 +8,7 @@ import '../../services/prefs_service.dart';
 import '../../services/watering_advisor.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/phenology.dart';
 import '../../widgets/watering_bars.dart';
 import 'culture_start_sheet.dart';
 import 'monthly_calendar_screen.dart';
@@ -294,6 +295,12 @@ class _CultureCard extends StatelessWidget {
                   const Icon(Icons.chevron_right),
                 ],
               ),
+              if (veg != null) ...<Widget>[
+                if (expectedStage(veg, days) != null) ...<Widget>[
+                  const SizedBox(height: 8),
+                  _StageChip(hint: expectedStage(veg, days)!),
+                ],
+              ],
               const SizedBox(height: 10),
               _WateringTrack(culture: culture),
               if (suggestWatering(culture, weather) != null) ...<Widget>[
@@ -364,6 +371,90 @@ class _CultureCard extends StatelessWidget {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Chip décrivant l'étape phénologique attendue de la culture.
+/// Tap = expand pour afficher le détail / conseil.
+class _StageChip extends StatelessWidget {
+  final PhenologyHint hint;
+  const _StageChip({required this.hint});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _showDetail(context),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: KultivaColors.primaryGreen.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.3),
+          ),
+        ),
+        child: Row(
+          children: <Widget>[
+            Text(hint.emoji, style: const TextStyle(fontSize: 14)),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                'Étape : ${hint.label}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  color: KultivaColors.primaryGreen,
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.info_outline,
+              size: 14,
+              color: KultivaColors.primaryGreen,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDetail(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(hint.emoji,
+                      style: const TextStyle(fontSize: 28)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      hint.label,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                hint.detail,
+                style: const TextStyle(fontSize: 13, height: 1.4),
+              ),
+            ],
+          ),
         ),
       ),
     );
