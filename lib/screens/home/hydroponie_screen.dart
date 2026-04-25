@@ -13,6 +13,7 @@ import '../../widgets/reading_sparkline.dart';
 import '../vegetable_detail_screen.dart';
 import 'culture_reading_sheet.dart';
 import 'culture_start_sheet.dart';
+import 'nutrient_calculator_sheet.dart';
 
 /// Cahier de culture hydroponique : suivi sérieux des cultures sans terre,
 /// avec configuration lumière (type, heures, LED). Distinct du Poussidex.
@@ -261,6 +262,10 @@ class _CultureCard extends StatelessWidget {
               ],
               const SizedBox(height: 12),
               _ReadingsRow(cultureId: culture.id, phase: culture.phase),
+              if (culture.flushDue) ...<Widget>[
+                const SizedBox(height: 10),
+                _FlushAlert(culture: culture),
+              ],
               if (culture.note != null && culture.note!.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 8),
                 Text(
@@ -287,6 +292,69 @@ class _CultureCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
+              leading: const Text('🧪',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Calculer nutriments'),
+              subtitle: const Text(
+                'Doses A/B/C + Cal-Mag selon la phase et le volume.',
+              ),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor:
+                      Theme.of(context).scaffoldBackgroundColor,
+                  builder: (_) =>
+                      NutrientCalculatorSheet(culture: culture),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Text('🪣',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Marquer rinçage du réservoir'),
+              subtitle: Text(
+                culture.lastReservoirFlushAt == null
+                    ? 'Jamais rincé'
+                    : 'Dernier : il y a ${culture.daysSinceFlush}j',
+              ),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await CultureService.instance.update(
+                  culture.copyWith(
+                    lastReservoirFlushAt: DateTime.now(),
+                  ),
+                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Rinçage enregistré 🪣'),
+                    ),
+                  );
+                }
+              },
+            ),
+            ListTile(
+              leading: const Text('🦠',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Conseils anti-algues'),
+              subtitle: const Text(
+                'Tu vois du vert sur les parois du réservoir ?',
+              ),
+              onTap: () {
+                Navigator.pop(ctx);
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor:
+                      Theme.of(context).scaffoldBackgroundColor,
+                  builder: (_) => const _AlgaeTipSheet(),
+                );
+              },
+            ),
+            const Divider(height: 1),
+            ListTile(
               leading: const Icon(Icons.check_circle_outline),
               title: const Text('Marquer terminée'),
               onTap: () async {
@@ -312,6 +380,124 @@ class _CultureCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Encart d'alerte affiché quand le rinçage du réservoir est dû.
+class _FlushAlert extends StatelessWidget {
+  final CultureEntry culture;
+  const _FlushAlert({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8A87C).withOpacity(0.18),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE8A87C)),
+      ),
+      child: Row(
+        children: <Widget>[
+          const Text('🪣', style: TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Réservoir à rincer (dernier il y a ${culture.daysSinceFlush}j)',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFFB36A3D),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              await CultureService.instance.update(
+                culture.copyWith(lastReservoirFlushAt: DateTime.now()),
+              );
+            },
+            child: const Text('Fait'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Sheet de tips si l'utilisateur signale des algues.
+class _AlgaeTipSheet extends StatelessWidget {
+  const _AlgaeTipSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    final tips = <(String, String)>[
+      ('🌑',
+          "Bloque la lumière du réservoir : gaine noire, scotch alu, "
+              "couvercle opaque. Les algues meurent sans photosynthèse."),
+      ('🧊',
+          "Maintiens la solution sous 22 °C. Plus c'est tiède, plus ça "
+              "prolifère."),
+      ('🪣',
+          "Vide, frotte avec un mélange eau + 5 % de peroxyde d'hydrogène, "
+              "rince à fond, refais une solution neuve."),
+      ('💨',
+          "Vérifie l'oxygénation : un bulleur en marche limite les biofilms "
+              "et rend l'eau plus saine pour les racines."),
+      ('🧴',
+          "En préventif : 1–2 mL/L de peroxyde 3 % à chaque remplissage "
+              "(non systématique, à doser avec parcimonie)."),
+    ];
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: const <Widget>[
+              Text('🦠', style: TextStyle(fontSize: 28)),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Anti-algues : 5 réflexes',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          for (final t in tips)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(t.$1, style: const TextStyle(fontSize: 18)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      t.$2,
+                      style: const TextStyle(fontSize: 13, height: 1.4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fermer'),
+            ),
+          ),
+        ],
       ),
     );
   }

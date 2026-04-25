@@ -220,6 +220,7 @@ class CultureEntry {
   final HydroLightConfig? light; // uniquement si method == hydroponic
   final String? linkedPlantationId;
   final GrowthPhase phase;
+  final DateTime? lastReservoirFlushAt;
 
   const CultureEntry({
     required this.id,
@@ -231,7 +232,21 @@ class CultureEntry {
     this.light,
     this.linkedPlantationId,
     this.phase = GrowthPhase.seedling,
+    this.lastReservoirFlushAt,
   });
+
+  /// Jours depuis le dernier rinçage du réservoir (hydro). null si
+  /// jamais rincé.
+  int? get daysSinceFlush {
+    if (lastReservoirFlushAt == null) return null;
+    return DateTime.now().difference(lastReservoirFlushAt!).inDays;
+  }
+
+  /// True si le rinçage devrait être fait (>= 14 jours).
+  bool get flushDue {
+    final d = daysSinceFlush;
+    return d != null && d >= 14;
+  }
 
   bool get isActive => endedAt == null;
 
@@ -245,9 +260,11 @@ class CultureEntry {
     HydroLightConfig? light,
     String? linkedPlantationId,
     GrowthPhase? phase,
+    DateTime? lastReservoirFlushAt,
     bool clearEndedAt = false,
     bool clearLight = false,
     bool clearLinkedPlantation = false,
+    bool clearFlush = false,
   }) {
     return CultureEntry(
       id: id,
@@ -261,6 +278,9 @@ class CultureEntry {
           ? null
           : (linkedPlantationId ?? this.linkedPlantationId),
       phase: phase ?? this.phase,
+      lastReservoirFlushAt: clearFlush
+          ? null
+          : (lastReservoirFlushAt ?? this.lastReservoirFlushAt),
     );
   }
 
@@ -274,6 +294,7 @@ class CultureEntry {
         'light': light?.toJson(),
         'linkedPlantationId': linkedPlantationId,
         'phase': phase.id,
+        'lastReservoirFlushAt': lastReservoirFlushAt?.toIso8601String(),
       };
 
   factory CultureEntry.fromJson(Map<String, dynamic> json) {
@@ -292,6 +313,9 @@ class CultureEntry {
               json['light'] as Map<String, dynamic>),
       linkedPlantationId: json['linkedPlantationId'] as String?,
       phase: GrowthPhase.fromId(json['phase'] as String?),
+      lastReservoirFlushAt: json['lastReservoirFlushAt'] == null
+          ? null
+          : DateTime.parse(json['lastReservoirFlushAt'] as String),
     );
   }
 
