@@ -82,7 +82,7 @@ class _HydroBuildsScreenState extends State<HydroBuildsScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 80),
                     itemCount: list.length,
                     itemBuilder: (ctx, i) =>
-                        _BuildCard(build: list[i], onChanged: _refresh),
+                        _BuildCard(entry: list[i], onChanged: _refresh),
                   );
                 },
               ),
@@ -192,9 +192,9 @@ class _EmptyBuilds extends StatelessWidget {
 }
 
 class _BuildCard extends StatelessWidget {
-  final HydroBuild build;
+  final HydroBuild entry;
   final VoidCallback onChanged;
-  const _BuildCard({required this.build, required this.onChanged});
+  const _BuildCard({required this.entry, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +214,7 @@ class _BuildCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Text(
-                build.systemType.emoji,
+                entry.systemType.emoji,
                 style: const TextStyle(fontSize: 22),
               ),
               const SizedBox(width: 8),
@@ -223,14 +223,14 @@ class _BuildCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      build.systemType.label,
+                      entry.systemType.label,
                       style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 14,
                       ),
                     ),
                     Text(
-                      'Par ${build.userName}',
+                      'Par ${entry.userName}',
                       style: TextStyle(
                         fontSize: 11,
                         color: KultivaColors.textSecondary,
@@ -241,12 +241,12 @@ class _BuildCard extends StatelessWidget {
               ),
             ],
           ),
-          if (build.photoUrl != null) ...<Widget>[
+          if (entry.photoUrl != null) ...<Widget>[
             const SizedBox(height: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                build.photoUrl!,
+                entry.photoUrl!,
                 height: 180,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -255,16 +255,16 @@ class _BuildCard extends StatelessWidget {
               ),
             ),
           ],
-          if (build.caption != null && build.caption!.isNotEmpty) ...<Widget>[
+          if (entry.caption != null && entry.caption!.isNotEmpty) ...<Widget>[
             const SizedBox(height: 10),
-            Text(build.caption!, style: const TextStyle(fontSize: 13)),
+            Text(entry.caption!, style: const TextStyle(fontSize: 13)),
           ],
-          if (build.equipment.isNotEmpty) ...<Widget>[
+          if (entry.equipment.isNotEmpty) ...<Widget>[
             const SizedBox(height: 10),
             Wrap(
               spacing: 6,
               runSpacing: 6,
-              children: build.equipment
+              children: entry.equipment
                   .map(
                     (e) => Container(
                       padding: const EdgeInsets.symmetric(
@@ -288,21 +288,21 @@ class _BuildCard extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                  build.likedByMe ? Icons.favorite : Icons.favorite_border,
-                  color: build.likedByMe ? Colors.pinkAccent : null,
+                  entry.likedByMe ? Icons.favorite : Icons.favorite_border,
+                  color: entry.likedByMe ? Colors.pinkAccent : null,
                 ),
                 onPressed: () async {
                   await HydroBuildService.instance.toggleLike(
-                    build.id,
-                    currentlyLiked: build.likedByMe,
+                    entry.id,
+                    currentlyLiked: entry.likedByMe,
                   );
                   onChanged();
                 },
               ),
-              Text('${build.likesCount}'),
+              Text('${entry.likesCount}'),
               const Spacer(),
               Text(
-                _ago(build.createdAt),
+                _ago(entry.createdAt),
                 style: TextStyle(
                   fontSize: 11,
                   color: KultivaColors.textSecondary,

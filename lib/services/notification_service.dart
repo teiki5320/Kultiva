@@ -5,6 +5,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
+import '../models/vegetable.dart';
 import '../utils/heatwave_tips.dart';
 import 'culture_service.dart';
 import 'prefs_service.dart';
