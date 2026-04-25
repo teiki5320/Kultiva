@@ -1,0 +1,74 @@
+name: Sync catalog → Supabase
+
+# Synchronise le catalogue d'espèces (vegetables_base.dart + regions/)
+# vers la table public.species du projet Supabase vkiwkeknfzwdvufcqbrp,
+# pour partage avec le projet sœur Kultivaprix.
+#
+# Trigger automatique sur push à main qui touche les fichiers source.
+# Manuel possible via "Run workflow" dans l'onglet Actions.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/data/vegetables_base.dart'
+      - 'lib/data/regions/*.dart'
+      - 'tool/export_catalog.dart'
+      - 'lib/models/vegetable.dart'
+      - 'lib/models/region_data.dart'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Export catalog
+        run: dart run tool/export_catalog.dart
+
+      - name: Verify catalog file
+        run: |
+          if [ ! -f kultiva-catalog.json ]; then
+            echo "::error::kultiva-catalog.json non généré"
+            exit 1
+          fi
+          COUNT=$(jq 'length' kultiva-catalog.json)
+          echo "Catalog : $COUNT entrées"
+          if [ "$COUNT" -lt 50 ]; then
+            echo "::error::Catalog trop petit ($COUNT < 50), abort par sécurité"
+            exit 1
+          fi
+
+      - name: POST to Supabase seed-species function
+        env:
+          SEED_SECRET: ${{ secrets.KULTIVA_SEED_SECRET }}
+          FUNCTION_URL: https://vkiwkeknfzwdvufcqbrp.supabase.co/functions/v1/seed-species
+        run: |
+          if [ -z "$SEED_SECRET" ]; then
+            echo "::error::Secret KULTIVA_SEED_SECRET manquant dans les secrets du repo"
+            exit 1
+          fi
+
+          HTTP_CODE=$(curl -sS -o /tmp/response.json -w "%{http_code}" \
+            -X POST "$FUNCTION_URL" \
+            -H "x-seed-secret: $SEED_SECRET" \
+            -H "Content-Type: application/json" \
+            --data-binary "@kultiva-catalog.json")
+
+          echo "Réponse Supabase (HTTP $HTTP_CODE) :"
+          cat /tmp/response.json
+          echo ""
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Sync échoué (HTTP $HTTP_CODE)"
+            exit 1
+          fi
