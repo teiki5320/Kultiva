@@ -166,6 +166,9 @@ class _CultureCard extends StatelessWidget {
     final veg = _veg();
     final days = culture.daysSinceStarted;
     final light = culture.light;
+    final dli = light != null ? estimateDli(light) : null;
+    final dliStat = dli != null ? dliStatus(dli, culture.phase) : null;
+    final ledRec = recommendedLedDistance(culture.phase);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
@@ -226,8 +229,10 @@ class _CultureCard extends StatelessWidget {
                   const Icon(Icons.chevron_right),
                 ],
               ),
+              const SizedBox(height: 10),
+              _PhaseChip(culture: culture),
               if (light != null) ...<Widget>[
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
@@ -243,15 +248,19 @@ class _CultureCard extends StatelessWidget {
                       _InfoChip(label: '⚡  ${light.ledWatts} W'),
                     if (light.ledDistanceCm != null)
                       _InfoChip(
-                          label:
-                              '↕  ${light.ledDistanceCm!.toStringAsFixed(0)} cm'),
+                        label:
+                            '↕  ${light.ledDistanceCm!.toStringAsFixed(0)} cm '
+                            '(reco. ${ledRec.ideal.toStringAsFixed(0)})',
+                      ),
                     if (light.ledColorTemp != null)
                       _InfoChip(label: '🎨  ${light.ledColorTemp!.label}'),
+                    if (dli != null)
+                      _DliChip(dli: dli, status: dliStat!),
                   ],
                 ),
               ],
               const SizedBox(height: 12),
-              _ReadingsRow(cultureId: culture.id),
+              _ReadingsRow(cultureId: culture.id, phase: culture.phase),
               if (culture.note != null && culture.note!.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 8),
                 Text(
@@ -336,7 +345,8 @@ class _InfoChip extends StatelessWidget {
 /// réservoir). Tap = ouvre la sheet pour ajouter une nouvelle mesure.
 class _ReadingsRow extends StatelessWidget {
   final String cultureId;
-  const _ReadingsRow({required this.cultureId});
+  final GrowthPhase phase;
+  const _ReadingsRow({required this.cultureId, required this.phase});
 
   static const _types = <ReadingType>[
     ReadingType.ph,
@@ -358,6 +368,7 @@ class _ReadingsRow extends StatelessWidget {
                 child: _ReadingChip(
                   cultureId: cultureId,
                   type: _types[i],
+                  phase: phase,
                 ),
               ),
             ],
@@ -371,7 +382,12 @@ class _ReadingsRow extends StatelessWidget {
 class _ReadingChip extends StatelessWidget {
   final String cultureId;
   final ReadingType type;
-  const _ReadingChip({required this.cultureId, required this.type});
+  final GrowthPhase phase;
+  const _ReadingChip({
+    required this.cultureId,
+    required this.type,
+    required this.phase,
+  });
 
   Color _statusColor(ReadingStatus s) {
     switch (s) {
@@ -391,7 +407,7 @@ class _ReadingChip extends StatelessWidget {
     final svc = CultureReadingService.instance;
     final latest = svc.latest(cultureId, type);
     final recent = svc.recent(cultureId, type, days: 14);
-    final tgt = defaultHydroTarget(type);
+    final tgt = hydroTargetFor(type, phase);
     final status = tgt?.statusFor(latest?.value) ?? ReadingStatus.unknown;
     final color = _statusColor(status);
     final values = recent
@@ -798,6 +814,135 @@ class _BulletSection extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Chip cliquable représentant la phase de croissance de la culture.
+/// Tap = ouvre la sheet de sélection de phase.
+class _PhaseChip extends StatelessWidget {
+  final CultureEntry culture;
+  const _PhaseChip({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _pickPhase(context),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: KultivaColors.primaryGreen.withOpacity(0.14),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.4),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              culture.phase.emoji,
+              style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              'Phase : ${culture.phase.label}',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: KultivaColors.primaryGreen,
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.tune,
+              size: 14,
+              color: KultivaColors.primaryGreen,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickPhase(BuildContext context) async {
+    final picked = await showModalBottomSheet<GrowthPhase>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 16, 20, 4),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Phase de croissance',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ),
+            for (final p in GrowthPhase.values)
+              ListTile(
+                leading: Text(p.emoji,
+                    style: const TextStyle(fontSize: 22)),
+                title: Text(p.label),
+                trailing: p == culture.phase
+                    ? const Icon(Icons.check,
+                        color: KultivaColors.primaryGreen)
+                    : null,
+                onTap: () => Navigator.pop(ctx, p),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (picked != null && picked != culture.phase) {
+      await CultureService.instance
+          .update(culture.copyWith(phase: picked));
+    }
+  }
+}
+
+/// Chip DLI (Daily Light Integral) calculé à partir de la config LED.
+class _DliChip extends StatelessWidget {
+  final double dli;
+  final ReadingStatus status;
+  const _DliChip({required this.dli, required this.status});
+
+  Color get _color {
+    switch (status) {
+      case ReadingStatus.ok:
+        return KultivaColors.primaryGreen;
+      case ReadingStatus.warn:
+        return const Color(0xFFE8A87C);
+      case ReadingStatus.bad:
+        return const Color(0xFFD4564A);
+      case ReadingStatus.unknown:
+        return const Color(0xFF4A9BBF);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: _color.withOpacity(0.14),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        '☀️  DLI ${dli.toStringAsFixed(0)} mol',
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w800,
+          color: _color,
+        ),
       ),
     );
   }

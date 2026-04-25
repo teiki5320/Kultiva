@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../models/culture_entry.dart';
 import '../../models/culture_reading.dart';
 import '../../services/culture_reading_service.dart';
+import '../../services/culture_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/reading_targets.dart';
 
@@ -35,7 +37,20 @@ class _CultureReadingSheetState extends State<CultureReadingSheet> {
     super.dispose();
   }
 
-  ReadingTarget? get _target => defaultHydroTarget(widget.type);
+  ReadingTarget? get _target {
+    final culture = CultureService.instance
+        .loadAll()
+        .firstWhere(
+          (c) => c.id == widget.cultureId,
+          orElse: () => CultureEntry(
+            id: widget.cultureId,
+            method: CultivationMethod.hydroponic,
+            vegetableId: '',
+            startedAt: DateTime.now(),
+          ),
+        );
+    return hydroTargetFor(widget.type, culture.phase);
+  }
 
   double? get _parsedValue {
     final raw = _valueCtrl.text.trim().replaceAll(',', '.');

@@ -110,6 +110,51 @@ enum LedColorTemp {
   }
 }
 
+/// Phase de croissance d'une culture hydroponique. Adapte les cibles
+/// pH/EC/distance LED et la durée de photopériode recommandée.
+enum GrowthPhase {
+  seedling('seedling'),
+  vegetative('vegetative'),
+  flowering('flowering'),
+  fruiting('fruiting');
+
+  final String id;
+  const GrowthPhase(this.id);
+
+  static GrowthPhase fromId(String? id) {
+    return GrowthPhase.values.firstWhere(
+      (p) => p.id == id,
+      orElse: () => GrowthPhase.seedling,
+    );
+  }
+
+  String get label {
+    switch (this) {
+      case GrowthPhase.seedling:
+        return 'Semis / plantule';
+      case GrowthPhase.vegetative:
+        return 'Croissance végétative';
+      case GrowthPhase.flowering:
+        return 'Floraison';
+      case GrowthPhase.fruiting:
+        return 'Fructification';
+    }
+  }
+
+  String get emoji {
+    switch (this) {
+      case GrowthPhase.seedling:
+        return '🌱';
+      case GrowthPhase.vegetative:
+        return '🌿';
+      case GrowthPhase.flowering:
+        return '🌸';
+      case GrowthPhase.fruiting:
+        return '🍅';
+    }
+  }
+}
+
 /// Configuration lumière d'une culture hydroponique.
 class HydroLightConfig {
   final LightType type;
@@ -174,6 +219,7 @@ class CultureEntry {
   final String? note;
   final HydroLightConfig? light; // uniquement si method == hydroponic
   final String? linkedPlantationId;
+  final GrowthPhase phase;
 
   const CultureEntry({
     required this.id,
@@ -184,6 +230,7 @@ class CultureEntry {
     this.note,
     this.light,
     this.linkedPlantationId,
+    this.phase = GrowthPhase.seedling,
   });
 
   bool get isActive => endedAt == null;
@@ -197,6 +244,7 @@ class CultureEntry {
     String? note,
     HydroLightConfig? light,
     String? linkedPlantationId,
+    GrowthPhase? phase,
     bool clearEndedAt = false,
     bool clearLight = false,
     bool clearLinkedPlantation = false,
@@ -212,6 +260,7 @@ class CultureEntry {
       linkedPlantationId: clearLinkedPlantation
           ? null
           : (linkedPlantationId ?? this.linkedPlantationId),
+      phase: phase ?? this.phase,
     );
   }
 
@@ -224,6 +273,7 @@ class CultureEntry {
         'note': note,
         'light': light?.toJson(),
         'linkedPlantationId': linkedPlantationId,
+        'phase': phase.id,
       };
 
   factory CultureEntry.fromJson(Map<String, dynamic> json) {
@@ -241,6 +291,7 @@ class CultureEntry {
           : HydroLightConfig.fromJson(
               json['light'] as Map<String, dynamic>),
       linkedPlantationId: json['linkedPlantationId'] as String?,
+      phase: GrowthPhase.fromId(json['phase'] as String?),
     );
   }
 
