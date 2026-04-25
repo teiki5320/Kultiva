@@ -6,6 +6,7 @@ import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/watering_bars.dart';
 import 'culture_start_sheet.dart';
 import 'monthly_calendar_screen.dart';
 import 'vegetables_screen.dart';
@@ -208,61 +209,68 @@ class _CultureCard extends StatelessWidget {
               color: KultivaColors.primaryGreen.withOpacity(0.35),
             ),
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  color: KultivaColors.primaryGreen.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  veg?.emoji ?? '🌱',
-                  style: const TextStyle(fontSize: 28),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      veg?.name ?? culture.vegetableId,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                      ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: KultivaColors.primaryGreen.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      days == 0
-                          ? 'Démarrée aujourd\'hui'
-                          : 'Démarrée il y a $days jour${days > 1 ? "s" : ""}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: KultivaColors.textSecondary,
-                      ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      veg?.emoji ?? '🌱',
+                      style: const TextStyle(fontSize: 28),
                     ),
-                    if (culture.note != null &&
-                        culture.note!.isNotEmpty) ...<Widget>[
-                      const SizedBox(height: 4),
-                      Text(
-                        culture.note!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                          color: KultivaColors.textSecondary,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          veg?.name ?? culture.vegetableId,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
-                    ],
-                  ],
-                ),
+                        const SizedBox(height: 2),
+                        Text(
+                          days == 0
+                              ? 'Démarrée aujourd\'hui'
+                              : 'Démarrée il y a $days jour${days > 1 ? "s" : ""}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
+                        if (culture.note != null &&
+                            culture.note!.isNotEmpty) ...<Widget>[
+                          const SizedBox(height: 4),
+                          Text(
+                            culture.note!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              color: KultivaColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right),
+                ],
               ),
-              const Icon(Icons.chevron_right),
+              const SizedBox(height: 10),
+              _WateringTrack(culture: culture),
             ],
           ),
         ),
@@ -277,6 +285,29 @@ class _CultureCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            ListTile(
+              leading: const Text('💧',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Marquer arrosé aujourd\'hui'),
+              subtitle: Text(
+                culture.lastWatering == null
+                    ? 'Pas encore arrosé'
+                    : 'Dernier arrosage : il y a '
+                        '${DateTime.now().difference(culture.lastWatering!).inDays}j',
+              ),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await CultureService.instance.markWatered(culture.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Arrosage enregistré 💧'),
+                    ),
+                  );
+                }
+              },
+            ),
+            const Divider(height: 1),
             ListTile(
               leading: const Icon(Icons.check_circle_outline),
               title: const Text('Marquer terminée'),
@@ -304,6 +335,57 @@ class _CultureCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Mini-bandeau d'arrosage 14 jours sous la card de culture pleine
+/// terre. Affiche un titre + des barres + le dernier arrosage.
+class _WateringTrack extends StatelessWidget {
+  final CultureEntry culture;
+  const _WateringTrack({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    final last = culture.lastWatering;
+    final daysSince = last == null
+        ? null
+        : DateTime.now().difference(last).inDays;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            const Text('💧', style: TextStyle(fontSize: 12)),
+            const SizedBox(width: 4),
+            Text(
+              'Arrosages 14j',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              daysSince == null
+                  ? 'Jamais arrosé'
+                  : daysSince == 0
+                      ? 'Arrosé aujourd\'hui'
+                      : 'Il y a ${daysSince}j',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: daysSince != null && daysSince >= 5
+                    ? const Color(0xFFE8A87C)
+                    : KultivaColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        WateringBars(history: culture.wateringHistory()),
+      ],
     );
   }
 }
