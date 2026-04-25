@@ -88,6 +88,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     if (activeVegIds.isEmpty) return;
     // On ne await pas — c'est du best-effort async.
     NotificationService.checkAndNotify(activeVegIds);
+    NotificationService.checkAndNotifyHeatwave();
   }
 
   void _openSettings() {

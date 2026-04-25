@@ -30,6 +30,7 @@ class PrefsService {
   static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
   static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
   static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
+  static const _kLastHeatwaveCheck = 'kultiva.lastHeatwaveNotificationCheck';
   static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kCultureReadings = 'kultiva.cultureReadings.v1';
@@ -234,6 +235,18 @@ class PrefsService {
 
   Future<void> setLastWateringNotificationCheck(DateTime t) async {
     await _prefs?.setString(_kLastWateringCheck, t.toIso8601String());
+  }
+
+  /// Dernière notif canicule envoyée. Utilisé pour throttler (max 1
+  /// par 7 jours).
+  DateTime? get lastHeatwaveNotificationCheck {
+    final iso = _prefs?.getString(_kLastHeatwaveCheck);
+    if (iso == null) return null;
+    return DateTime.tryParse(iso);
+  }
+
+  Future<void> setLastHeatwaveNotificationCheck(DateTime t) async {
+    await _prefs?.setString(_kLastHeatwaveCheck, t.toIso8601String());
   }
 
   // --- Watering history ---

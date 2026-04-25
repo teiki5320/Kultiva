@@ -3,6 +3,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../data/vegetables_base.dart';
+import '../models/culture_entry.dart';
+import '../utils/heatwave_tips.dart';
+import 'culture_service.dart';
 import 'prefs_service.dart';
 import 'watering_service.dart';
 import 'weather_service.dart';
@@ -22,6 +26,7 @@ class NotificationService {
   static const int _monthlyId = 100;
   static const int _wateringId = 42;
   static const int _dailyTamassiId = 73;
+  static const int _heatwaveId = 200;
 
   /// Initialise le plugin. Appelé au démarrage de l'app.
   static Future<void> init() async {
@@ -232,6 +237,95 @@ class NotificationService {
       );
       await PrefsService.instance
           .setLastWateringNotificationCheck(DateTime.now());
+    } catch (_) {}
+  }
+
+  /// Vérifie si une canicule est prévue dans les 3 prochains jours
+  /// (Tmax >= 30°C sur 2 jours d'affilée). Si oui, envoie une notif
+  /// avec un conseil légume-spécifique tiré de la culture pleine
+  /// terre la plus récemment démarrée.
+  ///
+  /// Throttle : max 1 fois tous les 7 jours.
+  static Future<void> checkAndNotifyHeatwave() async {
+    if (kIsWeb || !_initialized) return;
+    if (!PrefsService.instance.notifications.value) return;
+
+    final last = PrefsService.instance.lastHeatwaveNotificationCheck;
+    if (last != null &&
+        DateTime.now().difference(last).inDays < 7) {
+      return;
+    }
+    try {
+      final weather = await WeatherService.getWeather();
+      if (weather == null) return;
+
+      final tmaxList = weather.dailyTempMax;
+      if (tmaxList.length < 9) return;
+      // Index 7 = aujourd'hui ; on regarde aujourd'hui + 3 jours.
+      var hotStreak = 0;
+      var maxStreak = 0;
+      var peak = 0.0;
+      for (var i = 7; i <= 10 && i < tmaxList.length; i++) {
+        final t = tmaxList[i];
+        if (t > peak) peak = t;
+        if (t >= 30) {
+          hotStreak++;
+          if (hotStreak > maxStreak) maxStreak = hotStreak;
+        } else {
+          hotStreak = 0;
+        }
+      }
+      if (maxStreak < 2) return;
+
+      // Conseil légume-spécifique : on prend les cultures pleine
+      // terre actives, on garde la catégorie la plus représentée.
+      final actives = CultureService.instance
+          .activeByMethod(CultivationMethod.soil);
+      String tip;
+      if (actives.isEmpty) {
+        tip = 'Arrose tôt le matin ou en soirée, paille tes plants '
+            'et ombre les jeunes pousses.';
+      } else {
+        final categories = <VegetableCategory, int>{};
+        for (final c in actives) {
+          try {
+            final v = vegetablesBase
+                .firstWhere((veg) => veg.id == c.vegetableId);
+            categories[v.category] = (categories[v.category] ?? 0) + 1;
+          } catch (_) {}
+        }
+        final top = categories.entries.isEmpty
+            ? VegetableCategory.fruits
+            : (categories.entries.toList()
+                  ..sort((a, b) => b.value.compareTo(a.value)))
+                .first
+                .key;
+        tip = heatwaveTipFor(top);
+      }
+
+      const androidDetails = AndroidNotificationDetails(
+        'kultiva_heatwave',
+        'Alerte canicule',
+        channelDescription:
+            'Avertissement quand une vague de chaleur est prévue.',
+        importance: Importance.high,
+        priority: Priority.high,
+      );
+      const iosDetails = DarwinNotificationDetails();
+      const details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+        macOS: iosDetails,
+      );
+
+      await _plugin.show(
+        _heatwaveId,
+        '🥵 Canicule prévue (${peak.toStringAsFixed(0)}°C)',
+        tip,
+        details,
+      );
+      await PrefsService.instance
+          .setLastHeatwaveNotificationCheck(DateTime.now());
     } catch (_) {}
   }
 }
