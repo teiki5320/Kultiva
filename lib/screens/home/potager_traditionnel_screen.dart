@@ -5,6 +5,7 @@ import '../../models/culture_entry.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
 import '../../services/prefs_service.dart';
+import '../../services/pdf_service.dart';
 import '../../services/watering_advisor.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
@@ -82,6 +83,8 @@ class _PotagerTraditionnelScreenState
               const SizedBox(height: 24),
               if (ended.isNotEmpty) ...<Widget>[
                 _EndedSection(list: ended, weather: _weather),
+                const SizedBox(height: 16),
+                _SeasonRecapCta(),
                 const SizedBox(height: 24),
               ],
               _InfoExpansion(),
@@ -569,6 +572,71 @@ class _EndedSection extends StatelessWidget {
         children: list
             .map((c) => _CultureCard(culture: c, weather: weather))
             .toList(),
+      ),
+    );
+  }
+}
+
+/// CTA d'export PDF du récap de saison. Le bouton ouvre la feuille
+/// d'aperçu / impression du PDF généré par PdfService.
+class _SeasonRecapCta extends StatelessWidget {
+  Future<void> _print(BuildContext context) async {
+    final all = CultureService.instance.loadAll();
+    await PdfService.printSeasonRecap(
+      year: DateTime.now().year,
+      cultures: all,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _print(context),
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: <Color>[
+              KultivaColors.primaryGreen.withOpacity(0.18),
+              KultivaColors.springA.withOpacity(0.5),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.4),
+          ),
+        ),
+        child: Row(
+          children: <Widget>[
+            const Text('📄', style: TextStyle(fontSize: 28)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Récap saison ${DateTime.now().year}',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    'Génère un PDF avec stats, top légumes, '
+                    'familles, détail des cultures.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.picture_as_pdf,
+                color: KultivaColors.primaryGreen),
+          ],
+        ),
       ),
     );
   }

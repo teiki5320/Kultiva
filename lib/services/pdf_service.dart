@@ -6,6 +6,7 @@ import '../data/companions.dart';
 import '../data/regions/france.dart';
 import '../data/regions/west_africa.dart';
 import '../data/vegetables_base.dart';
+import '../models/culture_entry.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
 
@@ -164,6 +165,189 @@ class PdfService {
     );
   }
 
+  /// Génère un PDF de récap saison à partir des cultures pleine terre
+  /// de l'utilisateur sur l'année [year]. Imprime tout : nombre de
+  /// cultures, jours moyens, top légumes, total arrosages.
+  static Future<void> printSeasonRecap({
+    required int year,
+    required List<CultureEntry> cultures,
+  }) async {
+    final doc = pw.Document();
+    final soilCultures = cultures
+        .where((c) =>
+            c.method == CultivationMethod.soil &&
+            c.startedAt.year == year)
+        .toList();
+    final totalCultures = soilCultures.length;
+    final waterings = soilCultures.fold<int>(
+      0,
+      (sum, c) => sum + c.wateredAt.length,
+    );
+    final categories = <VegetableCategory, int>{};
+    final byVeg = <String, int>{};
+    var totalDuration = 0;
+    var endedCount = 0;
+    for (final c in soilCultures) {
+      try {
+        final v = vegetablesBase.firstWhere((veg) => veg.id == c.vegetableId);
+        categories[v.category] = (categories[v.category] ?? 0) + 1;
+      } catch (_) {}
+      byVeg[c.vegetableId] = (byVeg[c.vegetableId] ?? 0) + 1;
+      if (c.endedAt != null) {
+        totalDuration += c.endedAt!.difference(c.startedAt).inDays;
+        endedCount++;
+      }
+    }
+    final avgDuration =
+        endedCount == 0 ? 0 : (totalDuration / endedCount).round();
+    final topVeg = (byVeg.entries.toList()
+          ..sort((a, b) => b.value.compareTo(a.value)))
+        .take(5)
+        .toList();
+
+    doc.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(32),
+        build: (pw.Context ctx) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: <pw.Widget>[
+              pw.Text(
+                'Récap saison $year',
+                style: pw.TextStyle(
+                  fontSize: 28,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 4),
+              pw.Text(
+                'Cahier de culture pleine terre',
+                style: pw.TextStyle(
+                  fontSize: 13,
+                  color: PdfColors.grey700,
+                ),
+              ),
+              pw.SizedBox(height: 22),
+              pw.Row(
+                children: <pw.Widget>[
+                  _Stat(label: 'Cultures', value: '$totalCultures'),
+                  _Stat(label: 'Arrosages', value: '$waterings'),
+                  _Stat(
+                    label: 'Durée moy.',
+                    value: avgDuration == 0 ? '—' : '$avgDuration j',
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 24),
+              pw.Text(
+                'Top 5 légumes',
+                style: pw.TextStyle(
+                  fontSize: 16,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 8),
+              if (topVeg.isEmpty)
+                pw.Text(
+                  'Aucune culture cette saison.',
+                  style: const pw.TextStyle(color: PdfColors.grey700),
+                ),
+              for (final entry in topVeg)
+                pw.Padding(
+                  padding: const pw.EdgeInsets.symmetric(vertical: 3),
+                  child: pw.Row(
+                    children: <pw.Widget>[
+                      pw.Container(
+                        width: 18,
+                        child: pw.Text('•'),
+                      ),
+                      pw.Expanded(
+                        child: pw.Text(
+                          _vegName(entry.key),
+                          style: const pw.TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      pw.Text(
+                        '${entry.value} ×',
+                        style: pw.TextStyle(
+                          fontSize: 13,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              pw.SizedBox(height: 22),
+              pw.Text(
+                'Répartition par famille',
+                style: pw.TextStyle(
+                  fontSize: 16,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 8),
+              for (final entry in (categories.entries.toList()
+                ..sort((a, b) => b.value.compareTo(a.value))))
+                pw.Padding(
+                  padding: const pw.EdgeInsets.symmetric(vertical: 2),
+                  child: pw.Text(
+                    '${entry.key.label} : ${entry.value} culture${entry.value > 1 ? 's' : ''}',
+                    style: const pw.TextStyle(fontSize: 12),
+                  ),
+                ),
+              pw.SizedBox(height: 22),
+              pw.Text(
+                'Détail des cultures',
+                style: pw.TextStyle(
+                  fontSize: 16,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 8),
+              for (final c in soilCultures)
+                pw.Padding(
+                  padding: const pw.EdgeInsets.symmetric(vertical: 3),
+                  child: pw.Text(
+                    '${_fmtShort(c.startedAt)} → '
+                    '${c.endedAt == null ? "en cours" : _fmtShort(c.endedAt!)}'
+                    '   ${_vegName(c.vegetableId)}'
+                    '   (${c.wateredAt.length} arrosages)',
+                    style: const pw.TextStyle(fontSize: 11),
+                  ),
+                ),
+              pw.SizedBox(height: 32),
+              pw.Text(
+                'Récap généré par Kultiva',
+                style: pw.TextStyle(
+                  fontSize: 9,
+                  color: PdfColors.grey500,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (_) => doc.save(),
+      name: 'Kultiva — Récap $year',
+    );
+  }
+
+  static String _vegName(String id) {
+    try {
+      final v = vegetablesBase.firstWhere((veg) => veg.id == id);
+      return v.name;
+    } catch (_) {
+      return id;
+    }
+  }
+
+  static String _fmtShort(DateTime d) =>
+      '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}';
+
   static RegionData? _findRegionData(String vegetableId, Region region) {
     final list = region == Region.france ? franceData : westAfricaData;
     try {
@@ -254,6 +438,44 @@ class PdfService {
           child: pw.Text(names, style: const pw.TextStyle(fontSize: 10)),
         ),
       ],
+    );
+  }
+}
+
+/// Petit bloc statistique pour le récap saison (interne au service).
+class _Stat extends pw.StatelessWidget {
+  final String label;
+  final String value;
+  _Stat({required this.label, required this.value});
+
+  @override
+  pw.Widget build(pw.Context context) {
+    return pw.Expanded(
+      child: pw.Container(
+        padding: const pw.EdgeInsets.all(10),
+        margin: const pw.EdgeInsets.only(right: 8),
+        decoration: pw.BoxDecoration(
+          border: pw.Border.all(color: PdfColors.grey400),
+          borderRadius: pw.BorderRadius.circular(8),
+        ),
+        child: pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: <pw.Widget>[
+            pw.Text(
+              label,
+              style: pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+            ),
+            pw.SizedBox(height: 4),
+            pw.Text(
+              value,
+              style: pw.TextStyle(
+                fontSize: 22,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
