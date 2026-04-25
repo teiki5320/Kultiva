@@ -5,6 +5,8 @@ import '../../models/culture_entry.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
 import '../../services/prefs_service.dart';
+import '../../services/watering_advisor.dart';
+import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/watering_bars.dart';
 import 'culture_start_sheet.dart';
@@ -14,8 +16,28 @@ import 'weather_screen.dart';
 
 /// Cahier de culture pleine terre : suivi sérieux des cultures en cours
 /// et passées, distinct du Poussidex (qui reste le mini-jeu kawaii).
-class PotagerTraditionnelScreen extends StatelessWidget {
+class PotagerTraditionnelScreen extends StatefulWidget {
   const PotagerTraditionnelScreen({super.key});
+
+  @override
+  State<PotagerTraditionnelScreen> createState() =>
+      _PotagerTraditionnelScreenState();
+}
+
+class _PotagerTraditionnelScreenState
+    extends State<PotagerTraditionnelScreen> {
+  WeatherData? _weather;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWeather();
+  }
+
+  Future<void> _loadWeather() async {
+    final w = await WeatherService.getWeather();
+    if (mounted) setState(() => _weather = w);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +75,12 @@ class PotagerTraditionnelScreen extends StatelessWidget {
                       "Aucune culture en cours. Appuie sur « Démarrer une culture » pour créer ta première fiche.",
                 )
               else
-                ...active.map((c) => _CultureCard(culture: c)),
+                ...active.map(
+                  (c) => _CultureCard(culture: c, weather: _weather),
+                ),
               const SizedBox(height: 24),
               if (ended.isNotEmpty) ...<Widget>[
-                _EndedSection(list: ended),
+                _EndedSection(list: ended, weather: _weather),
                 const SizedBox(height: 24),
               ],
               _InfoExpansion(),
@@ -181,7 +205,8 @@ class _SectionHeader extends StatelessWidget {
 
 class _CultureCard extends StatelessWidget {
   final CultureEntry culture;
-  const _CultureCard({required this.culture});
+  final WeatherData? weather;
+  const _CultureCard({required this.culture, this.weather});
 
   Vegetable? _veg() {
     try {
@@ -271,6 +296,12 @@ class _CultureCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _WateringTrack(culture: culture),
+              if (suggestWatering(culture, weather) != null) ...<Widget>[
+                const SizedBox(height: 10),
+                _AdviceBanner(
+                  advice: suggestWatering(culture, weather)!,
+                ),
+              ],
             ],
           ),
         ),
@@ -428,7 +459,8 @@ class _EmptyState extends StatelessWidget {
 
 class _EndedSection extends StatelessWidget {
   final List<CultureEntry> list;
-  const _EndedSection({required this.list});
+  final WeatherData? weather;
+  const _EndedSection({required this.list, this.weather});
 
   @override
   Widget build(BuildContext context) {
@@ -443,7 +475,59 @@ class _EndedSection extends StatelessWidget {
           title: 'Cultures terminées',
           count: list.length,
         ),
-        children: list.map((c) => _CultureCard(culture: c)).toList(),
+        children: list
+            .map((c) => _CultureCard(culture: c, weather: weather))
+            .toList(),
+      ),
+    );
+  }
+}
+
+/// Bandeau de conseil d'arrosage produit par WateringAdvisor.
+class _AdviceBanner extends StatelessWidget {
+  final WateringAdvice advice;
+  const _AdviceBanner({required this.advice});
+
+  Color get _color {
+    switch (advice.urgency) {
+      case WateringUrgency.skip:
+        return const Color(0xFF4A9BBF);
+      case WateringUrgency.ok:
+        return KultivaColors.primaryGreen;
+      case WateringUrgency.dueSoon:
+        return const Color(0xFFE8A87C);
+      case WateringUrgency.overdue:
+      case WateringUrgency.heatwave:
+        return const Color(0xFFD4564A);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: _color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _color.withOpacity(0.4)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(advice.emoji, style: const TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              advice.message,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: _color,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
