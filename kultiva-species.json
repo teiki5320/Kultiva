@@ -1,0 +1,2922 @@
+[
+  {
+    "id": "tomate",
+    "name": "Tomate",
+    "emoji": "🍅",
+    "category": "fruits",
+    "description": "Star du potager, la tomate aime le soleil et la chaleur. Se prête à toutes les utilisations en cuisine.",
+    "note": "Légume-soleil, à semer sous abri en fin d'hiver.",
+    "sowing_technique": "Semis sous abri chauffé ou en godets",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "18 à 25 °C",
+    "germination_days": "6 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "60 × 80 cm",
+    "watering": "Régulier, au pied, sans mouiller le feuillage",
+    "soil": "Riche, bien drainé, légèrement acide",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 kg/m²",
+    "harvest_time_by_season": {
+      "spring": "90 à 110 jours (semis précoce sous abri)",
+      "summer": "70 à 90 jours (plein champ)",
+      "autumn": "100 à 120 jours (variétés tardives)"
+    },
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "carotte",
+    "name": "Carotte",
+    "emoji": "🥕",
+    "category": "roots",
+    "description": "Racine sucrée et croquante, facile à cultiver en sol meuble et sableux.",
+    "note": "Semer clair pour éviter d'éclaircir plus tard.",
+    "sowing_technique": "Semis direct en ligne",
+    "sowing_depth": "1 cm",
+    "germination_temp": "10 à 20 °C",
+    "germination_days": "10 à 20 jours",
+    "exposure": "Soleil",
+    "spacing": "5 × 25 cm",
+    "watering": "Régulier, éviter le dessèchement en surface",
+    "soil": "Meuble, sableux, sans cailloux",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 4 kg/m²",
+    "harvest_time_by_season": {
+      "spring": "75 à 90 jours",
+      "summer": "90 à 110 jours",
+      "autumn": "100 à 120 jours (variétés de garde)"
+    },
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "courgette",
+    "name": "Courgette",
+    "emoji": "🥒",
+    "category": "fruits",
+    "description": "Généreuse et rapide, la courgette est parfaite pour débuter au potager.",
+    "note": "Chaque pied produit beaucoup — prévoir 1 m² par plant.",
+    "sowing_technique": "Semis en godet puis repiquage",
+    "sowing_depth": "2 cm",
+    "germination_temp": "18 à 22 °C",
+    "germination_days": "5 à 8 jours",
+    "exposure": "Plein soleil",
+    "spacing": "1 m en tous sens",
+    "watering": "Abondant, au pied",
+    "soil": "Riche, frais, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 6 kg/pied",
+    "harvest_time_by_season": {
+      "spring": "60 à 75 jours (semis en avril)",
+      "summer": "50 à 65 jours"
+    },
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "laitue",
+    "name": "Laitue",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Feuilles tendres, croissance rapide et récolte étalée tout au long de la saison.",
+    "note": "Semer tous les 15 jours pour en récolter en continu.",
+    "sowing_technique": "Semis en pépinière ou en place",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Mi-ombre en été, soleil au printemps",
+    "spacing": "25 × 30 cm",
+    "watering": "Régulier, garder le sol frais",
+    "soil": "Meuble, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 3 kg/m²",
+    "harvest_time_by_season": {
+      "spring": "45 à 60 jours",
+      "summer": "40 à 55 jours",
+      "autumn": "55 à 75 jours"
+    },
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12,
+          1,
+          2
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "haricot",
+    "name": "Haricot vert",
+    "emoji": "🫘",
+    "category": "seeds",
+    "description": "Légumineuse fixatrice d'azote, nain ou à rames, idéale en culture d'été.",
+    "note": "Attendre que le sol atteigne 12 °C avant de semer.",
+    "sowing_technique": "Semis direct en poquets",
+    "sowing_depth": "3 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "6 à 10 jours",
+    "exposure": "Soleil",
+    "spacing": "40 × 10 cm",
+    "watering": "Modéré, sans mouiller le feuillage",
+    "soil": "Léger, meuble, peu azoté",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8,
+          10,
+          11
+        ],
+        "harvest_months": [
+          9,
+          10,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "aubergine",
+    "name": "Aubergine",
+    "emoji": "🍆",
+    "category": "fruits",
+    "description": "Amoureuse du chaud, à démarrer très tôt en intérieur pour avoir des plants prêts au repiquage.",
+    "note": "Semer très tôt — germination lente et long cycle.",
+    "sowing_technique": "Semis sous abri chauffé",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "22 à 28 °C",
+    "germination_days": "10 à 20 jours",
+    "exposure": "Plein soleil, à l'abri du vent",
+    "spacing": "60 × 60 cm",
+    "watering": "Régulier, généreux",
+    "soil": "Riche, profond, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "poivron",
+    "name": "Poivron",
+    "emoji": "🫑",
+    "category": "fruits",
+    "description": "Fruit coloré et sucré, cousin doux du piment, à démarrer en intérieur.",
+    "note": "Température clé pour la levée : viser 25 °C.",
+    "sowing_technique": "Semis sous abri chauffé",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "22 à 28 °C",
+    "germination_days": "10 à 15 jours",
+    "exposure": "Plein soleil",
+    "spacing": "50 × 50 cm",
+    "watering": "Régulier, au pied",
+    "soil": "Riche, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 3 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "epinard",
+    "name": "Épinard",
+    "emoji": "🌿",
+    "category": "leaves",
+    "description": "Feuilles riches en fer, préfère la fraîcheur — à semer au printemps ou en automne.",
+    "note": "Évite la chaleur, préfère les saisons fraîches.",
+    "sowing_technique": "Semis direct en ligne",
+    "sowing_depth": "1 à 2 cm",
+    "germination_temp": "10 à 20 °C",
+    "germination_days": "7 à 14 jours",
+    "exposure": "Mi-ombre en été",
+    "spacing": "10 × 30 cm",
+    "watering": "Régulier",
+    "soil": "Frais, riche en humus",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 3 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          8,
+          9
+        ],
+        "harvest_months": [
+          5,
+          6,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Préférer les variétés tropicales (amarante, célosie) qui résistent mieux à la chaleur."
+      }
+    }
+  },
+  {
+    "id": "oignon",
+    "name": "Oignon",
+    "emoji": "🧅",
+    "category": "bulbs",
+    "description": "Bulbe incontournable de la cuisine, se conserve longtemps après récolte.",
+    "note": "Se sème ou se plante en bulbilles (plus simple).",
+    "sowing_technique": "Semis direct ou plantation de bulbilles",
+    "sowing_depth": "1 cm",
+    "germination_temp": "10 à 20 °C",
+    "germination_days": "10 à 15 jours",
+    "exposure": "Soleil",
+    "spacing": "10 × 25 cm",
+    "watering": "Modéré, arrêter avant la récolte",
+    "soil": "Léger, bien drainé, non fraîchement fumé",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 3 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          9,
+          10
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "basilic",
+    "name": "Basilic",
+    "emoji": "🌿",
+    "category": "aromatics",
+    "description": "L'aromatique de l'été par excellence, compagnon idéal de la tomate.",
+    "note": "Craint le froid et le vent — à cultiver en pot si besoin.",
+    "sowing_technique": "Semis en godets ou en place après les saints de glace",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "20 à 25 °C",
+    "germination_days": "7 à 14 jours",
+    "exposure": "Plein soleil, à l'abri",
+    "spacing": "20 × 30 cm",
+    "watering": "Régulier, sans excès",
+    "soil": "Riche, drainé",
+    "watering_days_max": null,
+    "yield_estimate": "200 à 400 g/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "concombre",
+    "name": "Concombre",
+    "emoji": "🥒",
+    "category": "fruits",
+    "description": "Rafraîchissant et productif, le concombre aime la chaleur et l'eau. Idéal en salade.",
+    "note": "Palisser sur un grillage pour gagner de la place.",
+    "sowing_technique": "Semis en godet sous abri puis repiquage",
+    "sowing_depth": "2 cm",
+    "germination_temp": "18 à 25 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "60 × 100 cm",
+    "watering": "Abondant et régulier",
+    "soil": "Riche, frais, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "piment",
+    "name": "Piment",
+    "emoji": "🌶️",
+    "category": "fruits",
+    "description": "Du doux au brûlant, le piment apporte saveur et couleur au potager comme en cuisine.",
+    "note": "Même culture que le poivron, mais plus résistant à la chaleur.",
+    "sowing_technique": "Semis sous abri chauffé dès février",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "22 à 30 °C",
+    "germination_days": "10 à 20 jours",
+    "exposure": "Plein soleil",
+    "spacing": "50 × 50 cm",
+    "watering": "Régulier, sans excès",
+    "soil": "Riche, bien drainé, chaud",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 3 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": "Privilégier la culture sous serre ou tunnel en dehors du sud de la France."
+      },
+      "west_africa": {
+        "sowing_months": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "ail",
+    "name": "Ail",
+    "emoji": "🧄",
+    "category": "bulbs",
+    "description": "Condiment universel, l'ail se conserve des mois et demande très peu d'entretien.",
+    "note": "Planter les caïeux pointe en haut, à fleur de sol.",
+    "sowing_technique": "Plantation de caïeux directement en terre",
+    "sowing_depth": "2 à 3 cm",
+    "germination_temp": "10 à 15 °C",
+    "germination_days": "15 à 20 jours",
+    "exposure": "Soleil",
+    "spacing": "10 × 25 cm",
+    "watering": "Très modéré, stopper 1 mois avant récolte",
+    "soil": "Léger, bien drainé, pas de fumure fraîche",
+    "watering_days_max": null,
+    "yield_estimate": "0,5 à 1 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          10,
+          11,
+          2,
+          3
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          2,
+          3,
+          4
+        ],
+        "regional_note": "Cultiver en saison sèche fraîche. L'ail supporte mal l'humidité excessive de la saison des pluies."
+      }
+    }
+  },
+  {
+    "id": "pomme_de_terre",
+    "name": "Pomme de terre",
+    "emoji": "🥔",
+    "category": "tubers",
+    "description": "Tubercule de base de l'alimentation mondiale, facile à cultiver et très productif.",
+    "note": "Butter les plants quand ils atteignent 20 cm de haut.",
+    "sowing_technique": "Plantation de tubercules germés",
+    "sowing_depth": "10 à 15 cm",
+    "germination_temp": "10 à 15 °C",
+    "germination_days": "15 à 30 jours",
+    "exposure": "Soleil",
+    "spacing": "35 × 60 cm",
+    "watering": "Modéré, augmenter à la floraison",
+    "soil": "Meuble, profond, légèrement acide",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Culture de saison sèche en altitude ou en zone sahélienne. Difficile en zone tropicale humide de basse altitude."
+      }
+    }
+  },
+  {
+    "id": "radis",
+    "name": "Radis",
+    "emoji": "🔴",
+    "category": "roots",
+    "description": "Le plus rapide du potager : récolte en 3 à 4 semaines. Parfait pour les débutants.",
+    "note": "Semer peu à la fois, mais souvent (tous les 10 jours).",
+    "sowing_technique": "Semis direct en ligne, éclaircir à 3 cm",
+    "sowing_depth": "1 cm",
+    "germination_temp": "10 à 20 °C",
+    "germination_days": "3 à 6 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "3 × 15 cm",
+    "watering": "Régulier, garder le sol frais",
+    "soil": "Léger, meuble, frais",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": {
+      "spring": "21 à 30 jours",
+      "summer": "25 à 35 jours",
+      "autumn": "30 à 40 jours"
+    },
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "harvest_months": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "harvest_months": [
+          11,
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "chou_pomme",
+    "name": "Chou pommé",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Légume d'hiver par excellence, le chou pommé résiste au froid et nourrit copieusement.",
+    "note": "Prévoir beaucoup de place — chaque pied est imposant.",
+    "sowing_technique": "Semis en pépinière puis repiquage",
+    "sowing_depth": "1 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "50 × 60 cm",
+    "watering": "Régulier, aime l'humidité",
+    "soil": "Riche, argileux, frais",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11,
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "petit_pois",
+    "name": "Petit pois",
+    "emoji": "🟢",
+    "category": "seeds",
+    "description": "Légumineuse printanière sucrée, à récolter jeune pour un maximum de tendreté.",
+    "note": "Semer tôt — le petit pois craint la chaleur estivale.",
+    "sowing_technique": "Semis direct en ligne ou en poquets",
+    "sowing_depth": "3 à 5 cm",
+    "germination_temp": "8 à 15 °C",
+    "germination_days": "7 à 15 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "5 × 40 cm",
+    "watering": "Régulier à la floraison",
+    "soil": "Frais, humifère, pas trop riche en azote",
+    "watering_days_max": null,
+    "yield_estimate": "0,5 à 1 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4,
+          10
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2
+        ],
+        "regional_note": "Culture délicate en zone tropicale — préférer les altitudes ou la saison la plus fraîche."
+      }
+    }
+  },
+  {
+    "id": "poireau",
+    "name": "Poireau",
+    "emoji": "🥬",
+    "category": "bulbs",
+    "description": "Légume rustique et polyvalent, disponible presque toute l'année au potager.",
+    "note": "Repiquer profond et butter pour allonger le fût blanc.",
+    "sowing_technique": "Semis en pépinière puis repiquage profond",
+    "sowing_depth": "1 cm",
+    "germination_temp": "12 à 20 °C",
+    "germination_days": "10 à 20 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "15 × 30 cm",
+    "watering": "Régulier",
+    "soil": "Riche, profond, frais",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11,
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": "Peu courant en Afrique de l'Ouest. Cultiver en saison fraîche et sèche uniquement."
+      }
+    }
+  },
+  {
+    "id": "patate_douce",
+    "name": "Patate douce",
+    "emoji": "🍠",
+    "category": "tubers",
+    "description": "Tubercule sucré et nutritif, pilier de la cuisine africaine et tropicale.",
+    "note": "Se multiplie par boutures de tiges, pas par graines.",
+    "sowing_technique": "Bouturage de lianes ou plantation de slips",
+    "sowing_depth": "5 à 10 cm",
+    "germination_temp": "22 à 28 °C",
+    "germination_days": "10 à 15 jours (enracinement)",
+    "exposure": "Plein soleil",
+    "spacing": "30 × 90 cm",
+    "watering": "Modéré, réduire avant récolte",
+    "soil": "Léger, sableux, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": "Culture possible dans le sud de la France ou sous serre chauffée. Demande au moins 4 mois de chaleur continue."
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "gombo",
+    "name": "Gombo",
+    "emoji": "🟢",
+    "category": "fruits",
+    "description": "Fruit tropical mucilagineux, incontournable dans les sauces ouest-africaines.",
+    "note": "A besoin de chaleur : minimum 20 °C pour bien pousser.",
+    "sowing_technique": "Semis direct ou en godet, tremper les graines 24 h avant",
+    "sowing_depth": "2 cm",
+    "germination_temp": "25 à 30 °C",
+    "germination_days": "7 à 14 jours",
+    "exposure": "Plein soleil",
+    "spacing": "40 × 60 cm",
+    "watering": "Régulier, abondant en période chaude",
+    "soil": "Riche, bien drainé, chaud",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          8,
+          9
+        ],
+        "regional_note": "Très exigeant en chaleur — réservé au sud méditerranéen ou à la culture sous serre chauffée (min. 20 °C)."
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "echalote",
+    "name": "Échalote",
+    "emoji": "🧅",
+    "category": "bulbs",
+    "description": "Plus fine et parfumée que l'oignon, l'échalote est un classique de la cuisine française.",
+    "note": "Planter les bulbes à fleur de sol, pointe en haut.",
+    "sowing_technique": "Plantation de bulbes en terre",
+    "sowing_depth": "1 à 2 cm",
+    "germination_temp": "10 à 18 °C",
+    "germination_days": "15 à 20 jours",
+    "exposure": "Soleil",
+    "spacing": "15 × 25 cm",
+    "watering": "Faible, stopper avant récolte",
+    "soil": "Léger, bien drainé, pas de fumure fraîche",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          10,
+          11,
+          2,
+          3
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Cultivée principalement au Sahel (Niger, Mali). Préférer la saison sèche fraîche."
+      }
+    }
+  },
+  {
+    "id": "chou_fleur",
+    "name": "Chou-fleur",
+    "emoji": "🥦",
+    "category": "leaves",
+    "description": "Inflorescence blanche et compacte, le chou-fleur aime les climats doux et humides.",
+    "note": "Protéger la pomme du soleil en rabattant les feuilles.",
+    "sowing_technique": "Semis en pépinière puis repiquage",
+    "sowing_depth": "1 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "60 × 70 cm",
+    "watering": "Régulier et abondant",
+    "soil": "Riche, profond, frais, argileux",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Cultiver en saison fraîche et sèche. Le chou-fleur supporte mal la forte chaleur humide."
+      }
+    }
+  },
+  {
+    "id": "brocoli",
+    "name": "Brocoli",
+    "emoji": "🥦",
+    "category": "leaves",
+    "description": "Cousin vert du chou-fleur, le brocoli est riche en vitamines et se récolte en jets successifs.",
+    "note": "Récolter avant que les boutons floraux ne s'ouvrent.",
+    "sowing_technique": "Semis en pépinière puis repiquage",
+    "sowing_depth": "1 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "50 × 60 cm",
+    "watering": "Régulier",
+    "soil": "Riche, frais, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2
+        ],
+        "regional_note": "Même exigences que le chou-fleur — saison fraîche uniquement."
+      }
+    }
+  },
+  {
+    "id": "courge_butternut",
+    "name": "Courge butternut",
+    "emoji": "🎃",
+    "category": "fruits",
+    "description": "Chair orangée, douce et fondante. Excellente en soupe, gratin ou rôtie au four.",
+    "note": "Laisser les fruits mûrir sur pied jusqu'aux premières fraîcheurs.",
+    "sowing_technique": "Semis en godet sous abri puis repiquage",
+    "sowing_depth": "2 cm",
+    "germination_temp": "18 à 25 °C",
+    "germination_days": "6 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "1,5 m en tous sens",
+    "watering": "Abondant, au pied",
+    "soil": "Riche, profond, bien fumé",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 fruits/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "potiron",
+    "name": "Potiron",
+    "emoji": "🎃",
+    "category": "fruits",
+    "description": "Gros fruit d'automne, le potiron se conserve des mois et nourrit toute la famille.",
+    "note": "Très gourmand en espace — prévoir 2 à 3 m² par pied.",
+    "sowing_technique": "Semis en godet puis repiquage ou semis direct",
+    "sowing_depth": "2 à 3 cm",
+    "germination_temp": "18 à 25 °C",
+    "germination_days": "6 à 12 jours",
+    "exposure": "Plein soleil",
+    "spacing": "2 m en tous sens",
+    "watering": "Abondant en été, réduire à maturité",
+    "soil": "Très riche, profond, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "5 à 15 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "melon",
+    "name": "Melon",
+    "emoji": "🍈",
+    "category": "fruits",
+    "description": "Fruit d'été sucré et parfumé, le melon demande chaleur et patience.",
+    "note": "Pincer les tiges pour limiter à 3-4 fruits par pied.",
+    "sowing_technique": "Semis en godet sous abri puis repiquage",
+    "sowing_depth": "2 cm",
+    "germination_temp": "22 à 28 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil, chaleur indispensable",
+    "spacing": "1 m × 1,5 m",
+    "watering": "Régulier, réduire à maturité pour concentrer les sucres",
+    "soil": "Riche, chaud, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 fruits/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9
+        ],
+        "regional_note": "Meilleure réussite dans le sud de la France. En climat plus frais, cultiver sous tunnel ou serre."
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "pasteque",
+    "name": "Pastèque",
+    "emoji": "🍉",
+    "category": "fruits",
+    "description": "Le fruit le plus rafraîchissant de l'été, gorgé d'eau et de sucre.",
+    "note": "Très gourmand en chaleur et en eau — le fruit idéal des tropiques.",
+    "sowing_technique": "Semis en godet ou semis direct en sol chaud",
+    "sowing_depth": "2 à 3 cm",
+    "germination_temp": "22 à 30 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "1,5 m × 2 m",
+    "watering": "Abondant et régulier",
+    "soil": "Sableux, riche, bien drainé, chaud",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 fruits/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          8,
+          9
+        ],
+        "regional_note": "Culture réservée au sud méditerranéen ou sous serre chauffée dans le reste de la France."
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12,
+          1
+        ],
+        "harvest_months": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "fraise",
+    "name": "Fraise",
+    "emoji": "🍓",
+    "category": "fruits",
+    "description": "Petit fruit rouge sucré, la fraise se cultive en pleine terre ou en pot sur un balcon.",
+    "note": "Pailler le sol pour garder les fruits propres et frais.",
+    "sowing_technique": "Plantation de plants ou stolons (le semis est lent)",
+    "sowing_depth": "Surface, collet au niveau du sol",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "15 à 30 jours (si semis)",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "30 × 40 cm",
+    "watering": "Régulier, surtout à la fructification",
+    "soil": "Riche, humifère, légèrement acide",
+    "watering_days_max": null,
+    "yield_estimate": "500 g à 1 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          8,
+          9
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Culture rare en zone tropicale — possible en altitude ou en saison fraîche sèche avec variétés adaptées."
+      }
+    }
+  },
+  {
+    "id": "navet",
+    "name": "Navet",
+    "emoji": "🟣",
+    "category": "roots",
+    "description": "Racine douce et rapide à pousser, le navet est un allié des soupes et pot-au-feu.",
+    "note": "Semer en été pour une récolte d'automne — il préfère le frais.",
+    "sowing_technique": "Semis direct en ligne",
+    "sowing_depth": "1 cm",
+    "germination_temp": "10 à 20 °C",
+    "germination_days": "4 à 8 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "10 × 25 cm",
+    "watering": "Régulier, ne pas laisser sécher",
+    "soil": "Frais, léger, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          7,
+          8,
+          9
+        ],
+        "harvest_months": [
+          5,
+          6,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "betterave",
+    "name": "Betterave",
+    "emoji": "🟤",
+    "category": "roots",
+    "description": "Racine sucrée et colorée, la betterave se mange crue ou cuite et colore les plats.",
+    "note": "Chaque graine donne 2 à 3 plants — éclaircir après la levée.",
+    "sowing_technique": "Semis direct en ligne, éclaircir à 10 cm",
+    "sowing_depth": "2 cm",
+    "germination_temp": "12 à 22 °C",
+    "germination_days": "8 à 15 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "10 × 30 cm",
+    "watering": "Régulier, modéré",
+    "soil": "Meuble, profond, riche",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "mais",
+    "name": "Maïs",
+    "emoji": "🌽",
+    "category": "seeds",
+    "description": "Céréale d'été, le maïs doux se récolte frais pour un goût sucré incomparable.",
+    "note": "Semer en bloc (pas en ligne) pour favoriser la pollinisation.",
+    "sowing_technique": "Semis direct en poquets de 3 graines",
+    "sowing_depth": "3 à 5 cm",
+    "germination_temp": "15 à 25 °C",
+    "germination_days": "6 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "30 × 70 cm",
+    "watering": "Régulier, abondant à la floraison",
+    "soil": "Riche, profond, frais",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 3 épis/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "persil",
+    "name": "Persil",
+    "emoji": "🌿",
+    "category": "aromatics",
+    "description": "Aromatique indispensable en cuisine, le persil pousse lentement mais dure longtemps.",
+    "note": "Tremper les graines 24 h avant le semis pour accélérer la levée.",
+    "sowing_technique": "Semis direct ou en godet, patient à lever",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "15 à 22 °C",
+    "germination_days": "15 à 30 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "15 × 25 cm",
+    "watering": "Régulier, garder le sol frais",
+    "soil": "Riche, frais, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "200 à 400 g/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          11,
+          12,
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "coriandre",
+    "name": "Coriandre",
+    "emoji": "🌿",
+    "category": "aromatics",
+    "description": "Aromatique à double usage : feuilles fraîches et graines séchées pour les épices.",
+    "note": "Monte vite en graines dès qu'il fait chaud — semer en succession.",
+    "sowing_technique": "Semis direct en place",
+    "sowing_depth": "1 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "10 à 15 jours",
+    "exposure": "Mi-ombre en été, soleil au printemps",
+    "spacing": "10 × 20 cm",
+    "watering": "Régulier, garder le sol frais",
+    "soil": "Léger, drainé, pas trop riche",
+    "watering_days_max": null,
+    "yield_estimate": "100 à 200 g/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5,
+          8,
+          9
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "ciboulette",
+    "name": "Ciboulette",
+    "emoji": "🌿",
+    "category": "aromatics",
+    "description": "Vivace aromatique facile, la ciboulette revient chaque année et parfume salades et omelettes.",
+    "note": "Couper régulièrement pour stimuler la repousse.",
+    "sowing_technique": "Semis direct ou division de touffe",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "12 à 20 °C",
+    "germination_days": "10 à 15 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "15 × 20 cm",
+    "watering": "Régulier, modéré",
+    "soil": "Ordinaire, frais, drainé",
+    "watering_days_max": null,
+    "yield_estimate": "Vivace — récolte continue",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          11,
+          12,
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "menthe",
+    "name": "Menthe",
+    "emoji": "🌿",
+    "category": "aromatics",
+    "description": "Aromatique vigoureuse et envahissante, la menthe parfume thés, sauces et desserts.",
+    "note": "Cultiver en pot pour éviter qu'elle n'envahisse tout le jardin.",
+    "sowing_technique": "Bouturage ou division de touffe (semis très lent)",
+    "sowing_depth": "Surface, à peine couverte",
+    "germination_temp": "15 à 22 °C",
+    "germination_days": "10 à 20 jours",
+    "exposure": "Mi-ombre à soleil",
+    "spacing": "30 × 30 cm",
+    "watering": "Régulier, aime l'humidité",
+    "soil": "Riche, frais, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "Vivace — récolte continue",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "thym",
+    "name": "Thym",
+    "emoji": "🌿",
+    "category": "aromatics",
+    "description": "Aromatique méditerranéenne robuste, le thym résiste à la sécheresse et parfume plats et tisanes.",
+    "note": "Très rustique — demande peu d'eau et de soin une fois installé.",
+    "sowing_technique": "Semis en surface ou bouturage",
+    "sowing_depth": "Surface, ne pas couvrir",
+    "germination_temp": "15 à 22 °C",
+    "germination_days": "14 à 21 jours",
+    "exposure": "Plein soleil",
+    "spacing": "20 × 30 cm",
+    "watering": "Très faible, supporte la sécheresse",
+    "soil": "Pauvre, caillouteux, très bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "Vivace — récolte continue",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "regional_note": "Pousse bien en zone sahélienne. En climat très humide, veiller au drainage pour éviter la pourriture."
+      }
+    }
+  },
+  {
+    "id": "feve",
+    "name": "Fève",
+    "emoji": "🫛",
+    "category": "seeds",
+    "description": "Légumineuse de printemps, la fève est riche en protéines et enrichit le sol en azote.",
+    "note": "Pincer les tiges dès l'apparition des pucerons noirs en haut.",
+    "sowing_technique": "Semis direct en poquets",
+    "sowing_depth": "4 à 5 cm",
+    "germination_temp": "8 à 15 °C",
+    "germination_days": "8 à 15 jours",
+    "exposure": "Soleil",
+    "spacing": "15 × 40 cm",
+    "watering": "Modéré, pas en excès",
+    "soil": "Argileux, profond, frais",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          10,
+          11
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Peu courante en Afrique de l'Ouest. Tester en saison fraîche et sèche."
+      }
+    }
+  },
+  {
+    "id": "igname",
+    "name": "Igname",
+    "emoji": "🟤",
+    "category": "tubers",
+    "description": "Grand tubercule tropical, base de l'alimentation en Afrique de l'Ouest. Riche en amidon.",
+    "note": "Cycle long (8 à 12 mois) — planter en début de saison des pluies.",
+    "sowing_technique": "Plantation de fragments de tubercules ou de mini-semenceaux",
+    "sowing_depth": "10 à 15 cm",
+    "germination_temp": "25 à 30 °C",
+    "germination_days": "20 à 40 jours",
+    "exposure": "Plein soleil",
+    "spacing": "50 × 100 cm",
+    "watering": "Régulier en croissance, réduire à maturité",
+    "soil": "Profond, meuble, riche, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "5 à 15 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          10,
+          11
+        ],
+        "regional_note": "Culture expérimentale en France — possible dans le sud ou sous serre chauffée. Cycle très long (8 mois minimum)."
+      },
+      "west_africa": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          11,
+          12,
+          1
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "manioc",
+    "name": "Manioc",
+    "emoji": "🟤",
+    "category": "tubers",
+    "description": "Tubercule tropical résistant à la sécheresse, base de l'alimentation de millions de personnes.",
+    "note": "Se multiplie par boutures de tige — pas de graines nécessaires.",
+    "sowing_technique": "Bouturage de tiges de 20 à 30 cm, plantées en biais",
+    "sowing_depth": "5 à 10 cm (biais à 45°)",
+    "germination_temp": "25 à 35 °C",
+    "germination_days": "10 à 15 jours (bourgeonnement)",
+    "exposure": "Plein soleil",
+    "spacing": "80 × 100 cm",
+    "watering": "Faible, résiste à la sécheresse",
+    "soil": "Léger, sableux, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "5 à 15 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5
+        ],
+        "harvest_months": [
+          10,
+          11
+        ],
+        "regional_note": "Non adapté au climat français hors DOM-TOM. Possible en serre chauffée à titre expérimental uniquement."
+      },
+      "west_africa": {
+        "sowing_months": [
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "niebe",
+    "name": "Niébé",
+    "emoji": "🫘",
+    "category": "seeds",
+    "description": "Haricot à œil noir, pilier des protéines végétales en Afrique de l'Ouest. Très résistant à la chaleur.",
+    "note": "Culture facile, enrichit le sol en azote comme toutes les légumineuses.",
+    "sowing_technique": "Semis direct en poquets de 2-3 graines",
+    "sowing_depth": "3 à 5 cm",
+    "germination_temp": "20 à 30 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "20 × 50 cm",
+    "watering": "Modéré, résiste bien à la sécheresse",
+    "soil": "Pauvre à moyen, sableux, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "0,5 à 1,5 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10
+        ],
+        "regional_note": "Peu cultivé en France métropolitaine. Possible dans le sud — même culture que le haricot, mais plus tolérant à la chaleur."
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "artichaut",
+    "name": "Artichaut",
+    "emoji": "🌿",
+    "category": "flowers",
+    "description": "Bouton floral charnu et raffiné, l'artichaut est une vivace spectaculaire au potager.",
+    "note": "Vivace — un pied produit pendant 3 à 5 ans.",
+    "sowing_technique": "Plantation d'œilletons ou semis sous abri",
+    "sowing_depth": "2 cm",
+    "germination_temp": "15 à 20 °C",
+    "germination_days": "10 à 15 jours",
+    "exposure": "Soleil, à l'abri du vent",
+    "spacing": "80 × 100 cm",
+    "watering": "Régulier, généreux",
+    "soil": "Riche, profond, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "6 à 10 têtes/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          2,
+          3,
+          4
+        ],
+        "regional_note": "Peu cultivé en Afrique de l'Ouest. Possible en altitude ou en saison fraîche sèche."
+      }
+    }
+  },
+  {
+    "id": "blette",
+    "name": "Blette",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Aussi appelée bette ou poirée, on consomme ses larges côtes et ses feuilles tendres.",
+    "note": "Très productive — un seul pied nourrit pendant des mois.",
+    "sowing_technique": "Semis direct en ligne ou en godet",
+    "sowing_depth": "2 cm",
+    "germination_temp": "12 à 22 °C",
+    "germination_days": "8 à 15 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "30 × 40 cm",
+    "watering": "Régulier, aime le frais",
+    "soil": "Riche, frais, profond",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 5 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "celeri",
+    "name": "Céleri",
+    "emoji": "🌿",
+    "category": "stems",
+    "description": "Branche ou rave, le céleri parfume soupes et salades avec son goût puissant.",
+    "note": "Semis très long à lever — patience requise.",
+    "sowing_technique": "Semis sous abri en terrine, repiquage",
+    "sowing_depth": "Surface, à peine couverte",
+    "germination_temp": "18 à 22 °C",
+    "germination_days": "15 à 25 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "30 × 35 cm",
+    "watering": "Abondant et constant",
+    "soil": "Riche, humifère, frais",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Préférer la saison sèche et fraîche. Le céleri supporte mal la chaleur humide."
+      }
+    }
+  },
+  {
+    "id": "mache",
+    "name": "Mâche",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Petite salade d'hiver au goût doux et noisette, ultra-rustique au froid.",
+    "note": "La salade d'hiver par excellence — semée en automne, récoltée en hiver.",
+    "sowing_technique": "Semis direct à la volée ou en ligne",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "10 à 15 °C",
+    "germination_days": "8 à 15 jours",
+    "exposure": "Mi-ombre à soleil",
+    "spacing": "5 × 15 cm",
+    "watering": "Modéré, sol frais",
+    "soil": "Ordinaire, tassé, frais",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          8,
+          9,
+          10
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2
+        ],
+        "regional_note": "Non adaptée au climat tropical — possible en altitude uniquement. Préférer la laitue."
+      }
+    }
+  },
+  {
+    "id": "roquette",
+    "name": "Roquette",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Feuilles piquantes et poivrées, la roquette pousse vite et relève les salades.",
+    "note": "Monte vite en graines l'été — préférer le printemps ou l'automne.",
+    "sowing_technique": "Semis direct en ligne",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "10 à 20 °C",
+    "germination_days": "5 à 8 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "5 × 20 cm",
+    "watering": "Régulier, garder le sol frais",
+    "soil": "Ordinaire, frais",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5,
+          8,
+          9
+        ],
+        "harvest_months": [
+          5,
+          6,
+          7,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "chou_kale",
+    "name": "Chou kale",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Super-aliment à la mode, le kale est un chou frisé ultra-rustique qui résiste au gel.",
+    "note": "Le goût s'améliore après les premières gelées.",
+    "sowing_technique": "Semis en pépinière puis repiquage",
+    "sowing_depth": "1 cm",
+    "germination_temp": "12 à 20 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Soleil à mi-ombre",
+    "spacing": "40 × 50 cm",
+    "watering": "Régulier",
+    "soil": "Riche, frais, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11,
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10,
+          11
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Cultiver en saison sèche fraîche. Le kale résiste mieux à la chaleur que les autres choux."
+      }
+    }
+  },
+  {
+    "id": "arachide",
+    "name": "Arachide",
+    "emoji": "🥜",
+    "category": "seeds",
+    "description": "La cacahuète pousse sous terre — une légumineuse originale et productive en climat chaud.",
+    "note": "Les fleurs se courbent vers le sol pour enfouir les gousses.",
+    "sowing_technique": "Semis direct de graines décortiquées",
+    "sowing_depth": "3 à 5 cm",
+    "germination_temp": "20 à 30 °C",
+    "germination_days": "7 à 14 jours",
+    "exposure": "Plein soleil",
+    "spacing": "20 × 40 cm",
+    "watering": "Modéré, stopper avant récolte",
+    "soil": "Léger, sableux, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "0,5 à 1 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": "Culture expérimentale en France — possible dans le sud-ouest (Landes) en sol sableux chaud."
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "bissap",
+    "name": "Bissap (Oseille de Guinée)",
+    "emoji": "🌺",
+    "category": "flowers",
+    "description": "Hibiscus sabdariffa — ses calices rouges servent à préparer la célèbre boisson bissap.",
+    "note": "Plante décorative au jardin et utile en cuisine — double usage.",
+    "sowing_technique": "Semis direct ou en godet",
+    "sowing_depth": "1 cm",
+    "germination_temp": "22 à 30 °C",
+    "germination_days": "7 à 14 jours",
+    "exposure": "Plein soleil",
+    "spacing": "50 × 60 cm",
+    "watering": "Modéré, supporte la sécheresse",
+    "soil": "Ordinaire, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "0,5 à 1 kg de calices/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": "Annuelle tropicale — possible sous serre chauffée ou en pot rentré en hiver. Résultats aléatoires en plein air."
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "sesame",
+    "name": "Sésame",
+    "emoji": "🌾",
+    "category": "seeds",
+    "description": "Petite graine oléagineuse au goût de noisette, base du tahini et de nombreuses pâtisseries.",
+    "note": "Récolter avant que les capsules ne s'ouvrent — elles libèrent les graines.",
+    "sowing_technique": "Semis direct en sol chaud",
+    "sowing_depth": "0,5 à 1 cm",
+    "germination_temp": "20 à 30 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "10 × 30 cm",
+    "watering": "Faible, résiste à la sécheresse",
+    "soil": "Léger, sableux, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "100 à 300 g/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": "Culture rare en France — réservée au sud méditerranéen, sol chaud et sec."
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7
+        ],
+        "harvest_months": [
+          10,
+          11
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "gingembre",
+    "name": "Gingembre",
+    "emoji": "🫚",
+    "category": "aromatics",
+    "description": "Rhizome aromatique piquant et citronné, utilisé frais ou séché en cuisine et en tisane.",
+    "note": "Se cultive à partir d'un morceau de rhizome frais du commerce.",
+    "sowing_technique": "Plantation de rhizomes à bourgeons",
+    "sowing_depth": "3 à 5 cm",
+    "germination_temp": "22 à 30 °C",
+    "germination_days": "14 à 21 jours",
+    "exposure": "Mi-ombre à soleil tamisé",
+    "spacing": "20 × 30 cm",
+    "watering": "Régulier, aime l'humidité",
+    "soil": "Riche, léger, humifère, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "200 à 500 g/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4
+        ],
+        "harvest_months": [
+          10,
+          11
+        ],
+        "regional_note": "Possible en pot sous serre ou en intérieur lumineux. Cycle de 8 mois minimum."
+      },
+      "west_africa": {
+        "sowing_months": [
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "asperge",
+    "name": "Asperge",
+    "emoji": "🌿",
+    "category": "stems",
+    "description": "Vivace de luxe, l'asperge demande de la patience mais produit pendant 15 à 20 ans.",
+    "note": "Attendre 2 à 3 ans après la plantation avant la première récolte.",
+    "sowing_technique": "Plantation de griffes en tranchée",
+    "sowing_depth": "15 à 20 cm (tranchée)",
+    "germination_temp": "15 à 22 °C",
+    "germination_days": "20 à 30 jours (si semis)",
+    "exposure": "Soleil",
+    "spacing": "40 × 150 cm",
+    "watering": "Modéré, sol drainé",
+    "soil": "Léger, sableux, profond, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "500 g à 1 kg/pied/an",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          2,
+          3,
+          4
+        ],
+        "harvest_months": [
+          4,
+          5,
+          6
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          2,
+          3,
+          4
+        ],
+        "regional_note": "Rare en Afrique de l'Ouest — culture expérimentale en zone sahélienne irriguée."
+      }
+    }
+  },
+  {
+    "id": "fenouil",
+    "name": "Fenouil",
+    "emoji": "🌿",
+    "category": "bulbs",
+    "description": "Bulbe blanc au goût anisé, le fenouil est croquant cru et fondant cuit.",
+    "note": "Sensible à la montée en graines — éviter le stress hydrique.",
+    "sowing_technique": "Semis direct ou en godet",
+    "sowing_depth": "1 cm",
+    "germination_temp": "15 à 22 °C",
+    "germination_days": "8 à 15 jours",
+    "exposure": "Plein soleil",
+    "spacing": "25 × 40 cm",
+    "watering": "Régulier et constant",
+    "soil": "Riche, frais, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 3 kg/m²",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11,
+          12
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Cultiver en saison fraîche sèche uniquement. Monte vite en graines sous forte chaleur."
+      }
+    }
+  },
+  {
+    "id": "endive",
+    "name": "Endive (Chicon)",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Feuilles blanches et croquantes obtenues par forçage en cave — une technique originale.",
+    "note": "Culture en 2 temps : racines au jardin, puis forçage en obscurité.",
+    "sowing_technique": "Semis direct, puis arrachage et forçage en cave",
+    "sowing_depth": "1 cm",
+    "germination_temp": "12 à 20 °C",
+    "germination_days": "8 à 12 jours",
+    "exposure": "Soleil (phase racine), obscurité (phase forçage)",
+    "spacing": "15 × 30 cm",
+    "watering": "Régulier (phase racine), faible (phase forçage)",
+    "soil": "Profond, meuble",
+    "watering_days_max": null,
+    "yield_estimate": "1 chicon par racine",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          11,
+          12,
+          1,
+          2,
+          3
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          10,
+          11
+        ],
+        "harvest_months": [
+          2,
+          3
+        ],
+        "regional_note": "Le forçage en cave est difficile en climat chaud. Culture marginale."
+      }
+    }
+  },
+  {
+    "id": "chou_bruxelles",
+    "name": "Chou de Bruxelles",
+    "emoji": "🥬",
+    "category": "leaves",
+    "description": "Petites pommes vertes le long d'une tige, le chou de Bruxelles adore le froid.",
+    "note": "Le gel améliore la saveur — ne pas récolter trop tôt.",
+    "sowing_technique": "Semis en pépinière puis repiquage",
+    "sowing_depth": "1 cm",
+    "germination_temp": "12 à 20 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Soleil",
+    "spacing": "50 × 60 cm",
+    "watering": "Régulier",
+    "soil": "Riche, argileux, frais",
+    "watering_days_max": null,
+    "yield_estimate": "1 à 2 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12,
+          1,
+          2
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          9,
+          10
+        ],
+        "harvest_months": [
+          1,
+          2,
+          3
+        ],
+        "regional_note": "Très peu adapté aux tropiques — nécessite du froid pour former les pommes. Essayer en altitude."
+      }
+    }
+  },
+  {
+    "id": "potimarron",
+    "name": "Potimarron",
+    "emoji": "🎃",
+    "category": "fruits",
+    "description": "Courge au goût de châtaigne, dont la peau se mange — très pratique en soupe.",
+    "note": "Moins envahissant que le potiron, idéal pour petits jardins.",
+    "sowing_technique": "Semis en godet sous abri puis repiquage",
+    "sowing_depth": "2 cm",
+    "germination_temp": "18 à 25 °C",
+    "germination_days": "6 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "1 m × 1,5 m",
+    "watering": "Régulier, au pied",
+    "soil": "Riche, profond, bien fumé",
+    "watering_days_max": null,
+    "yield_estimate": "3 à 6 fruits/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8
+        ],
+        "harvest_months": [
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "oseille",
+    "name": "Oseille",
+    "emoji": "🌿",
+    "category": "leaves",
+    "description": "Vivace acidulée, l'oseille donne du pep aux soupes, sauces et salades.",
+    "note": "Vivace facile — un pied dure des années avec peu de soins.",
+    "sowing_technique": "Semis direct ou division de touffe",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "12 à 20 °C",
+    "germination_days": "8 à 15 jours",
+    "exposure": "Mi-ombre à soleil",
+    "spacing": "20 × 30 cm",
+    "watering": "Régulier, aime le frais",
+    "soil": "Riche, frais, légèrement acide",
+    "watering_days_max": null,
+    "yield_estimate": "Vivace — récolte continue",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          3,
+          4,
+          5
+        ],
+        "harvest_months": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "regional_note": null
+      },
+      "west_africa": {
+        "sowing_months": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "taro",
+    "name": "Taro",
+    "emoji": "🟤",
+    "category": "tubers",
+    "description": "Tubercule tropical riche en amidon, base alimentaire en Afrique, Asie et Caraïbes.",
+    "note": "Toujours cuire avant consommation — le taro cru est irritant.",
+    "sowing_technique": "Plantation de tubercules ou rejets",
+    "sowing_depth": "10 cm",
+    "germination_temp": "22 à 30 °C",
+    "germination_days": "15 à 30 jours",
+    "exposure": "Mi-ombre à soleil",
+    "spacing": "40 × 60 cm",
+    "watering": "Abondant, aime les sols humides",
+    "soil": "Riche, humide, humifère",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 5 kg/pied",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          4,
+          5
+        ],
+        "harvest_months": [
+          10,
+          11
+        ],
+        "regional_note": "Non adapté au climat français sauf DOM-TOM. Possible en pot sous serre chauffée."
+      },
+      "west_africa": {
+        "sowing_months": [
+          4,
+          5,
+          6
+        ],
+        "harvest_months": [
+          11,
+          12,
+          1
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "amarante",
+    "name": "Amarante",
+    "emoji": "🌾",
+    "category": "leaves",
+    "description": "Double usage : feuilles consommées comme épinard en Afrique, graines comme céréale.",
+    "note": "Pousse très vite en climat chaud — quasi aucune maladie.",
+    "sowing_technique": "Semis direct à la volée ou en ligne",
+    "sowing_depth": "0,5 cm",
+    "germination_temp": "20 à 30 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "15 × 30 cm",
+    "watering": "Modéré, résiste bien à la sécheresse",
+    "soil": "Ordinaire, bien drainé",
+    "watering_days_max": null,
+    "yield_estimate": "2 à 4 kg/m² (feuilles)",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          8,
+          9,
+          10
+        ],
+        "regional_note": "Pousse bien dans le sud de la France. Ailleurs, semer après les dernières gelées."
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "harvest_months": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      }
+    }
+  },
+  {
+    "id": "sorgho",
+    "name": "Sorgho",
+    "emoji": "🌾",
+    "category": "seeds",
+    "description": "Céréale tropicale résistante à la sécheresse, base du tô et du couscous de mil en Afrique.",
+    "note": "5e céréale mondiale — pousse là où le maïs ne résiste pas.",
+    "sowing_technique": "Semis direct en poquets",
+    "sowing_depth": "3 à 5 cm",
+    "germination_temp": "18 à 30 °C",
+    "germination_days": "5 à 10 jours",
+    "exposure": "Plein soleil",
+    "spacing": "20 × 50 cm",
+    "watering": "Faible, très résistant à la sécheresse",
+    "soil": "Ordinaire, sableux à argileux, drainé",
+    "watering_days_max": null,
+    "yield_estimate": "300 à 600 g/m² (grains)",
+    "harvest_time_by_season": null,
+    "regions": {
+      "france": {
+        "sowing_months": [
+          5,
+          6
+        ],
+        "harvest_months": [
+          9,
+          10
+        ],
+        "regional_note": "Culture rare en France métropolitaine — possible dans le sud en sol chaud et sec."
+      },
+      "west_africa": {
+        "sowing_months": [
+          5,
+          6,
+          7
+        ],
+        "harvest_months": [
+          9,
+          10,
+          11
+        ],
+        "regional_note": null
+      }
+    }
+  }
+]
