@@ -110,6 +110,51 @@ enum LedColorTemp {
   }
 }
 
+/// Phase de croissance d'une culture hydroponique. Adapte les cibles
+/// pH/EC/distance LED et la durée de photopériode recommandée.
+enum GrowthPhase {
+  seedling('seedling'),
+  vegetative('vegetative'),
+  flowering('flowering'),
+  fruiting('fruiting');
+
+  final String id;
+  const GrowthPhase(this.id);
+
+  static GrowthPhase fromId(String? id) {
+    return GrowthPhase.values.firstWhere(
+      (p) => p.id == id,
+      orElse: () => GrowthPhase.seedling,
+    );
+  }
+
+  String get label {
+    switch (this) {
+      case GrowthPhase.seedling:
+        return 'Semis / plantule';
+      case GrowthPhase.vegetative:
+        return 'Croissance végétative';
+      case GrowthPhase.flowering:
+        return 'Floraison';
+      case GrowthPhase.fruiting:
+        return 'Fructification';
+    }
+  }
+
+  String get emoji {
+    switch (this) {
+      case GrowthPhase.seedling:
+        return '🌱';
+      case GrowthPhase.vegetative:
+        return '🌿';
+      case GrowthPhase.flowering:
+        return '🌸';
+      case GrowthPhase.fruiting:
+        return '🍅';
+    }
+  }
+}
+
 /// Configuration lumière d'une culture hydroponique.
 class HydroLightConfig {
   final LightType type;
@@ -174,6 +219,9 @@ class CultureEntry {
   final String? note;
   final HydroLightConfig? light; // uniquement si method == hydroponic
   final String? linkedPlantationId;
+  final GrowthPhase phase;
+  final DateTime? lastReservoirFlushAt;
+  final List<DateTime> wateredAt;
 
   const CultureEntry({
     required this.id,
@@ -184,7 +232,42 @@ class CultureEntry {
     this.note,
     this.light,
     this.linkedPlantationId,
+    this.phase = GrowthPhase.seedling,
+    this.lastReservoirFlushAt,
+    this.wateredAt = const <DateTime>[],
   });
+
+  DateTime? get lastWatering =>
+      wateredAt.isEmpty ? null : wateredAt.last;
+
+  /// Renvoie un tableau de [days] booléens (le plus ancien en
+  /// premier) indiquant si la culture a été arrosée ce jour-là.
+  List<bool> wateringHistory({int days = 14}) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final result = List<bool>.filled(days, false);
+    for (final w in wateredAt) {
+      final wDay = DateTime(w.year, w.month, w.day);
+      final delta = today.difference(wDay).inDays;
+      if (delta >= 0 && delta < days) {
+        result[days - 1 - delta] = true;
+      }
+    }
+    return result;
+  }
+
+  /// Jours depuis le dernier rinçage du réservoir (hydro). null si
+  /// jamais rincé.
+  int? get daysSinceFlush {
+    if (lastReservoirFlushAt == null) return null;
+    return DateTime.now().difference(lastReservoirFlushAt!).inDays;
+  }
+
+  /// True si le rinçage devrait être fait (>= 14 jours).
+  bool get flushDue {
+    final d = daysSinceFlush;
+    return d != null && d >= 14;
+  }
 
   bool get isActive => endedAt == null;
 
@@ -197,9 +280,13 @@ class CultureEntry {
     String? note,
     HydroLightConfig? light,
     String? linkedPlantationId,
+    GrowthPhase? phase,
+    DateTime? lastReservoirFlushAt,
+    List<DateTime>? wateredAt,
     bool clearEndedAt = false,
     bool clearLight = false,
     bool clearLinkedPlantation = false,
+    bool clearFlush = false,
   }) {
     return CultureEntry(
       id: id,
@@ -212,6 +299,11 @@ class CultureEntry {
       linkedPlantationId: clearLinkedPlantation
           ? null
           : (linkedPlantationId ?? this.linkedPlantationId),
+      phase: phase ?? this.phase,
+      lastReservoirFlushAt: clearFlush
+          ? null
+          : (lastReservoirFlushAt ?? this.lastReservoirFlushAt),
+      wateredAt: wateredAt ?? this.wateredAt,
     );
   }
 
@@ -224,6 +316,10 @@ class CultureEntry {
         'note': note,
         'light': light?.toJson(),
         'linkedPlantationId': linkedPlantationId,
+        'phase': phase.id,
+        'lastReservoirFlushAt': lastReservoirFlushAt?.toIso8601String(),
+        'wateredAt':
+            wateredAt.map((d) => d.toIso8601String()).toList(),
       };
 
   factory CultureEntry.fromJson(Map<String, dynamic> json) {
@@ -241,6 +337,13 @@ class CultureEntry {
           : HydroLightConfig.fromJson(
               json['light'] as Map<String, dynamic>),
       linkedPlantationId: json['linkedPlantationId'] as String?,
+      phase: GrowthPhase.fromId(json['phase'] as String?),
+      lastReservoirFlushAt: json['lastReservoirFlushAt'] == null
+          ? null
+          : DateTime.parse(json['lastReservoirFlushAt'] as String),
+      wateredAt: ((json['wateredAt'] as List?) ?? const <dynamic>[])
+          .map<DateTime>((d) => DateTime.parse(d as String))
+          .toList(),
     );
   }
 

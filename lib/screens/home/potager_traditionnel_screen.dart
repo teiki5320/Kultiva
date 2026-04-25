@@ -5,7 +5,12 @@ import '../../models/culture_entry.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
 import '../../services/prefs_service.dart';
+import '../../services/pdf_service.dart';
+import '../../services/watering_advisor.dart';
+import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/phenology.dart';
+import '../../widgets/watering_bars.dart';
 import 'culture_start_sheet.dart';
 import 'monthly_calendar_screen.dart';
 import 'vegetables_screen.dart';
@@ -13,8 +18,28 @@ import 'weather_screen.dart';
 
 /// Cahier de culture pleine terre : suivi sérieux des cultures en cours
 /// et passées, distinct du Poussidex (qui reste le mini-jeu kawaii).
-class PotagerTraditionnelScreen extends StatelessWidget {
+class PotagerTraditionnelScreen extends StatefulWidget {
   const PotagerTraditionnelScreen({super.key});
+
+  @override
+  State<PotagerTraditionnelScreen> createState() =>
+      _PotagerTraditionnelScreenState();
+}
+
+class _PotagerTraditionnelScreenState
+    extends State<PotagerTraditionnelScreen> {
+  WeatherData? _weather;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWeather();
+  }
+
+  Future<void> _loadWeather() async {
+    final w = await WeatherService.getWeather();
+    if (mounted) setState(() => _weather = w);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +77,14 @@ class PotagerTraditionnelScreen extends StatelessWidget {
                       "Aucune culture en cours. Appuie sur « Démarrer une culture » pour créer ta première fiche.",
                 )
               else
-                ...active.map((c) => _CultureCard(culture: c)),
+                ...active.map(
+                  (c) => _CultureCard(culture: c, weather: _weather),
+                ),
               const SizedBox(height: 24),
               if (ended.isNotEmpty) ...<Widget>[
-                _EndedSection(list: ended),
+                _EndedSection(list: ended, weather: _weather),
+                const SizedBox(height: 16),
+                _SeasonRecapCta(),
                 const SizedBox(height: 24),
               ],
               _InfoExpansion(),
@@ -180,7 +209,8 @@ class _SectionHeader extends StatelessWidget {
 
 class _CultureCard extends StatelessWidget {
   final CultureEntry culture;
-  const _CultureCard({required this.culture});
+  final WeatherData? weather;
+  const _CultureCard({required this.culture, this.weather});
 
   Vegetable? _veg() {
     try {
@@ -208,61 +238,80 @@ class _CultureCard extends StatelessWidget {
               color: KultivaColors.primaryGreen.withOpacity(0.35),
             ),
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  color: KultivaColors.primaryGreen.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  veg?.emoji ?? '🌱',
-                  style: const TextStyle(fontSize: 28),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      veg?.name ?? culture.vegetableId,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                      ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: KultivaColors.primaryGreen.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      days == 0
-                          ? 'Démarrée aujourd\'hui'
-                          : 'Démarrée il y a $days jour${days > 1 ? "s" : ""}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: KultivaColors.textSecondary,
-                      ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      veg?.emoji ?? '🌱',
+                      style: const TextStyle(fontSize: 28),
                     ),
-                    if (culture.note != null &&
-                        culture.note!.isNotEmpty) ...<Widget>[
-                      const SizedBox(height: 4),
-                      Text(
-                        culture.note!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                          color: KultivaColors.textSecondary,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          veg?.name ?? culture.vegetableId,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
-                    ],
-                  ],
-                ),
+                        const SizedBox(height: 2),
+                        Text(
+                          days == 0
+                              ? 'Démarrée aujourd\'hui'
+                              : 'Démarrée il y a $days jour${days > 1 ? "s" : ""}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
+                        if (culture.note != null &&
+                            culture.note!.isNotEmpty) ...<Widget>[
+                          const SizedBox(height: 4),
+                          Text(
+                            culture.note!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              color: KultivaColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right),
+                ],
               ),
-              const Icon(Icons.chevron_right),
+              if (veg != null) ...<Widget>[
+                if (expectedStage(veg, days) != null) ...<Widget>[
+                  const SizedBox(height: 8),
+                  _StageChip(hint: expectedStage(veg, days)!),
+                ],
+              ],
+              const SizedBox(height: 10),
+              _WateringTrack(culture: culture),
+              if (suggestWatering(culture, weather) != null) ...<Widget>[
+                const SizedBox(height: 10),
+                _AdviceBanner(
+                  advice: suggestWatering(culture, weather)!,
+                ),
+              ],
             ],
           ),
         ),
@@ -277,6 +326,29 @@ class _CultureCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            ListTile(
+              leading: const Text('💧',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Marquer arrosé aujourd\'hui'),
+              subtitle: Text(
+                culture.lastWatering == null
+                    ? 'Pas encore arrosé'
+                    : 'Dernier arrosage : il y a '
+                        '${DateTime.now().difference(culture.lastWatering!).inDays}j',
+              ),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await CultureService.instance.markWatered(culture.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Arrosage enregistré 💧'),
+                    ),
+                  );
+                }
+              },
+            ),
+            const Divider(height: 1),
             ListTile(
               leading: const Icon(Icons.check_circle_outline),
               title: const Text('Marquer terminée'),
@@ -304,6 +376,141 @@ class _CultureCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Chip décrivant l'étape phénologique attendue de la culture.
+/// Tap = expand pour afficher le détail / conseil.
+class _StageChip extends StatelessWidget {
+  final PhenologyHint hint;
+  const _StageChip({required this.hint});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _showDetail(context),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: KultivaColors.primaryGreen.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.3),
+          ),
+        ),
+        child: Row(
+          children: <Widget>[
+            Text(hint.emoji, style: const TextStyle(fontSize: 14)),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                'Étape : ${hint.label}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  color: KultivaColors.primaryGreen,
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.info_outline,
+              size: 14,
+              color: KultivaColors.primaryGreen,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDetail(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(hint.emoji,
+                      style: const TextStyle(fontSize: 28)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      hint.label,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                hint.detail,
+                style: const TextStyle(fontSize: 13, height: 1.4),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Mini-bandeau d'arrosage 14 jours sous la card de culture pleine
+/// terre. Affiche un titre + des barres + le dernier arrosage.
+class _WateringTrack extends StatelessWidget {
+  final CultureEntry culture;
+  const _WateringTrack({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    final last = culture.lastWatering;
+    final daysSince = last == null
+        ? null
+        : DateTime.now().difference(last).inDays;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            const Text('💧', style: TextStyle(fontSize: 12)),
+            const SizedBox(width: 4),
+            Text(
+              'Arrosages 14j',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              daysSince == null
+                  ? 'Jamais arrosé'
+                  : daysSince == 0
+                      ? 'Arrosé aujourd\'hui'
+                      : 'Il y a ${daysSince}j',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: daysSince != null && daysSince >= 5
+                    ? const Color(0xFFE8A87C)
+                    : KultivaColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        WateringBars(history: culture.wateringHistory()),
+      ],
     );
   }
 }
@@ -346,7 +553,8 @@ class _EmptyState extends StatelessWidget {
 
 class _EndedSection extends StatelessWidget {
   final List<CultureEntry> list;
-  const _EndedSection({required this.list});
+  final WeatherData? weather;
+  const _EndedSection({required this.list, this.weather});
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +569,124 @@ class _EndedSection extends StatelessWidget {
           title: 'Cultures terminées',
           count: list.length,
         ),
-        children: list.map((c) => _CultureCard(culture: c)).toList(),
+        children: list
+            .map((c) => _CultureCard(culture: c, weather: weather))
+            .toList(),
+      ),
+    );
+  }
+}
+
+/// CTA d'export PDF du récap de saison. Le bouton ouvre la feuille
+/// d'aperçu / impression du PDF généré par PdfService.
+class _SeasonRecapCta extends StatelessWidget {
+  Future<void> _print(BuildContext context) async {
+    final all = CultureService.instance.loadAll();
+    await PdfService.printSeasonRecap(
+      year: DateTime.now().year,
+      cultures: all,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _print(context),
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: <Color>[
+              KultivaColors.primaryGreen.withOpacity(0.18),
+              KultivaColors.springA.withOpacity(0.5),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.4),
+          ),
+        ),
+        child: Row(
+          children: <Widget>[
+            const Text('📄', style: TextStyle(fontSize: 28)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Récap saison ${DateTime.now().year}',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    'Génère un PDF avec stats, top légumes, '
+                    'familles, détail des cultures.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.picture_as_pdf,
+                color: KultivaColors.primaryGreen),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Bandeau de conseil d'arrosage produit par WateringAdvisor.
+class _AdviceBanner extends StatelessWidget {
+  final WateringAdvice advice;
+  const _AdviceBanner({required this.advice});
+
+  Color get _color {
+    switch (advice.urgency) {
+      case WateringUrgency.skip:
+        return const Color(0xFF4A9BBF);
+      case WateringUrgency.ok:
+        return KultivaColors.primaryGreen;
+      case WateringUrgency.dueSoon:
+        return const Color(0xFFE8A87C);
+      case WateringUrgency.overdue:
+      case WateringUrgency.heatwave:
+        return const Color(0xFFD4564A);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: _color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _color.withOpacity(0.4)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(advice.emoji, style: const TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              advice.message,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: _color,
+                height: 1.3,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
+import '../../models/culture_reading.dart';
 import '../../models/vegetable.dart';
+import '../../services/culture_reading_service.dart';
 import '../../services/culture_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/reading_targets.dart';
+import '../../widgets/reading_sparkline.dart';
 import '../vegetable_detail_screen.dart';
+import 'culture_reading_sheet.dart';
 import 'culture_start_sheet.dart';
+import 'hydro_builds_screen.dart';
+import 'nutrient_calculator_sheet.dart';
 
 /// Cahier de culture hydroponique : suivi sérieux des cultures sans terre,
 /// avec configuration lumière (type, heures, LED). Distinct du Poussidex.
@@ -53,6 +60,14 @@ class HydroponieScreen extends StatelessWidget {
                 const SizedBox(height: 24),
               ],
               _InfoExpansion(),
+              const SizedBox(height: 12),
+              _BuildsCta(
+                onTap: () => Navigator.of(ctx).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const HydroBuildsScreen(),
+                  ),
+                ),
+              ),
               const SizedBox(height: 12),
               _AccessoryCta(
                 onTap: () {
@@ -161,6 +176,9 @@ class _CultureCard extends StatelessWidget {
     final veg = _veg();
     final days = culture.daysSinceStarted;
     final light = culture.light;
+    final dli = light != null ? estimateDli(light) : null;
+    final dliStat = dli != null ? dliStatus(dli, culture.phase) : null;
+    final ledRec = recommendedLedDistance(culture.phase);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
@@ -221,8 +239,10 @@ class _CultureCard extends StatelessWidget {
                   const Icon(Icons.chevron_right),
                 ],
               ),
+              const SizedBox(height: 10),
+              _PhaseChip(culture: culture),
               if (light != null) ...<Widget>[
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
@@ -238,12 +258,22 @@ class _CultureCard extends StatelessWidget {
                       _InfoChip(label: '⚡  ${light.ledWatts} W'),
                     if (light.ledDistanceCm != null)
                       _InfoChip(
-                          label:
-                              '↕  ${light.ledDistanceCm!.toStringAsFixed(0)} cm'),
+                        label:
+                            '↕  ${light.ledDistanceCm!.toStringAsFixed(0)} cm '
+                            '(reco. ${ledRec.ideal.toStringAsFixed(0)})',
+                      ),
                     if (light.ledColorTemp != null)
                       _InfoChip(label: '🎨  ${light.ledColorTemp!.label}'),
+                    if (dli != null)
+                      _DliChip(dli: dli, status: dliStat!),
                   ],
                 ),
+              ],
+              const SizedBox(height: 12),
+              _ReadingsRow(cultureId: culture.id, phase: culture.phase),
+              if (culture.flushDue) ...<Widget>[
+                const SizedBox(height: 10),
+                _FlushAlert(culture: culture),
               ],
               if (culture.note != null && culture.note!.isNotEmpty) ...<Widget>[
                 const SizedBox(height: 8),
@@ -270,6 +300,69 @@ class _CultureCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            ListTile(
+              leading: const Text('🧪',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Calculer nutriments'),
+              subtitle: const Text(
+                'Doses A/B/C + Cal-Mag selon la phase et le volume.',
+              ),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor:
+                      Theme.of(context).scaffoldBackgroundColor,
+                  builder: (_) =>
+                      NutrientCalculatorSheet(culture: culture),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Text('🪣',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Marquer rinçage du réservoir'),
+              subtitle: Text(
+                culture.lastReservoirFlushAt == null
+                    ? 'Jamais rincé'
+                    : 'Dernier : il y a ${culture.daysSinceFlush}j',
+              ),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await CultureService.instance.update(
+                  culture.copyWith(
+                    lastReservoirFlushAt: DateTime.now(),
+                  ),
+                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Rinçage enregistré 🪣'),
+                    ),
+                  );
+                }
+              },
+            ),
+            ListTile(
+              leading: const Text('🦠',
+                  style: TextStyle(fontSize: 22)),
+              title: const Text('Conseils anti-algues'),
+              subtitle: const Text(
+                'Tu vois du vert sur les parois du réservoir ?',
+              ),
+              onTap: () {
+                Navigator.pop(ctx);
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor:
+                      Theme.of(context).scaffoldBackgroundColor,
+                  builder: (_) => const _AlgaeTipSheet(),
+                );
+              },
+            ),
+            const Divider(height: 1),
             ListTile(
               leading: const Icon(Icons.check_circle_outline),
               title: const Text('Marquer terminée'),
@@ -301,6 +394,124 @@ class _CultureCard extends StatelessWidget {
   }
 }
 
+/// Encart d'alerte affiché quand le rinçage du réservoir est dû.
+class _FlushAlert extends StatelessWidget {
+  final CultureEntry culture;
+  const _FlushAlert({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8A87C).withOpacity(0.18),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE8A87C)),
+      ),
+      child: Row(
+        children: <Widget>[
+          const Text('🪣', style: TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Réservoir à rincer (dernier il y a ${culture.daysSinceFlush}j)',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFFB36A3D),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              await CultureService.instance.update(
+                culture.copyWith(lastReservoirFlushAt: DateTime.now()),
+              );
+            },
+            child: const Text('Fait'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Sheet de tips si l'utilisateur signale des algues.
+class _AlgaeTipSheet extends StatelessWidget {
+  const _AlgaeTipSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    final tips = <(String, String)>[
+      ('🌑',
+          "Bloque la lumière du réservoir : gaine noire, scotch alu, "
+              "couvercle opaque. Les algues meurent sans photosynthèse."),
+      ('🧊',
+          "Maintiens la solution sous 22 °C. Plus c'est tiède, plus ça "
+              "prolifère."),
+      ('🪣',
+          "Vide, frotte avec un mélange eau + 5 % de peroxyde d'hydrogène, "
+              "rince à fond, refais une solution neuve."),
+      ('💨',
+          "Vérifie l'oxygénation : un bulleur en marche limite les biofilms "
+              "et rend l'eau plus saine pour les racines."),
+      ('🧴',
+          "En préventif : 1–2 mL/L de peroxyde 3 % à chaque remplissage "
+              "(non systématique, à doser avec parcimonie)."),
+    ];
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: const <Widget>[
+              Text('🦠', style: TextStyle(fontSize: 28)),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Anti-algues : 5 réflexes',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          for (final t in tips)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(t.$1, style: const TextStyle(fontSize: 18)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      t.$2,
+                      style: const TextStyle(fontSize: 13, height: 1.4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fermer'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _InfoChip extends StatelessWidget {
   final String label;
   const _InfoChip({required this.label});
@@ -322,6 +533,171 @@ class _InfoChip extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// Rangée des 4 mesures hydro (pH, EC, température solution, niveau
+/// réservoir). Tap = ouvre la sheet pour ajouter une nouvelle mesure.
+class _ReadingsRow extends StatelessWidget {
+  final String cultureId;
+  final GrowthPhase phase;
+  const _ReadingsRow({required this.cultureId, required this.phase});
+
+  static const _types = <ReadingType>[
+    ReadingType.ph,
+    ReadingType.ec,
+    ReadingType.waterTemp,
+    ReadingType.reservoirLevel,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.cultureReadingsVersion,
+      builder: (ctx, _, __) {
+        return Row(
+          children: <Widget>[
+            for (var i = 0; i < _types.length; i++) ...<Widget>[
+              if (i > 0) const SizedBox(width: 6),
+              Expanded(
+                child: _ReadingChip(
+                  cultureId: cultureId,
+                  type: _types[i],
+                  phase: phase,
+                ),
+              ),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ReadingChip extends StatelessWidget {
+  final String cultureId;
+  final ReadingType type;
+  final GrowthPhase phase;
+  const _ReadingChip({
+    required this.cultureId,
+    required this.type,
+    required this.phase,
+  });
+
+  Color _statusColor(ReadingStatus s) {
+    switch (s) {
+      case ReadingStatus.ok:
+        return KultivaColors.primaryGreen;
+      case ReadingStatus.warn:
+        return const Color(0xFFE8A87C);
+      case ReadingStatus.bad:
+        return const Color(0xFFD4564A);
+      case ReadingStatus.unknown:
+        return const Color(0xFF4A9BBF);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final svc = CultureReadingService.instance;
+    final latest = svc.latest(cultureId, type);
+    final recent = svc.recent(cultureId, type, days: 14);
+    final tgt = hydroTargetFor(type, phase);
+    final status = tgt?.statusFor(latest?.value) ?? ReadingStatus.unknown;
+    final color = _statusColor(status);
+    final values = recent
+        .where((r) => r.value != null)
+        .map((r) => r.value!)
+        .toList();
+
+    return InkWell(
+      onTap: () async {
+        await showModalBottomSheet<bool>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          builder: (_) => CultureReadingSheet(
+            cultureId: cultureId,
+            type: type,
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.4), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(type.emoji, style: const TextStyle(fontSize: 14)),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    _shortLabel(type),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.textPrimary.withOpacity(0.7),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            Text(
+              latest?.value == null
+                  ? '—'
+                  : _fmtValue(latest!.value!, type),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 2),
+            ReadingSparkline(values: values, color: color, height: 18),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static String _shortLabel(ReadingType t) {
+    switch (t) {
+      case ReadingType.ph:
+        return 'pH';
+      case ReadingType.ec:
+        return 'EC';
+      case ReadingType.waterTemp:
+        return 'Temp.';
+      case ReadingType.reservoirLevel:
+        return 'Niveau';
+      default:
+        return t.label;
+    }
+  }
+
+  static String _fmtValue(double v, ReadingType t) {
+    switch (t) {
+      case ReadingType.ph:
+        return v.toStringAsFixed(1);
+      case ReadingType.ec:
+        return '${v.toStringAsFixed(1)} mS';
+      case ReadingType.waterTemp:
+        return '${v.toStringAsFixed(0)}°';
+      case ReadingType.reservoirLevel:
+        return '${v.toStringAsFixed(0)}%';
+      default:
+        return v.toStringAsFixed(1);
+    }
   }
 }
 
@@ -633,6 +1009,195 @@ class _BulletSection extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Chip cliquable représentant la phase de croissance de la culture.
+/// Tap = ouvre la sheet de sélection de phase.
+class _PhaseChip extends StatelessWidget {
+  final CultureEntry culture;
+  const _PhaseChip({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => _pickPhase(context),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: KultivaColors.primaryGreen.withOpacity(0.14),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.4),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              culture.phase.emoji,
+              style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              'Phase : ${culture.phase.label}',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: KultivaColors.primaryGreen,
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.tune,
+              size: 14,
+              color: KultivaColors.primaryGreen,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickPhase(BuildContext context) async {
+    final picked = await showModalBottomSheet<GrowthPhase>(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 16, 20, 4),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Phase de croissance',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ),
+            for (final p in GrowthPhase.values)
+              ListTile(
+                leading: Text(p.emoji,
+                    style: const TextStyle(fontSize: 22)),
+                title: Text(p.label),
+                trailing: p == culture.phase
+                    ? const Icon(Icons.check,
+                        color: KultivaColors.primaryGreen)
+                    : null,
+                onTap: () => Navigator.pop(ctx, p),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (picked != null && picked != culture.phase) {
+      await CultureService.instance
+          .update(culture.copyWith(phase: picked));
+    }
+  }
+}
+
+/// Chip DLI (Daily Light Integral) calculé à partir de la config LED.
+class _DliChip extends StatelessWidget {
+  final double dli;
+  final ReadingStatus status;
+  const _DliChip({required this.dli, required this.status});
+
+  Color get _color {
+    switch (status) {
+      case ReadingStatus.ok:
+        return KultivaColors.primaryGreen;
+      case ReadingStatus.warn:
+        return const Color(0xFFE8A87C);
+      case ReadingStatus.bad:
+        return const Color(0xFFD4564A);
+      case ReadingStatus.unknown:
+        return const Color(0xFF4A9BBF);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: _color.withOpacity(0.14),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        '☀️  DLI ${dli.toStringAsFixed(0)} mol',
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w800,
+          color: _color,
+        ),
+      ),
+    );
+  }
+}
+
+/// Carte d'accès aux builds partagés par la communauté.
+class _BuildsCta extends StatelessWidget {
+  final VoidCallback onTap;
+  const _BuildsCta({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: <Color>[
+              KultivaColors.primaryGreen.withOpacity(0.18),
+              const Color(0xFF4A9BBF).withOpacity(0.18),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.4),
+            width: 1.2,
+          ),
+        ),
+        child: Row(
+          children: const <Widget>[
+            Text('🌐', style: TextStyle(fontSize: 30)),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Builds de la communauté',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    'Inspire-toi des installations qui marchent — '
+                    'ou partage la tienne.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right),
+          ],
+        ),
       ),
     );
   }

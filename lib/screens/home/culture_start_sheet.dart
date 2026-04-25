@@ -5,6 +5,7 @@ import '../../models/culture_entry.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/rotation_advisor.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
 /// Bottom sheet pour démarrer une nouvelle culture dans le cahier.
@@ -193,6 +194,12 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                   ),
                 ),
               ),
+
+              if (widget.method == CultivationMethod.soil &&
+                  _vegetableId != null) ...<Widget>[
+                const SizedBox(height: 12),
+                _RotationWarningBanner(vegetableId: _vegetableId!),
+              ],
 
               const SizedBox(height: 16),
 
@@ -400,6 +407,56 @@ class _FieldLabel extends StatelessWidget {
         fontSize: 13,
         fontWeight: FontWeight.w700,
         color: KultivaColors.textPrimary,
+      ),
+    );
+  }
+}
+
+class _RotationWarningBanner extends StatelessWidget {
+  final String vegetableId;
+  const _RotationWarningBanner({required this.vegetableId});
+
+  @override
+  Widget build(BuildContext context) {
+    final all = CultureService.instance.loadAll();
+    final warning = checkRotation(
+      vegetableId: vegetableId,
+      previousCultures: all,
+    );
+    if (warning == null) return const SizedBox.shrink();
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8A87C).withOpacity(0.18),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE8A87C)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text('🔄', style: TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  'Rotation : attention',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFFB36A3D),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  warning.message,
+                  style: const TextStyle(fontSize: 12, height: 1.3),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

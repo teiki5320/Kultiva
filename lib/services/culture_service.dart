@@ -90,6 +90,19 @@ class CultureService {
     await _persist(list);
   }
 
+  /// Enregistre un arrosage à [at] (ou maintenant) pour une culture
+  /// pleine terre. No-op si la culture n'existe pas ou est en hydro.
+  Future<void> markWatered(String id, {DateTime? at}) async {
+    final list = loadAll();
+    final i = list.indexWhere((c) => c.id == id);
+    if (i == -1) return;
+    final updated = list[i].copyWith(
+      wateredAt: <DateTime>[...list[i].wateredAt, at ?? DateTime.now()],
+    );
+    list[i] = updated;
+    await _persist(list);
+  }
+
   Future<void> _persist(List<CultureEntry> list) async {
     await PrefsService.instance.setCulturesJson(CultureEntry.encodeAll(list));
   }
