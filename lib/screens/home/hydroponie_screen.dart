@@ -13,6 +13,7 @@ import '../../widgets/reading_sparkline.dart';
 import '../vegetable_detail_screen.dart';
 import 'culture_reading_sheet.dart';
 import 'culture_start_sheet.dart';
+import 'hydro_builds_screen.dart';
 import 'nutrient_calculator_sheet.dart';
 
 /// Cahier de culture hydroponique : suivi sérieux des cultures sans terre,
@@ -59,6 +60,14 @@ class HydroponieScreen extends StatelessWidget {
                 const SizedBox(height: 24),
               ],
               _InfoExpansion(),
+              const SizedBox(height: 12),
+              _BuildsCta(
+                onTap: () => Navigator.of(ctx).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const HydroBuildsScreen(),
+                  ),
+                ),
+              ),
               const SizedBox(height: 12),
               _AccessoryCta(
                 onTap: () {
@@ -1128,6 +1137,66 @@ class _DliChip extends StatelessWidget {
           fontSize: 11,
           fontWeight: FontWeight.w800,
           color: _color,
+        ),
+      ),
+    );
+  }
+}
+
+/// Carte d'accès aux builds partagés par la communauté.
+class _BuildsCta extends StatelessWidget {
+  final VoidCallback onTap;
+  const _BuildsCta({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: <Color>[
+              KultivaColors.primaryGreen.withOpacity(0.18),
+              const Color(0xFF4A9BBF).withOpacity(0.18),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: KultivaColors.primaryGreen.withOpacity(0.4),
+            width: 1.2,
+          ),
+        ),
+        child: Row(
+          children: const <Widget>[
+            Text('🌐', style: TextStyle(fontSize: 30)),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Builds de la communauté',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    'Inspire-toi des installations qui marchent — '
+                    'ou partage la tienne.',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right),
+          ],
         ),
       ),
     );
