@@ -365,4 +365,20 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'pois_chiche', sowingMonths: [4, 5], harvestMonths: [8, 9],
     regionalNote: "Aime la chaleur — meilleurs résultats au sud de la Loire.",
   ),
+
+  // ── Nouveautés vague 1 batch 6 ──
+  RegionData(regionId: 'france', vegetableId: 'pois_mange_tout', sowingMonths: [2, 3, 4, 8, 9], harvestMonths: [5, 6, 7, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'haricot_beurre', sowingMonths: [5, 6, 7], harvestMonths: [7, 8, 9, 10]),
+  RegionData(
+    regionId: 'france', vegetableId: 'framboisier', sowingMonths: [10, 11, 2, 3], harvestMonths: [6, 7, 9, 10],
+    regionalNote: "Plantation à l'automne ou en fin d'hiver. Récolte d'été pour les variétés non-remontantes, été + automne pour les remontantes.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'cassissier', sowingMonths: [10, 11, 2, 3], harvestMonths: [7],
+    regionalNote: "Plantation à l'automne ou en fin d'hiver. Production à partir de la 2e année.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'groseillier', sowingMonths: [10, 11, 2, 3], harvestMonths: [6, 7],
+    regionalNote: "Plantation à l'automne ou en fin d'hiver. Très rustique.",
+  ),
 ];

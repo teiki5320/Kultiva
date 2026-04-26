@@ -2020,6 +2020,139 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Pois mange-tout
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pois_mange_tout',
+    name: 'Pois mange-tout',
+    emoji: '🫛',
+    category: VegetableCategory.seeds,
+    description:
+        "Pois à cosse tendre qu'on mange en entier, sans écosser. Croquant et sucré, parfait au wok ou cru à la croque.",
+    note: "Récolter jeune avant que les graines ne grossissent dans la cosse.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "3 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "5 × 40 cm",
+    watering: "Régulier en floraison",
+    soil: "Frais, drainé, peu fumé",
+    yieldEstimate: "1,5 à 2,5 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pois+mange+tout&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "60 à 75 jours",
+      'summer': "55 à 70 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Haricot beurre
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'haricot_beurre',
+    name: 'Haricot beurre',
+    emoji: '🫛',
+    category: VegetableCategory.seeds,
+    description:
+        "Haricot à gousses jaune doré, à la chair fondante et au goût doux. Productif et facile, idéal pour débuter.",
+    note: "Récolter régulièrement pour stimuler la production.",
+    sowingTechnique: "Semis direct après les gelées, en poquets",
+    sowingDepth: "3 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "10 × 40 cm",
+    watering: "Régulier, surtout en floraison",
+    soil: "Frais, drainé, peu fumé",
+    yieldEstimate: "1,5 à 3 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+haricot+beurre&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "60 à 75 jours",
+      'summer': "50 à 65 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Framboisier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'framboisier',
+    name: 'Framboisier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Petit fruit rouge parfumé sur arbuste vivace. Variétés remontantes (deux récoltes) ou non remontantes (une grosse récolte en juin).",
+    note: "Pailler généreusement et tailler chaque hiver pour rester productif.",
+    sowingTechnique: "Plantation de plants ou drageons",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "50 × 200 cm (en haie)",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, légèrement acide",
+    yieldEstimate: "1 à 2 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+framboisier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juin-juillet",
+      'autumn': "Récolte des remontants en septembre-octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cassissier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cassissier',
+    name: 'Cassissier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbuste fruitier à baies noires acidulées, riches en vitamine C. Idéal pour confitures, gelées et liqueurs (la fameuse crème de cassis).",
+    note: "Tailler en hiver pour renouveler les rameaux productifs.",
+    sowingTechnique: "Plantation de plant ou bouturage en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "150 × 200 cm",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "2 à 4 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+cassissier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juillet",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Groseillier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'groseillier',
+    name: 'Groseillier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbuste à grappes de baies rouges ou blanches, acidulées et juteuses. Parfait en gelée ou pour les desserts d'été.",
+    note: "Très rustique, supporte les climats froids et la mi-ombre.",
+    sowingTechnique: "Plantation de plant ou bouturage en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "120 × 150 cm",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "2 à 4 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+groseillier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juin-juillet",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
