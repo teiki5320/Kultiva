@@ -1339,6 +1339,142 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "300 à 600 g/m² (grains)",
     amazonUrl: "https://www.amazon.fr/s?k=graines+sorgho&tag=kultiva-21",
   ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cornichon
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cornichon',
+    name: 'Cornichon',
+    emoji: '🥒',
+    category: VegetableCategory.fruits,
+    description:
+        "Petit concombre récolté jeune, parfait pour les conserves au vinaigre. Plante prolifique, croissance rapide en plein soleil.",
+    note: "Récolte tous les 2 jours pour des cornichons fermes.",
+    sowingTechnique: "Semis en godet sous abri ou semis direct après les gelées",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "18 à 25 °C",
+    germinationDays: "7 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "60 × 100 cm",
+    watering: "Régulier, au pied, sans mouiller le feuillage",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "2 à 4 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cornichon&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '60 à 75 jours',
+      'summer': '50 à 65 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Panais
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'panais',
+    name: 'Panais',
+    emoji: '🥕',
+    category: VegetableCategory.roots,
+    description:
+        "Racine blanche au goût sucré et anisé, proche de la carotte. Très rustique, supporte les gelées qui adoucissent sa chair.",
+    note: "Semer dès mars en sol meuble — germination lente (3 à 4 semaines).",
+    sowingTechnique: "Semis direct en ligne, graines fraîches",
+    sowingDepth: "1 cm",
+    germinationTemp: "10 à 15 °C",
+    germinationDays: "20 à 30 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "10 × 30 cm",
+    watering: "Régulier, sans excès",
+    soil: "Profond, meuble, sans cailloux",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+panais&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '150 à 180 jours',
+      'autumn': '120 à 150 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Rutabaga
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'rutabaga',
+    name: 'Rutabaga',
+    emoji: '🥔',
+    category: VegetableCategory.roots,
+    description:
+        "Racine généreuse à chair jaune, croisement entre chou et navet. Goût doux, parfait pour potages et purées d'hiver.",
+    note: "Légume rustique, idéal pour la conservation en cave.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "1 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "20 × 40 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Frais, profond, riche en humus",
+    yieldEstimate: "3 à 5 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+rutabaga&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '100 à 130 jours',
+      'autumn': '90 à 110 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Topinambour
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'topinambour',
+    name: 'Topinambour',
+    emoji: '🥔',
+    category: VegetableCategory.tubers,
+    description:
+        "Tubercule rustique à saveur d'artichaut. Plante vivace géante de 2 à 3 m, productive et increvable, mais peut devenir envahissante.",
+    note: "Une fois planté, revient chaque année — choisir l'emplacement avec soin.",
+    sowingTechnique: "Plantation de tubercules au printemps",
+    sowingDepth: "8 à 10 cm",
+    germinationTemp: "10 à 15 °C",
+    germinationDays: "20 à 30 jours (levée)",
+    exposure: "Soleil",
+    spacing: "40 × 80 cm",
+    watering: "Faible, plante très rustique",
+    soil: "Tout type, même pauvre",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=tubercules+topinambour&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': '180 à 210 jours',
+      'winter': '200 à 240 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Salsifis
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'salsifis',
+    name: 'Salsifis',
+    emoji: '🌱',
+    category: VegetableCategory.roots,
+    description:
+        "Racine longue et fine au goût d'huître ou d'asperge. Légume oublié à redécouvrir, riche en inuline et fibres.",
+    note: "Semer en place dès avril — repiquage difficile.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "1,5 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "10 à 20 jours",
+    exposure: "Soleil",
+    spacing: "10 × 30 cm",
+    watering: "Régulier, sans excès",
+    soil: "Meuble, profond, sans cailloux",
+    yieldEstimate: "2 à 3 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+salsifis&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': '120 à 150 jours',
+      'winter': '150 à 180 jours',
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

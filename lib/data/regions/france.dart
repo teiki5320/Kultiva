@@ -303,4 +303,11 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'sorgho', sowingMonths: [5, 6], harvestMonths: [9, 10],
     regionalNote: "Culture rare en France métropolitaine — possible dans le sud en sol chaud et sec.",
   ),
+
+  // ── Nouveautés vague 1 ──
+  RegionData(regionId: 'france', vegetableId: 'cornichon', sowingMonths: [4, 5, 6], harvestMonths: [7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'panais', sowingMonths: [3, 4, 5, 6], harvestMonths: [9, 10, 11, 12, 1, 2]),
+  RegionData(regionId: 'france', vegetableId: 'rutabaga', sowingMonths: [5, 6, 7], harvestMonths: [10, 11, 12]),
+  RegionData(regionId: 'france', vegetableId: 'topinambour', sowingMonths: [2, 3, 4], harvestMonths: [10, 11, 12, 1, 2]),
+  RegionData(regionId: 'france', vegetableId: 'salsifis', sowingMonths: [4, 5, 6], harvestMonths: [10, 11, 12, 1, 2]),
 ];
