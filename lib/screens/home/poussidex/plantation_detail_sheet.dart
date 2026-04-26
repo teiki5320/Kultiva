@@ -98,7 +98,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                     border: Border.all(color: cc, width: 3),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: cc.withOpacity(0.25),
+                        color: cc.withValues(alpha: 0.25),
                         blurRadius: 16,
                         offset: const Offset(0, 6),
                       ),
@@ -113,9 +113,9 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                         height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: cc.withOpacity(0.18),
+                          color: cc.withValues(alpha: 0.18),
                           border: Border.all(
-                              color: cc.withOpacity(0.5), width: 2),
+                              color: cc.withValues(alpha: 0.5), width: 2),
                         ),
                         alignment: Alignment.center,
                         child: Text(v.emoji,
@@ -163,7 +163,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                 child: LinearProgressIndicator(
                   value: p.isActive ? progress : 1.0,
                   minHeight: 8,
-                  backgroundColor: cc.withOpacity(0.12),
+                  backgroundColor: cc.withValues(alpha: 0.12),
                   valueColor: AlwaysStoppedAnimation<Color>(cc),
                 ),
               ),
@@ -576,7 +576,7 @@ class _PhotoThumb extends StatelessWidget {
                 width: 22,
                 height: 22,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withValues(alpha: 0.5),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.close,

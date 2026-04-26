@@ -541,8 +541,8 @@ class _CreaturePainter extends CustomPainter {
     final paint = Paint()
       ..shader = RadialGradient(
         colors: <Color>[
-          Colors.black.withOpacity(0.25),
-          Colors.black.withOpacity(0.0),
+          Colors.black.withValues(alpha: 0.25),
+          Colors.black.withValues(alpha: 0.0),
         ],
       ).createShader(shadowRect);
     canvas.drawOval(shadowRect, paint);
@@ -587,8 +587,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.45),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.45),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(hlRect),
     );
@@ -884,8 +884,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.55),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.55),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(highlightRect),
     );
@@ -1029,8 +1029,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.55),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.55),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(hlRect),
     );
@@ -1158,8 +1158,8 @@ class _CreaturePainter extends CustomPainter {
         Paint()
           ..shader = RadialGradient(
             colors: <Color>[
-              const Color(0xFFA8E8A8).withOpacity(0.5),
-              const Color(0xFFA8E8A8).withOpacity(0.0),
+              const Color(0xFFA8E8A8).withValues(alpha: 0.5),
+              const Color(0xFFA8E8A8).withValues(alpha: 0.0),
             ],
           ).createShader(rect),
       );
@@ -1176,8 +1176,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.35),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.35),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(hlRect),
     );
@@ -1303,8 +1303,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.55),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.55),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(hlRect),
     );
@@ -1402,8 +1402,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.35),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.35),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(hlRect),
     );
@@ -1492,8 +1492,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            Colors.white.withOpacity(0.35),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withValues(alpha: 0.35),
+            Colors.white.withValues(alpha: 0.0),
           ],
         ).createShader(hlRect),
     );
@@ -1542,9 +1542,9 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            const Color(0xFFFFE8A0).withOpacity(0.55),
-            const Color(0xFFFFE8A0).withOpacity(0.12),
-            const Color(0xFFFFE8A0).withOpacity(0.0),
+            const Color(0xFFFFE8A0).withValues(alpha: 0.55),
+            const Color(0xFFFFE8A0).withValues(alpha: 0.12),
+            const Color(0xFFFFE8A0).withValues(alpha: 0.0),
           ],
           stops: const <double>[0.0, 0.5, 1.0],
         ).createShader(auraRect),
@@ -1704,7 +1704,7 @@ class _CreaturePainter extends CustomPainter {
       anchor,
       tip,
       Paint()
-        ..color = const Color(0xFF3E7A48).withOpacity(0.5)
+        ..color = const Color(0xFF3E7A48).withValues(alpha: 0.5)
         ..strokeWidth = size.width * 0.005
         ..strokeCap = StrokeCap.round,
     );
@@ -1761,7 +1761,7 @@ class _CreaturePainter extends CustomPainter {
       canvas.drawCircle(
         center.translate(size.width * 0.014, size.height * 0.010),
         size.width * 0.006,
-        Paint()..color = Colors.white.withOpacity(0.7),
+        Paint()..color = Colors.white.withValues(alpha: 0.7),
       );
     }
   }
@@ -1777,8 +1777,8 @@ class _CreaturePainter extends CustomPainter {
       Paint()
         ..shader = RadialGradient(
           colors: <Color>[
-            const Color(0xFFFFB8C8).withOpacity(0.75),
-            const Color(0xFFFFB8C8).withOpacity(0.0),
+            const Color(0xFFFFB8C8).withValues(alpha: 0.75),
+            const Color(0xFFFFB8C8).withValues(alpha: 0.0),
           ],
         ).createShader(rect),
     );

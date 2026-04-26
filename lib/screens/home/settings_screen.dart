@@ -229,7 +229,7 @@ class SettingsScreen extends StatelessWidget {
                           ListTile(
                             leading: CircleAvatar(
                               backgroundColor:
-                                  KultivaColors.lightGreen.withOpacity(0.4),
+                                  KultivaColors.lightGreen.withValues(alpha: 0.4),
                               child: const Text('🌱'),
                             ),
                             title: Text(

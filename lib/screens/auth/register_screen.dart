@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: KultivaColors.lightGreen.withOpacity(0.4),
+                  color: KultivaColors.lightGreen.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 alignment: Alignment.center,

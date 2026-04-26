@@ -147,10 +147,10 @@ class _PodiumSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.25), width: 1.5),
+        border: Border.all(color: color.withValues(alpha: 0.25), width: 1.5),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: color.withOpacity(0.08),
+            color: color.withValues(alpha: 0.08),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -167,8 +167,8 @@ class _PodiumSection extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: <Color>[
-                  color.withOpacity(0.10),
-                  color.withOpacity(0.18),
+                  color.withValues(alpha: 0.10),
+                  color.withValues(alpha: 0.18),
                 ],
               ),
               borderRadius: const BorderRadius.only(
@@ -332,11 +332,11 @@ class _PodiumStep extends StatelessWidget {
                 height: emojiSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: veg.category.familyColor.withOpacity(0.18),
+                  color: veg.category.familyColor.withValues(alpha: 0.18),
                   border: Border.all(color: stepColor, width: 3),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: stepColor.withOpacity(rank == 1 ? 0.55 : 0.3),
+                      color: stepColor.withValues(alpha: rank == 1 ? 0.55 : 0.3),
                       blurRadius: rank == 1 ? 14 : 8,
                       spreadRadius: rank == 1 ? 1 : 0,
                     ),
@@ -369,7 +369,7 @@ class _PodiumStep extends StatelessWidget {
                     color: Colors.white,
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.18),
+                        color: Colors.black.withValues(alpha: 0.18),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -417,7 +417,7 @@ class _PodiumStep extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: <Color>[
                 stepColor,
-                stepColor.withOpacity(0.75),
+                stepColor.withValues(alpha: 0.75),
               ],
             ),
             borderRadius: const BorderRadius.only(
@@ -426,7 +426,7 @@ class _PodiumStep extends StatelessWidget {
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),

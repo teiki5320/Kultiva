@@ -341,7 +341,7 @@ class _HeaderCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: tier.color.withOpacity(0.12),
+                    color: tier.color.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: tier.color, width: 1.2),
                   ),
@@ -374,8 +374,8 @@ class _HeaderCard extends StatelessWidget {
                   label: 'Comparer',
                   sublabel: 'Prix en ligne',
                   gradientColors: [
-                    KultivaColors.primaryGreen.withOpacity(0.22),
-                    KultivaColors.springA.withOpacity(0.4),
+                    KultivaColors.primaryGreen.withValues(alpha: 0.22),
+                    KultivaColors.springA.withValues(alpha: 0.4),
                   ],
                   foreground: KultivaColors.primaryGreen,
                   tooltip: 'Comparateur de prix Kultiva',
@@ -393,8 +393,8 @@ class _HeaderCard extends StatelessWidget {
                     label: 'Acheter',
                     sublabel: 'Lien partenaire',
                     gradientColors: [
-                      KultivaColors.terracotta.withOpacity(0.28),
-                      KultivaColors.summerA.withOpacity(0.4),
+                      KultivaColors.terracotta.withValues(alpha: 0.28),
+                      KultivaColors.summerA.withValues(alpha: 0.4),
                     ],
                     foreground: KultivaColors.terracotta,
                     tooltip: 'Lien partenaire Amazon — Kultiva touche '
@@ -465,7 +465,7 @@ class _MonthsCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: active
                                 ? color
-                                : color.withOpacity(0.12),
+                                : color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -602,7 +602,7 @@ class _HarvestTimeSection extends StatelessWidget {
                         width: 32,
                         height: 32,
                         decoration: BoxDecoration(
-                          color: e.value.color.withOpacity(0.2),
+                          color: e.value.color.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
@@ -858,7 +858,7 @@ class _RegionalNoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: KultivaColors.summerA.withOpacity(0.35),
+      color: KultivaColors.summerA.withValues(alpha: 0.35),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -929,7 +929,7 @@ class _MiniActionBlock extends StatelessWidget {
             borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
-                color: foreground.withOpacity(0.22),
+                color: foreground.withValues(alpha: 0.22),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -954,7 +954,7 @@ class _MiniActionBlock extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 7.5,
                   fontWeight: FontWeight.w500,
-                  color: foreground.withOpacity(0.7),
+                  color: foreground.withValues(alpha: 0.7),
                   fontStyle: FontStyle.italic,
                 ),
               ),

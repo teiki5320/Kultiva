@@ -60,7 +60,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final pill = Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.35),
+        color: Colors.black.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -188,7 +188,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.25),
+                        color: Colors.black.withValues(alpha: 0.25),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.arrow_back,
@@ -205,7 +205,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.25),
+                        color: Colors.black.withValues(alpha: 0.25),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.refresh,
@@ -280,7 +280,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                                 color: active
                                     ? KultivaColors.primaryGreen
                                     : KultivaColors.lightGreen
-                                        .withOpacity(0.4),
+                                        .withValues(alpha: 0.4),
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             );
@@ -345,7 +345,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
-              color: KultivaColors.lightGreen.withOpacity(0.15),
+              color: KultivaColors.lightGreen.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -366,7 +366,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFF4FC3F7).withOpacity(0.15),
+              color: const Color(0xFF4FC3F7).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -385,12 +385,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
-                KultivaColors.summerA.withOpacity(0.3),
-                KultivaColors.terracotta.withOpacity(0.15),
+                KultivaColors.summerA.withValues(alpha: 0.3),
+                KultivaColors.terracotta.withValues(alpha: 0.15),
               ]),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: KultivaColors.terracotta.withOpacity(0.2),
+                color: KultivaColors.terracotta.withValues(alpha: 0.2),
               ),
             ),
             child: Column(
@@ -401,7 +401,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
-                      color: KultivaColors.terracotta.withOpacity(0.8),
+                      color: KultivaColors.terracotta.withValues(alpha: 0.8),
                     )),
                 const SizedBox(height: 6),
                 Text(advice,

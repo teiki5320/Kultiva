@@ -70,7 +70,7 @@ class _BadgeTile extends StatelessWidget {
           : null,
       child: Container(
         decoration: BoxDecoration(
-          color: c.withOpacity(unlocked ? 0.12 : 0.06),
+          color: c.withValues(alpha: unlocked ? 0.12 : 0.06),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: c,
@@ -79,7 +79,7 @@ class _BadgeTile extends StatelessWidget {
           boxShadow: unlocked
               ? <BoxShadow>[
                   BoxShadow(
-                    color: base.withOpacity(0.3),
+                    color: base.withValues(alpha: 0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -147,7 +147,7 @@ class _BadgeTile extends StatelessWidget {
                     border: Border.all(color: c, width: 1.5),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: c.withOpacity(0.3),
+                        color: c.withValues(alpha: 0.3),
                         blurRadius: 4,
                       ),
                     ],

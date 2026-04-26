@@ -73,8 +73,8 @@ class SeasonHeader extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: <Color>[
-                    Colors.white.withOpacity(0.0),
-                    Colors.black.withOpacity(0.25),
+                    Colors.white.withValues(alpha: 0.0),
+                    Colors.black.withValues(alpha: 0.25),
                   ],
                 ),
               ),

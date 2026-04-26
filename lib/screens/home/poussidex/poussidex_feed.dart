@@ -178,7 +178,7 @@ class _FeedPostCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -198,7 +198,7 @@ class _FeedPostCard extends StatelessWidget {
                   height: 36,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: KultivaColors.primaryGreen.withOpacity(0.2),
+                    color: KultivaColors.primaryGreen.withValues(alpha: 0.2),
                   ),
                   alignment: Alignment.center,
                   child: Text(

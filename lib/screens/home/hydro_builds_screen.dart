@@ -202,10 +202,10 @@ class _BuildCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: KultivaColors.winterA.withOpacity(0.45),
+        color: KultivaColors.winterA.withValues(alpha: 0.45),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFF4A9BBF).withOpacity(0.3),
+          color: const Color(0xFF4A9BBF).withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -270,7 +270,7 @@ class _BuildCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF4A9BBF).withOpacity(0.14),
+                        color: const Color(0xFF4A9BBF).withValues(alpha: 0.14),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(

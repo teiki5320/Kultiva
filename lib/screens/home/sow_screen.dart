@@ -192,7 +192,7 @@ class _SowScreenState extends State<SowScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.25),
+                          color: Colors.black.withValues(alpha: 0.25),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.settings,
@@ -214,7 +214,7 @@ class _SowScreenState extends State<SowScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
@@ -433,7 +433,7 @@ class _SowScreenState extends State<SowScreen> {
                     decoration: BoxDecoration(
                       color: active
                           ? KultivaColors.primaryGreen
-                          : KultivaColors.lightGreen.withOpacity(0.5),
+                          : KultivaColors.lightGreen.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(4),
                     ),
                   );
@@ -490,7 +490,7 @@ class _KawaiiCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
-              color: gradientColors.last.withOpacity(0.35),
+              color: gradientColors.last.withValues(alpha: 0.35),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -502,17 +502,17 @@ class _KawaiiCard extends StatelessWidget {
             Positioned(
               top: -8,
               right: -8,
-              child: _Bubble(size: 40, color: bubbleColor.withOpacity(0.15)),
+              child: _Bubble(size: 40, color: bubbleColor.withValues(alpha: 0.15)),
             ),
             Positioned(
               bottom: 10,
               right: 12,
-              child: _Bubble(size: 24, color: bubbleColor.withOpacity(0.12)),
+              child: _Bubble(size: 24, color: bubbleColor.withValues(alpha: 0.12)),
             ),
             Positioned(
               top: 20,
               right: 30,
-              child: _Bubble(size: 14, color: bubbleColor.withOpacity(0.10)),
+              child: _Bubble(size: 14, color: bubbleColor.withValues(alpha: 0.10)),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -523,11 +523,11 @@ class _KawaiiCard extends StatelessWidget {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: bubbleColor.withOpacity(0.15),
+                          color: bubbleColor.withValues(alpha: 0.15),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -547,7 +547,7 @@ class _KawaiiCard extends StatelessWidget {
                   Text(
                     label,
                     style: TextStyle(
-                      color: KultivaColors.textPrimary.withOpacity(0.9),
+                      color: KultivaColors.textPrimary.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
                     ),
@@ -556,7 +556,7 @@ class _KawaiiCard extends StatelessWidget {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      color: KultivaColors.textPrimary.withOpacity(0.55),
+                      color: KultivaColors.textPrimary.withValues(alpha: 0.55),
                       fontWeight: FontWeight.w600,
                       fontSize: 11,
                     ),
@@ -616,7 +616,7 @@ class _SlideBase extends StatelessWidget {
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: gradientColors.last.withOpacity(0.25),
+            color: gradientColors.last.withValues(alpha: 0.25),
             blurRadius: 14,
             offset: const Offset(0, 6),
           ),
@@ -629,22 +629,22 @@ class _SlideBase extends StatelessWidget {
           Positioned(
             top: -12,
             right: -12,
-            child: _Bubble(size: 50, color: bubbleColor.withOpacity(0.12)),
+            child: _Bubble(size: 50, color: bubbleColor.withValues(alpha: 0.12)),
           ),
           Positioned(
             bottom: 14,
             right: 20,
-            child: _Bubble(size: 28, color: bubbleColor.withOpacity(0.10)),
+            child: _Bubble(size: 28, color: bubbleColor.withValues(alpha: 0.10)),
           ),
           Positioned(
             top: 30,
             right: 50,
-            child: _Bubble(size: 16, color: bubbleColor.withOpacity(0.08)),
+            child: _Bubble(size: 16, color: bubbleColor.withValues(alpha: 0.08)),
           ),
           Positioned(
             bottom: 40,
             left: -10,
-            child: _Bubble(size: 32, color: bubbleColor.withOpacity(0.06)),
+            child: _Bubble(size: 32, color: bubbleColor.withValues(alpha: 0.06)),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -665,8 +665,8 @@ class _SlideVegOfDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SlideBase(
       gradientColors: [
-        KultivaColors.lightGreen.withOpacity(0.35),
-        KultivaColors.springA.withOpacity(0.45),
+        KultivaColors.lightGreen.withValues(alpha: 0.35),
+        KultivaColors.springA.withValues(alpha: 0.45),
       ],
       bubbleColor: KultivaColors.primaryGreen,
       child: Row(
@@ -675,11 +675,11 @@ class _SlideVegOfDay extends StatelessWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.75),
+              color: Colors.white.withValues(alpha: 0.75),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: KultivaColors.primaryGreen.withOpacity(0.12),
+                  color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
                   blurRadius: 10,
                   offset: const Offset(0, 3),
                 ),
@@ -698,7 +698,7 @@ class _SlideVegOfDay extends StatelessWidget {
                 Text(
                   '✨ Légume du jour',
                   style: TextStyle(
-                    color: KultivaColors.primaryGreen.withOpacity(0.7),
+                    color: KultivaColors.primaryGreen.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
                     letterSpacing: 0.5,
@@ -717,7 +717,7 @@ class _SlideVegOfDay extends StatelessWidget {
                   Text(
                     vegetable.note!,
                     style: TextStyle(
-                      color: KultivaColors.textPrimary.withOpacity(0.55),
+                      color: KultivaColors.textPrimary.withValues(alpha: 0.55),
                       fontSize: 12,
                       height: 1.3,
                     ),
@@ -744,7 +744,7 @@ class _SlideWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SlideBase(
       gradientColors: [
-        KultivaColors.winterA.withOpacity(0.5),
+        KultivaColors.winterA.withValues(alpha: 0.5),
         const Color(0xFFD6ECFA),
       ],
       bubbleColor: const Color(0xFF7BAFD4),
@@ -755,7 +755,7 @@ class _SlideWeather extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.75),
+                    color: Colors.white.withValues(alpha: 0.75),
                     shape: BoxShape.circle,
                   ),
                   alignment: Alignment.center,
@@ -771,7 +771,7 @@ class _SlideWeather extends StatelessWidget {
                       Text(
                         '🌤 Météo du jour',
                         style: TextStyle(
-                          color: const Color(0xFF5A8FB8).withOpacity(0.8),
+                          color: const Color(0xFF5A8FB8).withValues(alpha: 0.8),
                           fontWeight: FontWeight.w700,
                           fontSize: 11,
                           letterSpacing: 0.5,
@@ -791,7 +791,7 @@ class _SlideWeather extends StatelessWidget {
                             ? '${weather!.rainNext3Days.toStringAsFixed(1)} mm de pluie prévus sous 3 jours'
                             : 'Pas de pluie prévue sur 3 jours',
                         style: TextStyle(
-                          color: KultivaColors.textPrimary.withOpacity(0.55),
+                          color: KultivaColors.textPrimary.withValues(alpha: 0.55),
                           fontSize: 12,
                           height: 1.3,
                         ),
@@ -811,14 +811,14 @@ class _SlideWeather extends StatelessWidget {
                           height: 24,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.5,
-                            color: const Color(0xFF7BAFD4).withOpacity(0.6),
+                            color: const Color(0xFF7BAFD4).withValues(alpha: 0.6),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Text(
                           'Chargement météo...',
                           style: TextStyle(
-                            color: KultivaColors.textPrimary.withOpacity(0.5),
+                            color: KultivaColors.textPrimary.withValues(alpha: 0.5),
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                           ),
@@ -829,7 +829,7 @@ class _SlideWeather extends StatelessWidget {
                       'Météo indisponible\nActive la localisation pour les prévisions',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: KultivaColors.textPrimary.withOpacity(0.5),
+                        color: KultivaColors.textPrimary.withValues(alpha: 0.5),
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                         height: 1.4,
@@ -849,8 +849,8 @@ class _SlideTip extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SlideBase(
       gradientColors: [
-        KultivaColors.summerA.withOpacity(0.35),
-        KultivaColors.terracotta.withOpacity(0.2),
+        KultivaColors.summerA.withValues(alpha: 0.35),
+        KultivaColors.terracotta.withValues(alpha: 0.2),
       ],
       bubbleColor: KultivaColors.terracotta,
       child: Row(
@@ -859,7 +859,7 @@ class _SlideTip extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -874,7 +874,7 @@ class _SlideTip extends StatelessWidget {
                 Text(
                   'Conseil du jour',
                   style: TextStyle(
-                    color: KultivaColors.terracotta.withOpacity(0.8),
+                    color: KultivaColors.terracotta.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
                     letterSpacing: 0.5,
@@ -930,8 +930,8 @@ class _SlideSeason extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SlideBase(
       gradientColors: [
-        KultivaColors.autumnA.withOpacity(0.35),
-        KultivaColors.springB.withOpacity(0.3),
+        KultivaColors.autumnA.withValues(alpha: 0.35),
+        KultivaColors.springB.withValues(alpha: 0.3),
       ],
       bubbleColor: KultivaColors.primaryGreen,
       child: Row(
@@ -940,7 +940,7 @@ class _SlideSeason extends StatelessWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -955,7 +955,7 @@ class _SlideSeason extends StatelessWidget {
                 Text(
                   '${season.emoji} ${season.label}',
                   style: TextStyle(
-                    color: KultivaColors.primaryGreen.withOpacity(0.7),
+                    color: KultivaColors.primaryGreen.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
                     letterSpacing: 0.5,
@@ -973,7 +973,7 @@ class _SlideSeason extends StatelessWidget {
                 Text(
                   '🌱 $sowCount à semer  ·  🧺 $harvestCount à récolter',
                   style: TextStyle(
-                    color: KultivaColors.textPrimary.withOpacity(0.55),
+                    color: KultivaColors.textPrimary.withValues(alpha: 0.55),
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),

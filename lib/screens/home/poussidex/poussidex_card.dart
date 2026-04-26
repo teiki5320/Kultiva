@@ -87,10 +87,10 @@ class PlantationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: cc.withOpacity(0.7), width: 2),
+        border: Border.all(color: cc.withValues(alpha: 0.7), width: 2),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: cc.withOpacity(0.15),
+            color: cc.withValues(alpha: 0.15),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -156,7 +156,7 @@ class PlantationCard extends StatelessWidget {
               Text(
                 plantedLabel,
                 style: TextStyle(
-                  color: KultivaColors.textSecondary.withOpacity(0.7),
+                  color: KultivaColors.textSecondary.withValues(alpha: 0.7),
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                 ),
@@ -169,7 +169,7 @@ class PlantationCard extends StatelessWidget {
             child: LinearProgressIndicator(
               value: plantation.isActive ? progress : 1.0,
               minHeight: 5,
-              backgroundColor: cc.withOpacity(0.12),
+              backgroundColor: cc.withValues(alpha: 0.12),
               valueColor: AlwaysStoppedAnimation<Color>(cc),
             ),
           ),
@@ -236,7 +236,7 @@ class _PhotoWithTier extends StatelessWidget {
         boxShadow: tier == MedalTier.gold
             ? <BoxShadow>[
                 BoxShadow(
-                  color: ring.withOpacity(0.35),
+                  color: ring.withValues(alpha: 0.35),
                   blurRadius: 10,
                   spreadRadius: 1,
                 ),
@@ -244,7 +244,7 @@ class _PhotoWithTier extends StatelessWidget {
             : tier == MedalTier.shiny
                 ? <BoxShadow>[
                     BoxShadow(
-                      color: const Color(0xFFFF5CA8).withOpacity(0.4),
+                      color: const Color(0xFFFF5CA8).withValues(alpha: 0.4),
                       blurRadius: 12,
                       spreadRadius: 1,
                     ),
@@ -277,7 +277,7 @@ class _PhotoWithTier extends StatelessWidget {
                 color: Colors.white,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),

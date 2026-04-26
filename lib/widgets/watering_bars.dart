@@ -31,7 +31,7 @@ class WateringBars extends StatelessWidget {
               child: Container(
                 height: history[i] ? height : height * 0.25,
                 decoration: BoxDecoration(
-                  color: history[i] ? c : c.withOpacity(0.18),
+                  color: history[i] ? c : c.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),

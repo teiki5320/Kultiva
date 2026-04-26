@@ -136,7 +136,7 @@ class _NutrientCalculatorSheetState extends State<NutrientCalculatorSheet> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: KultivaColors.primaryGreen.withOpacity(0.1),
+                color: KultivaColors.primaryGreen.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(

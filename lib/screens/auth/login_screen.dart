@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: KultivaColors.lightGreen.withOpacity(0.4),
+                      color: KultivaColors.lightGreen.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(28),
                     ),
                     alignment: Alignment.center,
@@ -237,7 +237,7 @@ class _OrSeparator extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Divider(
-            color: KultivaColors.lightGreen.withOpacity(0.6),
+            color: KultivaColors.lightGreen.withValues(alpha: 0.6),
           ),
         ),
         Padding(
@@ -249,7 +249,7 @@ class _OrSeparator extends StatelessWidget {
         ),
         Expanded(
           child: Divider(
-            color: KultivaColors.lightGreen.withOpacity(0.6),
+            color: KultivaColors.lightGreen.withValues(alpha: 0.6),
           ),
         ),
       ],

@@ -86,7 +86,7 @@ class LexiconText extends StatelessWidget {
     if (entry == null) return;
     showDialog<void>(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.45),
+      barrierColor: Colors.black.withValues(alpha: 0.45),
       builder: (_) => Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22),
