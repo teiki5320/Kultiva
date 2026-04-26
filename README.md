@@ -1,109 +1,105 @@
-# Kultiva
+# 🌱 Kultiva
 
-Calendrier de semis pour jardiniers — Flutter, style pastel kawaii japonais.
+> Le potager kawaii dans ta poche.
 
-## Fonctionnalités
+Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pensée pour les jardiniers amateurs de **France métropolitaine** et d'**Afrique de l'Ouest**, du balcon au plein champ — des semis aux récoltes, du choix des graines à la fierté de la première tomate.
 
-- 🌱 **Semer** — calendrier mensuel des légumes à semer
-- 📖 **Légumes** — catalogue filtré par catégorie
-- 🏡 **Mon Jardin** — liste des légumes favoris
-- ⚙️ **Paramètres** — région, mode sombre, notifications
+![Aperçu Kultiva](assets/images/onboarding_1.png)
 
-## Régions supportées
+## ✨ Ce qu'on y trouve
 
-- 🇫🇷 France métropolitaine
-- 🌍 Afrique de l'Ouest
+- 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région
+- 🌽 **Catalogue de ~100 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
+- 📖 **Poussidex** : ta collection de plants en photos, avec notes, historique d'arrosage et compteur de récoltes
+- 🐣 **Tamassi** : créature virtuelle qui évolue avec ton activité au jardin (XP, niveaux, émotions)
+- 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
+- 🌐 **Feed communautaire** de défis photo avec badges, médailles bronze/argent/or
+- 📓 **Cahier de culture pleine terre + hydroponie** : suivi sérieux pH/EC/température, phases de croissance, calculateur de nutriments, étapes phénologiques auto, alertes canicule, partage de builds hydro
+- ☁️ **Synchronisation Supabase facultative** (auth Google/Apple, sync plantations, badges, photos)
+- 🎓 **Tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
 
-La région active pilote toute l'application — mois de semis, mois de récolte et affichage des cards "À semer maintenant".
+L'app est **local-first** : tout fonctionne sans connexion. La synchro cloud est en arrière-plan, jamais bloquante.
 
-## Stack
+## 🌍 Régions supportées
 
-- Flutter >= 3.24 / Dart ^3.5
-- `google_fonts` — typographie Nunito
-- `shared_preferences` — persistance locale
-- `go_router` — navigation (dépendance prête, navigation principale en Navigator direct)
-- `url_launcher` — liens affiliés Amazon
-- `supabase_flutter` / `google_sign_in` / `sign_in_with_apple` — auth (stubs prêts à brancher)
-- `flutter_local_notifications` — rappel mensuel (stub)
+- 🇫🇷 **France métropolitaine** — calendrier classique, alertes adaptées au climat tempéré
+- 🌍 **Afrique de l'Ouest** — saisons sèches/pluies, légumes tropicaux (gombo, niébé, manioc, taro, igname, sorgho, bissap…)
 
-## Démarrer
+Le choix se fait au premier lancement, modifiable à tout moment dans les paramètres.
+
+## 🛠️ Stack technique
+
+- **Flutter ≥ 3.24** / **Dart ^3.5** (canal stable)
+- **Supabase** (auth + Postgres + Storage) pour la sync cloud optionnelle
+- **Open-Meteo** pour la météo (gratuit, sans clé)
+- Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`
+- **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), Apple Sign-In, URL scheme Google
+- **Android** : Gradle 8.14, signing release via `key.properties`, core library desugaring activé
+
+## 🚀 Démarrage rapide
 
 ```bash
-cd kultiva
-flutter create . --project-name kultiva
+git clone https://github.com/teiki5320/Kultiva.git
+cd Kultiva
 flutter pub get
-flutter run
+flutter run               # debug
+flutter run --release     # mode release sur device
 ```
 
-> La commande `flutter create .` génère les dossiers natifs (`android/`, `ios/`, `web/`, …) sans écraser `lib/` ni `pubspec.yaml`.
+Pour iOS (après `pub get`) :
 
-## Arborescence
-
-```
-lib/
-├── main.dart
-├── models/
-│   ├── vegetable.dart
-│   └── region_data.dart
-├── data/
-│   ├── vegetables_base.dart
-│   └── regions/
-│       ├── france.dart
-│       └── west_africa.dart
-├── screens/
-│   ├── splash_screen.dart
-│   ├── onboarding_screen.dart
-│   ├── root_tabs.dart
-│   ├── auth/
-│   │   ├── login_screen.dart
-│   │   └── register_screen.dart
-│   ├── home/
-│   │   ├── sow_screen.dart
-│   │   ├── vegetables_screen.dart
-│   │   ├── my_garden_screen.dart
-│   │   └── settings_screen.dart
-│   └── vegetable_detail_screen.dart
-├── widgets/
-│   ├── season_header.dart
-│   ├── vegetable_card.dart
-│   └── petal_animation.dart
-├── services/
-│   ├── auth_service.dart
-│   └── prefs_service.dart
-└── theme/
-    └── app_theme.dart
+```bash
+cd ios && pod install --repo-update && cd ..
 ```
 
-## Illustrations saisonnières
+Routine quotidienne après une modif côté Claude Code (Mac de Jean, branche `main`) :
 
-Place les quatre illustrations kawaii dans `assets/images/` :
+```bash
+cd ~/Kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
+```
 
-| Saison      | Fichier        | Animation superposée                         |
-| ----------- | -------------- | -------------------------------------------- |
-| 🌸 Printemps | `spring.png`  | pétales qui tombent                          |
-| ☀️ Été      | `summer.png`  | papillons qui voltigent + particules         |
-| 🍂 Automne  | `autumn.png`  | feuilles qui tombent                         |
-| ❄️ Hiver    | `winter.png`  | flocons de neige                             |
+## 📦 Build de release
 
-Puis décommente la section `assets:` dans `pubspec.yaml`.
+```bash
+# Android — Google Play
+flutter build appbundle --release
 
-Tant que les fichiers ne sont pas fournis, l'en-tête saisonnier s'affiche avec un dégradé pastel correspondant à la saison, et les animations se superposent normalement.
+# iOS — TestFlight (signer ensuite via Xcode)
+flutter build ios --release
+```
 
-## Ajouter un légume
+L'app ID Android est `com.toa.kultiva`. Le signing release nécessite `android/key.properties` (non commité).
 
-1. Ajoute l'entrée dans `lib/data/vegetables_base.dart` (un `const Vegetable(...)`).
-2. Dans `lib/data/regions/france.dart` et `lib/data/regions/west_africa.dart`, ajoute un `RegionData` pour chaque région où le légume doit apparaître, avec les mois de semis et de récolte.
+## 📐 Architecture
 
-Tous les champs de la fiche légume sont optionnels — les sections vides sont automatiquement masquées dans la fiche détail.
+Voir **`CLAUDE.md`** à la racine pour le détail :
 
-## Auth
+- arborescence complète de `lib/`
+- conventions de code (state via `ValueNotifier`, pas de Provider/Riverpod)
+- contrat local-first
+- migrations Supabase
+- pièges à éviter (versions pinées, assets à déclarer dans `pubspec.yaml`…)
 
-La v1 fournit un **AuthService en mode démo local** : les emails et mots de passe sont validés localement et la session est persistée via `SharedPreferences`. Pour brancher Supabase :
+Le **catalogue d'espèces** est synchronisé vers Supabase pour partage avec le projet sœur **Kultivaprix** (comparateur de prix). Source de vérité : `lib/data/vegetables_base.dart`. Détails : **`docs/catalog-sync.md`**.
 
-1. Initialise `Supabase.initialize(url: …, anonKey: …)` dans `main.dart`.
-2. Remplace le corps de `lib/services/auth_service.dart` par des appels à `Supabase.instance.client.auth`.
-3. Branche `google_sign_in` et `sign_in_with_apple` via `Supabase` OAuth.
+## 🤝 Contribuer
 
-## Géolocalisation (v2)
+Les chantiers en cours et à venir sont listés dans **`_plans/roadmap.md`**.
 
-Non implémentée en v1 — la région se choisit manuellement. En v2, ajoute le package `geolocator` pour détecter la région au premier lancement.
+Tests + lints à passer avant toute PR :
+
+```bash
+flutter analyze
+flutter test
+```
+
+Les strings UI sont **en français** uniquement (l'app est `fr-FR` à 100% en V1). Les commentaires de code peuvent être en français ou en anglais selon le pattern dominant du fichier.
+
+## 🌐 Sites compagnons
+
+- **Landing marketing** — `landing/index.html` (site HTML statique)
+- **[Kultivaprix](https://github.com/teiki5320/kultivaprix)** — comparateur de prix kawaii, consomme le catalogue d'espèces de Kultiva via Supabase
+
+## 📜 Licence
+
+© Jean Perraudeau, 2026. Tous droits réservés. Pas (encore) de licence open-source explicite — pour toute utilisation au-delà du fork de découverte, contacte le mainteneur.
