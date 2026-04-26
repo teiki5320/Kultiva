@@ -1886,6 +1886,140 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Laurier-sauce
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'laurier_sauce',
+    name: 'Laurier-sauce',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Arbuste persistant aux feuilles vert sombre, indispensable au bouquet garni. Pousse aussi bien en pot qu'en pleine terre, peut atteindre 3 m.",
+    note: "Ne pas confondre avec le laurier-rose ou laurier-cerise (toxiques).",
+    sowingTechnique: "Bouturage ou achat de plant",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "1 × 1,5 m",
+    watering: "Faible une fois installé",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+laurier+sauce&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+      'winter': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Camomille romaine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'camomille',
+    name: 'Camomille romaine',
+    emoji: '🌼',
+    category: VegetableCategory.aromatics,
+    description:
+        "Plante vivace tapissante aux petites fleurs blanches très parfumées. Tisane apaisante et digestive, classique du jardin de grand-mère.",
+    note: "Récolter les fleurs en plein soleil pour préserver les arômes.",
+    sowingTechnique: "Semis en surface ou division de touffe",
+    sowingDepth: "0,1 cm (en surface)",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 25 cm",
+    watering: "Modéré",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte des fleurs sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+camomille+romaine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "70 à 90 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Marjolaine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'marjolaine',
+    name: 'Marjolaine',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Cousine plus douce de l'origan, parfaite pour les viandes blanches et les sauces tomate. Plante annuelle ou vivace selon le climat.",
+    note: "À ne pas confondre avec l'origan — la marjolaine est plus subtile.",
+    sowingTechnique: "Semis en godet ou en place",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "25 × 30 cm",
+    watering: "Faible",
+    soil: "Léger, calcaire, drainé",
+    yieldEstimate: "Récolte sur la belle saison",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+marjolaine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "60 à 80 jours",
+      'autumn': "Récolte continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Lentille verte
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'lentille',
+    name: 'Lentille verte',
+    emoji: '🫘',
+    category: VegetableCategory.seeds,
+    description:
+        "Légumineuse à grains plats riche en protéines, base des soupes et plats traditionnels. La lentille verte du Puy bénéficie d'une AOP française.",
+    note: "Plante peu exigeante — fixe l'azote et enrichit le sol.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "2 à 3 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "5 × 30 cm",
+    watering: "Faible",
+    soil: "Pauvre, calcaire, drainé",
+    yieldEstimate: "150 à 250 g/m² (grains secs)",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+lentille+verte+puy&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "100 à 110 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pois chiche
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pois_chiche',
+    name: 'Pois chiche',
+    emoji: '🫘',
+    category: VegetableCategory.seeds,
+    description:
+        "Légumineuse star de la cuisine méditerranéenne (houmous, falafels). Résistante à la sécheresse, parfaite pour les sols pauvres.",
+    note: "Aime la chaleur — réservée au sud ou semis tardif.",
+    sowingTechnique: "Semis direct après les gelées",
+    sowingDepth: "3 à 5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "10 × 40 cm",
+    watering: "Faible, très résistant à la sécheresse",
+    soil: "Léger, calcaire, drainé",
+    yieldEstimate: "200 à 350 g/m² (grains secs)",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pois+chiche&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "100 à 120 jours",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

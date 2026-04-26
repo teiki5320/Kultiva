@@ -349,4 +349,20 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'verveine', sowingMonths: [4, 5, 6], harvestMonths: [6, 7, 8, 9, 10],
     regionalNote: "Frileuse — rentrer en pot ou pailler en hiver dans le nord.",
   ),
+
+  // ── Nouveautés vague 1 batch 5 ──
+  RegionData(
+    regionId: 'france', vegetableId: 'laurier_sauce', sowingMonths: [3, 4, 5, 9, 10], harvestMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    regionalNote: "Persistant — récolte toute l'année. Plantation au printemps ou à l'automne.",
+  ),
+  RegionData(regionId: 'france', vegetableId: 'camomille', sowingMonths: [3, 4, 5], harvestMonths: [6, 7, 8]),
+  RegionData(regionId: 'france', vegetableId: 'marjolaine', sowingMonths: [4, 5, 6], harvestMonths: [7, 8, 9, 10]),
+  RegionData(
+    regionId: 'france', vegetableId: 'lentille', sowingMonths: [3, 4], harvestMonths: [7, 8],
+    regionalNote: "AOP du Puy en Auvergne — culture aussi possible en sol calcaire.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'pois_chiche', sowingMonths: [4, 5], harvestMonths: [8, 9],
+    regionalNote: "Aime la chaleur — meilleurs résultats au sud de la Loire.",
+  ),
 ];
