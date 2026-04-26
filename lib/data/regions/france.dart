@@ -310,4 +310,11 @@ const List<RegionData> franceData = <RegionData>[
   RegionData(regionId: 'france', vegetableId: 'rutabaga', sowingMonths: [5, 6, 7], harvestMonths: [10, 11, 12]),
   RegionData(regionId: 'france', vegetableId: 'topinambour', sowingMonths: [2, 3, 4], harvestMonths: [10, 11, 12, 1, 2]),
   RegionData(regionId: 'france', vegetableId: 'salsifis', sowingMonths: [4, 5, 6], harvestMonths: [10, 11, 12, 1, 2]),
+
+  // ── Nouveautés vague 1 batch 2 ──
+  RegionData(regionId: 'france', vegetableId: 'radis_noir', sowingMonths: [7, 8], harvestMonths: [10, 11, 12, 1]),
+  RegionData(regionId: 'france', vegetableId: 'chou_rave', sowingMonths: [3, 4, 5, 6, 7, 8], harvestMonths: [5, 6, 7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'cresson', sowingMonths: [3, 4, 5, 8, 9], harvestMonths: [5, 6, 7, 9, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'pak_choi', sowingMonths: [3, 4, 5, 7, 8, 9], harvestMonths: [5, 6, 7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'pourpier', sowingMonths: [5, 6, 7], harvestMonths: [6, 7, 8, 9]),
 ];

@@ -1475,6 +1475,141 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Radis noir
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'radis_noir',
+    name: 'Radis noir',
+    emoji: '🌑',
+    category: VegetableCategory.roots,
+    description:
+        "Radis d'hiver à peau noire et chair blanche, piquant et croquant. Très bonne conservation, riche en vitamine C.",
+    note: "Semer en été pour récolter à l'automne et conserver tout l'hiver.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "1 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "5 à 8 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "10 × 30 cm",
+    watering: "Régulier, sol toujours frais",
+    soil: "Meuble, profond, riche",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+radis+noir&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '70 à 90 jours',
+      'autumn': '80 à 100 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Chou-rave
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'chou_rave',
+    name: 'Chou-rave',
+    emoji: '🥬',
+    category: VegetableCategory.stems,
+    description:
+        "Chou à tige renflée en boule, à la chair tendre et sucrée. Se mange cru ou cuit, très digeste.",
+    note: "Récolter jeune (5-7 cm) pour une chair fondante.",
+    sowingTechnique: "Semis en pépinière puis repiquage",
+    sowingDepth: "1 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "25 × 30 cm",
+    watering: "Régulier, ne pas laisser sécher",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+chou+rave&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '60 à 80 jours',
+      'summer': '60 à 75 jours',
+      'autumn': '70 à 90 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cresson de fontaine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cresson',
+    name: 'Cresson de fontaine',
+    emoji: '🌿',
+    category: VegetableCategory.leaves,
+    description:
+        "Plante aquatique au goût piquant et iodé, très riche en vitamines. Pousse au bord d'un ruisseau ou en jardinière constamment humide.",
+    note: "Aime l'eau courante ou un substrat très humide.",
+    sowingTechnique: "Semis en pleine eau ou bouturage",
+    sowingDepth: "Surface",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Mi-ombre",
+    spacing: "15 × 20 cm",
+    watering: "Permanent, sol détrempé",
+    soil: "Argileux, riche en humus, très humide",
+    yieldEstimate: "1 à 2 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cresson+fontaine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '50 à 70 jours',
+      'autumn': '60 à 80 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pak choï
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pak_choi',
+    name: 'Pak choï',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Chou chinois à côtes blanches et feuilles vertes, croissance ultra-rapide. Délicieux sauté au wok ou en soupe.",
+    note: "Récolte 30 à 45 jours après semis — parfait pour débuter.",
+    sowingTechnique: "Semis direct ou en godet",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 22 °C",
+    germinationDays: "5 à 8 jours",
+    exposure: "Mi-ombre en été, soleil au printemps",
+    spacing: "20 × 30 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "2 à 3 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pak+choi&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '30 à 45 jours',
+      'autumn': '40 à 55 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pourpier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pourpier',
+    name: 'Pourpier',
+    emoji: '🌿',
+    category: VegetableCategory.leaves,
+    description:
+        "Plante grasse aux feuilles charnues et acidulées, très riche en oméga-3. Résiste à la sécheresse, idéale en plein été.",
+    note: "Se ressème spontanément, presque indestructible.",
+    sowingTechnique: "Semis direct à la volée",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 25 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "15 × 20 cm",
+    watering: "Faible, plante très résistante",
+    soil: "Léger, sableux, drainé",
+    yieldEstimate: "1 à 2 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pourpier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '40 à 55 jours',
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
