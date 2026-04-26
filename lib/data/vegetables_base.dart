@@ -1610,6 +1610,146 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Chou chinois (Napa)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'chou_chinois',
+    name: 'Chou chinois (Napa)',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Chou pommé allongé à feuilles tendres et nervures blanches. Base du kimchi coréen, parfait en salade ou sauté.",
+    note: "Préfère les températures fraîches — semer en fin d'été.",
+    sowingTechnique: "Semis en pépinière puis repiquage",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "30 × 40 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "4 à 6 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+chou+chinois+napa&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '60 à 80 jours',
+      'autumn': '70 à 90 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Romarin
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'romarin',
+    name: 'Romarin',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Arbrisseau aromatique méditerranéen aux feuilles persistantes. Très résistant à la sécheresse, présent toute l'année au jardin.",
+    note: "Plante vivace — un seul plant suffit pour des années.",
+    sowingTechnique: "Semis difficile — préférer le bouturage ou l'achat de plant",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 25 °C",
+    germinationDays: "21 à 30 jours",
+    exposure: "Plein soleil",
+    spacing: "60 × 80 cm",
+    watering: "Faible, très résistant à la sécheresse",
+    soil: "Pauvre, sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+romarin&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+      'winter': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Sauge officinale
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'sauge',
+    name: 'Sauge officinale',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate méditerranéen aux feuilles veloutées gris-vert. Saveur puissante pour viandes et farces, vertus médicinales reconnues.",
+    note: "Plante vivace — tailler après floraison pour la garder compacte.",
+    sowingTechnique: "Semis en godet ou bouturage",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Plein soleil",
+    spacing: "40 × 50 cm",
+    watering: "Faible",
+    soil: "Sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+sauge+officinale&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Origan
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'origan',
+    name: 'Origan',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate vivace au parfum chaud, indispensable en cuisine italienne. Floraison rose mellifère qui attire les pollinisateurs.",
+    note: "Récolter au moment de la floraison pour un arôme maximal.",
+    sowingTechnique: "Semis en godet ou division de touffe",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "10 à 21 jours",
+    exposure: "Plein soleil",
+    spacing: "30 × 40 cm",
+    watering: "Faible",
+    soil: "Sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+origan&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Estragon
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'estragon',
+    name: 'Estragon',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate fin au goût anisé, indispensable à la cuisine française (béarnaise, vinaigre d'estragon). Préférer la variété française à la russe (moins parfumée).",
+    note: "Multiplication par division — les graines donnent souvent l'estragon russe sans saveur.",
+    sowingTechnique: "Plantation de plant — éviter les graines",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil",
+    spacing: "40 × 50 cm",
+    watering: "Modéré",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+estragon+francais&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

@@ -317,4 +317,23 @@ const List<RegionData> franceData = <RegionData>[
   RegionData(regionId: 'france', vegetableId: 'cresson', sowingMonths: [3, 4, 5, 8, 9], harvestMonths: [5, 6, 7, 9, 10, 11]),
   RegionData(regionId: 'france', vegetableId: 'pak_choi', sowingMonths: [3, 4, 5, 7, 8, 9], harvestMonths: [5, 6, 7, 8, 9, 10]),
   RegionData(regionId: 'france', vegetableId: 'pourpier', sowingMonths: [5, 6, 7], harvestMonths: [6, 7, 8, 9]),
+
+  // ── Nouveautés vague 1 batch 3 ──
+  RegionData(regionId: 'france', vegetableId: 'chou_chinois', sowingMonths: [6, 7, 8], harvestMonths: [9, 10, 11]),
+  RegionData(
+    regionId: 'france', vegetableId: 'romarin', sowingMonths: [3, 4, 5], harvestMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    regionalNote: "Vivace persistante — récolte toute l'année après la première saison.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'sauge', sowingMonths: [3, 4, 5], harvestMonths: [4, 5, 6, 7, 8, 9, 10],
+    regionalNote: "Vivace — récolte de la 2e année, toute la belle saison.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'origan', sowingMonths: [3, 4, 5], harvestMonths: [6, 7, 8, 9],
+    regionalNote: "Vivace mellifère — récolter au moment de la floraison.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'estragon', sowingMonths: [3, 4, 5], harvestMonths: [5, 6, 7, 8, 9],
+    regionalNote: "Plantation au printemps — récolte permanente l'année suivante.",
+  ),
 ];
