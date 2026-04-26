@@ -336,4 +336,17 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'estragon', sowingMonths: [3, 4, 5], harvestMonths: [5, 6, 7, 8, 9],
     regionalNote: "Plantation au printemps — récolte permanente l'année suivante.",
   ),
+
+  // ── Nouveautés vague 1 batch 4 ──
+  RegionData(regionId: 'france', vegetableId: 'sarriette', sowingMonths: [4, 5, 6], harvestMonths: [7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'aneth', sowingMonths: [4, 5, 6, 7, 8], harvestMonths: [6, 7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'cerfeuil', sowingMonths: [3, 4, 8, 9], harvestMonths: [5, 6, 10, 11]),
+  RegionData(
+    regionId: 'france', vegetableId: 'melisse', sowingMonths: [3, 4, 5], harvestMonths: [5, 6, 7, 8, 9, 10],
+    regionalNote: "Vivace — récolte permanente la belle saison à partir de la 2e année.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'verveine', sowingMonths: [4, 5, 6], harvestMonths: [6, 7, 8, 9, 10],
+    regionalNote: "Frileuse — rentrer en pot ou pailler en hiver dans le nord.",
+  ),
 ];

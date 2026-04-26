@@ -1750,6 +1750,142 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Sarriette
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'sarriette',
+    name: 'Sarriette',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate poivré qui parfume haricots, fromages frais et grillades. La sarriette des montagnes (vivace) est plus rustique que celle des jardins (annuelle).",
+    note: "Plantée près des haricots, elle éloigne les pucerons.",
+    sowingTechnique: "Semis en place ou en godet",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "10 à 21 jours",
+    exposure: "Plein soleil",
+    spacing: "25 × 30 cm",
+    watering: "Faible",
+    soil: "Sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+sarriette&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "70 à 90 jours",
+      'autumn': "Récolte continue jusqu'aux gelées",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Aneth
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'aneth',
+    name: 'Aneth',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate annuel aux feuilles plumeuses au goût frais et anisé. Indispensable avec le saumon, les concombres et les marinades.",
+    note: "Semer toutes les 3 semaines pour une récolte continue.",
+    sowingTechnique: "Semis direct en place — supporte mal le repiquage",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Soleil",
+    spacing: "20 × 30 cm",
+    watering: "Régulier",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+aneth&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "40 à 60 jours",
+      'summer': "30 à 50 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cerfeuil
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cerfeuil',
+    name: 'Cerfeuil',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate fin et délicat au goût anisé subtil, base des fines herbes. Préfère la mi-ombre et la fraîcheur.",
+    note: "Semer en mars-avril ou en septembre — n'aime pas la chaleur.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Mi-ombre",
+    spacing: "15 × 25 cm",
+    watering: "Régulier, sol toujours frais",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "Récolte sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cerfeuil&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "45 à 60 jours",
+      'autumn': "50 à 70 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Mélisse citronnelle
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'melisse',
+    name: 'Mélisse citronnelle',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate vivace au parfum citronné, parfaite en tisane apaisante avant le coucher. Très mellifère, attire les abeilles.",
+    note: "Plante vivace — peut devenir envahissante par semis spontané.",
+    sowingTechnique: "Semis ou division de touffe",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "40 × 50 cm",
+    watering: "Modéré",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+melisse+citronnelle&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Verveine citronnée
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'verveine',
+    name: 'Verveine citronnée',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Arbuste à feuilles vert vif au parfum citronné intense. La star des tisanes du soir, à protéger du gel en hiver.",
+    note: "Frileuse — rentrer en pot ou pailler en hiver dans le nord.",
+    sowingTechnique: "Bouturage ou achat de plant",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "60 × 80 cm",
+    watering: "Modéré",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte sur la belle saison",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+verveine+citronnee&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
