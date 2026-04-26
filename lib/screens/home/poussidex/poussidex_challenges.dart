@@ -237,7 +237,7 @@ class _ChallengeTile extends StatelessWidget {
       onTap: done ? onTap : onParticipate,
       child: Container(
         decoration: BoxDecoration(
-          color: done ? color.withOpacity(0.12) : Colors.grey.shade50,
+          color: done ? color.withValues(alpha: 0.12) : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: done ? color : Colors.grey.shade300,
@@ -246,7 +246,7 @@ class _ChallengeTile extends StatelessWidget {
           boxShadow: done
               ? <BoxShadow>[
                   BoxShadow(
-                    color: color.withOpacity(0.25),
+                    color: color.withValues(alpha: 0.25),
                     blurRadius: 8,
                     offset: const Offset(0, 3),
                   ),
@@ -288,7 +288,7 @@ class _ChallengeTile extends StatelessWidget {
                                 color: color,
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
+                                    color: Colors.black.withValues(alpha: 0.2),
                                     blurRadius: 4,
                                   ),
                                 ],
@@ -315,7 +315,7 @@ class _ChallengeTile extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 3),
                               decoration: BoxDecoration(
-                                color: color.withOpacity(0.15),
+                                color: color.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(

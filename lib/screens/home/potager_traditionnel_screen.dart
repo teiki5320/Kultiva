@@ -190,7 +190,7 @@ class _SectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
-            color: KultivaColors.primaryGreen.withOpacity(0.14),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.14),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(
@@ -232,10 +232,10 @@ class _CultureCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: KultivaColors.springA.withOpacity(0.3),
+            color: KultivaColors.springA.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: KultivaColors.primaryGreen.withOpacity(0.35),
+              color: KultivaColors.primaryGreen.withValues(alpha: 0.35),
             ),
           ),
           child: Column(
@@ -247,7 +247,7 @@ class _CultureCard extends StatelessWidget {
                     width: 54,
                     height: 54,
                     decoration: BoxDecoration(
-                      color: KultivaColors.primaryGreen.withOpacity(0.15),
+                      color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
@@ -394,10 +394,10 @@ class _StageChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: KultivaColors.primaryGreen.withOpacity(0.1),
+          color: KultivaColors.primaryGreen.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withOpacity(0.3),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.3),
           ),
         ),
         child: Row(
@@ -525,10 +525,10 @@ class _EmptyState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: KultivaColors.springA.withOpacity(0.2),
+        color: KultivaColors.springA.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: KultivaColors.textSecondary.withOpacity(0.2),
+          color: KultivaColors.textSecondary.withValues(alpha: 0.2),
           style: BorderStyle.solid,
         ),
       ),
@@ -598,13 +598,13 @@ class _SeasonRecapCta extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: <Color>[
-              KultivaColors.primaryGreen.withOpacity(0.18),
-              KultivaColors.springA.withOpacity(0.5),
+              KultivaColors.primaryGreen.withValues(alpha: 0.18),
+              KultivaColors.springA.withValues(alpha: 0.5),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withOpacity(0.4),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
           ),
         ),
         child: Row(
@@ -666,9 +666,9 @@ class _AdviceBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.12),
+        color: _color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: _color.withOpacity(0.4)),
+        border: Border.all(color: _color.withValues(alpha: 0.4)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -776,7 +776,7 @@ class _PotagerHero extends StatelessWidget {
                   "Suivi sérieux de tes cultures en sol vivant.",
                   style: TextStyle(
                     fontSize: 13,
-                    color: KultivaColors.textPrimary.withOpacity(0.8),
+                    color: KultivaColors.textPrimary.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -848,7 +848,7 @@ class _CycleNode extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: KultivaColors.springA.withOpacity(0.5),
+            color: KultivaColors.springA.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(16),
           ),
           alignment: Alignment.center,
@@ -958,10 +958,10 @@ class _LinkCta extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: KultivaColors.springA.withOpacity(0.35),
+          color: KultivaColors.springA.withValues(alpha: 0.35),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withOpacity(0.4),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
             width: 1,
           ),
         ),
@@ -1005,8 +1005,8 @@ class _AccessoriesCta extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              KultivaColors.primaryGreen.withOpacity(0.22),
-              KultivaColors.springA.withOpacity(0.45),
+              KultivaColors.primaryGreen.withValues(alpha: 0.22),
+              KultivaColors.springA.withValues(alpha: 0.45),
             ],
           ),
           borderRadius: BorderRadius.circular(20),

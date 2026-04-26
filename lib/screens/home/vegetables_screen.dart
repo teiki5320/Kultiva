@@ -153,8 +153,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  Colors.black.withOpacity(0.0),
-                                  Colors.black.withOpacity(0.3),
+                                  Colors.black.withValues(alpha: 0.0),
+                                  Colors.black.withValues(alpha: 0.3),
                                 ],
                               ),
                             ),
@@ -176,7 +176,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                                 Text(
                                   '${filtered.length} variétés',
                                   style: TextStyle(
-                                    color: Colors.white.withOpacity(0.8),
+                                    color: Colors.white.withValues(alpha: 0.8),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12,
                                     shadows: const [Shadow(color: Colors.black38, blurRadius: 6)],
@@ -461,19 +461,19 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  cc.withOpacity(0.12),
-                  cc.withOpacity(0.25),
+                  cc.withValues(alpha: 0.12),
+                  cc.withValues(alpha: 0.25),
                 ],
               ),
               borderRadius: BorderRadius.circular(20),
               // Contour couleur famille pour repérage visuel.
               border: Border.all(
-                color: cc.withOpacity(0.7),
+                color: cc.withValues(alpha: 0.7),
                 width: 2,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: cc.withOpacity(0.2),
+                  color: cc.withValues(alpha: 0.2),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -572,7 +572,7 @@ class _KawaiiHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [colors[0].withOpacity(0.4), colors[1].withOpacity(0.3)],
+          colors: [colors[0].withValues(alpha: 0.4), colors[1].withValues(alpha: 0.3)],
         ),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(24),
@@ -593,7 +593,7 @@ class _KawaiiHeader extends StatelessWidget {
                   '$count légume${count > 1 ? "s" : ""}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: KultivaColors.textPrimary.withOpacity(0.5),
+                    color: KultivaColors.textPrimary.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -673,7 +673,7 @@ class _PastelChip extends StatelessWidget {
           decoration: BoxDecoration(
             // Sélectionné : fond coloré. Non sélectionné : fond blanc +
             // bordure couleur famille pour se repérer visuellement.
-            color: selected ? color.withOpacity(0.2) : Colors.white,
+            color: selected ? color.withValues(alpha: 0.2) : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: color,

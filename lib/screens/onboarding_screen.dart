@@ -175,7 +175,7 @@ class _OnboardingPage extends StatelessWidget {
               errorBuilder: (_, __, ___) => Container(
                 width: 240, height: 240,
                 decoration: BoxDecoration(
-                  color: KultivaColors.lightGreen.withOpacity(0.35),
+                  color: KultivaColors.lightGreen.withValues(alpha: 0.35),
                   borderRadius: BorderRadius.circular(52),
                 ),
                 alignment: Alignment.center,
@@ -286,7 +286,7 @@ class _RegionTile extends StatelessWidget {
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           color: selected
-              ? KultivaColors.primaryGreen.withOpacity(0.12)
+              ? KultivaColors.primaryGreen.withValues(alpha: 0.12)
               : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(

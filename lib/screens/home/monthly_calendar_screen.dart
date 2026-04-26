@@ -108,7 +108,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.25),
+                            color: Colors.black.withValues(alpha: 0.25),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.arrow_back,
@@ -153,7 +153,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                           boxShadow: [
                             BoxShadow(
                               color:
-                                  KultivaColors.primaryGreen.withOpacity(0.15),
+                                  KultivaColors.primaryGreen.withValues(alpha: 0.15),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),

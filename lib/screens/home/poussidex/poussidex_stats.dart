@@ -178,9 +178,9 @@ class _StatTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: color.withOpacity(0.4), width: 2),
+        border: Border.all(color: color.withValues(alpha: 0.4), width: 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +266,7 @@ class _SurvivalBar extends StatelessWidget {
             child: LinearProgressIndicator(
               value: total == 0 ? 0 : active / total,
               minHeight: 8,
-              backgroundColor: KultivaColors.lightGreen.withOpacity(0.3),
+              backgroundColor: KultivaColors.lightGreen.withValues(alpha: 0.3),
               valueColor: AlwaysStoppedAnimation<Color>(
                   KultivaColors.primaryGreen),
             ),
@@ -312,7 +312,7 @@ class _FamilyBar extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: ratio,
                 minHeight: 10,
-                backgroundColor: color.withOpacity(0.12),
+                backgroundColor: color.withValues(alpha: 0.12),
                 valueColor: AlwaysStoppedAnimation<Color>(color),
               ),
             ),
@@ -359,10 +359,10 @@ class _WateringChart extends StatelessWidget {
       height: 90,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: const Color(0xFFE0F7FA).withOpacity(0.4),
+        color: const Color(0xFFE0F7FA).withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: const Color(0xFF4FC3F7).withOpacity(0.35), width: 1.5),
+            color: const Color(0xFF4FC3F7).withValues(alpha: 0.35), width: 1.5),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

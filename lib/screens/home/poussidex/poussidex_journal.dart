@@ -183,7 +183,7 @@ class _JournalTile extends StatelessWidget {
             height: 30,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: event.color.withOpacity(0.15),
+              color: event.color.withValues(alpha: 0.15),
             ),
             alignment: Alignment.center,
             child: Text(event.icon, style: const TextStyle(fontSize: 14)),

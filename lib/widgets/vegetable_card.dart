@@ -97,7 +97,7 @@ class VegetableCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 12,
-                        color: KultivaColors.textPrimary.withOpacity(0.5),
+                        color: KultivaColors.textPrimary.withValues(alpha: 0.5),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -106,7 +106,7 @@ class VegetableCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: cc.withOpacity(0.1),
+                        color: cc.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(

@@ -65,13 +65,13 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: KultivaColors.lightCard,
         elevation: 2,
-        shadowColor: KultivaColors.primaryGreen.withOpacity(0.12),
+        shadowColor: KultivaColors.primaryGreen.withValues(alpha: 0.12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: KultivaColors.lightGreen.withOpacity(0.35),
+        backgroundColor: KultivaColors.lightGreen.withValues(alpha: 0.35),
         selectedColor: KultivaColors.primaryGreen,
         labelStyle: GoogleFonts.nunito(
           color: KultivaColors.textPrimary,
@@ -154,7 +154,7 @@ class AppTheme {
         elevation: 8,
       ),
       dividerTheme: DividerThemeData(
-        color: KultivaColors.lightGreen.withOpacity(0.5),
+        color: KultivaColors.lightGreen.withValues(alpha: 0.5),
         thickness: 1,
       ),
     );
@@ -240,7 +240,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          side: BorderSide(color: Colors.white.withOpacity(0.2)),
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -250,24 +250,24 @@ class AppTheme {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
           borderSide: const BorderSide(
               color: KultivaColors.darkPrimaryGreen, width: 2),
         ),
-        hintStyle: GoogleFonts.nunito(color: Colors.white.withOpacity(0.6)),
-        labelStyle: GoogleFonts.nunito(color: Colors.white.withOpacity(0.6)),
+        hintStyle: GoogleFonts.nunito(color: Colors.white.withValues(alpha: 0.6)),
+        labelStyle: GoogleFonts.nunito(color: Colors.white.withValues(alpha: 0.6)),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: KultivaColors.darkSurface,
         selectedItemColor: KultivaColors.darkPrimaryGreen,
-        unselectedItemColor: Colors.white.withOpacity(0.6),
+        unselectedItemColor: Colors.white.withValues(alpha: 0.6),
         selectedLabelStyle:
             GoogleFonts.nunito(fontWeight: FontWeight.w800, fontSize: 12),
         unselectedLabelStyle:
@@ -276,7 +276,7 @@ class AppTheme {
         elevation: 8,
       ),
       dividerTheme: DividerThemeData(
-        color: Colors.white.withOpacity(0.12),
+        color: Colors.white.withValues(alpha: 0.12),
         thickness: 1,
       ),
     );

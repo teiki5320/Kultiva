@@ -134,7 +134,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                   width: 42,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: KultivaColors.textSecondary.withOpacity(0.4),
+                    color: KultivaColors.textSecondary.withValues(alpha: 0.4),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -164,10 +164,10 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                 child: Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: KultivaColors.springA.withOpacity(0.2),
+                    color: KultivaColors.springA.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: KultivaColors.primaryGreen.withOpacity(0.4),
+                      color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Row(
@@ -212,10 +212,10 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                 child: Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: KultivaColors.springA.withOpacity(0.2),
+                    color: KultivaColors.springA.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: KultivaColors.primaryGreen.withOpacity(0.4),
+                      color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Row(
@@ -245,7 +245,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                 decoration: InputDecoration(
                   hintText: 'Variété, origine des graines, intention…',
                   filled: true,
-                  fillColor: KultivaColors.springA.withOpacity(0.15),
+                  fillColor: KultivaColors.springA.withValues(alpha: 0.15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: BorderSide.none,
@@ -256,7 +256,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
               // --- Config hydroponie ---
               if (_isHydro) ...<Widget>[
                 const SizedBox(height: 24),
-                Divider(color: KultivaColors.textSecondary.withOpacity(0.2)),
+                Divider(color: KultivaColors.textSecondary.withValues(alpha: 0.2)),
                 const SizedBox(height: 12),
                 Text(
                   '💡  Configuration lumière',
@@ -310,7 +310,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                           decoration: InputDecoration(
                             labelText: 'Distance (cm)',
                             filled: true,
-                            fillColor: KultivaColors.springA.withOpacity(0.15),
+                            fillColor: KultivaColors.springA.withValues(alpha: 0.15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(14),
                               borderSide: BorderSide.none,
@@ -326,7 +326,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                           decoration: InputDecoration(
                             labelText: 'Watts',
                             filled: true,
-                            fillColor: KultivaColors.springA.withOpacity(0.15),
+                            fillColor: KultivaColors.springA.withValues(alpha: 0.15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(14),
                               borderSide: BorderSide.none,
@@ -427,7 +427,7 @@ class _RotationWarningBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8A87C).withOpacity(0.18),
+        color: const Color(0xFFE8A87C).withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFE8A87C)),
       ),

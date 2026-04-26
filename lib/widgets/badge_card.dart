@@ -22,7 +22,7 @@ Future<void> showBadgeCard(
 }) {
   return showGeneralDialog<void>(
     context: context,
-    barrierColor: Colors.black.withOpacity(0.75),
+    barrierColor: Colors.black.withValues(alpha: 0.75),
     barrierDismissible: true,
     barrierLabel: 'Fermer',
     transitionDuration: const Duration(milliseconds: 240),
@@ -229,7 +229,7 @@ class _BadgeCardVisual extends StatelessWidget {
         border: Border.all(color: frameColor, width: 4),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             blurRadius: 24,
             offset: const Offset(0, 10),
           ),
@@ -245,7 +245,7 @@ class _BadgeCardVisual extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: frameColor.withOpacity(0.35)),
+          border: Border.all(color: frameColor.withValues(alpha: 0.35)),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         child: Column(
@@ -256,9 +256,9 @@ class _BadgeCardVisual extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: frameColor.withOpacity(0.15),
+                color: frameColor.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: frameColor.withOpacity(0.5)),
+                border: Border.all(color: frameColor.withValues(alpha: 0.5)),
               ),
               child: Text(
                 badge.name,
@@ -288,7 +288,7 @@ class _BadgeCardVisual extends StatelessWidget {
                       colors: tierColors.innerGradient,
                     ),
                     border: Border.all(
-                        color: frameColor.withOpacity(0.4), width: 1.5),
+                        color: frameColor.withValues(alpha: 0.4), width: 1.5),
                   ),
                   child: Stack(
                     fit: StackFit.expand,
@@ -327,7 +327,7 @@ class _BadgeCardVisual extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey.shade50,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: frameColor.withOpacity(0.25)),
+                border: Border.all(color: frameColor.withValues(alpha: 0.25)),
               ),
               child: LexiconText(
                 badge.description,
@@ -398,7 +398,7 @@ class _EmojiFallback extends StatelessWidget {
               '✨',
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
               ),
             ),
           ),
@@ -410,7 +410,7 @@ class _EmojiFallback extends StatelessWidget {
               '⭐',
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
               ),
             ),
           ),
@@ -498,9 +498,9 @@ class _HolographicOverlay extends StatelessWidget {
                 right,
               ],
               colors: <Color>[
-                Colors.white.withOpacity(0),
-                Colors.white.withOpacity(shineOpacity),
-                Colors.white.withOpacity(0),
+                Colors.white.withValues(alpha: 0),
+                Colors.white.withValues(alpha: shineOpacity),
+                Colors.white.withValues(alpha: 0),
               ],
             ),
           ),
@@ -541,7 +541,7 @@ class _BadgeCardBack extends StatelessWidget {
         border: Border.all(color: frameColor, width: 4),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
             blurRadius: 24,
             offset: const Offset(0, 10),
           ),
@@ -561,7 +561,7 @@ class _BadgeCardBack extends StatelessWidget {
             colors: tierColors.innerGradient,
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: frameColor.withOpacity(0.5), width: 2),
+          border: Border.all(color: frameColor.withValues(alpha: 0.5), width: 2),
         ),
         child: Stack(
           children: <Widget>[
@@ -586,11 +586,11 @@ class _BadgeCardBack extends StatelessWidget {
                     height: 120,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       border: Border.all(color: frameColor, width: 3),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
-                          color: frameColor.withOpacity(0.4),
+                          color: frameColor.withValues(alpha: 0.4),
                           blurRadius: 16,
                           spreadRadius: 1,
                         ),
@@ -664,7 +664,7 @@ class _BackPatternPainter extends CustomPainter {
           text: symbol,
           style: TextStyle(
             fontSize: 16,
-            color: color.withOpacity(0.8),
+            color: color.withValues(alpha: 0.8),
           ),
         );
         textPainter.layout();
@@ -723,7 +723,7 @@ class _TierColors {
         Color.lerp(c, Colors.grey.shade400, 0.55) ?? c;
     return _TierColors(
       frame: dim(frame),
-      glow: glow.withOpacity(0),
+      glow: glow.withValues(alpha: 0),
       text: Colors.grey.shade700,
       frameGradient: frameGradient.map(dim).toList(),
       innerGradient: innerGradient.map(dim).toList(),
@@ -794,7 +794,7 @@ class _TierColors {
 
   static final _locked = _TierColors(
     frame: Colors.grey.shade500,
-    glow: Colors.grey.shade500.withOpacity(0.3),
+    glow: Colors.grey.shade500.withValues(alpha: 0.3),
     text: Colors.grey.shade700,
     frameGradient: <Color>[
       Colors.grey.shade300,
@@ -817,7 +817,7 @@ Future<void> showBadgeUnlockedAnimation(
 }) {
   return showGeneralDialog<void>(
     context: context,
-    barrierColor: Colors.black.withOpacity(0.85),
+    barrierColor: Colors.black.withValues(alpha: 0.85),
     barrierDismissible: false,
     barrierLabel: 'Nouveau badge',
     transitionDuration: const Duration(milliseconds: 1),
@@ -947,7 +947,7 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
                         color: Colors.white,
                         shadows: <Shadow>[
                           Shadow(
-                            color: Colors.black.withOpacity(0.7),
+                            color: Colors.black.withValues(alpha: 0.7),
                             blurRadius: 8,
                           ),
                         ],
@@ -962,7 +962,7 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
                         color: Colors.white,
                         shadows: <Shadow>[
                           Shadow(
-                            color: Colors.black.withOpacity(0.6),
+                            color: Colors.black.withValues(alpha: 0.6),
                             blurRadius: 6,
                           ),
                         ],
@@ -982,7 +982,7 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white.withOpacity(0.7),
+                    color: Colors.white.withValues(alpha: 0.7),
                     letterSpacing: 1,
                   ),
                 ),

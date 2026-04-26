@@ -253,7 +253,7 @@ class _TamassiStoryVisual extends StatelessWidget {
               child: Text(
                 '🪴 KULTIVA',
                 style: TextStyle(
-                  color: KultivaColors.textPrimary.withOpacity(0.6),
+                  color: KultivaColors.textPrimary.withValues(alpha: 0.6),
                   fontWeight: FontWeight.w900,
                   fontSize: 14,
                   letterSpacing: 3,

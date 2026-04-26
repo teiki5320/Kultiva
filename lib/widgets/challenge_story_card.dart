@@ -191,7 +191,7 @@ class _StoryCardVisual extends StatelessWidget {
             pathOrUrl: photoPath,
             fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => Container(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               alignment: Alignment.center,
               child: Text(challenge.emoji,
                   style: const TextStyle(fontSize: 80)),
@@ -204,10 +204,10 @@ class _StoryCardVisual extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: <Color>[
-                  Colors.black.withOpacity(0.6),
+                  Colors.black.withValues(alpha: 0.6),
                   Colors.transparent,
                   Colors.transparent,
-                  Colors.black.withOpacity(0.7),
+                  Colors.black.withValues(alpha: 0.7),
                 ],
                 stops: const <double>[0.0, 0.2, 0.7, 1.0],
               ),
@@ -228,7 +228,7 @@ class _StoryCardVisual extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: color.withOpacity(0.5),
+                        color: color.withValues(alpha: 0.5),
                         blurRadius: 12,
                       ),
                     ],
@@ -263,7 +263,7 @@ class _StoryCardVisual extends StatelessWidget {
                     fontSize: 24,
                     shadows: <Shadow>[
                       Shadow(
-                        color: Colors.black.withOpacity(0.7),
+                        color: Colors.black.withValues(alpha: 0.7),
                         blurRadius: 8,
                       ),
                     ],
@@ -287,7 +287,7 @@ class _StoryCardVisual extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         blurRadius: 10,
                       ),
                     ],
@@ -316,13 +316,13 @@ class _StoryCardVisual extends StatelessWidget {
                 Text(
                   '🪴 KULTIVA',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
                     letterSpacing: 3,
                     shadows: <Shadow>[
                       Shadow(
-                        color: Colors.black.withOpacity(0.6),
+                        color: Colors.black.withValues(alpha: 0.6),
                         blurRadius: 6,
                       ),
                     ],

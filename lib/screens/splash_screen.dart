@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
                     errorBuilder: (_, __, ___) => Container(
                       width: 140, height: 140,
                       decoration: BoxDecoration(
-                        color: KultivaColors.lightGreen.withOpacity(0.4),
+                        color: KultivaColors.lightGreen.withValues(alpha: 0.4),
                         borderRadius: BorderRadius.circular(36),
                       ),
                       child: const Center(

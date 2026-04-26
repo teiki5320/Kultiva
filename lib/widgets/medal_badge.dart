@@ -65,7 +65,7 @@ class MedalBadge extends StatelessWidget {
           gradient: const SweepGradient(colors: _shinyGradient),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: const Color(0xFFFF5CA8).withOpacity(0.5),
+              color: const Color(0xFFFF5CA8).withValues(alpha: 0.5),
               blurRadius: 16,
               spreadRadius: 1,
             ),
@@ -78,24 +78,24 @@ class MedalBadge extends StatelessWidget {
       final glowShadows = switch (tier) {
         MedalTier.gold => <BoxShadow>[
             BoxShadow(
-              color: const Color(0xFFFFB800).withOpacity(0.55),
+              color: const Color(0xFFFFB800).withValues(alpha: 0.55),
               blurRadius: 18,
               spreadRadius: 1,
             ),
             BoxShadow(
-              color: const Color(0xFFFFF0A0).withOpacity(0.45),
+              color: const Color(0xFFFFF0A0).withValues(alpha: 0.45),
               blurRadius: 6,
               spreadRadius: 0,
             ),
           ],
         MedalTier.silver => <BoxShadow>[
             BoxShadow(
-              color: const Color(0xFF9AA4B0).withOpacity(0.45),
+              color: const Color(0xFF9AA4B0).withValues(alpha: 0.45),
               blurRadius: 14,
               spreadRadius: 1,
             ),
             BoxShadow(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               blurRadius: 6,
               spreadRadius: 0,
             ),
@@ -137,7 +137,7 @@ class MedalBadge extends StatelessWidget {
                 color: Colors.white,
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.18),
+                    color: Colors.black.withValues(alpha: 0.18),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -158,7 +158,7 @@ class MedalBadge extends StatelessWidget {
   Color get _ringColor {
     switch (tier) {
       case MedalTier.none:
-        return familyColor.withOpacity(0.35);
+        return familyColor.withValues(alpha: 0.35);
       case MedalTier.bronze:
       case MedalTier.silver:
       case MedalTier.gold:
@@ -182,7 +182,7 @@ class MedalBadge extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: familyColor.withOpacity(0.15),
+          color: familyColor.withValues(alpha: 0.15),
         ),
         alignment: Alignment.center,
         child: _buildCenterContent(emojiSize),
@@ -234,10 +234,10 @@ class MedalBadge extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: <Color>[
-                  Colors.white.withOpacity(0.45),
-                  Colors.white.withOpacity(0.0),
-                  Colors.white.withOpacity(0.0),
-                  Colors.white.withOpacity(0.15),
+                  Colors.white.withValues(alpha: 0.45),
+                  Colors.white.withValues(alpha: 0.0),
+                  Colors.white.withValues(alpha: 0.0),
+                  Colors.white.withValues(alpha: 0.15),
                 ],
                 stops: const <double>[0.0, 0.35, 0.7, 1.0],
               ),
@@ -254,8 +254,8 @@ class MedalBadge extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: <Color>[
-                    Colors.white.withOpacity(0.85),
-                    Colors.white.withOpacity(0.0),
+                    Colors.white.withValues(alpha: 0.85),
+                    Colors.white.withValues(alpha: 0.0),
                   ],
                   stops: const <double>[0.0, 1.0],
                 ),

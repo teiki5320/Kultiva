@@ -82,7 +82,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.25),
+                            color: Colors.black.withValues(alpha: 0.25),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.arrow_back,
@@ -100,7 +100,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.25),
+                              color: Colors.black.withValues(alpha: 0.25),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(Icons.filter_alt_off,
@@ -114,7 +114,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
               // Légende.
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                color: KultivaColors.lightGreen.withOpacity(0.1),
+                color: KultivaColors.lightGreen.withValues(alpha: 0.1),
                 child: Row(
                   children: [
                     _LegendItem(color: KultivaColors.primaryGreen, label: 'Semis'),
@@ -125,7 +125,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: KultivaColors.primaryGreen.withOpacity(0.15),
+                          color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -179,7 +179,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: _filterMonth == m + 1
-                                      ? KultivaColors.primaryGreen.withOpacity(0.2)
+                                      ? KultivaColors.primaryGreen.withValues(alpha: 0.2)
                                       : null,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -217,7 +217,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                                       color: KultivaColors.primaryGreen,
                                       decoration: TextDecoration.underline,
                                       decorationColor:
-                                          KultivaColors.primaryGreen.withOpacity(0.3),
+                                          KultivaColors.primaryGreen.withValues(alpha: 0.3),
                                     ),
                                   ),
                                 ),
@@ -294,7 +294,7 @@ class _MonthCell extends StatelessWidget {
         height: 28,
         decoration: BoxDecoration(
           color: isCurrentMonth
-              ? KultivaColors.lightGreen.withOpacity(0.1)
+              ? KultivaColors.lightGreen.withValues(alpha: 0.1)
               : null,
           borderRadius: BorderRadius.circular(4),
         ),

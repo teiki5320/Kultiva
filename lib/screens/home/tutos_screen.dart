@@ -178,8 +178,8 @@ class TutosScreen extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.0),
-                          Colors.black.withOpacity(0.35),
+                          Colors.black.withValues(alpha: 0.0),
+                          Colors.black.withValues(alpha: 0.35),
                         ],
                       ),
                     ),
@@ -206,7 +206,7 @@ class TutosScreen extends StatelessWidget {
                         Text(
                           'Apprends à jardiner en vidéo',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.85),
+                            color: Colors.white.withValues(alpha: 0.85),
                             fontWeight: FontWeight.w600,
                             fontSize: 13,
                             shadows: const [
@@ -302,14 +302,14 @@ class _TutoTile extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              color.withOpacity(0.12),
-              color.withOpacity(0.25),
+              color.withValues(alpha: 0.12),
+              color.withValues(alpha: 0.25),
             ],
           ),
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -326,7 +326,7 @@ class _TutoTile extends StatelessWidget {
                 height: 22,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                 ),
               ),
             ),
@@ -338,7 +338,7 @@ class _TutoTile extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.7),
+                      color: Colors.white.withValues(alpha: 0.7),
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,

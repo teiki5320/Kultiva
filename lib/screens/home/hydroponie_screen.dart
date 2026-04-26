@@ -142,7 +142,7 @@ class _SectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
           decoration: BoxDecoration(
-            color: const Color(0xFF4A9BBF).withOpacity(0.14),
+            color: const Color(0xFF4A9BBF).withValues(alpha: 0.14),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(
@@ -187,10 +187,10 @@ class _CultureCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: KultivaColors.winterA.withOpacity(0.45),
+            color: KultivaColors.winterA.withValues(alpha: 0.45),
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: const Color(0xFF4A9BBF).withOpacity(0.4),
+              color: const Color(0xFF4A9BBF).withValues(alpha: 0.4),
             ),
           ),
           child: Column(
@@ -202,7 +202,7 @@ class _CultureCard extends StatelessWidget {
                     width: 54,
                     height: 54,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF4A9BBF).withOpacity(0.18),
+                      color: const Color(0xFF4A9BBF).withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
@@ -404,7 +404,7 @@ class _FlushAlert extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8A87C).withOpacity(0.18),
+        color: const Color(0xFFE8A87C).withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFE8A87C)),
       ),
@@ -521,7 +521,7 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF4A9BBF).withOpacity(0.14),
+        color: const Color(0xFF4A9BBF).withValues(alpha: 0.14),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
@@ -626,9 +626,9 @@ class _ReadingChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.12),
+          color: color.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withOpacity(0.4), width: 1),
+          border: Border.all(color: color.withValues(alpha: 0.4), width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -645,7 +645,7 @@ class _ReadingChip extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
-                      color: KultivaColors.textPrimary.withOpacity(0.7),
+                      color: KultivaColors.textPrimary.withValues(alpha: 0.7),
                     ),
                   ),
                 ),
@@ -711,10 +711,10 @@ class _EmptyState extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: KultivaColors.winterA.withOpacity(0.4),
+        color: KultivaColors.winterA.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: KultivaColors.textSecondary.withOpacity(0.2),
+          color: KultivaColors.textSecondary.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -853,7 +853,7 @@ class _HydroHero extends StatelessWidget {
                   'Cultiver sans terre, avec suivi lumière.',
                   style: TextStyle(
                     fontSize: 13,
-                    color: KultivaColors.textPrimary.withOpacity(0.8),
+                    color: KultivaColors.textPrimary.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -925,7 +925,7 @@ class _DiagramNode extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: KultivaColors.winterA.withOpacity(0.5),
+            color: KultivaColors.winterA.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(16),
           ),
           alignment: Alignment.center,
@@ -1028,10 +1028,10 @@ class _PhaseChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: KultivaColors.primaryGreen.withOpacity(0.14),
+          color: KultivaColors.primaryGreen.withValues(alpha: 0.14),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withOpacity(0.4),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
           ),
         ),
         child: Row(
@@ -1128,7 +1128,7 @@ class _DliChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.14),
+        color: _color.withValues(alpha: 0.14),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
@@ -1158,13 +1158,13 @@ class _BuildsCta extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: <Color>[
-              KultivaColors.primaryGreen.withOpacity(0.18),
-              const Color(0xFF4A9BBF).withOpacity(0.18),
+              KultivaColors.primaryGreen.withValues(alpha: 0.18),
+              const Color(0xFF4A9BBF).withValues(alpha: 0.18),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withOpacity(0.4),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
             width: 1.2,
           ),
         ),
@@ -1217,8 +1217,8 @@ class _AccessoryCta extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              const Color(0xFF4A9BBF).withOpacity(0.22),
-              KultivaColors.winterA.withOpacity(0.55),
+              const Color(0xFF4A9BBF).withValues(alpha: 0.22),
+              KultivaColors.winterA.withValues(alpha: 0.55),
             ],
           ),
           borderRadius: BorderRadius.circular(20),

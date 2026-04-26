@@ -157,8 +157,8 @@ class _ShareCardContent extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[
-            familyColor.withOpacity(0.18),
-            familyColor.withOpacity(0.45),
+            familyColor.withValues(alpha: 0.18),
+            familyColor.withValues(alpha: 0.45),
           ],
         ),
         borderRadius: BorderRadius.circular(28),
@@ -196,7 +196,7 @@ class _ShareCardContent extends StatelessWidget {
                   border: Border.all(color: familyColor, width: 3),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: familyColor.withOpacity(0.25),
+                      color: familyColor.withValues(alpha: 0.25),
                       blurRadius: 18,
                       offset: const Offset(0, 8),
                     ),

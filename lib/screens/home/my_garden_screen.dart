@@ -1272,7 +1272,7 @@ class _TamassiViewState extends State<_TamassiView>
           right: 8,
           child: SafeArea(
             child: Material(
-              color: Colors.black.withOpacity(0.55),
+              color: Colors.black.withValues(alpha: 0.55),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -1507,7 +1507,7 @@ class _TamassiViewState extends State<_TamassiView>
                                 Positioned.fill(
                                   child: Container(
                                     color: Colors.white
-                                        .withOpacity(flashOpacity),
+                                        .withValues(alpha: flashOpacity),
                                   ),
                                 ),
                                 // Rayons lumineux rotatifs.
@@ -1551,7 +1551,7 @@ class _TamassiViewState extends State<_TamassiView>
                                           boxShadow: <BoxShadow>[
                                             BoxShadow(
                                               color: const Color(0xFFFFB04C)
-                                                  .withOpacity(0.7),
+                                                  .withValues(alpha: 0.7),
                                               blurRadius: 24,
                                               spreadRadius: 4,
                                             ),
@@ -1710,7 +1710,7 @@ class _StarterTapZoneState extends State<_StarterTapZone> {
         duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
-          color: _pressed ? Colors.white.withOpacity(0.25) : Colors.transparent,
+          color: _pressed ? Colors.white.withValues(alpha: 0.25) : Colors.transparent,
         ),
       ),
     );
@@ -1742,7 +1742,7 @@ class _TamassiActionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(22),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: color.withOpacity(0.35),
+              color: color.withValues(alpha: 0.35),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -1944,18 +1944,18 @@ class _FireflyOrbitPainter extends CustomPainter {
       canvas.drawCircle(
         p, 10,
         Paint()
-          ..color = const Color(0xFFFFF3A0).withOpacity(opacity * 0.22)
+          ..color = const Color(0xFFFFF3A0).withValues(alpha: opacity * 0.22)
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6),
       );
       // Point lumineux.
       canvas.drawCircle(
         p, 3.2,
-        Paint()..color = const Color(0xFFFFE37A).withOpacity(opacity),
+        Paint()..color = const Color(0xFFFFE37A).withValues(alpha: opacity),
       );
       // Reflet blanc central.
       canvas.drawCircle(
         p, 1.4,
-        Paint()..color = Colors.white.withOpacity(opacity),
+        Paint()..color = Colors.white.withValues(alpha: opacity),
       );
     }
   }
@@ -1997,7 +1997,7 @@ class _EvolutionRaysPainter extends CustomPainter {
                       const Color(0xFFFFE066),
                       const Color(0xFFFFB04C),
                       (i % 2).toDouble())!
-                  .withOpacity(opacity * 0.7),
+                  .withValues(alpha: opacity * 0.7),
               Colors.transparent,
             ],
           ).createShader(
@@ -2044,7 +2044,7 @@ class _ConfettiPainter extends CustomPainter {
       canvas.rotate(rot);
       canvas.drawRect(
         Rect.fromCenter(center: Offset.zero, width: 9, height: 4),
-        Paint()..color = c.withOpacity((1 - progress).clamp(0.0, 1.0)),
+        Paint()..color = c.withValues(alpha: (1 - progress).clamp(0.0, 1.0)),
       );
       canvas.restore();
     }
@@ -2195,7 +2195,7 @@ class _StarterButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.15),
+            color: color.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: color, width: 2.5),
           ),
@@ -2394,13 +2394,13 @@ class _KawaiiBackgroundState extends State<_KawaiiBackground>
       else ...<Widget>[
         Positioned(top: 20, left: 30,
           child: Text('☁️', style: TextStyle(
-            fontSize: 44, color: Colors.white.withOpacity(0.9)))),
+            fontSize: 44, color: Colors.white.withValues(alpha: 0.9)))),
         Positioned(top: 60, right: 40,
           child: Text('☁️', style: TextStyle(
-            fontSize: 32, color: Colors.white.withOpacity(0.8)))),
+            fontSize: 32, color: Colors.white.withValues(alpha: 0.8)))),
         Positioned(top: 140, left: 20,
           child: Text('☁️', style: TextStyle(
-            fontSize: 28, color: Colors.white.withOpacity(0.7)))),
+            fontSize: 28, color: Colors.white.withValues(alpha: 0.7)))),
       ],
       const Positioned(bottom: 20, left: 20,
         child: Text('🌸', style: TextStyle(fontSize: 26))),
@@ -2491,7 +2491,7 @@ class _WeatherParticlePainter extends CustomPainter {
       final rawY = (progress * speed + rng.nextDouble()) % 1.0;
       final y = rawY * size.height * 1.1 - size.height * 0.05;
       final len = size.height * (heavy ? 0.04 : 0.025);
-      paint.color = const Color(0xFF6BAADC).withOpacity(0.6);
+      paint.color = const Color(0xFF6BAADC).withValues(alpha: 0.6);
       canvas.drawLine(Offset(x, y), Offset(x - 2, y + len), paint);
     }
   }
@@ -2509,7 +2509,7 @@ class _WeatherParticlePainter extends CustomPainter {
       final r = 2.0 + rng.nextDouble() * 3;
       canvas.drawCircle(
         Offset(x, y), r,
-        Paint()..color = Colors.white.withOpacity(0.8),
+        Paint()..color = Colors.white.withValues(alpha: 0.8),
       );
     }
   }
@@ -2520,7 +2520,7 @@ class _WeatherParticlePainter extends CustomPainter {
     if (flash < 0.03) {
       canvas.drawRect(
         Offset.zero & size,
-        Paint()..color = Colors.white.withOpacity(0.3 * (1 - flash / 0.03)),
+        Paint()..color = Colors.white.withValues(alpha: 0.3 * (1 - flash / 0.03)),
       );
     }
   }
@@ -2535,7 +2535,7 @@ class _WeatherParticlePainter extends CustomPainter {
       final r = 2.0 + rng.nextDouble() * 2;
       canvas.drawCircle(
         Offset(x, y), r,
-        Paint()..color = const Color(0xFFFFE066).withOpacity(opacity),
+        Paint()..color = const Color(0xFFFFE066).withValues(alpha: opacity),
       );
     }
   }
@@ -2552,7 +2552,7 @@ class _WeatherParticlePainter extends CustomPainter {
       canvas.drawCircle(
         Offset(baseX + driftX, baseY + driftY),
         2.5,
-        Paint()..color = const Color(0xFFE8FF6B).withOpacity(opacity),
+        Paint()..color = const Color(0xFFE8FF6B).withValues(alpha: opacity),
       );
     }
   }
@@ -2573,7 +2573,7 @@ class _WeatherParticlePainter extends CustomPainter {
       canvas.rotate(rotation);
       canvas.drawOval(
         Rect.fromCenter(center: Offset.zero, width: r * 2.5, height: r),
-        Paint()..color = const Color(0xFFFFB7D5).withOpacity(0.7),
+        Paint()..color = const Color(0xFFFFB7D5).withValues(alpha: 0.7),
       );
       canvas.restore();
     }
@@ -2600,7 +2600,7 @@ class _WeatherParticlePainter extends CustomPainter {
       canvas.rotate(rotation);
       canvas.drawOval(
         Rect.fromCenter(center: Offset.zero, width: r * 2.2, height: r),
-        Paint()..color = colors[i % colors.length].withOpacity(0.65),
+        Paint()..color = colors[i % colors.length].withValues(alpha: 0.65),
       );
       canvas.restore();
     }
@@ -2670,8 +2670,8 @@ class _EffectPainter extends CustomPainter {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: <Color>[
-              const Color(0xFF9BD4FF).withOpacity(0.9),
-              const Color(0xFF3A9BE8).withOpacity(0.95),
+              const Color(0xFF9BD4FF).withValues(alpha: 0.9),
+              const Color(0xFF3A9BE8).withValues(alpha: 0.95),
             ],
           ).createShader(Rect.fromCircle(
               center: Offset(startX, y), radius: dropSize * 2)),
@@ -2687,7 +2687,7 @@ class _EffectPainter extends CustomPainter {
             ..style = PaintingStyle.stroke
             ..strokeWidth = 2
             ..color =
-                const Color(0xFF3A9BE8).withOpacity(0.5 * (1 - splashP)),
+                const Color(0xFF3A9BE8).withValues(alpha: 0.5 * (1 - splashP)),
         );
       }
     }
@@ -2719,7 +2719,7 @@ class _EffectPainter extends CustomPainter {
 
   void _drawSpark(
       Canvas canvas, Offset center, double size, Color color, double opacity) {
-    final paint = Paint()..color = color.withOpacity(opacity);
+    final paint = Paint()..color = color.withValues(alpha: opacity);
     // 4-branch star.
     final path = Path();
     for (int i = 0; i < 8; i++) {
@@ -2798,8 +2798,8 @@ class _Header extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: <Color>[
-                    Colors.black.withOpacity(0),
-                    Colors.black.withOpacity(0.35),
+                    Colors.black.withValues(alpha: 0),
+                    Colors.black.withValues(alpha: 0.35),
                   ],
                 ),
               ),
@@ -2825,7 +2825,7 @@ class _Header extends StatelessWidget {
                   Text(
                     '🏅 $speciesCount / $totalSpecies espèces  ·  🏆 $unlockedCount / $totalBadges badges',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
                       shadows: const <Shadow>[
@@ -2863,13 +2863,13 @@ class _ThirstyBanner extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: <Color>[
-                KultivaColors.terracotta.withOpacity(0.18),
-                const Color(0xFFFFE0B2).withOpacity(0.25),
+                KultivaColors.terracotta.withValues(alpha: 0.18),
+                const Color(0xFFFFE0B2).withValues(alpha: 0.25),
               ],
             ),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: KultivaColors.terracotta.withOpacity(0.35),
+              color: KultivaColors.terracotta.withValues(alpha: 0.35),
             ),
           ),
           child: Row(
@@ -3044,7 +3044,7 @@ class _FilterChip extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
-            color: selected ? color.withOpacity(0.2) : Colors.white,
+            color: selected ? color.withValues(alpha: 0.2) : Colors.white,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: color,
