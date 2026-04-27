@@ -1,6 +1,6 @@
 # 🗺️ Kultiva — Roadmap
 
-> Dernière mise à jour : **2026-04-25**
+> Dernière mise à jour : **2026-04-26**
 > Statut global : **actif**
 
 ## 🎯 Vision
@@ -23,21 +23,25 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 - [x] Partage de builds hydroponiques dans la communauté avec photos, équipement et likes
 - [x] CI iOS via Xcode Cloud, signing release Android et conformité Amazon Associates en place
 - [x] Landing marketing en ligne et site Kultivaprix (comparateur de prix) lié depuis l'app
+- [x] README réécrit pour refléter la v2 réelle (Supabase, Poussidex, Tamassi, météo, feed, cahier de culture)
+- [x] Sync unidirectionnelle du catalogue Kultiva vers Kultivaprix via edge function Supabase et workflow GitHub Actions sur push main
+- [x] Gros ménage de lint : 308 substitutions `withOpacity` → `withValues` sur 38 fichiers, plus de 90 % des avertissements résorbés
+- [x] Documentation de passation pour Kultivaprix (schéma, RLS, exemples curl/JS) et checklist de test V5 sur device
 
 ### 🔥 En cours
 
-- [ ] Validation sur device de la V5 du cahier de culture (10 batchs poussés, branche `claude/init-project-docs-hzSyH` à merger sur main)
-- [ ] Polish UI / UX pré-store sur les nouveaux écrans hydro et pleine terre
+- [ ] Validation sur device de la V5 du cahier de culture (10 batchs poussés sur `claude/init-project-docs-hzSyH`, à dérouler avec `docs/v5-test-checklist.md`)
+- [ ] Merge de la branche V5 sur `main` pour déclencher la première synchro automatique du catalogue vers Kultivaprix
 
 ### 📋 À faire
 
-- [ ] Réécrire complètement le README, qui décrit toujours la v1 obsolète
 - [ ] Soumettre l'app sur App Store et Google Play (listing, captures, descriptions, politique de confidentialité)
-- [ ] Mettre en place une CI GitHub Actions qui lance les tests à chaque pull request
-- [ ] Étendre la couverture de tests, aujourd'hui limitée aux modèles (~631 lignes pour ~30 600 lignes de code)
-- [ ] Nettoyer les ~525 avertissements de lint (migration `withOpacity` vers `withValues`, paramètres inutilisés)
+- [ ] Mettre en place une CI GitHub Actions qui lance `flutter analyze` et `flutter test` à chaque pull request
+- [ ] Étendre la couverture de tests, aujourd'hui limitée aux modèles, vers les widgets et un parcours d'intégration
+- [ ] Finir les ~40 avertissements de lint restants (Radio/Switch dépréciés, commentaires HTML)
 - [ ] Décider du sort de `go_router` : l'activer pour de bon ou le retirer du `pubspec`
 - [ ] Déplacer la modération du feed et le comptage de likes côté serveur via des edge functions Supabase
+- [ ] Transmettre `docs/kultivaprix-handoff.md` à l'équipe Kultivaprix pour brancher la consommation du catalogue
 
 ### 💡 Idées
 

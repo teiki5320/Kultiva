@@ -1339,6 +1339,1647 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "300 à 600 g/m² (grains)",
     amazonUrl: "https://www.amazon.fr/s?k=graines+sorgho&tag=kultiva-21",
   ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cornichon
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cornichon',
+    name: 'Cornichon',
+    emoji: '🥒',
+    category: VegetableCategory.fruits,
+    description:
+        "Petit concombre récolté jeune, parfait pour les conserves au vinaigre. Plante prolifique, croissance rapide en plein soleil.",
+    note: "Récolte tous les 2 jours pour des cornichons fermes.",
+    sowingTechnique: "Semis en godet sous abri ou semis direct après les gelées",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "18 à 25 °C",
+    germinationDays: "7 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "60 × 100 cm",
+    watering: "Régulier, au pied, sans mouiller le feuillage",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "2 à 4 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cornichon&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '60 à 75 jours',
+      'summer': '50 à 65 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Panais
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'panais',
+    name: 'Panais',
+    emoji: '🥕',
+    category: VegetableCategory.roots,
+    description:
+        "Racine blanche au goût sucré et anisé, proche de la carotte. Très rustique, supporte les gelées qui adoucissent sa chair.",
+    note: "Semer dès mars en sol meuble — germination lente (3 à 4 semaines).",
+    sowingTechnique: "Semis direct en ligne, graines fraîches",
+    sowingDepth: "1 cm",
+    germinationTemp: "10 à 15 °C",
+    germinationDays: "20 à 30 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "10 × 30 cm",
+    watering: "Régulier, sans excès",
+    soil: "Profond, meuble, sans cailloux",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+panais&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '150 à 180 jours',
+      'autumn': '120 à 150 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Rutabaga
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'rutabaga',
+    name: 'Rutabaga',
+    emoji: '🥔',
+    category: VegetableCategory.roots,
+    description:
+        "Racine généreuse à chair jaune, croisement entre chou et navet. Goût doux, parfait pour potages et purées d'hiver.",
+    note: "Légume rustique, idéal pour la conservation en cave.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "1 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "20 × 40 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Frais, profond, riche en humus",
+    yieldEstimate: "3 à 5 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+rutabaga&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '100 à 130 jours',
+      'autumn': '90 à 110 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Topinambour
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'topinambour',
+    name: 'Topinambour',
+    emoji: '🥔',
+    category: VegetableCategory.tubers,
+    description:
+        "Tubercule rustique à saveur d'artichaut. Plante vivace géante de 2 à 3 m, productive et increvable, mais peut devenir envahissante.",
+    note: "Une fois planté, revient chaque année — choisir l'emplacement avec soin.",
+    sowingTechnique: "Plantation de tubercules au printemps",
+    sowingDepth: "8 à 10 cm",
+    germinationTemp: "10 à 15 °C",
+    germinationDays: "20 à 30 jours (levée)",
+    exposure: "Soleil",
+    spacing: "40 × 80 cm",
+    watering: "Faible, plante très rustique",
+    soil: "Tout type, même pauvre",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=tubercules+topinambour&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': '180 à 210 jours',
+      'winter': '200 à 240 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Salsifis
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'salsifis',
+    name: 'Salsifis',
+    emoji: '🌱',
+    category: VegetableCategory.roots,
+    description:
+        "Racine longue et fine au goût d'huître ou d'asperge. Légume oublié à redécouvrir, riche en inuline et fibres.",
+    note: "Semer en place dès avril — repiquage difficile.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "1,5 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "10 à 20 jours",
+    exposure: "Soleil",
+    spacing: "10 × 30 cm",
+    watering: "Régulier, sans excès",
+    soil: "Meuble, profond, sans cailloux",
+    yieldEstimate: "2 à 3 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+salsifis&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': '120 à 150 jours',
+      'winter': '150 à 180 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Radis noir
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'radis_noir',
+    name: 'Radis noir',
+    emoji: '🌑',
+    category: VegetableCategory.roots,
+    description:
+        "Radis d'hiver à peau noire et chair blanche, piquant et croquant. Très bonne conservation, riche en vitamine C.",
+    note: "Semer en été pour récolter à l'automne et conserver tout l'hiver.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "1 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "5 à 8 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "10 × 30 cm",
+    watering: "Régulier, sol toujours frais",
+    soil: "Meuble, profond, riche",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+radis+noir&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '70 à 90 jours',
+      'autumn': '80 à 100 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Chou-rave
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'chou_rave',
+    name: 'Chou-rave',
+    emoji: '🥬',
+    category: VegetableCategory.stems,
+    description:
+        "Chou à tige renflée en boule, à la chair tendre et sucrée. Se mange cru ou cuit, très digeste.",
+    note: "Récolter jeune (5-7 cm) pour une chair fondante.",
+    sowingTechnique: "Semis en pépinière puis repiquage",
+    sowingDepth: "1 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "25 × 30 cm",
+    watering: "Régulier, ne pas laisser sécher",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "3 à 4 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+chou+rave&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '60 à 80 jours',
+      'summer': '60 à 75 jours',
+      'autumn': '70 à 90 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cresson de fontaine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cresson',
+    name: 'Cresson de fontaine',
+    emoji: '🌿',
+    category: VegetableCategory.leaves,
+    description:
+        "Plante aquatique au goût piquant et iodé, très riche en vitamines. Pousse au bord d'un ruisseau ou en jardinière constamment humide.",
+    note: "Aime l'eau courante ou un substrat très humide.",
+    sowingTechnique: "Semis en pleine eau ou bouturage",
+    sowingDepth: "Surface",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Mi-ombre",
+    spacing: "15 × 20 cm",
+    watering: "Permanent, sol détrempé",
+    soil: "Argileux, riche en humus, très humide",
+    yieldEstimate: "1 à 2 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cresson+fontaine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '50 à 70 jours',
+      'autumn': '60 à 80 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pak choï
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pak_choi',
+    name: 'Pak choï',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Chou chinois à côtes blanches et feuilles vertes, croissance ultra-rapide. Délicieux sauté au wok ou en soupe.",
+    note: "Récolte 30 à 45 jours après semis — parfait pour débuter.",
+    sowingTechnique: "Semis direct ou en godet",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 22 °C",
+    germinationDays: "5 à 8 jours",
+    exposure: "Mi-ombre en été, soleil au printemps",
+    spacing: "20 × 30 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "2 à 3 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pak+choi&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': '30 à 45 jours',
+      'autumn': '40 à 55 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pourpier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pourpier',
+    name: 'Pourpier',
+    emoji: '🌿',
+    category: VegetableCategory.leaves,
+    description:
+        "Plante grasse aux feuilles charnues et acidulées, très riche en oméga-3. Résiste à la sécheresse, idéale en plein été.",
+    note: "Se ressème spontanément, presque indestructible.",
+    sowingTechnique: "Semis direct à la volée",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 25 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "15 × 20 cm",
+    watering: "Faible, plante très résistante",
+    soil: "Léger, sableux, drainé",
+    yieldEstimate: "1 à 2 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pourpier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '40 à 55 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Chou chinois (Napa)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'chou_chinois',
+    name: 'Chou chinois (Napa)',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Chou pommé allongé à feuilles tendres et nervures blanches. Base du kimchi coréen, parfait en salade ou sauté.",
+    note: "Préfère les températures fraîches — semer en fin d'été.",
+    sowingTechnique: "Semis en pépinière puis repiquage",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "30 × 40 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "4 à 6 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+chou+chinois+napa&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': '60 à 80 jours',
+      'autumn': '70 à 90 jours',
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Romarin
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'romarin',
+    name: 'Romarin',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Arbrisseau aromatique méditerranéen aux feuilles persistantes. Très résistant à la sécheresse, présent toute l'année au jardin.",
+    note: "Plante vivace — un seul plant suffit pour des années.",
+    sowingTechnique: "Semis difficile — préférer le bouturage ou l'achat de plant",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 25 °C",
+    germinationDays: "21 à 30 jours",
+    exposure: "Plein soleil",
+    spacing: "60 × 80 cm",
+    watering: "Faible, très résistant à la sécheresse",
+    soil: "Pauvre, sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+romarin&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+      'winter': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Sauge officinale
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'sauge',
+    name: 'Sauge officinale',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate méditerranéen aux feuilles veloutées gris-vert. Saveur puissante pour viandes et farces, vertus médicinales reconnues.",
+    note: "Plante vivace — tailler après floraison pour la garder compacte.",
+    sowingTechnique: "Semis en godet ou bouturage",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Plein soleil",
+    spacing: "40 × 50 cm",
+    watering: "Faible",
+    soil: "Sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+sauge+officinale&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Origan
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'origan',
+    name: 'Origan',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate vivace au parfum chaud, indispensable en cuisine italienne. Floraison rose mellifère qui attire les pollinisateurs.",
+    note: "Récolter au moment de la floraison pour un arôme maximal.",
+    sowingTechnique: "Semis en godet ou division de touffe",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "10 à 21 jours",
+    exposure: "Plein soleil",
+    spacing: "30 × 40 cm",
+    watering: "Faible",
+    soil: "Sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+origan&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Estragon
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'estragon',
+    name: 'Estragon',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate fin au goût anisé, indispensable à la cuisine française (béarnaise, vinaigre d'estragon). Préférer la variété française à la russe (moins parfumée).",
+    note: "Multiplication par division — les graines donnent souvent l'estragon russe sans saveur.",
+    sowingTechnique: "Plantation de plant — éviter les graines",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil",
+    spacing: "40 × 50 cm",
+    watering: "Modéré",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+estragon+francais&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Sarriette
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'sarriette',
+    name: 'Sarriette',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate poivré qui parfume haricots, fromages frais et grillades. La sarriette des montagnes (vivace) est plus rustique que celle des jardins (annuelle).",
+    note: "Plantée près des haricots, elle éloigne les pucerons.",
+    sowingTechnique: "Semis en place ou en godet",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "10 à 21 jours",
+    exposure: "Plein soleil",
+    spacing: "25 × 30 cm",
+    watering: "Faible",
+    soil: "Sec, calcaire, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+sarriette&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "70 à 90 jours",
+      'autumn': "Récolte continue jusqu'aux gelées",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Aneth
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'aneth',
+    name: 'Aneth',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate annuel aux feuilles plumeuses au goût frais et anisé. Indispensable avec le saumon, les concombres et les marinades.",
+    note: "Semer toutes les 3 semaines pour une récolte continue.",
+    sowingTechnique: "Semis direct en place — supporte mal le repiquage",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Soleil",
+    spacing: "20 × 30 cm",
+    watering: "Régulier",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+aneth&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "40 à 60 jours",
+      'summer': "30 à 50 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cerfeuil
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cerfeuil',
+    name: 'Cerfeuil',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate fin et délicat au goût anisé subtil, base des fines herbes. Préfère la mi-ombre et la fraîcheur.",
+    note: "Semer en mars-avril ou en septembre — n'aime pas la chaleur.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Mi-ombre",
+    spacing: "15 × 25 cm",
+    watering: "Régulier, sol toujours frais",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "Récolte sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cerfeuil&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "45 à 60 jours",
+      'autumn': "50 à 70 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Mélisse citronnelle
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'melisse',
+    name: 'Mélisse citronnelle',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Aromate vivace au parfum citronné, parfaite en tisane apaisante avant le coucher. Très mellifère, attire les abeilles.",
+    note: "Plante vivace — peut devenir envahissante par semis spontané.",
+    sowingTechnique: "Semis ou division de touffe",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "40 × 50 cm",
+    watering: "Modéré",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+melisse+citronnelle&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Verveine citronnée
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'verveine',
+    name: 'Verveine citronnée',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Arbuste à feuilles vert vif au parfum citronné intense. La star des tisanes du soir, à protéger du gel en hiver.",
+    note: "Frileuse — rentrer en pot ou pailler en hiver dans le nord.",
+    sowingTechnique: "Bouturage ou achat de plant",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "60 × 80 cm",
+    watering: "Modéré",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte sur la belle saison",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+verveine+citronnee&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Laurier-sauce
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'laurier_sauce',
+    name: 'Laurier-sauce',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Arbuste persistant aux feuilles vert sombre, indispensable au bouquet garni. Pousse aussi bien en pot qu'en pleine terre, peut atteindre 3 m.",
+    note: "Ne pas confondre avec le laurier-rose ou laurier-cerise (toxiques).",
+    sowingTechnique: "Bouturage ou achat de plant",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "1 × 1,5 m",
+    watering: "Faible une fois installé",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Récolte permanente",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+laurier+sauce&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte permanente",
+      'summer': "Récolte permanente",
+      'autumn': "Récolte permanente",
+      'winter': "Récolte permanente",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Camomille romaine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'camomille',
+    name: 'Camomille romaine',
+    emoji: '🌼',
+    category: VegetableCategory.aromatics,
+    description:
+        "Plante vivace tapissante aux petites fleurs blanches très parfumées. Tisane apaisante et digestive, classique du jardin de grand-mère.",
+    note: "Récolter les fleurs en plein soleil pour préserver les arômes.",
+    sowingTechnique: "Semis en surface ou division de touffe",
+    sowingDepth: "0,1 cm (en surface)",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 25 cm",
+    watering: "Modéré",
+    soil: "Léger, drainé, neutre",
+    yieldEstimate: "Récolte des fleurs sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+camomille+romaine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "70 à 90 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Marjolaine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'marjolaine',
+    name: 'Marjolaine',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Cousine plus douce de l'origan, parfaite pour les viandes blanches et les sauces tomate. Plante annuelle ou vivace selon le climat.",
+    note: "À ne pas confondre avec l'origan — la marjolaine est plus subtile.",
+    sowingTechnique: "Semis en godet ou en place",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "25 × 30 cm",
+    watering: "Faible",
+    soil: "Léger, calcaire, drainé",
+    yieldEstimate: "Récolte sur la belle saison",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+marjolaine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "60 à 80 jours",
+      'autumn': "Récolte continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Lentille verte
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'lentille',
+    name: 'Lentille verte',
+    emoji: '🫘',
+    category: VegetableCategory.seeds,
+    description:
+        "Légumineuse à grains plats riche en protéines, base des soupes et plats traditionnels. La lentille verte du Puy bénéficie d'une AOP française.",
+    note: "Plante peu exigeante — fixe l'azote et enrichit le sol.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "2 à 3 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "5 × 30 cm",
+    watering: "Faible",
+    soil: "Pauvre, calcaire, drainé",
+    yieldEstimate: "150 à 250 g/m² (grains secs)",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+lentille+verte+puy&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "100 à 110 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pois chiche
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pois_chiche',
+    name: 'Pois chiche',
+    emoji: '🫘',
+    category: VegetableCategory.seeds,
+    description:
+        "Légumineuse star de la cuisine méditerranéenne (houmous, falafels). Résistante à la sécheresse, parfaite pour les sols pauvres.",
+    note: "Aime la chaleur — réservée au sud ou semis tardif.",
+    sowingTechnique: "Semis direct après les gelées",
+    sowingDepth: "3 à 5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "10 × 40 cm",
+    watering: "Faible, très résistant à la sécheresse",
+    soil: "Léger, calcaire, drainé",
+    yieldEstimate: "200 à 350 g/m² (grains secs)",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pois+chiche&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "100 à 120 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pois mange-tout
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pois_mange_tout',
+    name: 'Pois mange-tout',
+    emoji: '🫛',
+    category: VegetableCategory.seeds,
+    description:
+        "Pois à cosse tendre qu'on mange en entier, sans écosser. Croquant et sucré, parfait au wok ou cru à la croque.",
+    note: "Récolter jeune avant que les graines ne grossissent dans la cosse.",
+    sowingTechnique: "Semis direct en ligne",
+    sowingDepth: "3 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "5 × 40 cm",
+    watering: "Régulier en floraison",
+    soil: "Frais, drainé, peu fumé",
+    yieldEstimate: "1,5 à 2,5 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pois+mange+tout&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "60 à 75 jours",
+      'summer': "55 à 70 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Haricot beurre
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'haricot_beurre',
+    name: 'Haricot beurre',
+    emoji: '🫛',
+    category: VegetableCategory.seeds,
+    description:
+        "Haricot à gousses jaune doré, à la chair fondante et au goût doux. Productif et facile, idéal pour débuter.",
+    note: "Récolter régulièrement pour stimuler la production.",
+    sowingTechnique: "Semis direct après les gelées, en poquets",
+    sowingDepth: "3 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "10 × 40 cm",
+    watering: "Régulier, surtout en floraison",
+    soil: "Frais, drainé, peu fumé",
+    yieldEstimate: "1,5 à 3 kg/m²",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+haricot+beurre&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "60 à 75 jours",
+      'summer': "50 à 65 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Framboisier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'framboisier',
+    name: 'Framboisier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Petit fruit rouge parfumé sur arbuste vivace. Variétés remontantes (deux récoltes) ou non remontantes (une grosse récolte en juin).",
+    note: "Pailler généreusement et tailler chaque hiver pour rester productif.",
+    sowingTechnique: "Plantation de plants ou drageons",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "50 × 200 cm (en haie)",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, légèrement acide",
+    yieldEstimate: "1 à 2 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+framboisier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juin-juillet",
+      'autumn': "Récolte des remontants en septembre-octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cassissier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cassissier',
+    name: 'Cassissier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbuste fruitier à baies noires acidulées, riches en vitamine C. Idéal pour confitures, gelées et liqueurs (la fameuse crème de cassis).",
+    note: "Tailler en hiver pour renouveler les rameaux productifs.",
+    sowingTechnique: "Plantation de plant ou bouturage en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "150 × 200 cm",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "2 à 4 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+cassissier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juillet",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Groseillier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'groseillier',
+    name: 'Groseillier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbuste à grappes de baies rouges ou blanches, acidulées et juteuses. Parfait en gelée ou pour les desserts d'été.",
+    note: "Très rustique, supporte les climats froids et la mi-ombre.",
+    sowingTechnique: "Plantation de plant ou bouturage en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "120 × 150 cm",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "2 à 4 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+groseillier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juin-juillet",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Mûrier sans épines
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'murier',
+    name: 'Mûrier sans épines',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Ronce cultivée aux longs rameaux sans épines, productive et gourmande. Donne de grosses mûres juteuses, bien meilleures que les mûres sauvages.",
+    note: "Palisser sur un fil de fer pour faciliter la récolte.",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil",
+    spacing: "200 × 250 cm",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "5 à 10 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=murier+sans+epines+plant&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à septembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Myrtillier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'myrtillier',
+    name: 'Myrtillier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Petit arbuste à baies bleues sucrées, riches en antioxydants. Exige un sol acide (terre de bruyère) — culture en pot recommandée en sol calcaire.",
+    note: "Sol acide indispensable (pH 4,5 à 5,5).",
+    sowingTechnique: "Plantation de plant à l'automne ou au printemps",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "100 × 150 cm",
+    watering: "Régulier à l'eau de pluie (eau calcaire à éviter)",
+    soil: "Acide (terre de bruyère), drainé",
+    yieldEstimate: "1 à 3 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+myrtillier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à septembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Rhubarbe
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'rhubarbe',
+    name: 'Rhubarbe',
+    emoji: '🌿',
+    category: VegetableCategory.stems,
+    description:
+        "Plante vivace à grosses tiges acidulées, base des tartes et compotes printanières. Les feuilles sont toxiques, ne consommer que les pétioles.",
+    note: "Vivace pour 10 ans — choisir un coin définitif riche en compost.",
+    sowingTechnique: "Plantation de griffe ou division de touffe",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "100 × 120 cm",
+    watering: "Abondant en croissance",
+    soil: "Riche, frais, profond",
+    yieldEstimate: "3 à 5 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=griffe+rhubarbe&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte d'avril à juin",
+      'summer': "Récolte de juillet (plant établi)",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pleurote (kit)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pleurote',
+    name: 'Pleurote (kit)',
+    emoji: '🍄',
+    category: VegetableCategory.flowers,
+    description:
+        "Champignon en éventail à chapeau gris ou jaune, facile à cultiver sur kit (paille ou bûche inoculée). Rendement rapide en quelques semaines.",
+    note: "Maintenir l'humidité — vaporiser deux fois par jour.",
+    sowingTechnique: "Kit de mycélium sur paille ou bûche inoculée",
+    sowingDepth: "—",
+    germinationTemp: "15 à 22 °C",
+    germinationDays: "14 à 21 jours (apparition des primordia)",
+    exposure: "Lumière indirecte, lieu humide",
+    spacing: "—",
+    watering: "Vaporisation 2× par jour",
+    soil: "Substrat fourni dans le kit",
+    yieldEstimate: "1 à 2 kg sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=kit+culture+pleurote&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "21 à 35 jours",
+      'autumn': "21 à 35 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Shiitaké (kit)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'shiitake',
+    name: 'Shiitaké (kit)',
+    emoji: '🍄',
+    category: VegetableCategory.flowers,
+    description:
+        "Champignon japonais à chapeau brun et chair ferme, classique de la cuisine asiatique. Cultivable sur bûche de chêne inoculée, productif sur 5 à 6 ans.",
+    note: "Bûche placée à l'ombre dehors, à arroser en été sec.",
+    sowingTechnique: "Bûche de chêne inoculée au mycélium",
+    sowingDepth: "—",
+    germinationTemp: "15 à 25 °C",
+    germinationDays: "180 à 360 jours (1ère récolte)",
+    exposure: "Ombre, à l'extérieur",
+    spacing: "—",
+    watering: "Tremper la bûche par périodes sèches",
+    soil: "Bûche fournie",
+    yieldEstimate: "1 à 2 kg/an sur 5 ans",
+    amazonUrl: "https://www.amazon.fr/s?k=kit+shiitake+buche&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte d'avril à juin",
+      'autumn': "Récolte de septembre à novembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Champignon de Paris (kit)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'champignon_paris',
+    name: 'Champignon de Paris (kit)',
+    emoji: '🍄',
+    category: VegetableCategory.flowers,
+    description:
+        "Champignon classique blanc ou brun (rosé), cultivable en cave ou cellier sur kit prêt à l'emploi. Plusieurs vagues de récolte sur 1 à 2 mois.",
+    note: "Idéal en cave fraîche (12-18 °C), à l'abri de la lumière directe.",
+    sowingTechnique: "Kit de mycélium sur compost",
+    sowingDepth: "—",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Pénombre, lieu frais",
+    spacing: "—",
+    watering: "Vaporisation légère",
+    soil: "Compost fourni dans le kit",
+    yieldEstimate: "1 à 2 kg sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=kit+culture+champignon+paris&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "21 à 35 jours",
+      'autumn': "21 à 35 jours",
+      'winter': "Culture toute l'année en cave",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pommier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pommier',
+    name: 'Pommier',
+    emoji: '🍎',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier roi du verger français, des centaines de variétés (Reinette, Golden, Gala, Chanteclerc...). Vit 50 ans et plus.",
+    note: "La plupart des variétés ont besoin d'un pollinisateur — planter à plusieurs.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "300 × 400 cm (haute tige)",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, frais, drainé",
+    yieldEstimate: "20 à 100 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+pommier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Variétés précoces de juillet à août",
+      'autumn': "Variétés de saison de septembre à novembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Poirier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'poirier',
+    name: 'Poirier',
+    emoji: '🍐',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier élégant aux poires juteuses et parfumées (Williams, Conférence, Comice...). Plus exigeant que le pommier en chaleur.",
+    note: "Préférer les variétés autofertiles ou planter à plusieurs.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "300 × 400 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, frais, drainé, légèrement acide",
+    yieldEstimate: "30 à 80 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+poirier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Variétés précoces en août",
+      'autumn': "Variétés de saison de septembre à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Prunier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'prunier',
+    name: 'Prunier',
+    emoji: '🍑',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier généreux à l'origine de nombreuses variétés (Reine-Claude, Mirabelle, Quetsche). Productif et facile, peu exigeant.",
+    note: "Récolter à pleine maturité — les prunes ne mûrissent pas après cueillette.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "300 × 400 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Frais, profond, drainé",
+    yieldEstimate: "20 à 60 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+prunier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à septembre selon la variété",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cerisier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cerisier',
+    name: 'Cerisier',
+    emoji: '🍒',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier emblématique du printemps, sublime en floraison rose. Production rapide (3-4 ans) et abondante de cerises sucrées (bigarreau) ou acidulées (griotte).",
+    note: "Filets anti-oiseaux indispensables à la maturité — ils adorent les cerises.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, drainé, calcaire toléré",
+    yieldEstimate: "20 à 40 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+cerisier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juin-juillet",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Abricotier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'abricotier',
+    name: 'Abricotier',
+    emoji: '🍑',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier méridional aux fruits jaune-orangé sucrés. Floraison précoce sensible aux gelées tardives — préférer un emplacement abrité.",
+    note: "Floraison fragile en mars — protéger des gelées tardives.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, drainé, calcaire toléré",
+    yieldEstimate: "30 à 80 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+abricotier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juillet",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pêcher
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pecher',
+    name: 'Pêcher',
+    emoji: '🍑',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier aux fruits parfumés (pêche, nectarine, brugnon). Sensible à la cloque du pêcher — traiter à la bouillie bordelaise en hiver.",
+    note: "Production rapide (2-3 ans) — durée de vie limitée à 15-20 ans.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "300 × 400 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Frais, profond, drainé",
+    yieldEstimate: "20 à 50 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+pecher+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à août",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Figuier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'figuier',
+    name: 'Figuier',
+    emoji: '🍇',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre méditerranéen au feuillage caractéristique et aux fruits sucrés. Variétés bifères (deux récoltes par an) très productives.",
+    note: "Très peu exigeant — supporte la sécheresse et les sols pauvres.",
+    sowingTechnique: "Plantation de plant ou bouturage en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "400 × 500 cm",
+    watering: "Faible une fois installé",
+    soil: "Tout type, drainé",
+    yieldEstimate: "20 à 50 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+figuier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Figues fleurs en juin-juillet",
+      'autumn': "Récolte principale en août-octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Noisetier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'noisetier',
+    name: 'Noisetier',
+    emoji: '🌰',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbuste rustique aux noisettes croquantes, très facile à cultiver. Pollinisation croisée — planter au moins deux variétés différentes.",
+    note: "Récolter dès que les noisettes tombent au sol naturellement.",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Tout type, drainé, neutre à calcaire",
+    yieldEstimate: "5 à 15 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+noisetier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de fin août à septembre",
+      'autumn': "Récolte de septembre à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Vigne (raisin de table)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'vigne',
+    name: 'Vigne (raisin de table)',
+    emoji: '🍇',
+    category: VegetableCategory.fruits,
+    description:
+        "Liane fruitière classique, raisins blancs ou noirs sucrés. Magnifique en pergola, productive et longue durée de vie (50 ans et plus).",
+    note: "Tailler tous les hivers pour limiter la pousse et concentrer la sève.",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "150 × 200 cm",
+    watering: "Faible une fois installée",
+    soil: "Drainé, calcaire toléré",
+    yieldEstimate: "5 à 15 kg/pied adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+vigne+raisin+table&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Variétés précoces en août",
+      'autumn': "Récolte principale de septembre à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Kiwi (actinidia)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'kiwi',
+    name: 'Kiwi (actinidia)',
+    emoji: '🥝',
+    category: VegetableCategory.fruits,
+    description:
+        "Liane vigoureuse aux fruits velus à chair verte ou jaune. La plupart des variétés ont besoin d'un pied mâle pour 5-6 pieds femelles.",
+    note: "Réserver une grande pergola — pieds très vigoureux (jusqu'à 8 m).",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Frais, profond, légèrement acide",
+    yieldEstimate: "30 à 80 kg/pied femelle adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+kiwi+actinidia&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': "Récolte d'octobre à novembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Capucine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'capucine',
+    name: 'Capucine',
+    emoji: '🌸',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur comestible orange ou jaune au goût piquant, proche du cresson. Attire les pucerons loin des autres légumes — idéale en bordure de potager.",
+    note: "Fleurs et feuilles comestibles, à parsemer en salade.",
+    sowingTechnique: "Semis direct en place après les gelées",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "30 × 40 cm",
+    watering: "Modéré",
+    soil: "Pauvre, sec, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+capucine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de juin à octobre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Souci (calendula)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'souci',
+    name: 'Souci (calendula)',
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur jaune-orangé comestible aux pétales ensoleillés. Vertus médicinales reconnues (calendula), excellente compagne du potager qui repousse les nématodes.",
+    note: "Se ressème spontanément — un classique du jardin de grand-mère.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "25 × 30 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 5 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+souci+calendula&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mai à novembre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Bourrache
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'bourrache',
+    name: 'Bourrache',
+    emoji: '💙',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur étoilée bleu vif au goût d'huître, très mellifère. Indispensable au verger — attire massivement les abeilles pour la pollinisation.",
+    note: "Fleurs et jeunes feuilles comestibles. Se ressème toute seule.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "1 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "40 × 50 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+bourrache&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mai à octobre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pensée
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pensee',
+    name: 'Pensée',
+    emoji: '🌸',
+    category: VegetableCategory.flowers,
+    description:
+        "Petite fleur multicolore (violet, jaune, blanc) à l'aspect kawaii. Comestible en décoration de salades et desserts, fleurit même en hiver.",
+    note: "Bisannuelle — semer en été pour fleurir au printemps suivant.",
+    sowingTechnique: "Semis en pépinière puis repiquage",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "10 à 21 jours",
+    exposure: "Mi-ombre en été, soleil en hiver",
+    spacing: "20 × 25 cm",
+    watering: "Régulier",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "Floraison continue sur 6 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pensee+fleur&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mars à juin",
+      'autumn': "Floraison de septembre à novembre",
+      'winter': "Floraison hivernale au sud",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Œillet d'Inde
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'oeillet_inde',
+    name: "Œillet d'Inde",
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur jaune ou orange au feuillage très parfumé. Repousse les nématodes du sol et les insectes nuisibles — alliée précieuse au potager, surtout des tomates.",
+    note: "À planter au pied des tomates et aubergines.",
+    sowingTechnique: "Semis en godet ou en place",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 25 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+oeillet+inde+tagete&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de juin à octobre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Tournesol
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'tournesol',
+    name: 'Tournesol',
+    emoji: '🌻',
+    category: VegetableCategory.flowers,
+    description:
+        "Géant solaire jusqu'à 3 m, avec ses grandes fleurs jaunes. Mellifère, productif en graines pour les oiseaux ou la cuisine, idéal en fond de massif.",
+    note: "Suit la course du soleil pendant sa croissance.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "2 à 3 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "40 × 60 cm",
+    watering: "Régulier en croissance",
+    soil: "Profond, drainé",
+    yieldEstimate: "1 grosse fleur par plant",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+tournesol&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juillet à septembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Tagète (anti-nématodes)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'tagete',
+    name: 'Tagète',
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Cousine de l'œillet d'Inde, tagète erecta ou patula. Utilisée pour purger le sol des nématodes — semer une saison avant tomates ou pommes de terre.",
+    note: "Effet anti-nématodes maximal en culture pleine sur 1 saison.",
+    sowingTechnique: "Semis en godet ou en place",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "25 × 30 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+tagete+nematicide&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juin à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Lavande vraie
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'lavande',
+    name: 'Lavande vraie',
+    emoji: '💜',
+    category: VegetableCategory.flowers,
+    description:
+        "Arbrisseau provençal aux épis bleu-violet très parfumés. Très mellifère, repousse les pucerons, parfait en bordure ou dans les rocailles.",
+    note: "Tailler après floraison pour garder une touffe compacte.",
+    sowingTechnique: "Bouturage ou achat de plant — semis difficile",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "21 à 30 jours",
+    exposure: "Plein soleil",
+    spacing: "50 × 60 cm",
+    watering: "Faible, très résistante à la sécheresse",
+    soil: "Pauvre, sec, calcaire, drainé",
+    yieldEstimate: "Floraison sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+lavande+vraie&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juin à août",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cosmos
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cosmos',
+    name: 'Cosmos',
+    emoji: '🌸',
+    category: VegetableCategory.flowers,
+    description:
+        "Grande fleur rose, blanche ou pourpre au feuillage finement découpé. Très mellifère, germe et fleurit vite, idéal en massif ou en bouquet.",
+    note: "Floraison ininterrompue jusqu'aux gelées.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil",
+    spacing: "30 × 40 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 5 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cosmos+fleurs&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juin à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Zinnia
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'zinnia',
+    name: 'Zinnia',
+    emoji: '🌺',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur double aux couleurs éclatantes (rose, orange, rouge, jaune). Très florifère, parfaite en bouquet, attire papillons et abeilles.",
+    note: "Adore la chaleur — pas avant mai dans le nord.",
+    sowingTechnique: "Semis en godet ou en place après les gelées",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "30 × 40 cm",
+    watering: "Modéré, au pied",
+    soil: "Riche, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+zinnia+fleurs&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juillet à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Bleuet
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'bleuet',
+    name: 'Bleuet',
+    emoji: '💙',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur sauvage bleue des champs de blé, devenue rare en culture. Très mellifère, fleurs comestibles à parsemer en salade.",
+    note: "Se ressème spontanément — laisser quelques fleurs monter en graines.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 30 cm",
+    watering: "Faible",
+    soil: "Pauvre, sec, drainé",
+    yieldEstimate: "Floraison continue sur 3 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+bleuet+fleur&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mai à août",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Phacélie (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'phacelie',
+    name: 'Phacélie',
+    emoji: '💜',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert star : feuillage abondant, floraison mauve très mellifère. Étouffe les adventices, structure le sol et nourrit les abeilles avant d'être enfoui.",
+    note: "À enfouir avant montée en graines (8-10 semaines).",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "0,5 à 1 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type",
+    yieldEstimate: "Couvre-sol et engrais vert",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+phacelie+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Enfouir 8 à 10 semaines après semis",
+      'summer': "Enfouir 6 à 8 semaines après semis",
+      'autumn': "Enfouir avant les fortes gelées",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Moutarde blanche (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'moutarde_blanche',
+    name: 'Moutarde blanche',
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert rapide : germe et fleurit en 6 semaines. Désinfecte le sol (effet biocide), structure et étouffe les adventices.",
+    note: "Idéale entre deux cultures — semer en septembre après récoltes d'été.",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "0,5 à 1 cm",
+    germinationTemp: "10 à 20 °C",
+    germinationDays: "3 à 7 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type",
+    yieldEstimate: "Couvre-sol et engrais vert",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+moutarde+blanche+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Enfouir 6 à 8 semaines après semis",
+      'summer': "Enfouir 5 à 7 semaines après semis",
+      'autumn': "Détruite par les gelées (-5 °C)",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Trèfle incarnat (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'trefle_incarnat',
+    name: 'Trèfle incarnat',
+    emoji: '🌹',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert légumineuse aux fleurs rouges. Fixe l'azote dans le sol grâce aux nodosités racinaires — idéal avant des cultures gourmandes (tomate, courge).",
+    note: "Semer fin été pour profiter de la fixation d'azote tout l'hiver.",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "1 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Engrais vert riche en azote",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+trefle+incarnat+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': "Semer fin août-septembre, enfouir au printemps",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Sarrasin (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'sarrasin',
+    name: 'Sarrasin',
+    emoji: '🌾',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert à floraison blanche très mellifère, croissance ultra-rapide. Idéal pour étouffer un terrain envahi en pleine saison.",
+    note: "Détruit par les gelées — ne pas le laisser grainer pour éviter les repousses.",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "12 à 20 °C",
+    germinationDays: "5 à 8 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type, même pauvre",
+    yieldEstimate: "Couvre-sol et engrais vert",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+sarrasin+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Enfouir 6 à 8 semaines après semis",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
