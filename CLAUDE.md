@@ -248,13 +248,19 @@ style doit rester identique sur les deux apps.
 **Style commun (suffixe à concaténer derrière chaque sujet) :**
 
 ```
-kawaii pastel illustration, cute chibi style, soft pastel colors, big sparkly eyes, cream beige solid background, japanese anime aesthetic, simple rounded shapes, app icon, square 1:1, centered composition, clean line art, soft shading
+kawaii style botanical illustration, soft pastel colors, cream beige solid background, simple rounded shapes, clean line art, soft shading, clear recognizable vegetable, no face, app icon style, square 1:1, centered composition
 ```
+
+⚠️ **NE PAS** ajouter « smiling face », « big sparkly eyes », « cute chibi
+character » — ça produit des créatures anthropomorphisées au lieu de
+légumes lisibles. Les images cibles sont du style **« légume joliment
+dessiné en pastel »** (comme les 38 accessoires existants), pas des
+mascottes à yeux.
 
 **Negative prompt (constant) :**
 
 ```
-realistic, photo, photography, 3d render, dark, scary, gloomy, harsh shadows, complex background, text, watermark, logo, low quality, blurry, multiple subjects, distorted
+realistic, photo, photography, 3d render, dark, scary, gloomy, harsh shadows, complex background, text, watermark, logo, low quality, blurry, multiple subjects, distorted, anthropomorphic, character, mascot, eyes, face, mouth, smiling, chibi creature, kawaii character
 ```
 
 **Format de sortie attendu** : TSV (tabulation entre prompt et filename),
