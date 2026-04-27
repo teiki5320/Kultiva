@@ -2286,6 +2286,140 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Champignon de Paris (kit)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'champignon_paris',
+    name: 'Champignon de Paris (kit)',
+    emoji: '🍄',
+    category: VegetableCategory.flowers,
+    description:
+        "Champignon classique blanc ou brun (rosé), cultivable en cave ou cellier sur kit prêt à l'emploi. Plusieurs vagues de récolte sur 1 à 2 mois.",
+    note: "Idéal en cave fraîche (12-18 °C), à l'abri de la lumière directe.",
+    sowingTechnique: "Kit de mycélium sur compost",
+    sowingDepth: "—",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "14 à 21 jours",
+    exposure: "Pénombre, lieu frais",
+    spacing: "—",
+    watering: "Vaporisation légère",
+    soil: "Compost fourni dans le kit",
+    yieldEstimate: "1 à 2 kg sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=kit+culture+champignon+paris&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "21 à 35 jours",
+      'autumn': "21 à 35 jours",
+      'winter': "Culture toute l'année en cave",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pommier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pommier',
+    name: 'Pommier',
+    emoji: '🍎',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier roi du verger français, des centaines de variétés (Reinette, Golden, Gala, Chanteclerc...). Vit 50 ans et plus.",
+    note: "La plupart des variétés ont besoin d'un pollinisateur — planter à plusieurs.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "300 × 400 cm (haute tige)",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, frais, drainé",
+    yieldEstimate: "20 à 100 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+pommier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Variétés précoces de juillet à août",
+      'autumn': "Variétés de saison de septembre à novembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Poirier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'poirier',
+    name: 'Poirier',
+    emoji: '🍐',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier élégant aux poires juteuses et parfumées (Williams, Conférence, Comice...). Plus exigeant que le pommier en chaleur.",
+    note: "Préférer les variétés autofertiles ou planter à plusieurs.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "300 × 400 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, frais, drainé, légèrement acide",
+    yieldEstimate: "30 à 80 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+poirier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Variétés précoces en août",
+      'autumn': "Variétés de saison de septembre à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Prunier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'prunier',
+    name: 'Prunier',
+    emoji: '🍑',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier généreux à l'origine de nombreuses variétés (Reine-Claude, Mirabelle, Quetsche). Productif et facile, peu exigeant.",
+    note: "Récolter à pleine maturité — les prunes ne mûrissent pas après cueillette.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "300 × 400 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Frais, profond, drainé",
+    yieldEstimate: "20 à 60 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+prunier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à septembre selon la variété",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cerisier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cerisier',
+    name: 'Cerisier',
+    emoji: '🍒',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier emblématique du printemps, sublime en floraison rose. Production rapide (3-4 ans) et abondante de cerises sucrées (bigarreau) ou acidulées (griotte).",
+    note: "Filets anti-oiseaux indispensables à la maturité — ils adorent les cerises.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, drainé, calcaire toléré",
+    yieldEstimate: "20 à 40 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+cerisier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juin-juillet",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

@@ -403,4 +403,26 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'shiitake', sowingMonths: [3, 4, 10, 11], harvestMonths: [4, 5, 6, 9, 10, 11],
     regionalNote: "Bûche placée à l'ombre — première récolte à 6-12 mois, puis 5 ans de production.",
   ),
+
+  // ── Nouveautés vague 1 batch 8 ──
+  RegionData(
+    regionId: 'france', vegetableId: 'champignon_paris', sowingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], harvestMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    regionalNote: "Culture en cave fraîche toute l'année (12-18 °C).",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'pommier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [7, 8, 9, 10, 11],
+    regionalNote: "Plantation à racines nues en hiver. Production à partir de la 3e année.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'poirier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [8, 9, 10],
+    regionalNote: "Plantation à racines nues en hiver. Préfère les régions à étés chauds.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'prunier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [7, 8, 9],
+    regionalNote: "Plantation à racines nues en hiver. Reines-Claude et Mirabelles emblématiques.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'cerisier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [6, 7],
+    regionalNote: "Plantation à racines nues en hiver. Filets anti-oiseaux indispensables à la maturité.",
+  ),
 ];
