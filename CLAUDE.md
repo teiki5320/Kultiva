@@ -248,16 +248,23 @@ style doit rester identique sur les deux apps.
 **Style commun (suffixe à concaténer derrière chaque sujet) :**
 
 ```
-kawaii style botanical illustration, soft pastel colors, cream beige solid background, simple rounded shapes, clean line art, soft shading, clear recognizable vegetable, no face, app icon style, square 1:1, centered composition
+plain object, isolated, soft pastel colors, cream beige solid background, simple rounded shapes, clean line art, soft shading, app icon style, centered, 1:1 square
 ```
 
-⚠️ **NE PAS** ajouter « smiling face », « big sparkly eyes », « cute chibi
-character » — ça produit des créatures anthropomorphisées au lieu de
-légumes lisibles. Les images cibles sont du style **« légume joliment
-dessiné en pastel »** (comme les 38 accessoires existants), pas des
-mascottes à yeux.
+**Préfixe à mettre devant chaque sujet :**
 
-**Negative prompt (constant) :**
+```
+flat pastel illustration of a
+```
+
+⚠️ **Pas de negative prompt disponible côté ComfyUI** — il faut tout baker
+dans le positif. Donc on **N'AJOUTE PAS** : « kawaii character », « cute
+chibi », « smiling face », « big sparkly eyes », « mascot ». Ces termes
+créent des créatures anthropomorphisées au lieu de légumes lisibles. Les
+images cibles sont du style **« légume joliment dessiné en pastel »**
+(comme les 38 accessoires existants), pas des mascottes à yeux.
+
+**Negative prompt (si workflow le permet) :**
 
 ```
 realistic, photo, photography, 3d render, dark, scary, gloomy, harsh shadows, complex background, text, watermark, logo, low quality, blurry, multiple subjects, distorted, anthropomorphic, character, mascot, eyes, face, mouth, smiling, chibi creature, kawaii character
