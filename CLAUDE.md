@@ -238,6 +238,52 @@ cd ios && pod install --repo-update && cd ..
   kawaii dans ta poche 🌱 ».
 - **Localisation** : app **fr-FR** uniquement pour l'instant.
 
+### 🎨 Génération d'images ComfyUI (prompts produits)
+
+Format retenu pour générer les visuels kawaii des plantes et accessoires —
+même style que les 38 accessoires existants. Les images générées sont
+**partagées avec Kultivaprix** (projet sœur, comparateur de prix), donc le
+style doit rester identique sur les deux apps.
+
+**Style commun (suffixe à concaténer derrière chaque sujet) :**
+
+```
+plain object, isolated, soft pastel colors, cream beige solid background, simple rounded shapes, clean line art, soft shading, app icon style, centered, 1:1 square
+```
+
+**Préfixe à mettre devant chaque sujet :**
+
+```
+flat pastel illustration of a
+```
+
+⚠️ **Pas de negative prompt disponible côté ComfyUI** — il faut tout baker
+dans le positif. Donc on **N'AJOUTE PAS** : « kawaii character », « cute
+chibi », « smiling face », « big sparkly eyes », « mascot ». Ces termes
+créent des créatures anthropomorphisées au lieu de légumes lisibles. Les
+images cibles sont du style **« légume joliment dessiné en pastel »**
+(comme les 38 accessoires existants), pas des mascottes à yeux.
+
+**Negative prompt (si workflow le permet) :**
+
+```
+realistic, photo, photography, 3d render, dark, scary, gloomy, harsh shadows, complex background, text, watermark, logo, low quality, blurry, multiple subjects, distorted, anthropomorphic, character, mascot, eyes, face, mouth, smiling, chibi creature, kawaii character
+```
+
+**Format de sortie attendu** : TSV (tabulation entre prompt et filename),
+copiable dans Numbers/Sheets ou un node ComfyUI batch :
+
+```
+<prompt complet sujet + style>	<id>.png
+<prompt complet sujet + style>	<id>.png
+```
+
+Le filename = `{Vegetable.id}.png` (ex. `cornichon.png`, `pommier.png`).
+
+Destination : `assets/images/vegetables/<id>.png` côté Kultiva, et même
+fichier hébergé côté Kultivaprix (à voir : Supabase Storage public bucket
+ou CDN partagé).
+
 ## 🚫 Pièges à éviter
 
 - **Ne pas casser le mode offline** — toute nouvelle feature doit continuer à
