@@ -2420,6 +2420,165 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Abricotier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'abricotier',
+    name: 'Abricotier',
+    emoji: '🍑',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier méridional aux fruits jaune-orangé sucrés. Floraison précoce sensible aux gelées tardives — préférer un emplacement abrité.",
+    note: "Floraison fragile en mars — protéger des gelées tardives.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Profond, drainé, calcaire toléré",
+    yieldEstimate: "30 à 80 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+abricotier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte en juillet",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pêcher
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pecher',
+    name: 'Pêcher',
+    emoji: '🍑',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre fruitier aux fruits parfumés (pêche, nectarine, brugnon). Sensible à la cloque du pêcher — traiter à la bouillie bordelaise en hiver.",
+    note: "Production rapide (2-3 ans) — durée de vie limitée à 15-20 ans.",
+    sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "300 × 400 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Frais, profond, drainé",
+    yieldEstimate: "20 à 50 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+pecher+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à août",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Figuier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'figuier',
+    name: 'Figuier',
+    emoji: '🍇',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbre méditerranéen au feuillage caractéristique et aux fruits sucrés. Variétés bifères (deux récoltes par an) très productives.",
+    note: "Très peu exigeant — supporte la sécheresse et les sols pauvres.",
+    sowingTechnique: "Plantation de plant ou bouturage en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "400 × 500 cm",
+    watering: "Faible une fois installé",
+    soil: "Tout type, drainé",
+    yieldEstimate: "20 à 50 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+figuier+arbre+fruitier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Figues fleurs en juin-juillet",
+      'autumn': "Récolte principale en août-octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Noisetier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'noisetier',
+    name: 'Noisetier',
+    emoji: '🌰',
+    category: VegetableCategory.fruits,
+    description:
+        "Arbuste rustique aux noisettes croquantes, très facile à cultiver. Pollinisation croisée — planter au moins deux variétés différentes.",
+    note: "Récolter dès que les noisettes tombent au sol naturellement.",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Tout type, drainé, neutre à calcaire",
+    yieldEstimate: "5 à 15 kg/arbre adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+noisetier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de fin août à septembre",
+      'autumn': "Récolte de septembre à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Vigne (raisin de table)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'vigne',
+    name: 'Vigne (raisin de table)',
+    emoji: '🍇',
+    category: VegetableCategory.fruits,
+    description:
+        "Liane fruitière classique, raisins blancs ou noirs sucrés. Magnifique en pergola, productive et longue durée de vie (50 ans et plus).",
+    note: "Tailler tous les hivers pour limiter la pousse et concentrer la sève.",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil",
+    spacing: "150 × 200 cm",
+    watering: "Faible une fois installée",
+    soil: "Drainé, calcaire toléré",
+    yieldEstimate: "5 à 15 kg/pied adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+vigne+raisin+table&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Variétés précoces en août",
+      'autumn': "Récolte principale de septembre à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Kiwi (actinidia)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'kiwi',
+    name: 'Kiwi (actinidia)',
+    emoji: '🥝',
+    category: VegetableCategory.fruits,
+    description:
+        "Liane vigoureuse aux fruits velus à chair verte ou jaune. La plupart des variétés ont besoin d'un pied mâle pour 5-6 pieds femelles.",
+    note: "Réserver une grande pergola — pieds très vigoureux (jusqu'à 8 m).",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Plein soleil, abrité du vent",
+    spacing: "400 × 500 cm",
+    watering: "Régulier les 2 premières années",
+    soil: "Frais, profond, légèrement acide",
+    yieldEstimate: "30 à 80 kg/pied femelle adulte",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+kiwi+actinidia&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': "Récolte d'octobre à novembre",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

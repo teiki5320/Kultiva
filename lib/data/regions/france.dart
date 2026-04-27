@@ -425,4 +425,30 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'cerisier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [6, 7],
     regionalNote: "Plantation à racines nues en hiver. Filets anti-oiseaux indispensables à la maturité.",
   ),
+
+  // ── Nouveautés vague 1 batch 9 ──
+  RegionData(
+    regionId: 'france', vegetableId: 'abricotier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [7],
+    regionalNote: "Floraison précoce sensible aux gelées tardives — préférer le sud ou un emplacement abrité.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'pecher', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [7, 8],
+    regionalNote: "Plantation à racines nues en hiver. Traiter contre la cloque à la chute des feuilles.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'figuier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [7, 8, 9, 10],
+    regionalNote: "Plantation à racines nues en hiver. Très peu exigeant.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'noisetier', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [8, 9, 10],
+    regionalNote: "Plantation à racines nues en hiver. Planter au moins 2 variétés pour la pollinisation.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'vigne', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [8, 9, 10],
+    regionalNote: "Plantation à racines nues en hiver. Tailler chaque hiver pour rester productive.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'kiwi', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [10, 11],
+    regionalNote: "Plantation à racines nues en hiver. Prévoir un pied mâle pour 5-6 pieds femelles.",
+  ),
 ];
