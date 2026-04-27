@@ -269,6 +269,95 @@ const Map<String, List<Disease>> diseaseMap = {
     Disease('Cochenilles', 'Huile de neem, alcool à brûler dilué au coton-tige'),
     Disease('Araignées rouges', 'Brumisations régulières (préfèrent l\'air sec)'),
   ],
+
+  // ── Arbres fruitiers ──
+  'pommier': [
+    Disease('Tavelure du pommier', 'Bouillie bordelaise dès le débourrement, ramasser les feuilles tombées en automne, variétés résistantes (Reine des Reinettes, Belle de Boskoop)'),
+    Disease('Carpocapse (ver de la pomme)', 'Pièges à phéromones en mai-juin, glu sur le tronc, bandes-pièges en carton ondulé'),
+    Disease('Pucerons cendrés', 'Savon noir, traiter au stade rosé, favoriser coccinelles et syrphes'),
+    Disease('Oïdium', 'Soufre micronisé au débourrement, supprimer les pousses atteintes'),
+  ],
+  'poirier': [
+    Disease('Tavelure du poirier', 'Bouillie bordelaise au débourrement, ramasser les feuilles, traiter à la chute des pétales'),
+    Disease('Feu bactérien', 'Maladie à déclaration obligatoire — couper et brûler les rameaux atteints 30 cm en dessous, désinfecter les outils'),
+    Disease('Psylle du poirier', 'Argile blanche au débourrement, favoriser les forficules (perce-oreilles)'),
+    Disease('Rouille grillagée', 'Éloigner les genévriers (hôtes alternants), supprimer les feuilles atteintes'),
+  ],
+  'prunier': [
+    Disease('Moniliose', 'Supprimer les fruits momifiés sur l\'arbre, bouillie bordelaise à la chute des feuilles et au débourrement'),
+    Disease('Puceron noir du prunier', 'Savon noir au stade rosé, couper les pousses atteintes et brûler'),
+    Disease('Carpocapse des prunes', 'Pièges à phéromones, ramasser les fruits tombés, glu sur le tronc'),
+    Disease('Cochenilles', 'Huile blanche en hiver, brossage des troncs'),
+  ],
+  'cerisier': [
+    Disease('Mouche de la cerise', 'Pièges chromatiques jaunes englués dès mi-mai, variétés précoces (Burlat) qui échappent au pic'),
+    Disease('Moniliose', 'Supprimer les fruits momifiés, traiter à la chute des fleurs avec bouillie bordelaise'),
+    Disease('Puceron noir du cerisier', 'Savon noir, jet d\'eau puissant, supprimer les pousses très atteintes'),
+    Disease('Drosophile suzukii', 'Filets anti-insectes mailles 0,8 mm, pièges à vinaigre, récolter rapidement'),
+  ],
+  'abricotier': [
+    Disease('Moniliose', 'Bouillie bordelaise à la chute des feuilles et au débourrement, supprimer les fruits atteints'),
+    Disease('Oïdium', 'Soufre dès l\'apparition, aérer la couronne par taille'),
+    Disease('Bactériose', 'Tailler en été (sec) pour éviter les chancres, désinfecter les outils, badigeon de chaux sur le tronc'),
+    Disease('Pucerons', 'Savon noir au printemps, favoriser coccinelles'),
+  ],
+  'pecher': [
+    Disease('Cloque du pêcher', 'Bouillie bordelaise à la chute des feuilles, puis 2 traitements au débourrement avant que les bourgeons ne s\'ouvrent. Décoction de prêle préventive'),
+    Disease('Oïdium', 'Soufre dès apparition, supprimer les rameaux atteints'),
+    Disease('Tordeuse orientale', 'Pièges à phéromones, supprimer les rameaux flétris'),
+    Disease('Pucerons verts', 'Savon noir, plantation d\'ail au pied (effet répulsif)'),
+  ],
+  'figuier': [
+    Disease('Mosaïque du figuier', 'Maladie virale incurable — supprimer les rameaux les plus atteints, fertiliser pour soutenir l\'arbre'),
+    Disease('Cochenilles', 'Brossage des branches, huile blanche en hiver'),
+    Disease('Mouche de la figue', 'Pièges chromatiques, récolter rapidement à maturité'),
+  ],
+  'noisetier': [
+    Disease('Balanin du noisetier', 'Bâcher au sol en juin pour récupérer les larves tombantes, ramasser les noisettes véreuses'),
+    Disease('Phytopte du noisetier', 'Soufre au débourrement, supprimer les bourgeons hypertrophiés en hiver'),
+    Disease('Bactériose (Xanthomonas)', 'Tailler en été, désinfecter les outils, supprimer les rameaux atteints'),
+  ],
+  'vigne': [
+    Disease('Mildiou de la vigne', 'Bouillie bordelaise dès stade 5-6 feuilles, renouveler après pluies importantes, palissage pour aérer'),
+    Disease('Oïdium', 'Soufre poudre ou mouillable dès la 3e feuille, traitements préventifs réguliers'),
+    Disease('Eudémis (vers de la grappe)', 'Pièges à phéromones, confusion sexuelle, Bacillus thuringiensis sur les jeunes chenilles'),
+    Disease('Black-rot', 'Bouillie bordelaise, supprimer les feuilles et grappes atteintes, ramasser les momies'),
+  ],
+  'kiwi': [
+    Disease('PSA (chancre bactérien)', 'Maladie à déclaration — éviter blessures de taille, désinfecter outils, supprimer rameaux atteints jusqu\'au bois sain'),
+    Disease('Cochenilles', 'Huile blanche en hiver, brossage des troncs'),
+    Disease('Pourriture grise (Botrytis)', 'Aérer la palissade, ne pas blesser les fruits, récolte au sec'),
+  ],
+
+  // ── Petits fruits & vivaces ──
+  'framboisier': [
+    Disease('Rouille du framboisier', 'Supprimer les feuilles atteintes, bouillie bordelaise à la chute des feuilles'),
+    Disease('Drosophile suzukii', 'Filets anti-insectes mailles 0,8 mm, pièges à vinaigre, récolter tôt le matin'),
+    Disease('Pourriture grise (Botrytis)', 'Aérer les rameaux, pailler, ne pas mouiller les fruits'),
+  ],
+  'cassissier': [
+    Disease('Rouille du cassis', 'Supprimer les feuilles atteintes, bouillie bordelaise au débourrement'),
+    Disease('Phytopte du cassis (gros bourgeon)', 'Couper et brûler les bourgeons gonflés en hiver, soufre au débourrement'),
+    Disease('Pucerons', 'Savon noir au stade rosé'),
+  ],
+  'groseillier': [
+    Disease('Anthracnose', 'Supprimer les feuilles atteintes, bouillie bordelaise à la chute des feuilles'),
+    Disease('Tenthrède du groseillier', 'Ramassage manuel des chenilles, Bacillus thuringiensis'),
+    Disease('Oïdium américain', 'Soufre, aérer par la taille'),
+  ],
+  'murier': [
+    Disease('Anthracnose', 'Supprimer les rameaux atteints, bouillie bordelaise à la chute des feuilles'),
+    Disease('Drosophile suzukii', 'Filets anti-insectes, récolter rapidement'),
+  ],
+  'myrtillier': [
+    Disease('Pourriture des fruits (Botrytis)', 'Aérer, pailler, ne pas mouiller les fruits'),
+    Disease('Drosophile suzukii', 'Filets anti-insectes, récolter rapidement'),
+    Disease('Chlorose ferrique', 'Sol trop calcaire — apporter de la terre de bruyère, arroser à l\'eau de pluie, chélate de fer en pulvérisation'),
+  ],
+  'rhubarbe': [
+    Disease('Pourriture du collet', 'Sol bien drainé, ne pas planter en zone humide, supprimer la zone atteinte'),
+    Disease('Charançon de la rhubarbe', 'Ramassage manuel le soir, paillage de fougères'),
+  ],
 };
 
 /// Représente une maladie ou un ravageur avec son remède bio.
