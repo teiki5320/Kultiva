@@ -451,4 +451,14 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'kiwi', sowingMonths: [11, 12, 1, 2, 3], harvestMonths: [10, 11],
     regionalNote: "Plantation à racines nues en hiver. Prévoir un pied mâle pour 5-6 pieds femelles.",
   ),
+
+  // ── Vague 2 batch 10 — Fleurs comestibles ──
+  RegionData(regionId: 'france', vegetableId: 'capucine', sowingMonths: [4, 5, 6], harvestMonths: [6, 7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'souci', sowingMonths: [3, 4, 5, 6, 9], harvestMonths: [5, 6, 7, 8, 9, 10, 11]),
+  RegionData(regionId: 'france', vegetableId: 'bourrache', sowingMonths: [3, 4, 5, 6], harvestMonths: [5, 6, 7, 8, 9, 10]),
+  RegionData(
+    regionId: 'france', vegetableId: 'pensee', sowingMonths: [6, 7, 8], harvestMonths: [3, 4, 5, 6, 9, 10, 11],
+    regionalNote: "Bisannuelle — semis en été pour floraison au printemps suivant.",
+  ),
+  RegionData(regionId: 'france', vegetableId: 'oeillet_inde', sowingMonths: [3, 4, 5], harvestMonths: [6, 7, 8, 9, 10]),
 ];

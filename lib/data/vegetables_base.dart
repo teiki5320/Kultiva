@@ -2579,6 +2579,142 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Capucine
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'capucine',
+    name: 'Capucine',
+    emoji: '🌸',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur comestible orange ou jaune au goût piquant, proche du cresson. Attire les pucerons loin des autres légumes — idéale en bordure de potager.",
+    note: "Fleurs et feuilles comestibles, à parsemer en salade.",
+    sowingTechnique: "Semis direct en place après les gelées",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "30 × 40 cm",
+    watering: "Modéré",
+    soil: "Pauvre, sec, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+capucine&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de juin à octobre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Souci (calendula)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'souci',
+    name: 'Souci (calendula)',
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur jaune-orangé comestible aux pétales ensoleillés. Vertus médicinales reconnues (calendula), excellente compagne du potager qui repousse les nématodes.",
+    note: "Se ressème spontanément — un classique du jardin de grand-mère.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "25 × 30 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 5 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+souci+calendula&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mai à novembre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Bourrache
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'bourrache',
+    name: 'Bourrache',
+    emoji: '💙',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur étoilée bleu vif au goût d'huître, très mellifère. Indispensable au verger — attire massivement les abeilles pour la pollinisation.",
+    note: "Fleurs et jeunes feuilles comestibles. Se ressème toute seule.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "1 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "40 × 50 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+bourrache&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mai à octobre",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pensée
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pensee',
+    name: 'Pensée',
+    emoji: '🌸',
+    category: VegetableCategory.flowers,
+    description:
+        "Petite fleur multicolore (violet, jaune, blanc) à l'aspect kawaii. Comestible en décoration de salades et desserts, fleurit même en hiver.",
+    note: "Bisannuelle — semer en été pour fleurir au printemps suivant.",
+    sowingTechnique: "Semis en pépinière puis repiquage",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "10 à 21 jours",
+    exposure: "Mi-ombre en été, soleil en hiver",
+    spacing: "20 × 25 cm",
+    watering: "Régulier",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "Floraison continue sur 6 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+pensee+fleur&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mars à juin",
+      'autumn': "Floraison de septembre à novembre",
+      'winter': "Floraison hivernale au sud",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Œillet d'Inde
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'oeillet_inde',
+    name: "Œillet d'Inde",
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur jaune ou orange au feuillage très parfumé. Repousse les nématodes du sol et les insectes nuisibles — alliée précieuse au potager, surtout des tomates.",
+    note: "À planter au pied des tomates et aubergines.",
+    sowingTechnique: "Semis en godet ou en place",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 25 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+oeillet+inde+tagete&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de juin à octobre",
+      'summer': "Floraison continue",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
