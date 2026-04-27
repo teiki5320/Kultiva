@@ -471,4 +471,23 @@ const List<RegionData> franceData = <RegionData>[
   ),
   RegionData(regionId: 'france', vegetableId: 'cosmos', sowingMonths: [4, 5, 6], harvestMonths: [6, 7, 8, 9, 10]),
   RegionData(regionId: 'france', vegetableId: 'zinnia', sowingMonths: [4, 5, 6], harvestMonths: [7, 8, 9, 10]),
+
+  // ── Vague 2 batch 12 — Bleuet + engrais verts ──
+  RegionData(regionId: 'france', vegetableId: 'bleuet', sowingMonths: [3, 4, 9, 10], harvestMonths: [5, 6, 7, 8]),
+  RegionData(
+    regionId: 'france', vegetableId: 'phacelie', sowingMonths: [3, 4, 5, 6, 7, 8, 9], harvestMonths: [5, 6, 7, 8, 9, 10],
+    regionalNote: "Engrais vert — enfouir avant montée en graines (8-10 semaines après semis).",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'moutarde_blanche', sowingMonths: [3, 4, 5, 6, 7, 8, 9], harvestMonths: [5, 6, 7, 8, 9, 10, 11],
+    regionalNote: "Engrais vert — enfouir 6 à 8 semaines après semis ou laisser geler.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'trefle_incarnat', sowingMonths: [8, 9], harvestMonths: [4, 5],
+    regionalNote: "Engrais vert légumineuse — semis fin été, enfouissement au printemps.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'sarrasin', sowingMonths: [5, 6, 7], harvestMonths: [7, 8, 9],
+    regionalNote: "Engrais vert d'été — détruit par les gelées, ne pas laisser grainer.",
+  ),
 ];

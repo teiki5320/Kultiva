@@ -2845,6 +2845,141 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Bleuet
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'bleuet',
+    name: 'Bleuet',
+    emoji: '💙',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur sauvage bleue des champs de blé, devenue rare en culture. Très mellifère, fleurs comestibles à parsemer en salade.",
+    note: "Se ressème spontanément — laisser quelques fleurs monter en graines.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "12 à 18 °C",
+    germinationDays: "10 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 30 cm",
+    watering: "Faible",
+    soil: "Pauvre, sec, drainé",
+    yieldEstimate: "Floraison continue sur 3 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+bleuet+fleur&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Floraison de mai à août",
+      'summer': "Floraison continue",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Phacélie (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'phacelie',
+    name: 'Phacélie',
+    emoji: '💜',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert star : feuillage abondant, floraison mauve très mellifère. Étouffe les adventices, structure le sol et nourrit les abeilles avant d'être enfoui.",
+    note: "À enfouir avant montée en graines (8-10 semaines).",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "0,5 à 1 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type",
+    yieldEstimate: "Couvre-sol et engrais vert",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+phacelie+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Enfouir 8 à 10 semaines après semis",
+      'summer': "Enfouir 6 à 8 semaines après semis",
+      'autumn': "Enfouir avant les fortes gelées",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Moutarde blanche (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'moutarde_blanche',
+    name: 'Moutarde blanche',
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert rapide : germe et fleurit en 6 semaines. Désinfecte le sol (effet biocide), structure et étouffe les adventices.",
+    note: "Idéale entre deux cultures — semer en septembre après récoltes d'été.",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "0,5 à 1 cm",
+    germinationTemp: "10 à 20 °C",
+    germinationDays: "3 à 7 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type",
+    yieldEstimate: "Couvre-sol et engrais vert",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+moutarde+blanche+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Enfouir 6 à 8 semaines après semis",
+      'summer': "Enfouir 5 à 7 semaines après semis",
+      'autumn': "Détruite par les gelées (-5 °C)",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Trèfle incarnat (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'trefle_incarnat',
+    name: 'Trèfle incarnat',
+    emoji: '🌹',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert légumineuse aux fleurs rouges. Fixe l'azote dans le sol grâce aux nodosités racinaires — idéal avant des cultures gourmandes (tomate, courge).",
+    note: "Semer fin été pour profiter de la fixation d'azote tout l'hiver.",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "1 cm",
+    germinationTemp: "10 à 18 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Engrais vert riche en azote",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+trefle+incarnat+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'autumn': "Semer fin août-septembre, enfouir au printemps",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Sarrasin (engrais vert)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'sarrasin',
+    name: 'Sarrasin',
+    emoji: '🌾',
+    category: VegetableCategory.flowers,
+    description:
+        "Engrais vert à floraison blanche très mellifère, croissance ultra-rapide. Idéal pour étouffer un terrain envahi en pleine saison.",
+    note: "Détruit par les gelées — ne pas le laisser grainer pour éviter les repousses.",
+    sowingTechnique: "Semis à la volée puis griffage",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "12 à 20 °C",
+    germinationDays: "5 à 8 jours",
+    exposure: "Soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible",
+    soil: "Tout type, même pauvre",
+    yieldEstimate: "Couvre-sol et engrais vert",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+sarrasin+engrais+vert&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Enfouir 6 à 8 semaines après semis",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
