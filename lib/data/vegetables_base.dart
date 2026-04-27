@@ -2153,6 +2153,139 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Mûrier sans épines
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'murier',
+    name: 'Mûrier sans épines',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Ronce cultivée aux longs rameaux sans épines, productive et gourmande. Donne de grosses mûres juteuses, bien meilleures que les mûres sauvages.",
+    note: "Palisser sur un fil de fer pour faciliter la récolte.",
+    sowingTechnique: "Plantation de plant en hiver",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil",
+    spacing: "200 × 250 cm",
+    watering: "Régulier en fructification",
+    soil: "Frais, humifère, drainé",
+    yieldEstimate: "5 à 10 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=murier+sans+epines+plant&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à septembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Myrtillier
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'myrtillier',
+    name: 'Myrtillier',
+    emoji: '🫐',
+    category: VegetableCategory.fruits,
+    description:
+        "Petit arbuste à baies bleues sucrées, riches en antioxydants. Exige un sol acide (terre de bruyère) — culture en pot recommandée en sol calcaire.",
+    note: "Sol acide indispensable (pH 4,5 à 5,5).",
+    sowingTechnique: "Plantation de plant à l'automne ou au printemps",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "100 × 150 cm",
+    watering: "Régulier à l'eau de pluie (eau calcaire à éviter)",
+    soil: "Acide (terre de bruyère), drainé",
+    yieldEstimate: "1 à 3 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+myrtillier&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Récolte de juillet à septembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Rhubarbe
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'rhubarbe',
+    name: 'Rhubarbe',
+    emoji: '🌿',
+    category: VegetableCategory.stems,
+    description:
+        "Plante vivace à grosses tiges acidulées, base des tartes et compotes printanières. Les feuilles sont toxiques, ne consommer que les pétioles.",
+    note: "Vivace pour 10 ans — choisir un coin définitif riche en compost.",
+    sowingTechnique: "Plantation de griffe ou division de touffe",
+    sowingDepth: "—",
+    germinationTemp: "—",
+    germinationDays: "—",
+    exposure: "Soleil ou mi-ombre",
+    spacing: "100 × 120 cm",
+    watering: "Abondant en croissance",
+    soil: "Riche, frais, profond",
+    yieldEstimate: "3 à 5 kg/pied",
+    amazonUrl: "https://www.amazon.fr/s?k=griffe+rhubarbe&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte d'avril à juin",
+      'summer': "Récolte de juillet (plant établi)",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Pleurote (kit)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'pleurote',
+    name: 'Pleurote (kit)',
+    emoji: '🍄',
+    category: VegetableCategory.flowers,
+    description:
+        "Champignon en éventail à chapeau gris ou jaune, facile à cultiver sur kit (paille ou bûche inoculée). Rendement rapide en quelques semaines.",
+    note: "Maintenir l'humidité — vaporiser deux fois par jour.",
+    sowingTechnique: "Kit de mycélium sur paille ou bûche inoculée",
+    sowingDepth: "—",
+    germinationTemp: "15 à 22 °C",
+    germinationDays: "14 à 21 jours (apparition des primordia)",
+    exposure: "Lumière indirecte, lieu humide",
+    spacing: "—",
+    watering: "Vaporisation 2× par jour",
+    soil: "Substrat fourni dans le kit",
+    yieldEstimate: "1 à 2 kg sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=kit+culture+pleurote&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "21 à 35 jours",
+      'autumn': "21 à 35 jours",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Shiitaké (kit)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'shiitake',
+    name: 'Shiitaké (kit)',
+    emoji: '🍄',
+    category: VegetableCategory.flowers,
+    description:
+        "Champignon japonais à chapeau brun et chair ferme, classique de la cuisine asiatique. Cultivable sur bûche de chêne inoculée, productif sur 5 à 6 ans.",
+    note: "Bûche placée à l'ombre dehors, à arroser en été sec.",
+    sowingTechnique: "Bûche de chêne inoculée au mycélium",
+    sowingDepth: "—",
+    germinationTemp: "15 à 25 °C",
+    germinationDays: "180 à 360 jours (1ère récolte)",
+    exposure: "Ombre, à l'extérieur",
+    spacing: "—",
+    watering: "Tremper la bûche par périodes sèches",
+    soil: "Bûche fournie",
+    yieldEstimate: "1 à 2 kg/an sur 5 ans",
+    amazonUrl: "https://www.amazon.fr/s?k=kit+shiitake+buche&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'spring': "Récolte d'avril à juin",
+      'autumn': "Récolte de septembre à novembre",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

@@ -381,4 +381,26 @@ const List<RegionData> franceData = <RegionData>[
     regionId: 'france', vegetableId: 'groseillier', sowingMonths: [10, 11, 2, 3], harvestMonths: [6, 7],
     regionalNote: "Plantation à l'automne ou en fin d'hiver. Très rustique.",
   ),
+
+  // ── Nouveautés vague 1 batch 7 ──
+  RegionData(
+    regionId: 'france', vegetableId: 'murier', sowingMonths: [10, 11, 2, 3], harvestMonths: [7, 8, 9],
+    regionalNote: "Plantation à l'automne ou en fin d'hiver. Production à partir de la 2e année.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'myrtillier', sowingMonths: [10, 11, 2, 3], harvestMonths: [7, 8, 9],
+    regionalNote: "Sol acide indispensable — préférer la culture en pot avec terre de bruyère en sol calcaire.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'rhubarbe', sowingMonths: [10, 11, 2, 3], harvestMonths: [4, 5, 6, 7],
+    regionalNote: "Plantation à l'automne ou en fin d'hiver. Vivace pour une dizaine d'années.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'pleurote', sowingMonths: [3, 4, 5, 9, 10, 11], harvestMonths: [4, 5, 6, 10, 11, 12],
+    regionalNote: "Culture sur kit toute l'année à l'abri. Préférer printemps et automne en extérieur.",
+  ),
+  RegionData(
+    regionId: 'france', vegetableId: 'shiitake', sowingMonths: [3, 4, 10, 11], harvestMonths: [4, 5, 6, 9, 10, 11],
+    regionalNote: "Bûche placée à l'ombre — première récolte à 6-12 mois, puis 5 ans de production.",
+  ),
 ];
