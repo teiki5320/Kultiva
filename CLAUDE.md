@@ -245,30 +245,26 @@ même style que les 38 accessoires existants. Les images générées sont
 **partagées avec Kultivaprix** (projet sœur, comparateur de prix), donc le
 style doit rester identique sur les deux apps.
 
-**Style commun (suffixe à concaténer derrière chaque sujet) :**
+**Formule retenue (validée Apr 2026) :**
 
 ```
-plain object, isolated, soft pastel colors, cream beige solid background, simple rounded shapes, clean line art, soft shading, app icon style, centered, 1:1 square
+a [SUBJECT] icon, simple flat 2D vector design, solid [COLOR] color, [DETAILS], minimalist app icon, plain cream beige background, centered, 1:1 square
 ```
 
-**Préfixe à mettre devant chaque sujet :**
+Exemple validé sur tomate :
 
 ```
-flat pastel illustration of a
+a tomato icon, simple flat 2D vector design, solid red color, small green stem on top, minimalist app icon, plain cream beige background, centered, 1:1 square
 ```
 
-⚠️ **Pas de negative prompt disponible côté ComfyUI** — il faut tout baker
-dans le positif. Donc on **N'AJOUTE PAS** : « kawaii character », « cute
-chibi », « smiling face », « big sparkly eyes », « mascot ». Ces termes
-créent des créatures anthropomorphisées au lieu de légumes lisibles. Les
-images cibles sont du style **« légume joliment dessiné en pastel »**
-(comme les 38 accessoires existants), pas des mascottes à yeux.
-
-**Negative prompt (si workflow le permet) :**
-
-```
-realistic, photo, photography, 3d render, dark, scary, gloomy, harsh shadows, complex background, text, watermark, logo, low quality, blurry, multiple subjects, distorted, anthropomorphic, character, mascot, eyes, face, mouth, smiling, chibi creature, kawaii character
-```
+⚠️ **Pourquoi cette formule** :
+- `icon` + `vector design` + `minimalist app icon` → ancrent fort vers du logo plat
+- `solid [color] color` → empêche le mélange de couleurs (sinon le modèle hésite)
+- **NE PAS** ajouter « kawaii », « cute », « illustration », « character », « chibi »,
+  « smiling face » — ces mots tirent vers du personnage anthropomorphisé,
+  surtout sur les checkpoints anime/character (ex. `sdxl_afrotok_final`).
+- Si le modèle reste biaisé character : baisser `cfg` à 4.5 sur le KSampler,
+  ou désactiver les LoRAs actifs (clic-droit → Bypass).
 
 **Format de sortie attendu** : TSV (tabulation entre prompt et filename),
 copiable dans Numbers/Sheets ou un node ComfyUI batch :
