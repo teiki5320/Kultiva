@@ -238,6 +238,39 @@ cd ios && pod install --repo-update && cd ..
   kawaii dans ta poche 🌱 ».
 - **Localisation** : app **fr-FR** uniquement pour l'instant.
 
+### 🎨 Génération d'images ComfyUI (prompts produits)
+
+Format retenu pour générer les visuels kawaii des plantes et accessoires —
+même style que les 38 accessoires existants. Les images générées sont
+**partagées avec Kultivaprix** (projet sœur, comparateur de prix), donc le
+style doit rester identique sur les deux apps.
+
+**Style commun (suffixe à concaténer derrière chaque sujet) :**
+
+```
+kawaii pastel illustration, cute chibi style, soft pastel colors, big sparkly eyes, cream beige solid background, japanese anime aesthetic, simple rounded shapes, app icon, square 1:1, centered composition, clean line art, soft shading
+```
+
+**Negative prompt (constant) :**
+
+```
+realistic, photo, photography, 3d render, dark, scary, gloomy, harsh shadows, complex background, text, watermark, logo, low quality, blurry, multiple subjects, distorted
+```
+
+**Format de sortie attendu** : TSV (tabulation entre prompt et filename),
+copiable dans Numbers/Sheets ou un node ComfyUI batch :
+
+```
+<prompt complet sujet + style>	<id>.png
+<prompt complet sujet + style>	<id>.png
+```
+
+Le filename = `{Vegetable.id}.png` (ex. `cornichon.png`, `pommier.png`).
+
+Destination : `assets/images/vegetables/<id>.png` côté Kultiva, et même
+fichier hébergé côté Kultivaprix (à voir : Supabase Storage public bucket
+ou CDN partagé).
+
 ## 🚫 Pièges à éviter
 
 - **Ne pas casser le mode offline** — toute nouvelle feature doit continuer à
