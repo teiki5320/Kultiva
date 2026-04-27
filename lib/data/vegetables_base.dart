@@ -2715,6 +2715,136 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
   ),
 
+  // ──────────────────────────────────────────────────────────────────────
+  // Tournesol
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'tournesol',
+    name: 'Tournesol',
+    emoji: '🌻',
+    category: VegetableCategory.flowers,
+    description:
+        "Géant solaire jusqu'à 3 m, avec ses grandes fleurs jaunes. Mellifère, productif en graines pour les oiseaux ou la cuisine, idéal en fond de massif.",
+    note: "Suit la course du soleil pendant sa croissance.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "2 à 3 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "7 à 14 jours",
+    exposure: "Plein soleil",
+    spacing: "40 × 60 cm",
+    watering: "Régulier en croissance",
+    soil: "Profond, drainé",
+    yieldEstimate: "1 grosse fleur par plant",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+tournesol&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juillet à septembre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Tagète (anti-nématodes)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'tagete',
+    name: 'Tagète',
+    emoji: '🌼',
+    category: VegetableCategory.flowers,
+    description:
+        "Cousine de l'œillet d'Inde, tagète erecta ou patula. Utilisée pour purger le sol des nématodes — semer une saison avant tomates ou pommes de terre.",
+    note: "Effet anti-nématodes maximal en culture pleine sur 1 saison.",
+    sowingTechnique: "Semis en godet ou en place",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "25 × 30 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+tagete+nematicide&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juin à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Lavande vraie
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'lavande',
+    name: 'Lavande vraie',
+    emoji: '💜',
+    category: VegetableCategory.flowers,
+    description:
+        "Arbrisseau provençal aux épis bleu-violet très parfumés. Très mellifère, repousse les pucerons, parfait en bordure ou dans les rocailles.",
+    note: "Tailler après floraison pour garder une touffe compacte.",
+    sowingTechnique: "Bouturage ou achat de plant — semis difficile",
+    sowingDepth: "0,3 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "21 à 30 jours",
+    exposure: "Plein soleil",
+    spacing: "50 × 60 cm",
+    watering: "Faible, très résistante à la sécheresse",
+    soil: "Pauvre, sec, calcaire, drainé",
+    yieldEstimate: "Floraison sur 2 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=plant+lavande+vraie&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juin à août",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Cosmos
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'cosmos',
+    name: 'Cosmos',
+    emoji: '🌸',
+    category: VegetableCategory.flowers,
+    description:
+        "Grande fleur rose, blanche ou pourpre au feuillage finement découpé. Très mellifère, germe et fleurit vite, idéal en massif ou en bouquet.",
+    note: "Floraison ininterrompue jusqu'aux gelées.",
+    sowingTechnique: "Semis direct en place",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "15 à 20 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Soleil",
+    spacing: "30 × 40 cm",
+    watering: "Modéré",
+    soil: "Tout type, drainé",
+    yieldEstimate: "Floraison continue sur 5 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+cosmos+fleurs&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juin à octobre",
+    },
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Zinnia
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'zinnia',
+    name: 'Zinnia',
+    emoji: '🌺',
+    category: VegetableCategory.flowers,
+    description:
+        "Fleur double aux couleurs éclatantes (rose, orange, rouge, jaune). Très florifère, parfaite en bouquet, attire papillons et abeilles.",
+    note: "Adore la chaleur — pas avant mai dans le nord.",
+    sowingTechnique: "Semis en godet ou en place après les gelées",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "18 à 22 °C",
+    germinationDays: "5 à 10 jours",
+    exposure: "Plein soleil",
+    spacing: "30 × 40 cm",
+    watering: "Modéré, au pied",
+    soil: "Riche, drainé",
+    yieldEstimate: "Floraison continue sur 4 mois",
+    amazonUrl: "https://www.amazon.fr/s?k=graines+zinnia+fleurs&tag=kultiva-21",
+    harvestTimeBySeason: {
+      'summer': "Floraison de juillet à octobre",
+    },
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',

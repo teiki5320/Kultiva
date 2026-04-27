@@ -461,4 +461,14 @@ const List<RegionData> franceData = <RegionData>[
     regionalNote: "Bisannuelle — semis en été pour floraison au printemps suivant.",
   ),
   RegionData(regionId: 'france', vegetableId: 'oeillet_inde', sowingMonths: [3, 4, 5], harvestMonths: [6, 7, 8, 9, 10]),
+
+  // ── Vague 2 batch 11 — Fleurs utiles au potager ──
+  RegionData(regionId: 'france', vegetableId: 'tournesol', sowingMonths: [4, 5, 6], harvestMonths: [7, 8, 9]),
+  RegionData(regionId: 'france', vegetableId: 'tagete', sowingMonths: [3, 4, 5], harvestMonths: [6, 7, 8, 9, 10]),
+  RegionData(
+    regionId: 'france', vegetableId: 'lavande', sowingMonths: [3, 4, 5, 9, 10], harvestMonths: [6, 7, 8],
+    regionalNote: "Vivace — plantation au printemps ou à l'automne. Floraison à partir de la 2e année.",
+  ),
+  RegionData(regionId: 'france', vegetableId: 'cosmos', sowingMonths: [4, 5, 6], harvestMonths: [6, 7, 8, 9, 10]),
+  RegionData(regionId: 'france', vegetableId: 'zinnia', sowingMonths: [4, 5, 6], harvestMonths: [7, 8, 9, 10]),
 ];
