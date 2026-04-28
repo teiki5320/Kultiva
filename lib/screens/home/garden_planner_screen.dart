@@ -7,6 +7,7 @@ import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
+import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
@@ -125,11 +126,13 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
   bool _dirty = false;
   PlannerSeason _season = PlannerSeason.all;
   _PickerFilter _filter = const _FavoritesFilter();
+  WeatherData? _weather;
 
   @override
   void initState() {
     super.initState();
     _plan = widget.initialPlan;
+    _loadWeather();
     if (_plan == null) {
       // Au premier frame, on ouvre le modal de création approprié.
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -206,6 +209,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           children: <Widget>[
             // Barre Configurer / Conseils.
             _buildToolBar(),
+            // Banner irrigation (visible si grille non vide).
+            if (plan.cells.isNotEmpty)
+              _IrrigationBanner(weather: _weather, plan: plan),
             // Grille élastique, prend tout l'espace dispo.
             Expanded(child: _buildGrid(plan)),
             // Plant picker fixé en bas.
@@ -222,6 +228,11 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _loadWeather() async {
+    final w = await WeatherService.getWeather();
+    if (mounted) setState(() => _weather = w);
   }
 
   int get _totalPlants {
@@ -495,26 +506,54 @@ class _GridCell extends StatelessWidget {
       builder: (context, candidates, rejects) {
         final hovering = candidates.isNotEmpty;
         final c = cell;
-        return GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: hovering
-                  ? KultivaColors.primaryGreen.withValues(alpha: 0.35)
-                  : KultivaColors.lightGreen.withValues(alpha: 0.45),
-              borderRadius: BorderRadius.circular(6),
-              border: hovering
-                  ? Border.all(
-                      color: KultivaColors.primaryGreen,
-                      width: 2,
-                    )
-                  : (c != null && status != CompanionStatus.neutral
-                      ? Border.all(color: _ringColor, width: 2)
-                      : null),
+        // Style kawaii : gradient pastel, coins arrondis 14, ombre douce.
+        final baseGradient = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: hovering
+              ? <Color>[
+                  KultivaColors.primaryGreen.withValues(alpha: 0.55),
+                  KultivaColors.primaryGreen.withValues(alpha: 0.30),
+                ]
+              : <Color>[
+                  KultivaColors.lightGreen.withValues(alpha: 0.55),
+                  KultivaColors.lightGreen.withValues(alpha: 0.30),
+                ],
+        );
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOut,
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            gradient: baseGradient,
+            borderRadius: BorderRadius.circular(14),
+            border: hovering
+                ? Border.all(
+                    color: KultivaColors.primaryGreen,
+                    width: 2.5,
+                  )
+                : (c != null && status != CompanionStatus.neutral
+                    ? Border.all(color: _ringColor, width: 2.5)
+                    : Border.all(
+                        color: Colors.white.withValues(alpha: 0.4),
+                        width: 1,
+                      )),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: KultivaColors.primaryGreen.withValues(alpha: 0.10),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(14),
+              onTap: onTap,
+              child: c == null ? null : _buildContent(c),
             ),
-            child: c == null ? null : _buildContent(c),
           ),
         );
       },
@@ -607,6 +646,15 @@ class _CellActionSheetState extends State<_CellActionSheet> {
     _count = widget.cell.count;
   }
 
+  String _formatPlantedAt(DateTime when) {
+    final days = DateTime.now().difference(when).inDays;
+    final dateStr =
+        '${when.day.toString().padLeft(2, '0')}/${when.month.toString().padLeft(2, '0')}/${when.year}';
+    if (days == 0) return 'Planté aujourd\'hui ($dateStr)';
+    if (days == 1) return 'Planté hier ($dateStr)';
+    return 'Planté il y a $days jours ($dateStr)';
+  }
+
   @override
   Widget build(BuildContext context) {
     final veg = vegetablesBase.firstWhere(
@@ -647,7 +695,31 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                 ),
               ],
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 8),
+            // Date de semis / plantation.
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: KultivaColors.lightGreen.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: <Widget>[
+                  const Text('🌱', style: TextStyle(fontSize: 14)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _formatPlantedAt(widget.cell.plantedAt),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
             Text(
               "Combien de plants dans cette case ?",
               style: TextStyle(
@@ -1013,6 +1085,110 @@ class _PlantPicker extends StatelessWidget {
       visualDensity: VisualDensity.compact,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.symmetric(horizontal: 4),
+    );
+  }
+}
+
+/// Banner irrigation affiché au-dessus de la grille.
+///
+/// Synthétise la météo (température, prévision pluie 7j) et donne un
+/// conseil d'arrosage agrégé pour le potager carré. Les conseils sont
+/// dérivés du modèle utilisé par WateringAdvisor mais en mode "global"
+/// plutôt que par culture (le planificateur agrège plusieurs plants).
+class _IrrigationBanner extends StatelessWidget {
+  final WeatherData? weather;
+  final GardenPlan plan;
+  const _IrrigationBanner({required this.weather, required this.plan});
+
+  @override
+  Widget build(BuildContext context) {
+    final advice = _computeAdvice();
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            advice.color.withValues(alpha: 0.18),
+            advice.color.withValues(alpha: 0.08),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: advice.color.withValues(alpha: 0.35),
+          width: 1.5,
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Text(advice.emoji, style: const TextStyle(fontSize: 26)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  advice.title,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  advice.message,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: KultivaColors.textSecondary,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ({String emoji, String title, String message, Color color}) _computeAdvice() {
+    final w = weather;
+    if (w == null) {
+      return (
+        emoji: '💧',
+        title: 'Irrigation',
+        message: 'Météo en cours de chargement…',
+        color: Colors.blue,
+      );
+    }
+    final dailyRain = w.dailyPrecipitation.take(3).fold<double>(0, (s, p) => s + p);
+    final maxTempNext3 =
+        w.dailyTempMax.take(3).fold<double>(0, (m, t) => t > m ? t : m);
+
+    if (dailyRain >= 5) {
+      return (
+        emoji: '🌧️',
+        title: 'Pluie attendue',
+        message: 'Pluie cumulée ~ ${dailyRain.toStringAsFixed(0)} mm sur 3j. '
+            'Pas besoin d\'arroser pour l\'instant.',
+        color: Colors.blue,
+      );
+    }
+    if (maxTempNext3 >= 28) {
+      return (
+        emoji: '☀️',
+        title: 'Forte chaleur',
+        message: 'Pic à ${maxTempNext3.toStringAsFixed(0)} °C prévu. Arrose '
+            'tôt le matin ou en fin de journée, pailler les pieds.',
+        color: Colors.orange,
+      );
+    }
+    return (
+      emoji: '🌤️',
+      title: 'Conditions normales',
+      message: 'Vérifie tes plants : un sol sec sur 3 cm = il faut arroser.',
+      color: KultivaColors.primaryGreen,
     );
   }
 }
