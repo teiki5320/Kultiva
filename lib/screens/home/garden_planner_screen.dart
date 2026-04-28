@@ -121,6 +121,12 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     );
   }
 
+  int get _totalPlants {
+    final plan = _plan;
+    if (plan == null) return 0;
+    return plan.cells.values.fold<int>(0, (sum, c) => sum + c.count);
+  }
+
   Widget _buildToolBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -135,6 +141,24 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             ),
           ),
           const Spacer(),
+          if (_totalPlants > 0) ...<Widget>[
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: KultivaColors.lightGreen.withValues(alpha: 0.35),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                '🌱 $_totalPlants plant${_totalPlants > 1 ? 's' : ''}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+          ],
           TextButton.icon(
             onPressed: _showTips,
             icon: const Icon(Icons.help_outline, size: 18),
@@ -219,11 +243,16 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     if (plan == null) return;
     final cell = plan.cellAt(col, row);
     if (cell == null) return;
-    // Confirmation rapide pour vider la case.
     showModalBottomSheet<void>(
       context: context,
       builder: (_) => _CellActionSheet(
         cell: cell,
+        onCountChanged: (newCount) {
+          setState(() {
+            _plan = plan.withCell(col, row, cell.copyWith(count: newCount));
+            _dirty = true;
+          });
+        },
         onClear: () {
           Navigator.of(context).pop();
           setState(() {
@@ -403,47 +432,139 @@ class _GridCell extends StatelessWidget {
   }
 }
 
-/// Bottom-sheet avec actions sur une case occupée.
-class _CellActionSheet extends StatelessWidget {
+/// Bottom-sheet avec actions sur une case occupée :
+/// ajuster le nombre de plants, ouvrir la fiche détail, ou vider.
+class _CellActionSheet extends StatefulWidget {
   final PlannedCell cell;
+  final ValueChanged<int> onCountChanged;
   final VoidCallback onClear;
-  const _CellActionSheet({required this.cell, required this.onClear});
+  const _CellActionSheet({
+    required this.cell,
+    required this.onCountChanged,
+    required this.onClear,
+  });
+
+  @override
+  State<_CellActionSheet> createState() => _CellActionSheetState();
+}
+
+class _CellActionSheetState extends State<_CellActionSheet> {
+  late int _count;
+
+  @override
+  void initState() {
+    super.initState();
+    _count = widget.cell.count;
+  }
 
   @override
   Widget build(BuildContext context) {
     final veg = vegetablesBase.firstWhere(
-      (v) => v.id == cell.vegetableId,
+      (v) => v.id == widget.cell.vegetableId,
       orElse: () => vegetablesBase.first,
     );
+    final maxDensity = veg.densityPerSqFt ?? 1;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              '${veg.emoji}  ${veg.name}',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
+            Row(
+              children: <Widget>[
+                if (veg.imageAsset != null)
+                  SizedBox(
+                    width: 44,
+                    height: 44,
+                    child: Image.asset(
+                      veg.imageAsset!,
+                      errorBuilder: (_, __, ___) => Text(veg.emoji,
+                          style: const TextStyle(fontSize: 32)),
+                    ),
+                  )
+                else
+                  Text(veg.emoji, style: const TextStyle(fontSize: 32)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    veg.name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 14),
             Text(
-              '${cell.count} plant${cell.count > 1 ? 's' : ''} dans cette case',
+              "Combien de plants dans cette case ?",
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 13,
                 color: KultivaColors.textSecondary,
               ),
             ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: onClear,
-                icon: const Icon(Icons.delete_outline),
-                label: const Text('Vider la case'),
+            const SizedBox(height: 8),
+            Row(
+              children: <Widget>[
+                IconButton.filledTonal(
+                  onPressed: _count > 1
+                      ? () => setState(() => _count--)
+                      : null,
+                  icon: const Icon(Icons.remove),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      '$_count / $maxDensity',
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton.filledTonal(
+                  onPressed: _count < maxDensity
+                      ? () => setState(() => _count++)
+                      : null,
+                  icon: const Icon(Icons.add),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Maximum recommandé : $maxDensity plants par case (30×30 cm)',
+              style: TextStyle(
+                fontSize: 11,
+                color: KultivaColors.textSecondary,
               ),
+            ),
+            const SizedBox(height: 18),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: widget.onClear,
+                    icon: const Icon(Icons.delete_outline),
+                    label: const Text('Vider'),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: KultivaColors.primaryGreen,
+                    ),
+                    onPressed: () {
+                      widget.onCountChanged(_count);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Valider'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -533,33 +654,58 @@ class _PlantCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(6),
-      child: Column(
+      child: Stack(
         children: <Widget>[
-          Expanded(
-            child: plant.imageAsset != null
-                ? Image.asset(
-                    plant.imageAsset!,
-                    fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) => Center(
-                      child: Text(plant.emoji,
-                          style: const TextStyle(fontSize: 30)),
-                    ),
-                  )
-                : Center(
-                    child: Text(plant.emoji,
-                        style: const TextStyle(fontSize: 30)),
+          Column(
+            children: <Widget>[
+              Expanded(
+                child: plant.imageAsset != null
+                    ? Image.asset(
+                        plant.imageAsset!,
+                        fit: BoxFit.contain,
+                        errorBuilder: (_, __, ___) => Center(
+                          child: Text(plant.emoji,
+                              style: const TextStyle(fontSize: 30)),
+                        ),
+                      )
+                    : Center(
+                        child: Text(plant.emoji,
+                            style: const TextStyle(fontSize: 30)),
+                      ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                plant.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          if ((plant.densityPerSqFt ?? 1) > 1)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 4, vertical: 1),
+                decoration: BoxDecoration(
+                  color: KultivaColors.primaryGreen,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${plant.densityPerSqFt}x',
+                  style: const TextStyle(
+                    fontSize: 9,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
                   ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            plant.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
-          ),
         ],
       ),
     );
