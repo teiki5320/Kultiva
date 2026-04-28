@@ -18,9 +18,9 @@ import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
 import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
-import 'hydroponie_screen.dart';
 import 'monthly_calendar_screen.dart';
-import 'potager_traditionnel_screen.dart';
+import 'cahier_culture_picker_screen.dart';
+import 'news_feed_screen.dart';
 import 'settings_screen.dart';
 import 'weather_screen.dart';
 
@@ -335,10 +335,10 @@ class _SowScreenState extends State<SowScreen> {
                       children: [
                         Expanded(
                           child: _KawaiiCard(
-                            emoji: '🌻',
+                            emoji: '📔',
                             imagePath: null,
-                            label: 'Potager traditionnel',
-                            subtitle: 'Culture pleine terre',
+                            label: 'Cahier de culture',
+                            subtitle: 'Pleine terre & hydro',
                             gradientColors: const [
                               KultivaColors.springA,
                               KultivaColors.springB,
@@ -347,7 +347,7 @@ class _SowScreenState extends State<SowScreen> {
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
                                 builder: (_) =>
-                                    const PotagerTraditionnelScreen(),
+                                    const CahierCulturePickerScreen(),
                               ),
                             ),
                           ),
@@ -355,18 +355,18 @@ class _SowScreenState extends State<SowScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _KawaiiCard(
-                            emoji: '💧',
+                            emoji: '📰',
                             imagePath: null,
-                            label: 'Hydroponie',
-                            subtitle: 'Cultiver sans terre',
+                            label: 'Actualités',
+                            subtitle: 'Astuces & nouveautés',
                             gradientColors: const [
-                              KultivaColors.winterA,
-                              KultivaColors.winterB,
+                              KultivaColors.summerA,
+                              KultivaColors.summerB,
                             ],
-                            bubbleColor: const Color(0xFF4A9BBF),
+                            bubbleColor: KultivaColors.terracotta,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                builder: (_) => const HydroponieScreen(),
+                                builder: (_) => const NewsFeedScreen(),
                               ),
                             ),
                           ),
