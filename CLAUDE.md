@@ -238,6 +238,48 @@ cd ios && pod install --repo-update && cd ..
   kawaii dans ta poche 🌱 ».
 - **Localisation** : app **fr-FR** uniquement pour l'instant.
 
+### 🎨 Génération d'images ComfyUI (prompts produits)
+
+Format retenu pour générer les visuels kawaii des plantes et accessoires —
+même style que les 38 accessoires existants. Les images générées sont
+**partagées avec Kultivaprix** (projet sœur, comparateur de prix), donc le
+style doit rester identique sur les deux apps.
+
+**Formule retenue (validée Apr 2026) :**
+
+```
+a [SUBJECT] icon, simple flat 2D vector design, solid [COLOR] color, [DETAILS], minimalist app icon, plain cream beige background, centered, 1:1 square
+```
+
+Exemple validé sur tomate :
+
+```
+a tomato icon, simple flat 2D vector design, solid red color, small green stem on top, minimalist app icon, plain cream beige background, centered, 1:1 square
+```
+
+⚠️ **Pourquoi cette formule** :
+- `icon` + `vector design` + `minimalist app icon` → ancrent fort vers du logo plat
+- `solid [color] color` → empêche le mélange de couleurs (sinon le modèle hésite)
+- **NE PAS** ajouter « kawaii », « cute », « illustration », « character », « chibi »,
+  « smiling face » — ces mots tirent vers du personnage anthropomorphisé,
+  surtout sur les checkpoints anime/character (ex. `sdxl_afrotok_final`).
+- Si le modèle reste biaisé character : baisser `cfg` à 4.5 sur le KSampler,
+  ou désactiver les LoRAs actifs (clic-droit → Bypass).
+
+**Format de sortie attendu** : TSV (tabulation entre prompt et filename),
+copiable dans Numbers/Sheets ou un node ComfyUI batch :
+
+```
+<prompt complet sujet + style>	<id>.png
+<prompt complet sujet + style>	<id>.png
+```
+
+Le filename = `{Vegetable.id}.png` (ex. `cornichon.png`, `pommier.png`).
+
+Destination : `assets/images/vegetables/<id>.png` côté Kultiva, et même
+fichier hébergé côté Kultivaprix (à voir : Supabase Storage public bucket
+ou CDN partagé).
+
 ## 🚫 Pièges à éviter
 
 - **Ne pas casser le mode offline** — toute nouvelle feature doit continuer à
