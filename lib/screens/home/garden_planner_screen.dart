@@ -7,6 +7,7 @@ import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
+import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
@@ -125,11 +126,13 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
   bool _dirty = false;
   PlannerSeason _season = PlannerSeason.all;
   _PickerFilter _filter = const _FavoritesFilter();
+  WeatherData? _weather;
 
   @override
   void initState() {
     super.initState();
     _plan = widget.initialPlan;
+    _loadWeather();
     if (_plan == null) {
       // Au premier frame, on ouvre le modal de création approprié.
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -206,6 +209,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           children: <Widget>[
             // Barre Configurer / Conseils.
             _buildToolBar(),
+            // Banner irrigation (visible si grille non vide).
+            if (plan.cells.isNotEmpty)
+              _IrrigationBanner(weather: _weather, plan: plan),
             // Grille élastique, prend tout l'espace dispo.
             Expanded(child: _buildGrid(plan)),
             // Plant picker fixé en bas.
@@ -222,6 +228,11 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _loadWeather() async {
+    final w = await WeatherService.getWeather();
+    if (mounted) setState(() => _weather = w);
   }
 
   int get _totalPlants {
@@ -1041,6 +1052,110 @@ class _PlantPicker extends StatelessWidget {
       visualDensity: VisualDensity.compact,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.symmetric(horizontal: 4),
+    );
+  }
+}
+
+/// Banner irrigation affiché au-dessus de la grille.
+///
+/// Synthétise la météo (température, prévision pluie 7j) et donne un
+/// conseil d'arrosage agrégé pour le potager carré. Les conseils sont
+/// dérivés du modèle utilisé par WateringAdvisor mais en mode "global"
+/// plutôt que par culture (le planificateur agrège plusieurs plants).
+class _IrrigationBanner extends StatelessWidget {
+  final WeatherData? weather;
+  final GardenPlan plan;
+  const _IrrigationBanner({required this.weather, required this.plan});
+
+  @override
+  Widget build(BuildContext context) {
+    final advice = _computeAdvice();
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: <Color>[
+            advice.color.withValues(alpha: 0.18),
+            advice.color.withValues(alpha: 0.08),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: advice.color.withValues(alpha: 0.35),
+          width: 1.5,
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Text(advice.emoji, style: const TextStyle(fontSize: 26)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  advice.title,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  advice.message,
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: KultivaColors.textSecondary,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ({String emoji, String title, String message, Color color}) _computeAdvice() {
+    final w = weather;
+    if (w == null) {
+      return (
+        emoji: '💧',
+        title: 'Irrigation',
+        message: 'Météo en cours de chargement…',
+        color: Colors.blue,
+      );
+    }
+    final dailyRain = w.dailyPrecipitation.take(3).fold<double>(0, (s, p) => s + p);
+    final maxTempNext3 =
+        w.dailyTempMax.take(3).fold<double>(0, (m, t) => t > m ? t : m);
+
+    if (dailyRain >= 5) {
+      return (
+        emoji: '🌧️',
+        title: 'Pluie attendue',
+        message: 'Pluie cumulée ~ ${dailyRain.toStringAsFixed(0)} mm sur 3j. '
+            'Pas besoin d\'arroser pour l\'instant.',
+        color: Colors.blue,
+      );
+    }
+    if (maxTempNext3 >= 28) {
+      return (
+        emoji: '☀️',
+        title: 'Forte chaleur',
+        message: 'Pic à ${maxTempNext3.toStringAsFixed(0)} °C prévu. Arrose '
+            'tôt le matin ou en fin de journée, pailler les pieds.',
+        color: Colors.orange,
+      );
+    }
+    return (
+      emoji: '🌤️',
+      title: 'Conditions normales',
+      message: 'Vérifie tes plants : un sol sec sur 3 cm = il faut arroser.',
+      color: KultivaColors.primaryGreen,
     );
   }
 }
