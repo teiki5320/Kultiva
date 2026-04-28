@@ -646,6 +646,15 @@ class _CellActionSheetState extends State<_CellActionSheet> {
     _count = widget.cell.count;
   }
 
+  String _formatPlantedAt(DateTime when) {
+    final days = DateTime.now().difference(when).inDays;
+    final dateStr =
+        '${when.day.toString().padLeft(2, '0')}/${when.month.toString().padLeft(2, '0')}/${when.year}';
+    if (days == 0) return 'Planté aujourd\'hui ($dateStr)';
+    if (days == 1) return 'Planté hier ($dateStr)';
+    return 'Planté il y a $days jours ($dateStr)';
+  }
+
   @override
   Widget build(BuildContext context) {
     final veg = vegetablesBase.firstWhere(
@@ -686,7 +695,31 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                 ),
               ],
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 8),
+            // Date de semis / plantation.
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: KultivaColors.lightGreen.withValues(alpha: 0.25),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: <Widget>[
+                  const Text('🌱', style: TextStyle(fontSize: 14)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _formatPlantedAt(widget.cell.plantedAt),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
             Text(
               "Combien de plants dans cette case ?",
               style: TextStyle(
