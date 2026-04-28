@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../data/companions.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
 import '../../services/garden_plan_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
 
 /// Écran principal du planificateur de potager carré.
@@ -172,6 +174,19 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     );
   }
 
+  /// Récupère les IDs des plantes voisines (haut/bas/gauche/droite) d'une case.
+  Iterable<String> _neighborsOf(GardenPlan plan, int col, int row) sync* {
+    for (final pair in const <List<int>>[
+      [0, -1],
+      [0, 1],
+      [-1, 0],
+      [1, 0],
+    ]) {
+      final n = plan.cellAt(col + pair[0], row + pair[1]);
+      if (n != null) yield n.vegetableId;
+    }
+  }
+
   Widget _buildGrid(GardenPlan plan) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -200,6 +215,13 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
                           col: c,
                           row: r,
                           cell: plan.cellAt(c, r),
+                          status: plan.cellAt(c, r) == null
+                              ? CompanionStatus.neutral
+                              : statusFor(
+                                  vegetableId:
+                                      plan.cellAt(c, r)!.vegetableId,
+                                  neighbors: _neighborsOf(plan, c, r),
+                                ),
                           onAccept: (vegId) => _onPlacePlant(vegId, c, r),
                           onTap: () => _onTapCell(c, r),
                         ),
@@ -339,6 +361,7 @@ class _GridCell extends StatelessWidget {
   final int col;
   final int row;
   final PlannedCell? cell;
+  final CompanionStatus status;
   final ValueChanged<String> onAccept;
   final VoidCallback onTap;
 
@@ -347,9 +370,21 @@ class _GridCell extends StatelessWidget {
     required this.col,
     required this.row,
     required this.cell,
+    required this.status,
     required this.onAccept,
     required this.onTap,
   });
+
+  Color get _ringColor {
+    switch (status) {
+      case CompanionStatus.good:
+        return Colors.green.shade600;
+      case CompanionStatus.bad:
+        return Colors.red.shade400;
+      case CompanionStatus.neutral:
+        return Colors.transparent;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -374,7 +409,9 @@ class _GridCell extends StatelessWidget {
                       color: KultivaColors.primaryGreen,
                       width: 2,
                     )
-                  : null,
+                  : (c != null && status != CompanionStatus.neutral
+                      ? Border.all(color: _ringColor, width: 2)
+                      : null),
             ),
             child: c == null ? null : _buildContent(c),
           ),
@@ -407,6 +444,18 @@ class _GridCell extends StatelessWidget {
                       style: const TextStyle(fontSize: 22)),
                 ),
         ),
+        if (status == CompanionStatus.good)
+          const Positioned(
+            top: 2,
+            left: 2,
+            child: Text('👍', style: TextStyle(fontSize: 12)),
+          )
+        else if (status == CompanionStatus.bad)
+          const Positioned(
+            top: 2,
+            left: 2,
+            child: Text('⚠️', style: TextStyle(fontSize: 12)),
+          ),
         if (cell.count > 1)
           Positioned(
             bottom: 2,
@@ -541,7 +590,9 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                 color: KultivaColors.textSecondary,
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 14),
+            _CompanionInfo(vegetableId: widget.cell.vegetableId),
+            const SizedBox(height: 14),
             Row(
               children: <Widget>[
                 Expanded(
@@ -569,6 +620,104 @@ class _CellActionSheetState extends State<_CellActionSheet> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Affiche la liste des compagnes et incompatibles d'un légume.
+class _CompanionInfo extends StatelessWidget {
+  final String vegetableId;
+  const _CompanionInfo({required this.vegetableId});
+
+  String _label(String id) {
+    final v = vegetablesBase.firstWhere(
+      (e) => e.id == id,
+      orElse: () => vegetablesBase.first,
+    );
+    return '${v.emoji} ${v.name}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final companions = companionMap[vegetableId] ?? const <String>[];
+    final incompat = incompatibleMap[vegetableId] ?? const <String>[];
+    if (companions.isEmpty && incompat.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (companions.isNotEmpty) ...<Widget>[
+          Row(
+            children: <Widget>[
+              const Text('👍', style: TextStyle(fontSize: 14)),
+              const SizedBox(width: 6),
+              Text(
+                'À planter à côté',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.green.shade700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: companions
+                .take(8)
+                .map((id) => Chip(
+                      label: Text(
+                        _label(id),
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      backgroundColor: Colors.green.shade50,
+                      side: BorderSide(color: Colors.green.shade200),
+                      padding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                    ))
+                .toList(),
+          ),
+        ],
+        if (companions.isNotEmpty && incompat.isNotEmpty)
+          const SizedBox(height: 10),
+        if (incompat.isNotEmpty) ...<Widget>[
+          Row(
+            children: <Widget>[
+              const Text('⚠️', style: TextStyle(fontSize: 14)),
+              const SizedBox(width: 6),
+              Text(
+                'À éviter à côté',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.red.shade700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: incompat
+                .take(8)
+                .map((id) => Chip(
+                      label: Text(
+                        _label(id),
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      backgroundColor: Colors.red.shade50,
+                      side: BorderSide(color: Colors.red.shade200),
+                      padding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                    ))
+                .toList(),
+          ),
+        ],
+      ],
     );
   }
 }
