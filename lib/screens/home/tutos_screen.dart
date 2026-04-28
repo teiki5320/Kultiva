@@ -40,10 +40,7 @@ const _categories = <_TutoCategory>[
     label: 'Prise en main',
     color: Color(0xFFB565F2),
     items: [
-      _TutoItem(emoji: '🏠', label: 'Découvrir le dashboard', htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
-      _TutoItem(emoji: '🪴', label: 'Ton Tamassi', htmlAsset: 'assets/tutos/utiliser_poussidex.html'),
-      _TutoItem(emoji: '📷', label: 'Les défis photo', htmlAsset: 'assets/tutos/ajouter_photos.html'),
-      _TutoItem(emoji: '🏆', label: 'Débloquer les badges', htmlAsset: 'assets/tutos/debloquer_badges.html'),
+      _TutoItem(emoji: '🏠', label: "Découvrir l'application", htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
     ],
   ),
   _TutoCategory(
@@ -247,18 +244,29 @@ class TutosScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                itemCount: cat.items.length,
-                itemBuilder: (ctx, i) {
-                  final item = cat.items[i];
-                  return _TutoTile(item: item, color: cat.color);
-                },
+            if (cat.items.length == 1)
+              // Catégorie à un seul tuto → carte large pleine largeur.
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _TutoTile(
+                  item: cat.items.first,
+                  color: cat.color,
+                  wide: true,
+                ),
+              )
+            else
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: cat.items.length,
+                  itemBuilder: (ctx, i) {
+                    final item = cat.items[i];
+                    return _TutoTile(item: item, color: cat.color);
+                  },
+                ),
               ),
-            ),
           ],
           const SizedBox(height: 32),
         ],
@@ -270,7 +278,14 @@ class TutosScreen extends StatelessWidget {
 class _TutoTile extends StatelessWidget {
   final _TutoItem item;
   final Color color;
-  const _TutoTile({required this.item, required this.color});
+
+  /// Mode "carte large" : utilisée pour les catégories à 1 seul tuto
+  /// (ex. Prise en main) pour éviter une mini-tile perdue toute seule
+  /// dans l'écran. Elle prend toute la largeur, affiche un plus gros
+  /// emoji et un libellé plus lisible.
+  final bool wide;
+
+  const _TutoTile({required this.item, required this.color, this.wide = false});
 
   @override
   Widget build(BuildContext context) {
@@ -295,8 +310,13 @@ class _TutoTile extends StatelessWidget {
         }
       },
       child: Container(
-        width: 90,
-        margin: const EdgeInsets.symmetric(horizontal: 4),
+        width: wide ? double.infinity : 90,
+        margin: wide
+            ? const EdgeInsets.symmetric(vertical: 4)
+            : const EdgeInsets.symmetric(horizontal: 4),
+        padding: wide
+            ? const EdgeInsets.symmetric(horizontal: 20, vertical: 18)
+            : EdgeInsets.zero,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -306,7 +326,7 @@ class _TutoTile extends StatelessWidget {
               color.withValues(alpha: 0.25),
             ],
           ),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(wide ? 22 : 18),
           boxShadow: [
             BoxShadow(
               color: color.withValues(alpha: 0.15),
@@ -315,56 +335,99 @@ class _TutoTile extends StatelessWidget {
             ),
           ],
         ),
-        child: Stack(
-          clipBehavior: Clip.hardEdge,
-          children: [
-            Positioned(
-              top: -6,
-              right: -6,
-              child: Container(
-                width: 22,
-                height: 22,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color.withValues(alpha: 0.1),
-                ),
-              ),
-            ),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+        child: wide
+            ? Row(
                 children: [
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 64,
+                    height: 64,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: Colors.white.withValues(alpha: 0.8),
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
                     child: Text(item.emoji,
-                        style: const TextStyle(fontSize: 20)),
+                        style: const TextStyle(fontSize: 32)),
                   ),
-                  const SizedBox(height: 6),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Text(
-                      item.label,
-                      style: TextStyle(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700,
-                        color: KultivaColors.textPrimary,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          item.label,
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: KultivaColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Le tour complet — dashboard, Étal, Poussidex',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.chevron_right, color: color, size: 28),
+                ],
+              )
+            : Stack(
+                clipBehavior: Clip.hardEdge,
+                children: [
+                  Positioned(
+                    top: -6,
+                    right: -6,
+                    child: Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: color.withValues(alpha: 0.1),
                       ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.7),
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(item.emoji,
+                              style: const TextStyle(fontSize: 20)),
+                        ),
+                        const SizedBox(height: 6),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Text(
+                            item.label,
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: KultivaColors.textPrimary,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
