@@ -6,10 +6,37 @@ import '../../data/vegetables_base.dart';
 import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
 import '../../services/garden_plan_service.dart';
+import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
 import 'hydro_system_picker_sheet.dart';
+
+/// Filtre actif sur le plant picker. Reflète le pattern Étal :
+/// favoris / tous / par catégorie.
+sealed class _PickerFilter {
+  const _PickerFilter();
+  String get label;
+}
+
+class _FavoritesFilter extends _PickerFilter {
+  const _FavoritesFilter();
+  @override
+  String get label => 'Favoris';
+}
+
+class _AllFilter extends _PickerFilter {
+  const _AllFilter();
+  @override
+  String get label => 'Toutes';
+}
+
+class _CategoryFilter extends _PickerFilter {
+  final VegetableCategory category;
+  const _CategoryFilter(this.category);
+  @override
+  String get label => category.label;
+}
 
 /// Saison utilisée pour filtrer le plant picker.
 enum PlannerSeason {
@@ -97,6 +124,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
   GardenPlan? _plan;
   bool _dirty = false;
   PlannerSeason _season = PlannerSeason.all;
+  _PickerFilter _filter = const _FavoritesFilter();
 
   @override
   void initState() {
@@ -184,7 +212,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             _PlantPicker(
               season: _season,
               hydroOnly: plan.isHydroponic,
+              filter: _filter,
               onSeasonChanged: (s) => setState(() => _season = s),
+              onFilterChanged: (f) => setState(() => _filter = f),
               onPickedDrop: (vegId, col, row) =>
                   _onPlacePlant(vegId, col, row),
             ),
@@ -793,20 +823,24 @@ class _CompanionInfo extends StatelessWidget {
   }
 }
 
-/// Plant picker en bas d'écran. Filtre les plantes avec densityPerSqFt
-/// renseigné (les vivaces / arbres ne s'inscrivent pas dans la grille).
-/// Filtre additionnellement par saison via les `sowingMonths` du
-/// `RegionData` français, et par `hydroFriendly` en mode hydro.
+/// Plant picker en bas d'écran avec :
+/// - chips horizontales Favoris / Toutes / [catégories],
+/// - filtre saisonnier sur la droite,
+/// - cards de plantes draggables (long-press pour démarrer le drag).
 class _PlantPicker extends StatelessWidget {
   final PlannerSeason season;
   final bool hydroOnly;
+  final _PickerFilter filter;
   final ValueChanged<PlannerSeason> onSeasonChanged;
+  final ValueChanged<_PickerFilter> onFilterChanged;
   final void Function(String vegId, int col, int row) onPickedDrop;
 
   const _PlantPicker({
     required this.season,
     required this.hydroOnly,
+    required this.filter,
     required this.onSeasonChanged,
+    required this.onFilterChanged,
     required this.onPickedDrop,
   });
 
@@ -815,17 +849,49 @@ class _PlantPicker extends StatelessWidget {
     for (final r in franceData) r.vegetableId: r.sowingMonths.toSet(),
   };
 
+  /// Catégories qui ont au moins une plante avec densityPerSqFt.
+  /// Ordre : feuilles, fruits, racines, tiges, bulbes, tubercules,
+  /// graines, aromates, fleurs.
+  static const List<VegetableCategory> _orderedCategories = <VegetableCategory>[
+    VegetableCategory.leaves,
+    VegetableCategory.fruits,
+    VegetableCategory.roots,
+    VegetableCategory.stems,
+    VegetableCategory.bulbs,
+    VegetableCategory.tubers,
+    VegetableCategory.seeds,
+    VegetableCategory.aromatics,
+    VegetableCategory.flowers,
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final plants = vegetablesBase.where((v) {
-      if (v.category == VegetableCategory.accessories) return false;
-      if (v.densityPerSqFt == null) return false;
-      if (hydroOnly && !v.hydroFriendly) return false;
-      if (season == PlannerSeason.all) return true;
-      final months = _sowingByVegetable[v.id];
-      if (months == null || months.isEmpty) return false;
-      return months.intersection(season.months).isNotEmpty;
-    }).toList();
+    return ValueListenableBuilder<Set<String>>(
+      valueListenable: PrefsService.instance.favorites,
+      builder: (ctx, favs, _) {
+        final plants = vegetablesBase.where((v) {
+          if (v.category == VegetableCategory.accessories) return false;
+          if (v.densityPerSqFt == null) return false;
+          if (hydroOnly && !v.hydroFriendly) return false;
+          // Filtre par catégorie / favoris.
+          if (filter is _FavoritesFilter && !favs.contains(v.id)) return false;
+          if (filter is _CategoryFilter &&
+              v.category != (filter as _CategoryFilter).category) {
+            return false;
+          }
+          // Filtre saison.
+          if (season == PlannerSeason.all) return true;
+          final months = _sowingByVegetable[v.id];
+          if (months == null || months.isEmpty) return false;
+          return months.intersection(season.months).isNotEmpty;
+        }).toList();
+        return _buildPicker(context, plants, favs);
+      },
+    );
+  }
+
+  Widget _buildPicker(
+      BuildContext context, List<Vegetable> plants, Set<String> favs) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -889,17 +955,37 @@ class _PlantPicker extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 6),
+          // Chips horizontaux : Favoris / Toutes / catégories.
+          SizedBox(
+            height: 32,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                _filterChip(const _FavoritesFilter(), '⭐'),
+                const SizedBox(width: 6),
+                _filterChip(const _AllFilter(), '🌍'),
+                for (final cat in _orderedCategories) ...<Widget>[
+                  const SizedBox(width: 6),
+                  _filterChip(_CategoryFilter(cat), cat.emoji),
+                ],
+              ],
+            ),
+          ),
           const SizedBox(height: 8),
           SizedBox(
             height: 96,
             child: plants.isEmpty
                 ? Center(
                     child: Text(
-                      'Aucune plante semable en ${season.label.toLowerCase()}',
+                      filter is _FavoritesFilter
+                          ? 'Aucun favori. Ajoute des plantes en favori depuis l\'onglet Étal.'
+                          : 'Aucune plante dans ce filtre.',
                       style: TextStyle(
                         fontSize: 12,
                         color: KultivaColors.textSecondary,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   )
                 : ListView.separated(
@@ -911,6 +997,22 @@ class _PlantPicker extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _filterChip(_PickerFilter f, String emoji) {
+    final selected = f.runtimeType == filter.runtimeType &&
+        (f is! _CategoryFilter ||
+            (filter is _CategoryFilter &&
+                (filter as _CategoryFilter).category == f.category));
+    return ChoiceChip(
+      selected: selected,
+      onSelected: (_) => onFilterChanged(f),
+      label: Text('$emoji  ${f.label}',
+          style: const TextStyle(fontSize: 11)),
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
     );
   }
 }
@@ -985,8 +1087,11 @@ class _PlantCard extends StatelessWidget {
       ),
     );
 
-    return Draggable<String>(
+    // LongPressDraggable plutôt que Draggable : le tap court permet de
+    // scroller horizontalement le picker, l'appui long déclenche le drag.
+    return LongPressDraggable<String>(
       data: plant.id,
+      delay: const Duration(milliseconds: 200),
       feedback: Material(
         color: Colors.transparent,
         child: SizedBox(width: 78, height: 78, child: card),

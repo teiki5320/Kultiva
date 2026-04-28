@@ -89,8 +89,10 @@ class _PotagerTraditionnelScreenState
   Widget _buildPlanificationTab() {
     return ValueListenableBuilder<List<GardenPlan>>(
       valueListenable: GardenPlanService.instance.plans,
-      builder: (ctx, plans, _) {
-        if (plans.isEmpty) {
+      builder: (ctx, allPlans, _) {
+        final soilPlans =
+            allPlans.where((p) => p.hydroSystem == null).toList();
+        if (soilPlans.isEmpty) {
           return _EmptyState(
             emoji: '🗺️',
             message:
@@ -99,8 +101,8 @@ class _PotagerTraditionnelScreenState
         }
         return ListView.builder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          itemCount: plans.length,
-          itemBuilder: (_, i) => _GardenPlanCard(plan: plans[i]),
+          itemCount: soilPlans.length,
+          itemBuilder: (_, i) => _GardenPlanCard(plan: soilPlans[i]),
         );
       },
     );
