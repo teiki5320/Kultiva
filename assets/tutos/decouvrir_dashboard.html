@@ -87,6 +87,8 @@
   .deco svg{display:block}
   .replay{position:fixed;right:20px;top:20px;z-index:100;background:#fff;border:2px solid rgba(74,155,90,.25);padding:10px 18px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#357A44;cursor:pointer;box-shadow:0 4px 0 rgba(74,155,90,.18);opacity:.9}
   .replay:hover{opacity:1}
+  .replay-btn{position:fixed;right:20px;top:74px;z-index:100;background:#fff;border:2px solid rgba(74,155,90,.25);padding:10px 18px;border-radius:999px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#357A44;cursor:pointer;box-shadow:0 4px 0 rgba(74,155,90,.18);opacity:.9}
+  .replay-btn:hover{opacity:1}
   .scene-badge{position:absolute;left:50%;transform:translateX(-50%);top:260px;z-index:21;
     background:#fff;padding:8px 20px;border-radius:999px;
     font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:var(--green-deep);
@@ -115,7 +117,7 @@
 </style>
 </head>
 <body>
-<audio id="voAudio" preload="auto" playsinline>
+<audio id="voAudio" preload="auto" playsinline webkit-playsinline>
   <!-- L'inliner Dart remplace le src matchant un fichier existant dans
        assets/tutos/audio/ par une data-URL. Les autres sont ignorées. -->
   <source src="audio/decouvrir_dashboard.mp3" type="audio/mpeg">
@@ -125,6 +127,7 @@
   <source src="audio/decouvrir_dashboard.ogg" type="audio/ogg">
 </audio>
 <button class="replay" id="voToggle">🔊 Voix</button>
+<button class="replay-btn" id="replay">↻ Rejouer</button>
 <div id="tweaks">
   <h3>Tweaks <span class="hint">positions des halos</span></h3>
   <div class="group">
@@ -718,6 +721,16 @@ voToggle.textContent = '🔊 Voix ON';
 
 let TL=buildTL();
 
+// Bouton « Rejouer » : restart de la timeline GSAP. La voix repart aussi
+// via le callback onRepeat ci-dessous.
+document.getElementById('replay').addEventListener('click', () => {
+  TL.restart(true);
+  if (voEnabled && voMode === 'audio') {
+    voAudio.currentTime = 0;
+    voAudio.play().catch(()=>{});
+  }
+});
+
 // Redémarre la voix audio à chaque itération de la boucle (sinon
 // l'audio s'arrête au premier tour alors que l'animation loop).
 TL.eventCallback('onRepeat', () => {
@@ -728,7 +741,7 @@ TL.eventCallback('onRepeat', () => {
 });
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "speed": 0.3515,
+  "speed": 0.35,
   "halo1_x": 5, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
   "haloMeteo_x": 21, "haloMeteo_y": 820, "haloMeteo_w": 608, "haloMeteo_h": 255,
   "haloSemer_x": 13, "haloSemer_y": 374, "haloSemer_w": 315, "haloSemer_h": 200,
@@ -805,7 +818,7 @@ document.getElementById('tw-preview').addEventListener('click',()=>{
 });
 document.getElementById('tw-reset').addEventListener('click',()=>{
   Object.assign(TWEAKS, {
-    "speed": 0.3515,
+    "speed": 0.35,
     "halo1_x": 14, "halo1_y": 60, "halo1_w": 644, "halo1_h": 1300,
     "haloMeteo_x": 28, "haloMeteo_y": 760, "haloMeteo_w": 644, "haloMeteo_h": 170,
     "haloSemer_x": 28, "haloSemer_y": 300, "haloSemer_w": 315, "haloSemer_h": 200,

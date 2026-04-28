@@ -94,6 +94,10 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   /// que [_inlineAssetImages] mais pour les balises `<source>` dans un
   /// `<audio>`. Si le fichier n'existe pas on laisse le src intact (le
   /// HTML basculera alors sur la synthèse vocale TTS côté JS).
+  ///
+  /// TODO: ré-encoder `decouvrir_dashboard.mp4` en `.m4a` (AAC) ou `.mp3`
+  /// pur audio — un container MP4 force WebView à décoder une piste vidéo
+  /// inexistante, plus coûteux que nécessaire sur iPhone d'entrée de gamme.
   Future<String> _inlineAssetAudio(String html) async {
     final regex = RegExp(
       '''<source([^>]*?)src=["'](audio/[^"']+)["']([^>]*?)>''',

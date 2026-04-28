@@ -2969,12 +2969,10 @@ class _FilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 14, bottom: 4),
+      padding: const EdgeInsets.fromLTRB(12, 14, 12, 4),
       child: SizedBox(
         height: 36,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
+        child: Row(
           children: <Widget>[
             Expanded(
               child: _FilterChip(
@@ -2995,7 +2993,7 @@ class _FilterBar extends StatelessWidget {
                 count: 0,
                 hideCount: true,
                 selected: filter == _AlbumFilter.challenges,
-                color: const Color(0xFFFF8FAB),
+                color: KultivaColors.challengePink,
                 onTap: () {
                   AudioService.instance.play(Sfx.tap);
                   onChanged(_AlbumFilter.challenges);
@@ -3008,7 +3006,7 @@ class _FilterBar extends StatelessWidget {
                 count: badgesCount,
                 total: totalBadges,
                 selected: filter == _AlbumFilter.badges,
-                color: const Color(0xFFE8B923),
+                color: KultivaColors.badgeGold,
                 onTap: () {
                   AudioService.instance.play(Sfx.tap);
                   onChanged(_AlbumFilter.badges);
@@ -3016,7 +3014,6 @@ class _FilterBar extends StatelessWidget {
               ),
             ),
           ],
-          ),
         ),
       ),
     );
