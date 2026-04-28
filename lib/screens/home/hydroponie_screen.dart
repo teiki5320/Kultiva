@@ -234,8 +234,7 @@ class _HydroponieScreenState extends State<HydroponieScreen>
             ],
           );
         },
-      ),
-    );
+      );
   }
 }
 
