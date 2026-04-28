@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
+import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
+import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/pdf_service.dart';
 import '../../services/watering_advisor.dart';
@@ -12,6 +14,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/phenology.dart';
 import '../../widgets/watering_bars.dart';
 import 'culture_start_sheet.dart';
+import 'garden_planner_screen.dart';
 import 'monthly_calendar_screen.dart';
 import 'vegetables_screen.dart';
 import 'weather_screen.dart';
@@ -27,13 +30,27 @@ class PotagerTraditionnelScreen extends StatefulWidget {
 }
 
 class _PotagerTraditionnelScreenState
-    extends State<PotagerTraditionnelScreen> {
+    extends State<PotagerTraditionnelScreen>
+    with SingleTickerProviderStateMixin {
   WeatherData? _weather;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      // Force rebuild pour cacher/afficher le FAB selon l'onglet actif.
+      if (mounted) setState(() {});
+    });
     _loadWeather();
+    GardenPlanService.instance.load();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadWeather() async {
@@ -46,89 +63,275 @@ class _PotagerTraditionnelScreenState
     return Scaffold(
       appBar: AppBar(
         title: const Text('📔  Cahier pleine terre'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const <Tab>[
+            Tab(icon: Icon(Icons.grid_view), text: 'Planification'),
+            Tab(icon: Icon(Icons.eco), text: 'Croissance'),
+            Tab(icon: Icon(Icons.notifications_outlined), text: 'Rappel'),
+          ],
+        ),
       ),
-      floatingActionButton: _StartFab(
-        onStarted: () {
-          // Nothing to do — ValueListenableBuilder below rebuilds.
-        },
+      floatingActionButton: _tabController.index == 1
+          ? _StartFab(onStarted: () {})
+          : (_tabController.index == 0 ? _PlanFab() : null),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          _buildPlanificationTab(),
+          _buildCroissanceTab(),
+          _buildRappelTab(),
+        ],
       ),
-      body: ValueListenableBuilder<int>(
-        valueListenable: PrefsService.instance.culturesVersion,
-        builder: (ctx, _, __) {
-          final active = CultureService.instance
-              .activeByMethod(CultivationMethod.soil);
-          final ended = CultureService.instance
-              .endedByMethod(CultivationMethod.soil);
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-            children: <Widget>[
-              const _PotagerHero(),
-              const SizedBox(height: 16),
-              _SectionHeader(
-                emoji: '🌿',
-                title: 'Cultures en cours',
-                count: active.length,
+    );
+  }
+
+  Widget _buildPlanificationTab() {
+    return ValueListenableBuilder<List<GardenPlan>>(
+      valueListenable: GardenPlanService.instance.plans,
+      builder: (ctx, plans, _) {
+        if (plans.isEmpty) {
+          return _EmptyState(
+            emoji: '🗺️',
+            message:
+                "Aucun jardin planifié pour l'instant. Touche le bouton « + » pour créer ton premier potager carré.",
+          );
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          itemCount: plans.length,
+          itemBuilder: (_, i) => _GardenPlanCard(plan: plans[i]),
+        );
+      },
+    );
+  }
+
+  Widget _buildCroissanceTab() {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.culturesVersion,
+      builder: (ctx, _, __) {
+        final active = CultureService.instance
+            .activeByMethod(CultivationMethod.soil);
+        final ended = CultureService.instance
+            .endedByMethod(CultivationMethod.soil);
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          children: <Widget>[
+            const _PotagerHero(),
+            const SizedBox(height: 16),
+            _SectionHeader(
+              emoji: '🌿',
+              title: 'Cultures en cours',
+              count: active.length,
+            ),
+            const SizedBox(height: 8),
+            if (active.isEmpty)
+              const _EmptyState(
+                emoji: '🌱',
+                message:
+                    "Aucune culture en cours. Appuie sur « Démarrer une culture » pour créer ta première fiche.",
+              )
+            else
+              ...active.map(
+                (c) => _CultureCard(culture: c, weather: _weather),
               ),
-              const SizedBox(height: 8),
-              if (active.isEmpty)
-                const _EmptyState(
-                  emoji: '🌱',
-                  message:
-                      "Aucune culture en cours. Appuie sur « Démarrer une culture » pour créer ta première fiche.",
-                )
-              else
-                ...active.map(
-                  (c) => _CultureCard(culture: c, weather: _weather),
-                ),
+            const SizedBox(height: 24),
+            if (ended.isNotEmpty) ...<Widget>[
+              _EndedSection(list: ended, weather: _weather),
+              const SizedBox(height: 16),
+              _SeasonRecapCta(),
               const SizedBox(height: 24),
-              if (ended.isNotEmpty) ...<Widget>[
-                _EndedSection(list: ended, weather: _weather),
-                const SizedBox(height: 16),
-                _SeasonRecapCta(),
-                const SizedBox(height: 24),
-              ],
-              _InfoExpansion(),
-              const SizedBox(height: 12),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: _LinkCta(
-                      emoji: '📅',
-                      title: 'Calendrier',
-                      subtitle: 'Mois par mois',
-                      onTap: () => Navigator.of(ctx).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const MonthlyCalendarScreen(),
-                        ),
+            ],
+            _InfoExpansion(),
+            const SizedBox(height: 12),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: _LinkCta(
+                    emoji: '📅',
+                    title: 'Calendrier',
+                    subtitle: 'Mois par mois',
+                    onTap: () => Navigator.of(ctx).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const MonthlyCalendarScreen(),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _LinkCta(
-                      emoji: '🌦️',
-                      title: 'Météo',
-                      subtitle: 'Pluie à venir',
-                      onTap: () => Navigator.of(ctx).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const WeatherScreen(),
-                        ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _LinkCta(
+                    emoji: '🌦️',
+                    title: 'Météo',
+                    subtitle: 'Pluie à venir',
+                    onTap: () => Navigator.of(ctx).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const WeatherScreen(),
                       ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _AccessoriesCta(
+              onTap: () => Navigator.of(ctx).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const VegetablesScreen(),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildRappelTab() {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.culturesVersion,
+      builder: (ctx, _, __) {
+        final cultures = CultureService.instance
+            .activeByMethod(CultivationMethod.soil);
+        if (cultures.isEmpty) {
+          return const _EmptyState(
+            emoji: '🔔',
+            message:
+                "Aucun rappel pour l'instant. Démarre une culture dans l'onglet « Croissance » pour voir tes prochaines actions.",
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          children: <Widget>[
+            const Text(
+              'Prochaines actions',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Basé sur tes cultures actives et la météo.',
+              style: TextStyle(
+                fontSize: 12,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ...cultures.map((c) => _ReminderCard(culture: c, weather: _weather)),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// FAB de l'onglet Planification : crée un nouveau jardin.
+class _PlanFab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: () async {
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => const GardenPlannerScreen(),
+          ),
+        );
+      },
+      icon: const Icon(Icons.add),
+      label: const Text('Nouveau jardin'),
+      backgroundColor: KultivaColors.primaryGreen,
+      foregroundColor: Colors.white,
+    );
+  }
+}
+
+/// Card d'un jardin planifié dans l'onglet Planification.
+class _GardenPlanCard extends StatelessWidget {
+  final GardenPlan plan;
+  const _GardenPlanCard({required this.plan});
+
+  @override
+  Widget build(BuildContext context) {
+    final filledCells = plan.cells.length;
+    final totalCells = plan.cols * plan.rows;
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: KultivaColors.lightGreen.withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(Icons.grid_view, size: 22),
+        ),
+        title: Text(
+          plan.name,
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+        subtitle: Text(
+          '${plan.cols} × ${plan.rows} cases · $filledCells/$totalCells occupées'
+          '${plan.location != null ? ' · ${plan.location}' : ''}',
+          style: const TextStyle(fontSize: 12),
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => GardenPlannerScreen(initialPlan: plan),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Card de rappel d'une culture active dans l'onglet Rappel.
+class _ReminderCard extends StatelessWidget {
+  final CultureEntry culture;
+  final WeatherData? weather;
+  const _ReminderCard({required this.culture, required this.weather});
+
+  @override
+  Widget build(BuildContext context) {
+    final veg = vegetablesBase.firstWhere(
+      (v) => v.id == culture.vegetableId,
+      orElse: () => vegetablesBase.first,
+    );
+    final advice = suggestWatering(culture, weather);
+    final reminder = advice?.message ??
+        'Pas de rappel particulier pour le moment. Continue ton suivi habituel.';
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          children: <Widget>[
+            Text(veg.emoji, style: const TextStyle(fontSize: 28)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    veg.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    reminder,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: KultivaColors.textSecondary,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              _AccessoriesCta(
-                onTap: () => Navigator.of(ctx).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const VegetablesScreen(),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       ),
     );
   }
