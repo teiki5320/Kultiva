@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../models/garden_plan.dart';
 import '../../services/garden_plan_service.dart';
@@ -25,6 +27,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
   late GardenUnit _unit;
   late int _widthCm;
   late int _heightCm;
+  bool _detectingLocation = false;
 
   // Tailles disponibles en cm (multiples de 30 = 1 case = 1 pied carré).
   static const List<int> _sizesCm = <int>[60, 90, 120, 150, 180, 210, 240];
@@ -88,13 +91,32 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextField(
-                    controller: _locationCtrl,
-                    decoration: const InputDecoration(
-                      hintText: 'Ville, code postal, région…',
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: _locationCtrl,
+                          decoration: const InputDecoration(
+                            hintText: 'Ville, code postal, région…',
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      IconButton.filledTonal(
+                        tooltip: 'Détecter ma position',
+                        onPressed: _detectingLocation ? null : _detectLocation,
+                        icon: _detectingLocation
+                            ? const SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2),
+                              )
+                            : const Icon(Icons.my_location, size: 20),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -219,6 +241,53 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
         ),
       ),
     );
+  }
+
+  Future<void> _detectLocation() async {
+    setState(() => _detectingLocation = true);
+    try {
+      // Vérifier les permissions GPS.
+      var perm = await Geolocator.checkPermission();
+      if (perm == LocationPermission.denied) {
+        perm = await Geolocator.requestPermission();
+      }
+      if (perm == LocationPermission.denied ||
+          perm == LocationPermission.deniedForever) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Localisation refusée. Tape ta ville à la main."),
+            ),
+          );
+        }
+        return;
+      }
+      // Récupérer la position GPS.
+      final pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+      );
+      // Reverse-geocode pour avoir la ville.
+      final placemarks =
+          await placemarkFromCoordinates(pos.latitude, pos.longitude);
+      if (placemarks.isNotEmpty) {
+        final p = placemarks.first;
+        final city = p.locality ?? p.subAdministrativeArea ?? '';
+        final code = p.postalCode ?? '';
+        final label = code.isNotEmpty ? '$city ($code)' : city;
+        if (label.isNotEmpty) {
+          _locationCtrl.text = label;
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Échec de la géoloc : $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _detectingLocation = false);
+    }
   }
 
   Future<void> _save() async {
