@@ -9,6 +9,7 @@ import '../../services/garden_plan_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
+import 'hydro_system_picker_sheet.dart';
 
 /// Saison utilisée pour filtrer le plant picker.
 enum PlannerSeason {
@@ -78,7 +79,15 @@ class GardenPlannerScreen extends StatefulWidget {
   /// Plan à éditer. Si null, on en crée un nouveau au premier rendu.
   final GardenPlan? initialPlan;
 
-  const GardenPlannerScreen({super.key, this.initialPlan});
+  /// Si vrai et `initialPlan` est null, on ouvre le sélecteur de système
+  /// hydroponique au lieu du config sheet pleine terre.
+  final bool hydroMode;
+
+  const GardenPlannerScreen({
+    super.key,
+    this.initialPlan,
+    this.hydroMode = false,
+  });
 
   @override
   State<GardenPlannerScreen> createState() => _GardenPlannerScreenState();
@@ -94,7 +103,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     super.initState();
     _plan = widget.initialPlan;
     if (_plan == null) {
-      // Au premier frame, on ouvre le modal de création.
+      // Au premier frame, on ouvre le modal de création approprié.
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final created = await showModalBottomSheet<GardenPlan>(
           context: context,
@@ -104,7 +113,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             borderRadius:
                 BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          builder: (_) => const GardenPlanConfigSheet(),
+          builder: (_) => widget.hydroMode
+              ? const HydroSystemPickerSheet()
+              : const GardenPlanConfigSheet(),
         );
         if (!mounted) return;
         if (created == null) {
@@ -172,6 +183,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             // Plant picker fixé en bas.
             _PlantPicker(
               season: _season,
+              hydroOnly: plan.isHydroponic,
               onSeasonChanged: (s) => setState(() => _season = s),
               onPickedDrop: (vegId, col, row) =>
                   _onPlacePlant(vegId, col, row),
@@ -784,14 +796,16 @@ class _CompanionInfo extends StatelessWidget {
 /// Plant picker en bas d'écran. Filtre les plantes avec densityPerSqFt
 /// renseigné (les vivaces / arbres ne s'inscrivent pas dans la grille).
 /// Filtre additionnellement par saison via les `sowingMonths` du
-/// `RegionData` français.
+/// `RegionData` français, et par `hydroFriendly` en mode hydro.
 class _PlantPicker extends StatelessWidget {
   final PlannerSeason season;
+  final bool hydroOnly;
   final ValueChanged<PlannerSeason> onSeasonChanged;
   final void Function(String vegId, int col, int row) onPickedDrop;
 
   const _PlantPicker({
     required this.season,
+    required this.hydroOnly,
     required this.onSeasonChanged,
     required this.onPickedDrop,
   });
@@ -801,23 +815,17 @@ class _PlantPicker extends StatelessWidget {
     for (final r in franceData) r.vegetableId: r.sowingMonths.toSet(),
   };
 
-  bool _matchesSeason(Vegetable v) {
-    if (season == PlannerSeason.all) return true;
-    final months = _sowingByVegetable[v.id];
-    // Plante sans données régionales → on l'affiche en "Toute l'année"
-    // uniquement (cohérent avec le filtre saisonnier strict).
-    if (months == null || months.isEmpty) return false;
-    return months.intersection(season.months).isNotEmpty;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final plants = vegetablesBase
-        .where((v) =>
-            v.category != VegetableCategory.accessories &&
-            v.densityPerSqFt != null &&
-            _matchesSeason(v))
-        .toList();
+    final plants = vegetablesBase.where((v) {
+      if (v.category == VegetableCategory.accessories) return false;
+      if (v.densityPerSqFt == null) return false;
+      if (hydroOnly && !v.hydroFriendly) return false;
+      if (season == PlannerSeason.all) return true;
+      final months = _sowingByVegetable[v.id];
+      if (months == null || months.isEmpty) return false;
+      return months.intersection(season.months).isNotEmpty;
+    }).toList();
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

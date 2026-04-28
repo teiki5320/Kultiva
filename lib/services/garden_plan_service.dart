@@ -51,6 +51,7 @@ class GardenPlanService {
     int cols = 4,
     int rows = 4,
     GardenUnit unit = GardenUnit.cm,
+    HydroSystemType? hydroSystem,
   }) async {
     await load();
     final now = DateTime.now();
@@ -61,6 +62,7 @@ class GardenPlanService {
       cols: cols,
       rows: rows,
       unit: unit,
+      hydroSystem: hydroSystem,
       createdAt: now,
       updatedAt: now,
     );
@@ -68,6 +70,13 @@ class GardenPlanService {
     await _persist();
     return plan;
   }
+
+  /// Liste filtrée par type (pleine terre = hydroSystem == null).
+  List<GardenPlan> soilPlans() =>
+      plans.value.where((p) => p.hydroSystem == null).toList();
+
+  List<GardenPlan> hydroPlans() =>
+      plans.value.where((p) => p.hydroSystem != null).toList();
 
   /// Met à jour ou ajoute un plan (par id).
   Future<void> save(GardenPlan plan) async {

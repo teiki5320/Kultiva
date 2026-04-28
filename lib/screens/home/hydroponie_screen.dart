@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
 import '../../models/culture_reading.dart';
+import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_reading_service.dart';
 import '../../services/culture_service.dart';
+import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/reading_targets.dart';
@@ -13,29 +15,176 @@ import '../../widgets/reading_sparkline.dart';
 import '../vegetable_detail_screen.dart';
 import 'culture_reading_sheet.dart';
 import 'culture_start_sheet.dart';
+import 'garden_planner_screen.dart';
 import 'hydro_builds_screen.dart';
 import 'nutrient_calculator_sheet.dart';
 
 /// Cahier de culture hydroponique : suivi sérieux des cultures sans terre,
 /// avec configuration lumière (type, heures, LED). Distinct du Poussidex.
-class HydroponieScreen extends StatelessWidget {
+///
+/// L'écran est organisé en 3 sous-tabs : Planification (designer
+/// d'installation), Croissance (suivi des cultures actives) et Rappel
+/// (prochaines actions).
+class HydroponieScreen extends StatefulWidget {
   const HydroponieScreen({super.key});
+
+  @override
+  State<HydroponieScreen> createState() => _HydroponieScreenState();
+}
+
+class _HydroponieScreenState extends State<HydroponieScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (mounted) setState(() {});
+    });
+    GardenPlanService.instance.load();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('📔  Cahier hydroponie'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const <Tab>[
+            Tab(icon: Icon(Icons.grid_view), text: 'Planification'),
+            Tab(icon: Icon(Icons.eco), text: 'Croissance'),
+            Tab(icon: Icon(Icons.notifications_outlined), text: 'Rappel'),
+          ],
+        ),
       ),
-      floatingActionButton: _StartFab(),
-      body: ValueListenableBuilder<int>(
-        valueListenable: PrefsService.instance.culturesVersion,
-        builder: (ctx, _, __) {
-          final active = CultureService.instance
-              .activeByMethod(CultivationMethod.hydroponic);
-          final ended = CultureService.instance
-              .endedByMethod(CultivationMethod.hydroponic);
-          return ListView(
+      floatingActionButton: _tabController.index == 1
+          ? _StartFab()
+          : (_tabController.index == 0 ? _HydroPlanFab() : null),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          _buildPlanificationTab(),
+          _buildCroissanceTab(),
+          _buildRappelTab(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlanificationTab() {
+    return ValueListenableBuilder<List<GardenPlan>>(
+      valueListenable: GardenPlanService.instance.plans,
+      builder: (ctx, allPlans, _) {
+        final hydroPlans =
+            allPlans.where((p) => p.hydroSystem != null).toList();
+        if (hydroPlans.isEmpty) {
+          return const _EmptyState(
+            emoji: '💧',
+            message:
+                "Aucune install hydro pour l'instant. Touche le bouton « + » pour choisir ton système (DWC, Kratky, NFT, Tour).",
+          );
+        }
+        return ListView.builder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          itemCount: hydroPlans.length,
+          itemBuilder: (_, i) => _HydroPlanCard(plan: hydroPlans[i]),
+        );
+      },
+    );
+  }
+
+  Widget _buildRappelTab() {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.culturesVersion,
+      builder: (ctx, _, __) {
+        final cultures = CultureService.instance
+            .activeByMethod(CultivationMethod.hydroponic);
+        if (cultures.isEmpty) {
+          return const _EmptyState(
+            emoji: '🔔',
+            message:
+                "Aucun rappel. Démarre une culture pour voir les alertes pH/EC/flush du réservoir.",
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          children: <Widget>[
+            const Text(
+              'Prochaines actions',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Basé sur tes mesures pH/EC et la dernière vidange.',
+              style: TextStyle(
+                fontSize: 12,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ...cultures.map((c) => Card(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: ListTile(
+                    leading: Text(
+                      vegetablesBase
+                          .firstWhere(
+                            (v) => v.id == c.vegetableId,
+                            orElse: () => vegetablesBase.first,
+                          )
+                          .emoji,
+                      style: const TextStyle(fontSize: 28),
+                    ),
+                    title: Text(
+                      vegetablesBase
+                          .firstWhere(
+                            (v) => v.id == c.vegetableId,
+                            orElse: () => vegetablesBase.first,
+                          )
+                          .name,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    subtitle: Text(
+                      'Phase : ${c.phase.label} · ${_daysSinceFlush(c)}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                )),
+          ],
+        );
+      },
+    );
+  }
+
+  String _daysSinceFlush(CultureEntry c) {
+    final last = c.lastReservoirFlushAt;
+    if (last == null) {
+      return 'À planifier : première vidange du réservoir';
+    }
+    final days = DateTime.now().difference(last).inDays;
+    if (days >= 14) {
+      return '⚠️ Vidange à faire (${days}j depuis la dernière)';
+    }
+    return 'Dernière vidange il y a ${days}j';
+  }
+
+  Widget _buildCroissanceTab() {
+    return ValueListenableBuilder<int>(
+      valueListenable: PrefsService.instance.culturesVersion,
+      builder: (ctx, _, __) {
+        final active = CultureService.instance
+            .activeByMethod(CultivationMethod.hydroponic);
+        final ended = CultureService.instance
+            .endedByMethod(CultivationMethod.hydroponic);
+        return ListView(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
             children: <Widget>[
               const _HydroHero(),
@@ -85,6 +234,71 @@ class HydroponieScreen extends StatelessWidget {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// FAB de l'onglet Planification hydro : ouvre le sélecteur de système.
+class _HydroPlanFab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: () async {
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => const GardenPlannerScreen(hydroMode: true),
+          ),
+        );
+      },
+      icon: const Icon(Icons.add),
+      label: const Text('Nouvelle install'),
+      backgroundColor: KultivaColors.primaryGreen,
+      foregroundColor: Colors.white,
+    );
+  }
+}
+
+/// Card d'une install hydro dans l'onglet Planification.
+class _HydroPlanCard extends StatelessWidget {
+  final GardenPlan plan;
+  const _HydroPlanCard({required this.plan});
+
+  @override
+  Widget build(BuildContext context) {
+    final filled = plan.cells.length;
+    final total = plan.cols * plan.rows;
+    final system = plan.hydroSystem;
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: Container(
+          width: 44,
+          height: 44,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: KultivaColors.lightGreen.withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            system?.label ?? '?',
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12),
+          ),
+        ),
+        title: Text(
+          plan.name,
+          style: const TextStyle(fontWeight: FontWeight.w700),
+        ),
+        subtitle: Text(
+          '${system?.fullLabel ?? ''} · $filled/$total slots occupés',
+          style: const TextStyle(fontSize: 12),
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => GardenPlannerScreen(initialPlan: plan),
+          ),
+        ),
       ),
     );
   }
