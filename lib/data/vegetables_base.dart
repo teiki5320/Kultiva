@@ -33,6 +33,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '100 à 120 jours (variétés tardives)',
     },
     imageAsset: 'assets/images/vegetables/tomate.png',
+    densityPerSqFt: 1,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -62,6 +64,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '100 à 120 jours (variétés de garde)',
     },
     imageAsset: 'assets/images/vegetables/carotte.png',
+    densityPerSqFt: 9,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -90,6 +93,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '50 à 65 jours',
     },
     imageAsset: 'assets/images/vegetables/courgette.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -119,6 +123,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '55 à 75 jours',
     },
     imageAsset: 'assets/images/vegetables/laitue.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -143,6 +149,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+haricot+vert&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/haricot.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -167,6 +174,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+aubergine&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/aubergine.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -191,6 +199,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 3 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+poivron&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/poivron.png',
+    densityPerSqFt: 1,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -215,6 +225,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 3 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+epinard&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/epinard.png',
+    densityPerSqFt: 9,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -239,6 +251,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 3 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+oignon&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/oignon.png',
+    densityPerSqFt: 16,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -263,6 +276,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "200 à 400 g/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+basilic&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/basilic.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ════════════════════════════════════════════════════════════════════════
@@ -291,6 +306,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+concombre&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/concombre.png',
+    densityPerSqFt: 1,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -315,6 +332,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 3 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+piment&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/piment.png',
+    densityPerSqFt: 1,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -339,6 +358,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "0,5 à 1 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=ail+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/ail.png',
+    densityPerSqFt: 16,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -363,6 +383,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=pomme+de+terre+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/pomme_de_terre.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -392,6 +413,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '30 à 40 jours',
     },
     imageAsset: 'assets/images/vegetables/radis.png',
+    densityPerSqFt: 16,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -416,6 +438,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+chou+pomme&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/chou_pomme.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -440,6 +463,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "0,5 à 1 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+petit+pois&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/petit_pois.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -464,6 +488,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+poireau&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/poireau.png',
+    densityPerSqFt: 36,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -488,6 +513,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=patate+douce+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/patate_douce.png',
+    densityPerSqFt: 2,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -512,6 +538,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+gombo&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/gombo.png',
+    densityPerSqFt: 1,
   ),
   // ════════════════════════════════════════════════════════════════════════
   // LÉGUMES 21–40
@@ -539,6 +566,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=echalote+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/echalote.png',
+    densityPerSqFt: 16,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -563,6 +591,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+chou+fleur&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/chou_fleur.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -587,6 +616,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+brocoli&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/brocoli.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -611,6 +641,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 fruits/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+courge+butternut&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/courge_butternut.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -635,6 +666,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "5 à 15 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+potiron&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/potiron.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -659,6 +691,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 fruits/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+melon&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/melon.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -683,6 +716,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 fruits/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+pasteque&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/pasteque.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -707,6 +741,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "500 g à 1 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=plants+fraisier&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/fraise.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -731,6 +767,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+navet&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/navet.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -755,6 +792,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+betterave&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/betterave.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -779,6 +817,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 3 épis/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+mais+doux&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/mais.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -803,6 +842,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "200 à 400 g/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+persil&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/persil.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -827,6 +868,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "100 à 200 g/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+coriandre&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/coriandre.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -851,6 +894,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "Vivace — récolte continue",
     amazonUrl: "https://www.amazon.fr/s?k=graines+ciboulette&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/ciboulette.png',
+    densityPerSqFt: 36,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -875,6 +920,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "Vivace — récolte continue",
     amazonUrl: "https://www.amazon.fr/s?k=graines+menthe&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/menthe.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -899,6 +946,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "Vivace — récolte continue",
     amazonUrl: "https://www.amazon.fr/s?k=graines+thym&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/thym.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -923,6 +972,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+feve&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/feve.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -947,6 +997,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "5 à 15 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=igname+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/igname.png',
+    densityPerSqFt: 2,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -971,6 +1022,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "5 à 15 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=manioc+bouture&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/manioc.png',
+    densityPerSqFt: 2,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -995,6 +1047,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "0,5 à 1,5 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+niebe&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/niebe.png',
+    densityPerSqFt: 4,
   ),
   // ════════════════════════════════════════════════════════════════════════
   // LÉGUMES 41–60
@@ -1019,6 +1072,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "6 à 10 têtes/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+artichaut&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/artichaut.png',
+    densityPerSqFt: 1,
   ),
 
   Vegetable(
@@ -1040,6 +1094,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 5 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+blette&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/blette.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   Vegetable(
@@ -1061,6 +1117,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+celeri&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/celeri.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1082,6 +1139,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+mache&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/mache.png',
+    densityPerSqFt: 9,
+    hydroFriendly: true,
   ),
 
   Vegetable(
@@ -1103,6 +1162,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+roquette&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/roquette.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   Vegetable(
@@ -1124,6 +1185,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+chou+kale&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/chou_kale.png',
+    densityPerSqFt: 2,
+    hydroFriendly: true,
   ),
 
   Vegetable(
@@ -1145,6 +1208,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "0,5 à 1 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+arachide&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/arachide.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1166,6 +1230,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "0,5 à 1 kg de calices/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+bissap+hibiscus&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/bissap.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1187,6 +1252,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "100 à 300 g/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+sesame+a+semer&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/sesame.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1208,6 +1274,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "200 à 500 g/pied",
     amazonUrl: "https://www.amazon.fr/s?k=gingembre+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/gingembre.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1229,6 +1296,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "500 g à 1 kg/pied/an",
     amazonUrl: "https://www.amazon.fr/s?k=griffes+asperge&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/asperge.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1250,6 +1318,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 3 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=graines+fenouil&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/fenouil.png',
+    densityPerSqFt: 1,
   ),
 
   Vegetable(
@@ -1292,6 +1361,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "1 à 2 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+chou+bruxelles&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/chou_bruxelles.png',
+    densityPerSqFt: 1,
   ),
 
   Vegetable(
@@ -1313,6 +1383,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "3 à 6 fruits/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+potimarron&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/potimarron.png',
+    densityPerSqFt: 1,
   ),
 
   Vegetable(
@@ -1334,6 +1405,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "Vivace — récolte continue",
     amazonUrl: "https://www.amazon.fr/s?k=graines+oseille&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/oseille.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   Vegetable(
@@ -1355,6 +1428,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 5 kg/pied",
     amazonUrl: "https://www.amazon.fr/s?k=taro+bulbe+a+planter&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/taro.png',
+    densityPerSqFt: 2,
   ),
 
   Vegetable(
@@ -1376,6 +1450,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "2 à 4 kg/m² (feuilles)",
     amazonUrl: "https://www.amazon.fr/s?k=graines+amarante&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/amarante.png',
+    densityPerSqFt: 4,
   ),
 
   Vegetable(
@@ -1397,6 +1472,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "300 à 600 g/m² (grains)",
     amazonUrl: "https://www.amazon.fr/s?k=graines+sorgho&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/sorgho.png',
+    densityPerSqFt: 2,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1425,6 +1501,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '50 à 65 jours',
     },
     imageAsset: 'assets/images/vegetables/cornichon.png',
+    densityPerSqFt: 1,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1453,6 +1531,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '120 à 150 jours',
     },
     imageAsset: 'assets/images/vegetables/panais.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1481,6 +1560,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '90 à 110 jours',
     },
     imageAsset: 'assets/images/vegetables/rutabaga.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1537,6 +1617,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'winter': '150 à 180 jours',
     },
     imageAsset: 'assets/images/vegetables/salsifis.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1565,6 +1646,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '80 à 100 jours',
     },
     imageAsset: 'assets/images/vegetables/radis_noir.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1594,6 +1676,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '70 à 90 jours',
     },
     imageAsset: 'assets/images/vegetables/chou_rave.png',
+    densityPerSqFt: 2,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1622,6 +1705,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '60 à 80 jours',
     },
     imageAsset: 'assets/images/vegetables/cresson.png',
+    densityPerSqFt: 9,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1650,6 +1735,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '40 à 55 jours',
     },
     imageAsset: 'assets/images/vegetables/pak_choi.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1677,6 +1764,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '40 à 55 jours',
     },
     imageAsset: 'assets/images/vegetables/pourpier.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1705,6 +1794,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '70 à 90 jours',
     },
     imageAsset: 'assets/images/vegetables/chou_chinois.png',
+    densityPerSqFt: 1,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1735,6 +1826,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'winter': "Récolte permanente",
     },
     imageAsset: 'assets/images/vegetables/romarin.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1764,6 +1857,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
     },
     imageAsset: 'assets/images/vegetables/sauge.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1793,6 +1888,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
     },
     imageAsset: 'assets/images/vegetables/origan.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1822,6 +1919,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
     },
     imageAsset: 'assets/images/vegetables/estragon.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1850,6 +1949,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte continue jusqu'aux gelées",
     },
     imageAsset: 'assets/images/vegetables/sarriette.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1878,6 +1979,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "30 à 50 jours",
     },
     imageAsset: 'assets/images/vegetables/aneth.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1906,6 +2009,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "50 à 70 jours",
     },
     imageAsset: 'assets/images/vegetables/cerfeuil.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1935,6 +2040,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
     },
     imageAsset: 'assets/images/vegetables/melisse.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1963,6 +2070,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
     },
     imageAsset: 'assets/images/vegetables/verveine.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2020,6 +2129,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "70 à 90 jours",
     },
     imageAsset: 'assets/images/vegetables/camomille.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2048,6 +2159,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte continue",
     },
     imageAsset: 'assets/images/vegetables/marjolaine.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2075,6 +2188,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "100 à 110 jours",
     },
     imageAsset: 'assets/images/vegetables/lentille.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2102,6 +2216,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "100 à 120 jours",
     },
     imageAsset: 'assets/images/vegetables/pois_chiche.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2130,6 +2245,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "55 à 70 jours",
     },
     imageAsset: 'assets/images/vegetables/pois_mange_tout.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2158,6 +2274,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "50 à 65 jours",
     },
     imageAsset: 'assets/images/vegetables/haricot_beurre.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2322,6 +2439,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte de juillet (plant établi)",
     },
     imageAsset: 'assets/images/vegetables/rhubarbe.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2710,6 +2828,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison continue",
     },
     imageAsset: 'assets/images/vegetables/capucine.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2738,6 +2858,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison continue",
     },
     imageAsset: 'assets/images/vegetables/souci.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2766,6 +2888,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison continue",
     },
     imageAsset: 'assets/images/vegetables/bourrache.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2795,6 +2919,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'winter': "Floraison hivernale au sud",
     },
     imageAsset: 'assets/images/vegetables/pensee.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2823,6 +2949,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison continue",
     },
     imageAsset: 'assets/images/vegetables/oeillet_inde.png',
+    densityPerSqFt: 4,
+    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2850,6 +2978,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison de juillet à septembre",
     },
     imageAsset: 'assets/images/vegetables/tournesol.png',
+    densityPerSqFt: 1,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2877,6 +3006,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison de juin à octobre",
     },
     imageAsset: 'assets/images/vegetables/tagete.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2904,6 +3034,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison de juin à août",
     },
     imageAsset: 'assets/images/vegetables/lavande.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2931,6 +3062,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison de juin à octobre",
     },
     imageAsset: 'assets/images/vegetables/cosmos.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2958,6 +3090,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison de juillet à octobre",
     },
     imageAsset: 'assets/images/vegetables/zinnia.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2986,6 +3119,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Floraison continue",
     },
     imageAsset: 'assets/images/vegetables/bleuet.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3015,6 +3149,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Enfouir avant les fortes gelées",
     },
     imageAsset: 'assets/images/vegetables/phacelie.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3044,6 +3179,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Détruite par les gelées (-5 °C)",
     },
     imageAsset: 'assets/images/vegetables/moutarde_blanche.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3071,6 +3207,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Semer fin août-septembre, enfouir au printemps",
     },
     imageAsset: 'assets/images/vegetables/trefle_incarnat.png',
+    densityPerSqFt: 4,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3098,6 +3235,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Enfouir 6 à 8 semaines après semis",
     },
     imageAsset: 'assets/images/vegetables/sarrasin.png',
+    densityPerSqFt: 4,
   ),
 
   // ── Accessoires jardinage ──

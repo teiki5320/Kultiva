@@ -45,6 +45,7 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 
 ### 💡 Idées
 
+- [ ] **À discuter** : reconnaissance de plante par photo (style PlantNet / Picture This), avec écran de scan caméra et conseils photo (cadrage, netteté, mono-espèce). Captures d'inspiration vues 2026-04-27.
 - [ ] Internationalisation avec extraction des strings et ajout de l'anglais
 - [ ] Mode hors ligne complet avec assets météo et tutoriels téléchargeables
 - [ ] Intégration de capteurs Bluetooth pour automatiser les mesures hydroponiques (pH, EC, température)

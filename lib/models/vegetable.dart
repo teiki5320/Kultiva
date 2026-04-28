@@ -159,6 +159,19 @@ class Vegetable {
   /// Ex. {Season.spring: '60-80 jours', Season.summer: '50-70 jours'}.
   final Map<String, String>? harvestTimeBySeason;
 
+  /// Densité du Square Foot Gardening (potager carré) :
+  /// nombre de plants qui tiennent dans une case de 30×30 cm (1 pied²).
+  ///
+  /// Valeurs typiques : 1 (tomate, courgette), 4 (laitue, pak choi),
+  /// 9 (carotte, betterave), 16 (radis, oignon), 36 (poireau, ciboulette).
+  /// `null` pour les vivaces ou plantes de rang (arbres fruitiers, baies)
+  /// qui ne s'inscrivent pas dans cette logique.
+  final int? densityPerSqFt;
+
+  /// Compatible avec une culture hydroponique grand public (DWC, Kratky, NFT).
+  /// Par défaut `false` pour les arbres, tubercules et plantes complexes.
+  final bool hydroFriendly;
+
   const Vegetable({
     required this.id,
     required this.name,
@@ -180,6 +193,8 @@ class Vegetable {
     this.accessorySub,
     this.imageAsset,
     this.harvestTimeBySeason,
+    this.densityPerSqFt,
+    this.hydroFriendly = false,
   });
 
   /// Seuil effectif de jours secs max. Si [wateringDaysMax] est renseigné,
