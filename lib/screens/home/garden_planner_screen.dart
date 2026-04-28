@@ -495,26 +495,54 @@ class _GridCell extends StatelessWidget {
       builder: (context, candidates, rejects) {
         final hovering = candidates.isNotEmpty;
         final c = cell;
-        return GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: hovering
-                  ? KultivaColors.primaryGreen.withValues(alpha: 0.35)
-                  : KultivaColors.lightGreen.withValues(alpha: 0.45),
-              borderRadius: BorderRadius.circular(6),
-              border: hovering
-                  ? Border.all(
-                      color: KultivaColors.primaryGreen,
-                      width: 2,
-                    )
-                  : (c != null && status != CompanionStatus.neutral
-                      ? Border.all(color: _ringColor, width: 2)
-                      : null),
+        // Style kawaii : gradient pastel, coins arrondis 14, ombre douce.
+        final baseGradient = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: hovering
+              ? <Color>[
+                  KultivaColors.primaryGreen.withValues(alpha: 0.55),
+                  KultivaColors.primaryGreen.withValues(alpha: 0.30),
+                ]
+              : <Color>[
+                  KultivaColors.lightGreen.withValues(alpha: 0.55),
+                  KultivaColors.lightGreen.withValues(alpha: 0.30),
+                ],
+        );
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          curve: Curves.easeOut,
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            gradient: baseGradient,
+            borderRadius: BorderRadius.circular(14),
+            border: hovering
+                ? Border.all(
+                    color: KultivaColors.primaryGreen,
+                    width: 2.5,
+                  )
+                : (c != null && status != CompanionStatus.neutral
+                    ? Border.all(color: _ringColor, width: 2.5)
+                    : Border.all(
+                        color: Colors.white.withValues(alpha: 0.4),
+                        width: 1,
+                      )),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: KultivaColors.primaryGreen.withValues(alpha: 0.10),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(14),
+              onTap: onTap,
+              child: c == null ? null : _buildContent(c),
             ),
-            child: c == null ? null : _buildContent(c),
           ),
         );
       },
