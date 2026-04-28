@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/companions.dart';
+import '../../data/regions/france.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
@@ -8,6 +9,61 @@ import '../../services/garden_plan_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
+
+/// Saison utilisée pour filtrer le plant picker.
+enum PlannerSeason {
+  all,
+  spring,
+  summer,
+  autumn,
+  winter;
+
+  String get label {
+    switch (this) {
+      case PlannerSeason.all:
+        return "Toute l'année";
+      case PlannerSeason.spring:
+        return 'Printemps';
+      case PlannerSeason.summer:
+        return 'Été';
+      case PlannerSeason.autumn:
+        return 'Automne';
+      case PlannerSeason.winter:
+        return 'Hiver';
+    }
+  }
+
+  String get emoji {
+    switch (this) {
+      case PlannerSeason.all:
+        return '🗓️';
+      case PlannerSeason.spring:
+        return '🌸';
+      case PlannerSeason.summer:
+        return '☀️';
+      case PlannerSeason.autumn:
+        return '🍂';
+      case PlannerSeason.winter:
+        return '❄️';
+    }
+  }
+
+  /// Mois (1-12) couverts par cette saison dans l'hémisphère nord.
+  Set<int> get months {
+    switch (this) {
+      case PlannerSeason.all:
+        return const <int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+      case PlannerSeason.spring:
+        return const <int>{3, 4, 5};
+      case PlannerSeason.summer:
+        return const <int>{6, 7, 8};
+      case PlannerSeason.autumn:
+        return const <int>{9, 10, 11};
+      case PlannerSeason.winter:
+        return const <int>{12, 1, 2};
+    }
+  }
+}
 
 /// Écran principal du planificateur de potager carré.
 ///
@@ -31,6 +87,7 @@ class GardenPlannerScreen extends StatefulWidget {
 class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
   GardenPlan? _plan;
   bool _dirty = false;
+  PlannerSeason _season = PlannerSeason.all;
 
   @override
   void initState() {
@@ -114,6 +171,8 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             Expanded(child: _buildGrid(plan)),
             // Plant picker fixé en bas.
             _PlantPicker(
+              season: _season,
+              onSeasonChanged: (s) => setState(() => _season = s),
               onPickedDrop: (vegId, col, row) =>
                   _onPlacePlant(vegId, col, row),
             ),
@@ -724,16 +783,40 @@ class _CompanionInfo extends StatelessWidget {
 
 /// Plant picker en bas d'écran. Filtre les plantes avec densityPerSqFt
 /// renseigné (les vivaces / arbres ne s'inscrivent pas dans la grille).
+/// Filtre additionnellement par saison via les `sowingMonths` du
+/// `RegionData` français.
 class _PlantPicker extends StatelessWidget {
+  final PlannerSeason season;
+  final ValueChanged<PlannerSeason> onSeasonChanged;
   final void Function(String vegId, int col, int row) onPickedDrop;
-  const _PlantPicker({required this.onPickedDrop});
+
+  const _PlantPicker({
+    required this.season,
+    required this.onSeasonChanged,
+    required this.onPickedDrop,
+  });
+
+  /// Map vegetableId → mois de semis France. Construit une seule fois.
+  static final Map<String, Set<int>> _sowingByVegetable = <String, Set<int>>{
+    for (final r in franceData) r.vegetableId: r.sowingMonths.toSet(),
+  };
+
+  bool _matchesSeason(Vegetable v) {
+    if (season == PlannerSeason.all) return true;
+    final months = _sowingByVegetable[v.id];
+    // Plante sans données régionales → on l'affiche en "Toute l'année"
+    // uniquement (cohérent avec le filtre saisonnier strict).
+    if (months == null || months.isEmpty) return false;
+    return months.intersection(season.months).isNotEmpty;
+  }
 
   @override
   Widget build(BuildContext context) {
     final plants = vegetablesBase
         .where((v) =>
             v.category != VegetableCategory.accessories &&
-            v.densityPerSqFt != null)
+            v.densityPerSqFt != null &&
+            _matchesSeason(v))
         .toList();
     return Container(
       decoration: BoxDecoration(
@@ -761,14 +844,39 @@ class _PlantPicker extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.expand_more, size: 16),
-                label: const Text('Toute l\'année'),
-                style: TextButton.styleFrom(
-                  foregroundColor: KultivaColors.primaryGreen,
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(0, 24),
+              PopupMenuButton<PlannerSeason>(
+                tooltip: 'Filtrer par saison',
+                initialValue: season,
+                onSelected: onSeasonChanged,
+                itemBuilder: (_) => PlannerSeason.values
+                    .map((s) => PopupMenuItem<PlannerSeason>(
+                          value: s,
+                          child: Row(
+                            children: <Widget>[
+                              Text(s.emoji),
+                              const SizedBox(width: 8),
+                              Text(s.label),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      season.label,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: KultivaColors.primaryGreen,
+                      ),
+                    ),
+                    Icon(
+                      Icons.expand_more,
+                      size: 16,
+                      color: KultivaColors.primaryGreen,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -776,12 +884,22 @@ class _PlantPicker extends StatelessWidget {
           const SizedBox(height: 8),
           SizedBox(
             height: 96,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: plants.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
-              itemBuilder: (_, i) => _PlantCard(plant: plants[i]),
-            ),
+            child: plants.isEmpty
+                ? Center(
+                    child: Text(
+                      'Aucune plante semable en ${season.label.toLowerCase()}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: KultivaColors.textSecondary,
+                      ),
+                    ),
+                  )
+                : ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: plants.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 8),
+                    itemBuilder: (_, i) => _PlantCard(plant: plants[i]),
+                  ),
           ),
         ],
       ),
