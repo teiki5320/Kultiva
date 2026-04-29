@@ -110,6 +110,27 @@ ReadingTarget? hydroTargetFor(ReadingType type, GrowthPhase phase) {
       return const ReadingTarget(
         badLow: 15, warnLow: 30, warnHigh: 100, badHigh: 100, unit: '%',
       );
+    case ReadingType.airHumidity:
+      // Fourchette générique ; le sheet « Mes mesures du jour » utilise
+      // les seuils plus précis du HydroProfile par légume.
+      switch (phase) {
+        case GrowthPhase.seedling:
+          return const ReadingTarget(
+            badLow: 50, warnLow: 65, warnHigh: 80, badHigh: 90,
+            unit: '%',
+          );
+        case GrowthPhase.vegetative:
+          return const ReadingTarget(
+            badLow: 40, warnLow: 55, warnHigh: 70, badHigh: 85,
+            unit: '%',
+          );
+        case GrowthPhase.flowering:
+        case GrowthPhase.fruiting:
+          return const ReadingTarget(
+            badLow: 30, warnLow: 45, warnHigh: 60, badHigh: 75,
+            unit: '%',
+          );
+      }
     case ReadingType.soilTemp:
     case ReadingType.harvestGrams:
     case ReadingType.observation:

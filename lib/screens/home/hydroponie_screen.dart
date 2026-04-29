@@ -10,11 +10,13 @@ import '../../services/culture_service.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/hydro_advisor.dart';
 import '../../utils/reading_targets.dart';
 import '../../widgets/reading_sparkline.dart';
 import '../vegetable_detail_screen.dart';
 import 'culture_reading_sheet.dart';
 import 'culture_start_sheet.dart';
+import 'daily_readings_sheet.dart';
 import 'garden_planner_screen.dart';
 import 'hydro_builds_screen.dart';
 import 'nutrient_calculator_sheet.dart';
@@ -481,9 +483,18 @@ class _CultureCard extends StatelessWidget {
                       _DliChip(dli: dli, status: dliStat!),
                   ],
                 ),
+                if (light.ledWatts != null) ...<Widget>[
+                  const SizedBox(height: 8),
+                  _LampHeightTip(
+                    watts: light.ledWatts!,
+                    phase: culture.phase,
+                  ),
+                ],
               ],
               const SizedBox(height: 12),
               _ReadingsRow(cultureId: culture.id, phase: culture.phase),
+              const SizedBox(height: 10),
+              _DailyReadingsButton(culture: culture),
               if (culture.flushDue) ...<Widget>[
                 const SizedBox(height: 10),
                 _FlushAlert(culture: culture),
@@ -1472,6 +1483,83 @@ class _AccessoryCta extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Bouton « Mes mesures du jour » affiché en bas de chaque card de
+/// culture active. Ouvre le [DailyReadingsSheet] qui combine saisie
+/// + conseils dans un seul écran.
+class _DailyReadingsButton extends StatelessWidget {
+  final CultureEntry culture;
+  const _DailyReadingsButton({required this.culture});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton.icon(
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (_) => DailyReadingsSheet(culture: culture),
+          );
+        },
+        icon: const Icon(Icons.auto_awesome, size: 18),
+        label: const Text('Mes mesures du jour'),
+        style: FilledButton.styleFrom(
+          backgroundColor: KultivaColors.primaryGreen,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          textStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Petit encart de conseil pour la hauteur de la lampe LED selon la
+/// phase de croissance et la puissance configurée. Apparaît juste sous
+/// les chips d'info lumière.
+class _LampHeightTip extends StatelessWidget {
+  final int watts;
+  final GrowthPhase phase;
+  const _LampHeightTip({required this.watts, required this.phase});
+
+  @override
+  Widget build(BuildContext context) {
+    final reco = recommendedLampHeight(phase: phase, watts: watts);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3D0).withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: const Color(0xFFE8C96A).withValues(alpha: 0.7),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const Text('💡', style: TextStyle(fontSize: 16)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              reco.advice,
+              style: TextStyle(
+                fontSize: 11,
+                height: 1.35,
+                fontWeight: FontWeight.w700,
+                color: KultivaColors.textPrimary.withValues(alpha: 0.85),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

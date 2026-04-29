@@ -35,6 +35,16 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/tomate.png',
     densityPerSqFt: 1,
     hydroFriendly: true,
+    hydroProfile: HydroProfile(
+      phMin: 5.8,
+      phMax: 6.3,
+      ecVegMin: 1.6,
+      ecVegMax: 2.0,
+      waterTempMin: 18,
+      waterTempMax: 22,
+      airHumidityMin: 60,
+      airHumidityMax: 70,
+    ),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -125,6 +135,16 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/laitue.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroProfile: HydroProfile(
+      phMin: 5.5,
+      phMax: 6.5,
+      ecVegMin: 0.8,
+      ecVegMax: 1.2,
+      waterTempMin: 18,
+      waterTempMax: 22,
+      airHumidityMin: 50,
+      airHumidityMax: 70,
+    ),
   ),
 
   // ──────────────────────────────────────────────────────────────────────

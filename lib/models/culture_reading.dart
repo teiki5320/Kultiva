@@ -16,6 +16,9 @@ enum ReadingType {
   /// Niveau du réservoir (hydro), en %.
   reservoirLevel('reservoirLevel', '%'),
 
+  /// Humidité ambiante de la pièce (hydro intérieur), en %.
+  airHumidity('airHumidity', '%'),
+
   /// Température du sol (pleine terre), en °C.
   soilTemp('soilTemp', '°C'),
 
@@ -46,6 +49,8 @@ enum ReadingType {
         return 'Température eau';
       case ReadingType.reservoirLevel:
         return 'Niveau réservoir';
+      case ReadingType.airHumidity:
+        return 'Humidité de la pièce';
       case ReadingType.soilTemp:
         return 'Température sol';
       case ReadingType.harvestGrams:
@@ -65,6 +70,8 @@ enum ReadingType {
         return '🌡️';
       case ReadingType.reservoirLevel:
         return '💧';
+      case ReadingType.airHumidity:
+        return '💨';
       case ReadingType.soilTemp:
         return '🌡️';
       case ReadingType.harvestGrams:
