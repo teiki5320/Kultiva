@@ -163,6 +163,12 @@ class HydroInstallService {
     await update(install.copyWith(lastFlushAt: DateTime.now()));
   }
 
+  Future<void> toggleEquipment(String installId, HydroEquipment e) async {
+    final install = byId(installId);
+    if (install == null) return;
+    await update(install.toggleEquipment(e));
+  }
+
   Future<void> _persist(List<HydroInstall> next) async {
     await PrefsService.instance
         .setHydroInstallsJson(HydroInstall.encodeAll(next));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
@@ -75,6 +76,8 @@ class _HydroInstallDetailScreenState
                 _FlushAlert(install: install),
                 const SizedBox(height: 14),
               ],
+              _EquipmentSection(install: install),
+              const SizedBox(height: 14),
               _DailyReadingsButton(install: install),
               const SizedBox(height: 18),
               const _SectionTitle('🌿  Mes plants'),
@@ -835,6 +838,231 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+      ),
+    );
+  }
+}
+
+/// Section « 🛒 Mon équipement de mesure ». Liste les 4 outils essentiels
+/// (pH-mètre, EC-mètre, thermomètre, hygromètre) avec leur statut
+/// (configuré / pas encore). Bouton « Acheter » ouvre Amazon avec le
+/// tag affilié Kultiva. Bouton « Configuré » bascule l'état (l'utilisateur
+/// déclare avoir l'outil → le champ correspondant apparaît dans
+/// « Mes mesures du jour »).
+class _EquipmentSection extends StatelessWidget {
+  final HydroInstall install;
+  const _EquipmentSection({required this.install});
+
+  Future<void> _openAmazon(HydroEquipment e) async {
+    final uri = Uri.parse(e.amazonUrl);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hasAny = install.equipment.isNotEmpty;
+    final missing = HydroEquipment.values
+        .where((e) => !install.equipment.contains(e))
+        .length;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: KultivaColors.lightGreen.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Text('🛒', style: TextStyle(fontSize: 18)),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text(
+                  'Mon équipement de mesure',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              if (!hasAny)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8A87C).withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    'à équiper',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFFB36A3D),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          if (!hasAny) ...<Widget>[
+            const SizedBox(height: 6),
+            Text(
+              'Sans ces outils, tu cultives à l\'aveugle. Voici les 4 '
+              'mesures qui font la différence.',
+              style: TextStyle(
+                fontSize: 11,
+                color: KultivaColors.textSecondary,
+                height: 1.4,
+              ),
+            ),
+          ] else if (missing > 0) ...<Widget>[
+            const SizedBox(height: 4),
+            Text(
+              'Tape « ✓ J\'ai » si tu possèdes déjà l\'outil. Tape '
+              '« Acheter » sinon.',
+              style: TextStyle(
+                fontSize: 11,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          for (final e in HydroEquipment.values) ...<Widget>[
+            _EquipmentRow(
+              install: install,
+              equipment: e,
+              owned: install.equipment.contains(e),
+              onToggle: () => HydroInstallService.instance
+                  .toggleEquipment(install.id, e),
+              onBuy: () => _openAmazon(e),
+            ),
+            if (e != HydroEquipment.values.last)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 2),
+                child: Divider(height: 1),
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _EquipmentRow extends StatelessWidget {
+  final HydroInstall install;
+  final HydroEquipment equipment;
+  final bool owned;
+  final VoidCallback onToggle;
+  final VoidCallback onBuy;
+
+  const _EquipmentRow({
+    required this.install,
+    required this.equipment,
+    required this.owned,
+    required this.onToggle,
+    required this.onBuy,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 32,
+            height: 32,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: owned
+                  ? KultivaColors.primaryGreen.withValues(alpha: 0.15)
+                  : KultivaColors.lightGreen.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(equipment.emoji, style: const TextStyle(fontSize: 18)),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        equipment.label,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    if (owned)
+                      const Icon(
+                        Icons.check_circle,
+                        color: KultivaColors.primaryGreen,
+                        size: 18,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  equipment.whyItMatters,
+                  style: TextStyle(
+                    fontSize: 11,
+                    height: 1.35,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: <Widget>[
+                    OutlinedButton.icon(
+                      onPressed: onToggle,
+                      icon: Icon(
+                        owned ? Icons.remove_circle_outline : Icons.check,
+                        size: 14,
+                      ),
+                      label: Text(
+                        owned ? 'Je ne l\'ai plus' : 'J\'ai déjà',
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        minimumSize: const Size(0, 30),
+                        foregroundColor: owned
+                            ? KultivaColors.textSecondary
+                            : KultivaColors.primaryGreen,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    if (!owned)
+                      FilledButton.icon(
+                        onPressed: onBuy,
+                        icon: const Icon(Icons.shopping_cart, size: 14),
+                        label: Text(
+                          'Acheter ${equipment.priceHint}',
+                          style: const TextStyle(fontSize: 11),
+                        ),
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          minimumSize: const Size(0, 30),
+                          backgroundColor: KultivaColors.terracotta,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
