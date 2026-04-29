@@ -2,31 +2,23 @@ import 'package:flutter/material.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
-import '../../models/culture_reading.dart';
-import '../../models/garden_plan.dart';
+import '../../models/hydro_install.dart';
 import '../../models/vegetable.dart';
-import '../../services/culture_reading_service.dart';
+import '../../services/audio_service.dart';
 import '../../services/culture_service.dart';
-import '../../services/garden_plan_service.dart';
-import '../../services/prefs_service.dart';
+import '../../services/hydro_install_service.dart';
 import '../../theme/app_theme.dart';
-import '../../utils/hydro_advisor.dart';
-import '../../utils/reading_targets.dart';
-import '../../widgets/reading_sparkline.dart';
-import '../vegetable_detail_screen.dart';
-import 'culture_reading_sheet.dart';
-import 'culture_start_sheet.dart';
-import 'daily_readings_sheet.dart';
-import 'garden_planner_screen.dart';
-import 'hydro_builds_screen.dart';
-import 'nutrient_calculator_sheet.dart';
+import 'create_hydro_install_sheet.dart';
+import 'hydro_install_detail_screen.dart';
 
-/// Cahier de culture hydroponique : suivi sérieux des cultures sans terre,
-/// avec configuration lumière (type, heures, LED). Distinct du Poussidex.
+/// Écran principal de l'onglet Hydroponie après la refonte cohérence
+/// (avril 2026). Liste les installations de l'utilisateur (1 install
+/// = 1 bac physique = lampe + réservoir + N slots de plants), permet
+/// d'en créer de nouvelles et d'accéder au détail de chacune.
 ///
-/// L'écran est organisé en 3 sous-tabs : Planification (designer
-/// d'installation), Croissance (suivi des cultures actives) et Rappel
-/// (prochaines actions).
+/// Les sous-onglets Planification / Croissance / Rappel ont disparu —
+/// tout est centralisé ici, avec accès au détail d'une install pour
+/// le suivi de ses plants et la saisie des mesures du jour.
 class HydroponieScreen extends StatefulWidget {
   const HydroponieScreen({super.key});
 
@@ -34,379 +26,142 @@ class HydroponieScreen extends StatefulWidget {
   State<HydroponieScreen> createState() => _HydroponieScreenState();
 }
 
-class _HydroponieScreenState extends State<HydroponieScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
+class _HydroponieScreenState extends State<HydroponieScreen> {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() {
-      if (mounted) setState(() {});
-    });
-    GardenPlanService.instance.load();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+    HydroInstallService.instance.load();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('📔  Cahier hydroponie'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const <Tab>[
-            Tab(icon: Icon(Icons.grid_view), text: 'Planification'),
-            Tab(icon: Icon(Icons.eco), text: 'Croissance'),
-            Tab(icon: Icon(Icons.notifications_outlined), text: 'Rappel'),
-          ],
-        ),
+        title: const Text('💧  Mon jardin hydroponique'),
       ),
-      floatingActionButton: _tabController.index == 1
-          ? _StartFab()
-          : (_tabController.index == 0 ? _HydroPlanFab() : null),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          _buildPlanificationTab(),
-          _buildCroissanceTab(),
-          _buildRappelTab(),
-        ],
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _openCreateSheet(context),
+        icon: const Icon(Icons.add),
+        label: const Text('Créer une install'),
+        backgroundColor: KultivaColors.primaryGreen,
       ),
-    );
-  }
-
-  Widget _buildPlanificationTab() {
-    return ValueListenableBuilder<List<GardenPlan>>(
-      valueListenable: GardenPlanService.instance.plans,
-      builder: (ctx, allPlans, _) {
-        final hydroPlans =
-            allPlans.where((p) => p.hydroSystem != null).toList();
-        if (hydroPlans.isEmpty) {
-          return const _EmptyState(
-            emoji: '💧',
-            message:
-                "Aucune install hydro pour l'instant. Touche le bouton « + » pour choisir ton système (DWC, Kratky, NFT, Tour).",
-          );
-        }
-        return ListView.builder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          itemCount: hydroPlans.length,
-          itemBuilder: (_, i) => _HydroPlanCard(plan: hydroPlans[i]),
-        );
-      },
-    );
-  }
-
-  Widget _buildRappelTab() {
-    return ValueListenableBuilder<int>(
-      valueListenable: PrefsService.instance.culturesVersion,
-      builder: (ctx, _, __) {
-        final cultures = CultureService.instance
-            .activeByMethod(CultivationMethod.hydroponic);
-        if (cultures.isEmpty) {
-          return const _EmptyState(
-            emoji: '🔔',
-            message:
-                "Aucun rappel. Démarre une culture pour voir les alertes pH/EC/flush du réservoir.",
-          );
-        }
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          children: <Widget>[
-            const Text(
-              'Prochaines actions',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Basé sur tes mesures pH/EC et la dernière vidange.',
-              style: TextStyle(
-                fontSize: 12,
-                color: KultivaColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ...cultures.map((c) => Card(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: ListTile(
-                    leading: Text(
-                      vegetablesBase
-                          .firstWhere(
-                            (v) => v.id == c.vegetableId,
-                            orElse: () => vegetablesBase.first,
-                          )
-                          .emoji,
-                      style: const TextStyle(fontSize: 28),
-                    ),
-                    title: Text(
-                      vegetablesBase
-                          .firstWhere(
-                            (v) => v.id == c.vegetableId,
-                            orElse: () => vegetablesBase.first,
-                          )
-                          .name,
-                      style: const TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    subtitle: Text(
-                      'Phase : ${c.phase.label} · ${_daysSinceFlush(c)}',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                )),
-          ],
-        );
-      },
-    );
-  }
-
-  String _daysSinceFlush(CultureEntry c) {
-    final last = c.lastReservoirFlushAt;
-    if (last == null) {
-      return 'À planifier : première vidange du réservoir';
-    }
-    final days = DateTime.now().difference(last).inDays;
-    if (days >= 14) {
-      return '⚠️ Vidange à faire (${days}j depuis la dernière)';
-    }
-    return 'Dernière vidange il y a ${days}j';
-  }
-
-  Widget _buildCroissanceTab() {
-    return ValueListenableBuilder<int>(
-      valueListenable: PrefsService.instance.culturesVersion,
-      builder: (ctx, _, __) {
-        final active = CultureService.instance
-            .activeByMethod(CultivationMethod.hydroponic);
-        final ended = CultureService.instance
-            .endedByMethod(CultivationMethod.hydroponic);
-        return ListView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-            children: <Widget>[
-              const _HydroHero(),
-              const SizedBox(height: 16),
-              _SectionHeader(
-                emoji: '🌿',
-                title: 'Cultures en cours',
-                count: active.length,
-              ),
-              const SizedBox(height: 8),
-              if (active.isEmpty)
-                const _EmptyState(
-                  emoji: '💧',
-                  message:
-                      "Aucune culture en cours. Appuie sur « Démarrer une culture » pour créer ta première fiche (tu pourras configurer la lumière : naturelle, LED, heures/jour…).",
-                )
-              else
-                ...active.map((c) => _CultureCard(culture: c)),
-              const SizedBox(height: 24),
-              if (ended.isNotEmpty) ...<Widget>[
-                _EndedSection(list: ended),
-                const SizedBox(height: 24),
-              ],
-              _InfoExpansion(),
-              const SizedBox(height: 12),
-              _BuildsCta(
-                onTap: () => Navigator.of(ctx).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const HydroBuildsScreen(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              _AccessoryCta(
-                onTap: () {
-                  final hydro = vegetablesBase.firstWhere(
-                    (v) => v.id == 'acc_hydroponie',
-                  );
-                  Navigator.of(ctx).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) =>
-                          VegetableDetailScreen(vegetable: hydro),
-                    ),
-                  );
-                },
-              ),
-            ],
+      body: ValueListenableBuilder<List<HydroInstall>>(
+        valueListenable: HydroInstallService.instance.installs,
+        builder: (context, installs, _) {
+          if (installs.isEmpty) {
+            return _EmptyState(onCreate: () => _openCreateSheet(context));
+          }
+          return ListView.builder(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            itemCount: installs.length,
+            itemBuilder: (_, i) => _InstallCard(install: installs[i]),
           );
         },
-      );
-  }
-}
-
-/// FAB de l'onglet Planification hydro : ouvre le sélecteur de système.
-class _HydroPlanFab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      onPressed: () async {
-        await Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => const GardenPlannerScreen(hydroMode: true),
-          ),
-        );
-      },
-      icon: const Icon(Icons.add),
-      label: const Text('Nouvelle install'),
-      backgroundColor: KultivaColors.primaryGreen,
-      foregroundColor: Colors.white,
-    );
-  }
-}
-
-/// Card d'une install hydro dans l'onglet Planification.
-class _HydroPlanCard extends StatelessWidget {
-  final GardenPlan plan;
-  const _HydroPlanCard({required this.plan});
-
-  @override
-  Widget build(BuildContext context) {
-    final filled = plan.cells.length;
-    final total = plan.cols * plan.rows;
-    final system = plan.hydroSystem;
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: Container(
-          width: 44,
-          height: 44,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: KultivaColors.lightGreen.withValues(alpha: 0.4),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            system?.label ?? '?',
-            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12),
-          ),
-        ),
-        title: Text(
-          plan.name,
-          style: const TextStyle(fontWeight: FontWeight.w700),
-        ),
-        subtitle: Text(
-          '${system?.fullLabel ?? ''} · $filled/$total slots occupés',
-          style: const TextStyle(fontSize: 12),
-        ),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => GardenPlannerScreen(initialPlan: plan),
-          ),
-        ),
       ),
     );
   }
-}
 
-class _StartFab extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      onPressed: () async {
-        await showModalBottomSheet<bool>(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          builder: (_) =>
-              const CultureStartSheet(method: CultivationMethod.hydroponic),
-        );
-      },
-      icon: const Icon(Icons.add),
-      label: const Text(
-        'Démarrer une culture',
-        style: TextStyle(fontWeight: FontWeight.w800),
-      ),
-      backgroundColor: const Color(0xFF4A9BBF),
-      foregroundColor: Colors.white,
+  Future<void> _openCreateSheet(BuildContext context) async {
+    AudioService.instance.play(Sfx.tap);
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const CreateHydroInstallSheet(),
     );
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String emoji;
-  final String title;
-  final int count;
-
-  const _SectionHeader({
-    required this.emoji,
-    required this.title,
-    required this.count,
-  });
+/// État vide : invite à créer la première install.
+class _EmptyState extends StatelessWidget {
+  final VoidCallback onCreate;
+  const _EmptyState({required this.onCreate});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Text(emoji, style: const TextStyle(fontSize: 20)),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-          decoration: BoxDecoration(
-            color: const Color(0xFF4A9BBF).withValues(alpha: 0.14),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            '$count',
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF4A9BBF),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Text('💧', style: TextStyle(fontSize: 64)),
+            const SizedBox(height: 18),
+            Text(
+              'Aucune installation pour l\'instant',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
             ),
-          ),
+            const SizedBox(height: 10),
+            Text(
+              'Une installation hydroponique c\'est ton bac : '
+              'le système (DWC, Kratky…), la lampe, le réservoir et '
+              'les emplacements pour tes plants.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 13,
+                color: KultivaColors.textSecondary,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: onCreate,
+              icon: const Icon(Icons.add),
+              label: const Text('Créer ma première install'),
+              style: FilledButton.styleFrom(
+                backgroundColor: KultivaColors.primaryGreen,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
 
-class _CultureCard extends StatelessWidget {
-  final CultureEntry culture;
-  const _CultureCard({required this.culture});
-
-  Vegetable? _veg() {
-    try {
-      return vegetablesBase.firstWhere((v) => v.id == culture.vegetableId);
-    } catch (_) {
-      return null;
-    }
-  }
+/// Card d'une install dans la liste principale.
+class _InstallCard extends StatelessWidget {
+  final HydroInstall install;
+  const _InstallCard({required this.install});
 
   @override
   Widget build(BuildContext context) {
-    final veg = _veg();
-    final days = culture.daysSinceStarted;
-    final light = culture.light;
-    final dli = light != null ? estimateDli(light) : null;
-    final dliStat = dli != null ? dliStatus(dli, culture.phase) : null;
-    final ledRec = recommendedLedDistance(culture.phase);
+    final filled = install.filledSlots;
+    final total = install.slotCount;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.only(bottom: 14),
       child: InkWell(
-        onTap: () => _showActions(context),
-        borderRadius: BorderRadius.circular(18),
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: KultivaColors.winterA.withValues(alpha: 0.45),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: const Color(0xFF4A9BBF).withValues(alpha: 0.4),
+        onTap: () {
+          AudioService.instance.play(Sfx.tap);
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => HydroInstallDetailScreen(installId: install.id),
             ),
+          );
+        },
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: KultivaColors.winterA.withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: const Color(0xFF4A9BBF).withValues(alpha: 0.45),
+              width: 1.4,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF4A9BBF).withValues(alpha: 0.15),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,17 +169,14 @@ class _CultureCard extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Container(
-                    width: 54,
-                    height: 54,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
                       color: const Color(0xFF4A9BBF).withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      veg?.emoji ?? '💧',
-                      style: const TextStyle(fontSize: 28),
-                    ),
+                    child: const Text('💧', style: TextStyle(fontSize: 30)),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -432,17 +184,17 @@ class _CultureCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          veg?.name ?? culture.vegetableId,
+                          install.name,
                           style: const TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          days == 0
-                              ? 'Démarrée aujourd\'hui'
-                              : 'Démarrée il y a $days jour${days > 1 ? "s" : ""}',
+                          '${install.systemType.label}  ·  '
+                          '${install.reservoirL.toStringAsFixed(0)} L  ·  '
+                          '$filled/$total plants',
                           style: TextStyle(
                             fontSize: 12,
                             color: KultivaColors.textSecondary,
@@ -454,61 +206,11 @@ class _CultureCard extends StatelessWidget {
                   const Icon(Icons.chevron_right),
                 ],
               ),
-              const SizedBox(height: 10),
-              _PhaseChip(culture: culture),
-              if (light != null) ...<Widget>[
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: <Widget>[
-                    _InfoChip(
-                      label: '${light.type.emoji}  ${light.type.label}',
-                    ),
-                    _InfoChip(
-                      label:
-                          '⏱  ${light.hoursPerDay.toStringAsFixed(0)} h/jour',
-                    ),
-                    if (light.ledWatts != null)
-                      _InfoChip(label: '⚡  ${light.ledWatts} W'),
-                    if (light.ledDistanceCm != null)
-                      _InfoChip(
-                        label:
-                            '↕  ${light.ledDistanceCm!.toStringAsFixed(0)} cm '
-                            '(reco. ${ledRec.ideal.toStringAsFixed(0)})',
-                      ),
-                    if (light.ledColorTemp != null)
-                      _InfoChip(label: '🎨  ${light.ledColorTemp!.label}'),
-                    if (dli != null)
-                      _DliChip(dli: dli, status: dliStat!),
-                  ],
-                ),
-                if (light.ledWatts != null) ...<Widget>[
-                  const SizedBox(height: 8),
-                  _LampHeightTip(
-                    watts: light.ledWatts!,
-                    phase: culture.phase,
-                  ),
-                ],
-              ],
               const SizedBox(height: 12),
-              _ReadingsRow(cultureId: culture.id, phase: culture.phase),
-              const SizedBox(height: 10),
-              _DailyReadingsButton(culture: culture),
-              if (culture.flushDue) ...<Widget>[
+              _PlantsPreview(install: install),
+              if (install.flushDue) ...<Widget>[
                 const SizedBox(height: 10),
-                _FlushAlert(culture: culture),
-              ],
-              if (culture.note != null && culture.note!.isNotEmpty) ...<Widget>[
-                const SizedBox(height: 8),
-                Text(
-                  culture.note!,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    color: KultivaColors.textSecondary,
-                  ),
-                ),
+                _FlushAlert(install: install),
               ],
             ],
           ),
@@ -516,112 +218,123 @@ class _CultureCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _showActions(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+/// Aperçu des plants dans une install (chips colorées).
+class _PlantsPreview extends StatelessWidget {
+  final HydroInstall install;
+  const _PlantsPreview({required this.install});
+
+  @override
+  Widget build(BuildContext context) {
+    if (install.filledSlots == 0) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: KultivaColors.textSecondary.withValues(alpha: 0.2),
+          ),
+        ),
+        child: Row(
           children: <Widget>[
-            ListTile(
-              leading: const Text('🧪',
-                  style: TextStyle(fontSize: 22)),
-              title: const Text('Calculer nutriments'),
-              subtitle: const Text(
-                'Doses A/B/C + Cal-Mag selon la phase et le volume.',
-              ),
-              onTap: () async {
-                Navigator.pop(ctx);
-                await showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
-                  builder: (_) =>
-                      NutrientCalculatorSheet(culture: culture),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Text('🪣',
-                  style: TextStyle(fontSize: 22)),
-              title: const Text('Marquer rinçage du réservoir'),
-              subtitle: Text(
-                culture.lastReservoirFlushAt == null
-                    ? 'Jamais rincé'
-                    : 'Dernier : il y a ${culture.daysSinceFlush}j',
-              ),
-              onTap: () async {
-                Navigator.pop(ctx);
-                await CultureService.instance.update(
-                  culture.copyWith(
-                    lastReservoirFlushAt: DateTime.now(),
-                  ),
-                );
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Rinçage enregistré 🪣'),
-                    ),
-                  );
-                }
-              },
-            ),
-            ListTile(
-              leading: const Text('🦠',
-                  style: TextStyle(fontSize: 22)),
-              title: const Text('Conseils anti-algues'),
-              subtitle: const Text(
-                'Tu vois du vert sur les parois du réservoir ?',
-              ),
-              onTap: () {
-                Navigator.pop(ctx);
-                showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
-                  builder: (_) => const _AlgaeTipSheet(),
-                );
-              },
-            ),
-            const Divider(height: 1),
-            ListTile(
-              leading: const Icon(Icons.check_circle_outline),
-              title: const Text('Marquer terminée'),
-              onTap: () async {
-                Navigator.pop(ctx);
-                await CultureService.instance.endCulture(culture.id);
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.delete_outline,
-                color: Theme.of(ctx).colorScheme.error,
-              ),
-              title: Text(
-                'Supprimer',
+            const Text('🌱', style: TextStyle(fontSize: 16)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Aucun plant dans cette install. Ouvre-la pour en ajouter.',
                 style: TextStyle(
-                  color: Theme.of(ctx).colorScheme.error,
+                  fontSize: 12,
+                  color: KultivaColors.textSecondary,
                 ),
               ),
-              onTap: () async {
-                Navigator.pop(ctx);
-                await CultureService.instance.remove(culture.id);
-              },
             ),
           ],
         ),
+      );
+    }
+    final cultures = CultureService.instance.loadAll();
+    final byId = <String, CultureEntry>{
+      for (final c in cultures) c.id: c,
+    };
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: <Widget>[
+        for (final cid in install.slotCultureIds)
+          if (cid != null) _PlantChip(culture: byId[cid]),
+      ],
+    );
+  }
+}
+
+class _PlantChip extends StatelessWidget {
+  final CultureEntry? culture;
+  const _PlantChip({required this.culture});
+
+  Vegetable? _veg() {
+    final c = culture;
+    if (c == null) return null;
+    try {
+      return vegetablesBase.firstWhere((v) => v.id == c.vegetableId);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = culture;
+    if (c == null) {
+      return _chipShell(
+        emoji: '❓',
+        label: 'plant inconnu',
+        color: KultivaColors.textSecondary,
+      );
+    }
+    final veg = _veg();
+    return _chipShell(
+      emoji: veg?.emoji ?? '🌱',
+      label: '${veg?.name ?? c.vegetableId} · J+${c.daysSinceStarted}',
+      color: KultivaColors.primaryGreen,
+    );
+  }
+
+  Widget _chipShell({
+    required String emoji,
+    required String label,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(emoji, style: const TextStyle(fontSize: 13)),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-/// Encart d'alerte affiché quand le rinçage du réservoir est dû.
 class _FlushAlert extends StatelessWidget {
-  final CultureEntry culture;
-  const _FlushAlert({required this.culture});
+  final HydroInstall install;
+  const _FlushAlert({required this.install});
 
   @override
   Widget build(BuildContext context) {
@@ -634,11 +347,12 @@ class _FlushAlert extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          const Text('🪣', style: TextStyle(fontSize: 18)),
+          const Text('🪣', style: TextStyle(fontSize: 16)),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Réservoir à rincer (dernier il y a ${culture.daysSinceFlush}j)',
+              'Réservoir à rincer (dernier il y a '
+              '${install.daysSinceFlush}j)',
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w800,
@@ -647,11 +361,8 @@ class _FlushAlert extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () async {
-              await CultureService.instance.update(
-                culture.copyWith(lastReservoirFlushAt: DateTime.now()),
-              );
-            },
+            onPressed: () => HydroInstallService.instance
+                .markFlushed(install.id),
             child: const Text('Fait'),
           ),
         ],
@@ -660,907 +371,3 @@ class _FlushAlert extends StatelessWidget {
   }
 }
 
-/// Sheet de tips si l'utilisateur signale des algues.
-class _AlgaeTipSheet extends StatelessWidget {
-  const _AlgaeTipSheet();
-
-  @override
-  Widget build(BuildContext context) {
-    final tips = <(String, String)>[
-      ('🌑',
-          "Bloque la lumière du réservoir : gaine noire, scotch alu, "
-              "couvercle opaque. Les algues meurent sans photosynthèse."),
-      ('🧊',
-          "Maintiens la solution sous 22 °C. Plus c'est tiède, plus ça "
-              "prolifère."),
-      ('🪣',
-          "Vide, frotte avec un mélange eau + 5 % de peroxyde d'hydrogène, "
-              "rince à fond, refais une solution neuve."),
-      ('💨',
-          "Vérifie l'oxygénation : un bulleur en marche limite les biofilms "
-              "et rend l'eau plus saine pour les racines."),
-      ('🧴',
-          "En préventif : 1–2 mL/L de peroxyde 3 % à chaque remplissage "
-              "(non systématique, à doser avec parcimonie)."),
-    ];
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: const <Widget>[
-              Text('🦠', style: TextStyle(fontSize: 28)),
-              SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Anti-algues : 5 réflexes',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          for (final t in tips)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(t.$1, style: const TextStyle(fontSize: 18)),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      t.$2,
-                      style: const TextStyle(fontSize: 13, height: 1.4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Fermer'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoChip extends StatelessWidget {
-  final String label;
-  const _InfoChip({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFF4A9BBF).withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          color: Color(0xFF2E6680),
-        ),
-      ),
-    );
-  }
-}
-
-/// Rangée des 4 mesures hydro (pH, EC, température solution, niveau
-/// réservoir). Tap = ouvre la sheet pour ajouter une nouvelle mesure.
-class _ReadingsRow extends StatelessWidget {
-  final String cultureId;
-  final GrowthPhase phase;
-  const _ReadingsRow({required this.cultureId, required this.phase});
-
-  static const _types = <ReadingType>[
-    ReadingType.ph,
-    ReadingType.ec,
-    ReadingType.waterTemp,
-    ReadingType.reservoirLevel,
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<int>(
-      valueListenable: PrefsService.instance.cultureReadingsVersion,
-      builder: (ctx, _, __) {
-        return Row(
-          children: <Widget>[
-            for (var i = 0; i < _types.length; i++) ...<Widget>[
-              if (i > 0) const SizedBox(width: 6),
-              Expanded(
-                child: _ReadingChip(
-                  cultureId: cultureId,
-                  type: _types[i],
-                  phase: phase,
-                ),
-              ),
-            ],
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _ReadingChip extends StatelessWidget {
-  final String cultureId;
-  final ReadingType type;
-  final GrowthPhase phase;
-  const _ReadingChip({
-    required this.cultureId,
-    required this.type,
-    required this.phase,
-  });
-
-  Color _statusColor(ReadingStatus s) {
-    switch (s) {
-      case ReadingStatus.ok:
-        return KultivaColors.primaryGreen;
-      case ReadingStatus.warn:
-        return const Color(0xFFE8A87C);
-      case ReadingStatus.bad:
-        return const Color(0xFFD4564A);
-      case ReadingStatus.unknown:
-        return const Color(0xFF4A9BBF);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final svc = CultureReadingService.instance;
-    final latest = svc.latest(cultureId, type);
-    final recent = svc.recent(cultureId, type, days: 14);
-    final tgt = hydroTargetFor(type, phase);
-    final status = tgt?.statusFor(latest?.value) ?? ReadingStatus.unknown;
-    final color = _statusColor(status);
-    final values = recent
-        .where((r) => r.value != null)
-        .map((r) => r.value!)
-        .toList();
-
-    return InkWell(
-      onTap: () async {
-        await showModalBottomSheet<bool>(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          builder: (_) => CultureReadingSheet(
-            cultureId: cultureId,
-            type: type,
-          ),
-        );
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color.withValues(alpha: 0.4), width: 1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(type.emoji, style: const TextStyle(fontSize: 14)),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    _shortLabel(type),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      color: KultivaColors.textPrimary.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 2),
-            Text(
-              latest?.value == null
-                  ? '—'
-                  : _fmtValue(latest!.value!, type),
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 2),
-            ReadingSparkline(values: values, color: color, height: 18),
-          ],
-        ),
-      ),
-    );
-  }
-
-  static String _shortLabel(ReadingType t) {
-    switch (t) {
-      case ReadingType.ph:
-        return 'pH';
-      case ReadingType.ec:
-        return 'EC';
-      case ReadingType.waterTemp:
-        return 'Temp.';
-      case ReadingType.reservoirLevel:
-        return 'Niveau';
-      default:
-        return t.label;
-    }
-  }
-
-  static String _fmtValue(double v, ReadingType t) {
-    switch (t) {
-      case ReadingType.ph:
-        return v.toStringAsFixed(1);
-      case ReadingType.ec:
-        return '${v.toStringAsFixed(1)} mS';
-      case ReadingType.waterTemp:
-        return '${v.toStringAsFixed(0)}°';
-      case ReadingType.reservoirLevel:
-        return '${v.toStringAsFixed(0)}%';
-      default:
-        return v.toStringAsFixed(1);
-    }
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  final String emoji;
-  final String message;
-  const _EmptyState({required this.emoji, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        color: KultivaColors.winterA.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: KultivaColors.textSecondary.withValues(alpha: 0.2),
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          Text(emoji, style: const TextStyle(fontSize: 42)),
-          const SizedBox(height: 10),
-          Text(
-            message,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              color: KultivaColors.textSecondary,
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _EndedSection extends StatelessWidget {
-  final List<CultureEntry> list;
-  const _EndedSection({required this.list});
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context)
-          .copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        tilePadding: EdgeInsets.zero,
-        childrenPadding: EdgeInsets.zero,
-        title: _SectionHeader(
-          emoji: '✅',
-          title: 'Cultures terminées',
-          count: list.length,
-        ),
-        children: list.map((c) => _CultureCard(culture: c)).toList(),
-      ),
-    );
-  }
-}
-
-class _InfoExpansion extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-          title: Text(
-            'ℹ️  Découvrir l\'hydroponie',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-          children: const <Widget>[
-            _DiagramBlock(),
-            SizedBox(height: 12),
-            _BulletSection(
-              emoji: '🌟',
-              title: 'Pourquoi essayer ?',
-              bullets: <String>[
-                'Jusqu\'à 90 % d\'eau en moins qu\'un potager classique.',
-                'Croissance 2 à 3 fois plus rapide.',
-                'Cultivable en intérieur, toute l\'année.',
-                'Zéro terre, zéro maladies du sol, zéro mauvaises herbes.',
-              ],
-            ),
-            _BulletSection(
-              emoji: '🔧',
-              title: 'Comment ça marche ?',
-              bullets: <String>[
-                'Réservoir d\'eau enrichie en nutriments.',
-                'Pompe fait circuler la solution vers les racines.',
-                'Substrat inerte (billes d\'argile, laine de roche…).',
-                'Systèmes simples : DWC, Kratky, NFT.',
-              ],
-            ),
-            _BulletSection(
-              emoji: '💡',
-              title: 'Lumière',
-              bullets: <String>[
-                'Naturelle (plein soleil ≥ 6 h/jour) pour balcon.',
-                'LED horticole (spectre complet ou blanc + rouge) en intérieur.',
-                'Mixte : LED d\'appoint l\'hiver ou en zones peu ensoleillées.',
-                'Durée recommandée : 10-16 h selon la phase de croissance.',
-              ],
-            ),
-            SizedBox(height: 8),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HydroHero extends StatelessWidget {
-  const _HydroHero();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            KultivaColors.winterA,
-            KultivaColors.winterB,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(22),
-      ),
-      child: Row(
-        children: <Widget>[
-          const Text('💧', style: TextStyle(fontSize: 44)),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Text(
-                  'Mon cahier hydroponie',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: KultivaColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  'Cultiver sans terre, avec suivi lumière.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: KultivaColors.textPrimary.withValues(alpha: 0.8),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DiagramBlock extends StatelessWidget {
-  const _DiagramBlock();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const <Widget>[
-              _DiagramNode(emoji: '🪴', label: 'Plants'),
-              _DiagramArrow(),
-              _DiagramNode(emoji: '🌿', label: 'Racines'),
-              _DiagramArrow(),
-              _DiagramNode(emoji: '💧', label: 'Solution'),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              '↑  cycle fermé  ↓',
-              style: TextStyle(
-                fontSize: 11,
-                fontStyle: FontStyle.italic,
-                color: KultivaColors.textSecondary,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const <Widget>[
-              _DiagramNode(emoji: '🪣', label: 'Réservoir'),
-              _DiagramArrow(reverse: true),
-              _DiagramNode(emoji: '⚙️', label: 'Pompe'),
-              _DiagramArrow(reverse: true),
-              _DiagramNode(emoji: '💦', label: 'Nutriments'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _DiagramNode extends StatelessWidget {
-  final String emoji;
-  final String label;
-  const _DiagramNode({required this.emoji, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: KultivaColors.winterA.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          alignment: Alignment.center,
-          child: Text(emoji, style: const TextStyle(fontSize: 24)),
-        ),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700)),
-      ],
-    );
-  }
-}
-
-class _DiagramArrow extends StatelessWidget {
-  final bool reverse;
-  const _DiagramArrow({this.reverse = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Text(
-        reverse ? '←' : '→',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: KultivaColors.textSecondary,
-        ),
-      ),
-    );
-  }
-}
-
-class _BulletSection extends StatelessWidget {
-  final String emoji;
-  final String title;
-  final List<String> bullets;
-
-  const _BulletSection({
-    required this.emoji,
-    required this.title,
-    required this.bullets,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            '$emoji  $title',
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 6),
-          ...bullets.map(
-            (b) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5, right: 8),
-                    child: Icon(
-                      Icons.circle,
-                      size: 5,
-                      color: const Color(0xFF4A9BBF),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      b,
-                      style: const TextStyle(fontSize: 13, height: 1.4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Chip cliquable représentant la phase de croissance de la culture.
-/// Tap = ouvre la sheet de sélection de phase.
-class _PhaseChip extends StatelessWidget {
-  final CultureEntry culture;
-  const _PhaseChip({required this.culture});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => _pickPhase(context),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: KultivaColors.primaryGreen.withValues(alpha: 0.14),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              culture.phase.emoji,
-              style: const TextStyle(fontSize: 14),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              'Phase : ${culture.phase.label}',
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: KultivaColors.primaryGreen,
-              ),
-            ),
-            const SizedBox(width: 4),
-            const Icon(
-              Icons.tune,
-              size: 14,
-              color: KultivaColors.primaryGreen,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickPhase(BuildContext context) async {
-    final picked = await showModalBottomSheet<GrowthPhase>(
-      context: context,
-      builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 16, 20, 4),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Phase de croissance',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-            ),
-            for (final p in GrowthPhase.values)
-              ListTile(
-                leading: Text(p.emoji,
-                    style: const TextStyle(fontSize: 22)),
-                title: Text(p.label),
-                trailing: p == culture.phase
-                    ? const Icon(Icons.check,
-                        color: KultivaColors.primaryGreen)
-                    : null,
-                onTap: () => Navigator.pop(ctx, p),
-              ),
-          ],
-        ),
-      ),
-    );
-    if (picked != null && picked != culture.phase) {
-      await CultureService.instance
-          .update(culture.copyWith(phase: picked));
-    }
-  }
-}
-
-/// Chip DLI (Daily Light Integral) calculé à partir de la config LED.
-class _DliChip extends StatelessWidget {
-  final double dli;
-  final ReadingStatus status;
-  const _DliChip({required this.dli, required this.status});
-
-  Color get _color {
-    switch (status) {
-      case ReadingStatus.ok:
-        return KultivaColors.primaryGreen;
-      case ReadingStatus.warn:
-        return const Color(0xFFE8A87C);
-      case ReadingStatus.bad:
-        return const Color(0xFFD4564A);
-      case ReadingStatus.unknown:
-        return const Color(0xFF4A9BBF);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: _color.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        '☀️  DLI ${dli.toStringAsFixed(0)} mol',
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w800,
-          color: _color,
-        ),
-      ),
-    );
-  }
-}
-
-/// Carte d'accès aux builds partagés par la communauté.
-class _BuildsCta extends StatelessWidget {
-  final VoidCallback onTap;
-  const _BuildsCta({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: <Color>[
-              KultivaColors.primaryGreen.withValues(alpha: 0.18),
-              const Color(0xFF4A9BBF).withValues(alpha: 0.18),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
-            width: 1.2,
-          ),
-        ),
-        child: Row(
-          children: const <Widget>[
-            Text('🌐', style: TextStyle(fontSize: 30)),
-            SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Builds de la communauté',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: KultivaColors.textPrimary,
-                    ),
-                  ),
-                  Text(
-                    'Inspire-toi des installations qui marchent — '
-                    'ou partage la tienne.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: KultivaColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(Icons.chevron_right),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AccessoryCta extends StatelessWidget {
-  final VoidCallback onTap;
-  const _AccessoryCta({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              const Color(0xFF4A9BBF).withValues(alpha: 0.22),
-              KultivaColors.winterA.withValues(alpha: 0.55),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: const Color(0xFF4A9BBF),
-            width: 1.2,
-          ),
-        ),
-        child: Row(
-          children: <Widget>[
-            const Text('🛒', style: TextStyle(fontSize: 30)),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    'Voir le kit hydroponie',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xFF2E6680),
-                    ),
-                  ),
-                  Text(
-                    'Accessoire complet avec description et lien.',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: KultivaColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              Icons.chevron_right,
-              color: Color(0xFF4A9BBF),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Bouton « Mes mesures du jour » affiché en bas de chaque card de
-/// culture active. Ouvre le [DailyReadingsSheet] qui combine saisie
-/// + conseils dans un seul écran.
-class _DailyReadingsButton extends StatelessWidget {
-  final CultureEntry culture;
-  const _DailyReadingsButton({required this.culture});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: FilledButton.icon(
-        onPressed: () {
-          showModalBottomSheet<void>(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (_) => DailyReadingsSheet(culture: culture),
-          );
-        },
-        icon: const Icon(Icons.auto_awesome, size: 18),
-        label: const Text('Mes mesures du jour'),
-        style: FilledButton.styleFrom(
-          backgroundColor: KultivaColors.primaryGreen,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          textStyle: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Petit encart de conseil pour la hauteur de la lampe LED selon la
-/// phase de croissance et la puissance configurée. Apparaît juste sous
-/// les chips d'info lumière.
-class _LampHeightTip extends StatelessWidget {
-  final int watts;
-  final GrowthPhase phase;
-  const _LampHeightTip({required this.watts, required this.phase});
-
-  @override
-  Widget build(BuildContext context) {
-    final reco = recommendedLampHeight(phase: phase, watts: watts);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF3D0).withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFE8C96A).withValues(alpha: 0.7),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Text('💡', style: TextStyle(fontSize: 16)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              reco.advice,
-              style: TextStyle(
-                fontSize: 11,
-                height: 1.35,
-                fontWeight: FontWeight.w700,
-                color: KultivaColors.textPrimary.withValues(alpha: 0.85),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

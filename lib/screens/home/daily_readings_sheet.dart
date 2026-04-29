@@ -4,22 +4,41 @@ import 'package:flutter/services.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
 import '../../models/culture_reading.dart';
+import '../../models/hydro_install.dart';
 import '../../models/vegetable.dart';
 import '../../services/audio_service.dart';
 import '../../services/culture_reading_service.dart';
+import '../../services/culture_service.dart';
+import '../../services/hydro_install_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/hydro_advisor.dart';
 
-/// Sheet « Mes mesures du jour » — saisie de pH, EC, T° eau et
-/// humidité ambiante en un seul écran, puis affichage de conseils
-/// personnalisés selon le légume cultivé et la phase actuelle.
+/// Sheet « Mes mesures du jour ». Deux modes de fonctionnement :
 ///
-/// Design pensé pour un producteur amateur : pas de jargon dans l'UI,
-/// chaque conseil aboutit à une action concrète.
+///   - **Install** (refonte cohérence avril 2026, principal) : on saisit
+///     pH, EC, T° eau et humidité **une seule fois pour toute
+///     l'installation**, et on génère un conseil par plant qu'elle
+///     contient. Constructeur [DailyReadingsSheet.forInstall].
+///
+///   - **Culture** (legacy, plus utilisé directement mais conservé pour
+///     compat) : un sheet par plant. Constructeur principal.
+///
+/// Pas de jargon dans l'UI, chaque conseil aboutit à une action
+/// concrète (« Ajoute 5 mL de partie A », « Pose un humidificateur »).
 class DailyReadingsSheet extends StatefulWidget {
-  final CultureEntry culture;
+  /// Mode culture (legacy). Exactement un de [culture] ou [installId]
+  /// est non-null.
+  final CultureEntry? culture;
 
-  const DailyReadingsSheet({super.key, required this.culture});
+  /// Mode install. Toutes les cultures de l'install reçoivent leurs
+  /// conseils.
+  final String? installId;
+
+  const DailyReadingsSheet({super.key, required CultureEntry this.culture})
+      : installId = null;
+
+  const DailyReadingsSheet.forInstall({super.key, required String this.installId})
+      : culture = null;
 
   @override
   State<DailyReadingsSheet> createState() => _DailyReadingsSheetState();
@@ -32,21 +51,28 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
   final _humidityCtrl = TextEditingController();
 
   /// Tant qu'on n'a pas appuyé sur « Voir les conseils », on est en
-  /// mode saisie. Sinon on bascule sur la liste des [HydroAdvice].
-  List<HydroAdvice>? _advices;
+  /// mode saisie. Sinon on bascule sur la liste des panneaux de conseil.
+  List<_PlantAdvicePanel>? _panels;
   bool _saving = false;
 
   @override
   void initState() {
     super.initState();
-    // Pré-remplit les champs avec les dernières valeurs connues, pour
-    // que l'utilisateur n'ait qu'à modifier ce qui a changé.
+    // Pré-remplit les champs avec les dernières valeurs connues. En
+    // mode install, on stocke les mesures sous l'id de l'install pour
+    // que toutes les cultures s'y rattachent ; en mode culture, on
+    // garde l'historique par plant.
+    final scopeId = _scopeId();
     final svc = CultureReadingService.instance;
-    final id = widget.culture.id;
-    _phCtrl.text = _initial(svc.latest(id, ReadingType.ph));
-    _ecCtrl.text = _initial(svc.latest(id, ReadingType.ec));
-    _waterTempCtrl.text = _initial(svc.latest(id, ReadingType.waterTemp));
-    _humidityCtrl.text = _initial(svc.latest(id, ReadingType.airHumidity));
+    _phCtrl.text = _initial(svc.latest(scopeId, ReadingType.ph));
+    _ecCtrl.text = _initial(svc.latest(scopeId, ReadingType.ec));
+    _waterTempCtrl.text = _initial(svc.latest(scopeId, ReadingType.waterTemp));
+    _humidityCtrl.text =
+        _initial(svc.latest(scopeId, ReadingType.airHumidity));
+  }
+
+  String _scopeId() {
+    return widget.installId ?? widget.culture!.id;
   }
 
   String _initial(CultureReading? r) {
@@ -65,11 +91,44 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     super.dispose();
   }
 
-  Vegetable _veg() {
-    return vegetablesBase.firstWhere(
-      (v) => v.id == widget.culture.vegetableId,
-      orElse: () => vegetablesBase.first,
-    );
+  /// Liste des cultures pour lesquelles on doit générer des conseils.
+  /// Mode install = toutes les cultures rattachées. Mode culture = la
+  /// culture seule.
+  List<CultureEntry> _targetCultures() {
+    if (widget.culture != null) return <CultureEntry>[widget.culture!];
+    final iid = widget.installId!;
+    final install = HydroInstallService.instance.byId(iid);
+    if (install == null) return const <CultureEntry>[];
+    final all = CultureService.instance.loadAll();
+    final byId = <String, CultureEntry>{
+      for (final c in all) c.id: c,
+    };
+    return <CultureEntry>[
+      for (final cid in install.slotCultureIds)
+        if (cid != null && byId[cid] != null) byId[cid]!,
+    ];
+  }
+
+  String _headerSubtitle() {
+    final cultures = _targetCultures();
+    if (cultures.isEmpty) {
+      return 'Aucun plant — ajoute-en avant de mesurer';
+    }
+    if (cultures.length == 1) {
+      final c = cultures.first;
+      final v = _vegFor(c);
+      return '${v?.emoji ?? "🌱"}  ${v?.name ?? c.vegetableId}  ·  '
+          '${c.phase.label}';
+    }
+    return '${cultures.length} plants';
+  }
+
+  Vegetable? _vegFor(CultureEntry c) {
+    try {
+      return vegetablesBase.firstWhere((v) => v.id == c.vegetableId);
+    } catch (_) {
+      return null;
+    }
   }
 
   double? _parse(TextEditingController c) {
@@ -86,20 +145,21 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
 
     setState(() => _saving = true);
 
-    // Persiste chaque mesure non vide pour alimenter les sparklines /
-    // l'historique. Si le champ est vide on ne crée pas d'entrée.
+    // Persiste chaque mesure non vide pour alimenter l'historique.
     final svc = CultureReadingService.instance;
-    final cid = widget.culture.id;
+    final scopeId = _scopeId();
     final tasks = <Future<void>>[];
     if (ph != null) {
-      tasks.add(svc.add(cultureId: cid, type: ReadingType.ph, unit: 'pH', value: ph));
+      tasks.add(
+          svc.add(cultureId: scopeId, type: ReadingType.ph, unit: 'pH', value: ph));
     }
     if (ec != null) {
-      tasks.add(svc.add(cultureId: cid, type: ReadingType.ec, unit: 'mS/cm', value: ec));
+      tasks.add(svc.add(
+          cultureId: scopeId, type: ReadingType.ec, unit: 'mS/cm', value: ec));
     }
     if (waterTemp != null) {
       tasks.add(svc.add(
-        cultureId: cid,
+        cultureId: scopeId,
         type: ReadingType.waterTemp,
         unit: '°C',
         value: waterTemp,
@@ -107,7 +167,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     }
     if (humidity != null) {
       tasks.add(svc.add(
-        cultureId: cid,
+        cultureId: scopeId,
         type: ReadingType.airHumidity,
         unit: '%',
         value: humidity,
@@ -115,26 +175,46 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     }
     await Future.wait(tasks);
 
-    final advices = generateHydroAdvice(
-      veg: _veg(),
-      phase: widget.culture.phase,
-      ph: ph,
-      ec: ec,
-      waterTempC: waterTemp,
-      airHumidityPct: humidity,
-    );
+    // Génère un panneau de conseils par plant cible. En mode culture
+    // (1 plant), il y aura juste 1 panneau ; en mode install, 1 par
+    // plant placé.
+    final cultures = _targetCultures();
+    final panels = <_PlantAdvicePanel>[];
+    for (final c in cultures) {
+      final veg = _vegFor(c);
+      if (veg == null) continue;
+      final advices = generateHydroAdvice(
+        veg: veg,
+        phase: c.phase,
+        ph: ph,
+        ec: ec,
+        waterTempC: waterTemp,
+        airHumidityPct: humidity,
+      );
+      panels.add(_PlantAdvicePanel(
+        culture: c,
+        veg: veg,
+        advices: advices,
+      ));
+    }
 
     if (!mounted) return;
     AudioService.instance.play(Sfx.cart);
     setState(() {
-      _advices = advices;
+      _panels = panels;
       _saving = false;
     });
   }
 
+  String _title() {
+    if (_panels == null) return 'Mes mesures du jour';
+    return widget.installId != null
+        ? 'Conseils par plant'
+        : 'Conseils du jour';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final veg = _veg();
     return DraggableScrollableSheet(
       initialChildSize: 0.85,
       minChildSize: 0.5,
@@ -155,9 +235,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
                 _DragHandle(),
                 const SizedBox(height: 6),
                 Text(
-                  _advices == null
-                      ? 'Mes mesures du jour'
-                      : 'Conseils pour ta ${veg.name}',
+                  _title(),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 19,
@@ -166,7 +244,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${veg.emoji}  ${widget.culture.phase.label}',
+                  _headerSubtitle(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13,
@@ -174,7 +252,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
                   ),
                 ),
                 const SizedBox(height: 18),
-                if (_advices == null) _buildInputs() else _buildResults(),
+                if (_panels == null) _buildInputs() else _buildResults(),
               ],
             ),
           ),
@@ -256,8 +334,8 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
   }
 
   Widget _buildResults() {
-    final advices = _advices!;
-    if (advices.isEmpty) {
+    final panels = _panels!;
+    if (panels.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 30),
         child: Column(
@@ -265,8 +343,8 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
             const Text('🤔', style: TextStyle(fontSize: 40)),
             const SizedBox(height: 10),
             Text(
-              'Aucune mesure saisie. Reviens en arrière et remplis '
-              'au moins un champ.',
+              'Aucun plant à conseiller. Ajoute des plants dans tes '
+              'slots ou remplis au moins un champ de mesure.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: KultivaColors.textSecondary,
@@ -275,7 +353,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
             ),
             const SizedBox(height: 14),
             TextButton(
-              onPressed: () => setState(() => _advices = null),
+              onPressed: () => setState(() => _panels = null),
               child: const Text('Retour à la saisie'),
             ),
           ],
@@ -285,16 +363,16 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        for (final a in advices) ...<Widget>[
-          _AdviceCard(advice: a),
-          const SizedBox(height: 10),
+        for (final p in panels) ...<Widget>[
+          _PlantPanelView(panel: p, showHeader: panels.length > 1),
+          const SizedBox(height: 14),
         ],
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         Row(
           children: <Widget>[
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: () => setState(() => _advices = null),
+                onPressed: () => setState(() => _panels = null),
                 icon: const Icon(Icons.edit_outlined),
                 label: const Text('Modifier'),
               ),
@@ -312,6 +390,64 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+/// Bundle « conseils pour 1 plant » — sert à grouper l'affichage en
+/// mode install (plusieurs plants → plusieurs panneaux).
+class _PlantAdvicePanel {
+  final CultureEntry culture;
+  final Vegetable veg;
+  final List<HydroAdvice> advices;
+  const _PlantAdvicePanel({
+    required this.culture,
+    required this.veg,
+    required this.advices,
+  });
+}
+
+class _PlantPanelView extends StatelessWidget {
+  final _PlantAdvicePanel panel;
+
+  /// Si `true`, on affiche un en-tête « 🍅 Tomate » au-dessus des
+  /// conseils — utile quand il y a plusieurs plants. Si `false`,
+  /// l'en-tête est sous-titre du sheet.
+  final bool showHeader;
+
+  const _PlantPanelView({required this.panel, required this.showHeader});
+
+  @override
+  Widget build(BuildContext context) {
+    final advices = panel.advices;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        if (showHeader)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6, left: 4),
+            child: Row(
+              children: <Widget>[
+                Text(panel.veg.emoji,
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    '${panel.veg.name}  ·  ${panel.culture.phase.label}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        for (final a in advices) ...<Widget>[
+          _AdviceCard(advice: a),
+          const SizedBox(height: 8),
+        ],
       ],
     );
   }

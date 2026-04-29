@@ -34,6 +34,7 @@ class PrefsService {
   static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kCultureReadings = 'kultiva.cultureReadings.v1';
+  static const _kHydroInstalls = 'kultiva.hydroInstalls.v1';
 
   SharedPreferences? _prefs;
 
@@ -210,6 +211,13 @@ class PrefsService {
   Future<void> setCultureReadingsJson(String json) async {
     await _prefs?.setString(_kCultureReadings, json);
     cultureReadingsVersion.value = cultureReadingsVersion.value + 1;
+  }
+
+  // --- Installations hydroponiques (refonte cohérence avril 2026) ---
+  String? get hydroInstallsJson => _prefs?.getString(_kHydroInstalls);
+
+  Future<void> setHydroInstallsJson(String json) async {
+    await _prefs?.setString(_kHydroInstalls, json);
   }
 
   Set<String> get unlockedBadges =>
