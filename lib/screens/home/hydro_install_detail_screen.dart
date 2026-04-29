@@ -12,6 +12,7 @@ import '../../services/hydro_install_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/hydro_advisor.dart';
+import '../../utils/hydro_grid_spacing.dart';
 import '../../utils/phenology.dart';
 import 'daily_readings_sheet.dart';
 
@@ -436,6 +437,22 @@ class _SlotsGrid extends StatelessWidget {
         final byId = <String, CultureEntry>{
           for (final c in cultures) c.id: c,
         };
+        // Map précalculée slotIndex → Vegetable, utilisée par chaque
+        // cellule pour calculer la distance aux voisins.
+        final filledByVeg = <int, Vegetable>{};
+        for (var i = 0; i < install.slotCultureIds.length; i++) {
+          final cid = install.slotCultureIds[i];
+          if (cid == null) continue;
+          final c = byId[cid];
+          if (c == null) continue;
+          try {
+            filledByVeg[i] = vegetablesBase.firstWhere(
+              (v) => v.id == c.vegetableId,
+            );
+          } catch (_) {
+            // Légume inconnu : on l'ignore pour le calcul de spacing.
+          }
+        }
         // Layout préféré du système (DWC = 3×2, NFT = 4×2, etc.). Si
         // l'utilisateur a configuré moins/plus de slots que la grille
         // par défaut, on s'aligne sur slotCount en répartissant.
@@ -455,6 +472,8 @@ class _SlotsGrid extends StatelessWidget {
             install: install,
             slotIndex: i,
             culture: byId[install.slotCultureIds[i]],
+            gridCols: cols,
+            filledByVeg: filledByVeg,
           ),
         );
       },
@@ -480,11 +499,15 @@ class _SlotCell extends StatelessWidget {
   final HydroInstall install;
   final int slotIndex;
   final CultureEntry? culture;
+  final int gridCols;
+  final Map<int, Vegetable> filledByVeg;
 
   const _SlotCell({
     required this.install,
     required this.slotIndex,
     required this.culture,
+    required this.gridCols,
+    required this.filledByVeg,
   });
 
   Vegetable? _veg() {
@@ -585,6 +608,32 @@ class _SlotCell extends StatelessWidget {
     );
   }
 
+  Color _borderColorFor(SlotSpacingStatus status) {
+    switch (status) {
+      case SlotSpacingStatus.ok:
+        return KultivaColors.primaryGreen.withValues(alpha: 0.55);
+      case SlotSpacingStatus.warn:
+        return const Color(0xFFE8A87C);
+      case SlotSpacingStatus.bad:
+        return const Color(0xFFD4564A);
+      case SlotSpacingStatus.off:
+        return KultivaColors.primaryGreen.withValues(alpha: 0.45);
+    }
+  }
+
+  Color _glowColorFor(SlotSpacingStatus status) {
+    switch (status) {
+      case SlotSpacingStatus.ok:
+        return KultivaColors.primaryGreen.withValues(alpha: 0.12);
+      case SlotSpacingStatus.warn:
+        return const Color(0xFFE8A87C).withValues(alpha: 0.18);
+      case SlotSpacingStatus.bad:
+        return const Color(0xFFD4564A).withValues(alpha: 0.22);
+      case SlotSpacingStatus.off:
+        return KultivaColors.primaryGreen.withValues(alpha: 0.10);
+    }
+  }
+
   /// Placement rapide via drag/drop : crée la culture avec
   /// `startedAt = now` et `phase = seedling`. L'utilisateur peut
   /// ajuster ensuite en tapant sur le slot rempli.
@@ -605,6 +654,19 @@ class _SlotCell extends StatelessWidget {
   Widget _filledCell(BuildContext context) {
     final veg = _veg();
     final c = culture!;
+    // Calcul du statut d'espacement aux voisins pour la coloration de
+    // la bordure (vert/jaune/rouge ou neutre si pas de profil).
+    final status = veg == null
+        ? SlotSpacingStatus.off
+        : computeSlotSpacingStatus(
+            install: install,
+            slotIndex: slotIndex,
+            gridCols: gridCols,
+            vegetable: veg,
+            filledByVeg: filledByVeg,
+          );
+    final borderColor = _borderColorFor(status);
+    final glowColor = _glowColorFor(status);
     return InkWell(
       onTap: () => _showPlantActions(context, c),
       borderRadius: BorderRadius.circular(14),
@@ -621,11 +683,15 @@ class _SlotCell extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withValues(alpha: 0.55),
+            color: borderColor,
+            width: status == SlotSpacingStatus.bad ||
+                    status == SlotSpacingStatus.warn
+                ? 2
+                : 1,
           ),
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
+              color: glowColor,
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),

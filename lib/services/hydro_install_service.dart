@@ -76,6 +76,7 @@ class HydroInstallService {
     required HydroSystemType systemType,
     required int slotCount,
     required double reservoirL,
+    double holeSpacingCm = 25,
     List<HydroLightConfig> lamps = const <HydroLightConfig>[],
     String? photoPath,
   }) async {
@@ -85,6 +86,7 @@ class HydroInstallService {
       systemType: systemType,
       slotCount: slotCount,
       reservoirL: reservoirL,
+      holeSpacingCm: holeSpacingCm,
       lamps: lamps,
       photoPath: photoPath,
       createdAt: DateTime.now(),

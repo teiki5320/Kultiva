@@ -24,6 +24,11 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
   int _slotCount = 4;
   double _reservoirL = 20;
 
+  /// Espacement physique entre trous (cm). Valeurs par défaut sourcées
+  /// audit web 2026 : DWC 25 cm pour laitues amateur, NFT 25 cm
+  /// laitues / 50 cm tomates, Tour 30 cm, Kratky n/a (1 plant).
+  int _holeSpacingCm = 25;
+
   // Lumière (commune à toute l'install). On ne stocke plus la durée
   // par défaut : elle est calculée dynamiquement dans le détail de
   // l'install selon la phase dominante des plants. À la création on
@@ -104,6 +109,7 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
       systemType: _systemType,
       slotCount: _slotCount,
       reservoirL: _reservoirL,
+      holeSpacingCm: _holeSpacingCm.toDouble(),
       lamps: lamps,
     );
     if (!mounted) return;
@@ -200,6 +206,29 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
                   step: _slotCount < 12 ? 1 : 2,
                   unit: 'plants',
                   onChanged: (v) => setState(() => _slotCount = v),
+                ),
+                const SizedBox(height: 12),
+
+                // ─── Espacement entre trous ──────────────────────────
+                _NumberStepper(
+                  value: _holeSpacingCm,
+                  min: 5,
+                  max: 100,
+                  step: 5,
+                  unit: 'cm',
+                  label: 'Espacement entre 2 trous voisins',
+                  onChanged: (v) => setState(() => _holeSpacingCm = v),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Distance physique entre 2 emplacements adjacents. '
+                  'L\'app s\'en sert pour vérifier que tu ne plantes pas '
+                  'trop serré (ex. tomate = 25-40 cm, laitue = 18-30 cm).',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: KultivaColors.textSecondary,
+                    height: 1.35,
+                  ),
                 ),
                 const SizedBox(height: 22),
 

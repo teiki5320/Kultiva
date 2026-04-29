@@ -138,6 +138,15 @@ class HydroInstall {
   /// pour ne pas redemander à chaque fois.
   final double reservoirL;
 
+  /// Espacement physique entre 2 trous adjacents (en cm). Sert au calcul
+  /// de distance réelle entre 2 plants dans la grille, comparé aux
+  /// fourchettes [Vegetable.hydroSpacing] pour signaler des plants
+  /// trop serrés (rouge), un peu serrés (jaune) ou OK (vert).
+  ///
+  /// Valeur typique : 20 cm DWC débutant, 25-30 cm NFT laitues,
+  /// 50-90 cm NFT chanvre/tomate, 30 cm tour verticale.
+  final double holeSpacingCm;
+
   /// Liste des lampes de l'install. Une vraie installation peut en
   /// avoir plusieurs (ex. NFT 4 m² avec 4 lampes 100W couvrant chacune
   /// ~1 m²). La somme des watts × heures × footprints sert au calcul
@@ -175,6 +184,7 @@ class HydroInstall {
     required this.slotCultureIds,
     required this.createdAt,
     this.lamps = const <HydroLightConfig>[],
+    this.holeSpacingCm = 25,
     this.photoPath,
     this.lastFlushAt,
     this.equipment = const <HydroEquipment>{},
@@ -219,6 +229,7 @@ class HydroInstall {
     HydroSystemType? systemType,
     int? slotCount,
     double? reservoirL,
+    double? holeSpacingCm,
     List<HydroLightConfig>? lamps,
     String? photoPath,
     DateTime? lastFlushAt,
@@ -234,6 +245,7 @@ class HydroInstall {
       systemType: systemType ?? this.systemType,
       slotCount: slotCount ?? this.slotCount,
       reservoirL: reservoirL ?? this.reservoirL,
+      holeSpacingCm: holeSpacingCm ?? this.holeSpacingCm,
       lamps: clearLamps
           ? const <HydroLightConfig>[]
           : (lamps ?? this.lamps),
@@ -290,6 +302,7 @@ class HydroInstall {
         'systemType': systemType.name,
         'slotCount': slotCount,
         'reservoirL': reservoirL,
+        'holeSpacingCm': holeSpacingCm,
         'lamps': lamps.map((l) => l.toJson()).toList(),
         'photoPath': photoPath,
         'lastFlushAt': lastFlushAt?.toIso8601String(),
@@ -341,6 +354,8 @@ class HydroInstall {
       ),
       slotCount: slotCount,
       reservoirL: (json['reservoirL'] as num?)?.toDouble() ?? 20.0,
+      holeSpacingCm:
+          (json['holeSpacingCm'] as num?)?.toDouble() ?? 25.0,
       lamps: lamps,
       photoPath: json['photoPath'] as String?,
       lastFlushAt: json['lastFlushAt'] == null
