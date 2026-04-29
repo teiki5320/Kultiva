@@ -6,7 +6,6 @@ import '../../models/garden_plan.dart';
 import '../../services/audio_service.dart';
 import '../../services/hydro_install_service.dart';
 import '../../theme/app_theme.dart';
-import '../../utils/hydro_advisor.dart';
 
 /// Sheet de création d'une nouvelle installation hydroponique. Tout
 /// dans un seul scroll : système → nom → slots → réservoir → lampe →
@@ -25,9 +24,13 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
   int _slotCount = 4;
   double _reservoirL = 20;
 
-  // Lumière (commune à toute l'install).
+  // Lumière (commune à toute l'install). On ne stocke plus la durée
+  // par défaut : elle est calculée dynamiquement dans le détail de
+  // l'install selon la phase dominante des plants. À la création on
+  // utilise une valeur par défaut neutre (16 h, qui couvre semis +
+  // croissance).
   LightType _lightType = LightType.led;
-  double _hoursPerDay = 16;
+  static const double _defaultHoursPerDay = 16;
   int _ledWatts = 100;
   LedColorTemp _ledColorTemp = LedColorTemp.fullSpectrum;
 
@@ -79,10 +82,13 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
         : _nameCtrl.text.trim();
     setState(() => _saving = true);
     final light = _lightType == LightType.natural
-        ? HydroLightConfig(type: _lightType, hoursPerDay: _hoursPerDay)
+        ? const HydroLightConfig(
+            type: LightType.natural,
+            hoursPerDay: _defaultHoursPerDay,
+          )
         : HydroLightConfig(
             type: _lightType,
-            hoursPerDay: _hoursPerDay,
+            hoursPerDay: _defaultHoursPerDay,
             ledWatts: _ledWatts,
             ledColorTemp: _ledColorTemp,
           );
@@ -94,7 +100,7 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
       light: light,
     );
     if (!mounted) return;
-    AudioService.instance.play(Sfx.cart);
+    AudioService.instance.play(Sfx.success);
     Navigator.of(context).pop();
   }
 
@@ -216,17 +222,6 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
                   selected: _lightType,
                   onChanged: (t) => setState(() => _lightType = t),
                 ),
-                const SizedBox(height: 12),
-                _NumberStepper(
-                  value: _hoursPerDay.toInt(),
-                  min: 6,
-                  max: 24,
-                  step: 1,
-                  unit: 'h/jour',
-                  label: 'Heures de lumière par jour',
-                  onChanged: (v) =>
-                      setState(() => _hoursPerDay = v.toDouble()),
-                ),
                 if (_lightType != LightType.natural) ...<Widget>[
                   const SizedBox(height: 12),
                   _NumberStepper(
@@ -243,11 +238,8 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
                     selected: _ledColorTemp,
                     onChanged: (c) => setState(() => _ledColorTemp = c),
                   ),
-                  const SizedBox(height: 12),
-                  _LampHeightPreview(
-                    watts: _ledWatts,
-                    phase: GrowthPhase.vegetative,
-                  ),
+                  const SizedBox(height: 14),
+                  _LightCalcInfo(),
                 ],
 
                 const SizedBox(height: 28),
@@ -597,16 +589,13 @@ class _NumberStepper extends StatelessWidget {
   }
 }
 
-/// Aperçu en direct de la hauteur de lampe recommandée selon la
-/// puissance saisie. Affiche un texte friendly pendant la création.
-class _LampHeightPreview extends StatelessWidget {
-  final int watts;
-  final GrowthPhase phase;
-  const _LampHeightPreview({required this.watts, required this.phase});
-
+/// Petit encart explicatif sous la config lampe : on dit à
+/// l'utilisateur qu'on calcule la durée et la hauteur pour lui une
+/// fois que des plants seront ajoutés. Évite de demander des paramètres
+/// que l'utilisateur ne connaît pas.
+class _LightCalcInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final reco = recommendedLampHeight(phase: phase, watts: watts);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -623,9 +612,11 @@ class _LampHeightPreview extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              reco.advice,
+              'On calcule pour toi la hauteur de la lampe et le nombre '
+              'd\'heures à allumer par jour, en fonction de la phase '
+              'de tes plants. Pas besoin de chercher.',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 height: 1.4,
                 fontWeight: FontWeight.w700,
                 color: KultivaColors.textPrimary.withValues(alpha: 0.85),

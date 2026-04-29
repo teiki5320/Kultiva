@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
@@ -11,6 +12,7 @@ import '../../services/hydro_install_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/hydro_advisor.dart';
+import '../../utils/phenology.dart';
 import 'daily_readings_sheet.dart';
 
 /// Détail d'une installation hydroponique : lampe, slots (chaque slot
@@ -74,6 +76,8 @@ class _HydroInstallDetailScreenState
                 _FlushAlert(install: install),
                 const SizedBox(height: 14),
               ],
+              _EquipmentSection(install: install),
+              const SizedBox(height: 14),
               _DailyReadingsButton(install: install),
               const SizedBox(height: 18),
               const _SectionTitle('🌿  Mes plants'),
@@ -421,29 +425,49 @@ class _SlotsGrid extends StatelessWidget {
         final byId = <String, CultureEntry>{
           for (final c in cultures) c.id: c,
         };
-        return Column(
-          children: <Widget>[
-            for (var i = 0; i < install.slotCount; i++) ...<Widget>[
-              if (i > 0) const SizedBox(height: 8),
-              _SlotTile(
-                install: install,
-                slotIndex: i,
-                culture: byId[install.slotCultureIds[i]],
-              ),
-            ],
-          ],
+        // Layout préféré du système (DWC = 3×2, NFT = 4×2, etc.). Si
+        // l'utilisateur a configuré moins/plus de slots que la grille
+        // par défaut, on s'aligne sur slotCount en répartissant.
+        final layout = install.systemType.defaultLayout;
+        final cols = _computeCols(install.slotCount, layout.cols);
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cols,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 1.0,
+          ),
+          itemCount: install.slotCount,
+          itemBuilder: (_, i) => _SlotCell(
+            install: install,
+            slotIndex: i,
+            culture: byId[install.slotCultureIds[i]],
+          ),
         );
       },
     );
   }
+
+  /// Choisit un nombre de colonnes raisonnable. Si slotCount ≤ defaultCols,
+  /// on prend slotCount (1 rangée). Sinon on garde le défaut du système.
+  int _computeCols(int slotCount, int defaultCols) {
+    if (slotCount <= 0) return 1;
+    if (slotCount <= defaultCols) return slotCount;
+    return defaultCols.clamp(1, 4);
+  }
 }
 
-class _SlotTile extends StatelessWidget {
+/// Cellule carrée d'un slot dans la grille de l'install. Style kawaii
+/// cohérent avec les cases du planificateur pleine terre (gradient
+/// pastel, arrondis 14, ombre douce).
+class _SlotCell extends StatelessWidget {
   final HydroInstall install;
   final int slotIndex;
   final CultureEntry? culture;
 
-  const _SlotTile({
+  const _SlotCell({
     required this.install,
     required this.slotIndex,
     required this.culture,
@@ -462,46 +486,62 @@ class _SlotTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (culture == null) {
-      return _emptyTile(context);
+      return _emptyCell(context);
     }
-    return _filledTile(context);
+    return _filledCell(context);
   }
 
-  Widget _emptyTile(BuildContext context) {
+  Widget _emptyCell(BuildContext context) {
     return InkWell(
       onTap: () => _pickPlant(context),
       borderRadius: BorderRadius.circular(14),
       child: Container(
-        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: <Color>[
+              Colors.white,
+              KultivaColors.winterA.withValues(alpha: 0.55),
+            ],
+          ),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: KultivaColors.textSecondary.withValues(alpha: 0.25),
-            style: BorderStyle.solid,
+            color:
+                KultivaColors.textSecondary.withValues(alpha: 0.25),
           ),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: KultivaColors.primaryGreen.withValues(alpha: 0.07),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              width: 42,
-              height: 42,
+              width: 32,
+              height: 32,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: KultivaColors.lightGreen.withValues(alpha: 0.3),
+                color: KultivaColors.lightGreen.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.add, color: KultivaColors.primaryGreen),
+              child: const Icon(
+                Icons.add,
+                color: KultivaColors.primaryGreen,
+                size: 20,
+              ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'Slot ${slotIndex + 1}  ·  Touche pour ajouter un plant',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: KultivaColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                ),
+            const SizedBox(height: 6),
+            Text(
+              'Slot ${slotIndex + 1}',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                color: KultivaColors.textSecondary,
               ),
             ),
           ],
@@ -510,60 +550,61 @@ class _SlotTile extends StatelessWidget {
     );
   }
 
-  Widget _filledTile(BuildContext context) {
+  Widget _filledCell(BuildContext context) {
     final veg = _veg();
     final c = culture!;
     return InkWell(
       onTap: () => _showPlantActions(context, c),
       borderRadius: BorderRadius.circular(14),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: KultivaColors.springB.withValues(alpha: 0.25),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: <Color>[
+              KultivaColors.springB.withValues(alpha: 0.4),
+              KultivaColors.springA.withValues(alpha: 0.5),
+            ],
+          ),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: KultivaColors.primaryGreen.withValues(alpha: 0.5),
+            color: KultivaColors.primaryGreen.withValues(alpha: 0.55),
           ),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              width: 48,
-              height: 48,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.7),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                veg?.emoji ?? '🌱',
-                style: const TextStyle(fontSize: 26),
+            Text(
+              veg?.emoji ?? '🌱',
+              style: const TextStyle(fontSize: 32),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              veg?.name ?? c.vegetableId,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
               ),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    veg?.name ?? c.vegetableId,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'J+${c.daysSinceStarted}  ·  ${c.phase.label}',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: KultivaColors.textSecondary,
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 1),
+            Text(
+              'J+${c.daysSinceStarted}',
+              style: TextStyle(
+                fontSize: 10,
+                color: KultivaColors.textSecondary,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            const Icon(Icons.more_horiz),
           ],
         ),
       ),
@@ -578,14 +619,31 @@ class _SlotTile extends StatelessWidget {
       backgroundColor: KultivaColors.lightBackground,
       builder: (_) => const _HydroVegetablePickerSheet(),
     );
-    if (picked == null) return;
+    if (picked == null || !context.mounted) return;
 
-    // Crée la culture et l'attache au slot.
+    // Étape 2 : configurer la date de plantation (et phase déduite,
+    // overridable par l'utilisateur).
+    final result = await showModalBottomSheet<_PlantConfig>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: KultivaColors.lightBackground,
+      builder: (_) => _PlantConfigSheet(veg: picked),
+    );
+    if (result == null) return;
+
+    // Crée la culture avec la bonne date de démarrage.
     final entry = await CultureService.instance.add(
       method: CultivationMethod.hydroponic,
       vegetableId: picked.id,
-      startedAt: DateTime.now(),
+      startedAt: result.startedAt,
     );
+    // Si la phase diffère du défaut (seedling), on la met à jour.
+    if (result.phase != GrowthPhase.seedling) {
+      await CultureService.instance.update(
+        entry.copyWith(phase: result.phase),
+      );
+    }
+
     await HydroInstallService.instance.placeCulture(
       installId: install.id,
       cultureId: entry.id,
@@ -754,7 +812,7 @@ class _HydroVegetablePickerSheetState
                               overflow: TextOverflow.ellipsis,
                             ),
                       onTap: () {
-                        AudioService.instance.play(Sfx.cart);
+                        AudioService.instance.play(Sfx.plant);
                         Navigator.of(context).pop(v);
                       },
                     );
@@ -780,6 +838,527 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+      ),
+    );
+  }
+}
+
+/// Section « 🛒 Mon équipement de mesure ». Liste les 4 outils essentiels
+/// (pH-mètre, EC-mètre, thermomètre, hygromètre) avec leur statut
+/// (configuré / pas encore). Bouton « Acheter » ouvre Amazon avec le
+/// tag affilié Kultiva. Bouton « Configuré » bascule l'état (l'utilisateur
+/// déclare avoir l'outil → le champ correspondant apparaît dans
+/// « Mes mesures du jour »).
+class _EquipmentSection extends StatelessWidget {
+  final HydroInstall install;
+  const _EquipmentSection({required this.install});
+
+  Future<void> _openAmazon(HydroEquipment e) async {
+    final uri = Uri.parse(e.amazonUrl);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hasAny = install.equipment.isNotEmpty;
+    final missing = HydroEquipment.values
+        .where((e) => !install.equipment.contains(e))
+        .length;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: KultivaColors.lightGreen.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Text('🛒', style: TextStyle(fontSize: 18)),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text(
+                  'Mon équipement de mesure',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              if (!hasAny)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8A87C).withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    'à équiper',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFFB36A3D),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          if (!hasAny) ...<Widget>[
+            const SizedBox(height: 6),
+            Text(
+              'Sans ces outils, tu cultives à l\'aveugle. Voici les 4 '
+              'mesures qui font la différence.',
+              style: TextStyle(
+                fontSize: 11,
+                color: KultivaColors.textSecondary,
+                height: 1.4,
+              ),
+            ),
+          ] else if (missing > 0) ...<Widget>[
+            const SizedBox(height: 4),
+            Text(
+              'Tape « ✓ J\'ai » si tu possèdes déjà l\'outil. Tape '
+              '« Acheter » sinon.',
+              style: TextStyle(
+                fontSize: 11,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          for (final e in HydroEquipment.values) ...<Widget>[
+            _EquipmentRow(
+              install: install,
+              equipment: e,
+              owned: install.equipment.contains(e),
+              onToggle: () => HydroInstallService.instance
+                  .toggleEquipment(install.id, e),
+              onBuy: () => _openAmazon(e),
+            ),
+            if (e != HydroEquipment.values.last)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 2),
+                child: Divider(height: 1),
+              ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _EquipmentRow extends StatelessWidget {
+  final HydroInstall install;
+  final HydroEquipment equipment;
+  final bool owned;
+  final VoidCallback onToggle;
+  final VoidCallback onBuy;
+
+  const _EquipmentRow({
+    required this.install,
+    required this.equipment,
+    required this.owned,
+    required this.onToggle,
+    required this.onBuy,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: 32,
+            height: 32,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: owned
+                  ? KultivaColors.primaryGreen.withValues(alpha: 0.15)
+                  : KultivaColors.lightGreen.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(equipment.emoji, style: const TextStyle(fontSize: 18)),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        equipment.label,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    if (owned)
+                      const Icon(
+                        Icons.check_circle,
+                        color: KultivaColors.primaryGreen,
+                        size: 18,
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  equipment.whyItMatters,
+                  style: TextStyle(
+                    fontSize: 11,
+                    height: 1.35,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: <Widget>[
+                    OutlinedButton.icon(
+                      onPressed: onToggle,
+                      icon: Icon(
+                        owned ? Icons.remove_circle_outline : Icons.check,
+                        size: 14,
+                      ),
+                      label: Text(
+                        owned ? 'Je ne l\'ai plus' : 'J\'ai déjà',
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        minimumSize: const Size(0, 30),
+                        foregroundColor: owned
+                            ? KultivaColors.textSecondary
+                            : KultivaColors.primaryGreen,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    if (!owned)
+                      FilledButton.icon(
+                        onPressed: onBuy,
+                        icon: const Icon(Icons.shopping_cart, size: 14),
+                        label: Text(
+                          'Acheter ${equipment.priceHint}',
+                          style: const TextStyle(fontSize: 11),
+                        ),
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          minimumSize: const Size(0, 30),
+                          backgroundColor: KultivaColors.terracotta,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Bundle de configuration d'un nouveau plant — date plantée + phase.
+class _PlantConfig {
+  final DateTime startedAt;
+  final GrowthPhase phase;
+  const _PlantConfig({required this.startedAt, required this.phase});
+}
+
+/// Sheet « Quand l'as-tu planté ? » — slider 0-180 jours, phase
+/// déduite live depuis les données phénologiques du légume,
+/// override possible.
+class _PlantConfigSheet extends StatefulWidget {
+  final Vegetable veg;
+
+  const _PlantConfigSheet({required this.veg});
+
+  @override
+  State<_PlantConfigSheet> createState() => _PlantConfigSheetState();
+}
+
+class _PlantConfigSheetState extends State<_PlantConfigSheet> {
+  int _daysAgo = 0;
+  GrowthPhase? _phaseOverride; // null = utilise la phase déduite
+
+  GrowthPhase _deducedPhase() => deducedPhase(widget.veg, _daysAgo);
+
+  GrowthPhase get _activePhase => _phaseOverride ?? _deducedPhase();
+
+  @override
+  Widget build(BuildContext context) {
+    final phase = _activePhase;
+    final isOverride = _phaseOverride != null;
+    return DraggableScrollableSheet(
+      initialChildSize: 0.65,
+      minChildSize: 0.4,
+      maxChildSize: 0.85,
+      expand: false,
+      builder: (_, scroll) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+          child: ListView(
+            controller: scroll,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  width: 38,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: KultivaColors.textSecondary.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Center(
+                child: Text(
+                  'Quand l\'as-tu planté ?',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Center(
+                child: Text(
+                  '${widget.veg.emoji}  ${widget.veg.name}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 22),
+
+              // ─── Slider jours ────────────────────────────────────
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: KultivaColors.lightGreen.withValues(alpha: 0.6),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      _daysLabel(_daysAgo),
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _daysAgo == 0
+                          ? 'Tu viens de le planter'
+                          : 'Il y a $_daysAgo jour${_daysAgo > 1 ? "s" : ""}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: KultivaColors.textSecondary,
+                      ),
+                    ),
+                    Slider(
+                      value: _daysAgo.toDouble(),
+                      min: 0,
+                      max: 180,
+                      divisions: 180,
+                      activeColor: KultivaColors.primaryGreen,
+                      onChanged: (v) => setState(() {
+                        _daysAgo = v.round();
+                        _phaseOverride = null; // reset l'override
+                      }),
+                    ),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: <Widget>[
+                        _quickChip('Aujourd\'hui', 0),
+                        _quickChip('Il y a 1 sem', 7),
+                        _quickChip('Il y a 2 sem', 14),
+                        _quickChip('Il y a 1 mois', 30),
+                        _quickChip('Il y a 2 mois', 60),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // ─── Phase déduite ───────────────────────────────────
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: KultivaColors.springB.withValues(alpha: 0.18),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: KultivaColors.primaryGreen.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      isOverride
+                          ? 'Phase choisie manuellement'
+                          : '✨ Phase déduite automatiquement',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: KultivaColors.textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: <Widget>[
+                        Text(phase.emoji, style: const TextStyle(fontSize: 22)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            phase.label,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: <Widget>[
+                        for (final p in GrowthPhase.values)
+                          _phaseChip(p, p == phase),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // ─── Bouton confirmer ────────────────────────────────
+              FilledButton.icon(
+                onPressed: () {
+                  AudioService.instance.play(Sfx.plant);
+                  Navigator.of(context).pop(_PlantConfig(
+                    startedAt: DateTime.now()
+                        .subtract(Duration(days: _daysAgo)),
+                    phase: phase,
+                  ));
+                },
+                icon: const Icon(Icons.check),
+                label: const Text('Planter ici'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: KultivaColors.primaryGreen,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  String _daysLabel(int days) {
+    if (days == 0) return 'Planté aujourd\'hui';
+    return 'Planté il y a $days jour${days > 1 ? "s" : ""}';
+  }
+
+  Widget _quickChip(String label, int days) {
+    final selected = _daysAgo == days && _phaseOverride == null;
+    return GestureDetector(
+      onTap: () => setState(() {
+        _daysAgo = days;
+        _phaseOverride = null;
+      }),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected
+              ? KultivaColors.primaryGreen.withValues(alpha: 0.18)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selected
+                ? KultivaColors.primaryGreen
+                : KultivaColors.lightGreen.withValues(alpha: 0.5),
+            width: selected ? 1.8 : 1.2,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+            color: selected
+                ? KultivaColors.primaryGreen
+                : KultivaColors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _phaseChip(GrowthPhase p, bool selected) {
+    return GestureDetector(
+      onTap: () => setState(() {
+        _phaseOverride = p == _deducedPhase() ? null : p;
+      }),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected
+              ? KultivaColors.primaryGreen.withValues(alpha: 0.22)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selected
+                ? KultivaColors.primaryGreen
+                : KultivaColors.lightGreen.withValues(alpha: 0.5),
+            width: selected ? 1.8 : 1.2,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(p.emoji, style: const TextStyle(fontSize: 12)),
+            const SizedBox(width: 4),
+            Text(
+              p.label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+                color: selected
+                    ? KultivaColors.primaryGreen
+                    : KultivaColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

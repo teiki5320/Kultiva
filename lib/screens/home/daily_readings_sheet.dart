@@ -199,7 +199,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     }
 
     if (!mounted) return;
-    AudioService.instance.play(Sfx.cart);
+    AudioService.instance.play(Sfx.tap);
     setState(() {
       _panels = panels;
       _saving = false;
@@ -261,42 +261,115 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     );
   }
 
+  /// Set des équipements possédés (vide pour le mode culture, qui affiche
+  /// tous les champs comme avant). En mode install, on lit l'install
+  /// pour ne montrer que les champs des outils déclarés possédés.
+  Set<HydroEquipment> _ownedEquipment() {
+    final iid = widget.installId;
+    if (iid == null) return HydroEquipment.values.toSet();
+    final install = HydroInstallService.instance.byId(iid);
+    return install?.equipment ?? const <HydroEquipment>{};
+  }
+
   Widget _buildInputs() {
+    final owned = _ownedEquipment();
+    final hasPh = owned.contains(HydroEquipment.phMeter);
+    final hasEc = owned.contains(HydroEquipment.ecMeter);
+    final hasWaterTemp = owned.contains(HydroEquipment.waterThermometer);
+    final hasHumidity = owned.contains(HydroEquipment.hygrometer);
+    final none = !hasPh && !hasEc && !hasWaterTemp && !hasHumidity;
+
+    if (none) {
+      return Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE8A87C).withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: const Color(0xFFE8A87C).withValues(alpha: 0.5),
+          ),
+        ),
+        child: Column(
+          children: <Widget>[
+            const Text('🛒', style: TextStyle(fontSize: 32)),
+            const SizedBox(height: 10),
+            const Text(
+              'Tu n\'as pas encore d\'outils de mesure',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Configure ton équipement dans le détail de l\'install '
+              '(section « Mon équipement de mesure ») pour débloquer '
+              'les mesures du jour.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                color: KultivaColors.textSecondary,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(),
+              style: FilledButton.styleFrom(
+                backgroundColor: KultivaColors.primaryGreen,
+              ),
+              child: const Text('Retour à mon install'),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _MeasureField(
-          emoji: '🧪',
-          label: 'pH',
-          hint: 'Ex. 6.0',
-          unit: '',
-          controller: _phCtrl,
-        ),
-        const SizedBox(height: 12),
-        _MeasureField(
-          emoji: '⚡',
-          label: 'Concentration des engrais',
-          hint: 'Ex. 1.4',
-          unit: 'mS/cm',
-          controller: _ecCtrl,
-        ),
-        const SizedBox(height: 12),
-        _MeasureField(
-          emoji: '🌡️',
-          label: 'Température du réservoir',
-          hint: 'Ex. 20',
-          unit: '°C',
-          controller: _waterTempCtrl,
-        ),
-        const SizedBox(height: 12),
-        _MeasureField(
-          emoji: '💨',
-          label: 'Humidité de la pièce',
-          hint: 'Ex. 60',
-          unit: '%',
-          controller: _humidityCtrl,
-        ),
-        const SizedBox(height: 22),
+        if (hasPh) ...<Widget>[
+          _MeasureField(
+            emoji: '🧪',
+            label: 'pH',
+            hint: 'Ex. 6.0',
+            unit: '',
+            controller: _phCtrl,
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (hasEc) ...<Widget>[
+          _MeasureField(
+            emoji: '⚡',
+            label: 'Concentration des engrais',
+            hint: 'Ex. 1.4',
+            unit: 'mS/cm',
+            controller: _ecCtrl,
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (hasWaterTemp) ...<Widget>[
+          _MeasureField(
+            emoji: '🌡️',
+            label: 'Température du réservoir',
+            hint: 'Ex. 20',
+            unit: '°C',
+            controller: _waterTempCtrl,
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (hasHumidity) ...<Widget>[
+          _MeasureField(
+            emoji: '💨',
+            label: 'Humidité de la pièce',
+            hint: 'Ex. 60',
+            unit: '%',
+            controller: _humidityCtrl,
+          ),
+          const SizedBox(height: 12),
+        ],
+        const SizedBox(height: 10),
         FilledButton.icon(
           onPressed: _saving ? null : _showAdvice,
           icon: _saving

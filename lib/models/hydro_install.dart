@@ -3,6 +3,121 @@ import 'dart:convert';
 import 'culture_entry.dart';
 import 'garden_plan.dart';
 
+/// Type de matériel de mesure que l'utilisateur peut posséder. Sert à
+/// conditionner l'affichage des champs dans le sheet « Mes mesures du
+/// jour » : pas de demande de pH si l'utilisateur n'a pas de pH-mètre.
+enum HydroEquipment {
+  phMeter('phMeter'),
+  ecMeter('ecMeter'),
+  waterThermometer('waterThermometer'),
+  hygrometer('hygrometer');
+
+  final String id;
+  const HydroEquipment(this.id);
+
+  static HydroEquipment? fromId(String? id) {
+    if (id == null) return null;
+    for (final e in HydroEquipment.values) {
+      if (e.id == id) return e;
+    }
+    return null;
+  }
+
+  String get label {
+    switch (this) {
+      case HydroEquipment.phMeter:
+        return 'pH-mètre';
+      case HydroEquipment.ecMeter:
+        return 'EC-mètre';
+      case HydroEquipment.waterThermometer:
+        return 'Thermomètre étanche';
+      case HydroEquipment.hygrometer:
+        return 'Hygromètre';
+    }
+  }
+
+  String get emoji {
+    switch (this) {
+      case HydroEquipment.phMeter:
+        return '🧪';
+      case HydroEquipment.ecMeter:
+        return '⚡';
+      case HydroEquipment.waterThermometer:
+        return '🌡️';
+      case HydroEquipment.hygrometer:
+        return '💨';
+    }
+  }
+
+  /// Description courte affichée dans la section équipement —
+  /// orientée « pourquoi en avoir besoin », sans jargon.
+  String get whyItMatters {
+    switch (this) {
+      case HydroEquipment.phMeter:
+        return 'Sans pH correct, tes plants n\'absorbent pas les '
+            'nutriments. C\'est la mesure n°1 en hydro.';
+      case HydroEquipment.ecMeter:
+        return 'Mesure si tes engrais sont bien dosés. Trop = brûle '
+            'les racines. Pas assez = plants qui ralentissent.';
+      case HydroEquipment.waterThermometer:
+        return 'Eau trop chaude (>25°C) = racines qui pourrissent. '
+            'Trop froide (<16°C) = absorption ralentie.';
+      case HydroEquipment.hygrometer:
+        return 'Air trop sec ou trop humide impacte directement la '
+            'pousse. Important en intérieur.';
+    }
+  }
+
+  /// Prix indicatif (€) pour afficher dans le bouton d'achat.
+  String get priceHint {
+    switch (this) {
+      case HydroEquipment.phMeter:
+        return '~25€';
+      case HydroEquipment.ecMeter:
+        return '~25€';
+      case HydroEquipment.waterThermometer:
+        return '~12€';
+      case HydroEquipment.hygrometer:
+        return '~15€';
+    }
+  }
+
+  /// URL Amazon avec tag affilié Kultiva. Recherche pré-remplie.
+  String get amazonUrl {
+    final query = Uri.encodeComponent(_searchQuery);
+    return 'https://www.amazon.fr/s?k=$query&tag=kultiva-21';
+  }
+
+  String get _searchQuery {
+    switch (this) {
+      case HydroEquipment.phMeter:
+        return 'ph metre numerique hydroponie';
+      case HydroEquipment.ecMeter:
+        return 'ec metre tds metre hydroponie';
+      case HydroEquipment.waterThermometer:
+        return 'thermometre etanche aquarium digital';
+      case HydroEquipment.hygrometer:
+        return 'hygrometre thermometre digital interieur';
+    }
+  }
+
+  /// Type de mesure (ReadingType) que cet équipement débloque dans
+  /// le sheet « Mes mesures du jour ». Utilisé pour conditionner
+  /// l'affichage des champs.
+  String get readingTypeId {
+    switch (this) {
+      case HydroEquipment.phMeter:
+        return 'ph';
+      case HydroEquipment.ecMeter:
+        return 'ec';
+      case HydroEquipment.waterThermometer:
+        return 'waterTemp';
+      case HydroEquipment.hygrometer:
+        return 'airHumidity';
+    }
+  }
+}
+
 /// Une installation hydroponique = un objet physique : un système (DWC,
 /// NFT, Kratky…) avec son réservoir, sa lampe, et N emplacements pour
 /// des plants. C'est l'unité de gestion principale de l'onglet
@@ -38,6 +153,10 @@ class HydroInstall {
   /// pour un slot vide.
   final List<String?> slotCultureIds;
 
+  /// Matériel de mesure que l'utilisateur a déclaré posséder. Sert à
+  /// conditionner l'affichage des champs dans « Mes mesures du jour ».
+  final Set<HydroEquipment> equipment;
+
   final DateTime createdAt;
 
   const HydroInstall({
@@ -51,6 +170,7 @@ class HydroInstall {
     this.light,
     this.photoPath,
     this.lastFlushAt,
+    this.equipment = const <HydroEquipment>{},
   });
 
   /// Nombre de slots remplis (plants en cours).
@@ -77,6 +197,7 @@ class HydroInstall {
     String? photoPath,
     DateTime? lastFlushAt,
     List<String?>? slotCultureIds,
+    Set<HydroEquipment>? equipment,
     bool clearLight = false,
     bool clearPhoto = false,
     bool clearFlush = false,
@@ -91,8 +212,21 @@ class HydroInstall {
       photoPath: clearPhoto ? null : (photoPath ?? this.photoPath),
       lastFlushAt: clearFlush ? null : (lastFlushAt ?? this.lastFlushAt),
       slotCultureIds: slotCultureIds ?? this.slotCultureIds,
+      equipment: equipment ?? this.equipment,
       createdAt: createdAt,
     );
+  }
+
+  /// Bascule la possession d'un équipement. Renvoie une nouvelle
+  /// install avec le set mis à jour.
+  HydroInstall toggleEquipment(HydroEquipment e) {
+    final next = <HydroEquipment>{...equipment};
+    if (next.contains(e)) {
+      next.remove(e);
+    } else {
+      next.add(e);
+    }
+    return copyWith(equipment: next);
   }
 
   /// Place une [cultureId] dans le premier slot vide. Renvoie une
@@ -132,6 +266,7 @@ class HydroInstall {
         'photoPath': photoPath,
         'lastFlushAt': lastFlushAt?.toIso8601String(),
         'slotCultureIds': slotCultureIds,
+        'equipment': equipment.map((e) => e.id).toList(),
         'createdAt': createdAt.toIso8601String(),
       };
 
@@ -146,6 +281,12 @@ class HydroInstall {
     if (slots.length > slotCount) {
       slots.removeRange(slotCount, slots.length);
     }
+    final rawEquipment = (json['equipment'] as List?) ?? const <dynamic>[];
+    final equipment = <HydroEquipment>{
+      for (final e in rawEquipment)
+        if (HydroEquipment.fromId(e as String?) != null)
+          HydroEquipment.fromId(e as String)!,
+    };
     return HydroInstall(
       id: json['id'] as String,
       name: (json['name'] as String?) ?? 'Mon install',
@@ -163,6 +304,7 @@ class HydroInstall {
           ? null
           : DateTime.parse(json['lastFlushAt'] as String),
       slotCultureIds: slots,
+      equipment: equipment,
       createdAt: json['createdAt'] == null
           ? DateTime.now()
           : DateTime.parse(json['createdAt'] as String),

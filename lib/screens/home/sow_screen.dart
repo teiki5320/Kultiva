@@ -19,7 +19,7 @@ import '../vegetable_detail_screen.dart';
 import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
-import 'cahier_culture_picker_screen.dart';
+import 'mes_jardins_screen.dart';
 import 'news_feed_screen.dart';
 import 'settings_screen.dart';
 import 'weather_screen.dart';
@@ -346,8 +346,7 @@ class _SowScreenState extends State<SowScreen> {
                             bubbleColor: KultivaColors.primaryGreen,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    const CahierCulturePickerScreen(),
+                                builder: (_) => const MesJardinsScreen(),
                               ),
                             ),
                           ),
