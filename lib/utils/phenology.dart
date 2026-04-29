@@ -1,3 +1,4 @@
+import '../models/culture_entry.dart';
 import '../models/vegetable.dart';
 
 /// Étape phénologique attendue d'un plant à un moment donné.
@@ -109,6 +110,48 @@ int _harvestStartDays(VegetableCategory c) {
 }
 
 int _harvestEndDays(VegetableCategory c) => _harvestStartDays(c) + 60;
+
+/// Déduit la phase de croissance hydroponique d'un plant à partir du
+/// nombre de jours depuis qu'il a été planté. Sert à pré-remplir la
+/// phase quand l'utilisateur ajoute un plant en disant qu'il l'a
+/// planté il y a X jours.
+///
+/// Heuristique :
+///   - Avant la fin de la germination + 7 j → semis
+///   - Entre fin germination et 14 j avant la récolte → croissance
+///   - Pour les fruits : on insère une phase floraison juste avant fruits
+///   - Pour les non-fruits : on reste en croissance jusqu'à la récolte
+GrowthPhase deducedPhase(Vegetable veg, int daysSinceStarted) {
+  if (veg.category == VegetableCategory.accessories) {
+    return GrowthPhase.seedling;
+  }
+  final germMax = _parseUpperDays(veg.germinationDays) ?? 14;
+  final harvestStart = _harvestStartDays(veg.category);
+
+  // Phase semis = jusqu'à 7 jours après la germination max.
+  if (daysSinceStarted < germMax + 7) {
+    return GrowthPhase.seedling;
+  }
+
+  // Pour les légumes-fruits : croissance puis floraison (~14j avant
+  // récolte) puis fructification (à partir de la récolte).
+  if (veg.category == VegetableCategory.fruits ||
+      veg.category == VegetableCategory.tubers) {
+    if (daysSinceStarted < harvestStart - 14) {
+      return GrowthPhase.vegetative;
+    }
+    if (daysSinceStarted < harvestStart) {
+      return GrowthPhase.flowering;
+    }
+    return GrowthPhase.fruiting;
+  }
+
+  // Pour le reste (feuilles, aromatiques, racines, bulbes…) : on
+  // reste en croissance jusqu'à la récolte. Pas de phase floraison
+  // (au sens hydro) parce qu'on récolte avant qu'elle ne monte en
+  // graine.
+  return GrowthPhase.vegetative;
+}
 
 ({String label, String detail}) _flowerStageLabel(VegetableCategory c) {
   switch (c) {

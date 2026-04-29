@@ -199,7 +199,7 @@ class _DailyReadingsSheetState extends State<DailyReadingsSheet> {
     }
 
     if (!mounted) return;
-    AudioService.instance.play(Sfx.cart);
+    AudioService.instance.play(Sfx.tap);
     setState(() {
       _panels = panels;
       _saving = false;
