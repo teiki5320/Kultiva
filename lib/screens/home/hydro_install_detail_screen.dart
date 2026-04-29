@@ -65,25 +65,36 @@ class _HydroInstallDetailScreenState
               ),
             ],
           ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-            children: <Widget>[
-              _SystemSummary(install: install),
-              const SizedBox(height: 14),
-              _LightSummary(install: install),
-              const SizedBox(height: 14),
-              if (install.flushDue) ...<Widget>[
-                _FlushAlert(install: install),
-                const SizedBox(height: 14),
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    children: <Widget>[
+                      _SystemSummary(install: install),
+                      const SizedBox(height: 14),
+                      _LightSummary(install: install),
+                      const SizedBox(height: 14),
+                      if (install.flushDue) ...<Widget>[
+                        _FlushAlert(install: install),
+                        const SizedBox(height: 14),
+                      ],
+                      _EquipmentSection(install: install),
+                      const SizedBox(height: 14),
+                      _DailyReadingsButton(install: install),
+                      const SizedBox(height: 18),
+                      const _SectionTitle('🌿  Mes plants'),
+                      const SizedBox(height: 8),
+                      _SlotsGrid(install: install),
+                    ],
+                  ),
+                ),
+                // Picker style pleine terre : drag/drop d'un légume vers
+                // un slot vide, ou tap pour placer dans le 1er slot vide.
+                _HydroPlantPicker(install: install),
               ],
-              _EquipmentSection(install: install),
-              const SizedBox(height: 14),
-              _DailyReadingsButton(install: install),
-              const SizedBox(height: 18),
-              const _SectionTitle('🌿  Mes plants'),
-              const SizedBox(height: 8),
-              _SlotsGrid(install: install),
-            ],
+            ),
           ),
         );
       },
@@ -495,61 +506,99 @@ class _SlotCell extends StatelessWidget {
   }
 
   Widget _emptyCell(BuildContext context) {
-    return InkWell(
-      onTap: () => _pickPlant(context),
-      borderRadius: BorderRadius.circular(14),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[
-              Colors.white,
-              KultivaColors.winterA.withValues(alpha: 0.55),
-            ],
-          ),
+    // Une cellule vide est aussi un DragTarget : un drag depuis le
+    // picker en bas droppé ici place le légume dans ce slot avec
+    // « planté aujourd'hui » par défaut.
+    return DragTarget<String>(
+      onWillAcceptWithDetails: (_) => true,
+      onAcceptWithDetails: (details) =>
+          _placeQuick(context, details.data),
+      builder: (ctx, candidates, _) {
+        final hovering = candidates.isNotEmpty;
+        return InkWell(
+          onTap: () => _pickPlant(context),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color:
-                KultivaColors.textSecondary.withValues(alpha: 0.25),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 140),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: hovering
+                    ? <Color>[
+                        KultivaColors.primaryGreen.withValues(alpha: 0.25),
+                        KultivaColors.lightGreen.withValues(alpha: 0.4),
+                      ]
+                    : <Color>[
+                        Colors.white,
+                        KultivaColors.winterA.withValues(alpha: 0.55),
+                      ],
+              ),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: hovering
+                    ? KultivaColors.primaryGreen
+                    : KultivaColors.textSecondary.withValues(alpha: 0.25),
+                width: hovering ? 2 : 1,
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color:
+                      KultivaColors.primaryGreen.withValues(alpha: 0.07),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 32,
+                  height: 32,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color:
+                        KultivaColors.lightGreen.withValues(alpha: 0.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: KultivaColors.primaryGreen,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Slot ${slotIndex + 1}',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: KultivaColors.primaryGreen.withValues(alpha: 0.07),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 32,
-              height: 32,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: KultivaColors.lightGreen.withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.add,
-                color: KultivaColors.primaryGreen,
-                size: 20,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'Slot ${slotIndex + 1}',
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w800,
-                color: KultivaColors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
+        );
+      },
+    );
+  }
+
+  /// Placement rapide via drag/drop : crée la culture avec
+  /// `startedAt = now` et `phase = seedling`. L'utilisateur peut
+  /// ajuster ensuite en tapant sur le slot rempli.
+  Future<void> _placeQuick(BuildContext context, String vegId) async {
+    AudioService.instance.play(Sfx.plant);
+    final entry = await CultureService.instance.add(
+      method: CultivationMethod.hydroponic,
+      vegetableId: vegId,
+      startedAt: DateTime.now(),
+    );
+    await HydroInstallService.instance.placeCulture(
+      installId: install.id,
+      cultureId: entry.id,
+      atSlot: slotIndex,
     );
   }
 
@@ -1365,6 +1414,306 @@ class _PlantConfigSheetState extends State<_PlantConfigSheet> {
                 color: selected
                     ? KultivaColors.primaryGreen
                     : KultivaColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Picker de légumes hydro-friendly fixé en bas du détail d'install.
+/// Reproduit le pattern du _PlantPicker de pleine terre : chips de
+/// filtre par catégorie + ListView horizontal de cartes draggables.
+///
+/// Drag d'une carte vers un slot vide → place le légume avec
+/// `startedAt = now`. Tap sur une carte → place dans le 1er slot vide.
+class _HydroPlantPicker extends StatefulWidget {
+  final HydroInstall install;
+  const _HydroPlantPicker({required this.install});
+
+  @override
+  State<_HydroPlantPicker> createState() => _HydroPlantPickerState();
+}
+
+enum _PickerCatFilter { favorites, all, byCategory }
+
+class _HydroPlantPickerState extends State<_HydroPlantPicker> {
+  _PickerCatFilter _filter = _PickerCatFilter.favorites;
+  VegetableCategory? _selectedCategory;
+  String _query = '';
+
+  static const List<VegetableCategory> _orderedCats = <VegetableCategory>[
+    VegetableCategory.leaves,
+    VegetableCategory.fruits,
+    VegetableCategory.aromatics,
+    VegetableCategory.roots,
+    VegetableCategory.bulbs,
+    VegetableCategory.flowers,
+  ];
+
+  bool _matches(Vegetable v, Set<String> favs) {
+    if (!v.hydroFriendly) return false;
+    if (v.category == VegetableCategory.accessories) return false;
+    if (_query.isNotEmpty &&
+        !v.name.toLowerCase().contains(_query.toLowerCase())) {
+      return false;
+    }
+    switch (_filter) {
+      case _PickerCatFilter.favorites:
+        return favs.contains(v.id);
+      case _PickerCatFilter.all:
+        return true;
+      case _PickerCatFilter.byCategory:
+        return _selectedCategory != null &&
+            v.category == _selectedCategory;
+    }
+  }
+
+  Future<void> _placeInFirstEmptySlot(Vegetable v) async {
+    AudioService.instance.play(Sfx.plant);
+    final emptyIndex = widget.install.slotCultureIds.indexOf(null);
+    if (emptyIndex < 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Aucun slot vide — agrandis ton install'),
+        ),
+      );
+      return;
+    }
+    final entry = await CultureService.instance.add(
+      method: CultivationMethod.hydroponic,
+      vegetableId: v.id,
+      startedAt: DateTime.now(),
+    );
+    await HydroInstallService.instance.placeCulture(
+      installId: widget.install.id,
+      cultureId: entry.id,
+      atSlot: emptyIndex,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              const Text(
+                '🌱  Glisse un plant vers une case',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const Spacer(),
+              SizedBox(
+                width: 130,
+                height: 32,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Chercher…',
+                    hintStyle: const TextStyle(fontSize: 12),
+                    prefixIcon: const Icon(Icons.search, size: 16),
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 12),
+                  onChanged: (v) => setState(() => _query = v),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          // Chips filtre.
+          SizedBox(
+            height: 30,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                _filterChip('⭐  Favoris', _PickerCatFilter.favorites, null),
+                const SizedBox(width: 6),
+                _filterChip('🌍  Tous', _PickerCatFilter.all, null),
+                for (final cat in _orderedCats) ...<Widget>[
+                  const SizedBox(width: 6),
+                  _filterChip(
+                    '${cat.emoji}  ${cat.label}',
+                    _PickerCatFilter.byCategory,
+                    cat,
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Liste horizontale de cartes draggables.
+          ValueListenableBuilder<Set<String>>(
+            valueListenable: PrefsService.instance.favorites,
+            builder: (_, favs, __) {
+              final list = vegetablesBase
+                  .where((v) => _matches(v, favs))
+                  .toList()
+                ..sort((a, b) => a.name.compareTo(b.name));
+              return SizedBox(
+                height: 86,
+                child: list.isEmpty
+                    ? Center(
+                        child: Text(
+                          _filter == _PickerCatFilter.favorites
+                              ? 'Aucun favori. Tape Tous ou une catégorie.'
+                              : 'Aucun plant ne correspond.',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
+                      )
+                    : ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: list.length,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox(width: 8),
+                        itemBuilder: (_, i) => _DraggablePlantCard(
+                          plant: list[i],
+                          onTapPlace: () => _placeInFirstEmptySlot(list[i]),
+                        ),
+                      ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _filterChip(
+    String label,
+    _PickerCatFilter target,
+    VegetableCategory? cat,
+  ) {
+    final selected = _filter == target &&
+        (target != _PickerCatFilter.byCategory ||
+            _selectedCategory == cat);
+    return GestureDetector(
+      onTap: () {
+        AudioService.instance.play(Sfx.tap);
+        setState(() {
+          _filter = target;
+          _selectedCategory = cat;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 160),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: selected
+              ? KultivaColors.primaryGreen.withValues(alpha: 0.18)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selected
+                ? KultivaColors.primaryGreen
+                : KultivaColors.lightGreen.withValues(alpha: 0.6),
+            width: selected ? 1.6 : 1,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+            color: selected
+                ? KultivaColors.primaryGreen
+                : KultivaColors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Carte draggable d'un plant dans le picker. LongPress pour démarrer
+/// le drag (évite les conflits avec le scroll horizontal). Tap court
+/// → placement automatique dans le premier slot vide.
+class _DraggablePlantCard extends StatelessWidget {
+  final Vegetable plant;
+  final VoidCallback onTapPlace;
+
+  const _DraggablePlantCard({
+    required this.plant,
+    required this.onTapPlace,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LongPressDraggable<String>(
+      data: plant.id,
+      delay: const Duration(milliseconds: 200),
+      feedback: _cardBody(elevated: true),
+      childWhenDragging: Opacity(opacity: 0.4, child: _cardBody()),
+      child: GestureDetector(
+        onTap: onTapPlace,
+        child: _cardBody(),
+      ),
+    );
+  }
+
+  Widget _cardBody({bool elevated = false}) {
+    return Container(
+      width: 72,
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: KultivaColors.lightGreen.withValues(alpha: 0.6),
+        ),
+        boxShadow: elevated
+            ? <BoxShadow>[
+                BoxShadow(
+                  color:
+                      KultivaColors.primaryGreen.withValues(alpha: 0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(plant.emoji, style: const TextStyle(fontSize: 26)),
+            const SizedBox(height: 2),
+            Text(
+              plant.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ],
