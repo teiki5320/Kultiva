@@ -2989,7 +2989,7 @@ class _FilterBar extends StatelessWidget {
             count: 0,
             hideCount: true,
             selected: filter == _AlbumFilter.challenges,
-            color: const Color(0xFFFF8FAB),
+            color: KultivaColors.challengePink,
             onTap: () {
               AudioService.instance.play(Sfx.tap);
               onChanged(_AlbumFilter.challenges);
@@ -3000,7 +3000,7 @@ class _FilterBar extends StatelessWidget {
             count: badgesCount,
             total: totalBadges,
             selected: filter == _AlbumFilter.badges,
-            color: const Color(0xFFE8B923),
+            color: KultivaColors.badgeGold,
             onTap: () {
               AudioService.instance.play(Sfx.tap);
               onChanged(_AlbumFilter.badges);
