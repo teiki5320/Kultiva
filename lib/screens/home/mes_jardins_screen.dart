@@ -147,9 +147,9 @@ class _SoilGardenCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filledCells = plan.cells.values
-        .where((v) => v != null && v.isNotEmpty)
-        .length;
+    // Map<String, PlannedCell> : 1 entrée = 1 case remplie. Les cases
+    // vides ne sont pas dans la map.
+    final filledCells = plan.cells.length;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
