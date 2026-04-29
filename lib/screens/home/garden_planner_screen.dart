@@ -11,7 +11,6 @@ import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';
 import 'garden_plan_config_sheet.dart';
-import 'hydro_system_picker_sheet.dart';
 
 /// Filtre actif sur le plant picker. Reflète le pattern Étal :
 /// favoris / tous / par catégorie.
@@ -103,18 +102,17 @@ enum PlannerSeason {
 ///
 /// L'écran charge un [GardenPlan] existant ou en crée un nouveau via
 /// [GardenPlanConfigSheet] si aucun plan n'est sélectionné.
+///
+/// Note (refonte cohérence avril 2026) : ce planificateur ne sert plus
+/// que pour la pleine terre. La gestion des installs hydroponiques se
+/// fait dans `HydroponieScreen` (modèle `HydroInstall`, sans grille).
 class GardenPlannerScreen extends StatefulWidget {
   /// Plan à éditer. Si null, on en crée un nouveau au premier rendu.
   final GardenPlan? initialPlan;
 
-  /// Si vrai et `initialPlan` est null, on ouvre le sélecteur de système
-  /// hydroponique au lieu du config sheet pleine terre.
-  final bool hydroMode;
-
   const GardenPlannerScreen({
     super.key,
     this.initialPlan,
-    this.hydroMode = false,
   });
 
   @override
@@ -134,7 +132,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     _plan = widget.initialPlan;
     _loadWeather();
     if (_plan == null) {
-      // Au premier frame, on ouvre le modal de création approprié.
+      // Au premier frame, on ouvre le modal de création (pleine terre).
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final created = await showModalBottomSheet<GardenPlan>(
           context: context,
@@ -144,9 +142,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             borderRadius:
                 BorderRadius.vertical(top: Radius.circular(24)),
           ),
-          builder: (_) => widget.hydroMode
-              ? const HydroSystemPickerSheet()
-              : const GardenPlanConfigSheet(),
+          builder: (_) => const GardenPlanConfigSheet(),
         );
         if (!mounted) return;
         if (created == null) {
