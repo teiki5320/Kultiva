@@ -209,8 +209,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           children: <Widget>[
             // Barre Configurer / Conseils.
             _buildToolBar(),
-            // Banner irrigation (visible si grille non vide).
-            if (plan.cells.isNotEmpty)
+            // Banner irrigation (visible si grille non vide ET pleine terre).
+            // En hydro c'est inutile : l'eau vient du réservoir, pas de la pluie.
+            if (plan.cells.isNotEmpty && !plan.isHydroponic)
               _IrrigationBanner(weather: _weather, plan: plan),
             // Grille élastique, prend tout l'espace dispo.
             Expanded(child: _buildGrid(plan)),
