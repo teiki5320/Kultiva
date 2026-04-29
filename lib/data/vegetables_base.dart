@@ -45,6 +45,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       airHumidityMin: 60,
       airHumidityMax: 70,
     ),
+    hydroSpacing: HydroSpacing(minCm: 40, typicalCm: 50, maxCm: 60),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -145,6 +146,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       airHumidityMin: 50,
       airHumidityMax: 70,
     ),
+    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────

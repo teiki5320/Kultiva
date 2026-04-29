@@ -450,12 +450,15 @@ class _SlotsGrid extends StatelessWidget {
     );
   }
 
-  /// Choisit un nombre de colonnes raisonnable. Si slotCount ≤ defaultCols,
-  /// on prend slotCount (1 rangée). Sinon on garde le défaut du système.
+  /// Choisit un nombre de colonnes raisonnable. La grille s'adapte au
+  /// `slotCount` réel (pas de cap dur), avec un palier à ~6 colonnes
+  /// pour rester lisible sur un écran de téléphone.
   int _computeCols(int slotCount, int defaultCols) {
     if (slotCount <= 0) return 1;
-    if (slotCount <= defaultCols) return slotCount;
-    return defaultCols.clamp(1, 4);
+    if (slotCount <= 6) return slotCount;
+    if (slotCount <= 12) return defaultCols.clamp(2, 4);
+    if (slotCount <= 24) return 4;
+    return 6;
   }
 }
 
@@ -849,6 +852,9 @@ class _SectionTitle extends StatelessWidget {
 /// tag affilié Kultiva. Bouton « Configuré » bascule l'état (l'utilisateur
 /// déclare avoir l'outil → le champ correspondant apparaît dans
 /// « Mes mesures du jour »).
+/// Section « Mon équipement de mesure » — désormais rétractable
+/// (replié par défaut, déplié si rien n'est encore configuré pour
+/// orienter l'utilisateur vers la configuration initiale).
 class _EquipmentSection extends StatelessWidget {
   final HydroInstall install;
   const _EquipmentSection({required this.install});
@@ -861,11 +867,9 @@ class _EquipmentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasAny = install.equipment.isNotEmpty;
-    final missing = HydroEquipment.values
-        .where((e) => !install.equipment.contains(e))
-        .length;
+    final ownedCount = install.equipment.length;
+    final totalCount = HydroEquipment.values.length;
     return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -873,80 +877,86 @@ class _EquipmentSection extends StatelessWidget {
           color: KultivaColors.lightGreen.withValues(alpha: 0.5),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              const Text('🛒', style: TextStyle(fontSize: 18)),
-              const SizedBox(width: 8),
-              const Expanded(
-                child: Text(
-                  'Mon équipement de mesure',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-              if (!hasAny)
-                Container(
+      clipBehavior: Clip.hardEdge,
+      child: Theme(
+        // Désactive les divisions par défaut de l'ExpansionTile.
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+        ),
+        child: ExpansionTile(
+          // Replié par défaut (validé avec l'utilisatrice). On déplie
+          // automatiquement si rien n'est configuré, pour pousser
+          // doucement à se renseigner sur le matériel.
+          initiallyExpanded: !hasAny,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+          childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 12),
+          leading: const Text('🛒', style: TextStyle(fontSize: 20)),
+          title: const Text(
+            'Mon équipement de mesure',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          subtitle: Text(
+            hasAny
+                ? '$ownedCount/$totalCount outils configurés'
+                : 'À configurer pour débloquer les mesures',
+            style: TextStyle(
+              fontSize: 11,
+              color: KultivaColors.textSecondary,
+            ),
+          ),
+          trailing: hasAny
+              ? Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8A87C).withValues(alpha: 0.18),
+                    color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    'à équiper',
+                  child: Text(
+                    '$ownedCount/$totalCount',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFFB36A3D),
+                      color: KultivaColors.primaryGreen,
                     ),
                   ),
+                )
+              : null,
+          children: <Widget>[
+            if (!hasAny) ...<Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  'Sans ces outils, tu cultives à l\'aveugle. Voici les '
+                  '4 mesures qui font la différence.',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: KultivaColors.textSecondary,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
+            for (final e in HydroEquipment.values) ...<Widget>[
+              _EquipmentRow(
+                install: install,
+                equipment: e,
+                owned: install.equipment.contains(e),
+                onToggle: () => HydroInstallService.instance
+                    .toggleEquipment(install.id, e),
+                onBuy: () => _openAmazon(e),
+              ),
+              if (e != HydroEquipment.values.last)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2),
+                  child: Divider(height: 1),
                 ),
             ],
-          ),
-          if (!hasAny) ...<Widget>[
-            const SizedBox(height: 6),
-            Text(
-              'Sans ces outils, tu cultives à l\'aveugle. Voici les 4 '
-              'mesures qui font la différence.',
-              style: TextStyle(
-                fontSize: 11,
-                color: KultivaColors.textSecondary,
-                height: 1.4,
-              ),
-            ),
-          ] else if (missing > 0) ...<Widget>[
-            const SizedBox(height: 4),
-            Text(
-              'Tape « ✓ J\'ai » si tu possèdes déjà l\'outil. Tape '
-              '« Acheter » sinon.',
-              style: TextStyle(
-                fontSize: 11,
-                color: KultivaColors.textSecondary,
-              ),
-            ),
           ],
-          const SizedBox(height: 10),
-          for (final e in HydroEquipment.values) ...<Widget>[
-            _EquipmentRow(
-              install: install,
-              equipment: e,
-              owned: install.equipment.contains(e),
-              onToggle: () => HydroInstallService.instance
-                  .toggleEquipment(install.id, e),
-              onBuy: () => _openAmazon(e),
-            ),
-            if (e != HydroEquipment.values.last)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 2),
-                child: Divider(height: 1),
-              ),
-          ],
-        ],
+        ),
       ),
     );
   }

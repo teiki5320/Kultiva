@@ -32,6 +32,7 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
   LightType _lightType = LightType.led;
   static const double _defaultHoursPerDay = 16;
   int _ledWatts = 100;
+  int _lampCount = 1;
   LedColorTemp _ledColorTemp = LedColorTemp.fullSpectrum;
 
   bool _saving = false;
@@ -81,23 +82,29 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
         ? _defaultName(_systemType)
         : _nameCtrl.text.trim();
     setState(() => _saving = true);
-    final light = _lightType == LightType.natural
-        ? const HydroLightConfig(
-            type: LightType.natural,
-            hoursPerDay: _defaultHoursPerDay,
-          )
-        : HydroLightConfig(
-            type: _lightType,
-            hoursPerDay: _defaultHoursPerDay,
-            ledWatts: _ledWatts,
-            ledColorTemp: _ledColorTemp,
-          );
+    // Crée _lampCount lampes identiques (puissance × type × couleur).
+    // L'utilisateur pourra les positionner individuellement dans le
+    // détail de l'install (heatmap PPFD).
+    final lamps = <HydroLightConfig>[
+      for (var i = 0; i < _lampCount; i++)
+        _lightType == LightType.natural
+            ? const HydroLightConfig(
+                type: LightType.natural,
+                hoursPerDay: _defaultHoursPerDay,
+              )
+            : HydroLightConfig(
+                type: _lightType,
+                hoursPerDay: _defaultHoursPerDay,
+                ledWatts: _ledWatts,
+                ledColorTemp: _ledColorTemp,
+              ),
+    ];
     await HydroInstallService.instance.create(
       name: name,
       systemType: _systemType,
       slotCount: _slotCount,
       reservoirL: _reservoirL,
-      light: light,
+      lamps: lamps,
     );
     if (!mounted) return;
     AudioService.instance.play(Sfx.success);
@@ -186,8 +193,11 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
                 _NumberStepper(
                   value: _slotCount,
                   min: 1,
-                  max: 12,
-                  step: 1,
+                  // Pas de cap arbitraire — un NFT semi-pro peut avoir
+                  // 36+ plants (4 gouttières × 9 trous). Cap haut juste
+                  // pour la safety du widget de saisie.
+                  max: 200,
+                  step: _slotCount < 12 ? 1 : 2,
                   unit: 'plants',
                   onChanged: (v) => setState(() => _slotCount = v),
                 ),
@@ -225,12 +235,24 @@ class _CreateHydroInstallSheetState extends State<CreateHydroInstallSheet> {
                 if (_lightType != LightType.natural) ...<Widget>[
                   const SizedBox(height: 12),
                   _NumberStepper(
+                    value: _lampCount,
+                    min: 1,
+                    max: 12,
+                    step: 1,
+                    unit: 'lampe(s)',
+                    label: 'Combien de lampes ?',
+                    onChanged: (v) => setState(() => _lampCount = v),
+                  ),
+                  const SizedBox(height: 12),
+                  _NumberStepper(
                     value: _ledWatts,
                     min: 20,
-                    max: 400,
+                    max: 600,
                     step: 10,
                     unit: 'W',
-                    label: 'Puissance de la lampe (chiffre marqué dessus)',
+                    label: _lampCount == 1
+                        ? 'Puissance de la lampe (chiffre marqué dessus)'
+                        : 'Puissance de chaque lampe (chiffre marqué dessus)',
                     onChanged: (v) => setState(() => _ledWatts = v),
                   ),
                   const SizedBox(height: 12),
