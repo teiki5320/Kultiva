@@ -19,37 +19,46 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   static const List<_OnboardingContent> _pages = <_OnboardingContent>[
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_1.png',
+      fallbackEmoji: '🌱',
       title: 'Bienvenue sur Kultiva',
       subtitle:
-          "Ton copain potager : calendrier de semis, suivi d'arrosage, météo et conseils, tout au même endroit.",
+          "Le potager kawaii dans ta poche. Calendrier de semis, suivi "
+          "de tes plants, météo, conseils — tout au même endroit, en français.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_2.png',
-      title: 'Ton tableau de bord',
+      fallbackEmoji: '📔',
+      title: 'Ton cahier de culture',
       subtitle:
-          "Chaque jour : ton légume du jour, la météo, les cartes Semer / Récolter / Calendrier. Tout se met à jour selon la saison.",
+          "Crée tes jardins : potager pleine terre avec ses cases, ou "
+          "installations hydroponiques (DWC, Kratky, NFT). L'app te "
+          "guide à chaque phase de croissance.",
+    ),
+    _OnboardingContent(
+      imagePath: 'assets/images/onboarding_3.png',
+      fallbackEmoji: '🌦️',
+      title: 'Météo + alertes arrosage',
+      subtitle:
+          "L'app suit la météo de ton jardin et te prévient quand "
+          "il faut arroser, protéger d'une canicule ou rentrer un plant.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_poussidex.png',
-      title: 'Ton Poussidex',
+      fallbackEmoji: '🐣',
+      title: 'Tamassi, ton compagnon',
       subtitle:
-          "Adopte ton Tamassi — Poussia, Soleia ou Spira — et fais-le "
-          "évoluer à travers 11 stades. Relève des défis photo, gagne "
-          "des badges façon Pokémon et monte ton Tamassi jusqu'au "
-          "niveau 100 !",
+          "Adopte une créature kawaii qui évolue avec toi. Parfait "
+          "pour faire jardiner les enfants — défis photo, badges, "
+          "11 stades à débloquer ensemble.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_tutos.png',
-      title: 'Apprends en vidéo',
+      fallbackEmoji: '📚',
+      title: 'Apprends à ton rythme',
       subtitle:
-          "L'onglet Tutos regroupe astuces et vidéos pour débuter, "
-          "réussir tes semis, arroser juste, lutter contre les nuisibles.",
-    ),
-    _OnboardingContent(
-      imagePath: 'assets/images/onboarding_5.png',
-      title: 'Achète et compare en un clic',
-      subtitle:
-          "Depuis chaque fiche légume, tu peux acheter des graines bio, du matériel de jardinage et comparer les prix en ligne.",
+          "L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
+          "bien arroser, lutter contre les nuisibles, démarrer en "
+          "hydroponie.",
     ),
   ];
 
@@ -145,12 +154,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
 class _OnboardingContent {
   final String imagePath;
+  final String fallbackEmoji;
   final String title;
   final String subtitle;
   const _OnboardingContent({
     required this.imagePath,
     required this.title,
     required this.subtitle,
+    this.fallbackEmoji = '🌱',
   });
 }
 
@@ -179,7 +190,10 @@ class _OnboardingPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(52),
                 ),
                 alignment: Alignment.center,
-                child: const Text('🌱', style: TextStyle(fontSize: 110)),
+                child: Text(
+                  content.fallbackEmoji,
+                  style: const TextStyle(fontSize: 110),
+                ),
               ),
             ),
           ),
@@ -248,7 +262,13 @@ class _RegionSelectorPage extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 24),
-              for (final r in Region.values)
+              // Refonte avril 2026 : on n'affiche plus l'Afrique de l'Ouest
+              // dans le sélecteur d'onboarding (pas assez de catalogue
+              // localisé). L'enum garde la valeur pour ne pas casser les
+              // anciennes installations, mais l'UI ne propose que France.
+              for (final r in Region.values.where(
+                (r) => r != Region.westAfrica,
+              ))
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   child: _RegionTile(

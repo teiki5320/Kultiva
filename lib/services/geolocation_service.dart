@@ -41,13 +41,11 @@ class GeolocationService {
 
   /// Détermine la région à partir des coordonnées.
   ///
-  /// Heuristique simple :
-  /// - Latitude 0–25°N, Longitude -20°W à 20°E → Afrique de l'Ouest
-  /// - Sinon → France (défaut européen)
+  /// Refonte avril 2026 : on retourne toujours Region.france (le
+  /// catalogue Afrique de l'Ouest a été retiré du picker mais reste
+  /// dans l'enum pour compat). On garde la fonction au cas où on
+  /// rouvrirait le marché plus tard.
   static Region _regionFromCoordinates(double lat, double lng) {
-    if (lat >= 0 && lat <= 25 && lng >= -20 && lng <= 20) {
-      return Region.westAfrica;
-    }
     return Region.france;
   }
 }

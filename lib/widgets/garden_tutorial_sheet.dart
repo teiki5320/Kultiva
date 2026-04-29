@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
-/// Overlay bottom-sheet qui explique en 3 slides comment utiliser le
-/// Poussidex. Affiché une seule fois (flag gardenTutorialDone) juste
-/// après la 1ère plantation.
+/// Overlay bottom-sheet de présentation du Poussidex.
+///
+/// Refonte avril 2026 : axe « jardiner avec ses enfants ». Le Poussidex
+/// est positionné comme l'outil familial de Kultiva — l'enfant a un
+/// compagnon qui évolue avec ses gestes au jardin, ce qui transforme
+/// l'arrosage et l'observation des plants en jeu.
+///
+/// Affiché une seule fois (flag gardenTutorialDone) à la première
+/// ouverture de l'onglet Poussidex.
 class GardenTutorialSheet extends StatefulWidget {
   const GardenTutorialSheet({super.key});
 
@@ -18,39 +24,39 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
 
   static const List<_TutoSlide> _slides = <_TutoSlide>[
     _TutoSlide(
-      emoji: '🌱',
-      title: 'Bienvenue dans ton Poussidex',
+      emoji: '👨‍👩‍👧',
+      title: 'Le potager, en famille',
       subtitle:
-          "Choisis ton compagnon de jardin parmi Spira, Soleia et "
-          "Poussia. Il t'accompagnera de la graine à l'arbre "
-          "légendaire à travers 11 stades d'évolution.",
+          "Le Poussidex est pensé pour faire jardiner les enfants. "
+          "Ton enfant choisit un compagnon kawaii — Spira, Soleia ou "
+          "Poussia — qui grandit chaque fois qu'il s'occupe du jardin.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _TutoSlide(
-      emoji: '📸',
-      title: 'Relève des défis photo',
+      emoji: '🌱',
+      title: 'Un compagnon qui évolue',
       subtitle:
-          "Complète des défis dans l'onglet Défis : plante la plus "
-          "moche, plus grande courgette, night garden… Chaque photo "
-          "partagée fait gagner de l'XP à ton Tamassi.",
-      gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
-    ),
-    _TutoSlide(
-      emoji: '💧',
-      title: 'Arrose et fertilise',
-      subtitle:
-          "Les boutons Arroser et Engrais au-dessus de ton Tamassi "
-          "lui donnent un petit boost d'XP. Pas de pénalité si tu "
-          "oublies — c'est juste un coup de pouce.",
+          "À chaque arrosage, chaque photo, chaque défi relevé, le "
+          "Tamassi gagne de l'XP et change d'apparence. 11 stades à "
+          "débloquer ensemble — de la petite graine à l'arbre légendaire.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
     ),
     _TutoSlide(
-      emoji: '🏆',
-      title: 'Collection de badges',
+      emoji: '📸',
+      title: 'Des défis photo qui les motivent',
       subtitle:
-          "Dans l'onglet Badges, retrouve toutes tes cartes façon "
-          "Pokémon gagnées en complétant des défis. Bronze, argent, "
-          "or et shiny t'attendent !",
+          "« Le légume le plus grand », « La fleur la plus jolie »... "
+          "Une trentaine de défis qui transforment les enfants en "
+          "petits explorateurs du jardin. Une photo = une badge.",
+      gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
+    ),
+    _TutoSlide(
+      emoji: '🏆',
+      title: 'Une collection à compléter',
+      subtitle:
+          "Les badges débloqués s'ajoutent à un album façon collection "
+          "Pokémon : bronze, argent, or et shiny. Idéal pour donner "
+          "envie aux enfants de revenir au jardin.",
       gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
     ),
   ];
@@ -87,17 +93,18 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               child: Row(
                 children: [
-                  const Text('🎀', style: TextStyle(fontSize: 20)),
+                  const Text('👨‍👩‍👧', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
-                  Text(
-                    'Comment ça marche',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16,
-                      color: KultivaColors.textPrimary,
+                  Expanded(
+                    child: Text(
+                      'Jardiner avec tes enfants',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: KultivaColors.textPrimary,
+                      ),
                     ),
                   ),
-                  const Spacer(),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('Passer'),

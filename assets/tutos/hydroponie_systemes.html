@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprendre les systèmes hydro</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f4f7fa;--texte:#3d4a52;--texte-doux:#7a8a92;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#4A9BBF;--accent-soft:#A8D0E0;--accent-bg:#E0F0F8}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:'Fredoka',sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.systeme{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:var(--ombre)}
+.systeme-titre{font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.systeme-tag{background:var(--accent-bg);color:var(--accent);font-family:'Fredoka',sans-serif;font-weight:600;font-size:10px;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px}
+.systeme-desc{font-size:13px;color:var(--texte-doux);line-height:1.4;margin-bottom:8px}
+.systeme-row{display:flex;gap:14px;margin-top:8px;font-size:12px}
+.systeme-pour{flex:1}
+.systeme-pour-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:11px;color:#4A9B5A;margin-bottom:2px}
+.systeme-contre-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:11px;color:#D4564A;margin-bottom:2px}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:'Fredoka',sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Hydroponie</div>
+    <div class="icone-principale">🔬</div>
+    <div class="titre-fiche">Comprendre les systèmes</div>
+    <div class="sous-titre-fiche">DWC, Kratky, NFT, tour — qui choisir ?</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">Il existe 4 grands systèmes accessibles aux amateurs. Choisis selon ta place, ton budget et ce que tu veux cultiver. On peut commencer à 30€ tout compris.</div>
+  </div>
+
+  <div class="section">
+    <div class="systeme">
+      <div class="systeme-titre">💧 DWC <span class="systeme-tag">DÉBUTANT</span></div>
+      <div class="systeme-desc">Deep Water Culture. Un bac avec couvercle troué. Les racines plongent dans une solution oxygénée par une pompe à air.</div>
+      <div class="systeme-row">
+        <div class="systeme-pour">
+          <div class="systeme-pour-label">✅ Avantages</div>
+          <div>Le plus simple. Marche pour 90% des légumes. Pas cher (30-50€).</div>
+        </div>
+        <div class="systeme-pour">
+          <div class="systeme-contre-label">⚠️ Limites</div>
+          <div>Demande une pompe à air en continu. Eau qui chauffe en été = racines qui pourrissent.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="systeme">
+      <div class="systeme-titre">🫙 Kratky <span class="systeme-tag">PASSIF</span></div>
+      <div class="systeme-desc">Un bocal fermé avec un plant au-dessus. Pas de pompe, pas d'électricité. Le niveau d'eau baisse au fur et à mesure que la plante boit.</div>
+      <div class="systeme-row">
+        <div class="systeme-pour">
+          <div class="systeme-pour-label">✅ Avantages</div>
+          <div>Zéro électricité. Idéal pour balcon ou cuisine. Ultra simple.</div>
+        </div>
+        <div class="systeme-pour">
+          <div class="systeme-contre-label">⚠️ Limites</div>
+          <div>1 seul plant à la fois. Que pour les feuilles (laitue, basilic). Pas pour fruits.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="systeme">
+      <div class="systeme-titre">🌊 NFT <span class="systeme-tag">FEUILLES</span></div>
+      <div class="systeme-desc">Nutrient Film Technique. Un tube incliné avec un mince film d'eau qui circule en continu. Excellent rendement.</div>
+      <div class="systeme-row">
+        <div class="systeme-pour">
+          <div class="systeme-pour-label">✅ Avantages</div>
+          <div>Très bon rendement pour feuilles et fraises. Visuellement chouette. Modulaire.</div>
+        </div>
+        <div class="systeme-pour">
+          <div class="systeme-contre-label">⚠️ Limites</div>
+          <div>Plus cher (~80€). Si la pompe lâche, plants morts en 6h. Pas pour gros légumes.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="systeme">
+      <div class="systeme-titre">🗼 Tour verticale <span class="systeme-tag">SPACE</span></div>
+      <div class="systeme-desc">Tour modulaire avec slots étagés. Maximise la surface au sol — idéal balcon urbain.</div>
+      <div class="systeme-row">
+        <div class="systeme-pour">
+          <div class="systeme-pour-label">✅ Avantages</div>
+          <div>Beaucoup de plants en peu de place (jusqu'à 20 plants/m²). Très joli.</div>
+        </div>
+        <div class="systeme-pour">
+          <div class="systeme-contre-label">⚠️ Limites</div>
+          <div>Investissement (200-400€). Pompe puissante nécessaire. Maintenance plus complexe.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="conseil">
+    <div class="conseil-icone">🚀</div>
+    <div>
+      <div class="conseil-label">Mon conseil</div>
+      <div class="conseil-texte">Démarre en DWC. C'est le rapport simplicité/résultat le plus élevé. Une fois que tu maîtrises le pH/EC, tu peux passer à un NFT pour les feuillus ou une tour si tu veux scaler.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

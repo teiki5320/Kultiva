@@ -127,6 +127,17 @@ const _categories = <_TutoCategory>[
       _TutoItem(emoji: '🪴', label: 'Potager en balcon', htmlAsset: 'assets/tutos/potager_balcon.html'),
     ],
   ),
+  _TutoCategory(
+    emoji: '💧',
+    imagePath: 'assets/images/tuto_arrosage.png',
+    label: 'Hydroponie',
+    color: Color(0xFF4A9BBF),
+    items: [
+      _TutoItem(emoji: '🚀', label: 'Démarrer en hydroponie', htmlAsset: 'assets/tutos/hydroponie_demarrer.html'),
+      _TutoItem(emoji: '🔬', label: 'Comprendre les systèmes', htmlAsset: 'assets/tutos/hydroponie_systemes.html'),
+      _TutoItem(emoji: '🧪', label: 'pH et engrais', htmlAsset: 'assets/tutos/hydroponie_ph_ec.html'),
+    ],
+  ),
 ];
 
 class TutosScreen extends StatelessWidget {
