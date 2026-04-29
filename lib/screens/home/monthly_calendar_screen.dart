@@ -8,6 +8,8 @@ import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../services/audio_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/category_colors.dart';
+import '../../utils/months.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
@@ -28,6 +30,7 @@ class MonthlyCalendarScreen extends StatefulWidget {
 class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
   late final PageController _monthController;
   late int _selectedMonth;
+  VegetableCategory? _selectedCategory;
 
   @override
   void initState() {
@@ -61,11 +64,6 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
     return null;
   }
 
-  static const List<String> _monthLabels = [
-    'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin',
-    'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Region>(
@@ -77,6 +75,9 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
         final later = <Vegetable>[];
         for (final veg in vegetablesBase) {
           if (veg.category == VegetableCategory.accessories) continue;
+          if (_selectedCategory != null && veg.category != _selectedCategory) {
+            continue;
+          }
           final entry = _findRegionData(data, veg.id);
           final months = isHarvest
               ? (entry?.harvestMonths ?? const <int>[])
@@ -161,7 +162,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          _monthLabels[index],
+                          monthNamesShortCap[index],
                           style: TextStyle(
                             color: active
                                 ? Colors.white
@@ -176,10 +177,40 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                 ),
               ),
               const SizedBox(height: 8),
+              // Filter chips par catégorie (Toutes / Racines / Aromatiques / etc.)
+              SizedBox(
+                height: 44,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  children: [
+                    _CategoryChip(
+                      label: 'Toutes',
+                      emoji: '✨',
+                      color: KultivaColors.primaryGreen,
+                      selected: _selectedCategory == null,
+                      onTap: () => setState(() => _selectedCategory = null),
+                    ),
+                    for (final cat in VegetableCategory.values
+                        .where((c) => c != VegetableCategory.accessories))
+                      _CategoryChip(
+                        label: cat.label,
+                        emoji: cat.emoji,
+                        color: cat.familyColor,
+                        selected: _selectedCategory == cat,
+                        onTap: () => setState(() {
+                          _selectedCategory =
+                              _selectedCategory == cat ? null : cat;
+                        }),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 4),
               if (activeVegs.isNotEmpty) ...[
                 _SectionHeader(
                   icon: isHarvest ? '🧺' : '✅',
-                  title: '${isHarvest ? "À récolter" : "À semer"} en ${_monthLabels[_selectedMonth - 1]}',
+                  title: '${isHarvest ? "À récolter" : "À semer"} en ${monthNamesLongCap[_selectedMonth - 1]}',
                 ),
                 ValueListenableBuilder<Set<String>>(
                   valueListenable: PrefsService.instance.favorites,
@@ -270,6 +301,58 @@ class _SectionHeader extends StatelessWidget {
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w800,
             ),
+      ),
+    );
+  }
+}
+
+/// Chip pastel de filtre par catégorie — même style que dans l'Étal
+/// (`vegetables_screen.dart::_PastelChip`).
+class _CategoryChip extends StatelessWidget {
+  final String label;
+  final String emoji;
+  final Color color;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _CategoryChip({
+    required this.label,
+    required this.emoji,
+    required this.color,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      child: GestureDetector(
+        onTap: () {
+          AudioService.instance.play(Sfx.tap);
+          onTap();
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: selected ? color.withValues(alpha: 0.2) : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: color,
+              width: selected ? 2.5 : 2,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '$emoji $label',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+              color: color,
+            ),
+          ),
+        ),
       ),
     );
   }
