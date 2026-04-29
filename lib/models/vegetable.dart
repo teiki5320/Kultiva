@@ -172,6 +172,11 @@ class Vegetable {
   /// Par défaut `false` pour les arbres, tubercules et plantes complexes.
   final bool hydroFriendly;
 
+  /// Profil hydroponique du légume — fourchettes idéales pH / EC /
+  /// T° eau / humidité ambiante. Si `null`, l'app retombe sur les
+  /// fourchettes génériques par phase de [reading_targets.dart].
+  final HydroProfile? hydroProfile;
+
   const Vegetable({
     required this.id,
     required this.name,
@@ -195,6 +200,7 @@ class Vegetable {
     this.harvestTimeBySeason,
     this.densityPerSqFt,
     this.hydroFriendly = false,
+    this.hydroProfile,
   });
 
   /// Seuil effectif de jours secs max. Si [wateringDaysMax] est renseigné,
@@ -208,4 +214,31 @@ class Vegetable {
     if (w.contains('faible') || w.contains('très')) return 7;
     return 4; // défaut raisonnable
   }
+}
+
+/// Fourchettes idéales pour une culture hydroponique d'un légume donné.
+///
+/// Les valeurs `*Veg` sont la base (phase végétative). L'advisor applique
+/// des coefficients par phase : semis ≈ ×0.5 sur l'EC, fructification
+/// ≈ ×1.3 sur l'EC, etc.
+class HydroProfile {
+  final double phMin;
+  final double phMax;
+  final double ecVegMin; // mS/cm en phase végétative
+  final double ecVegMax;
+  final double waterTempMin; // °C
+  final double waterTempMax;
+  final double airHumidityMin; // %
+  final double airHumidityMax;
+
+  const HydroProfile({
+    required this.phMin,
+    required this.phMax,
+    required this.ecVegMin,
+    required this.ecVegMax,
+    required this.waterTempMin,
+    required this.waterTempMax,
+    required this.airHumidityMin,
+    required this.airHumidityMax,
+  });
 }
