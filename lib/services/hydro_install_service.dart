@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import '../models/culture_entry.dart';
+import '../models/garden_plan.dart';
 import '../models/hydro_install.dart';
 import 'culture_service.dart';
 import 'prefs_service.dart';

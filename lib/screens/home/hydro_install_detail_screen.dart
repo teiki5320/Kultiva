@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
+import '../../models/garden_plan.dart';
 import '../../models/hydro_install.dart';
 import '../../models/vegetable.dart';
 import '../../services/audio_service.dart';
