@@ -90,20 +90,29 @@ class PlannedCell {
   /// Date de plantation (pour suivi de croissance).
   final DateTime plantedAt;
 
+  /// Optionnel : id d'une [CultureEntry] créée automatiquement pour
+  /// suivre ce plant (phase, observations, photos…). Lien établi par
+  /// `garden_planner_screen.dart::_onPlacePlant` au moment du placement.
+  /// Null pour les anciennes cellules (legacy d'avant la refonte
+  /// cohérence d'avril 2026).
+  final String? cultureId;
+
   PlannedCell({
     required this.col,
     required this.row,
     required this.vegetableId,
     required this.count,
     required this.plantedAt,
+    this.cultureId,
   });
 
-  PlannedCell copyWith({int? count}) => PlannedCell(
+  PlannedCell copyWith({int? count, String? cultureId}) => PlannedCell(
         col: col,
         row: row,
         vegetableId: vegetableId,
         count: count ?? this.count,
         plantedAt: plantedAt,
+        cultureId: cultureId ?? this.cultureId,
       );
 
   Map<String, dynamic> toJson() => {
@@ -112,6 +121,7 @@ class PlannedCell {
         'vegetableId': vegetableId,
         'count': count,
         'plantedAt': plantedAt.toIso8601String(),
+        'cultureId': cultureId,
       };
 
   factory PlannedCell.fromJson(Map<String, dynamic> j) => PlannedCell(
@@ -120,6 +130,7 @@ class PlannedCell {
         vegetableId: j['vegetableId'] as String,
         count: j['count'] as int,
         plantedAt: DateTime.parse(j['plantedAt'] as String),
+        cultureId: j['cultureId'] as String?,
       );
 }
 

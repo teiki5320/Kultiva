@@ -18,9 +18,10 @@ import 'garden_plan_config_sheet.dart';
 /// pleine terre + hydroponie. Deux FABs en bas pour créer chaque type.
 ///
 /// Refonte cohérence avril 2026 : remplace CahierCulturePickerScreen
-/// (qui obligeait à choisir une méthode AVANT de voir ses jardins) et
-/// fusionne PotagerTraditionnelScreen + HydroponieScreen sur leur vue
-/// principale (la liste des jardins).
+/// (qui obligeait à choisir une méthode AVANT de voir ses jardins).
+/// Sert de point d'entrée unique : tap sur une card pleine terre →
+/// GardenPlannerScreen (cases + picker), tap sur une card hydro →
+/// HydroInstallDetailScreen.
 class MesJardinsScreen extends StatefulWidget {
   const MesJardinsScreen({super.key});
 

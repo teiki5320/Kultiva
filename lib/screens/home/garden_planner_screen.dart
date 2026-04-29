@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../../data/companions.dart';
 import '../../data/regions/france.dart';
 import '../../data/vegetables_base.dart';
+import '../../models/culture_entry.dart';
 import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
+import '../../services/culture_service.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/weather_service.dart';
@@ -348,7 +350,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     );
   }
 
-  void _onPlacePlant(String vegId, int col, int row) {
+  Future<void> _onPlacePlant(String vegId, int col, int row) async {
     final plan = _plan;
     if (plan == null) return;
     final veg = vegetablesBase.firstWhere(
@@ -356,12 +358,24 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
       orElse: () => vegetablesBase.first,
     );
     final density = veg.densityPerSqFt ?? 1;
+    final plantedAt = DateTime.now();
+
+    // Refonte cohérence avril 2026 : on crée AUSSI une CultureEntry
+    // trackable pour suivre ce plant (phase, observations, photos…).
+    // L'id de la culture est stocké dans la cellule via cultureId.
+    final culture = await CultureService.instance.add(
+      method: CultivationMethod.soil,
+      vegetableId: vegId,
+      startedAt: plantedAt,
+    );
+
     final cell = PlannedCell(
       col: col,
       row: row,
       vegetableId: vegId,
       count: density,
-      plantedAt: DateTime.now(),
+      plantedAt: plantedAt,
+      cultureId: culture.id,
     );
     setState(() {
       _plan = plan.withCell(col, row, cell);
@@ -384,8 +398,13 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             _dirty = true;
           });
         },
-        onClear: () {
+        onClear: () async {
           Navigator.of(context).pop();
+          // Refonte cohérence : si la cellule a une culture liée
+          // (créée auto au placement), on la supprime avec.
+          if (cell.cultureId != null) {
+            await CultureService.instance.remove(cell.cultureId!);
+          }
           setState(() {
             _plan = plan.withCell(col, row, null);
             _dirty = true;
