@@ -19,15 +19,6 @@ import '../utils/months.dart';
 import '../widgets/lexicon_text.dart';
 import '../widgets/medal_badge.dart';
 
-// Comparateur de prix officiel de Kultiva (site séparé).
-const String _kComparateurBaseUrl = 'https://kultivaprix.vercel.app';
-
-/// Construit l'URL du comparateur avec le nom du légume en paramètre de
-/// recherche (recherche pré-remplie si le site supporte `?q=`).
-String _comparateurUrlFor(Vegetable v) {
-  return '$_kComparateurBaseUrl/?q=${Uri.encodeComponent(v.name)}';
-}
-
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
 /// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
 /// les légumes quand une liste est fournie.
@@ -231,7 +222,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
-        // Boutons Acheter + Comparateur en bas (sauf accessoires qui ont déjà le panier en haut).
+        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier en haut).
         if (vegetable.amazonUrl != null &&
             vegetable.category != VegetableCategory.accessories) ...[
           const SizedBox(height: 20),
@@ -250,27 +241,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
                   borderRadius: BorderRadius.circular(18),
                 ),
                 elevation: 3,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () => _openUrl(context, _comparateurUrlFor(vegetable)),
-              icon: const Text('💰', style: TextStyle(fontSize: 22)),
-              label: const Text('Comparateur de prix',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: KultivaColors.primaryGreen,
-                side: BorderSide(
-                  color: KultivaColors.primaryGreen,
-                  width: 2,
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
               ),
             ),
           ),
@@ -368,24 +338,6 @@ class _HeaderCard extends StatelessWidget {
                   familyColor: KultivaColors.primaryGreen,
                   size: 78,
                   showCornerMedal: tier != MedalTier.none,
-                ),
-                _MiniActionBlock(
-                  emoji: '💰',
-                  label: 'Comparer',
-                  sublabel: 'Prix en ligne',
-                  gradientColors: [
-                    KultivaColors.primaryGreen.withValues(alpha: 0.22),
-                    KultivaColors.springA.withValues(alpha: 0.4),
-                  ],
-                  foreground: KultivaColors.primaryGreen,
-                  tooltip: 'Comparateur de prix Kultiva',
-                  onTap: () {
-                    AudioService.instance.play(Sfx.cart);
-                    launchUrl(
-                      Uri.parse(_comparateurUrlFor(vegetable)),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  },
                 ),
                 if (vegetable.amazonUrl != null)
                   _MiniActionBlock(
