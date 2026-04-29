@@ -55,7 +55,7 @@ cd ios && pod install --repo-update && cd ..
 Routine quotidienne après une modif côté Claude Code (Mac de Jean, branche `main`) :
 
 ```bash
-cd ~/Kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
+cd ~/Code/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
 ```
 
 ## 📦 Build de release

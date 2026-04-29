@@ -175,12 +175,12 @@ Triggers : `handle_new_user` (auto-profile), `touch_updated_at` (4 tables),
 
 ### 🚀 Lancer l'app sur le Mac de Jean (routine quotidienne)
 
-Le projet est sur **`~/Kultiva`** (Mac-mini-de-Jean). Branche de travail
+Le projet est sur **`~/Code/kultiva`** (Mac-mini-de-Jean). Branche de travail
 courante : **`main`**. Commande à donner systématiquement après une modif
 poussée par Claude Code :
 
 ```bash
-cd ~/Kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
+cd ~/Code/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
 ```
 
 - `git stash` est nécessaire car les lock files (`pubspec.lock`, `Podfile.lock`)
