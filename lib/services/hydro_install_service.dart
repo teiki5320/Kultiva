@@ -50,6 +50,7 @@ class HydroInstallService {
     if (orphans.isEmpty) return;
 
     // Crée une install par défaut qui accueille tous les orphelins.
+    final firstLight = orphans.first.light;
     final defaultInstall = HydroInstall(
       id: _generateId(),
       name: 'Mon install',
@@ -58,7 +59,9 @@ class HydroInstallService {
       reservoirL: 20.0,
       slotCultureIds: <String?>[for (final c in orphans) c.id],
       createdAt: DateTime.now(),
-      light: orphans.first.light,
+      lamps: firstLight != null
+          ? <HydroLightConfig>[firstLight]
+          : const <HydroLightConfig>[],
     );
     final next = <HydroInstall>[...installs.value, defaultInstall];
     await _persist(next);
