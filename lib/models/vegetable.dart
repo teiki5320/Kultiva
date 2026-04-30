@@ -177,6 +177,13 @@ class Vegetable {
   /// fourchettes génériques par phase de [reading_targets.dart].
   final HydroProfile? hydroProfile;
 
+  /// Espacement recommandé entre plants en hydroponie (cm). Triple
+  /// (min, typique, max) sourcé sur University of Arizona CEAC,
+  /// Cornell CEA et Resh "Hydroponic Food Production". Affiché dans
+  /// la grille pour vert/jaune/rouge selon la distance aux voisins.
+  /// Si `null`, l'espacement n'est pas vérifié.
+  final HydroSpacing? hydroSpacing;
+
   const Vegetable({
     required this.id,
     required this.name,
@@ -201,6 +208,7 @@ class Vegetable {
     this.densityPerSqFt,
     this.hydroFriendly = false,
     this.hydroProfile,
+    this.hydroSpacing,
   });
 
   /// Seuil effectif de jours secs max. Si [wateringDaysMax] est renseigné,
@@ -241,4 +249,28 @@ class HydroProfile {
     required this.airHumidityMin,
     required this.airHumidityMax,
   });
+}
+
+/// Espacement entre plants en hydroponie (cm). Triplet
+/// `(min, typique, max)` sourcé pour la majorité des cultures sur
+/// University of Arizona CEAC, Cornell CEA, Resh « Hydroponic Food
+/// Production ». Utilisé par la grille pour vert (≥typical),
+/// jaune (entre min et typical), rouge (< min).
+class HydroSpacing {
+  final int minCm;
+  final int typicalCm;
+  final int maxCm;
+
+  const HydroSpacing({
+    required this.minCm,
+    required this.typicalCm,
+    required this.maxCm,
+  });
+
+  /// Densité plants/m² approchée à l'espacement typique.
+  double get plantsPerSquareMeter {
+    if (typicalCm <= 0) return 0;
+    final m = typicalCm / 100;
+    return 1 / (m * m);
+  }
 }

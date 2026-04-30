@@ -138,8 +138,24 @@ class HydroInstall {
   /// pour ne pas redemander à chaque fois.
   final double reservoirL;
 
-  /// Configuration lumière commune à toute l'install (1 lampe = 1 install).
-  final HydroLightConfig? light;
+  /// Espacement physique entre 2 trous adjacents (en cm). Sert au calcul
+  /// de distance réelle entre 2 plants dans la grille, comparé aux
+  /// fourchettes [Vegetable.hydroSpacing] pour signaler des plants
+  /// trop serrés (rouge), un peu serrés (jaune) ou OK (vert).
+  ///
+  /// Valeur typique : 20 cm DWC débutant, 25-30 cm NFT laitues,
+  /// 50-90 cm NFT chanvre/tomate, 30 cm tour verticale.
+  final double holeSpacingCm;
+
+  /// Liste des lampes de l'install. Une vraie installation peut en
+  /// avoir plusieurs (ex. NFT 4 m² avec 4 lampes 100W couvrant chacune
+  /// ~1 m²). La somme des watts × heures × footprints sert au calcul
+  /// PPFD/DLI.
+  ///
+  /// Vide si aucune lampe n'a été configurée. Pour les installations
+  /// créées avant la refonte multi-lampes (avril 2026), on migre depuis
+  /// l'ancien champ `light` au moment de [fromJson].
+  final List<HydroLightConfig> lamps;
 
   /// Chemin local de la photo de l'install (ex.
   /// `app documents/hydro_installs/{id}.jpg`). Optionnel.
@@ -167,11 +183,31 @@ class HydroInstall {
     required this.reservoirL,
     required this.slotCultureIds,
     required this.createdAt,
-    this.light,
+    this.lamps = const <HydroLightConfig>[],
+    this.holeSpacingCm = 25,
     this.photoPath,
     this.lastFlushAt,
     this.equipment = const <HydroEquipment>{},
   });
+
+  /// Première lampe configurée, pratique pour le code legacy qui
+  /// affichait une « lampe principale ». null si aucune.
+  HydroLightConfig? get primaryLamp => lamps.isEmpty ? null : lamps.first;
+
+  /// Compatibilité descendante : ancien getter `light` qui est utilisé
+  /// dans plusieurs widgets pour afficher une fiche lampe rapide.
+  /// Renvoie la première lampe.
+  HydroLightConfig? get light => primaryLamp;
+
+  /// Puissance totale (W) cumulée des lampes. Sert au calcul PPFD
+  /// global de l'install.
+  int get totalLampWatts {
+    var total = 0;
+    for (final l in lamps) {
+      if (l.ledWatts != null) total += l.ledWatts!;
+    }
+    return total;
+  }
 
   /// Nombre de slots remplis (plants en cours).
   int get filledSlots => slotCultureIds.where((id) => id != null).length;
@@ -193,12 +229,13 @@ class HydroInstall {
     HydroSystemType? systemType,
     int? slotCount,
     double? reservoirL,
-    HydroLightConfig? light,
+    double? holeSpacingCm,
+    List<HydroLightConfig>? lamps,
     String? photoPath,
     DateTime? lastFlushAt,
     List<String?>? slotCultureIds,
     Set<HydroEquipment>? equipment,
-    bool clearLight = false,
+    bool clearLamps = false,
     bool clearPhoto = false,
     bool clearFlush = false,
   }) {
@@ -208,7 +245,10 @@ class HydroInstall {
       systemType: systemType ?? this.systemType,
       slotCount: slotCount ?? this.slotCount,
       reservoirL: reservoirL ?? this.reservoirL,
-      light: clearLight ? null : (light ?? this.light),
+      holeSpacingCm: holeSpacingCm ?? this.holeSpacingCm,
+      lamps: clearLamps
+          ? const <HydroLightConfig>[]
+          : (lamps ?? this.lamps),
       photoPath: clearPhoto ? null : (photoPath ?? this.photoPath),
       lastFlushAt: clearFlush ? null : (lastFlushAt ?? this.lastFlushAt),
       slotCultureIds: slotCultureIds ?? this.slotCultureIds,
@@ -262,7 +302,8 @@ class HydroInstall {
         'systemType': systemType.name,
         'slotCount': slotCount,
         'reservoirL': reservoirL,
-        'light': light?.toJson(),
+        'holeSpacingCm': holeSpacingCm,
+        'lamps': lamps.map((l) => l.toJson()).toList(),
         'photoPath': photoPath,
         'lastFlushAt': lastFlushAt?.toIso8601String(),
         'slotCultureIds': slotCultureIds,
@@ -287,6 +328,23 @@ class HydroInstall {
         if (HydroEquipment.fromId(e as String?) != null)
           HydroEquipment.fromId(e as String)!,
     };
+    // Migration depuis l'ancien champ `light` (pré-refonte multi-lampes
+    // avril 2026) : si `lamps` n'existe pas mais `light` est présent,
+    // on convertit en liste à 1 élément.
+    final List<HydroLightConfig> lamps;
+    final rawLamps = json['lamps'];
+    if (rawLamps is List) {
+      lamps = <HydroLightConfig>[
+        for (final l in rawLamps)
+          HydroLightConfig.fromJson(l as Map<String, dynamic>),
+      ];
+    } else if (json['light'] != null) {
+      lamps = <HydroLightConfig>[
+        HydroLightConfig.fromJson(json['light'] as Map<String, dynamic>),
+      ];
+    } else {
+      lamps = const <HydroLightConfig>[];
+    }
     return HydroInstall(
       id: json['id'] as String,
       name: (json['name'] as String?) ?? 'Mon install',
@@ -296,9 +354,9 @@ class HydroInstall {
       ),
       slotCount: slotCount,
       reservoirL: (json['reservoirL'] as num?)?.toDouble() ?? 20.0,
-      light: json['light'] == null
-          ? null
-          : HydroLightConfig.fromJson(json['light'] as Map<String, dynamic>),
+      holeSpacingCm:
+          (json['holeSpacingCm'] as num?)?.toDouble() ?? 25.0,
+      lamps: lamps,
       photoPath: json['photoPath'] as String?,
       lastFlushAt: json['lastFlushAt'] == null
           ? null

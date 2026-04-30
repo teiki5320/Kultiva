@@ -76,7 +76,8 @@ class HydroInstallService {
     required HydroSystemType systemType,
     required int slotCount,
     required double reservoirL,
-    HydroLightConfig? light,
+    double holeSpacingCm = 25,
+    List<HydroLightConfig> lamps = const <HydroLightConfig>[],
     String? photoPath,
   }) async {
     final install = HydroInstall(
@@ -85,7 +86,8 @@ class HydroInstallService {
       systemType: systemType,
       slotCount: slotCount,
       reservoirL: reservoirL,
-      light: light,
+      holeSpacingCm: holeSpacingCm,
+      lamps: lamps,
       photoPath: photoPath,
       createdAt: DateTime.now(),
       slotCultureIds: List<String?>.filled(slotCount, null),

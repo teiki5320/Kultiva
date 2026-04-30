@@ -45,6 +45,9 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       airHumidityMin: 60,
       airHumidityMax: 70,
     ),
+    // Espacement révisé après audit web 2026 : en hydro semi-pro on
+    // densifie 2× plus qu'en sol (Greenhouse Product News, Resh).
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -145,6 +148,9 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       airHumidityMin: 50,
       airHumidityMax: 70,
     ),
+    // Audit 2026 : range pour laitue pommée/butterhead. Baby leaf =
+    // 10-12 cm si culture serrée, romaine = 22-25 cm.
+    hydroSpacing: HydroSpacing(minCm: 18, typicalCm: 22, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -221,6 +227,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/poivron.png',
     densityPerSqFt: 1,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 28, maxCm: 35),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -247,6 +254,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/epinard.png',
     densityPerSqFt: 9,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 12, typicalCm: 15, maxCm: 20),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -298,6 +306,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/basilic.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 10, typicalCm: 18, maxCm: 25),
   ),
 
   // ════════════════════════════════════════════════════════════════════════
@@ -328,6 +337,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/concombre.png',
     densityPerSqFt: 1,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 30, typicalCm: 35, maxCm: 45),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -763,6 +773,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/fraise.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 22, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -864,6 +875,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/persil.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 20, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -890,6 +902,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/coriandre.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 18, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -916,6 +929,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/ciboulette.png',
     densityPerSqFt: 36,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 10, typicalCm: 12, maxCm: 20),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -942,6 +956,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/menthe.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -968,6 +983,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/thym.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1116,6 +1132,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/blette.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   Vegetable(
@@ -1161,6 +1178,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/mache.png',
     densityPerSqFt: 9,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 8, typicalCm: 10, maxCm: 12),
   ),
 
   Vegetable(
@@ -1184,6 +1202,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/roquette.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 10, typicalCm: 12, maxCm: 20),
   ),
 
   Vegetable(
@@ -1207,6 +1226,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/chou_kale.png',
     densityPerSqFt: 2,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 38),
   ),
 
   Vegetable(
@@ -1427,6 +1447,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/oseille.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 45),
   ),
 
   Vegetable(
@@ -1757,6 +1778,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/pak_choi.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 18, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1816,6 +1838,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/chou_chinois.png',
     densityPerSqFt: 1,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1848,6 +1871,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/romarin.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1879,6 +1903,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/sauge.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2001,6 +2026,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/vegetables/aneth.png',
     densityPerSqFt: 4,
     hydroFriendly: true,
+    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 20, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────

@@ -78,7 +78,15 @@ class PrefsService {
 
   Future<void> load() async {
     _prefs = await SharedPreferences.getInstance();
-    region.value = Region.fromId(_prefs!.getString(_kRegion));
+    // Refonte avril 2026 : Afrique de l'Ouest retirée du picker. On
+    // bascule en silence sur France pour les installations existantes
+    // qui auraient eu westAfrica enregistré.
+    final loadedRegion = Region.fromId(_prefs!.getString(_kRegion));
+    region.value =
+        loadedRegion == Region.westAfrica ? Region.france : loadedRegion;
+    if (loadedRegion == Region.westAfrica) {
+      await _prefs!.setString(_kRegion, Region.france.id);
+    }
     darkMode.value = _prefs!.getBool(_kDarkMode) ?? false;
     notifications.value = _prefs!.getBool(_kNotifications) ?? true;
     favorites.value =
