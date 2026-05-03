@@ -35,6 +35,7 @@ class PrefsService {
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kCultureReadings = 'kultiva.cultureReadings.v1';
   static const _kHydroInstalls = 'kultiva.hydroInstalls.v1';
+  static const _kJardinsTutorialDone = 'kultiva.jardinsTutorialDone';
 
   SharedPreferences? _prefs;
 
@@ -226,6 +227,14 @@ class PrefsService {
 
   Future<void> setHydroInstallsJson(String json) async {
     await _prefs?.setString(_kHydroInstalls, json);
+  }
+
+  // --- Tutoriel premier-lancement de Mes Jardins ---
+  bool get jardinsTutorialDone =>
+      _prefs?.getBool(_kJardinsTutorialDone) ?? false;
+
+  Future<void> setJardinsTutorialDone(bool value) async {
+    await _prefs?.setBool(_kJardinsTutorialDone, value);
   }
 
   Set<String> get unlockedBadges =>

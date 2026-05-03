@@ -6,7 +6,9 @@ import '../../data/vegetables_base.dart';
 import '../../models/culture_entry.dart';
 import '../../models/garden_plan.dart';
 import '../../models/vegetable.dart';
+import '../../services/audio_service.dart';
 import '../../services/culture_service.dart';
+import '../../utils/phenology.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/weather_service.dart';
@@ -390,6 +392,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     if (cell == null) return;
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       builder: (_) => _CellActionSheet(
         cell: cell,
         onCountChanged: (newCount) {
@@ -397,6 +400,33 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             _plan = plan.withCell(col, row, cell.copyWith(count: newCount));
             _dirty = true;
           });
+        },
+        onPlantedAtChanged: (newDate) async {
+          // Met à jour la cellule avec la nouvelle date.
+          final fresh = plan.cellAt(col, row);
+          if (fresh == null) return;
+          setState(() {
+            _plan = plan.withCell(
+              col,
+              row,
+              fresh.copyWith(plantedAt: newDate),
+            );
+            _dirty = true;
+          });
+          // Synchronise la culture liée pour que la phase déduite
+          // soit cohérente partout (sheet de mesures, etc.).
+          final cid = fresh.cultureId;
+          if (cid == null) return;
+          final cultures = CultureService.instance.loadAll();
+          final existing = cultures.firstWhere(
+            (c) => c.id == cid,
+            orElse: () => cultures.first,
+          );
+          if (existing.id == cid) {
+            await CultureService.instance.update(
+              existing.copyWith(startedAt: newDate),
+            );
+          }
         },
         onClear: () async {
           Navigator.of(context).pop();
@@ -642,10 +672,12 @@ class _GridCell extends StatelessWidget {
 class _CellActionSheet extends StatefulWidget {
   final PlannedCell cell;
   final ValueChanged<int> onCountChanged;
+  final ValueChanged<DateTime> onPlantedAtChanged;
   final VoidCallback onClear;
   const _CellActionSheet({
     required this.cell,
     required this.onCountChanged,
+    required this.onPlantedAtChanged,
     required this.onClear,
   });
 
@@ -655,11 +687,13 @@ class _CellActionSheet extends StatefulWidget {
 
 class _CellActionSheetState extends State<_CellActionSheet> {
   late int _count;
+  late DateTime _plantedAt;
 
   @override
   void initState() {
     super.initState();
     _count = widget.cell.count;
+    _plantedAt = widget.cell.plantedAt;
   }
 
   String _formatPlantedAt(DateTime when) {
@@ -671,6 +705,59 @@ class _CellActionSheetState extends State<_CellActionSheet> {
     return 'Planté il y a $days jours ($dateStr)';
   }
 
+  /// Date dernier arrosage formatée pour l'utilisateur (ou message
+  /// d'invitation si jamais).
+  String _formatLastWatering(DateTime? when) {
+    if (when == null) return 'Pas encore arrosé';
+    final days = DateTime.now().difference(when).inDays;
+    if (days == 0) return 'Arrosé aujourd\'hui';
+    if (days == 1) return 'Arrosé hier';
+    return 'Arrosé il y a $days jours';
+  }
+
+  /// Couleur du badge arrosage : vert si récent (≤ seuil), orange si à
+  /// la limite, rouge si dépassé. Seuil dérivé de Vegetable.watering.
+  Color _wateringBadgeColor(DateTime? lastWater, int thresholdDays) {
+    if (lastWater == null) return const Color(0xFFE8A87C);
+    final days = DateTime.now().difference(lastWater).inDays;
+    if (days <= thresholdDays - 1) return KultivaColors.primaryGreen;
+    if (days <= thresholdDays) return const Color(0xFFE8A87C);
+    return const Color(0xFFD4564A);
+  }
+
+  Future<void> _pickDate(BuildContext context) async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _plantedAt,
+      firstDate: now.subtract(const Duration(days: 365)),
+      lastDate: now,
+      helpText: 'Date de plantation',
+      cancelText: 'Annuler',
+      confirmText: 'OK',
+      locale: const Locale('fr', 'FR'),
+    );
+    if (picked == null) return;
+    setState(() => _plantedAt = picked);
+    widget.onPlantedAtChanged(picked);
+  }
+
+  Future<void> _markWatered() async {
+    final cid = widget.cell.cultureId;
+    if (cid == null) return;
+    AudioService.instance.play(Sfx.water);
+    await CultureService.instance.markWatered(cid);
+    if (mounted) {
+      setState(() {}); // Refresh badge
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('💧 Arrosage enregistré'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final veg = vegetablesBase.firstWhere(
@@ -678,8 +765,27 @@ class _CellActionSheetState extends State<_CellActionSheet> {
       orElse: () => vegetablesBase.first,
     );
     final maxDensity = veg.densityPerSqFt ?? 1;
+    // Charge la culture liée si la cellule en a une (créée auto au
+    // placement depuis la refonte cohérence avril 2026).
+    final cid = widget.cell.cultureId;
+    CultureEntry? culture;
+    if (cid != null) {
+      final matching = CultureService.instance
+          .loadAll()
+          .where((c) => c.id == cid)
+          .toList();
+      if (matching.isNotEmpty) culture = matching.first;
+    }
+    final lastWater =
+        culture?.wateredAt.isNotEmpty == true ? culture!.wateredAt.last : null;
+    final daysSinceStarted =
+        DateTime.now().difference(_plantedAt).inDays;
+    final phase = deducedPhase(veg, daysSinceStarted);
+    final wateringDays = veg.effectiveWateringDays;
+    final wateringColor = _wateringBadgeColor(lastWater, wateringDays);
+
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -711,31 +817,133 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            // Date de semis / plantation.
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: KultivaColors.lightGreen.withValues(alpha: 0.25),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: <Widget>[
-                  const Text('🌱', style: TextStyle(fontSize: 14)),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      _formatPlantedAt(widget.cell.plantedAt),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+            const SizedBox(height: 12),
+
+            // ─── Date de plantation (modifiable) ──────────────────
+            InkWell(
+              onTap: () => _pickDate(context),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: KultivaColors.lightGreen.withValues(alpha: 0.25),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: KultivaColors.lightGreen.withValues(alpha: 0.6),
+                  ),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    const Text('🌱', style: TextStyle(fontSize: 16)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(
+                            _formatPlantedAt(_plantedAt),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Stade : ${phase.emoji} ${phase.label}',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: KultivaColors.textSecondary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    const Icon(Icons.edit_calendar_outlined, size: 18),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 12),
+
+            // ─── Bloc Arrosage ────────────────────────────────────
+            if (cid != null) ...<Widget>[
+              Container(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                decoration: BoxDecoration(
+                  color: wateringColor.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: wateringColor.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        const Text('💧', style: TextStyle(fontSize: 16)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            _formatLastWatering(lastWater),
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w800,
+                              color: wateringColor,
+                            ),
+                          ),
+                        ),
+                        FilledButton.icon(
+                          onPressed: _markWatered,
+                          icon: const Icon(Icons.water_drop, size: 16),
+                          label: const Text('Arroser'),
+                          style: FilledButton.styleFrom(
+                            backgroundColor: KultivaColors.primaryGreen,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 6),
+                            textStyle: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (veg.watering != null) ...<Widget>[
+                      const SizedBox(height: 6),
+                      Text(
+                        '👉 ${veg.watering}',
+                        style: TextStyle(
+                          fontSize: 11,
+                          height: 1.4,
+                          color: KultivaColors.textPrimary
+                              .withValues(alpha: 0.8),
+                        ),
+                      ),
+                    ],
+                    Text(
+                      'Fréquence indicative : tous les $wateringDays jours '
+                      'environ (selon météo).',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontStyle: FontStyle.italic,
+                        color: KultivaColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+
+            // ─── Conseils selon phase ─────────────────────────────
+            _PhaseAdviceTile(veg: veg, phase: phase),
+            const SizedBox(height: 12),
+
+            // ─── Densité plants par case ──────────────────────────
             Text(
               "Combien de plants dans cette case ?",
               style: TextStyle(
@@ -808,6 +1016,87 @@ class _CellActionSheetState extends State<_CellActionSheet> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Tile de conseil contextuel selon la phase du plant. Donne une
+/// action concrète (« pince les gourmands », « apporte du compost »…).
+class _PhaseAdviceTile extends StatelessWidget {
+  final Vegetable veg;
+  final GrowthPhase phase;
+
+  const _PhaseAdviceTile({required this.veg, required this.phase});
+
+  String _adviceFor(Vegetable veg, GrowthPhase phase) {
+    switch (phase) {
+      case GrowthPhase.seedling:
+        return 'Garde le sol humide, protège des limaces et du froid '
+            'avec un voile si besoin.';
+      case GrowthPhase.vegetative:
+        if (veg.category == VegetableCategory.fruits) {
+          return 'Tuteure le plant, pince les gourmands (tomates), '
+              'apporte du compost si feuilles claires.';
+        }
+        if (veg.category == VegetableCategory.leaves ||
+            veg.category == VegetableCategory.aromatics) {
+          return 'Récolte au fur et à mesure pour stimuler la repousse, '
+              'arrose au pied le matin.';
+        }
+        return 'Le plant prend du volume — arrose régulièrement et '
+            'binesle pied pour aérer le sol.';
+      case GrowthPhase.flowering:
+        return 'Floraison en cours : maintenir l\'arrosage régulier, '
+            'apporter de la potasse (cendres bois).';
+      case GrowthPhase.fruiting:
+        return 'Récolte régulière pour stimuler la production. '
+            'Surveille les nuisibles et l\'humidité.';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: KultivaColors.summerA.withValues(alpha: 0.25),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: const Color(0xFFE8C96A).withValues(alpha: 0.5),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(phase.emoji, style: const TextStyle(fontSize: 16)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Conseil pour ce stade',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: const Color(0xFF7A5A1E),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _adviceFor(veg, phase),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    height: 1.4,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

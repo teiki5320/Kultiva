@@ -106,12 +106,17 @@ class PlannedCell {
     this.cultureId,
   });
 
-  PlannedCell copyWith({int? count, String? cultureId}) => PlannedCell(
+  PlannedCell copyWith({
+    int? count,
+    String? cultureId,
+    DateTime? plantedAt,
+  }) =>
+      PlannedCell(
         col: col,
         row: row,
         vegetableId: vegetableId,
         count: count ?? this.count,
-        plantedAt: plantedAt,
+        plantedAt: plantedAt ?? this.plantedAt,
         cultureId: cultureId ?? this.cultureId,
       );
 
