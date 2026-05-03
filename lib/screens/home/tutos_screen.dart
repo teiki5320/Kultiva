@@ -303,10 +303,6 @@ class _TutoTile extends StatelessWidget {
         } else if (item.url.isNotEmpty) {
           launchUrl(Uri.parse(item.url),
               mode: LaunchMode.externalApplication);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Bientôt disponible !')),
-          );
         }
       },
       child: Container(

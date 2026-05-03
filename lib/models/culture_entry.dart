@@ -149,10 +149,9 @@ class CultureEntry {
   static String encodeAll(List<CultureEntry> list) =>
       jsonEncode(list.map((c) => c.toJson()).toList());
 
-  /// Décode la liste des cultures du cahier. Les entrées historiques
-  /// hydroponiques (`method == 'hydroponic'`) sont filtrées : la
-  /// fonctionnalité a été retirée en mai 2026, on archive le code mais
-  /// on n'expose plus ces entries dans l'UI.
+  /// Décode la liste des cultures du cahier. Filtre silencieusement
+  /// les entrées dont `method == 'hydroponic'` pour rester compatible
+  /// avec les sauvegardes antérieures à la v2 pleine-terre-only.
   static List<CultureEntry> decodeAll(String? raw) {
     if (raw == null || raw.isEmpty) return <CultureEntry>[];
     try {

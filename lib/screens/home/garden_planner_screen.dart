@@ -1720,7 +1720,7 @@ class _TipsSheet extends StatelessWidget {
             _TipStep(
               n: 4,
               text:
-                  "Bientôt : anneaux verts pour les compagnes, rouges pour les combatives.",
+                  "Anneau vert autour d'une case = plantes compagnes voisines, anneau rouge = à séparer.",
             ),
             _TipStep(
               n: 5,
