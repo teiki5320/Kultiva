@@ -5,11 +5,10 @@ import '../theme/app_theme.dart';
 /// Sheet de présentation à la première ouverture de « Mes jardins ».
 ///
 /// Affiché une seule fois (flag prefs `jardinsTutorialDone`). Couvre
-/// les 4 fonctions clés ajoutées par la refonte cohérence avril 2026 :
-/// jardins multiples (pleine terre + hydro), placement par drag/drop
-/// dans des cases, suivi par plant (arrosage + phase + photos), et
-/// la possibilité d'ajuster la date de plantation pour un suivi
-/// rétroactif.
+/// les 4 fonctions clés : jardins multiples pleine terre, placement
+/// par drag/drop dans des cases, suivi par plant (arrosage + phase
+/// + photos), et la possibilité d'ajuster la date de plantation pour
+/// un suivi rétroactif.
 class JardinsIntroSheet extends StatefulWidget {
   const JardinsIntroSheet({super.key});
 
@@ -26,9 +25,9 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
       emoji: '🌿',
       title: 'Mes jardins',
       subtitle:
-          "Tout ton potager au même endroit : pleine terre comme "
-          "hydroponie. Crée autant de jardins que tu veux, l'app "
-          "s'adapte à chaque type.",
+          "Crée autant de jardins pleine terre que tu veux, "
+          "chacun avec sa grille de cases. L'app suit tes plants "
+          "et te conseille tout au long de la saison.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _IntroSlide(

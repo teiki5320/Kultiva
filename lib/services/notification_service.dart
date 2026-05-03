@@ -278,10 +278,9 @@ class NotificationService {
       }
       if (maxStreak < 2) return;
 
-      // Conseil légume-spécifique : on prend les cultures pleine
-      // terre actives, on garde la catégorie la plus représentée.
-      final actives = CultureService.instance
-          .activeByMethod(CultivationMethod.soil);
+      // Conseil légume-spécifique : on prend les cultures actives,
+      // on garde la catégorie la plus représentée.
+      final actives = CultureService.instance.active();
       String tip;
       if (actives.isEmpty) {
         tip = 'Arrose tôt le matin ou en soirée, paille tes plants '

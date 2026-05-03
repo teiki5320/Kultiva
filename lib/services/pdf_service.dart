@@ -174,9 +174,7 @@ class PdfService {
   }) async {
     final doc = pw.Document();
     final soilCultures = cultures
-        .where((c) =>
-            c.method == CultivationMethod.soil &&
-            c.startedAt.year == year)
+        .where((c) => c.startedAt.year == year)
         .toList();
     final totalCultures = soilCultures.length;
     final waterings = soilCultures.fold<int>(
