@@ -4066,29 +4066,5 @@
     "harvest_time_by_season": null,
     "amazon_url": "https://www.amazon.fr/s?k=panier+recolte+osier+jardin&tag=kultiva-21",
     "regions": null
-  },
-  {
-    "id": "acc_hydroponie",
-    "kind": "accessory",
-    "name": "Système hydroponie",
-    "emoji": "💧",
-    "category": "accessories",
-    "accessory_sub": "structures",
-    "image_asset": "assets/images/accessories/hydroponie.png",
-    "description": null,
-    "note": "Cultiver sans terre, en eau nutritive",
-    "sowing_technique": null,
-    "sowing_depth": null,
-    "germination_temp": null,
-    "germination_days": null,
-    "exposure": null,
-    "spacing": null,
-    "watering": null,
-    "soil": null,
-    "watering_days_max": null,
-    "yield_estimate": null,
-    "harvest_time_by_season": null,
-    "amazon_url": "https://www.amazon.fr/s?k=hydroponie+kit&tag=kultiva-21",
-    "regions": null
   }
 ]

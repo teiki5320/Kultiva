@@ -14,7 +14,7 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 - 🐣 **Tamassi** : créature virtuelle qui évolue avec ton activité au jardin (XP, niveaux, émotions)
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
 - 🌐 **Feed communautaire** de défis photo avec badges, médailles bronze/argent/or
-- 📓 **Cahier de culture pleine terre + hydroponie** : suivi sérieux pH/EC/température, phases de croissance, calculateur de nutriments, étapes phénologiques auto, alertes canicule, partage de builds hydro
+- 📓 **Cahier de culture pleine terre** : potager carré multi-jardins, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), conseils contextuels selon la météo
 - ☁️ **Synchronisation Supabase facultative** (auth Google/Apple, sync plantations, badges, photos)
 - 🎓 **Tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
 
@@ -55,7 +55,7 @@ cd ios && pod install --repo-update && cd ..
 Routine quotidienne après une modif côté Claude Code (Mac de Jean, branche `main`) :
 
 ```bash
-cd ~/Kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
+cd ~/Code/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
 ```
 
 ## 📦 Build de release
