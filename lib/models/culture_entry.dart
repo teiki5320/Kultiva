@@ -276,6 +276,7 @@ class CultureEntry {
 
   CultureEntry copyWith({
     CultivationMethod? method,
+    DateTime? startedAt,
     DateTime? endedAt,
     String? note,
     HydroLightConfig? light,
@@ -292,7 +293,7 @@ class CultureEntry {
       id: id,
       method: method ?? this.method,
       vegetableId: vegetableId,
-      startedAt: startedAt,
+      startedAt: startedAt ?? this.startedAt,
       endedAt: clearEndedAt ? null : (endedAt ?? this.endedAt),
       note: note ?? this.note,
       light: clearLight ? null : (light ?? this.light),
