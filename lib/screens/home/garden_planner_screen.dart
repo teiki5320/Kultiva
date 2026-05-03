@@ -901,7 +901,7 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                           icon: const Icon(Icons.water_drop, size: 16),
                           label: const Text('Arroser'),
                           style: FilledButton.styleFrom(
-                            backgroundColor: KultivaColors.primaryGreen,
+                            backgroundColor: const Color(0xFF4A9BBF),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 14, vertical: 6),
                             textStyle: const TextStyle(
@@ -1504,7 +1504,7 @@ class _IrrigationBanner extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             color: advice.color.withValues(alpha: 0.35),
           ),
-          // ─── Partie droite : bouton Arroser ───
+          // ─── Partie droite : bouton Arroser (bleu eau) ───
           GestureDetector(
             onTap: cultureCount > 0 ? () => _waterAll(context) : null,
             child: Opacity(
@@ -1517,11 +1517,11 @@ class _IrrigationBanner extends StatelessWidget {
                     height: 38,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: KultivaColors.primaryGreen,
+                      color: const Color(0xFF4A9BBF),
                       shape: BoxShape.circle,
                       boxShadow: <BoxShadow>[
                         BoxShadow(
-                          color: KultivaColors.primaryGreen
+                          color: const Color(0xFF4A9BBF)
                               .withValues(alpha: 0.3),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
@@ -1535,12 +1535,12 @@ class _IrrigationBanner extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 3),
-                  Text(
+                  const Text(
                     'Arroser',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
-                      color: KultivaColors.primaryGreen,
+                      color: Color(0xFF4A9BBF),
                     ),
                   ),
                 ],
