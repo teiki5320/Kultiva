@@ -29,7 +29,6 @@ class WateringAdvice {
 /// - Sinon, conseil neutre selon le dernier arrosage
 WateringAdvice? suggestWatering(CultureEntry culture, WeatherData? weather) {
   if (weather == null) return null;
-  if (culture.method != CultivationMethod.soil) return null;
 
   // Index 7 = aujourd'hui dans le tableau (7 jours passés + aujourd'hui
   // + 7 futurs).

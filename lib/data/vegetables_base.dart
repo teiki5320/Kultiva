@@ -34,20 +34,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/tomate.png',
     densityPerSqFt: 1,
-    hydroFriendly: true,
-    hydroProfile: HydroProfile(
-      phMin: 5.8,
-      phMax: 6.3,
-      ecVegMin: 1.6,
-      ecVegMax: 2.0,
-      waterTempMin: 18,
-      waterTempMax: 22,
-      airHumidityMin: 60,
-      airHumidityMax: 70,
-    ),
-    // Espacement révisé après audit web 2026 : en hydro semi-pro on
-    // densifie 2× plus qu'en sol (Greenhouse Product News, Resh).
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -137,20 +123,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/laitue.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroProfile: HydroProfile(
-      phMin: 5.5,
-      phMax: 6.5,
-      ecVegMin: 0.8,
-      ecVegMax: 1.2,
-      waterTempMin: 18,
-      waterTempMax: 22,
-      airHumidityMin: 50,
-      airHumidityMax: 70,
-    ),
     // Audit 2026 : range pour laitue pommée/butterhead. Baby leaf =
     // 10-12 cm si culture serrée, romaine = 22-25 cm.
-    hydroSpacing: HydroSpacing(minCm: 18, typicalCm: 22, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -226,8 +200,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+poivron&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/poivron.png',
     densityPerSqFt: 1,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 28, maxCm: 35),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -253,8 +225,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+epinard&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/epinard.png',
     densityPerSqFt: 9,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 12, typicalCm: 15, maxCm: 20),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -305,8 +275,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+basilic&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/basilic.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 10, typicalCm: 18, maxCm: 25),
   ),
 
   // ════════════════════════════════════════════════════════════════════════
@@ -336,8 +304,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+concombre&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/concombre.png',
     densityPerSqFt: 1,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 30, typicalCm: 35, maxCm: 45),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -363,7 +329,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+piment&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/piment.png',
     densityPerSqFt: 1,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -772,8 +737,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=plants+fraisier&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/fraise.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 22, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -874,8 +837,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+persil&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/persil.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 20, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -901,8 +862,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+coriandre&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/coriandre.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 18, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -928,8 +887,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+ciboulette&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/ciboulette.png',
     densityPerSqFt: 36,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 10, typicalCm: 12, maxCm: 20),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -955,8 +912,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+menthe&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/menthe.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -982,8 +937,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+thym&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/thym.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1131,8 +1084,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+blette&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/blette.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 20, typicalCm: 25, maxCm: 30),
   ),
 
   Vegetable(
@@ -1177,8 +1128,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+mache&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/mache.png',
     densityPerSqFt: 9,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 8, typicalCm: 10, maxCm: 12),
   ),
 
   Vegetable(
@@ -1201,8 +1150,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+roquette&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/roquette.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 10, typicalCm: 12, maxCm: 20),
   ),
 
   Vegetable(
@@ -1225,8 +1172,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+chou+kale&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/chou_kale.png',
     densityPerSqFt: 2,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 38),
   ),
 
   Vegetable(
@@ -1446,8 +1391,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: "https://www.amazon.fr/s?k=graines+oseille&tag=kultiva-21",
     imageAsset: 'assets/images/vegetables/oseille.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 45),
   ),
 
   Vegetable(
@@ -1543,7 +1486,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/cornichon.png',
     densityPerSqFt: 1,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1747,7 +1689,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/cresson.png',
     densityPerSqFt: 9,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1777,8 +1718,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/pak_choi.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 18, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1807,7 +1746,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/pourpier.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1837,8 +1775,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/chou_chinois.png',
     densityPerSqFt: 1,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1870,8 +1806,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/romarin.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1902,8 +1836,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/sauge.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 25, typicalCm: 30, maxCm: 40),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1934,7 +1866,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/origan.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1965,7 +1896,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/estragon.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1995,7 +1925,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/sarriette.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2025,8 +1954,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/aneth.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
-    hydroSpacing: HydroSpacing(minCm: 15, typicalCm: 20, maxCm: 25),
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2056,7 +1983,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/cerfeuil.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2087,7 +2013,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/melisse.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2117,7 +2042,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/verveine.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2176,7 +2100,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/camomille.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2206,7 +2129,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/marjolaine.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2875,7 +2797,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/capucine.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2905,7 +2826,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/souci.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2935,7 +2855,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/bourrache.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2966,7 +2885,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/pensee.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2996,7 +2914,6 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     },
     imageAsset: 'assets/images/vegetables/oeillet_inde.png',
     densityPerSqFt: 4,
-    hydroFriendly: true,
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3708,16 +3625,5 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: 'https://www.amazon.fr/s?k=panier+recolte+osier+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/panier_recolte.png',
-  ),
-  Vegetable(
-    id: 'acc_hydroponie',
-    name: 'Système hydroponie',
-    emoji: '💧',
-    category: VegetableCategory.accessories,
-    note: 'Cultiver sans terre, en eau nutritive',
-    description: "Kit hydroponie pour faire pousser légumes et aromates sans terre, directement dans une solution nutritive. Idéal pour balcon ou intérieur. Économie d'eau jusqu'à 90 %, croissance rapide et zéro maladies du sol.",
-    amazonUrl: 'https://www.amazon.fr/s?k=hydroponie+kit&tag=kultiva-21',
-    accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/hydroponie.png',
   ),
 ];

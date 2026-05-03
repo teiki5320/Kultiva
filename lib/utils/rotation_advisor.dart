@@ -53,7 +53,6 @@ RotationWarning? checkRotation({
   // Cherche d'abord exactement le même légume.
   for (final c in previousCultures) {
     if (c.vegetableId != vegetableId) continue;
-    if (c.method != CultivationMethod.soil) continue;
     final years = now.year - c.startedAt.year;
     if (years < data.waitYears) {
       return RotationWarning(
@@ -68,7 +67,6 @@ RotationWarning? checkRotation({
 
   // Puis un légume de la même famille.
   for (final c in previousCultures) {
-    if (c.method != CultivationMethod.soil) continue;
     final prev = rotationMap[c.vegetableId];
     if (prev == null) continue;
     if (prev.family != data.family) continue;

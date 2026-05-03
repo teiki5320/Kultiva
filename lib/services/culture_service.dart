@@ -17,43 +17,33 @@ class CultureService {
     return CultureEntry.decodeAll(PrefsService.instance.culturesJson);
   }
 
-  /// Filtrées par méthode (pleine terre ou hydroponie).
-  List<CultureEntry> loadByMethod(CultivationMethod method) {
-    return loadAll().where((c) => c.method == method).toList();
-  }
-
-  /// Actives uniquement (endedAt == null) pour une méthode donnée,
-  /// les plus récentes en premier.
-  List<CultureEntry> activeByMethod(CultivationMethod method) {
-    final list = loadByMethod(method).where((c) => c.isActive).toList();
+  /// Cultures actives (endedAt == null), les plus récentes en premier.
+  List<CultureEntry> active() {
+    final list = loadAll().where((c) => c.isActive).toList();
     list.sort((a, b) => b.startedAt.compareTo(a.startedAt));
     return list;
   }
 
-  /// Terminées pour une méthode, les plus récemment finies en premier.
-  List<CultureEntry> endedByMethod(CultivationMethod method) {
-    final list = loadByMethod(method).where((c) => !c.isActive).toList();
+  /// Cultures terminées, les plus récemment finies en premier.
+  List<CultureEntry> ended() {
+    final list = loadAll().where((c) => !c.isActive).toList();
     list.sort((a, b) => (b.endedAt ?? b.startedAt)
         .compareTo(a.endedAt ?? a.startedAt));
     return list;
   }
 
   Future<CultureEntry> add({
-    required CultivationMethod method,
     required String vegetableId,
     required DateTime startedAt,
     String? note,
-    HydroLightConfig? light,
     String? linkedPlantationId,
   }) async {
     final id = _generateId();
     final entry = CultureEntry(
       id: id,
-      method: method,
       vegetableId: vegetableId,
       startedAt: startedAt,
       note: note,
-      light: method == CultivationMethod.hydroponic ? light : null,
       linkedPlantationId: linkedPlantationId,
     );
     final list = loadAll()..add(entry);
@@ -90,8 +80,8 @@ class CultureService {
     await _persist(list);
   }
 
-  /// Enregistre un arrosage à [at] (ou maintenant) pour une culture
-  /// pleine terre. No-op si la culture n'existe pas ou est en hydro.
+  /// Enregistre un arrosage à [at] (ou maintenant) pour une culture.
+  /// No-op si la culture n'existe pas.
   Future<void> markWatered(String id, {DateTime? at}) async {
     final list = loadAll();
     final i = list.indexWhere((c) => c.id == id);

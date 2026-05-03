@@ -168,22 +168,6 @@ class Vegetable {
   /// qui ne s'inscrivent pas dans cette logique.
   final int? densityPerSqFt;
 
-  /// Compatible avec une culture hydroponique grand public (DWC, Kratky, NFT).
-  /// Par défaut `false` pour les arbres, tubercules et plantes complexes.
-  final bool hydroFriendly;
-
-  /// Profil hydroponique du légume — fourchettes idéales pH / EC /
-  /// T° eau / humidité ambiante. Si `null`, l'app retombe sur les
-  /// fourchettes génériques par phase de [reading_targets.dart].
-  final HydroProfile? hydroProfile;
-
-  /// Espacement recommandé entre plants en hydroponie (cm). Triple
-  /// (min, typique, max) sourcé sur University of Arizona CEAC,
-  /// Cornell CEA et Resh "Hydroponic Food Production". Affiché dans
-  /// la grille pour vert/jaune/rouge selon la distance aux voisins.
-  /// Si `null`, l'espacement n'est pas vérifié.
-  final HydroSpacing? hydroSpacing;
-
   const Vegetable({
     required this.id,
     required this.name,
@@ -206,9 +190,6 @@ class Vegetable {
     this.imageAsset,
     this.harvestTimeBySeason,
     this.densityPerSqFt,
-    this.hydroFriendly = false,
-    this.hydroProfile,
-    this.hydroSpacing,
   });
 
   /// Seuil effectif de jours secs max. Si [wateringDaysMax] est renseigné,
@@ -221,56 +202,5 @@ class Vegetable {
     if (w.contains('modéré')) return 5;
     if (w.contains('faible') || w.contains('très')) return 7;
     return 4; // défaut raisonnable
-  }
-}
-
-/// Fourchettes idéales pour une culture hydroponique d'un légume donné.
-///
-/// Les valeurs `*Veg` sont la base (phase végétative). L'advisor applique
-/// des coefficients par phase : semis ≈ ×0.5 sur l'EC, fructification
-/// ≈ ×1.3 sur l'EC, etc.
-class HydroProfile {
-  final double phMin;
-  final double phMax;
-  final double ecVegMin; // mS/cm en phase végétative
-  final double ecVegMax;
-  final double waterTempMin; // °C
-  final double waterTempMax;
-  final double airHumidityMin; // %
-  final double airHumidityMax;
-
-  const HydroProfile({
-    required this.phMin,
-    required this.phMax,
-    required this.ecVegMin,
-    required this.ecVegMax,
-    required this.waterTempMin,
-    required this.waterTempMax,
-    required this.airHumidityMin,
-    required this.airHumidityMax,
-  });
-}
-
-/// Espacement entre plants en hydroponie (cm). Triplet
-/// `(min, typique, max)` sourcé pour la majorité des cultures sur
-/// University of Arizona CEAC, Cornell CEA, Resh « Hydroponic Food
-/// Production ». Utilisé par la grille pour vert (≥typical),
-/// jaune (entre min et typical), rouge (< min).
-class HydroSpacing {
-  final int minCm;
-  final int typicalCm;
-  final int maxCm;
-
-  const HydroSpacing({
-    required this.minCm,
-    required this.typicalCm,
-    required this.maxCm,
-  });
-
-  /// Densité plants/m² approchée à l'espacement typique.
-  double get plantsPerSquareMeter {
-    if (typicalCm <= 0) return 0;
-    final m = typicalCm / 100;
-    return 1 / (m * m);
   }
 }

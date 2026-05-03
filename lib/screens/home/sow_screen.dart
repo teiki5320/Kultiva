@@ -338,7 +338,7 @@ class _SowScreenState extends State<SowScreen> {
                             emoji: '📔',
                             imagePath: null,
                             label: 'Cahier de culture',
-                            subtitle: 'Pleine terre & hydro',
+                            subtitle: 'Mes jardins pleine terre',
                             gradientColors: const [
                               KultivaColors.springA,
                               KultivaColors.springB,

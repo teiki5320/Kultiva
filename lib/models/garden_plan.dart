@@ -12,67 +12,6 @@ enum GardenUnit {
   static const double cellSizeCm = 30.0;
 }
 
-/// Type d'installation hydroponique. `null` côté GardenPlan = pleine terre.
-enum HydroSystemType {
-  dwc,
-  kratky,
-  nft,
-  tower;
-
-  String get label {
-    switch (this) {
-      case HydroSystemType.dwc:
-        return 'DWC';
-      case HydroSystemType.kratky:
-        return 'Kratky';
-      case HydroSystemType.nft:
-        return 'NFT';
-      case HydroSystemType.tower:
-        return 'Tour';
-    }
-  }
-
-  String get fullLabel {
-    switch (this) {
-      case HydroSystemType.dwc:
-        return 'DWC — Deep Water Culture';
-      case HydroSystemType.kratky:
-        return 'Kratky — bocal passif';
-      case HydroSystemType.nft:
-        return 'NFT — Nutrient Film';
-      case HydroSystemType.tower:
-        return 'Tour verticale';
-    }
-  }
-
-  String get description {
-    switch (this) {
-      case HydroSystemType.dwc:
-        return 'Bac avec couvercle troué, racines plongées dans une solution nutritive oxygénée par bulleur. Idéal pour salades et aromates.';
-      case HydroSystemType.kratky:
-        return 'Bocal ou container fermé avec une plante au-dessus. Sans pompe ni électricité — méthode passive simple.';
-      case HydroSystemType.nft:
-        return 'Tube incliné avec un mince film d\'eau circulant en continu. Excellent rendement pour feuilles et fraises.';
-      case HydroSystemType.tower:
-        return 'Tour verticale modulaire avec slots étagés. Maximise la surface en pied carré au sol.';
-    }
-  }
-
-  /// Disposition par défaut des slots (cols × rows).
-  ({int cols, int rows}) get defaultLayout {
-    switch (this) {
-      case HydroSystemType.dwc:
-        return (cols: 3, rows: 2); // 6 slots
-      case HydroSystemType.kratky:
-        return (cols: 1, rows: 1); // 1 slot
-      case HydroSystemType.nft:
-        return (cols: 4, rows: 2); // 8 slots
-      case HydroSystemType.tower:
-        return (cols: 2, rows: 6); // 12 slots
-    }
-  }
-}
-
 /// Une case occupée du planificateur. Contient l'ID du légume planté
 /// et le nombre exact d'individus dans la case (peut être inférieur à
 /// la densité maximale du légume si l'utilisateur veut peupler partiellement).
@@ -163,10 +102,6 @@ class GardenPlan {
   /// Unité affichée à l'utilisateur dans la config (cm ou pieds).
   final GardenUnit unit;
 
-  /// Si renseigné, ce plan représente un système hydroponique. Sinon
-  /// c'est un potager carré classique (pleine terre).
-  final HydroSystemType? hydroSystem;
-
   /// Cases peuplées (clé = "col,row").
   final Map<String, PlannedCell> cells;
 
@@ -181,13 +116,10 @@ class GardenPlan {
     required this.cols,
     required this.rows,
     this.unit = GardenUnit.cm,
-    this.hydroSystem,
     Map<String, PlannedCell>? cells,
     required this.createdAt,
     required this.updatedAt,
   }) : cells = cells ?? <String, PlannedCell>{};
-
-  bool get isHydroponic => hydroSystem != null;
 
   /// Largeur en cm (cols × 30).
   double get widthCm => cols * GardenUnit.cellSizeCm;
@@ -217,7 +149,6 @@ class GardenPlan {
       cols: cols,
       rows: rows,
       unit: unit,
-      hydroSystem: hydroSystem,
       cells: newCells,
       createdAt: createdAt,
       updatedAt: DateTime.now(),
@@ -230,7 +161,6 @@ class GardenPlan {
     int? cols,
     int? rows,
     GardenUnit? unit,
-    HydroSystemType? hydroSystem,
   }) =>
       GardenPlan(
         id: id,
@@ -239,7 +169,6 @@ class GardenPlan {
         cols: cols ?? this.cols,
         rows: rows ?? this.rows,
         unit: unit ?? this.unit,
-        hydroSystem: hydroSystem ?? this.hydroSystem,
         cells: cells,
         createdAt: createdAt,
         updatedAt: DateTime.now(),
@@ -252,7 +181,6 @@ class GardenPlan {
         'cols': cols,
         'rows': rows,
         'unit': unit.name,
-        'hydroSystem': hydroSystem?.name,
         'cells': cells.map((k, v) => MapEntry(k, v.toJson())),
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String(),
@@ -265,7 +193,6 @@ class GardenPlan {
     final cells = cellsJson.map(
       (k, v) => MapEntry(k, PlannedCell.fromJson(v as Map<String, dynamic>)),
     );
-    final hydroRaw = j['hydroSystem'] as String?;
     return GardenPlan(
       id: j['id'] as String,
       name: j['name'] as String,
@@ -276,12 +203,6 @@ class GardenPlan {
         (u) => u.name == (j['unit'] as String? ?? 'cm'),
         orElse: () => GardenUnit.cm,
       ),
-      hydroSystem: hydroRaw == null
-          ? null
-          : HydroSystemType.values.firstWhere(
-              (h) => h.name == hydroRaw,
-              orElse: () => HydroSystemType.dwc,
-            ),
       cells: cells,
       createdAt: DateTime.parse(j['createdAt'] as String),
       updatedAt: DateTime.parse(j['updatedAt'] as String),

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../data/vegetables_base.dart';
-import '../../models/culture_entry.dart';
 import '../../models/vegetable.dart';
 import '../../services/culture_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/rotation_advisor.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
-/// Bottom sheet pour démarrer une nouvelle culture dans le cahier.
-/// Si [method] == hydroponic, demande aussi la configuration lumière.
+/// Bottom sheet pour démarrer une nouvelle culture pleine terre dans
+/// le cahier.
 class CultureStartSheet extends StatefulWidget {
-  final CultivationMethod method;
-
-  const CultureStartSheet({super.key, required this.method});
+  const CultureStartSheet({super.key});
 
   @override
   State<CultureStartSheet> createState() => _CultureStartSheetState();
@@ -24,20 +21,11 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
   DateTime _startedAt = DateTime.now();
   final TextEditingController _noteCtrl = TextEditingController();
 
-  // Champs hydroponie
-  LightType _lightType = LightType.natural;
-  double _hoursPerDay = 12.0;
-  final TextEditingController _ledDistanceCtrl = TextEditingController();
-  final TextEditingController _ledWattsCtrl = TextEditingController();
-  LedColorTemp _ledColorTemp = LedColorTemp.fullSpectrum;
-
   bool _saving = false;
 
   @override
   void dispose() {
     _noteCtrl.dispose();
-    _ledDistanceCtrl.dispose();
-    _ledWattsCtrl.dispose();
     super.dispose();
   }
 
@@ -50,10 +38,6 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
     }
   }
 
-  bool get _isHydro => widget.method == CultivationMethod.hydroponic;
-  bool get _needsLedDetails =>
-      _isHydro &&
-      (_lightType == LightType.led || _lightType == LightType.mixed);
   bool get _canSubmit => _vegetableId != null && !_saving;
 
   Future<void> _pickVegetable() async {
@@ -85,27 +69,10 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
     if (!_canSubmit) return;
     setState(() => _saving = true);
 
-    HydroLightConfig? lightConfig;
-    if (_isHydro) {
-      lightConfig = HydroLightConfig(
-        type: _lightType,
-        hoursPerDay: _hoursPerDay,
-        ledDistanceCm: _needsLedDetails
-            ? double.tryParse(_ledDistanceCtrl.text.trim())
-            : null,
-        ledWatts: _needsLedDetails
-            ? int.tryParse(_ledWattsCtrl.text.trim())
-            : null,
-        ledColorTemp: _needsLedDetails ? _ledColorTemp : null,
-      );
-    }
-
     await CultureService.instance.add(
-      method: widget.method,
       vegetableId: _vegetableId!,
       startedAt: _startedAt,
       note: _noteCtrl.text.trim().isEmpty ? null : _noteCtrl.text.trim(),
-      light: lightConfig,
     );
 
     if (mounted) {
@@ -141,13 +108,13 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
               ),
               const SizedBox(height: 16),
               Text(
-                '${widget.method.emoji}  Démarrer une culture',
+                '🌻  Démarrer une culture',
                 style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
               ),
               Text(
-                'Cahier ${widget.method.label.toLowerCase()}',
+                'Cahier pleine terre',
                 style: TextStyle(
                   fontSize: 13,
                   color: KultivaColors.textSecondary,
@@ -156,7 +123,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
               const SizedBox(height: 20),
 
               // --- Légume ---
-              _FieldLabel(text: 'Légume'),
+              const _FieldLabel(text: 'Légume'),
               const SizedBox(height: 6),
               InkWell(
                 onTap: _pickVegetable,
@@ -195,8 +162,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                 ),
               ),
 
-              if (widget.method == CultivationMethod.soil &&
-                  _vegetableId != null) ...<Widget>[
+              if (_vegetableId != null) ...<Widget>[
                 const SizedBox(height: 12),
                 _RotationWarningBanner(vegetableId: _vegetableId!),
               ],
@@ -204,7 +170,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
               const SizedBox(height: 16),
 
               // --- Date ---
-              _FieldLabel(text: 'Date de démarrage'),
+              const _FieldLabel(text: 'Date de démarrage'),
               const SizedBox(height: 6),
               InkWell(
                 onTap: _pickDate,
@@ -237,7 +203,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
               const SizedBox(height: 16),
 
               // --- Note ---
-              _FieldLabel(text: 'Note (optionnelle)'),
+              const _FieldLabel(text: 'Note (optionnelle)'),
               const SizedBox(height: 6),
               TextField(
                 controller: _noteCtrl,
@@ -252,109 +218,6 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                   ),
                 ),
               ),
-
-              // --- Config hydroponie ---
-              if (_isHydro) ...<Widget>[
-                const SizedBox(height: 24),
-                Divider(color: KultivaColors.textSecondary.withValues(alpha: 0.2)),
-                const SizedBox(height: 12),
-                Text(
-                  '💡  Configuration lumière',
-                  style: Theme.of(ctx).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-                const SizedBox(height: 12),
-
-                _FieldLabel(text: 'Type de lumière'),
-                const SizedBox(height: 6),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: LightType.values.map((type) {
-                    final selected = type == _lightType;
-                    return ChoiceChip(
-                      label: Text('${type.emoji} ${type.label}'),
-                      selected: selected,
-                      onSelected: (_) {
-                        setState(() => _lightType = type);
-                      },
-                    );
-                  }).toList(),
-                ),
-
-                const SizedBox(height: 16),
-                _FieldLabel(
-                  text:
-                      "Durée d'éclairage : ${_hoursPerDay.toStringAsFixed(0)} h/jour",
-                ),
-                Slider(
-                  value: _hoursPerDay,
-                  min: 0,
-                  max: 24,
-                  divisions: 24,
-                  label: '${_hoursPerDay.toStringAsFixed(0)} h',
-                  onChanged: (v) => setState(() => _hoursPerDay = v),
-                ),
-
-                if (_needsLedDetails) ...<Widget>[
-                  const SizedBox(height: 8),
-                  _FieldLabel(text: 'Détails LED (optionnel)'),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextField(
-                          controller: _ledDistanceCtrl,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'Distance (cm)',
-                            filled: true,
-                            fillColor: KultivaColors.springA.withValues(alpha: 0.15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          controller: _ledWattsCtrl,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'Watts',
-                            filled: true,
-                            fillColor: KultivaColors.springA.withValues(alpha: 0.15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  _FieldLabel(text: 'Température de couleur'),
-                  const SizedBox(height: 6),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: LedColorTemp.values.map((temp) {
-                      final selected = temp == _ledColorTemp;
-                      return ChoiceChip(
-                        label: Text(temp.label),
-                        selected: selected,
-                        onSelected: (_) {
-                          setState(() => _ledColorTemp = temp);
-                        },
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ],
 
               const SizedBox(height: 28),
               SizedBox(

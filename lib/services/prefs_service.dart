@@ -33,8 +33,6 @@ class PrefsService {
   static const _kLastHeatwaveCheck = 'kultiva.lastHeatwaveNotificationCheck';
   static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
   static const _kCultures = 'kultiva.cultures.v1';
-  static const _kCultureReadings = 'kultiva.cultureReadings.v1';
-  static const _kHydroInstalls = 'kultiva.hydroInstalls.v1';
   static const _kJardinsTutorialDone = 'kultiva.jardinsTutorialDone';
 
   SharedPreferences? _prefs;
@@ -58,10 +56,6 @@ class PrefsService {
   /// Même pattern que [plantationsVersion], pour le cahier de culture
   /// (séparé du Poussidex).
   final ValueNotifier<int> culturesVersion = ValueNotifier<int>(0);
-
-  /// Même pattern, pour les mesures (pH, EC, température...) attachées
-  /// aux cultures du cahier.
-  final ValueNotifier<int> cultureReadingsVersion = ValueNotifier<int>(0);
 
   /// Callback appelé après chaque changement de préférence. Permet
   /// à CloudSyncService de re-uploader les prefs sans créer de
@@ -212,21 +206,6 @@ class PrefsService {
   Future<void> setCulturesJson(String json) async {
     await _prefs?.setString(_kCultures, json);
     culturesVersion.value = culturesVersion.value + 1;
-  }
-
-  // --- Mesures du cahier (pH, EC, etc.) ---
-  String? get cultureReadingsJson => _prefs?.getString(_kCultureReadings);
-
-  Future<void> setCultureReadingsJson(String json) async {
-    await _prefs?.setString(_kCultureReadings, json);
-    cultureReadingsVersion.value = cultureReadingsVersion.value + 1;
-  }
-
-  // --- Installations hydroponiques (refonte cohérence avril 2026) ---
-  String? get hydroInstallsJson => _prefs?.getString(_kHydroInstalls);
-
-  Future<void> setHydroInstallsJson(String json) async {
-    await _prefs?.setString(_kHydroInstalls, json);
   }
 
   // --- Tutoriel premier-lancement de Mes Jardins ---

@@ -30,9 +30,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       fallbackEmoji: '📔',
       title: 'Ton cahier de culture',
       subtitle:
-          "Crée tes jardins : potager pleine terre avec ses cases, ou "
-          "installations hydroponiques (DWC, Kratky, NFT). L'app te "
-          "guide à chaque phase de croissance.",
+          "Crée ton potager pleine terre, place tes plants par "
+          "glisser-déposer dans les cases et suis chaque phase de "
+          "croissance.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_3.png',
@@ -57,8 +57,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       title: 'Apprends à ton rythme',
       subtitle:
           "L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
-          "bien arroser, lutter contre les nuisibles, démarrer en "
-          "hydroponie.",
+          "bien arroser, lutter contre les nuisibles et apprendre les "
+          "bons gestes au jardin.",
     ),
   ];
 

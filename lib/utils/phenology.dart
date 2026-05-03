@@ -111,7 +111,7 @@ int _harvestStartDays(VegetableCategory c) {
 
 int _harvestEndDays(VegetableCategory c) => _harvestStartDays(c) + 60;
 
-/// Déduit la phase de croissance hydroponique d'un plant à partir du
+/// Déduit la phase de croissance d'un plant pleine terre à partir du
 /// nombre de jours depuis qu'il a été planté. Sert à pré-remplir la
 /// phase quand l'utilisateur ajoute un plant en disant qu'il l'a
 /// planté il y a X jours.
@@ -148,8 +148,7 @@ GrowthPhase deducedPhase(Vegetable veg, int daysSinceStarted) {
 
   // Pour le reste (feuilles, aromatiques, racines, bulbes…) : on
   // reste en croissance jusqu'à la récolte. Pas de phase floraison
-  // (au sens hydro) parce qu'on récolte avant qu'elle ne monte en
-  // graine.
+  // distincte parce qu'on récolte avant qu'elle ne monte en graine.
   return GrowthPhase.vegetative;
 }
 

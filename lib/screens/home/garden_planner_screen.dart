@@ -106,10 +106,6 @@ enum PlannerSeason {
 ///
 /// L'écran charge un [GardenPlan] existant ou en crée un nouveau via
 /// [GardenPlanConfigSheet] si aucun plan n'est sélectionné.
-///
-/// Note (refonte cohérence avril 2026) : ce planificateur ne sert plus
-/// que pour la pleine terre. La gestion des installs hydroponiques se
-/// fait dans `HydroponieScreen` (modèle `HydroInstall`, sans grille).
 class GardenPlannerScreen extends StatefulWidget {
   /// Plan à éditer. Si null, on en crée un nouveau au premier rendu.
   final GardenPlan? initialPlan;
@@ -209,16 +205,14 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           children: <Widget>[
             // Barre Configurer / Conseils.
             _buildToolBar(),
-            // Banner irrigation (visible si grille non vide ET pleine terre).
-            // En hydro c'est inutile : l'eau vient du réservoir, pas de la pluie.
-            if (plan.cells.isNotEmpty && !plan.isHydroponic)
+            // Banner irrigation (visible si grille non vide).
+            if (plan.cells.isNotEmpty)
               _IrrigationBanner(weather: _weather, plan: plan),
             // Grille élastique, prend tout l'espace dispo.
             Expanded(child: _buildGrid(plan)),
             // Plant picker fixé en bas.
             _PlantPicker(
               season: _season,
-              hydroOnly: plan.isHydroponic,
               filter: _filter,
               onSeasonChanged: (s) => setState(() => _season = s),
               onFilterChanged: (f) => setState(() => _filter = f),
@@ -366,7 +360,6 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     // trackable pour suivre ce plant (phase, observations, photos…).
     // L'id de la culture est stocké dans la cellule via cultureId.
     final culture = await CultureService.instance.add(
-      method: CultivationMethod.soil,
       vegetableId: vegId,
       startedAt: plantedAt,
     );
@@ -1206,7 +1199,6 @@ class _CompanionInfo extends StatelessWidget {
 /// - cards de plantes draggables (long-press pour démarrer le drag).
 class _PlantPicker extends StatelessWidget {
   final PlannerSeason season;
-  final bool hydroOnly;
   final _PickerFilter filter;
   final ValueChanged<PlannerSeason> onSeasonChanged;
   final ValueChanged<_PickerFilter> onFilterChanged;
@@ -1214,7 +1206,6 @@ class _PlantPicker extends StatelessWidget {
 
   const _PlantPicker({
     required this.season,
-    required this.hydroOnly,
     required this.filter,
     required this.onSeasonChanged,
     required this.onFilterChanged,
@@ -1249,7 +1240,6 @@ class _PlantPicker extends StatelessWidget {
         final plants = vegetablesBase.where((v) {
           if (v.category == VegetableCategory.accessories) return false;
           if (v.densityPerSqFt == null) return false;
-          if (hydroOnly && !v.hydroFriendly) return false;
           // Filtre par catégorie / favoris.
           if (filter is _FavoritesFilter && !favs.contains(v.id)) return false;
           if (filter is _CategoryFilter &&
