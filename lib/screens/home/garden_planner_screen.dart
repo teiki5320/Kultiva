@@ -1400,14 +1400,52 @@ class _PlantPicker extends StatelessWidget {
 /// conseil d'arrosage agrégé pour le potager carré. Les conseils sont
 /// dérivés du modèle utilisé par WateringAdvisor mais en mode "global"
 /// plutôt que par culture (le planificateur agrège plusieurs plants).
+/// Bandeau d'irrigation au-dessus de la grille du planificateur. Coupé
+/// en 2 (refonte demandée par l'user) : météo à gauche + bouton
+/// « Arroser tout » à droite. Le bouton marque arrosé toutes les
+/// cellules du jardin qui ont une CultureEntry liée.
 class _IrrigationBanner extends StatelessWidget {
   final WeatherData? weather;
   final GardenPlan plan;
   const _IrrigationBanner({required this.weather, required this.plan});
 
+  /// Liste des cultureIds liés aux cellules du plan (cellules qui ont
+  /// été créées via _onPlacePlant après la refonte cohérence).
+  List<String> _cultureIdsInPlan() {
+    return <String>[
+      for (final cell in plan.cells.values)
+        if (cell.cultureId != null) cell.cultureId!,
+    ];
+  }
+
+  Future<void> _waterAll(BuildContext context) async {
+    final ids = _cultureIdsInPlan();
+    if (ids.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Aucun plant à arroser dans ce jardin'),
+        ),
+      );
+      return;
+    }
+    AudioService.instance.play(Sfx.water);
+    for (final id in ids) {
+      await CultureService.instance.markWatered(id);
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('💧 ${ids.length} plant(s) arrosé(s)'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final advice = _computeAdvice();
+    final cultureCount = _cultureIdsInPlan().length;
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -1426,30 +1464,87 @@ class _IrrigationBanner extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          Text(advice.emoji, style: const TextStyle(fontSize: 26)),
-          const SizedBox(width: 10),
+          // ─── Partie gauche : météo + conseil ───
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
               children: <Widget>[
-                Text(
-                  advice.title,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  advice.message,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: KultivaColors.textSecondary,
-                    height: 1.3,
+                Text(advice.emoji, style: const TextStyle(fontSize: 26)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        advice.title,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        advice.message,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: KultivaColors.textSecondary,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
+            ),
+          ),
+          // ─── Séparateur vertical ───
+          Container(
+            width: 1,
+            height: 38,
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            color: advice.color.withValues(alpha: 0.35),
+          ),
+          // ─── Partie droite : bouton Arroser ───
+          GestureDetector(
+            onTap: cultureCount > 0 ? () => _waterAll(context) : null,
+            child: Opacity(
+              opacity: cultureCount > 0 ? 1 : 0.45,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    width: 38,
+                    height: 38,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: KultivaColors.primaryGreen,
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: KultivaColors.primaryGreen
+                              .withValues(alpha: 0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.water_drop,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    'Arroser',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: KultivaColors.primaryGreen,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
