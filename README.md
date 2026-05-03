@@ -2,21 +2,22 @@
 
 > Le potager kawaii dans ta poche.
 
-Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pensée pour les jardiniers amateurs de **France métropolitaine** et d'**Afrique de l'Ouest**, du balcon au plein champ — des semis aux récoltes, du choix des graines à la fierté de la première tomate.
+Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pensée pour les jardiniers amateurs de **France métropolitaine** et d'**Afrique de l'Ouest**, et pour faire jardiner les enfants. Du balcon au plein champ — des semis aux récoltes, du choix des graines à la fierté de la première tomate.
 
 ![Aperçu Kultiva](assets/images/onboarding_1.png)
 
 ## ✨ Ce qu'on y trouve
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région
-- 🌽 **Catalogue de ~100 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
-- 📖 **Poussidex** : ta collection de plants en photos, avec notes, historique d'arrosage et compteur de récoltes
-- 🐣 **Tamassi** : créature virtuelle qui évolue avec ton activité au jardin (XP, niveaux, émotions)
+- 🌽 **Catalogue de plus de 120 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
+- 📓 **Mes jardins** : potager carré multi-jardins, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), conseils contextuels selon la météo
+- 📖 **Poussidex** : ta collection chronologique des plants en photos, avec notes, historique d'arrosage et compteur de récoltes
+- 🐣 **Tamassi** : créature virtuelle qui évolue avec ton activité au jardin (XP, niveaux, émotions, visiteurs)
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
-- 🌐 **Feed communautaire** de défis photo avec badges, médailles bronze/argent/or
-- 📓 **Cahier de culture pleine terre** : potager carré multi-jardins, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), conseils contextuels selon la météo
+- 🌐 **Feed communautaire** de défis photo avec 50 défis, 50 badges et médailles bronze / argent / or
+- 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et compagnon kawaii adaptés à un usage en famille
+- 🎓 **30 tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
 - ☁️ **Synchronisation Supabase facultative** (auth Google/Apple, sync plantations, badges, photos)
-- 🎓 **Tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
 
 L'app est **local-first** : tout fonctionne sans connexion. La synchro cloud est en arrière-plan, jamais bloquante.
 
@@ -25,7 +26,7 @@ L'app est **local-first** : tout fonctionne sans connexion. La synchro cloud est
 - 🇫🇷 **France métropolitaine** — calendrier classique, alertes adaptées au climat tempéré
 - 🌍 **Afrique de l'Ouest** — saisons sèches/pluies, légumes tropicaux (gombo, niébé, manioc, taro, igname, sorgho, bissap…)
 
-Le choix se fait au premier lancement, modifiable à tout moment dans les paramètres.
+Le choix se fait au premier lancement et peut être modifié à tout moment dans les paramètres.
 
 ## 🛠️ Stack technique
 
@@ -33,6 +34,7 @@ Le choix se fait au premier lancement, modifiable à tout moment dans les param�
 - **Supabase** (auth + Postgres + Storage) pour la sync cloud optionnelle
 - **Open-Meteo** pour la météo (gratuit, sans clé)
 - Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`
+- **Auth** : email/password, Google Sign-In, Apple Sign-In
 - **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), Apple Sign-In, URL scheme Google
 - **Android** : Gradle 8.14, signing release via `key.properties`, core library desugaring activé
 
@@ -52,7 +54,7 @@ Pour iOS (après `pub get`) :
 cd ios && pod install --repo-update && cd ..
 ```
 
-Routine quotidienne après une modif côté Claude Code (Mac de Jean, branche `main`) :
+Routine quotidienne sur le Mac de Jean après une modif côté Claude Code (branche `main`) :
 
 ```bash
 cd ~/Code/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
@@ -70,6 +72,15 @@ flutter build ios --release
 
 L'app ID Android est `com.toa.kultiva`. Le signing release nécessite `android/key.properties` (non commité).
 
+## ✅ Vérifs avant push
+
+À chaque commit, la CI GitHub Actions lance automatiquement `flutter analyze` et `flutter test`. Pour les vérifier en local :
+
+```bash
+flutter analyze
+flutter test
+```
+
 ## 📐 Architecture
 
 Voir **`CLAUDE.md`** à la racine pour le détail :
@@ -86,14 +97,7 @@ Le **catalogue d'espèces** est synchronisé vers Supabase pour partage avec le 
 
 Les chantiers en cours et à venir sont listés dans **`_plans/roadmap.md`**.
 
-Tests + lints à passer avant toute PR :
-
-```bash
-flutter analyze
-flutter test
-```
-
-Les strings UI sont **en français** uniquement (l'app est `fr-FR` à 100% en V1). Les commentaires de code peuvent être en français ou en anglais selon le pattern dominant du fichier.
+Les strings UI sont **en français** uniquement (l'app est `fr-FR` à 100%). Les commentaires de code peuvent être en français ou en anglais selon le pattern dominant du fichier.
 
 ## 🌐 Sites compagnons
 
