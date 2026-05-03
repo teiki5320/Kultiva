@@ -6,8 +6,10 @@ import '../../services/audio_service.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/hydro_install_service.dart';
 import '../../services/culture_service.dart';
+import '../../services/prefs_service.dart';
 import '../../models/culture_entry.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/jardins_intro_sheet.dart';
 import 'create_hydro_install_sheet.dart';
 import 'garden_planner_screen.dart';
 import 'hydro_install_detail_screen.dart';
@@ -35,6 +37,24 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
     super.initState();
     GardenPlanService.instance.load();
     HydroInstallService.instance.load();
+    _maybeShowIntro();
+  }
+
+  /// Affiche le sheet de présentation à la première ouverture (flag
+  /// prefs jardinsTutorialDone). Plus jamais après.
+  Future<void> _maybeShowIntro() async {
+    if (PrefsService.instance.jardinsTutorialDone) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        isDismissible: true,
+        builder: (_) => const JardinsIntroSheet(),
+      );
+      await PrefsService.instance.setJardinsTutorialDone(true);
+    });
   }
 
   @override
