@@ -16,9 +16,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
-import '../../models/culture_entry.dart';
 import '../../services/audio_service.dart';
-import '../../services/culture_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 import 'mes_jardins_screen.dart';
@@ -77,19 +75,6 @@ class _SowScreenState extends State<SowScreen> {
       _weather = await WeatherService.getWeather();
     } catch (_) {}
     if (mounted) setState(() => _loadingWeather = false);
-  }
-
-  /// Sheet d'arrosage rapide depuis le dashboard. Liste les cultures
-  /// actives (pleine terre + hydro) avec leur dernière date d'arrosage
-  /// et un bouton pour marquer arrosé maintenant.
-  Future<void> _openQuickWaterSheet() async {
-    AudioService.instance.play(Sfx.tap);
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const _QuickWaterSheet(),
-    );
   }
 
   List<RegionData> _dataFor(Region region) {
@@ -215,33 +200,42 @@ class _SowScreenState extends State<SowScreen> {
                       ),
                     ),
                   ),
-                  // Bulles météo + arroser sous l'icône paramètres.
-                  // Refonte : 2 mini-cards équilibrées (même style/taille).
-                  Positioned(
-                    top: 48,
-                    right: 12,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        _DashboardActionBubble(
-                          emoji: '💧',
-                          label: 'Arroser',
-                          onTap: () => _openQuickWaterSheet(),
+                  // Bulle météo sous l'icône paramètres.
+                  if (_weather != null)
+                    Positioned(
+                      top: 48,
+                      right: 12,
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                              builder: (_) => const WeatherScreen()),
                         ),
-                        const SizedBox(width: 6),
-                        if (_weather != null)
-                          _DashboardActionBubble(
-                            emoji: _weather!.weatherEmoji,
-                            label:
-                                '${_weather!.currentTemp.toStringAsFixed(0)}°',
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                  builder: (_) => const WeatherScreen()),
-                            ),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                      ],
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(_weather!.weatherEmoji,
+                                  style: const TextStyle(fontSize: 14)),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${_weather!.currentTemp.toStringAsFixed(0)}°',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
 
@@ -988,283 +982,6 @@ class _SlideSeason extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-/// Bulle d'action ronde affichée en haut à droite du dashboard
-/// (à côté de l'icône paramètres). Utilisée pour la météo et l'arrosage
-/// rapide. Mêmes dimensions / style pour rester équilibré visuellement.
-class _DashboardActionBubble extends StatelessWidget {
-  final String emoji;
-  final String label;
-  final VoidCallback onTap;
-
-  const _DashboardActionBubble({
-    required this.emoji,
-    required this.label,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(emoji, style: const TextStyle(fontSize: 14)),
-            const SizedBox(width: 4),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Sheet d'arrosage rapide depuis le dashboard. Liste les cultures
-/// actives (pleine terre + hydro), avec leur dernier arrosage et un
-/// bouton « Arroser » pour chacune. Bouton « Tout arroser » en bas
-/// pour un geste groupé.
-class _QuickWaterSheet extends StatefulWidget {
-  const _QuickWaterSheet();
-
-  @override
-  State<_QuickWaterSheet> createState() => _QuickWaterSheetState();
-}
-
-class _QuickWaterSheetState extends State<_QuickWaterSheet> {
-  late List<CultureEntry> _cultures;
-
-  @override
-  void initState() {
-    super.initState();
-    _refresh();
-  }
-
-  void _refresh() {
-    _cultures = CultureService.instance.loadAll().where((c) => c.isActive).toList()
-      ..sort((a, b) => b.startedAt.compareTo(a.startedAt));
-  }
-
-  String _formatLast(CultureEntry c) {
-    final last = c.lastWatering;
-    if (last == null) return 'Jamais arrosé';
-    final days = DateTime.now().difference(last).inDays;
-    if (days == 0) return 'Arrosé aujourd\'hui';
-    if (days == 1) return 'Arrosé hier';
-    return 'Arrosé il y a $days jours';
-  }
-
-  Color _statusColor(CultureEntry c) {
-    final last = c.lastWatering;
-    if (last == null) return const Color(0xFFE8A87C);
-    final days = DateTime.now().difference(last).inDays;
-    final veg = vegetablesBase.firstWhere(
-      (v) => v.id == c.vegetableId,
-      orElse: () => vegetablesBase.first,
-    );
-    final threshold = veg.effectiveWateringDays;
-    if (days <= threshold - 1) return KultivaColors.primaryGreen;
-    if (days <= threshold) return const Color(0xFFE8A87C);
-    return const Color(0xFFD4564A);
-  }
-
-  Future<void> _waterOne(CultureEntry c) async {
-    AudioService.instance.play(Sfx.water);
-    await CultureService.instance.markWatered(c.id);
-    setState(_refresh);
-  }
-
-  Future<void> _waterAll() async {
-    AudioService.instance.play(Sfx.water);
-    for (final c in _cultures) {
-      await CultureService.instance.markWatered(c.id);
-    }
-    setState(_refresh);
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('💧 ${_cultures.length} plant(s) arrosé(s)'),
-        ),
-      );
-      Navigator.of(context).pop();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.7,
-      minChildSize: 0.4,
-      maxChildSize: 0.9,
-      expand: false,
-      builder: (_, scroll) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: KultivaColors.lightBackground,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 10),
-              Container(
-                width: 38,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: KultivaColors.textSecondary.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                '💧  Arroser mes plants',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                _cultures.isEmpty
-                    ? 'Aucune culture active'
-                    : '${_cultures.length} plant(s) en cours',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: KultivaColors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: 14),
-              if (_cultures.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: <Widget>[
-                      const Text('🌱', style: TextStyle(fontSize: 40)),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Tu n\'as encore aucun plant en cours.\n'
-                        'Va dans Mes jardins pour en ajouter.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: KultivaColors.textSecondary,
-                          fontSize: 13,
-                          height: 1.4,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                Expanded(
-                  child: ListView.separated(
-                    controller: scroll,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    itemCount: _cultures.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 8),
-                    itemBuilder: (_, i) {
-                      final c = _cultures[i];
-                      final veg = vegetablesBase.firstWhere(
-                        (v) => v.id == c.vegetableId,
-                        orElse: () => vegetablesBase.first,
-                      );
-                      final color = _statusColor(c);
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: color.withValues(alpha: 0.4),
-                          ),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Text(veg.emoji,
-                                style: const TextStyle(fontSize: 26)),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    veg.name,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    _formatLast(c),
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: color,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            FilledButton.icon(
-                              onPressed: () => _waterOne(c),
-                              icon: const Icon(Icons.water_drop, size: 14),
-                              label: const Text(
-                                'Arroser',
-                                style: TextStyle(fontSize: 11),
-                              ),
-                              style: FilledButton.styleFrom(
-                                backgroundColor: KultivaColors.primaryGreen,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 4),
-                                minimumSize: const Size(0, 32),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              if (_cultures.length > 1)
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton.icon(
-                        onPressed: _waterAll,
-                        icon: const Icon(Icons.water_drop),
-                        label: Text(
-                          'Tout arroser (${_cultures.length} plants)',
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: KultivaColors.primaryGreen,
-                          side: BorderSide(
-                              color: KultivaColors.primaryGreen, width: 1.5),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
