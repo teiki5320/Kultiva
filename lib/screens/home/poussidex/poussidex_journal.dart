@@ -45,7 +45,7 @@ class PoussidexJournalView extends StatelessWidget {
           icon: '💧',
           action: 'Arrosé',
           vegetableLabel: label,
-          color: const Color(0xFF4FC3F7),
+          color: KultivaColors.waterBlue,
         ));
       }
       if (p.harvestedAt != null) {

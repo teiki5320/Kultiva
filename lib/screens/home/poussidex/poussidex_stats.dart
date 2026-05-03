@@ -101,7 +101,7 @@ class PoussidexStatsView extends StatelessWidget {
                 emoji: '💧',
                 label: 'Arrosages',
                 value: '$totalWaterings',
-                color: const Color(0xFF4FC3F7),
+                color: KultivaColors.waterBlue,
               ),
               _StatTile(
                 emoji: '🧺',
@@ -362,7 +362,7 @@ class _WateringChart extends StatelessWidget {
         color: const Color(0xFFE0F7FA).withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: const Color(0xFF4FC3F7).withValues(alpha: 0.35), width: 1.5),
+            color: KultivaColors.waterBlue.withValues(alpha: 0.35), width: 1.5),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

@@ -81,7 +81,7 @@ class PoussidexPodiumView extends StatelessWidget {
         _PodiumSection(
           title: 'Les plus arrosés',
           emoji: '💧',
-          color: const Color(0xFF4FC3F7),
+          color: KultivaColors.waterBlue,
           entries: topBy((s) => s.totalWaterings),
           unitSingular: 'arrosage',
           unitPlural: 'arrosages',

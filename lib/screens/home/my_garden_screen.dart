@@ -527,7 +527,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
                     _TamassiActionButton(
                       label: 'Arroser',
                       icon: Icons.water_drop,
-                      color: Colors.blue.shade400,
+                      color: KultivaColors.waterBlue,
                       onTap: _onWater,
                     ),
                     const SizedBox(width: 12),

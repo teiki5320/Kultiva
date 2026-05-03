@@ -18,6 +18,11 @@ class KultivaColors {
   static const Color challengePink = Color(0xFFFF8FAB);
   static const Color badgeGold = Color(0xFFE8B923);
 
+  /// Bleu eau utilisé pour TOUS les boutons et indicateurs liés à
+  /// l'arrosage. Une seule nuance dans toute l'app pour la cohérence
+  /// visuelle (cf audit mai 2026).
+  static const Color waterBlue = Color(0xFF4A9BBF);
+
   // --- Thème sombre ---
   static const Color darkBackground = Color(0xFF0F1F18);
   static const Color darkSurface = Color(0xFF1A2E22);
