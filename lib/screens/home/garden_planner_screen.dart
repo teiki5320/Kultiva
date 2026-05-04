@@ -894,7 +894,7 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                           icon: const Icon(Icons.water_drop, size: 16),
                           label: const Text('Arroser'),
                           style: FilledButton.styleFrom(
-                            backgroundColor: const Color(0xFF4A9BBF),
+                            backgroundColor: KultivaColors.waterBlue,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 14, vertical: 6),
                             textStyle: const TextStyle(
@@ -1507,11 +1507,11 @@ class _IrrigationBanner extends StatelessWidget {
                     height: 38,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF4A9BBF),
+                      color: KultivaColors.waterBlue,
                       shape: BoxShape.circle,
                       boxShadow: <BoxShadow>[
                         BoxShadow(
-                          color: const Color(0xFF4A9BBF)
+                          color: KultivaColors.waterBlue
                               .withValues(alpha: 0.3),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
@@ -1530,7 +1530,7 @@ class _IrrigationBanner extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFF4A9BBF),
+                      color: KultivaColors.waterBlue,
                     ),
                   ),
                 ],
@@ -1720,7 +1720,7 @@ class _TipsSheet extends StatelessWidget {
             _TipStep(
               n: 4,
               text:
-                  "Bientôt : anneaux verts pour les compagnes, rouges pour les combatives.",
+                  "Anneau vert autour d'une case = plantes compagnes voisines, anneau rouge = à séparer.",
             ),
             _TipStep(
               n: 5,

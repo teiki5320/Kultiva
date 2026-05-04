@@ -366,7 +366,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFF4FC3F7).withValues(alpha: 0.15),
+              color: KultivaColors.waterBlue.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(

@@ -1,11 +1,11 @@
 # 🗺️ Kultiva — Roadmap
 
-> Dernière mise à jour : **2026-04-26**
-> Statut global : **actif**
+> Dernière mise à jour : **2026-05-03**
+> Statut global : **pré-publication**
 
 ## 🎯 Vision
 
-Le potager kawaii dans la poche : un compagnon de jardinage francophone qui combine calendrier régional, créature évolutive, météo, défis communautaires et cahier de culture sérieux (pleine terre et hydroponie), pour la France métropolitaine et l'Afrique de l'Ouest.
+Le potager kawaii dans la poche : un compagnon de jardinage francophone qui combine calendrier régional, créature évolutive, météo, défis communautaires et cahier de culture pleine terre, pour la France métropolitaine et l'Afrique de l'Ouest. Pensé pour les amateurs et pour faire jardiner les enfants.
 
 ## 🏁 Jalons
 
@@ -18,10 +18,11 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 - [x] Météo intégrée via Open-Meteo (sans clé d'API) avec alertes d'arrosage et fallback Paris si la géoloc est refusée
 - [x] Feed communautaire de défis photo avec likes, badges, médailles bronze/argent/or
 - [x] Connexion Supabase email + Google + Apple, et synchronisation cloud facultative des plantations, préférences, badges et XP
-- [x] Cahier de culture pleine terre et hydroponie avec suivi pH, EC, température, niveau réservoir, phases de croissance et calculateur de nutriments
-- [x] Étapes phénologiques auto-suggérées sur la pleine terre, alertes canicule personnalisées et avertissement de rotation
-- [x] Partage de builds hydroponiques dans la communauté avec photos, équipement et likes
+- [x] Cahier de culture pleine terre multi-jardins avec placement par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos)
+- [x] Étapes phénologiques auto-suggérées sur chaque plant, alertes canicule personnalisées et avertissement de rotation
+- [x] Tutoriel de bienvenue parent-enfant et conseils contextuels selon la météo
 - [x] CI iOS via Xcode Cloud, signing release Android et conformité Amazon Associates en place
+- [x] Retrait complet de la feature hydroponie (sauvegardée sur la branche `archive/hydroponie-2026-05-03` pour réintégration future)
 - [x] Landing marketing en ligne et site Kultivaprix (comparateur de prix) lié depuis l'app
 - [x] README réécrit pour refléter la v2 réelle (Supabase, Poussidex, Tamassi, météo, feed, cahier de culture)
 - [x] Sync unidirectionnelle du catalogue Kultiva vers Kultivaprix via edge function Supabase et workflow GitHub Actions sur push main
@@ -48,7 +49,8 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 - [ ] **À discuter** : reconnaissance de plante par photo (style PlantNet / Picture This), avec écran de scan caméra et conseils photo (cadrage, netteté, mono-espèce). Captures d'inspiration vues 2026-04-27.
 - [ ] Internationalisation avec extraction des strings et ajout de l'anglais
 - [ ] Mode hors ligne complet avec assets météo et tutoriels téléchargeables
-- [ ] Intégration de capteurs Bluetooth pour automatiser les mesures hydroponiques (pH, EC, température)
-- [ ] Comparatif inter-saisons et entre méthodes (pleine terre vs hydroponie) avec stats partageables
+- [ ] Réintroduire l'hydroponie en mode simplifié (le code complet est conservé sur `archive/hydroponie-2026-05-03`)
+- [ ] Comparatif inter-saisons avec stats partageables
 - [ ] Marketplace de semences paysannes au-delà du programme Amazon Associates
 - [ ] Groupes privés famille ou voisins avec défis locaux et classements géographiques
+- [ ] Mode « parent-enfant » avec profils enfants, défis adaptés et badges spéciaux

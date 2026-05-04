@@ -262,13 +262,7 @@ class _RegionSelectorPage extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 24),
-              // Refonte avril 2026 : on n'affiche plus l'Afrique de l'Ouest
-              // dans le sélecteur d'onboarding (pas assez de catalogue
-              // localisé). L'enum garde la valeur pour ne pas casser les
-              // anciennes installations, mais l'UI ne propose que France.
-              for (final r in Region.values.where(
-                (r) => r != Region.westAfrica,
-              ))
+              for (final r in Region.values)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   child: _RegionTile(

@@ -220,7 +220,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                           style: TextStyle(fontSize: 18)),
                       label: const Text('Arroser'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4FC3F7),
+                        backgroundColor: KultivaColors.waterBlue,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),

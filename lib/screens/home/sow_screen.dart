@@ -241,7 +241,7 @@ class _SowScreenState extends State<SowScreen> {
 
               const SizedBox(height: 20),
 
-              // ── 4 cartes kawaii 2×2 ──
+              // ── 6 cartes kawaii 3×2 ──
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
