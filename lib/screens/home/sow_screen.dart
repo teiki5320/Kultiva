@@ -20,7 +20,6 @@ import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 import 'mes_jardins_screen.dart';
-import 'news_feed_screen.dart';
 import 'settings_screen.dart';
 import 'weather_screen.dart';
 
@@ -331,46 +330,22 @@ class _SowScreenState extends State<SowScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _KawaiiCard(
-                            emoji: '📔',
-                            imagePath: null,
-                            label: 'Cahier de culture',
-                            subtitle: 'Mes jardins pleine terre',
-                            gradientColors: const [
-                              KultivaColors.springA,
-                              KultivaColors.springB,
-                            ],
-                            bubbleColor: KultivaColors.primaryGreen,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const MesJardinsScreen(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _KawaiiCard(
-                            emoji: '📰',
-                            imagePath: null,
-                            label: 'Actualités',
-                            subtitle: 'Astuces & nouveautés',
-                            gradientColors: const [
-                              KultivaColors.summerA,
-                              KultivaColors.summerB,
-                            ],
-                            bubbleColor: KultivaColors.terracotta,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const NewsFeedScreen(),
-                              ),
-                            ),
-                          ),
-                        ),
+                    _KawaiiCard(
+                      emoji: '📔',
+                      imagePath: null,
+                      label: 'Cahier de culture',
+                      subtitle: 'Mes jardins pleine terre',
+                      gradientColors: const [
+                        KultivaColors.springA,
+                        KultivaColors.springB,
                       ],
+                      bubbleColor: KultivaColors.primaryGreen,
+                      height: 150,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const MesJardinsScreen(),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -460,6 +435,7 @@ class _KawaiiCard extends StatelessWidget {
   final List<Color> gradientColors;
   final Color bubbleColor;
   final VoidCallback onTap;
+  final double height;
 
   const _KawaiiCard({
     required this.emoji,
@@ -469,6 +445,7 @@ class _KawaiiCard extends StatelessWidget {
     required this.gradientColors,
     required this.bubbleColor,
     required this.onTap,
+    this.height = 130,
   });
 
   @override
@@ -479,7 +456,7 @@ class _KawaiiCard extends StatelessWidget {
         onTap();
       },
       child: Container(
-        height: 130,
+        height: height,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
