@@ -23,8 +23,9 @@ import 'mes_jardins_screen.dart';
 import 'settings_screen.dart';
 import 'weather_screen.dart';
 
-/// Dashboard principal — Hero saisonnier + 4 cartes kawaii +
-/// carrousel de slides (légume, météo, conseil, saison).
+/// Dashboard principal — Hero saisonnier + 4 cartes kawaii (Semer,
+/// Récolter, Calendrier, Légume du jour) + 1 carte Cahier de culture
+/// pleine largeur + carrousel de slides (légume, météo, conseil, saison).
 class SowScreen extends StatefulWidget {
   const SowScreen({super.key});
 
@@ -240,7 +241,7 @@ class _SowScreenState extends State<SowScreen> {
 
               const SizedBox(height: 20),
 
-              // ── 6 cartes kawaii 3×2 ──
+              // ── 4 cartes 2×2 + carte Cahier de culture pleine largeur ──
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
