@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/companions.dart';
 import '../../data/diseases.dart';
@@ -23,9 +24,15 @@ import 'mes_jardins_screen.dart';
 import 'settings_screen.dart';
 import 'weather_screen.dart';
 
-/// Dashboard principal — Hero saisonnier + 4 cartes kawaii (Semer,
-/// Récolter, Calendrier, Légume du jour) + 1 carte Cahier de culture
-/// pleine largeur + carrousel de slides (légume, météo, conseil, saison).
+/// URL Instagram Kultiva — ouverte au tap sur la carte « Actualités ».
+/// Le compte sert d'actualités (publications + stories) plutôt que de
+/// gérer un feed maison côté app.
+// TODO: remplacer par le vrai pseudo Kultiva quand le compte sera créé.
+const String _kInstagramUrl = 'https://www.instagram.com/kultiva_app/';
+
+/// Dashboard principal — Hero saisonnier + 6 cartes kawaii 3×2
+/// (Semer, Récolter, Calendrier, Légume du jour, Cahier de culture,
+/// Actualités) + carrousel de slides (légume, météo, conseil, saison).
 class SowScreen extends StatefulWidget {
   const SowScreen({super.key});
 
@@ -331,22 +338,42 @@ class _SowScreenState extends State<SowScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    _KawaiiCard(
-                      emoji: '📔',
-                      imagePath: null,
-                      label: 'Cahier de culture',
-                      subtitle: 'Mes jardins pleine terre',
-                      gradientColors: const [
-                        KultivaColors.springA,
-                        KultivaColors.springB,
-                      ],
-                      bubbleColor: KultivaColors.primaryGreen,
-                      height: 150,
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const MesJardinsScreen(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _KawaiiCard(
+                            emoji: '📔',
+                            imagePath: null,
+                            label: 'Cahier de culture',
+                            subtitle: 'Mes jardins pleine terre',
+                            gradientColors: const [
+                              KultivaColors.springA,
+                              KultivaColors.springB,
+                            ],
+                            bubbleColor: KultivaColors.primaryGreen,
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const MesJardinsScreen(),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _KawaiiCard(
+                            emoji: '📸',
+                            imagePath: null,
+                            label: 'Actualités',
+                            subtitle: 'Suis-nous sur Instagram',
+                            gradientColors: const [
+                              KultivaColors.summerA,
+                              KultivaColors.summerB,
+                            ],
+                            bubbleColor: KultivaColors.terracotta,
+                            onTap: () => _openInstagram(context),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -421,6 +448,22 @@ class _SowScreenState extends State<SowScreen> {
         );
       },
     );
+  }
+
+  /// Ouvre le compte Instagram Kultiva dans le navigateur ou l'app
+  /// Instagram. Affiche un snackbar discret si l'URL ne peut pas
+  /// être ouverte (rare, mais évite un crash silencieux).
+  Future<void> _openInstagram(BuildContext context) async {
+    AudioService.instance.play(Sfx.tap);
+    final uri = Uri.parse(_kInstagramUrl);
+    final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!ok && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Impossible d\'ouvrir Instagram pour le moment.'),
+        ),
+      );
+    }
   }
 }
 
