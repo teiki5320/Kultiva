@@ -1503,11 +1503,22 @@ class _TamassiViewState extends State<_TamassiView>
                                 sin(bannerP * pi) * 0.05;
                             return Stack(
                               children: <Widget>[
-                                // Flash blanc.
+                                // Flash blanc (radial pour éviter un rectangle
+                                // net au bord de la SizedBox parente).
                                 Positioned.fill(
-                                  child: Container(
-                                    color: Colors.white
-                                        .withValues(alpha: flashOpacity),
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      gradient: RadialGradient(
+                                        colors: <Color>[
+                                          Colors.white
+                                              .withValues(alpha: flashOpacity),
+                                          Colors.white
+                                              .withValues(alpha: flashOpacity * 0.6),
+                                          Colors.white.withValues(alpha: 0),
+                                        ],
+                                        stops: const <double>[0.0, 0.55, 1.0],
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 // Rayons lumineux rotatifs.
