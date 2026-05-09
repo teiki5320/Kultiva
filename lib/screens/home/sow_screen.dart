@@ -94,9 +94,14 @@ class _SowScreenState extends State<SowScreen> {
   }
 
   Vegetable get _vegetableOfTheDay {
+    // Filtre les accessoires : seul un vrai légume/aromate/tubercule
+    // peut être « Légume du jour ».
+    final pool = vegetablesBase
+        .where((v) => v.category != VegetableCategory.accessories)
+        .toList();
     final dayOfYear =
         DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
-    return vegetablesBase[dayOfYear % vegetablesBase.length];
+    return pool[dayOfYear % pool.length];
   }
 
   String get _tipOfTheDay {
