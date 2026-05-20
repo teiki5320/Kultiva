@@ -149,7 +149,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
                         : completedCount / allChallenges.length,
                     minHeight: 6,
                     backgroundColor: Colors.grey.shade200,
-                    valueColor: AlwaysStoppedAnimation<Color>(
+                    valueColor: const AlwaysStoppedAnimation<Color>(
                         KultivaColors.primaryGreen),
                   ),
                 ),

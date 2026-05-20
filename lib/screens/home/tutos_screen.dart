@@ -155,13 +155,13 @@ class TutosScreen extends StatelessWidget {
                   Image.asset(
                     'assets/images/tutos.png',
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => DecoratedBox(
+                    errorBuilder: (_, __, ___) => const DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            const Color(0xFFFFE0B2),
+                            Color(0xFFFFE0B2),
                             KultivaColors.springB,
                           ],
                         ),
@@ -188,13 +188,13 @@ class TutosScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           '🎓 Tutos',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
                             fontSize: 24,
-                            shadows: const [
+                            shadows: [
                               Shadow(color: Colors.black45, blurRadius: 8),
                             ],
                           ),
@@ -353,14 +353,14 @@ class _TutoTile extends StatelessWidget {
                       children: [
                         Text(
                           item.label,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,
                             color: KultivaColors.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
+                        const Text(
                           'Le tour complet — dashboard, Étal, Poussidex',
                           style: TextStyle(
                             fontSize: 12,
@@ -409,7 +409,7 @@ class _TutoTile extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: Text(
                             item.label,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 9,
                               fontWeight: FontWeight.w700,
                               color: KultivaColors.textPrimary,

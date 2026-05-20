@@ -564,15 +564,15 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       bodyRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.3, -0.5),
+        ..shader = const RadialGradient(
+          center: Alignment(-0.3, -0.5),
           radius: 0.9,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFFD4A96A),
             Color(0xFFAA7B42),
             Color(0xFF6F4A2A),
           ],
-          stops: const <double>[0.0, 0.5, 1.0],
+          stops: <double>[0.0, 0.5, 1.0],
         ).createShader(bodyRect),
     );
 
@@ -697,9 +697,9 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       seedRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.3, -0.4),
-          colors: const <Color>[Color(0xFFB48A63), Color(0xFF6F4A2A)],
+        ..shader = const RadialGradient(
+          center: Alignment(-0.3, -0.4),
+          colors: <Color>[Color(0xFFB48A63), Color(0xFF6F4A2A)],
         ).createShader(seedRect),
     );
 
@@ -736,14 +736,14 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       headRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.3, -0.5),
-          colors: const <Color>[
+        ..shader = const RadialGradient(
+          center: Alignment(-0.3, -0.5),
+          colors: <Color>[
             Color(0xFFB8E6B8),
             Color(0xFF6FB87A),
             Color(0xFF3E8A4B),
           ],
-          stops: const <double>[0.0, 0.55, 1.0],
+          stops: <double>[0.0, 0.55, 1.0],
         ).createShader(headRect),
     );
 
@@ -786,11 +786,11 @@ class _CreaturePainter extends CustomPainter {
       height: h * 0.09,
     );
     final seedPaint = Paint()
-      ..shader = RadialGradient(
-        center: const Alignment(-0.3, -0.4),
+      ..shader = const RadialGradient(
+        center: Alignment(-0.3, -0.4),
         colors: <Color>[
-          const Color(0xFFB48A63),
-          const Color(0xFF6F4A2A),
+          Color(0xFFB48A63),
+          Color(0xFF6F4A2A),
         ],
       ).createShader(seedRect);
     canvas.drawOval(seedRect, seedPaint);
@@ -813,13 +813,13 @@ class _CreaturePainter extends CustomPainter {
       )
       ..close();
     final stemPaint = Paint()
-      ..shader = LinearGradient(
+      ..shader = const LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
         colors: <Color>[
-          const Color(0xFF4F9F5A),
-          const Color(0xFF7DC887),
-          const Color(0xFF4F9F5A),
+          Color(0xFF4F9F5A),
+          Color(0xFF7DC887),
+          Color(0xFF4F9F5A),
         ],
       ).createShader(Rect.fromLTWH(0, 0, w, h));
     canvas.drawPath(stemPath, stemPaint);
@@ -843,15 +843,15 @@ class _CreaturePainter extends CustomPainter {
     );
     // Corps principal avec dégradé radial (lumière en haut-gauche).
     final headPaint = Paint()
-      ..shader = RadialGradient(
-        center: const Alignment(-0.3, -0.5),
+      ..shader = const RadialGradient(
+        center: Alignment(-0.3, -0.5),
         radius: 0.95,
         colors: <Color>[
-          const Color(0xFFB8E6B8),
-          const Color(0xFF6FB87A),
-          const Color(0xFF3E8A4B),
+          Color(0xFFB8E6B8),
+          Color(0xFF6FB87A),
+          Color(0xFF3E8A4B),
         ],
-        stops: const <double>[0.0, 0.55, 1.0],
+        stops: <double>[0.0, 0.55, 1.0],
       ).createShader(headRect);
     canvas.drawOval(headRect, headPaint);
 
@@ -932,9 +932,9 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       earthPath,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(0, -0.5),
-          colors: const <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
+        ..shader = const RadialGradient(
+          center: Alignment(0, -0.5),
+          colors: <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
         ).createShader(Rect.fromLTWH(cx - w * 0.25, h * 0.82, w * 0.5, h * 0.12)),
     );
 
@@ -1012,9 +1012,9 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       centerRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.3, -0.4),
-          colors: const <Color>[Color(0xFFFFE68A), Color(0xFFEABF30)],
+        ..shader = const RadialGradient(
+          center: Alignment(-0.3, -0.4),
+          colors: <Color>[Color(0xFFFFE68A), Color(0xFFEABF30)],
         ).createShader(centerRect),
     );
 
@@ -1081,9 +1081,9 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       earthPath,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(0, -0.5),
-          colors: const <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
+        ..shader = const RadialGradient(
+          center: Alignment(0, -0.5),
+          colors: <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
         ).createShader(
             Rect.fromLTWH(cx - w * 0.30, h * 0.84, w * 0.60, h * 0.12)),
     );
@@ -1098,10 +1098,10 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       trunkPath,
       Paint()
-        ..shader = LinearGradient(
+        ..shader = const LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFF7A5530),
             Color(0xFFA07240),
             Color(0xFF7A5530),
@@ -1129,15 +1129,15 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       canopyRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.25, -0.4),
+        ..shader = const RadialGradient(
+          center: Alignment(-0.25, -0.4),
           radius: 0.85,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFF8FD98F),
             Color(0xFF5CB35C),
             Color(0xFF2E7A2E),
           ],
-          stops: const <double>[0.0, 0.5, 1.0],
+          stops: <double>[0.0, 0.5, 1.0],
         ).createShader(canopyRect),
     );
 
@@ -1268,15 +1268,15 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       budPath,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.3, -0.5),
+        ..shader = const RadialGradient(
+          center: Alignment(-0.3, -0.5),
           radius: 0.9,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFFFFC8E0),
             Color(0xFFF594B8),
             Color(0xFFCA5E86),
           ],
-          stops: const <double>[0.0, 0.55, 1.0],
+          stops: <double>[0.0, 0.55, 1.0],
         ).createShader(Rect.fromCenter(
             center: budCenter, width: w * 0.24, height: h * 0.28)),
     );
@@ -1360,15 +1360,15 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       bodyRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.2, -0.3),
+        ..shader = const RadialGradient(
+          center: Alignment(-0.2, -0.3),
           radius: 0.9,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFFB8E6B8),
             Color(0xFF6FB87A),
             Color(0xFF3E8A4B),
           ],
-          stops: const <double>[0.0, 0.5, 1.0],
+          stops: <double>[0.0, 0.5, 1.0],
         ).createShader(bodyRect),
     );
 
@@ -1448,10 +1448,10 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       trunkPath,
       Paint()
-        ..shader = LinearGradient(
+        ..shader = const LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFF7A5530),
             Color(0xFFA07240),
             Color(0xFF7A5530),
@@ -1470,15 +1470,15 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawOval(
       canopyRect,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(-0.25, -0.4),
+        ..shader = const RadialGradient(
+          center: Alignment(-0.25, -0.4),
           radius: 0.85,
-          colors: const <Color>[
+          colors: <Color>[
             Color(0xFF8FD98F),
             Color(0xFF5CB35C),
             Color(0xFF2E7A2E),
           ],
-          stops: const <double>[0.0, 0.5, 1.0],
+          stops: <double>[0.0, 0.5, 1.0],
         ).createShader(canopyRect),
     );
 
@@ -1595,9 +1595,9 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       earthPath,
       Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(0, -0.5),
-          colors: const <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
+        ..shader = const RadialGradient(
+          center: Alignment(0, -0.5),
+          colors: <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
         ).createShader(Rect.fromLTWH(left, topY, width, h * 0.96 - topY)),
     );
   }
@@ -1690,12 +1690,12 @@ class _CreaturePainter extends CustomPainter {
     canvas.drawPath(
       path,
       Paint()
-        ..shader = LinearGradient(
+        ..shader = const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[
-            const Color(0xFF7DC887),
-            const Color(0xFF4A8B56),
+            Color(0xFF7DC887),
+            Color(0xFF4A8B56),
           ],
         ).createShader(leafRect),
     );

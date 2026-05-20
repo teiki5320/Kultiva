@@ -70,7 +70,7 @@ PhenologyHint? expectedStage(Vegetable veg, int daysSinceStart) {
     );
   }
   if (daysSinceStart < harvestEnd) {
-    return PhenologyHint(
+    return const PhenologyHint(
       emoji: '🧺',
       label: 'Récolte attendue',
       detail: 'Tu peux commencer à récolter. Goûte régulièrement '

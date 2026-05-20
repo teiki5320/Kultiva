@@ -85,7 +85,7 @@ class _VegetablePickerSheetState extends State<VegetablePickerSheet> {
                       const SizedBox(width: 8),
                       Text(
                         '${list.length} légume${list.length > 1 ? "s" : ""}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: KultivaColors.textSecondary,
                           fontSize: 12,
                         ),
@@ -96,7 +96,7 @@ class _VegetablePickerSheetState extends State<VegetablePickerSheet> {
                 const SizedBox(height: 4),
                 Expanded(
                   child: list.isEmpty
-                      ? Center(
+                      ? const Center(
                           child: Text(
                             'Aucun résultat',
                             style: TextStyle(
@@ -117,7 +117,7 @@ class _VegetablePickerSheetState extends State<VegetablePickerSheet> {
                                       fontWeight: FontWeight.w600)),
                               subtitle: Text(v.category.label),
                               trailing: isFav
-                                  ? Icon(Icons.favorite,
+                                  ? const Icon(Icons.favorite,
                                       size: 16,
                                       color: KultivaColors.terracotta)
                                   : null,

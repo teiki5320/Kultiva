@@ -8,7 +8,7 @@ import '../models/garden_plan.dart';
 /// Service local-first pour les plans de jardin (planificateur potager carré).
 ///
 /// Stocke tous les plans dans une seule clé SharedPreferences
-/// `garden_plans_v1` (Map<String, GardenPlan> sérialisée en JSON).
+/// `garden_plans_v1` (`Map<String, GardenPlan>` sérialisée en JSON).
 /// Cohérent avec les autres services Kultiva (PrefsService,
 /// CultureService) : pas de framework state-management externe,
 /// juste un `ValueNotifier<List<GardenPlan>>`.

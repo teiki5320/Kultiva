@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
 import '../../../models/plantation.dart';
-import '../../../models/vegetable.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 
@@ -14,9 +13,9 @@ class PoussidexPodiumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (plantations.isEmpty) {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           child: Text(
             '🏅\n\nPas encore de podium — plante ton premier légume pour lancer la compétition !',
             textAlign: TextAlign.center,
@@ -216,13 +215,13 @@ class _PodiumSection extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.hourglass_empty,
+                  const Icon(Icons.hourglass_empty,
                       size: 16, color: KultivaColors.textSecondary),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       hint,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: KultivaColors.textSecondary,
                         fontSize: 12,
                         fontStyle: FontStyle.italic,
@@ -350,11 +349,11 @@ class _PodiumStep extends StatelessWidget {
               ),
               // 👑 Couronne en overlay au-dessus de l'emoji (rank 1).
               if (rank == 1)
-                Positioned(
+                const Positioned(
                   top: -14,
                   child: Text(
                     '👑',
-                    style: const TextStyle(fontSize: 28),
+                    style: TextStyle(fontSize: 28),
                   ),
                 ),
               // Pastille médaille au coin haut-droit.

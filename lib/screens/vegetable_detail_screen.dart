@@ -211,8 +211,8 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
         if (rotationMap.containsKey(vegetable.id))
           _RotationSection(data: rotationMap[vegetable.id]!),
         if (_list.length > 1)
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
+          const Padding(
+            padding: EdgeInsets.only(top: 12),
             child: Text(
               '← Swipe pour naviguer →',
               textAlign: TextAlign.center,
@@ -490,7 +490,7 @@ class _InfoSection extends StatelessWidget {
                         width: 110,
                         child: Text(
                           r.label,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             color: KultivaColors.textSecondary,
                           ),
@@ -566,7 +566,7 @@ class _HarvestTimeSection extends StatelessWidget {
                         width: 90,
                         child: Text(
                           _seasonLabel(e.key),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             color: KultivaColors.textSecondary,
                           ),
@@ -631,7 +631,7 @@ class _DiseaseSection extends StatelessWidget {
                     children: [
                       LexiconText(
                         d.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: KultivaColors.terracotta,
                         ),
@@ -683,7 +683,7 @@ class _RotationSection extends StatelessWidget {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Famille : ',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -697,7 +697,7 @@ class _RotationSection extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Attendre : ',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -712,7 +712,7 @@ class _RotationSection extends StatelessWidget {
               ),
               if (successors.isNotEmpty) ...[
                 const SizedBox(height: 8),
-                Text(
+                const Text(
                   'Bons successeurs :',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
@@ -824,7 +824,7 @@ class _RegionalNoteCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Adaptation — ${region.label}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       color: KultivaColors.textSecondary,
                       fontSize: 13,

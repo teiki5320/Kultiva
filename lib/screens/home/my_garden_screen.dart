@@ -19,7 +19,6 @@ import '../../services/photo_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
-import '../../utils/category_colors.dart';
 import '../../widgets/badge_card.dart';
 import '../../widgets/camera_permission_dialog.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
@@ -27,7 +26,6 @@ import '../../widgets/plant_creature.dart';
 import '../../widgets/tamassi_story_card.dart';
 import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_badges.dart';
-import 'poussidex/poussidex_card.dart';
 import 'poussidex/poussidex_challenges.dart';
 import 'poussidex/vegetable_picker_sheet.dart';
 
@@ -1136,7 +1134,7 @@ class _TamassiViewState extends State<_TamassiView>
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 'Il t\'accompagnera dans tes aventures !',
                 style: TextStyle(
                   fontSize: 13,
@@ -1382,7 +1380,7 @@ class _TamassiViewState extends State<_TamassiView>
             Text(
               _creatureName,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.2,
@@ -1392,7 +1390,7 @@ class _TamassiViewState extends State<_TamassiView>
             const SizedBox(height: 2),
             Text(
               'Niveau $lv',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 11,
                 color: KultivaColors.textSecondary,
                 fontWeight: FontWeight.w600,
@@ -2781,7 +2779,7 @@ class _Header extends StatelessWidget {
             Image.asset(
               'assets/images/potager.png',
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => DecoratedBox(
+              errorBuilder: (_, __, ___) => const DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: <Color>[
@@ -2810,13 +2808,13 @@ class _Header extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     '🪴 Mon Poussidex',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
                       fontSize: 24,
-                      shadows: const <Shadow>[
+                      shadows: <Shadow>[
                         Shadow(color: Colors.black45, blurRadius: 8),
                       ],
                     ),
@@ -2879,14 +2877,14 @@ class _ThirstyBanner extends StatelessWidget {
               Expanded(
                 child: Text(
                   '$count plante${count > 1 ? "s ont" : " a"} soif — Tap pour tout arroser',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
                     color: KultivaColors.terracotta,
                   ),
                 ),
               ),
-              Icon(Icons.water_drop,
+              const Icon(Icons.water_drop,
                   color: KultivaColors.terracotta, size: 18),
             ],
           ),

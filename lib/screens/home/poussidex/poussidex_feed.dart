@@ -114,14 +114,14 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
       );
     }
     if (_posts.isEmpty) {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Text('🌍', style: TextStyle(fontSize: 48)),
-              const SizedBox(height: 12),
+              Text('🌍', style: TextStyle(fontSize: 48)),
+              SizedBox(height: 12),
               Text(
                 'Le feed est vide pour l\'instant.\nComplète des défis et sois le premier à poster !',
                 textAlign: TextAlign.center,
@@ -205,7 +205,7 @@ class _FeedPostCard extends StatelessWidget {
                     post.userName.isNotEmpty
                         ? post.userName[0].toUpperCase()
                         : '?',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       color: KultivaColors.primaryGreen,
                     ),
@@ -228,7 +228,7 @@ class _FeedPostCard extends StatelessWidget {
                       if (challenge != null)
                         Text(
                           '${challenge!.emoji} ${challenge!.name}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 11,
                             color: KultivaColors.textSecondary,
                             fontWeight: FontWeight.w600,
@@ -239,7 +239,7 @@ class _FeedPostCard extends StatelessWidget {
                 ),
                 Text(
                   timeAgo,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 11,
                     color: KultivaColors.textSecondary,
                   ),

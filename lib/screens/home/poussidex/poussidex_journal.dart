@@ -73,9 +73,9 @@ class PoussidexJournalView extends StatelessWidget {
     }
 
     if (events.isEmpty) {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           child: Text(
             '📜\n\nTon journal se remplira au fil de tes actions.\nPlante, arrose, récolte !',
             textAlign: TextAlign.center,
@@ -112,7 +112,7 @@ class PoussidexJournalView extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(6, 14, 6, 6),
               child: Text(
                 _dayLabel(day),
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 12,
                   letterSpacing: 1.5,
@@ -214,7 +214,7 @@ class _JournalTile extends StatelessWidget {
           ),
           Text(
             _timeLabel(event.date),
-            style: TextStyle(
+            style: const TextStyle(
               color: KultivaColors.textSecondary,
               fontSize: 11,
               fontWeight: FontWeight.w700,

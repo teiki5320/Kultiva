@@ -95,7 +95,7 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
                 children: [
                   const Text('👨‍👩‍👧', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'Jardiner avec tes enfants',
                       style: TextStyle(
@@ -243,7 +243,7 @@ class _SlideView extends StatelessWidget {
           Text(
             slide.subtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: KultivaColors.textSecondary,
               height: 1.4,
               fontSize: 14,

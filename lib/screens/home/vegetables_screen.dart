@@ -12,7 +12,6 @@ import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../widgets/medal_badge.dart';
 import '../../widgets/petal_animation.dart';
-import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -139,7 +138,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                           Image.asset(
                             'assets/images/vegetables.png',
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => DecoratedBox(
+                            errorBuilder: (_, __, ___) => const DecoratedBox(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [KultivaColors.springA, KultivaColors.springB],
@@ -165,12 +164,12 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Étal',
+                                const Text('Étal',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 22,
-                                    shadows: const [Shadow(color: Colors.black45, blurRadius: 8)],
+                                    shadows: [Shadow(color: Colors.black45, blurRadius: 8)],
                                   ),
                                 ),
                                 Text(
@@ -203,11 +202,11 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                               onSelected: (m) =>
                                   setState(() => _sortMode = m),
                               itemBuilder: (_) => [
-                                PopupMenuItem(value: _SortMode.alpha,
+                                const PopupMenuItem(value: _SortMode.alpha,
                                     child: Text('Alphabétique')),
-                                PopupMenuItem(value: _SortMode.category,
+                                const PopupMenuItem(value: _SortMode.category,
                                     child: Text('Par catégorie')),
-                                PopupMenuItem(value: _SortMode.sowNow,
+                                const PopupMenuItem(value: _SortMode.sowNow,
                                     child: Text('À semer ce mois')),
                               ],
                             ),
@@ -345,13 +344,13 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                   // Liste ou grille.
                   Expanded(
                     child: filtered.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text('🌱',
-                                    style: const TextStyle(fontSize: 48)),
-                                const SizedBox(height: 12),
+                                    style: TextStyle(fontSize: 48)),
+                                SizedBox(height: 12),
                                 Text(
                                   'Aucun légume trouvé',
                                   style: TextStyle(
@@ -515,7 +514,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                 ),
                 // Favori.
                 if (isFav)
-                  Positioned(
+                  const Positioned(
                     top: 6,
                     right: 6,
                     child: Icon(Icons.favorite,

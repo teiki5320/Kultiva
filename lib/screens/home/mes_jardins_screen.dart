@@ -98,15 +98,15 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Text('🌿', style: TextStyle(fontSize: 64)),
-            const SizedBox(height: 18),
-            const Text(
+            Text('🌿', style: TextStyle(fontSize: 64)),
+            SizedBox(height: 18),
+            Text(
               'Aucun jardin pour l\'instant',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -114,7 +114,7 @@ class _EmptyState extends StatelessWidget {
                 fontWeight: FontWeight.w800,
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Text(
               'Crée ton premier jardin pleine terre avec le bouton '
               'en bas. Tu pourras ensuite y placer tes plants par '
@@ -206,7 +206,7 @@ class _SoilGardenCard extends StatelessWidget {
                     Text(
                       'Pleine terre  ·  ${plan.cols}×${plan.rows} cases  ·  '
                       '$filledCells plants',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: KultivaColors.textSecondary,
                       ),

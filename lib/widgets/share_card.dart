@@ -252,7 +252,7 @@ class _ShareCardContent extends StatelessWidget {
           Text(
             'Planté le ${_fmt(plantation.plantedAt)}  •  Kultiva',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
               color: KultivaColors.textSecondary,
@@ -277,7 +277,7 @@ class _StatBlock extends StatelessWidget {
             style: const TextStyle(
                 fontWeight: FontWeight.w900, fontSize: 22)),
         Text(label,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 11,
               color: KultivaColors.textSecondary,

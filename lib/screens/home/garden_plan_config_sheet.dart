@@ -119,7 +119,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  const Text(
                     'Pour connaître ton climat et les dates de gel.',
                     style: TextStyle(
                       fontSize: 11,
@@ -168,7 +168,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                       onSelectionChanged: (Set<GardenUnit> set) {
                         setState(() => _unit = set.first);
                       },
-                      style: ButtonStyle(
+                      style: const ButtonStyle(
                         visualDensity: VisualDensity.compact,
                       ),
                     ),
@@ -206,7 +206,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                   const SizedBox(height: 8),
                   Text(
                     '${_widthCm ~/ 30} × ${_heightCm ~/ 30} cases (1 case = 30×30 cm)',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 11,
                       color: KultivaColors.textSecondary,
                     ),
@@ -396,7 +396,7 @@ class _SizePicker extends StatelessWidget {
       children: <Widget>[
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 11,
             color: KultivaColors.textSecondary,
           ),

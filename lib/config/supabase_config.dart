@@ -36,6 +36,7 @@ class GoogleOAuthConfig {
 
   /// Client ID de type "Web" — utilisé par google_sign_in pour
   /// demander un idToken que Supabase peut valider.
+  /// Nullable : mettre à `null` désactive le bouton Google côté login.
   static const String? webClientId =
       '56977548622-l52olnkn81icjbo6aqk6b5trssjpbqiu.apps.googleusercontent.com';
 

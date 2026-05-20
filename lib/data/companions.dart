@@ -2,6 +2,7 @@
 ///
 /// Chaque clé est un ID de légume (identique à [Vegetable.id]).
 /// Les valeurs sont les IDs des légumes bons voisins ou incompatibles.
+library;
 
 /// Bons voisins — à planter côte à côte pour des bénéfices mutuels.
 const Map<String, List<String>> companionMap = {

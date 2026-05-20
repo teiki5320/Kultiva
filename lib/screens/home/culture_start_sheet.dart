@@ -113,7 +113,7 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
                       fontWeight: FontWeight.w800,
                     ),
               ),
-              Text(
+              const Text(
                 'Cahier pleine terre',
                 style: TextStyle(
                   fontSize: 13,
@@ -266,7 +266,7 @@ class _FieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 13,
         fontWeight: FontWeight.w700,
         color: KultivaColors.textPrimary,

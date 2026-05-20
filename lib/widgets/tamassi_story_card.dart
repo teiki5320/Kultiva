@@ -236,7 +236,7 @@ class _TamassiStoryVisual extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   'Niveau $level · $stageName',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: KultivaColors.textSecondary,
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
