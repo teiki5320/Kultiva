@@ -25,7 +25,10 @@ jobs:
         run: flutter pub get
 
       - name: Analyze
-        run: flutter analyze
+        # --no-fatal-infos : les warnings de style (prefer_const_*, etc.)
+        # restent visibles dans les logs mais ne bloquent pas le build.
+        # Les vraies erreurs (warning, error) font toujours échouer.
+        run: flutter analyze --no-fatal-infos
 
       - name: Test
         run: flutter test
