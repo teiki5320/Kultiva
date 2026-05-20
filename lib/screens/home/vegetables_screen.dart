@@ -11,7 +11,6 @@ import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../widgets/medal_badge.dart';
-import '../../widgets/petal_animation.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -118,7 +117,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             final filtered = _filter(region, favs);
             final regionData =
                 region == Region.france ? franceData : westAfricaData;
-            final season = Season.fromMonth(DateTime.now().month);
             return SafeArea(
               bottom: false,
               child: Column(
@@ -546,103 +544,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   Color _categoryColor(VegetableCategory cat) => cat.familyColor;
 }
 
-// Header kawaii saisonnier.
-class _KawaiiHeader extends StatelessWidget {
-  final Season season;
-  final int count;
-  final bool gridView;
-  final VoidCallback onToggleView;
-  final _SortMode sortMode;
-  final ValueChanged<_SortMode> onSortChanged;
-
-  const _KawaiiHeader({
-    required this.season,
-    required this.count,
-    required this.gridView,
-    required this.onToggleView,
-    required this.sortMode,
-    required this.onSortChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = _seasonColors(season);
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [colors[0].withValues(alpha: 0.4), colors[1].withValues(alpha: 0.3)],
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
-        ),
-      ),
-      child: Row(
-        children: [
-          Text(season.emoji, style: const TextStyle(fontSize: 28)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Catalogue',
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
-                Text(
-                  '$count légume${count > 1 ? "s" : ""}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: KultivaColors.textPrimary.withValues(alpha: 0.5),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: Icon(gridView
-                ? Icons.view_list_rounded
-                : Icons.grid_view_rounded, size: 22),
-            onPressed: onToggleView,
-          ),
-          PopupMenuButton<_SortMode>(
-            icon: const Icon(Icons.sort, size: 22),
-            onSelected: onSortChanged,
-            itemBuilder: (_) => [
-              _sortItem(_SortMode.alpha, 'Alphabétique'),
-              _sortItem(_SortMode.category, 'Par catégorie'),
-              _sortItem(_SortMode.sowNow, 'À semer ce mois'),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  PopupMenuItem<_SortMode> _sortItem(_SortMode mode, String label) {
-    return PopupMenuItem(
-      value: mode,
-      child: Text(label,
-          style: TextStyle(
-            fontWeight: sortMode == mode ? FontWeight.w800 : FontWeight.w500,
-            color: sortMode == mode ? KultivaColors.primaryGreen : null,
-          )),
-    );
-  }
-
-  List<Color> _seasonColors(Season s) {
-    switch (s) {
-      case Season.spring:
-        return [KultivaColors.springA, KultivaColors.springB];
-      case Season.summer:
-        return [KultivaColors.summerA, KultivaColors.summerB];
-      case Season.autumn:
-        return [KultivaColors.autumnA, KultivaColors.autumnB];
-      case Season.winter:
-        return [KultivaColors.winterA, KultivaColors.winterB];
-    }
-  }
-}
 
 // Chip pastel coloré par catégorie.
 class _PastelChip extends StatelessWidget {

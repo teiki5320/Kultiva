@@ -28,6 +28,7 @@ class _TutoItem {
   const _TutoItem({
     required this.emoji,
     required this.label,
+    // ignore: unused_element_parameter
     this.url = '',
     this.htmlAsset,
   });
