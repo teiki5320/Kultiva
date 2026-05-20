@@ -39,7 +39,7 @@ class PdfService {
                   pw.Spacer(),
                   pw.Text(
                     vegetable.category.label,
-                    style: pw.TextStyle(fontSize: 14, color: PdfColors.grey600),
+                    style: const pw.TextStyle(fontSize: 14, color: PdfColors.grey600),
                   ),
                 ],
               ),
@@ -151,7 +151,7 @@ class PdfService {
               pw.SizedBox(height: 4),
               pw.Text(
                 'Fiche générée par Kultiva',
-                style: pw.TextStyle(fontSize: 9, color: PdfColors.grey500),
+                style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey500),
               ),
             ],
           );
@@ -221,7 +221,7 @@ class PdfService {
               pw.SizedBox(height: 4),
               pw.Text(
                 'Cahier de culture pleine terre',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 13,
                   color: PdfColors.grey700,
                 ),
@@ -317,7 +317,7 @@ class PdfService {
               pw.SizedBox(height: 32),
               pw.Text(
                 'Récap généré par Kultiva',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 9,
                   color: PdfColors.grey500,
                 ),
@@ -461,7 +461,7 @@ class _Stat extends pw.StatelessWidget {
           children: <pw.Widget>[
             pw.Text(
               label,
-              style: pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
             ),
             pw.SizedBox(height: 4),
             pw.Text(

@@ -845,7 +845,7 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                           const SizedBox(height: 2),
                           Text(
                             'Stade : ${phase.emoji} ${phase.label}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11,
                               color: KultivaColors.textSecondary,
                               fontWeight: FontWeight.w600,
@@ -920,7 +920,7 @@ class _CellActionSheetState extends State<_CellActionSheet> {
                     Text(
                       'Fréquence indicative : tous les $wateringDays jours '
                       'environ (selon météo).',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 10,
                         fontStyle: FontStyle.italic,
                         color: KultivaColors.textSecondary,
@@ -937,7 +937,7 @@ class _CellActionSheetState extends State<_CellActionSheet> {
             const SizedBox(height: 12),
 
             // ─── Densité plants par case ──────────────────────────
-            Text(
+            const Text(
               "Combien de plants dans cette case ?",
               style: TextStyle(
                 fontSize: 13,
@@ -975,7 +975,7 @@ class _CellActionSheetState extends State<_CellActionSheet> {
             const SizedBox(height: 6),
             Text(
               'Maximum recommandé : $maxDensity plants par case (30×30 cm)',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 11,
                 color: KultivaColors.textSecondary,
               ),
@@ -1069,12 +1069,12 @@ class _PhaseAdviceTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
+                const Text(
                   'Conseil pour ce stade',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    color: const Color(0xFF7A5A1E),
+                    color: Color(0xFF7A5A1E),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -1306,13 +1306,13 @@ class _PlantPicker extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       season.label,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: KultivaColors.primaryGreen,
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.expand_more,
                       size: 16,
                       color: KultivaColors.primaryGreen,
@@ -1348,7 +1348,7 @@ class _PlantPicker extends StatelessWidget {
                       filter is _FavoritesFilter
                           ? 'Aucun favori. Ajoute des plantes en favori depuis l\'onglet Étal.'
                           : 'Aucune plante dans ce filtre.',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: KultivaColors.textSecondary,
                       ),
@@ -1475,7 +1475,7 @@ class _IrrigationBanner extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         advice.message,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 11,
                           color: KultivaColors.textSecondary,
                           height: 1.3,
@@ -1702,27 +1702,27 @@ class _TipsSheet extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _TipStep(
+            const _TipStep(
               n: 1,
               text:
                   "Glisse une plante depuis la barre du bas vers une case de la grille pour la planter.",
             ),
-            _TipStep(
+            const _TipStep(
               n: 2,
               text:
                   "Touche une case occupée pour voir les détails ou la vider.",
             ),
-            _TipStep(
+            const _TipStep(
               n: 3,
               text:
                   "Le chiffre indique le nombre de plants qui tiennent dans une case (ex. 9 carottes par 30×30 cm).",
             ),
-            _TipStep(
+            const _TipStep(
               n: 4,
               text:
                   "Anneau vert autour d'une case = plantes compagnes voisines, anneau rouge = à séparer.",
             ),
-            _TipStep(
+            const _TipStep(
               n: 5,
               text:
                   "Chaque case mesure 1×1 pied (≈ 30×30 cm). Configure la taille de ton jardin via « Configurer ».",
@@ -1750,7 +1750,7 @@ class _TipStep extends StatelessWidget {
             width: 28,
             height: 28,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: KultivaColors.primaryGreen,
               shape: BoxShape.circle,
             ),

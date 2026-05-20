@@ -67,6 +67,7 @@ class _TamassiStoryDialogState extends State<_TamassiStoryDialog> {
       final file = File(
           '${tmp.path}/kultiva_tamassi_${DateTime.now().millisecondsSinceEpoch}.png');
       await file.writeAsBytes(bytes);
+      if (!mounted) return;
       final box = context.findRenderObject() as RenderBox?;
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
@@ -235,7 +236,7 @@ class _TamassiStoryVisual extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   'Niveau $level · $stageName',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: KultivaColors.textSecondary,
                     fontWeight: FontWeight.w700,
                     fontSize: 13,

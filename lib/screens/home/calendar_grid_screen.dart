@@ -117,9 +117,9 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                 color: KultivaColors.lightGreen.withValues(alpha: 0.1),
                 child: Row(
                   children: [
-                    _LegendItem(color: KultivaColors.primaryGreen, label: 'Semis'),
+                    const _LegendItem(color: KultivaColors.primaryGreen, label: 'Semis'),
                     const SizedBox(width: 16),
-                    _LegendItem(color: KultivaColors.terracotta, label: 'Récolte'),
+                    const _LegendItem(color: KultivaColors.terracotta, label: 'Récolte'),
                     const Spacer(),
                     if (_filterMonth != null)
                       Container(
@@ -130,7 +130,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                         ),
                         child: Text(
                           '${_fullMonths[_filterMonth! - 1]} (${entries.length})',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w800,
                             color: KultivaColors.primaryGreen,
@@ -138,7 +138,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                         ),
                       )
                     else
-                      Text(
+                      const Text(
                         '💡 Tap mois = filtre · Tap case = fiche',
                         style: TextStyle(
                           fontSize: 10,

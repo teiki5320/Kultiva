@@ -147,7 +147,7 @@ class PlantationCard extends StatelessWidget {
                 plantation.isActive
                     ? 'Jour ${days + 1}${mature ? " ★" : "/$expected"}'
                     : 'Récolté',
-                style: TextStyle(
+                style: const TextStyle(
                   color: KultivaColors.textSecondary,
                   fontSize: 10,
                   fontWeight: FontWeight.w700,

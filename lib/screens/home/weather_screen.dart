@@ -42,7 +42,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     await _load();
   }
 
-  /// Pill "📍 <ville>" affichée sous "🌤 Météo". Cliquable seulement si
+  /// Pill "📍 `<ville>`" affichée sous "🌤 Météo". Cliquable seulement si
   /// on est en fallback Paris (propose d'ouvrir les Réglages pour la
   /// géolocalisation).
   Widget _buildLocationPill() {
@@ -321,7 +321,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       child: Column(
         children: [
           Text(_dayLabel(offset),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: KultivaColors.textPrimary,
@@ -334,7 +334,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 style: const TextStyle(
                     fontSize: 48, fontWeight: FontWeight.w800)),
             Text(w.weatherLabel,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 14, color: KultivaColors.textSecondary)),
           ] else
             Text('${tmax.toStringAsFixed(0)}°C',

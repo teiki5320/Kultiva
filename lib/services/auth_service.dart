@@ -123,12 +123,6 @@ class AuthService extends ChangeNotifier {
   ///    Client iOS comme URL scheme.
   Future<void> signInWithGoogle() async {
     final serverClientId = GoogleOAuthConfig.webClientId;
-    if (serverClientId == null) {
-      throw const AuthException(
-        'Google Sign-In pas encore configuré — renseigne le Web '
-        'Client ID dans lib/config/supabase_config.dart.',
-      );
-    }
     try {
       final googleUser = await GoogleSignIn(
         // clientId = iOS Client ID (pour ouvrir la feuille Google native).

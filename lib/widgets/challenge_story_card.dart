@@ -62,6 +62,7 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
       final file = File(
           '${tmp.path}/kultiva_story_${widget.challenge.id}_${DateTime.now().millisecondsSinceEpoch}.png');
       await file.writeAsBytes(bytes);
+      if (!mounted) return;
       final box = context.findRenderObject() as RenderBox?;
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],

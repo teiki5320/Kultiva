@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'auth_service.dart';
 
 /// Un post dans le feed communautaire.
 class FeedPost {

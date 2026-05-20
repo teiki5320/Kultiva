@@ -110,7 +110,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   ///   kultiva://poussidex/badges    → Poussidex section Badges
   ///   kultiva://poussidex/challenges→ Poussidex section Défis
   ///   kultiva://tutos               → onglet Tutos
-  ///   kultiva://tuto/<nom>          → remplace la fiche par une autre
+  ///   kultiva://tuto/`<nom>`          → remplace la fiche par une autre
   void _handleDeepLink(Uri uri) {
     final host = uri.host;
     final segments = uri.pathSegments;

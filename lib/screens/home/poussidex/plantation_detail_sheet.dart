@@ -126,7 +126,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                           style: const TextStyle(
                               fontWeight: FontWeight.w800, fontSize: 22)),
                       Text(v.category.label,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: KultivaColors.textSecondary,
                               fontWeight: FontWeight.w600)),
                     ],
@@ -149,7 +149,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                       remaining == 0
                           ? '✨ Prêt à récolter'
                           : '⏳ $remaining j restants',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: KultivaColors.textSecondary,
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
@@ -397,7 +397,7 @@ class _TimelineTile extends StatelessWidget {
           ),
           Text(
             formatter(event.date),
-            style: TextStyle(
+            style: const TextStyle(
               color: KultivaColors.textSecondary,
               fontSize: 12,
               fontWeight: FontWeight.w600,
@@ -495,12 +495,12 @@ class _PhotoGallery extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(Icons.add_a_photo_outlined,
+                      const Icon(Icons.add_a_photo_outlined,
                           color: KultivaColors.primaryGreen, size: 28),
                       const SizedBox(height: 4),
                       Text(
                         photos.isEmpty ? 'Ajouter' : '+',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
                           color: KultivaColors.primaryGreen,
@@ -688,7 +688,7 @@ class _NoteEditorState extends State<_NoteEditor> {
                 ),
               ),
             ),
-            Icon(Icons.edit_outlined,
+            const Icon(Icons.edit_outlined,
                 size: 16, color: KultivaColors.textSecondary),
           ],
         ),

@@ -57,7 +57,7 @@ class LexiconText extends StatelessWidget {
       final matched = text.substring(m.start, m.end);
       spans.add(TextSpan(
         text: matched,
-        style: TextStyle(
+        style: const TextStyle(
           decoration: TextDecoration.underline,
           decorationStyle: TextDecorationStyle.dotted,
           decorationColor: KultivaColors.primaryGreen,

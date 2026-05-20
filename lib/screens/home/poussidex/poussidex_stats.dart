@@ -18,9 +18,9 @@ class PoussidexStatsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (plantations.isEmpty) {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.all(32),
+          padding: EdgeInsets.all(32),
           child: Text(
             '📊\n\nPas encore de statistiques — plante ton premier légume !',
             textAlign: TextAlign.center,
@@ -244,7 +244,7 @@ class _SurvivalBar extends StatelessWidget {
             children: <Widget>[
               const Text('🌿', style: TextStyle(fontSize: 18)),
               const SizedBox(width: 8),
-              Expanded(
+              const Expanded(
                 child: Text('Taux de plants en cours',
                     style: TextStyle(
                         fontWeight: FontWeight.w800,
@@ -253,7 +253,7 @@ class _SurvivalBar extends StatelessWidget {
               ),
               Text(
                 '${rate.toStringAsFixed(0)}% ($active/$total)',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   color: KultivaColors.primaryGreen,
                 ),
@@ -267,7 +267,7 @@ class _SurvivalBar extends StatelessWidget {
               value: total == 0 ? 0 : active / total,
               minHeight: 8,
               backgroundColor: KultivaColors.lightGreen.withValues(alpha: 0.3),
-              valueColor: AlwaysStoppedAnimation<Color>(
+              valueColor: const AlwaysStoppedAnimation<Color>(
                   KultivaColors.primaryGreen),
             ),
           ),
@@ -348,7 +348,7 @@ class _WateringChart extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: Colors.grey.shade200),
         ),
-        child: Text(
+        child: const Text(
           "Aucun arrosage sur les 30 derniers jours.",
           style: TextStyle(
               color: KultivaColors.textSecondary, fontSize: 12),
@@ -375,12 +375,12 @@ class _WateringChart extends StatelessWidget {
                   duration: const Duration(milliseconds: 250),
                   height: 72 * (buckets[i] / maxValue).clamp(0.02, 1.0),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: <Color>[
-                        const Color(0xFF29B6F6),
-                        const Color(0xFF81D4FA),
+                        Color(0xFF29B6F6),
+                        Color(0xFF81D4FA),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(3),
@@ -419,7 +419,7 @@ class _RepereRow extends StatelessWidget {
           ),
           Text(
             value,
-            style: TextStyle(
+            style: const TextStyle(
               color: KultivaColors.textSecondary,
               fontSize: 13,
               fontWeight: FontWeight.w700,

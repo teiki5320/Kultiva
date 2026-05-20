@@ -457,7 +457,7 @@ class _SowScreenState extends State<SowScreen> {
     AudioService.instance.play(Sfx.tap);
     final uri = Uri.parse(_kInstagramUrl);
     final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!ok && mounted) {
+    if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Impossible d\'ouvrir Instagram pour le moment.'),

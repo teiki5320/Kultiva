@@ -27,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
                 vertical: 8,
               ),
               children: <Widget>[
-                _SectionTitle(title: '🌍  Région'),
+                const _SectionTitle(title: '🌍  Région'),
                 Card(
                   child: ValueListenableBuilder<Region>(
                     valueListenable: PrefsService.instance.region,
@@ -92,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _SectionTitle(title: '🔔  Notifications'),
+                const _SectionTitle(title: '🔔  Notifications'),
                 Card(
                   child: Column(
                     children: <Widget>[
@@ -141,7 +141,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _SectionTitle(title: '🔊  Sons'),
+                const _SectionTitle(title: '🔊  Sons'),
                 Card(
                   child: Column(
                     children: [
@@ -200,7 +200,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _SectionTitle(title: '🌙  Apparence'),
+                const _SectionTitle(title: '🌙  Apparence'),
                 Card(
                   child: ValueListenableBuilder<bool>(
                     valueListenable: PrefsService.instance.darkMode,
@@ -218,7 +218,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _SectionTitle(title: '👤  Compte'),
+                const _SectionTitle(title: '👤  Compte'),
                 Card(
                   child: AnimatedBuilder(
                     animation: AuthService.instance,

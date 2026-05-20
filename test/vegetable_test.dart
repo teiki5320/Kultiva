@@ -111,7 +111,7 @@ void main() {
             reason: 'companionMap key "${entry.key}" is not a valid vegetable ID');
         for (final id in entry.value) {
           expect(validIds.contains(id), isTrue,
-              reason: 'Companion "${id}" of "${entry.key}" is not a valid vegetable ID');
+              reason: 'Companion "$id" of "${entry.key}" is not a valid vegetable ID');
         }
       }
     });
@@ -123,7 +123,7 @@ void main() {
             reason: 'incompatibleMap key "${entry.key}" is not a valid vegetable ID');
         for (final id in entry.value) {
           expect(validIds.contains(id), isTrue,
-              reason: 'Incompatible "${id}" of "${entry.key}" is not a valid vegetable ID');
+              reason: 'Incompatible "$id" of "${entry.key}" is not a valid vegetable ID');
         }
       }
     });

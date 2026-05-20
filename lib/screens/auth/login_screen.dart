@@ -240,8 +240,8 @@ class _OrSeparator extends StatelessWidget {
             color: KultivaColors.lightGreen.withValues(alpha: 0.6),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
           child: Text(
             'ou',
             style: TextStyle(color: KultivaColors.textSecondary),
