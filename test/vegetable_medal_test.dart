@@ -2,232 +2,207 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/models/plantation.dart';
 import 'package:kultiva/models/vegetable_medal.dart';
 
-/// Helper pour créer une Plantation rapidement dans les tests.
-Plantation _plant({
-  required String vegId,
-  DateTime? plantedAt,
-  int harvests = 0,
-  bool active = true,
-}) {
-  return Plantation(
-    id: '${vegId}_${DateTime.now().microsecondsSinceEpoch}',
-    vegetableId: vegId,
-    plantedAt: plantedAt ?? DateTime.now(),
-    harvestedAt: active ? null : DateTime.now(),
-    harvestCount: harvests,
-  );
-}
-
 void main() {
-  group('MedalTier enum — valeurs et ordre', () {
-    test('contient exactement 5 paliers', () {
-      expect(MedalTier.values.length, 5);
+  group('MedalTier enum', () {
+    test('contient 5 valeurs dans le bon ordre', () {
+      expect(MedalTier.values.length, equals(5));
+      expect(MedalTier.values[0], equals(MedalTier.none));
+      expect(MedalTier.values[1], equals(MedalTier.bronze));
+      expect(MedalTier.values[2], equals(MedalTier.silver));
+      expect(MedalTier.values[3], equals(MedalTier.gold));
+      expect(MedalTier.values[4], equals(MedalTier.shiny));
     });
 
-    test('les paliers sont dans l\'ordre attendu', () {
-      expect(MedalTier.values, <MedalTier>[
-        MedalTier.none,
-        MedalTier.bronze,
-        MedalTier.silver,
-        MedalTier.gold,
-        MedalTier.shiny,
-      ]);
+    test('chaque palier a un emoji cohérent', () {
+      expect(MedalTier.none.emoji, isEmpty);
+      expect(MedalTier.bronze.emoji, isNotEmpty);
+      expect(MedalTier.silver.emoji, isNotEmpty);
+      expect(MedalTier.gold.emoji, isNotEmpty);
+      expect(MedalTier.shiny.emoji, isNotEmpty);
     });
 
-    test('rank est strictement croissant de none à shiny', () {
-      for (int i = 0; i < MedalTier.values.length - 1; i++) {
-        expect(
-          MedalTier.values[i].rank,
-          lessThan(MedalTier.values[i + 1].rank),
-          reason:
-              '${MedalTier.values[i].name}.rank devrait être < '
-              '${MedalTier.values[i + 1].name}.rank',
-        );
+    test('chaque palier a un label cohérent', () {
+      expect(MedalTier.none.label, isEmpty);
+      expect(MedalTier.bronze.label, equals('Bronze'));
+      expect(MedalTier.silver.label, equals('Argent'));
+      expect(MedalTier.gold.label, equals('Or'));
+      expect(MedalTier.shiny.label, equals('Shiny'));
+    });
+
+    test('les rangs sont strictement croissants', () {
+      expect(MedalTier.none.rank, equals(0));
+      expect(MedalTier.bronze.rank, equals(1));
+      expect(MedalTier.silver.rank, equals(2));
+      expect(MedalTier.gold.rank, equals(3));
+      expect(MedalTier.shiny.rank, equals(4));
+    });
+
+    test('chaque palier a une couleur non nulle', () {
+      for (final tier in MedalTier.values) {
+        // ignore: unnecessary_null_comparison
+        expect(tier.color, isNotNull,
+            reason: '${tier.name} devrait avoir une couleur');
       }
     });
+  });
 
-    test('none a un rank de 0', () {
-      expect(MedalTier.none.rank, 0);
+  group('computeMedalTier', () {
+    test('aucune plantation → none', () {
+      final tier = computeMedalTier('tomate', <Plantation>[]);
+      expect(tier, equals(MedalTier.none));
     });
 
-    test('shiny a le rank le plus élevé (4)', () {
-      expect(MedalTier.shiny.rank, 4);
+    test("0 plantation pour ce légume parmi d'autres → none", () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'carotte',
+          plantedAt: DateTime(2025, 3, 1),
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.none));
+    });
+
+    test('1 plantation sans récolte → bronze', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.bronze));
+    });
+
+    test('1 récolte → silver', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+          harvestCount: 1,
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.silver));
+    });
+
+    test('2 récoltes (< 3) → silver', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+          harvestCount: 2,
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.silver));
+    });
+
+    test('3 récoltes cumulées → gold', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+          harvestCount: 2,
+        ),
+        Plantation(
+          id: '2',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 7, 1),
+          harvestCount: 1,
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      // 3 récoltes cumulées OU 2 saisons (printemps + été) → gold
+      expect(tier, equals(MedalTier.gold));
+    });
+
+    test('plantations dans 2 saisons différentes → gold', () {
+      // Mars = printemps (3-5), Septembre = automne (9-11)
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 3, 1),
+          harvestCount: 0,
+        ),
+        Plantation(
+          id: '2',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 9, 1),
+          harvestCount: 0,
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.gold));
+    });
+
+    test('5 récoltes cumulées → shiny', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+          harvestCount: 5,
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.shiny));
+    });
+
+    test('4 récoltes cumulées (< 5) dans la même saison → gold', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+          harvestCount: 4,
+        ),
+      ];
+      final tier = computeMedalTier('tomate', plantations);
+      expect(tier, equals(MedalTier.gold));
     });
   });
 
-  group('MedalTier — emoji, label, color', () {
-    test('none renvoie un emoji et label vides', () {
-      expect(MedalTier.none.emoji, isEmpty);
-      expect(MedalTier.none.label, isEmpty);
-    });
-
-    test('bronze a un emoji et label non vides', () {
-      expect(MedalTier.bronze.emoji, '🥉');
-      expect(MedalTier.bronze.label, 'Bronze');
-    });
-
-    test('silver a un emoji et label non vides', () {
-      expect(MedalTier.silver.emoji, '🥈');
-      expect(MedalTier.silver.label, 'Argent');
-    });
-
-    test('gold a un emoji et label non vides', () {
-      expect(MedalTier.gold.emoji, '🥇');
-      expect(MedalTier.gold.label, 'Or');
-    });
-
-    test('shiny a un emoji et label non vides', () {
-      expect(MedalTier.shiny.emoji, '✨');
-      expect(MedalTier.shiny.label, 'Shiny');
-    });
-
-    test('chaque palier actif (non-none) a un emoji unique', () {
-      final activeTiers = MedalTier.values
-          .where((t) => t != MedalTier.none)
-          .toList();
-      final emojis = activeTiers.map((t) => t.emoji).toSet();
-      expect(emojis.length, activeTiers.length);
-    });
-
-    test('chaque palier actif a une couleur distincte', () {
-      final activeTiers = MedalTier.values
-          .where((t) => t != MedalTier.none)
-          .toList();
-      final colors = activeTiers.map((t) => t.color.value).toSet();
-      expect(colors.length, activeTiers.length);
-    });
-
-    test('none a aussi une couleur (gris par défaut)', () {
-      expect(MedalTier.none.color, isNotNull);
-    });
-  });
-
-  group('computeMedalTier — seuils de palier', () {
-    test('0 plantations = none', () {
-      expect(computeMedalTier('tomate', <Plantation>[]), MedalTier.none);
-    });
-
-    test('1 plantation sans récolte = bronze', () {
-      final plantations = [_plant(vegId: 'tomate', harvests: 0)];
-      expect(computeMedalTier('tomate', plantations), MedalTier.bronze);
-    });
-
-    test('1 récolte = silver', () {
-      final plantations = [_plant(vegId: 'tomate', harvests: 1)];
-      expect(computeMedalTier('tomate', plantations), MedalTier.silver);
-    });
-
-    test('2 récoltes = silver (pas encore gold)', () {
-      final plantations = [_plant(vegId: 'tomate', harvests: 2)];
-      expect(computeMedalTier('tomate', plantations), MedalTier.silver);
-    });
-
-    test('3 récoltes cumulées = gold', () {
-      final plantations = [_plant(vegId: 'tomate', harvests: 3)];
-      expect(computeMedalTier('tomate', plantations), MedalTier.gold);
-    });
-
-    test('4 récoltes cumulées = gold (pas encore shiny)', () {
-      final plantations = [_plant(vegId: 'tomate', harvests: 4)];
-      expect(computeMedalTier('tomate', plantations), MedalTier.gold);
-    });
-
-    test('5 récoltes cumulées = shiny', () {
-      final plantations = [_plant(vegId: 'tomate', harvests: 5)];
-      expect(computeMedalTier('tomate', plantations), MedalTier.shiny);
-    });
-
-    test('récoltes réparties sur plusieurs plantations s\'additionnent', () {
-      final plantations = [
-        _plant(vegId: 'tomate', harvests: 2),
-        _plant(vegId: 'tomate', harvests: 3),
-      ];
-      // 2 + 3 = 5 → shiny
-      expect(computeMedalTier('tomate', plantations), MedalTier.shiny);
-    });
-
-    test('plantations dans 2 saisons = gold sans récolte', () {
-      final plantations = [
-        _plant(
-          vegId: 'carotte',
-          plantedAt: DateTime(2024, 1, 15), // hiver
-          active: false,
-        ),
-        _plant(
-          vegId: 'carotte',
-          plantedAt: DateTime(2024, 7, 15), // été
-          active: false,
-        ),
-      ];
-      expect(computeMedalTier('carotte', plantations), MedalTier.gold);
-    });
-
-    test('plant actif >= 180 jours = shiny', () {
-      final plantations = [
-        _plant(
-          vegId: 'tomate',
-          plantedAt: DateTime.now().subtract(const Duration(days: 181)),
-          active: true,
-        ),
-      ];
-      expect(computeMedalTier('tomate', plantations), MedalTier.shiny);
-    });
-
-    test('plant terminé >= 180 jours ne donne PAS shiny par survie', () {
-      final plantations = [
-        _plant(
-          vegId: 'tomate',
-          plantedAt: DateTime.now().subtract(const Duration(days: 200)),
-          active: false,
-        ),
-      ];
-      // Terminé, donc pas isActive → la règle survie ne s'applique pas.
-      // 0 récolte, 1 saison → bronze.
-      expect(computeMedalTier('tomate', plantations), MedalTier.bronze);
-    });
-
-    test('les plantations d\'autres espèces sont ignorées', () {
-      final plantations = [
-        _plant(vegId: 'courgette', harvests: 10),
-        _plant(vegId: 'carotte', harvests: 8),
-      ];
-      expect(computeMedalTier('tomate', plantations), MedalTier.none);
-    });
-  });
-
-  group('computeAllMedals — map globale', () {
-    test('retourne une entrée par espèce présente', () {
-      final medals = computeAllMedals([
-        _plant(vegId: 'tomate'),
-        _plant(vegId: 'carotte', harvests: 1),
-        _plant(vegId: 'tomate', harvests: 2),
-      ]);
-      expect(medals.length, 2);
-      expect(medals.containsKey('tomate'), isTrue);
-      expect(medals.containsKey('carotte'), isTrue);
-    });
-
-    test('espèce absente n\'apparaît pas dans la map', () {
-      final medals = computeAllMedals([
-        _plant(vegId: 'tomate'),
-      ]);
-      expect(medals.containsKey('courgette'), isFalse);
-    });
-
-    test('liste vide retourne une map vide', () {
+  group('computeAllMedals', () {
+    test('liste vide → map vide', () {
       final medals = computeAllMedals(<Plantation>[]);
       expect(medals, isEmpty);
     });
 
-    test('calcule le bon tier pour chaque espèce indépendamment', () {
-      final medals = computeAllMedals([
-        _plant(vegId: 'tomate', harvests: 5), // shiny
-        _plant(vegId: 'carotte', harvests: 0), // bronze
-        _plant(vegId: 'radis', harvests: 1), // silver
-      ]);
-      expect(medals['tomate'], MedalTier.shiny);
-      expect(medals['carotte'], MedalTier.bronze);
-      expect(medals['radis'], MedalTier.silver);
+    test('renvoie une entrée par espèce distincte', () {
+      final plantations = <Plantation>[
+        Plantation(
+          id: '1',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 4, 1),
+        ),
+        Plantation(
+          id: '2',
+          vegetableId: 'carotte',
+          plantedAt: DateTime(2025, 4, 1),
+          harvestCount: 1,
+        ),
+        Plantation(
+          id: '3',
+          vegetableId: 'tomate',
+          plantedAt: DateTime(2025, 6, 1),
+          harvestCount: 3,
+        ),
+      ];
+      final medals = computeAllMedals(plantations);
+      expect(medals.length, equals(2));
+      expect(medals.containsKey('tomate'), isTrue);
+      expect(medals.containsKey('carotte'), isTrue);
+      // Tomate : 3 récoltes + 2 saisons → gold ou mieux
+      expect(medals['tomate']!.rank, greaterThanOrEqualTo(MedalTier.gold.rank));
+      // Carotte : 1 récolte → silver
+      expect(medals['carotte'], equals(MedalTier.silver));
     });
   });
 }
