@@ -1,7 +1,7 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-04-22.
+> Dernière mise à jour : 2026-05-25.
 
 ## 🎯 Contexte
 
@@ -24,10 +24,11 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - des tutoriels HTML embarqués, un lexique, un guide de maladies et de
   compagnonnage.
 
-**Statut** : en phase de polish pré-publication — la CI iOS (Xcode Cloud) est
-branchée, la config de signing Android est active, la landing page marketing
-est prête et la conformité Amazon Associates est en place. Aucune issue
-GitHub ouverte à ce jour.
+**Statut** : en phase de polish pré-publication. La CI GitHub Actions
+(`flutter analyze` + `flutter test`) est branchée et passe à 0 issues.
+Xcode Cloud est actif côté iOS. La config signing Android est en place. La
+landing page marketing est prête (liens stores à remplir). La conformité
+Amazon Associates est active.
 
 ## 🛠️ Stack technique
 
@@ -37,7 +38,6 @@ GitHub ouverte à ce jour.
 - Material3, thèmes clair et sombre
 - `google_fonts` — typographie **Nunito**
 - `shared_preferences` — persistance locale
-- `go_router` — déclaré mais non utilisé en v1 (navigation via `Navigator`)
 - `url_launcher` — liens affiliés Amazon
 - `flutter_local_notifications` ^17.2.3 + `timezone` — rappels mensuels,
   quotidiens (Tamassi) et d'arrosage
@@ -54,7 +54,7 @@ GitHub ouverte à ce jour.
 **Backend / services**
 
 - **Supabase** (`supabase_flutter` ^2.5) — auth, Postgres, Storage
-  (`plant-photos`) ; aucun edge function
+  (`plant-photos`) ; 1 edge function (`seed-species` pour sync catalogue)
 - **Open-Meteo** — météo 7 jours, aucune clé d'API requise
 - **Google Sign-In** (`google_sign_in` ^6.2) — OAuth natif
 - **Apple Sign-In** (`sign_in_with_apple` ^6.1) avec nonce SHA-256 (`crypto`)
@@ -67,16 +67,18 @@ GitHub ouverte à ce jour.
 - iOS : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), Apple Sign-In
   entitlement, URL scheme Google, permissions caméra / photos / localisation
   déclarées dans `Info.plist`
+- CI : GitHub Actions (`flutter analyze` strict + `flutter test`),
+  sync catalogue vers Supabase (`sync-catalog.yml`)
 - Lints : `flutter_lints` ^5.0 + règles custom (`prefer_const_constructors`,
   `prefer_const_literals_to_create_immutables`, `avoid_print`,
-  `use_key_in_widget_constructors`)
-- Tests : `flutter_test` (unitaires uniquement pour l'instant)
+  `use_key_in_widget_constructors`) ; `tool/` exclu de l'analyse
+- Tests : `flutter_test` (8 fichiers — modèles et données)
 
 ## 📁 Architecture
 
 ```
 Kultiva/
-├── lib/                    # Code Dart principal (~24 685 LoC sur 68 fichiers)
+├── lib/                    # Code Dart principal (~31 000 LoC sur 83 fichiers)
 │   ├── main.dart           # Bootstrap : splash → onboarding → auth → tabs
 │   ├── config/
 │   │   └── supabase_config.dart    # URL, anon key, Google OAuth client IDs
@@ -88,12 +90,14 @@ Kultiva/
 │   │   ├── auth/                   # login_screen, register_screen
 │   │   └── home/                   # sow, vegetables, my_garden, tutos,
 │   │                               # settings, weather, calendrier mensuel,
-│   │                               # tuto_fiche (WebView), poussidex/*
-│   ├── models/             # plantation, vegetable, region_data, medal,
-│   │                       # weather_data, tamassi_visitor, photo_pick_result
+│   │                               # tuto_fiche (WebView), poussidex/*,
+│   │                               # garden_planner, culture_start, mes_jardins
+│   ├── models/             # plantation, vegetable, region_data, culture_entry,
+│   │                       # vegetable_medal, garden_plan
 │   ├── services/           # auth, prefs, cloud_sync, weather, geolocation,
-│   │                       # notification, photo, audio, watering, feed,
-│   │                       # pdf, tamassi_stats, plantation_migration
+│   │                       # notification, photo, audio, watering, watering_advisor,
+│   │                       # feed, pdf, tamassi_stats, plantation_migration,
+│   │                       # culture_service, garden_plan_service
 │   ├── data/               # Catalogues statiques (français)
 │   │   ├── vegetables_base.dart    # ~100 entrées
 │   │   ├── badges.dart / challenges.dart / diseases.dart
@@ -101,22 +105,27 @@ Kultiva/
 │   │   └── regions/        # france.dart, west_africa.dart
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
-│   ├── widgets/            # plant_creature (55 Ko), badge_card (34 Ko),
-│   │                       # petal_animation, season_header, share_card, etc.
-│   └── utils/              # category_colors, months
+│   ├── widgets/            # plant_creature, badge_card, petal_animation,
+│   │                       # season_header, share_card, challenge_story_card,
+│   │                       # tamassi_story_card, watering_bars, etc.
+│   └── utils/              # category_colors, months, phenology
+├── tool/
+│   └── export_catalog.dart # Script d'export catalogue → kultiva-catalog.json
 ├── supabase/
-│   └── migrations/         # 001_initial_schema → 004_tamassi_visitors
+│   └── migrations/         # 001_initial_schema → 008_drop_hydro_tables
 ├── assets/
 │   ├── images/             # creatures, badges (50), accessories (38),
 │   │                       # backgrounds saisonniers + time-of-day, cards,
 │   │                       # onboarding, app_icon
 │   ├── sounds/             # 8 SFX
-│   └── tutos/              # 34 fichiers + screens/
+│   └── tutos/              # fichiers HTML embarqués
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site HTML statique marketing (index.html + img/)
-├── test/                   # badges_test, medals_test, plantation_test,
-│                           # vegetable_test, widget_test (stub) — 631 LoC
+├── test/                   # 8 suites : badges, medals, plantation, vegetable,
+│                           # culture_entry, garden_plan, phenology, widget (stub)
+│                           # — ~988 LoC
+├── .github/workflows/      # ci.yml (analyze + test), sync-catalog.yml
 ├── pubspec.yaml
 ├── analysis_options.yaml
 └── README.md               # ⚠️ Obsolète — voir section Alertes
@@ -153,11 +162,11 @@ Triggers : `handle_new_user` (auto-profile), `touch_updated_at` (4 tables),
   de manière non bloquante. Si Supabase est indisponible, l'app doit continuer
   à fonctionner.
 - **Services** = logique métier ; **widgets** = présentation. Éviter de mélanger.
-- **Navigation** : `Navigator.push` et `showModalBottomSheet`. `go_router` est
-  importé mais inutilisé — ne pas s'appuyer dessus sans migration explicite.
+- **Navigation** : `Navigator.push` et `showModalBottomSheet`. Ne pas
+  introduire de router déclaratif sans migration explicite.
 - **Lints** : `prefer_const_constructors`, `prefer_const_literals_to_create_immutables`,
-  `avoid_print`, `use_key_in_widget_constructors`. Lancer `flutter analyze`
-  avant toute PR.
+  `avoid_print`, `use_key_in_widget_constructors`. `flutter analyze` doit
+  passer à **0 issues** avant toute PR (CI strict, aucun `--no-fatal-*`).
 - **Thème** : couleurs centralisées dans `lib/theme/app_theme.dart`
   (`KultivaColors`). Pour les catégories de légumes, utiliser
   `lib/utils/category_colors.dart`.
@@ -167,9 +176,11 @@ Triggers : `handle_new_user` (auto-profile), `touch_updated_at` (4 tables),
   `assets:` de `pubspec.yaml`. Des fichiers `.gitkeep` peuvent être nécessaires
   pour tracker des dossiers vides (cf commit `cba299c`).
 - **Migrations Supabase** : **toujours** créer un nouveau fichier numéroté
-  (`005_*.sql`, etc.). Ne jamais modifier une migration existante.
+  (`009_*.sql`, etc.). Ne jamais modifier une migration existante.
 - **Dépendances** : toute nouvelle dépendance mérite un commentaire inline dans
   `pubspec.yaml` expliquant son usage (pattern observé).
+- **Code mort** : supprimer plutôt que commenter. L'historique git conserve
+  tout. Ne pas laisser de méthodes / classes inutilisées.
 
 ## ⚡ Commandes utiles
 
@@ -196,9 +207,12 @@ flutter pub get
 flutter run                         # debug
 flutter run --release
 
-# Qualité
-flutter analyze
+# Qualité (CI reproduit ces 2 étapes)
+flutter analyze                     # doit passer à 0 issues
 flutter test                        # tests unitaires dans test/
+
+# Fix automatique des lints (const, imports, etc.)
+dart fix --apply
 
 # Builds de release
 flutter build apk --release
@@ -219,6 +233,9 @@ cd ios && pod install --repo-update && cd ..
 # Supabase
 # Les migrations se trouvent dans supabase/migrations/ et sont appliquées
 # manuellement via le dashboard Supabase (pas de supabase/config.toml).
+
+# Export catalogue (utilisé par CI sync-catalog.yml)
+dart run tool/export_catalog.dart   # → kultiva-catalog.json
 ```
 
 ## 🎨 Design / UX
@@ -257,7 +274,7 @@ Exemple validé sur tomate :
 a tomato icon, simple flat 2D vector design, solid red color, small green stem on top, minimalist app icon, plain cream beige background, centered, 1:1 square
 ```
 
-⚠️ **Pourquoi cette formule** :
+**Pourquoi cette formule** :
 - `icon` + `vector design` + `minimalist app icon` → ancrent fort vers du logo plat
 - `solid [color] color` → empêche le mélange de couleurs (sinon le modèle hésite)
 - **NE PAS** ajouter « kawaii », « cute », « illustration », « character », « chibi »,
@@ -285,8 +302,8 @@ ou CDN partagé).
 - **Ne pas casser le mode offline** — toute nouvelle feature doit continuer à
   fonctionner sans session Supabase.
 - **Ne pas monter en version majeure** de `flutter_local_notifications`
-  (17 → 21), `geolocator` (11 → 14), ou `go_router` (12 → 17) sans plan de
-  migration. Ces pins sont intentionnels et documentés dans `pubspec.yaml`.
+  (17 → 21) ou `geolocator` (11 → 14) sans plan de migration. Ces pins sont
+  intentionnels et documentés dans `pubspec.yaml`.
 - **Ne jamais committer** `android/key.properties`, `*.jks`, ou la `service_role`
   key Supabase. L'`anonKey` actuellement en source est publique (c'est normal).
 - **Synchroniser `assets/` ⇄ `pubspec.yaml`** — les incidents récents sur les
@@ -301,28 +318,35 @@ ou CDN partagé).
   `Info.plist`).
 - **Fallback météo** : si la géoloc échoue ou est refusée, le service retombe
   sur **Paris** par défaut. Ne pas supprimer ce fallback.
+- **`flutter analyze` doit passer à 0** — la CI est en mode strict (fatal-infos
+  + fatal-warnings). Lancer `dart fix --apply` pour corriger automatiquement
+  les `prefer_const_*` et imports.
 
 ## 📝 Historique technique
 
-Décisions et évolutions significatives déduites des 20 derniers commits :
+Décisions et évolutions significatives :
 
+- **CI GitHub Actions** ajoutée : `flutter analyze` strict (0 issues) +
+  `flutter test` sur chaque push/PR vers main. Workflow `sync-catalog.yml`
+  pour exporter le catalogue vers Supabase (Kultivaprix).
+- **Nettoyage code mort** : ~580 lignes supprimées dans `my_garden_screen.dart`
+  (méthodes CRUD plantation déplacées vers Poussidex, widgets _StarterButton /
+  _ThirstyBanner / _DeleteModeBanner retirés), headers saisonniers morts dans
+  `vegetables_screen.dart`, champs inutilisés partout. `dart fix --apply`
+  appliqué sur 34 fichiers (217 `prefer_const_*` corrigés).
+- **Hydroponie retirée** : tout le module (cultures, builds, readings) supprimé
+  et archivé sur `archive/hydroponie-2026-05-03`. Migration 008 drop les tables.
 - **Xcode Cloud** branché côté iOS via `ci_post_clone.sh` (clone Flutter stable,
   précache, pub get, pod install).
-- **Dashboard onboarding** reconfiguré : tuto statique remplacé par animation
-  kawaii dans une WebView centrée.
-- **38 images d'accessoires** kawaii câblées avec fallback emoji ; `.gitkeep`
-  ajouté pour tracker le dossier vide.
-- **Android** : signing release wiré via `key.properties` ; chemin keystore
-  corrigé (`rootProject.file` plutôt que `file`) ; core library desugaring
+- **Dashboard** : tuto statique remplacé par animation kawaii ; carte Actualités
+  avec lien Instagram.
+- **38 images d'accessoires** kawaii câblées avec fallback emoji.
+- **Android** : signing release via `key.properties` ; core library desugaring
   activé pour supporter `flutter_local_notifications` 17+.
 - **Permissions iOS** : correctifs sur l'ouverture caméra après grant, et
   gestion de la géolocalisation refusée avec fallback Paris.
-- **Météo** : nom de ville affiché dans le header, bouton rafraîchir ajouté,
-  mois en overlap retiré.
-- **Amazon Associates** : mention « Lien partenaire » visible + bouton agrandi
-  pour conformité du programme d'affiliation.
-- **Tutos** : `reussir_semis` repassé en HTML pur (suppression du PDF et du
-  viewer PNG pour simplifier).
+- **Météo** : nom de ville affiché dans le header, bouton rafraîchir.
+- **Amazon Associates** : mention « Lien partenaire » visible + bouton agrandi.
 
 ## 💬 Instructions pour Claude Code
 
@@ -330,7 +354,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 1. **Respecter le contrat local-first** : ne jamais introduire d'appel réseau
    bloquant dans un flux UI. Synchro cloud = arrière-plan uniquement.
-2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/005_*.sql`,
+2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/009_*.sql`,
    jamais éditer les existants.
 3. **Assets** : après `cp` d'un asset, penser à déclarer le chemin dans
    `pubspec.yaml`.
@@ -338,35 +362,68 @@ Règles spécifiques au projet pour être efficace dès la première action :
    descriptions de permissions, les textes des notifications.
 5. **Pas de nouvelle dépendance sans justification** dans le `pubspec.yaml`
    (commentaire inline obligatoire).
-6. **Avant toute PR** : `flutter analyze` + `flutter test` doivent passer.
+6. **Avant toute PR** : `flutter analyze` (0 issues) + `flutter test` doivent
+   passer. Utiliser `dart fix --apply` pour corriger les lints automatiquement.
 7. **Tests** : pour un nouveau modèle, ajouter `test/<nom>_test.dart` sur le
    pattern existant (voir `vegetable_test.dart`).
 8. **Navigation** : rester sur `Navigator.push` / `showModalBottomSheet`. Ne
-   pas activer `go_router` sans migration complète.
+   pas introduire de router déclaratif sans migration complète.
 9. **Services externes** : privilégier les APIs gratuites sans clé (cf
    Open-Meteo) quand c'est possible.
 10. **Créer une migration** quand on touche au schéma, pas un ALTER à la volée
     côté code.
+11. **Code mort** : supprimer immédiatement. Ne pas commenter du code « pour
+    plus tard » — l'historique git suffit.
+12. **`BuildContext` après `await`** : toujours vérifier `mounted` (ou
+    `context.mounted`) avant d'utiliser `context` après un appel asynchrone.
 
 ## ⚠️ Alertes
 
-À signaler à l'utilisateur / à traiter dans un futur ticket :
+### 🔴 Bloquants publication App Store / Play Store
 
-1. **`README.md` sévèrement obsolète** — il décrit une « v1 » avec
-   `AuthService` en démo locale et 4 fonctionnalités, alors que la v2 actuelle
-   inclut Supabase, Poussidex, Tamassi, météo, OAuth Google/Apple, feed
-   communautaire, notifications locales. À réécrire.
-2. **`go_router` est une dépendance morte** — importée (`^12.0.0`) mais aucune
-   route enregistrée. Soit l'activer, soit la retirer.
-3. **Aucun test de widget ni d'intégration** — seuls les modèles et les
-   données sont couverts (631 LoC sur 24 685 LoC de code source).
-4. **Aucune CI GitHub Actions** — seul Xcode Cloud tourne côté iOS. Pas de
-   vérification automatique de `flutter analyze` / `flutter test` sur les PR.
-5. **Aucun edge function Supabase** — toute la logique métier (XP, likes,
-   modération du feed) est côté Dart, donc contournable si quelqu'un
-   interroge l'API directement.
-6. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
-   c'est correct pour une anon key JWT publique, mais à documenter pour éviter
-   tout doute.
-7. **Commits dominés par Claude** (192 sur 238) — vérifier que les revues
-   humaines restent régulières pour éviter les dérives stylistiques.
+1. **Aucune Privacy Policy** — ni dans l'app, ni dans `landing/`. Obligatoire
+   dès qu'il y a auth + photos. Créer `landing/privacy.html` et ajouter un
+   lien dans l'app (Settings) et dans `landing/index.html`.
+2. **Aucune CGU / Terms of Service** — Apple exige un lien EULA pour les apps
+   avec création de compte. Même traitement que la privacy policy.
+3. **Liens stores `href="#"`** dans `landing/index.html:146-147` — à remplacer
+   par les vraies URLs App Store / Play Store avant lancement marketing.
+4. **AndroidManifest.xml sans `<uses-permission>`** — les plugins Flutter
+   (geolocator, image_picker, etc.) mergent leurs permissions via Gradle, mais
+   il faut **valider sur device Android réel** que caméra, géoloc et notifs
+   (POST_NOTIFICATIONS Android 13+) fonctionnent.
+
+### 🟡 Importants avant v1.0
+
+5. **`README.md` sévèrement obsolète** — il décrit une « v1 » avec
+   `AuthService` en démo locale et 4 fonctionnalités. À réécrire.
+6. **Aucun test de widget ni d'intégration** — seuls les modèles et les
+   données sont couverts (988 LoC de test sur ~31 000 LoC de source).
+7. **Aucune modération du feed** — `challenge_posts` est en lecture publique,
+   pas de filtre server-side. Un user peut poster n'importe quoi. Besoin
+   d'un edge function de modération ou d'un système de signalement.
+8. **Aucune validation server-side** — RLS protège l'accès mais aucune
+   contrainte de taille (notes, photos). Un user motivé peut spammer le storage.
+9. **Pas de cache météo** — Open-Meteo refetch à chaque ouverture de l'écran.
+   Pas de TTL local → spinner infini si réseau down.
+10. **Timer carrousel** dans `sow_screen.dart` — `Timer.periodic(6s)` continue
+    de tourner même quand l'écran n'est pas affiché. À brancher sur le
+    lifecycle du widget.
+11. **Instagram URL placeholder** — `sow_screen.dart:30` : TODO « remplacer
+    par le vrai pseudo Kultiva ».
+12. **Zéro accessibilité** — pas de `Semantics`, pas de support
+    `textScaleFactor`. À tester avec VoiceOver / TalkBack avant soumission.
+13. **i18n** — 100 % français hardcodé, pas de `intl` / `app_localizations`.
+    OK si lancement FR-only assumé, sinon refacto complète requise.
+
+### 🟢 Backlog
+
+14. Retry exponential pour `CloudSyncService` (actuellement fire-and-forget).
+15. Edge functions Supabase pour XP / likes (évite le contournement client).
+16. Compression d'images avant upload Storage.
+17. `go_router` (^12.0.0) est importé mais inutilisé — soit l'activer, soit le
+    retirer du `pubspec.yaml`.
+18. L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart` —
+    correct pour une anon key JWT publique, documenté ici pour éviter le doute.
+19. Commits dominés par Claude (109 sur 160) — vérifier que les revues
+    humaines restent régulières.
