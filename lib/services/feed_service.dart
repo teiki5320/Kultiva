@@ -100,7 +100,7 @@ class FeedService {
         );
       }).toList();
     } catch (e) {
-      debugPrint('FeedService.fetchFeed error: $e');
+      if (kDebugMode) debugPrint('FeedService.fetchFeed error: $e');
       return <FeedPost>[];
     }
   }
