@@ -191,20 +191,24 @@ class _SowScreenState extends State<SowScreen> {
                   Positioned(
                     top: 8,
                     right: 12,
-                    child: GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => _SettingsProxy(),
+                    child: Semantics(
+                      label: 'Paramètres',
+                      button: true,
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => _SettingsProxy(),
+                          ),
                         ),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.25),
-                          shape: BoxShape.circle,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.25),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.settings,
+                              color: Colors.white, size: 20),
                         ),
-                        child: const Icon(Icons.settings,
-                            color: Colors.white, size: 20),
                       ),
                     ),
                   ),
@@ -213,33 +217,37 @@ class _SowScreenState extends State<SowScreen> {
                     Positioned(
                       top: 48,
                       right: 12,
-                      child: GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                              builder: (_) => const WeatherScreen()),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.3),
-                            borderRadius: BorderRadius.circular(20),
+                      child: Semantics(
+                        label: 'Météo : ${_weather!.currentTemp.toStringAsFixed(0)} degrés, ${_weather!.weatherLabel}',
+                        button: true,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                                builder: (_) => const WeatherScreen()),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(_weather!.weatherEmoji,
-                                  style: const TextStyle(fontSize: 14)),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${_weather!.currentTemp.toStringAsFixed(0)}°',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 13,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(_weather!.weatherEmoji,
+                                    style: const TextStyle(fontSize: 14)),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '${_weather!.currentTemp.toStringAsFixed(0)}°',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 13,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -495,7 +503,10 @@ class _KawaiiCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      label: '$label, $subtitle',
+      button: true,
+      child: GestureDetector(
       onTap: () {
         AudioService.instance.play(Sfx.tap);
         onTap();
@@ -590,6 +601,7 @@ class _KawaiiCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

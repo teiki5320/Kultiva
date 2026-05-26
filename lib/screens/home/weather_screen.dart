@@ -184,16 +184,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
               Positioned(
                 top: 8, left: 8,
                 child: SafeArea(
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.25),
-                        shape: BoxShape.circle,
+                  child: Semantics(
+                    label: 'Retour',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.25),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.arrow_back,
+                            color: Colors.white, size: 20),
                       ),
-                      child: const Icon(Icons.arrow_back,
-                          color: Colors.white, size: 20),
                     ),
                   ),
                 ),
@@ -201,16 +205,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
               Positioned(
                 top: 8, right: 8,
                 child: SafeArea(
-                  child: GestureDetector(
-                    onTap: _refreshWeather,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.25),
-                        shape: BoxShape.circle,
+                  child: Semantics(
+                    label: 'Rafraîchir la météo',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: _refreshWeather,
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.25),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.refresh,
+                            color: Colors.white, size: 20),
                       ),
-                      child: const Icon(Icons.refresh,
-                          color: Colors.white, size: 20),
                     ),
                   ),
                 ),
@@ -317,7 +325,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final emoji = offset == 0 ? w.weatherEmoji : _weatherEmojiForCode(0);
     final advice = _adviceForDay(rain, tmax, tmin);
 
-    return SingleChildScrollView(
+    final String daySemanticLabel = offset == 0
+        ? '${_dayLabel(offset)}, ${w.currentTemp.toStringAsFixed(0)} degrés, ${w.weatherLabel}'
+        : '${_dayLabel(offset)}, max ${tmax.toStringAsFixed(0)} degrés';
+
+    return Semantics(
+      label: daySemanticLabel,
+      child: SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
@@ -328,56 +342,70 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 color: KultivaColors.textPrimary,
               )),
           const SizedBox(height: 8),
-          Text(emoji, style: const TextStyle(fontSize: 80)),
+          ExcludeSemantics(
+            child: Text(emoji, style: const TextStyle(fontSize: 80)),
+          ),
           const SizedBox(height: 8),
           if (offset == 0) ...[
-            Text('${w.currentTemp.toStringAsFixed(0)}°C',
-                style: const TextStyle(
-                    fontSize: 48, fontWeight: FontWeight.w800)),
+            Semantics(
+              label: '${w.currentTemp.toStringAsFixed(0)} degrés',
+              child: Text('${w.currentTemp.toStringAsFixed(0)}°C',
+                  style: const TextStyle(
+                      fontSize: 48, fontWeight: FontWeight.w800)),
+            ),
             Text(w.weatherLabel,
                 style: const TextStyle(
                     fontSize: 14, color: KultivaColors.textSecondary)),
           ] else
-            Text('${tmax.toStringAsFixed(0)}°C',
-                style: const TextStyle(
-                    fontSize: 48, fontWeight: FontWeight.w800)),
+            Semantics(
+              label: '${tmax.toStringAsFixed(0)} degrés',
+              child: Text('${tmax.toStringAsFixed(0)}°C',
+                  style: const TextStyle(
+                      fontSize: 48, fontWeight: FontWeight.w800)),
+            ),
           const SizedBox(height: 16),
           // Température min/max.
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: KultivaColors.lightGreen.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('🌡', style: TextStyle(fontSize: 18)),
-                const SizedBox(width: 8),
-                Text('Min ${tmin.toStringAsFixed(0)}°',
-                    style: const TextStyle(fontWeight: FontWeight.w700)),
-                const SizedBox(width: 16),
-                Text('Max ${tmax.toStringAsFixed(0)}°',
-                    style: const TextStyle(fontWeight: FontWeight.w700)),
-              ],
+          Semantics(
+            label: 'Minimum ${tmin.toStringAsFixed(0)} degrés, maximum ${tmax.toStringAsFixed(0)} degrés',
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(
+                color: KultivaColors.lightGreen.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const ExcludeSemantics(child: Text('🌡', style: TextStyle(fontSize: 18))),
+                  const SizedBox(width: 8),
+                  Text('Min ${tmin.toStringAsFixed(0)}°',
+                      style: const TextStyle(fontWeight: FontWeight.w700)),
+                  const SizedBox(width: 16),
+                  Text('Max ${tmax.toStringAsFixed(0)}°',
+                      style: const TextStyle(fontWeight: FontWeight.w700)),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 12),
           // Précipitations.
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: KultivaColors.waterBlue.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('💧', style: TextStyle(fontSize: 18)),
-                const SizedBox(width: 8),
-                Text('${rain.toStringAsFixed(1)} mm de pluie',
-                    style: const TextStyle(fontWeight: FontWeight.w700)),
-              ],
+          Semantics(
+            label: '${rain.toStringAsFixed(1)} millimètres de pluie',
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(
+                color: KultivaColors.waterBlue.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const ExcludeSemantics(child: Text('💧', style: TextStyle(fontSize: 18))),
+                  const SizedBox(width: 8),
+                  Text('${rain.toStringAsFixed(1)} mm de pluie',
+                      style: const TextStyle(fontWeight: FontWeight.w700)),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 24),
@@ -415,6 +443,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
         ],
       ),
+    ),
     );
   }
 }

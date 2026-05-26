@@ -174,53 +174,58 @@ class _JournalTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: event.color.withValues(alpha: 0.15),
+    return Semantics(
+      label: '${event.action} ${event.vegetableLabel} à ${_timeLabel(event.date)}',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Row(
+          children: <Widget>[
+            ExcludeSemantics(
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: event.color.withValues(alpha: 0.15),
+                ),
+                alignment: Alignment.center,
+                child: Text(event.icon, style: const TextStyle(fontSize: 14)),
+              ),
             ),
-            alignment: Alignment.center,
-            child: Text(event.icon, style: const TextStyle(fontSize: 14)),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  event.action,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    color: event.color,
-                    letterSpacing: 0.4,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    event.action,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: event.color,
+                      letterSpacing: 0.4,
+                    ),
                   ),
-                ),
-                Text(
-                  event.vegetableLabel,
-                  style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w700),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                  Text(
+                    event.vegetableLabel,
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w700),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Text(
-            _timeLabel(event.date),
-            style: const TextStyle(
-              color: KultivaColors.textSecondary,
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
+            Text(
+              _timeLabel(event.date),
+              style: const TextStyle(
+                color: KultivaColors.textSecondary,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -20,7 +20,11 @@ class WateringBars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = color ?? KultivaColors.primaryGreen;
-    return SizedBox(
+    final wateredCount = history.where((b) => b).length;
+    return Semantics(
+      label: 'Arrosage : $wateredCount jour${wateredCount > 1 ? 's' : ''}'
+          ' sur ${history.length}',
+      child: SizedBox(
       height: height,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -39,6 +43,7 @@ class WateringBars extends StatelessWidget {
           ],
         ],
       ),
+    ),
     );
   }
 }

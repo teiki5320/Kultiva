@@ -188,13 +188,19 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                         right: 8, bottom: 6,
                         child: Row(
                           children: [
-                            IconButton(
-                              icon: Icon(_gridView
-                                  ? Icons.view_list_rounded
-                                  : Icons.grid_view_rounded,
-                                  color: Colors.white, size: 20),
-                              onPressed: () =>
-                                  setState(() => _gridView = !_gridView),
+                            Semantics(
+                              label: _gridView
+                                  ? 'Afficher en liste'
+                                  : 'Afficher en grille',
+                              button: true,
+                              child: IconButton(
+                                icon: Icon(_gridView
+                                    ? Icons.view_list_rounded
+                                    : Icons.grid_view_rounded,
+                                    color: Colors.white, size: 20),
+                                onPressed: () =>
+                                    setState(() => _gridView = !_gridView),
+                              ),
                             ),
                             PopupMenuButton<_SortMode>(
                               icon: const Icon(Icons.sort,
@@ -221,21 +227,29 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 8),
-                    child: TextField(
-                      controller: _searchCtrl,
-                      onChanged: (v) => setState(() => _query = v.trim()),
-                      decoration: InputDecoration(
-                        hintText: 'Rechercher un légume…',
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: _query.isEmpty
-                            ? null
-                            : IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: () {
-                                  _searchCtrl.clear();
-                                  setState(() => _query = '');
-                                },
-                              ),
+                    child: Semantics(
+                      label: 'Rechercher un légume',
+                      textField: true,
+                      child: TextField(
+                        controller: _searchCtrl,
+                        onChanged: (v) => setState(() => _query = v.trim()),
+                        decoration: InputDecoration(
+                          hintText: 'Rechercher un légume…',
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: _query.isEmpty
+                              ? null
+                              : Semantics(
+                                  label: 'Effacer la recherche',
+                                  button: true,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      _searchCtrl.clear();
+                                      setState(() => _query = '');
+                                    },
+                                  ),
+                                ),
+                        ),
                       ),
                     ),
                   ),
@@ -664,7 +678,10 @@ class _PastelChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: GestureDetector(
+      child: Semantics(
+        label: '$label${selected ? ', sélectionné' : ''}',
+        button: true,
+        child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -688,6 +705,7 @@ class _PastelChip extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

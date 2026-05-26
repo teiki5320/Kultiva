@@ -83,7 +83,21 @@ class PlantationCard extends StatelessWidget {
     final plantedLabel =
         '${plantation.plantedAt.day} ${monthNamesShort[plantation.plantedAt.month - 1]}';
 
-    return Container(
+    final String statusLabel;
+    if (!plantation.isActive) {
+      statusLabel = 'récolté';
+    } else if (thirsty) {
+      statusLabel = 'a soif';
+    } else if (mature) {
+      statusLabel = 'prêt à récolter';
+    } else {
+      statusLabel = 'jour ${days + 1} sur $expected';
+    }
+
+    return Semantics(
+      label: '${vegetable.name}, $statusLabel, planté le $plantedLabel'
+          '${tier != MedalTier.none ? ', médaille ${tier.label}' : ''}',
+      child: Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
@@ -183,6 +197,7 @@ class PlantationCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
