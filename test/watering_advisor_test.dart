@@ -1,7 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/models/culture_entry.dart';
+import 'package:kultiva/models/watering_advice.dart';
+import 'package:kultiva/models/weather_data.dart';
 import 'package:kultiva/services/watering_advisor.dart';
-import 'package:kultiva/services/weather_service.dart';
 
 /// Construit une entrée de culture avec les champs essentiels pour les tests.
 CultureEntry _culture({

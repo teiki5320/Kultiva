@@ -6,21 +6,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/plantation.dart';
 import '../models/region_data.dart';
+import '../models/tamassi_visitor.dart';
 import 'auth_service.dart';
 import 'prefs_service.dart';
-
-/// Données minimales d'un Tamassi d'un autre utilisateur, suffisantes
-/// pour l'afficher dans l'écran de visite.
-class TamassiVisitor {
-  final int xp;
-  final String starter; // 'poussia' / 'soleia' / 'spira'
-  final String name;
-  const TamassiVisitor({
-    required this.xp,
-    required this.starter,
-    required this.name,
-  });
-}
 
 /// Service de synchro cloud entre le Poussidex local (shared_preferences)
 /// et Supabase.

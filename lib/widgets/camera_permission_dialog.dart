@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/photo_pick_result.dart';
 import '../services/photo_service.dart';
 import '../theme/app_theme.dart';
 

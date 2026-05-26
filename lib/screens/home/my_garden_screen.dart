@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/tamassi_stats.dart';
+import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../root_tabs.dart';
 
@@ -14,8 +15,11 @@ import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
+import '../../models/photo_pick_result.dart';
+import '../../models/tamassi_visitor.dart';
 import '../../services/cloud_sync_service.dart';
 import '../../services/photo_service.dart';
+import '../../services/review_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
@@ -161,6 +165,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _medals = nextMedals;
     PrefsService.instance.setUnlockedBadges(next);
     unawaited(CloudSyncService.instance.uploadBadges(next));
+    unawaited(ReviewService.instance.maybeRequestReview(
+      unlockedBadgeCount: next.length,
+    ));
     if (!mounted) return;
     // Snackbar promotion d'espèce (argent/or/shiny).
     for (final entry in newlyPromoted.entries) {

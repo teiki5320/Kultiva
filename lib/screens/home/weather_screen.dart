@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/photo_service.dart';
+import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
