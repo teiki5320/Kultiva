@@ -229,17 +229,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     });
   }
 
-  Future<void> _save() async {
-    await PrefsService.instance
-        .setPlantationsJson(Plantation.encodeAll(_plantations));
-    _refreshBadges();
-    // Upload vers le cloud en fire-and-forget (pas de await, l'UI
-    // n'attend pas le réseau pour répondre au tap).
-    unawaited(
-      CloudSyncService.instance.uploadAllPlantations(_plantations),
-    );
-  }
-
   /// Appelé quand l'user soumet une photo pour un défi.
   void _onChallengePhotoTaken(String challengeId, String photoPath) {
     if (mounted) setState(() {});
