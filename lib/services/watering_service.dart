@@ -1,5 +1,4 @@
 import '../data/vegetables_base.dart';
-import '../models/vegetable.dart';
 import '../models/watering_alert.dart';
 import 'weather_service.dart';
 

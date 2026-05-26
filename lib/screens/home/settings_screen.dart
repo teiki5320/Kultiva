@@ -447,7 +447,7 @@ class SettingsScreen extends StatelessWidget {
                     child: Text(
                       'Politique de confidentialité',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: KultivaColors.primary,
+                            color: KultivaColors.primaryGreen,
                             decoration: TextDecoration.underline,
                           ),
                     ),
