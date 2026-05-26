@@ -240,14 +240,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
-  void _replace(Plantation updated) {
-    setState(() {
-      final i = _plantations.indexWhere((x) => x.id == updated.id);
-      if (i >= 0) _plantations[i] = updated;
-    });
-    _save();
-  }
-
   /// Appelé quand l'user soumet une photo pour un défi.
   void _onChallengePhotoTaken(String challengeId, String photoPath) {
     if (mounted) setState(() {});
