@@ -273,21 +273,20 @@ class CloudSyncService {
   // XP de la créature Tamassi (table user_xp)
   // ══════════════════════════════════════════════════════════════════
 
-  /// Push l'XP + starter + nom vers le cloud. Fire-and-forget.
+  /// Push l'XP + starter + nom vers le cloud via RPC sécurisée.
+  /// Fire-and-forget — ne bloque pas l'UI.
   Future<void> uploadXp({
     required int xp,
     String? starter,
     String? creatureName,
   }) async {
     if (!_signedIn) return;
-    final uid = _userId;
-    if (uid == null) return;
+    if (_userId == null) return;
     try {
-      await _client.from('user_xp').upsert(<String, dynamic>{
-        'user_id': uid,
-        'xp': xp,
-        if (starter != null) 'starter': starter,
-        if (creatureName != null) 'creature_name': creatureName,
+      await _client.rpc('sync_xp', params: <String, dynamic>{
+        'total_xp': xp,
+        'p_starter': starter,
+        'p_creature_name': creatureName,
       });
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadXp error: $e');
