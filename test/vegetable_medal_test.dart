@@ -57,7 +57,7 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'carotte',
-          plantedAt: DateTime(2025, 3, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
         ),
       ];
       final tier = computeMedalTier('tomate', plantations);
@@ -69,7 +69,7 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
         ),
       ];
       final tier = computeMedalTier('tomate', plantations);
@@ -81,7 +81,7 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 1,
         ),
       ];
@@ -94,7 +94,7 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 2,
         ),
       ];
@@ -107,13 +107,13 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 2,
         ),
         Plantation(
           id: '2',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 7, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 5)),
           harvestCount: 1,
         ),
       ];
@@ -128,13 +128,13 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 3, 1),
+          plantedAt: DateTime(2026, 3, 1),
           harvestCount: 0,
         ),
         Plantation(
           id: '2',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 9, 1),
+          plantedAt: DateTime(2026, 1, 15),
           harvestCount: 0,
         ),
       ];
@@ -147,7 +147,7 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 5,
         ),
       ];
@@ -160,7 +160,7 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 4,
         ),
       ];
@@ -180,12 +180,12 @@ void main() {
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
         ),
         Plantation(
           id: '2',
           vegetableId: 'carotte',
-          plantedAt: DateTime(2025, 4, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 1,
         ),
         Plantation(
