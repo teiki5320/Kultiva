@@ -17,11 +17,9 @@ import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
 import '../../models/tamassi_visitor.dart';
 import '../../services/cloud_sync_service.dart';
-import '../../services/review_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/badge_card.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/plant_creature.dart';
 import '../../widgets/tamassi_story_card.dart';
@@ -140,60 +138,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   /// Poussidex pour la première fois.
   void onBecameVisible() {
     _showTutorialIfNeeded();
-  }
-
-  /// Appelée après chaque action qui modifie la collection — détecte les
-  /// nouveaux badges débloqués et montre un snackbar kawaii pour chacun.
-  void _refreshBadges() {
-    final next = computeUnlockedBadges(level: _currentXp());
-    final newly = next.difference(_unlockedBadges);
-    final nextMedals = computeAllMedals(_plantations);
-    final newlyPromoted = <String, MedalTier>{};
-    for (final entry in nextMedals.entries) {
-      final prev = _medals[entry.key] ?? MedalTier.none;
-      if (entry.value.rank > prev.rank && entry.value != MedalTier.bronze) {
-        newlyPromoted[entry.key] = entry.value;
-      }
-    }
-    _unlockedBadges = next;
-    _medals = nextMedals;
-    PrefsService.instance.setUnlockedBadges(next);
-    unawaited(CloudSyncService.instance.uploadBadges(next));
-    unawaited(ReviewService.instance.maybeRequestReview(
-      unlockedBadgeCount: next.length,
-    ));
-    if (!mounted) return;
-    // Snackbar promotion d'espèce (argent/or/shiny).
-    for (final entry in newlyPromoted.entries) {
-      final veg = vegetablesBase
-          .where((v) => v.id == entry.key)
-          .firstOrNull;
-      if (veg == null) continue;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${entry.value.emoji} ${veg.name} passe ${entry.value.label} !',
-          ),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: entry.value.color,
-          duration: const Duration(seconds: 3),
-        ),
-      );
-    }
-    if (newly.isEmpty) return;
-    // Animation "pack opening" pour chaque nouveau badge, séquentielle :
-    // la prochaine ne se lance qu'une fois la précédente fermée.
-    _showNewBadgesSequentially(newly.toList());
-  }
-
-  /// Affiche les cartes des nouveaux badges une par une, en attendant
-  /// que l'utilisateur tape pour fermer entre chaque.
-  Future<void> _showNewBadgesSequentially(List<String> ids) async {
-    for (final id in ids) {
-      if (!mounted) return;
-      final b = allBadges.firstWhere((x) => x.id == id);
-      await showBadgeUnlockedAnimation(context, badge: b);
-    }
   }
 
   final GlobalKey<_TamassiViewState> _tamassiKey =
