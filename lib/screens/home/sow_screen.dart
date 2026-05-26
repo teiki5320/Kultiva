@@ -136,11 +136,6 @@ class _SowScreenState extends State<SowScreen> {
     return tips[dayOfYear % tips.length];
   }
 
-  static const List<String> _monthNames = [
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
-  ];
-
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();

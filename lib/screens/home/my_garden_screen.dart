@@ -28,10 +28,8 @@ import '../../widgets/camera_permission_dialog.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/plant_creature.dart';
 import '../../widgets/tamassi_story_card.dart';
-import 'poussidex/plantation_detail_sheet.dart';
 import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_challenges.dart';
-import 'poussidex/vegetable_picker_sheet.dart';
 
 /// Incrémenté à chaque reset du starter depuis les paramètres.
 /// Le [_TamassiView] l'écoute pour recharger l'état du starter.
@@ -68,7 +66,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   Map<String, MedalTier> _medals = <String, MedalTier>{};
   _AlbumFilter _filter = _AlbumFilter.tamassi;
   bool _loaded = false;
-  bool _deleteMode = false;
 
   /// Total d'espèces collectionnables (tous les légumes sauf accessoires).
   static final int _totalSpecies = vegetablesBase
@@ -202,8 +199,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     }
   }
 
-  List<Plantation> get _filteredPlantations => _plantations;
-
   final GlobalKey<_TamassiViewState> _tamassiKey =
       GlobalKey<_TamassiViewState>();
 
@@ -290,32 +285,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     return result;
   }
 
-  /// Arrose en un tap toutes les plantes qui ont soif.
-  void _waterAllThirsty() {
-    final list = _thirsty;
-    if (list.isEmpty) return;
-    final now = DateTime.now();
-    setState(() {
-      for (int i = 0; i < _plantations.length; i++) {
-        final p = _plantations[i];
-        if (list.any((x) => x.id == p.id)) {
-          _plantations[i] = p.copyWith(
-            wateredAt: <DateTime>[...p.wateredAt, now],
-          );
-        }
-      }
-    });
-    _save();
-    AudioService.instance.play(Sfx.rain);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            '💧 ${list.length} plante${list.length > 1 ? "s" : ""} arrosée${list.length > 1 ? "s" : ""}'),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
   void _harvest(Plantation p) {
     _replace(p.copyWith(harvestCount: p.harvestCount + 1));
     AudioService.instance.play(Sfx.plant);
@@ -329,36 +298,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     setState(() => _plantations.removeWhere((x) => x.id == p.id));
     _save();
     unawaited(CloudSyncService.instance.deletePlantation(p.id));
-  }
-
-  /// Supprime une plantation en mode suppression avec un bouton d'annulation
-  /// dans un SnackBar (fenêtre de 4 secondes).
-  void _removeWithUndo(Plantation p, Vegetable veg) {
-    setState(() => _plantations.removeWhere((x) => x.id == p.id));
-    _save();
-    unawaited(CloudSyncService.instance.deletePlantation(p.id));
-    AudioService.instance.play(Sfx.tap);
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('🗑️ ${veg.name} retiré du Poussidex'),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 4),
-        action: SnackBarAction(
-          label: 'Annuler',
-          textColor: Colors.white,
-          onPressed: () {
-            setState(() => _plantations.add(p));
-            _save();
-          },
-        ),
-      ),
-    );
-    // Si la collection est vide, on sort auto du mode suppression.
-    if (_plantations.isEmpty) {
-      setState(() => _deleteMode = false);
-    }
   }
 
   void _setNote(Plantation p, String? note) {
@@ -431,66 +370,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     // La créature célèbre le défi complété et gagne +20 XP.
     _tamassiKey.currentState?.triggerCelebration();
     _tamassiKey.currentState?.awardChallengeXp(challengeId);
-  }
-
-  void _openPicker() {
-    showModalBottomSheet<String>(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) => const VegetablePickerSheet(),
-    ).then((vegId) {
-      if (vegId != null) _plant(vegId);
-    });
-  }
-
-  Future<void> _showDetail(Plantation p, Vegetable v) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) {
-        return StatefulBuilder(
-          builder: (ctx, setSheetState) {
-            // On lit la dernière version de la plantation à chaque rebuild
-            // pour refléter immédiatement les photos ajoutées sans fermer
-            // la sheet.
-            final current =
-                _plantations.firstWhere((x) => x.id == p.id, orElse: () => p);
-            return PlantationDetailSheet(
-              plantation: current,
-              vegetable: v,
-              onWater: () {
-                _water(current);
-                Navigator.pop(ctx);
-              },
-              onHarvest: () {
-                _harvest(current);
-                Navigator.pop(ctx);
-              },
-              onTerminate: () {
-                _terminate(current);
-                Navigator.pop(ctx);
-              },
-              onRemove: () {
-                _remove(current);
-                Navigator.pop(ctx);
-              },
-              onNoteChanged: (note) => _setNote(current, note),
-              onAddPhoto: (fromCamera) async {
-                await _addPhoto(current, fromCamera: fromCamera);
-                setSheetState(() {});
-              },
-              onRemovePhoto: (path) {
-                _removePhoto(current, path);
-                setSheetState(() {});
-              },
-            );
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -840,13 +719,6 @@ class _TamassiViewState extends State<_TamassiView>
     prefs.setString(_kLastSeen, todayKey);
     prefs.setString(_kStreak, next.toString());
     _streak = next;
-  }
-
-  String get _moodEmoji {
-    if (_streak >= 7) return '🤩';
-    if (_streak >= 3) return '😄';
-    if (_streak >= 1) return '😊';
-    return '😐';
   }
 
   bool get _isNight {
@@ -2179,51 +2051,6 @@ class _SpeechBubble extends StatelessWidget {
   }
 }
 
-class _StarterButton extends StatelessWidget {
-  final String label;
-  final String emoji;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _StarterButton({
-    required this.label,
-    required this.emoji,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: color, width: 2.5),
-          ),
-          child: Column(
-            children: <Widget>[
-              Text(emoji, style: const TextStyle(fontSize: 28)),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 13,
-                  color: color,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 /// Fond kawaii dynamique : gradient selon l'heure du jour, particules
 /// selon la météo réelle (Open-Meteo) ou la saison en fallback.
 class _KawaiiBackground extends StatefulWidget {
@@ -2839,110 +2666,6 @@ class _Header extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Bannière "X plantes ont soif — tap pour tout arroser"
-// ═══════════════════════════════════════════════════════════════════════════
-
-class _ThirstyBanner extends StatelessWidget {
-  final int count;
-  final VoidCallback onTap;
-  const _ThirstyBanner({required this.count, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: <Color>[
-                KultivaColors.terracotta.withValues(alpha: 0.18),
-                const Color(0xFFFFE0B2).withValues(alpha: 0.25),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: KultivaColors.terracotta.withValues(alpha: 0.35),
-            ),
-          ),
-          child: Row(
-            children: <Widget>[
-              const Text('💧', style: TextStyle(fontSize: 20)),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  '$count plante${count > 1 ? "s ont" : " a"} soif — Tap pour tout arroser',
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                    color: KultivaColors.terracotta,
-                  ),
-                ),
-              ),
-              const Icon(Icons.water_drop,
-                  color: KultivaColors.terracotta, size: 18),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// Bannière "Mode suppression actif — tap pour sortir"
-// ═══════════════════════════════════════════════════════════════════════════
-
-class _DeleteModeBanner extends StatelessWidget {
-  final VoidCallback onExit;
-  const _DeleteModeBanner({required this.onExit});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.red.shade50,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.red.shade300),
-        ),
-        child: Row(
-          children: <Widget>[
-            Icon(Icons.delete_outline,
-                color: Colors.red.shade700, size: 20),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                'Tape une carte pour la retirer',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.red.shade700,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: onExit,
-              child: Text(
-                'Terminé',
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: Colors.red.shade700,
-                ),
               ),
             ),
           ],
