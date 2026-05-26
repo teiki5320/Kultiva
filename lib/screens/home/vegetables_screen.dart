@@ -11,7 +11,6 @@ import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../widgets/medal_badge.dart';
-import '../../widgets/petal_animation.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
 

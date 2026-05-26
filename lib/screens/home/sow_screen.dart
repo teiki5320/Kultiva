@@ -483,7 +483,6 @@ class _KawaiiCard extends StatelessWidget {
   final List<Color> gradientColors;
   final Color bubbleColor;
   final VoidCallback onTap;
-  final double height;
 
   const _KawaiiCard({
     required this.emoji,
@@ -493,7 +492,6 @@ class _KawaiiCard extends StatelessWidget {
     required this.gradientColors,
     required this.bubbleColor,
     required this.onTap,
-    this.height = 130,
   });
 
   @override
@@ -507,7 +505,7 @@ class _KawaiiCard extends StatelessWidget {
         onTap();
       },
       child: Container(
-        height: height,
+        height: 130,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,

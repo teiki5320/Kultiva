@@ -15,16 +15,13 @@ import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
-import '../../models/photo_pick_result.dart';
 import '../../models/tamassi_visitor.dart';
 import '../../services/cloud_sync_service.dart';
-import '../../services/photo_service.dart';
 import '../../services/review_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/badge_card.dart';
-import '../../widgets/camera_permission_dialog.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import '../../widgets/plant_creature.dart';
 import '../../widgets/tamassi_story_card.dart';
@@ -243,125 +240,12 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
-  String _genId() =>
-      '${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(100000)}';
-
-  void _plant(String vegetableId) {
-    setState(() {
-      _plantations.add(Plantation(
-        id: _genId(),
-        vegetableId: vegetableId,
-        plantedAt: DateTime.now(),
-      ));
-    });
-    _save();
-    AudioService.instance.play(Sfx.plant);
-  }
-
   void _replace(Plantation updated) {
     setState(() {
       final i = _plantations.indexWhere((x) => x.id == updated.id);
       if (i >= 0) _plantations[i] = updated;
     });
     _save();
-  }
-
-  void _water(Plantation p) {
-    _replace(p.copyWith(wateredAt: <DateTime>[...p.wateredAt, DateTime.now()]));
-    AudioService.instance.play(Sfx.drop);
-  }
-
-  /// Liste des plantations qui ont soif (isActive + seuil dépassé).
-  List<Plantation> get _thirsty {
-    final result = <Plantation>[];
-    for (final p in _plantations) {
-      if (!p.isActive) continue;
-      final v = vegetablesBase
-          .where((x) => x.id == p.vegetableId)
-          .firstOrNull;
-      if (v == null) continue;
-      if (p.daysSinceWatered >= v.effectiveWateringDays) result.add(p);
-    }
-    return result;
-  }
-
-  void _harvest(Plantation p) {
-    _replace(p.copyWith(harvestCount: p.harvestCount + 1));
-    AudioService.instance.play(Sfx.plant);
-  }
-
-  void _terminate(Plantation p) {
-    _replace(p.copyWith(harvestedAt: DateTime.now()));
-  }
-
-  void _remove(Plantation p) {
-    setState(() => _plantations.removeWhere((x) => x.id == p.id));
-    _save();
-    unawaited(CloudSyncService.instance.deletePlantation(p.id));
-  }
-
-  void _setNote(Plantation p, String? note) {
-    _replace(p.copyWith(note: note));
-  }
-
-  Future<void> _addPhoto(Plantation p, {required bool fromCamera}) async {
-    final result = await PhotoService.pickDetailed(fromCamera: fromCamera);
-    if (result.status == PhotoPickStatus.permissionDenied) {
-      if (!mounted) return;
-      await showCameraPermissionDialog(context);
-      return;
-    }
-    final localPath = result.path;
-    if (localPath == null) return;
-    // Ajoute la photo immédiatement (chemin local) pour que l'UI
-    // affiche la miniature sans attendre le réseau.
-    _replace(p.copyWith(
-      photoPaths: <String>[...p.photoPaths, localPath],
-    ));
-    // Upload vers Supabase Storage en arrière-plan ; si succès on
-    // remplace le chemin local par l'URL cloud dans la plantation,
-    // et on efface le fichier local (économise l'espace device).
-    unawaited(_uploadAndReplacePhoto(p.id, localPath));
-  }
-
-  /// Upload une photo locale vers Storage puis met à jour la
-  /// plantation pour remplacer le chemin local par l'URL renvoyée.
-  Future<void> _uploadAndReplacePhoto(
-      String plantationId, String localPath) async {
-    final url = await CloudSyncService.instance.uploadPhoto(
-      localPath: localPath,
-      plantationId: plantationId,
-    );
-    if (url == null) return; // Upload échoué : on garde le local.
-    if (!mounted) return;
-    final idx = _plantations.indexWhere((x) => x.id == plantationId);
-    if (idx < 0) return;
-    final current = _plantations[idx];
-    final updated = current.copyWith(
-      photoPaths: current.photoPaths
-          .map((p) => p == localPath ? url : p)
-          .toList(),
-    );
-    setState(() => _plantations[idx] = updated);
-    await PrefsService.instance
-        .setPlantationsJson(Plantation.encodeAll(_plantations));
-    unawaited(
-      CloudSyncService.instance.uploadAllPlantations(_plantations),
-    );
-    // Efface le fichier local maintenant qu'on a l'URL cloud.
-    unawaited(PhotoService.deleteFile(localPath));
-  }
-
-  void _removePhoto(Plantation p, String path) {
-    // Supprime le fichier (local OU cloud).
-    if (path.startsWith('http')) {
-      unawaited(CloudSyncService.instance.deletePhoto(path));
-    } else {
-      PhotoService.deleteFile(path);
-    }
-    _replace(p.copyWith(
-      photoPaths: p.photoPaths.where((x) => x != path).toList(),
-    ));
   }
 
   /// Appelé quand l'user soumet une photo pour un défi.
@@ -1246,7 +1130,7 @@ class _TamassiViewState extends State<_TamassiView>
                     ..rotateY(rotateY),
                   child: Text(
                     anim.emoji,
-                    style: TextStyle(fontSize: anim.size),
+                    style: const TextStyle(fontSize: 32),
                   ),
                 ),
               );
@@ -1653,13 +1537,11 @@ enum _CrossingStyle { flyHigh, zigzag, groundSlow, hop }
 class _CrossingAnimal {
   final String emoji;
   final _CrossingStyle style;
-  final double size;
   final int durationMs;
 
   const _CrossingAnimal({
     required this.emoji,
     required this.style,
-    this.size = 32,
     this.durationMs = 6000,
   });
 }
