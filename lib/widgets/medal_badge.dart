@@ -115,11 +115,20 @@ class MedalBadge extends StatelessWidget {
     }
 
     if (!showCornerMedal || tier == MedalTier.none) {
-      return ring;
+      return Semantics(
+        label: tier == MedalTier.none
+            ? emoji
+            : 'Médaille ${tier.label}',
+        image: true,
+        child: ring,
+      );
     }
 
     // Pastille médaille coin haut-droit.
-    return SizedBox(
+    return Semantics(
+      label: 'Médaille ${tier.label}',
+      image: true,
+      child: SizedBox(
       width: size,
       height: size,
       child: Stack(
@@ -152,6 +161,7 @@ class MedalBadge extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 

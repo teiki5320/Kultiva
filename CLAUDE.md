@@ -56,6 +56,8 @@ retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `share_plus` ^7.2 — partage Instagram / social
 - `sensors_plus` ^6.0 — accéléromètre / gyroscope (animations de la créature)
 - `webview_flutter` ^4.10 — tutoriels HTML
+- `sentry_flutter` ^8.3 — crash reporting (erreurs + stack traces)
+- `in_app_review` ^2.0 — demande de note sur les stores
 
 **Backend / services**
 
@@ -380,6 +382,11 @@ Décisions et évolutions significatives :
   Supabase `seed-species`, documentation dans `docs/catalog-sync.md`.
 - **Actualités** : table `news_items` + bucket `news-images` (migration 007),
   publication via Supabase Studio uniquement (service_role).
+- **Audit mai 2026** : extraction de 6 modèles des services vers `lib/models/`,
+  ajout `sentry_flutter` (crash reporting), `in_app_review` (notes store),
+  `flutter_native_splash` (splash natif), privacy policy HTML + lien settings,
+  migrations 009 (sécurisation XP) + 010 (modération feed), 3 nouveaux tests
+  (region_data, vegetable_medal, watering_advisor), CI durcie (warnings fatals).
 
 ## 💬 Instructions pour Claude Code
 
@@ -387,7 +394,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 1. **Respecter le contrat local-first** : ne jamais introduire d'appel réseau
    bloquant dans un flux UI. Synchro cloud = arrière-plan uniquement.
-2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/009_*.sql`,
+2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/011_*.sql`,
    jamais éditer les existants.
 3. **Assets** : après `cp` d'un asset, penser à déclarer le chemin dans
    `pubspec.yaml`.
@@ -410,35 +417,23 @@ Règles spécifiques au projet pour être efficace dès la première action :
 À signaler à l'utilisateur / à traiter dans un futur ticket :
 
 1. **Aucun test de widget ni d'intégration** — seuls les modèles et les
-   données sont couverts (988 LoC de tests sur 31 640 LoC de code source).
-   Aucun des 16 services n'a de test. 2 modèles non testés : `region_data`,
-   `vegetable_medal`.
-2. **Aucun edge function Supabase pour la logique métier** — XP, likes,
-   modération du feed sont côté Dart, donc contournables si quelqu'un
-   interroge l'API directement. (Note : l'edge function `seed-species` existe
-   mais ne concerne que la sync catalogue.)
+   données sont couverts. Aucun des 16 services n'a de test (sauf
+   `watering_advisor`). Tous les modèles sont testés.
+2. **Migrations 009 + 010 à appliquer** — `009_secure_xp.sql` (sécurise l'XP
+   via RPC) et `010_feed_moderation.sql` (signalements + masquage auto)
+   attendent d'être exécutées dans Supabase Dashboard → SQL Editor. Après
+   009, adapter le code Dart pour appeler `increment_xp()` via RPC.
 3. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
    c'est correct pour une anon key JWT publique, mais à documenter pour éviter
    tout doute.
-4. **Commits dominés par Claude** (108 sur 157) — vérifier que les revues
-   humaines restent régulières pour éviter les dérives stylistiques.
-5. **`assets/images/accessories/` est vide** — les 38 images d'accessoires
+4. **`assets/images/accessories/` est vide** — les 38 images d'accessoires
    référencées dans le code ne sont pas encore générées (fallback emoji actif).
-6. **54 légumes sur 120 n'ont pas de `harvestTimeBySeason`** — des trous dans
-   les calendriers saisonniers sont possibles (66 sur 120 renseignés).
-7. **Modèles définis dans les services au lieu de `lib/models/`** —
-   `WeatherData` (weather_service), `TamassiVisitor` (cloud_sync_service),
-   `PhotoPickResult` (photo_service), `FeedPost` (feed_service),
-   `WateringAlert` (watering_service), `WateringAdvice` + enum
-   `WateringUrgency` (watering_advisor).
-8. **Aucune accessibilité** — 0 usage de `Semantics` dans le code. L'app est
-   inutilisable avec VoiceOver / TalkBack.
-9. **Pas de privacy policy, CGU, ni mention RGPD** — obligatoire pour les
-   stores Apple et Google.
-10. **Pas d'analytics ni crash reporting** — aucun Firebase Analytics,
-    Crashlytics ou Sentry. Impossible de diagnostiquer les crashs en prod.
-11. **2 `debugPrint()` sans garde `kDebugMode`** — `cloud_sync_service.dart:401`
-    et `feed_service.dart:103`. Les 15 autres appels sont correctement gardés.
-12. **`my_garden_screen.dart` fait 3 070 lignes** — le plus gros fichier du
-    projet, à découper en sous-widgets. Autres fichiers volumineux :
-    `plant_creature.dart` (1 798 LoC), `garden_planner_screen.dart` (1 777 LoC).
+   Prompts ComfyUI prêts dans `tool/accessory_prompts.tsv`.
+5. **Sentry DSN à configurer** — `sentry_flutter` est branché dans `main.dart`
+   mais le DSN est vide. Créer un compte sur sentry.io et coller le DSN.
+6. **Splash natif à générer** — `flutter_native_splash` est configuré dans
+   `pubspec.yaml` mais il faut lancer `dart run flutter_native_splash:create`
+   sur le Mac pour générer les fichiers natifs.
+7. **`my_garden_screen.dart` fait 3 070 lignes** — le plus gros fichier du
+   projet, à découper en sous-widgets. Autres fichiers volumineux :
+   `plant_creature.dart` (1 798 LoC), `garden_planner_screen.dart` (1 777 LoC).

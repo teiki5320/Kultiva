@@ -30,7 +30,12 @@ class VegetableCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cc = vegetable.category.familyColor;
-    return Card(
+    return Semantics(
+      label: '${vegetable.name}, ${vegetable.category.label}'
+          '${canSowNow ? ', à semer ce mois' : ''}'
+          '${isFavorite ? ', favori' : ''}',
+      button: onTap != null,
+      child: Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
@@ -122,19 +127,25 @@ class VegetableCard extends StatelessWidget {
                 ),
               ),
               if (onFavoriteToggle != null)
-                GestureDetector(
-                  onTap: () {
-                    AudioService.instance.play(Sfx.favorite);
-                    onFavoriteToggle!();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Icon(
-                      isFavorite ? Icons.favorite : Icons.favorite_border,
-                      size: 20,
-                      color: isFavorite
-                          ? KultivaColors.terracotta
-                          : Colors.grey.shade300,
+                Semantics(
+                  label: isFavorite
+                      ? 'Retirer ${vegetable.name} des favoris'
+                      : 'Ajouter ${vegetable.name} aux favoris',
+                  button: true,
+                  child: GestureDetector(
+                    onTap: () {
+                      AudioService.instance.play(Sfx.favorite);
+                      onFavoriteToggle!();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        size: 20,
+                        color: isFavorite
+                            ? KultivaColors.terracotta
+                            : Colors.grey.shade300,
+                      ),
                     ),
                   ),
                 ),
@@ -142,6 +153,7 @@ class VegetableCard extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

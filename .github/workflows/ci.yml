@@ -26,9 +26,9 @@ jobs:
 
       - name: Analyze
         # --no-fatal-infos : style (prefer_const_*, doc comments, etc.)
-        # --no-fatal-warnings : code mort historique (unused_element/field)
-        # Les vraies erreurs Dart (error level) font toujours échouer.
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        # Les warnings (code mort, API dépréciées) font maintenant
+        # échouer le build pour éviter l'accumulation silencieuse.
+        run: flutter analyze --no-fatal-infos
 
       - name: Test
         run: flutter test
