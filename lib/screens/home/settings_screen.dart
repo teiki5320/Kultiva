@@ -7,6 +7,7 @@ import '../../services/cloud_sync_service.dart';
 import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../home/tuto_fiche_screen.dart';
 import 'my_garden_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -432,7 +433,27 @@ class SettingsScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const TutoFicheScreen(
+                          titre: 'Politique de confidentialité',
+                          assetPath: 'assets/tutos/privacy_policy.html',
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Politique de confidentialité',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: KultivaColors.primaryGreen,
+                            decoration: TextDecoration.underline,
+                          ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Center(
                   child: Text(
                     'Kultiva v1.0',

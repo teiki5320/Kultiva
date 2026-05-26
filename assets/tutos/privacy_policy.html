@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Politique de confidentialité — Kultiva</title>
+<style>
+  body {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    color: #2A4A3A;
+    background: #F5FAF8;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22px; color: #4A9B5A; }
+  h2 { font-size: 17px; color: #4A9B5A; margin-top: 28px; }
+  p, li { font-size: 14px; }
+  ul { padding-left: 20px; }
+  .date { font-size: 13px; color: #888; }
+</style>
+</head>
+<body>
+
+<h1>🌱 Politique de confidentialité</h1>
+<p class="date">Dernière mise à jour : 25 mai 2026</p>
+
+<p>Kultiva est une application de jardinage développée par Jean Perraudeau
+(ci-après « nous »). Cette politique explique quelles données nous
+collectons, pourquoi, et comment nous les protégeons.</p>
+
+<h2>1. Données collectées</h2>
+<ul>
+  <li><strong>Compte utilisateur</strong> — adresse e-mail, nom affiché,
+  identifiant OAuth (Google ou Apple). Collectées lors de l'inscription
+  pour permettre la synchronisation cloud.</li>
+  <li><strong>Données de jardinage</strong> — plantations, arrosages,
+  récoltes, badges débloqués, préférences (région, thème, notifications).
+  Stockées localement sur l'appareil et synchronisées sur nos serveurs
+  si tu actives la synchronisation cloud.</li>
+  <li><strong>Photos</strong> — photos de plants prises avec la caméra ou
+  importées depuis la galerie. Stockées localement et uploadées dans le
+  cloud si la synchronisation est active.</li>
+  <li><strong>Localisation</strong> — position GPS utilisée uniquement pour
+  afficher la météo locale et détecter ta région (France / Afrique de
+  l'Ouest). Jamais stockée sur nos serveurs. Si tu refuses l'accès, Paris
+  est utilisé par défaut.</li>
+  <li><strong>Données de la créature Tamassi</strong> — XP, niveau, nom,
+  variante choisie. Synchronisées si le compte cloud est actif.</li>
+  <li><strong>Publications communautaires</strong> — photos et légendes
+  soumises dans le feed de défis. Visibles par tous les utilisateurs
+  authentifiés.</li>
+</ul>
+
+<h2>2. Pourquoi nous collectons ces données</h2>
+<ul>
+  <li>Faire fonctionner l'application (calendrier, météo, arrosage).</li>
+  <li>Synchroniser tes données entre tes appareils (facultatif).</li>
+  <li>Permettre le feed communautaire de défis photo.</li>
+  <li>Afficher le classement Tamassi (XP publique).</li>
+</ul>
+<p>Nous ne vendons jamais tes données. Nous n'utilisons pas tes données
+à des fins publicitaires.</p>
+
+<h2>3. Stockage et sécurité</h2>
+<p>Les données cloud sont hébergées sur <strong>Supabase</strong>
+(infrastructure AWS, région Europe — Francfort). L'accès aux données
+est protégé par :</p>
+<ul>
+  <li>Authentification OAuth2 (Google / Apple) ou e-mail + mot de passe.</li>
+  <li>Row Level Security (RLS) : chaque utilisateur ne peut accéder
+  qu'à ses propres données.</li>
+  <li>Chiffrement en transit (HTTPS/TLS).</li>
+</ul>
+<p>Les données locales sont stockées sur ton appareil dans le stockage
+privé de l'application (SharedPreferences et dossier documents).</p>
+
+<h2>4. Partage des données</h2>
+<p>Nous ne partageons tes données avec aucun tiers, sauf :</p>
+<ul>
+  <li><strong>Supabase</strong> — hébergeur cloud (sous-traitant technique).</li>
+  <li><strong>Open-Meteo</strong> — service météo gratuit. Seules les
+  coordonnées GPS sont transmises pour obtenir les prévisions. Aucun
+  compte utilisateur n'est partagé.</li>
+  <li><strong>Google / Apple</strong> — uniquement pour l'authentification
+  OAuth. Nous recevons ton e-mail et ton nom, rien d'autre.</li>
+</ul>
+
+<h2>5. Durée de conservation</h2>
+<ul>
+  <li>Données locales : tant que l'application est installée.</li>
+  <li>Données cloud : tant que ton compte existe. Si tu supprimes ton
+  compte, toutes tes données sont effacées sous 30 jours.</li>
+  <li>Publications communautaires : conservées tant qu'elles ne sont pas
+  supprimées par l'auteur ou masquées par la modération.</li>
+</ul>
+
+<h2>6. Tes droits (RGPD)</h2>
+<p>Tu as le droit de :</p>
+<ul>
+  <li><strong>Accéder</strong> à tes données — elles sont toutes visibles
+  dans l'application.</li>
+  <li><strong>Rectifier</strong> tes données — modifie ton profil ou tes
+  plantations directement dans l'app.</li>
+  <li><strong>Supprimer</strong> ton compte et toutes tes données — dans
+  Paramètres → Supprimer mon compte.</li>
+  <li><strong>Exporter</strong> tes données — contacte-nous par e-mail.</li>
+  <li><strong>T'opposer</strong> au traitement — désactive la
+  synchronisation cloud dans les paramètres pour utiliser l'app en
+  mode 100 % local.</li>
+</ul>
+
+<h2>7. Mineurs</h2>
+<p>Kultiva est conçue pour être utilisée en famille. Les enfants de moins
+de 16 ans doivent obtenir le consentement d'un parent ou tuteur avant
+de créer un compte cloud. L'application fonctionne intégralement en mode
+local (sans compte) et ne collecte alors aucune donnée personnelle.</p>
+
+<h2>8. Cookies et trackers</h2>
+<p>L'application mobile n'utilise aucun cookie, aucun tracker publicitaire,
+aucun outil d'analytics. Aucune donnée de navigation n'est collectée.</p>
+
+<h2>9. Modifications</h2>
+<p>Cette politique peut être mise à jour. En cas de changement significatif,
+une notification sera affichée dans l'application. La date de mise à jour
+en haut de cette page fait référence.</p>
+
+<h2>10. Contact</h2>
+<p>Pour toute question relative à tes données personnelles :</p>
+<p>📧 <strong>contact@kultiva.app</strong></p>
+<p>Jean Perraudeau — Responsable du traitement<br>
+France métropolitaine</p>
+
+</body>
+</html>

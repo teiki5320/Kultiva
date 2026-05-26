@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../theme/app_theme.dart';
 import 'tuto_fiche_screen.dart';
@@ -23,12 +22,10 @@ class _TutoCategory {
 class _TutoItem {
   final String emoji;
   final String label;
-  final String url;
   final String? htmlAsset;
   const _TutoItem({
     required this.emoji,
     required this.label,
-    this.url = '',
     this.htmlAsset,
   });
 }
@@ -300,9 +297,6 @@ class _TutoTile extends StatelessWidget {
               ),
             ),
           );
-        } else if (item.url.isNotEmpty) {
-          launchUrl(Uri.parse(item.url),
-              mode: LaunchMode.externalApplication);
         }
       },
       child: Container(

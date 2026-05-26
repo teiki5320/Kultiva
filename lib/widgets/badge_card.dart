@@ -174,16 +174,21 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
                     rotationY: totalY,
                   );
 
-            return GestureDetector(
-              // Tap sur la carte = retournement (au lieu de rien).
-              onTap: _toggleFlip,
-              onPanStart: _onDragStart,
-              onPanUpdate: _onDragUpdate,
-              onPanEnd: _onDragEnd,
-              child: Transform(
-                alignment: Alignment.center,
-                transform: matrix,
-                child: content,
+            return Semantics(
+              label: widget.unlocked
+                  ? 'Badge ${widget.badge.name}, débloqué'
+                  : 'Badge ${widget.badge.name}, verrouillé',
+              child: GestureDetector(
+                // Tap sur la carte = retournement (au lieu de rien).
+                onTap: _toggleFlip,
+                onPanStart: _onDragStart,
+                onPanUpdate: _onDragUpdate,
+                onPanEnd: _onDragEnd,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: matrix,
+                  child: content,
+                ),
               ),
             );
           },

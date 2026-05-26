@@ -29,9 +29,6 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
   late int _heightCm;
   bool _detectingLocation = false;
 
-  // Tailles disponibles en cm (multiples de 30 = 1 case = 1 pied carré).
-  static const List<int> _sizesCm = <int>[60, 90, 120, 150, 180, 210, 240];
-
   @override
   void initState() {
     super.initState();

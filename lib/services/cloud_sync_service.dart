@@ -6,21 +6,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/plantation.dart';
 import '../models/region_data.dart';
+import '../models/tamassi_visitor.dart';
 import 'auth_service.dart';
 import 'prefs_service.dart';
-
-/// Données minimales d'un Tamassi d'un autre utilisateur, suffisantes
-/// pour l'afficher dans l'écran de visite.
-class TamassiVisitor {
-  final int xp;
-  final String starter; // 'poussia' / 'soleia' / 'spira'
-  final String name;
-  const TamassiVisitor({
-    required this.xp,
-    required this.starter,
-    required this.name,
-  });
-}
 
 /// Service de synchro cloud entre le Poussidex local (shared_preferences)
 /// et Supabase.
@@ -285,21 +273,20 @@ class CloudSyncService {
   // XP de la créature Tamassi (table user_xp)
   // ══════════════════════════════════════════════════════════════════
 
-  /// Push l'XP + starter + nom vers le cloud. Fire-and-forget.
+  /// Push l'XP + starter + nom vers le cloud via RPC sécurisée.
+  /// Fire-and-forget — ne bloque pas l'UI.
   Future<void> uploadXp({
     required int xp,
     String? starter,
     String? creatureName,
   }) async {
     if (!_signedIn) return;
-    final uid = _userId;
-    if (uid == null) return;
+    if (_userId == null) return;
     try {
-      await _client.from('user_xp').upsert(<String, dynamic>{
-        'user_id': uid,
-        'xp': xp,
-        if (starter != null) 'starter': starter,
-        if (creatureName != null) 'creature_name': creatureName,
+      await _client.rpc('sync_xp', params: <String, dynamic>{
+        'total_xp': xp,
+        'p_starter': starter,
+        'p_creature_name': creatureName,
       });
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadXp error: $e');
@@ -398,7 +385,7 @@ class CloudSyncService {
           );
       return _client.storage.from(_photosBucket).getPublicUrl(storagePath);
     } catch (e) {
-      debugPrint('CloudSync.uploadPhoto error: $e');
+      if (kDebugMode) debugPrint('CloudSync.uploadPhoto error: $e');
       return null;
     }
   }

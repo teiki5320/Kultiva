@@ -347,7 +347,9 @@ class _PlantCreatureState extends State<PlantCreature>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      label: 'Tamassi ${widget.starter.name}, niveau ${widget.level}',
+      child: GestureDetector(
       onTap: _onTap,
       onPanUpdate: _onPanUpdate,
       onPanEnd: _onPanEnd,
@@ -486,6 +488,7 @@ class _PlantCreatureState extends State<PlantCreature>
           ],
         ),
       ),
+    ),
     );
   }
 }

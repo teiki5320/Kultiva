@@ -11,6 +11,7 @@ import '../../services/culture_service.dart';
 import '../../utils/phenology.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
+import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/companion_status.dart';

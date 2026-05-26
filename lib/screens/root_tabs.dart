@@ -5,7 +5,6 @@ import '../services/audio_service.dart';
 import '../services/notification_service.dart';
 import '../services/prefs_service.dart';
 import 'home/my_garden_screen.dart';
-import 'home/settings_screen.dart';
 import 'home/sow_screen.dart';
 import 'home/tutos_screen.dart';
 import 'home/vegetables_screen.dart';
@@ -89,14 +88,6 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     // On ne await pas — c'est du best-effort async.
     NotificationService.checkAndNotify(activeVegIds);
     NotificationService.checkAndNotifyHeatwave();
-  }
-
-  void _openSettings() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => SettingsScreen(onSignOut: onSignOut),
-      ),
-    );
   }
 
   VoidCallback get onSignOut => widget.onSignOut;

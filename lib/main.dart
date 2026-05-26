@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'config/supabase_config.dart';
@@ -46,7 +47,14 @@ Future<void> main() async {
   if (PrefsService.instance.musicEnabled.value) {
     AudioService.instance.startMusic();
   }
-  runApp(const KultivaApp());
+  await SentryFlutter.init(
+    (options) {
+      // TODO: remplacer par le vrai DSN Sentry (https://sentry.io → Settings → DSN).
+      options.dsn = 'https://0ea500cdcb663dfbe9e22a7b4e309721@o4511455467864064.ingest.de.sentry.io/4511455478808656';
+      options.tracesSampleRate = 0.2;
+    },
+    appRunner: () => runApp(const KultivaApp()),
+  );
 }
 
 class KultivaApp extends StatelessWidget {

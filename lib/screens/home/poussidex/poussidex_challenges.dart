@@ -8,6 +8,7 @@ import '../../../models/vegetable_medal.dart';
 import '../../../services/audio_service.dart';
 import '../../../services/cloud_sync_service.dart';
 import '../../../services/feed_service.dart';
+import '../../../models/photo_pick_result.dart';
 import '../../../services/photo_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
