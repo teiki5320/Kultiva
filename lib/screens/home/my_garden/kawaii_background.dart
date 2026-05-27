@@ -12,10 +12,10 @@ class KawaiiBackground extends StatefulWidget {
   const KawaiiBackground({super.key});
 
   @override
-  State<KawaiiBackground> createState() => KawaiiBackgroundState();
+  State<KawaiiBackground> createState() => _KawaiiBackgroundState();
 }
 
-class KawaiiBackgroundState extends State<KawaiiBackground>
+class _KawaiiBackgroundState extends State<KawaiiBackground>
     with SingleTickerProviderStateMixin {
   WeatherData? _weather;
   late final AnimationController _particleCtrl;
