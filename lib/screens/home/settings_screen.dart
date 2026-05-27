@@ -33,29 +33,31 @@ class SettingsScreen extends StatelessWidget {
                   child: ValueListenableBuilder<Region>(
                     valueListenable: PrefsService.instance.region,
                     builder: (context, region, _) {
-                      return Column(
-                        children: <Widget>[
-                          for (int i = 0; i < Region.values.length; i++) ...<Widget>[
-                            if (i > 0)
-                              const Divider(height: 0, indent: 16),
-                            RadioListTile<Region>(
-                              value: Region.values[i],
-                              groupValue: region,
-                              onChanged: (v) {
-                                if (v != null) {
-                                  PrefsService.instance.setRegion(v);
-                                }
-                              },
-                              title: Text(
-                                '${Region.values[i].emoji}   ${Region.values[i].label}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
+                      return RadioGroup<Region>(
+                        groupValue: region,
+                        onChanged: (v) {
+                          if (v != null) {
+                            PrefsService.instance.setRegion(v);
+                          }
+                        },
+                        child: Column(
+                          children: <Widget>[
+                            for (int i = 0; i < Region.values.length; i++) ...<Widget>[
+                              if (i > 0)
+                                const Divider(height: 0, indent: 16),
+                              RadioListTile<Region>(
+                                value: Region.values[i],
+                                title: Text(
+                                  '${Region.values[i].emoji}   ${Region.values[i].label}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
+                                activeColor: KultivaColors.primaryGreen,
                               ),
-                              activeColor: KultivaColors.primaryGreen,
-                            ),
+                            ],
                           ],
-                        ],
+                        ),
                       );
                     },
                   ),
@@ -105,7 +107,7 @@ class SettingsScreen extends StatelessWidget {
                             value: value,
                             onChanged:
                                 PrefsService.instance.setNotifications,
-                            activeColor: KultivaColors.primaryGreen,
+                            activeThumbColor: KultivaColors.primaryGreen,
                             title: const Text(
                               'Rappel mensuel',
                               style:
@@ -126,7 +128,7 @@ class SettingsScreen extends StatelessWidget {
                             value: value,
                             onChanged: PrefsService
                                 .instance.setTamassiDailyReminder,
-                            activeColor: KultivaColors.primaryGreen,
+                            activeThumbColor: KultivaColors.primaryGreen,
                             title: const Text(
                               'Rappel Tamassi quotidien',
                               style:
@@ -151,7 +153,7 @@ class SettingsScreen extends StatelessWidget {
                         builder: (context, v, _) => SwitchListTile(
                           value: v,
                           onChanged: PrefsService.instance.setSoundEnabled,
-                          activeColor: KultivaColors.primaryGreen,
+                          activeThumbColor: KultivaColors.primaryGreen,
                           title: const Text('Sons des boutons',
                               style: TextStyle(fontWeight: FontWeight.w700)),
                           subtitle: const Text('Bips kawaii sur les actions'),
@@ -170,7 +172,7 @@ class SettingsScreen extends StatelessWidget {
                               await AudioService.instance.stopMusic();
                             }
                           },
-                          activeColor: KultivaColors.primaryGreen,
+                          activeThumbColor: KultivaColors.primaryGreen,
                           title: const Text('Musique de fond',
                               style: TextStyle(fontWeight: FontWeight.w700)),
                           subtitle: const Text('Ambiance douce japonisante'),
@@ -209,7 +211,7 @@ class SettingsScreen extends StatelessWidget {
                       return SwitchListTile(
                         value: value,
                         onChanged: PrefsService.instance.setDarkMode,
-                        activeColor: KultivaColors.primaryGreen,
+                        activeThumbColor: KultivaColors.primaryGreen,
                         title: const Text(
                           'Mode sombre',
                           style: TextStyle(fontWeight: FontWeight.w700),

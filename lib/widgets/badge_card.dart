@@ -921,8 +921,8 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
 
               final matrix = Matrix4.identity()
                 ..setEntry(3, 2, 0.0015)
-                ..translate(0.0, dy, 0.0)
-                ..scale(scale)
+                ..translateByDouble(0.0, dy, 0.0, 1.0)
+                ..scaleByDouble(scale, scale, scale, 1.0)
                 ..rotateY(spinY + idleY);
 
               return Transform(

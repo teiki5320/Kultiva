@@ -400,9 +400,11 @@ class _PlantCreatureState extends State<PlantCreature>
                     alignment: Alignment.bottomCenter,
                     transform: Matrix4.identity()
                       ..rotateZ(sway + dance + tilt + shakeSpin)
-                      ..scale(
+                      ..scaleByDouble(
                         squash * breathScale * sneezeScale,
                         stretch * breathScale * sneezeScale,
+                        squash * breathScale * sneezeScale,
+                        1.0,
                       ),
                     child: _buildCreatureVisual(),
                   ),
