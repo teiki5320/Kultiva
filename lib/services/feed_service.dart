@@ -44,18 +44,23 @@ class FeedService {
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
-      // Récupérer les likes de l'utilisateur courant en une requête.
+      // Récupérer les likes et signalements de l'utilisateur courant.
       final Set<String> myLikes;
+      final Set<String> myReports;
       if (uid != null) {
-        final likesData = await _client
-            .from('post_likes')
-            .select('post_id')
-            .eq('user_id', uid);
-        myLikes = likesData
+        final results = await Future.wait(<Future<List<Map<String, dynamic>>>>[
+          _client.from('post_likes').select('post_id').eq('user_id', uid),
+          _client.from('post_reports').select('post_id').eq('user_id', uid),
+        ]);
+        myLikes = results[0]
+            .map<String>((row) => row['post_id'] as String)
+            .toSet();
+        myReports = results[1]
             .map<String>((row) => row['post_id'] as String)
             .toSet();
       } else {
         myLikes = <String>{};
+        myReports = <String>{};
       }
 
       return data.map<FeedPost>((row) {
@@ -72,12 +77,30 @@ class FeedService {
           caption: row['caption'] as String?,
           likesCount: (row['likes_count'] as int?) ?? 0,
           likedByMe: myLikes.contains(postId),
+          reportedByMe: myReports.contains(postId),
           createdAt: DateTime.parse(row['created_at'] as String),
         );
       }).toList();
     } catch (e) {
       if (kDebugMode) debugPrint('FeedService.fetchFeed error: $e');
       return <FeedPost>[];
+    }
+  }
+
+  /// Signale un post. Retourne true si le signalement a été enregistré.
+  Future<bool> reportPost(String postId, String reason) async {
+    final uid = _userId;
+    if (uid == null) return false;
+    try {
+      await _client.from('post_reports').insert(<String, dynamic>{
+        'user_id': uid,
+        'post_id': postId,
+        'reason': reason,
+      });
+      return true;
+    } catch (e) {
+      if (kDebugMode) debugPrint('FeedService.reportPost error: $e');
+      return false;
     }
   }
 

@@ -8,6 +8,7 @@ class FeedPost {
   final String? caption;
   final int likesCount;
   final bool likedByMe;
+  final bool reportedByMe;
   final DateTime createdAt;
 
   const FeedPost({
@@ -19,6 +20,7 @@ class FeedPost {
     this.caption,
     required this.likesCount,
     required this.likedByMe,
+    this.reportedByMe = false,
     required this.createdAt,
   });
 }
