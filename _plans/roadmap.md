@@ -40,8 +40,8 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 ### 📋 À faire — Qualité / dette technique
 
 - [ ] Étendre la couverture de tests vers les widgets, les services et un parcours d'intégration (actuellement : 129 tests sur modèles + `watering_advisor` uniquement)
-- [ ] Finir les ~40 avertissements de lint restants (Radio/Switch dépréciés, commentaires HTML)
-- [ ] Découper `tamassi_view.dart` (1 740 LoC) et `garden_planner_screen.dart` (1 777 LoC)
+- [x] ~~Finir les ~40 avertissements de lint restants~~ — audit mai 2026 : zéro API dépréciée restante
+- [x] Découper `tamassi_view.dart` (1 740 → 1 205 + 544) et `garden_planner_screen.dart` (1 778 → 503 + 1 298)
 
 ### 📋 À faire — Backend
 
