@@ -17,6 +17,7 @@ import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
 import '../../models/tamassi_visitor.dart';
 import '../../services/cloud_sync_service.dart';
+import '../../services/review_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
@@ -129,6 +130,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _unlockedBadges = computeUnlockedBadges(level: _currentXp());
     _medals = computeAllMedals(_plantations);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
+    unawaited(ReviewService.instance.maybeRequestReview(
+      unlockedBadgeCount: _unlockedBadges.length,
+    ));
     if (mounted) setState(() => _loaded = true);
     // Le tuto n'est PAS déclenché ici — RootTabs l'appelle via
     // [onBecameVisible] quand l'utilisateur arrive sur cet onglet.
