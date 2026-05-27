@@ -287,13 +287,15 @@ class MedalBadge extends StatelessWidget {
       return Text(emoji, style: TextStyle(fontSize: emojiSize));
     }
     final double imgSize = size * 0.82;
-    return Image.asset(
-      imageAsset!,
-      width: imgSize,
-      height: imgSize,
-      fit: BoxFit.contain,
-      errorBuilder: (_, __, ___) =>
-          Text(emoji, style: TextStyle(fontSize: emojiSize)),
+    return ClipOval(
+      child: Image.asset(
+        imageAsset!,
+        width: imgSize,
+        height: imgSize,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) =>
+            Text(emoji, style: TextStyle(fontSize: emojiSize)),
+      ),
     );
   }
 }
