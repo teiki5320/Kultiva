@@ -3,6 +3,22 @@
 > Documentation pour futures sessions Claude Code.
 > Dernière mise à jour : 2026-05-27.
 
+## 🚀 CE QUI RESTE À FAIRE (3 points)
+
+**L'app est fonctionnellement complète.** Il ne reste que 3 actions avant la
+publication :
+
+1. **Soumettre sur App Store et Google Play** — listing, captures d'écran,
+   descriptions, politique de confidentialité (privacy policy HTML déjà prête
+   dans l'app).
+2. **Remplacer les `href="#"` dans `landing/index.html`** — par les vrais liens
+   App Store / Play Store une fois les fiches publiées.
+3. **Transmettre `docs/kultivaprix-handoff.md`** à l'équipe Kultivaprix pour
+   brancher la consommation du catalogue.
+
+Tout le reste (code, CI, modération, lint, découpe fichiers, assets, migrations)
+est terminé.
+
 ## 🎯 Contexte
 
 **Kultiva** est une application mobile Flutter de jardinage francophone, au style
@@ -31,10 +47,12 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - un lien avec **Kultivaprix** (projet sœur, comparateur de prix) via sync
   unidirectionnelle du catalogue vers Supabase.
 
-**Statut** : en phase de polish pré-publication (v1.0.0+5) — CI iOS (Xcode
-Cloud) + CI GitHub Actions branchées, config de signing Android active, landing
-page marketing prête, conformité Amazon Associates en place, Sentry crash
-reporting branché, splash natif configuré, privacy policy RGPD en place.
+**Statut** : **prête à publier** (v1.0.0+5) — toutes les features implémentées,
+CI iOS (Xcode Cloud) + CI GitHub Actions branchées, config de signing Android
+active, landing page marketing prête, conformité Amazon Associates en place,
+Sentry crash reporting branché, splash natif configuré, privacy policy RGPD en
+place, modération du feed câblée (signalements + auto-hide), fichiers
+volumineux découpés, zéro API dépréciée restante.
 L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 ## 🛠️ Stack technique
@@ -95,7 +113,7 @@ Kultiva/
 │   ├── main.dart           # Bootstrap : splash → onboarding → auth → tabs
 │   ├── config/
 │   │   └── supabase_config.dart    # URL, anon key, Google OAuth client IDs
-│   ├── screens/            # 31 fichiers (dont my_garden/ découpé en 3)
+│   ├── screens/            # 33 fichiers (dont my_garden/ et garden_planner/ découpés)
 │   │   ├── splash_screen.dart
 │   │   ├── onboarding_screen.dart
 │   │   ├── root_tabs.dart          # Conteneur 4 onglets (Bottom nav)
@@ -104,11 +122,13 @@ Kultiva/
 │   │   └── home/                   # sow, vegetables, my_garden, tutos,
 │   │                               # settings, weather, calendrier mensuel,
 │   │                               # tuto_fiche (WebView),
-│   │                               # garden_planner, mes_jardins,
-│   │                               # culture_start_sheet,
+│   │                               # mes_jardins, culture_start_sheet,
 │   │                               # garden_plan_config_sheet,
+│   │                               # garden_planner/ (garden_planner_screen,
+│   │                               #   planner_widgets — barrel export),
 │   │                               # my_garden/ (tamassi_view,
-│   │                               # kawaii_background, garden_header),
+│   │                               #   tamassi_widgets, kawaii_background,
+│   │                               #   garden_header),
 │   │                               # poussidex/* (8 fichiers)
 │   ├── models/             # 12 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
@@ -400,6 +420,14 @@ Décisions et évolutions significatives :
   54 légumes `harvestTimeBySeason` complétés (120/120), 38 images d'accessoires
   kawaii générées (ComfyUI), lien Instagram `@toa.kultiva` câblé, version
   bumpée à 1.0.0+5.
+- **Polish final (27 mai 2026)** : découpe `tamassi_view.dart` (1 740 →
+  1 205 + 544 dans `tamassi_widgets.dart`) et `garden_planner_screen.dart`
+  (1 778 → 503 + 1 298 dans `garden_planner/planner_widgets.dart` + barrel),
+  audit lint complet (zéro API dépréciée restante), câblage client de la
+  modération du feed (`FeedService.reportPost`, `FeedPost.reportedByMe`,
+  UI "Signaler" avec dialog + snackbar — s'appuie sur migration 010 :
+  trigger `update_reported_count` + auto-hide à 3 signalements + RLS
+  `posts_select_visible`), roadmap nettoyée.
 
 ## 💬 Instructions pour Claude Code
 
@@ -427,16 +455,16 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 ## ⚠️ Alertes
 
-À signaler à l'utilisateur / à traiter dans un futur ticket :
+Points d'attention restants :
 
 1. **Aucun test de widget ni d'intégration** — seuls les modèles, données
    et `watering_advisor` sont couverts (129 tests, 1 565 LoC). Aucun des
-   autres services n'a de test.
+   autres services n'a de test. Nice-to-have post-publication.
 2. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
    c'est correct pour une anon key JWT publique, mais à documenter pour éviter
    tout doute.
-3. **Fichiers volumineux restants** — `tamassi_view.dart` (1 740 LoC),
-   `garden_planner_screen.dart` (1 777 LoC). Candidats à un découpage futur.
+3. ~~**Fichiers volumineux** — `tamassi_view.dart` et `garden_planner_screen.dart`~~
+   → **Résolu** : découpés en sous-fichiers (mai 2026).
 4. **Liens stores dans `landing/index.html`** — les boutons Télécharger
    pointent vers `href="#"`. À remplacer par les vrais liens App Store /
    Play Store une fois l'app publiée.

@@ -1,11 +1,19 @@
 # 🗺️ Kultiva — Roadmap
 
 > Dernière mise à jour : **2026-05-27**
-> Statut global : **pré-publication (v1.0.0+5)**
+> Statut global : **prête à publier (v1.0.0+5)**
 
 ## 🎯 Vision
 
 Le potager kawaii dans la poche : un compagnon de jardinage francophone qui combine calendrier régional, créature évolutive, météo, défis communautaires et cahier de culture pleine terre, pour la France métropolitaine et l'Afrique de l'Ouest. Pensé pour les amateurs et pour faire jardiner les enfants.
+
+## 🚀 IL NE RESTE QUE 3 CHOSES À FAIRE
+
+1. **Soumettre sur App Store et Google Play** — listing, captures d'écran, descriptions, politique de confidentialité (privacy policy HTML déjà dans l'app)
+2. **Remplacer les `href="#"` dans `landing/index.html`** — par les vrais liens stores une fois les fiches publiées
+3. **Transmettre `docs/kultivaprix-handoff.md`** à l'équipe Kultivaprix pour brancher la consommation du catalogue
+
+Tout le reste est terminé.
 
 ## 🏁 Jalons
 
@@ -22,34 +30,20 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 - [x] Étapes phénologiques auto-suggérées sur chaque plant, alertes canicule personnalisées et avertissement de rotation
 - [x] Tutoriel de bienvenue parent-enfant et conseils contextuels selon la météo
 - [x] CI iOS via Xcode Cloud, signing release Android et conformité Amazon Associates en place
-- [x] Retrait complet de la feature hydroponie (sauvegardée sur la branche `archive/hydroponie-2026-05-03`)
-- [x] Landing marketing en ligne et site Kultivaprix (comparateur de prix) lié depuis l'app
-- [x] README réécrit pour refléter la v2 réelle (Supabase, Poussidex, Tamassi, météo, feed, cahier de culture)
-- [x] Sync unidirectionnelle du catalogue Kultiva vers Kultivaprix via edge function Supabase et workflow GitHub Actions
-- [x] Gros ménage de lint : 308 substitutions `withOpacity` → `withValues` sur 38 fichiers, >90 % des avertissements résorbés
-- [x] Documentation de passation pour Kultivaprix (schéma, RLS, exemples curl/JS) et checklist de test V5
 - [x] CI GitHub Actions en place (`ci.yml` : `flutter analyze` + `flutter test` sur push main et PR)
+- [x] Retrait complet de la feature hydroponie (sauvegardée sur `archive/hydroponie-2026-05-03`)
+- [x] Landing marketing en ligne et site Kultivaprix lié depuis l'app
+- [x] Sync unidirectionnelle du catalogue Kultiva vers Kultivaprix via edge function Supabase et workflow GitHub Actions
+- [x] Documentation de passation pour Kultivaprix (schéma, RLS, exemples curl/JS) et checklist de test V5
 - [x] Branche V5 mergée sur `main`, première synchro catalogue déclenchée
-- [x] Audit pré-publication mai 2026 : extraction 6 modèles, Sentry, in_app_review, splash natif, privacy policy RGPD, migrations 009-011, 3 nouveaux tests, ~600 lignes de code mort supprimées, 10 deprecated APIs corrigés, découpe `my_garden_screen.dart`, 54 légumes `harvestTimeBySeason` complétés, 38 images accessoires kawaii, lien Instagram, version 1.0.0+5
+- [x] Gros ménage de lint : 308 substitutions `withOpacity` → `withValues`, zéro API dépréciée restante
+- [x] Audit pré-publication mai 2026 : extraction 6 modèles, Sentry, in_app_review, splash natif, privacy policy RGPD, migrations 009-011, ~600 lignes de code mort supprimées, 10 deprecated APIs corrigés, 38 images accessoires kawaii, version 1.0.0+5
+- [x] Découpe des fichiers volumineux : `tamassi_view.dart` (1 740 → 1 205 + 544) et `garden_planner_screen.dart` (1 778 → 503 + 1 298)
+- [x] Modération du feed : likes côté serveur (trigger PostgreSQL), signalements câblés côté client (migration 010 + FeedService.reportPost + UI "Signaler" + auto-hide à 3 signalements)
 
-### 📋 À faire — Publication
-
-- [ ] Soumettre l'app sur App Store et Google Play (listing, captures, descriptions, politique de confidentialité)
-- [ ] Remplacer les liens `href="#"` dans `landing/index.html` par les vrais liens App Store / Play Store
-
-### 📋 À faire — Qualité / dette technique
+### 📋 Nice-to-have (post-publication)
 
 - [ ] Étendre la couverture de tests vers les widgets, les services et un parcours d'intégration (actuellement : 129 tests sur modèles + `watering_advisor` uniquement)
-- [x] ~~Finir les ~40 avertissements de lint restants~~ — audit mai 2026 : zéro API dépréciée restante
-- [x] Découper `tamassi_view.dart` (1 740 → 1 205 + 544) et `garden_planner_screen.dart` (1 778 → 503 + 1 298)
-
-### 📋 À faire — Backend
-
-- [x] ~~Modération du feed côté serveur~~ — likes déjà gérés par trigger PostgreSQL (migration 002), signalements câblés côté client (migration 010 + FeedService.reportPost + UI "Signaler")
-
-### 📋 À faire — Coordination
-
-- [ ] Transmettre `docs/kultivaprix-handoff.md` à l'équipe Kultivaprix pour brancher la consommation du catalogue
 
 ### 💡 Idées futures
 
