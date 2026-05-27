@@ -45,7 +45,7 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 
 ### 📋 À faire — Backend
 
-- [ ] Déplacer la modération du feed et le comptage de likes côté serveur via des edge functions Supabase
+- [x] ~~Modération du feed côté serveur~~ — likes déjà gérés par trigger PostgreSQL (migration 002), signalements câblés côté client (migration 010 + FeedService.reportPost + UI "Signaler")
 
 ### 📋 À faire — Coordination
 
