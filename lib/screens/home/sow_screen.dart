@@ -28,8 +28,7 @@ import 'weather_screen.dart';
 /// URL Instagram Kultiva — ouverte au tap sur la carte « Actualités ».
 /// Le compte sert d'actualités (publications + stories) plutôt que de
 /// gérer un feed maison côté app.
-// TODO: remplacer par le vrai pseudo Kultiva quand le compte sera créé.
-const String _kInstagramUrl = 'https://www.instagram.com/kultiva_app/';
+const String _kInstagramUrl = 'https://www.instagram.com/toa.kultiva/';
 
 /// Dashboard principal — Hero saisonnier + 6 cartes kawaii 3×2
 /// (Semer, Récolter, Calendrier, Légume du jour, Cahier de culture,
