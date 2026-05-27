@@ -1,7 +1,7 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-05-25.
+> Dernière mise à jour : 2026-05-27.
 
 ## 🎯 Contexte
 
@@ -31,10 +31,11 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - un lien avec **Kultivaprix** (projet sœur, comparateur de prix) via sync
   unidirectionnelle du catalogue vers Supabase.
 
-**Statut** : en phase de polish pré-publication (v1.0.0+4) — CI iOS (Xcode
+**Statut** : en phase de polish pré-publication (v1.0.0+5) — CI iOS (Xcode
 Cloud) + CI GitHub Actions branchées, config de signing Android active, landing
-page marketing prête, conformité Amazon Associates en place. L'hydroponie a été
-retirée (archivée sur `archive/hydroponie-2026-05-03`).
+page marketing prête, conformité Amazon Associates en place, Sentry crash
+reporting branché, splash natif configuré, privacy policy RGPD en place.
+L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 ## 🛠️ Stack technique
 
@@ -90,11 +91,11 @@ retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 ```
 Kultiva/
-├── lib/                    # Code Dart principal (~31 640 LoC sur 83 fichiers)
+├── lib/                    # Code Dart principal (~31 480 LoC sur 93 fichiers)
 │   ├── main.dart           # Bootstrap : splash → onboarding → auth → tabs
 │   ├── config/
 │   │   └── supabase_config.dart    # URL, anon key, Google OAuth client IDs
-│   ├── screens/            # 28 fichiers — 14 955 LoC
+│   ├── screens/            # 31 fichiers (dont my_garden/ découpé en 3)
 │   │   ├── splash_screen.dart
 │   │   ├── onboarding_screen.dart
 │   │   ├── root_tabs.dart          # Conteneur 4 onglets (Bottom nav)
@@ -106,15 +107,21 @@ Kultiva/
 │   │                               # garden_planner, mes_jardins,
 │   │                               # culture_start_sheet,
 │   │                               # garden_plan_config_sheet,
+│   │                               # my_garden/ (tamassi_view,
+│   │                               # kawaii_background, garden_header),
 │   │                               # poussidex/* (8 fichiers)
-│   ├── models/             # 6 fichiers — 885 LoC
+│   ├── models/             # 12 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
-│   │                       # region_data, culture_entry, garden_plan
-│   ├── services/           # 16 fichiers — 3 209 LoC
+│   │                       # region_data, culture_entry, garden_plan,
+│   │                       # weather_data, tamassi_visitor, feed_post,
+│   │                       # photo_pick_result, watering_alert,
+│   │                       # watering_advice
+│   ├── services/           # 17 fichiers
 │   │                       # auth, prefs, cloud_sync, weather, geolocation,
 │   │                       # notification, photo, audio, watering,
 │   │                       # watering_advisor, feed, pdf, tamassi_stats,
-│   │                       # plantation_migration, culture, garden_plan
+│   │                       # plantation_migration, culture, garden_plan,
+│   │                       # review
 │   ├── data/               # 9 fichiers — 6 320 LoC
 │   │   ├── vegetables_base.dart    # 158 entrées (120 légumes + 38 accessoires)
 │   │   ├── badges.dart (51) / challenges.dart (51) / diseases.dart
@@ -135,10 +142,10 @@ Kultiva/
 │                           # companion_status, heatwave_tips,
 │                           # rotation_advisor
 ├── supabase/
-│   └── migrations/         # 001_initial_schema → 008_drop_hydro_tables
+│   └── migrations/         # 001_initial_schema → 011_sync_xp_rpc
 ├── assets/
 │   ├── images/             # créatures (3 variantes, 35 images), badges (50),
-│   │                       # accessories (vide, fallback emoji), légumes (120),
+│   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
 │   │                       # app_icon
 │   ├── sounds/             # 8 fichiers (1 musique + 7 SFX)
@@ -151,10 +158,11 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site HTML statique marketing (index.html + img/)
-├── test/                   # 8 fichiers — 988 LoC
+├── test/                   # 11 fichiers — 1 565 LoC
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
-│                           # widget_test (stub)
+│                           # region_data, vegetable_medal,
+│                           # watering_advisor, widget_test
 ├── pubspec.yaml
 ├── analysis_options.yaml
 └── README.md
@@ -385,8 +393,13 @@ Décisions et évolutions significatives :
 - **Audit mai 2026** : extraction de 6 modèles des services vers `lib/models/`,
   ajout `sentry_flutter` (crash reporting), `in_app_review` (notes store),
   `flutter_native_splash` (splash natif), privacy policy HTML + lien settings,
-  migrations 009 (sécurisation XP) + 010 (modération feed), 3 nouveaux tests
-  (region_data, vegetable_medal, watering_advisor), CI durcie (warnings fatals).
+  migrations 009 (sécurisation XP) + 010 (modération feed) + 011 (sync_xp RPC),
+  3 nouveaux tests (region_data, vegetable_medal, watering_advisor), CI durcie
+  (warnings fatals), ~600 lignes de code mort supprimées, 10 deprecated APIs
+  corrigés, `my_garden_screen.dart` découpé (2 607 → 264 LoC + 3 sous-fichiers),
+  54 légumes `harvestTimeBySeason` complétés (120/120), 38 images d'accessoires
+  kawaii générées (ComfyUI), lien Instagram `@toa.kultiva` câblé, version
+  bumpée à 1.0.0+5.
 
 ## 💬 Instructions pour Claude Code
 
@@ -394,7 +407,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 1. **Respecter le contrat local-first** : ne jamais introduire d'appel réseau
    bloquant dans un flux UI. Synchro cloud = arrière-plan uniquement.
-2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/011_*.sql`,
+2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/012_*.sql`,
    jamais éditer les existants.
 3. **Assets** : après `cp` d'un asset, penser à déclarer le chemin dans
    `pubspec.yaml`.
@@ -416,24 +429,14 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 À signaler à l'utilisateur / à traiter dans un futur ticket :
 
-1. **Aucun test de widget ni d'intégration** — seuls les modèles et les
-   données sont couverts. Aucun des 16 services n'a de test (sauf
-   `watering_advisor`). Tous les modèles sont testés.
-2. **Migrations 009 + 010 à appliquer** — `009_secure_xp.sql` (sécurise l'XP
-   via RPC) et `010_feed_moderation.sql` (signalements + masquage auto)
-   attendent d'être exécutées dans Supabase Dashboard → SQL Editor. Après
-   009, adapter le code Dart pour appeler `increment_xp()` via RPC.
-3. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
+1. **Aucun test de widget ni d'intégration** — seuls les modèles, données
+   et `watering_advisor` sont couverts (129 tests, 1 565 LoC). Aucun des
+   autres services n'a de test.
+2. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
    c'est correct pour une anon key JWT publique, mais à documenter pour éviter
    tout doute.
-4. **`assets/images/accessories/` est vide** — les 38 images d'accessoires
-   référencées dans le code ne sont pas encore générées (fallback emoji actif).
-   Prompts ComfyUI prêts dans `tool/accessory_prompts.tsv`.
-5. **Sentry DSN à configurer** — `sentry_flutter` est branché dans `main.dart`
-   mais le DSN est vide. Créer un compte sur sentry.io et coller le DSN.
-6. **Splash natif à générer** — `flutter_native_splash` est configuré dans
-   `pubspec.yaml` mais il faut lancer `dart run flutter_native_splash:create`
-   sur le Mac pour générer les fichiers natifs.
-7. **`my_garden_screen.dart` fait 3 070 lignes** — le plus gros fichier du
-   projet, à découper en sous-widgets. Autres fichiers volumineux :
-   `plant_creature.dart` (1 798 LoC), `garden_planner_screen.dart` (1 777 LoC).
+3. **Fichiers volumineux restants** — `tamassi_view.dart` (1 740 LoC),
+   `garden_planner_screen.dart` (1 777 LoC). Candidats à un découpage futur.
+4. **Liens stores dans `landing/index.html`** — les boutons Télécharger
+   pointent vers `href="#"`. À remplacer par les vrais liens App Store /
+   Play Store une fois l'app publiée.
