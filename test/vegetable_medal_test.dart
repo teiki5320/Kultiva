@@ -123,18 +123,20 @@ void main() {
     });
 
     test('plantations dans 2 saisons différentes → gold', () {
-      // Mars = printemps (3-5), Septembre = automne (9-11)
+      // Dates relatives : 120 jours d'écart garantissent deux saisons
+      // distinctes, et rester sous 180 jours évite de déclencher le
+      // palier shiny (plant actif >= 180 j).
       final plantations = <Plantation>[
         Plantation(
           id: '1',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2026, 3, 1),
+          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
           harvestCount: 0,
         ),
         Plantation(
           id: '2',
           vegetableId: 'tomate',
-          plantedAt: DateTime(2026, 1, 15),
+          plantedAt: DateTime.now().subtract(const Duration(days: 130)),
           harvestCount: 0,
         ),
       ];
