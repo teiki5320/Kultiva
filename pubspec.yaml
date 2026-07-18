@@ -98,6 +98,9 @@ flutter:
     - assets/tutos/screens/
     - assets/tutos/screens/dashboard/
     - assets/sounds/
+    # Nunito bundlée localement : google_fonts la charge depuis les
+    # assets au lieu de la télécharger (démarrage offline, zéro data).
+    - assets/google_fonts/
 
 # ─── Packages intentionnellement non-majorés (breaking API) ───
 #

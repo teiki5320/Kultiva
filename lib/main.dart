@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -16,6 +17,10 @@ import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Nunito est bundlée dans assets/google_fonts/ : on interdit tout
+  // téléchargement de police au runtime (important sur les forfaits
+  // data limités, notamment en Afrique de l'Ouest).
+  GoogleFonts.config.allowRuntimeFetching = false;
   // Initialise Supabase (auth + sync cloud). Doit être fait avant
   // AuthService.load() qui pioche la session courante dans Supabase.
   await Supabase.initialize(
@@ -51,7 +56,9 @@ Future<void> main() async {
     (options) {
       // TODO: remplacer par le vrai DSN Sentry (https://sentry.io → Settings → DSN).
       options.dsn = 'https://0ea500cdcb663dfbe9e22a7b4e309721@o4511455467864064.ingest.de.sentry.io/4511455478808656';
-      options.tracesSampleRate = 0.2;
+      // Échantillonnage bas : limite le trafic réseau de télémétrie
+      // (forfaits data limités) tout en gardant les crash reports.
+      options.tracesSampleRate = 0.05;
     },
     appRunner: () => runApp(const KultivaApp()),
   );
