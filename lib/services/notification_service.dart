@@ -4,7 +4,9 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../data/vegetables_base.dart';
+import '../models/region_data.dart';
 import '../models/vegetable.dart';
+import '../utils/climate.dart';
 import '../utils/heatwave_tips.dart';
 import 'culture_service.dart';
 import 'prefs_service.dart';
@@ -27,6 +29,7 @@ class NotificationService {
   static const int _wateringId = 42;
   static const int _dailyTamassiId = 73;
   static const int _heatwaveId = 200;
+  static const int _firstRainsId = 210;
 
   /// Initialise le plugin. Appelé au démarrage de l'app.
   static Future<void> init() async {
@@ -54,6 +57,13 @@ class NotificationService {
         macOS: iosSettings,
       );
       await _plugin.initialize(settings);
+      // Android 13+ : la permission POST_NOTIFICATIONS doit être
+      // demandée explicitement, sinon toutes les notifications sont
+      // silencieusement bloquées.
+      await _plugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
       _initialized = true;
     } catch (_) {
       _initialized = true;
@@ -262,13 +272,17 @@ class NotificationService {
       final tmaxList = weather.dailyTempMax;
       if (tmaxList.length < 9) return;
       // Index 7 = aujourd'hui ; on regarde aujourd'hui + 3 jours.
+      // Seuil régional : 30 °C en France, 40 °C en Afrique de l'Ouest
+      // (sinon l'alerte sonnerait tous les jours de saison sèche).
+      final threshold =
+          heatwaveThresholdFor(PrefsService.instance.region.value);
       var hotStreak = 0;
       var maxStreak = 0;
       var peak = 0.0;
       for (var i = 7; i <= 10 && i < tmaxList.length; i++) {
         final t = tmaxList[i];
         if (t > peak) peak = t;
-        if (t >= 30) {
+        if (t >= threshold) {
           hotStreak++;
           if (hotStreak > maxStreak) maxStreak = hotStreak;
         } else {
@@ -325,6 +339,66 @@ class NotificationService {
       );
       await PrefsService.instance
           .setLastHeatwaveNotificationCheck(DateTime.now());
+    } catch (_) {}
+  }
+
+  /// Alerte « premières pluies » — Afrique de l'Ouest uniquement.
+  ///
+  /// Après une longue période sèche, si un vrai épisode pluvieux
+  /// (>= 10 mm cumulés) est prévu dans les 3 prochains jours, on
+  /// prévient : c'est LE signal de semis de l'hivernage (niébé, maïs,
+  /// gombo, arachide…). Throttle : max 1 fois tous les 30 jours.
+  static Future<void> checkAndNotifyFirstRains() async {
+    if (kIsWeb || !_initialized) return;
+    if (!PrefsService.instance.notifications.value) return;
+    if (PrefsService.instance.region.value != Region.westAfrica) return;
+
+    final last = PrefsService.instance.lastFirstRainsNotificationCheck;
+    if (last != null && DateTime.now().difference(last).inDays < 30) {
+      return;
+    }
+    try {
+      final weather = await WeatherService.getWeather();
+      if (weather == null) return;
+
+      // Longue période sèche derrière nous…
+      if (weather.consecutiveDryDays < 7) return;
+
+      // …et un vrai épisode pluvieux devant (aujourd'hui + 3 jours).
+      final daily = weather.dailyPrecipitation;
+      if (daily.length < 9) return;
+      var upcoming = 0.0;
+      for (var i = 7; i <= 10 && i < daily.length; i++) {
+        upcoming += daily[i];
+      }
+      if (upcoming < 10) return;
+
+      const androidDetails = AndroidNotificationDetails(
+        'kultiva_first_rains',
+        'Premières pluies',
+        channelDescription:
+            "Signal de semis quand les premières pluies de l'hivernage "
+            'arrivent.',
+        importance: Importance.high,
+        priority: Priority.high,
+      );
+      const iosDetails = DarwinNotificationDetails();
+      const details = NotificationDetails(
+        android: androidDetails,
+        iOS: iosDetails,
+        macOS: iosDetails,
+      );
+
+      await _plugin.show(
+        _firstRainsId,
+        '🌧️ Les premières pluies arrivent !',
+        "${upcoming.toStringAsFixed(0)} mm de pluie prévus ces prochains "
+            "jours : c'est le moment de semer niébé, maïs, gombo et "
+            'arachide. Prépare tes billons !',
+        details,
+      );
+      await PrefsService.instance
+          .setLastFirstRainsNotificationCheck(DateTime.now());
     } catch (_) {}
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/country.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
 import '../../services/auth_service.dart';
@@ -28,27 +29,30 @@ class SettingsScreen extends StatelessWidget {
                 vertical: 8,
               ),
               children: <Widget>[
-                const _SectionTitle(title: '🌍  Région'),
+                const _SectionTitle(title: '🌍  Pays'),
                 Card(
-                  child: ValueListenableBuilder<Region>(
-                    valueListenable: PrefsService.instance.region,
-                    builder: (context, region, _) {
-                      return RadioGroup<Region>(
-                        groupValue: region,
+                  child: ValueListenableBuilder<Country?>(
+                    valueListenable: PrefsService.instance.country,
+                    builder: (context, country, _) {
+                      final region = PrefsService.instance.region.value;
+                      final effective = country ??
+                          (region == Region.france ? Country.france : null);
+                      return RadioGroup<Country>(
+                        groupValue: effective,
                         onChanged: (v) {
                           if (v != null) {
-                            PrefsService.instance.setRegion(v);
+                            PrefsService.instance.setCountry(v);
                           }
                         },
                         child: Column(
                           children: <Widget>[
-                            for (int i = 0; i < Region.values.length; i++) ...<Widget>[
+                            for (int i = 0; i < Country.values.length; i++) ...<Widget>[
                               if (i > 0)
                                 const Divider(height: 0, indent: 16),
-                              RadioListTile<Region>(
-                                value: Region.values[i],
+                              RadioListTile<Country>(
+                                value: Country.values[i],
                                 title: Text(
-                                  '${Region.values[i].emoji}   ${Region.values[i].label}',
+                                  '${Country.values[i].flag}   ${Country.values[i].label}',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -68,14 +72,15 @@ class SettingsScreen extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: () async {
-                        final region = await GeolocationService.detectRegion();
+                        final country =
+                            await GeolocationService.detectCountry();
                         if (!context.mounted) return;
-                        if (region != null) {
-                          PrefsService.instance.setRegion(region);
+                        if (country != null) {
+                          PrefsService.instance.setCountry(country);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                'Région détectée : ${region.emoji} ${region.label}',
+                                'Pays détecté : ${country.flag} ${country.label}',
                               ),
                             ),
                           );
@@ -83,14 +88,14 @@ class SettingsScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
-                                'Impossible de détecter la position. Vérifie tes permissions de localisation.',
+                                'Impossible de détecter ton pays. Vérifie tes permissions de localisation.',
                               ),
                             ),
                           );
                         }
                       },
                       icon: const Icon(Icons.my_location),
-                      label: const Text('Détecter ma région automatiquement'),
+                      label: const Text('Détecter mon pays automatiquement'),
                     ),
                   ),
                 ),

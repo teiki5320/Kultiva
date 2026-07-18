@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../models/country.dart';
 import '../models/plantation.dart';
 import '../models/region_data.dart';
 import '../models/tamassi_visitor.dart';
@@ -190,15 +191,24 @@ class CloudSyncService {
     if (uid == null) return;
     try {
       final prefs = PrefsService.instance;
-      await _client.from('preferences').upsert(<String, dynamic>{
+      final payload = <String, dynamic>{
         'user_id': uid,
         'region': prefs.region.value.id,
+        'country': prefs.country.value?.isoCode,
         'dark_mode': prefs.darkMode.value,
         'notifications': prefs.notifications.value,
         'sound_enabled': prefs.soundEnabled.value,
         'music_enabled': prefs.musicEnabled.value,
         'sound_volume': prefs.soundVolume.value,
-      });
+      };
+      try {
+        await _client.from('preferences').upsert(payload);
+      } on PostgrestException {
+        // Colonne `country` absente tant que la migration 013 n'est pas
+        // appliquée : on retente sans, pour ne pas casser la synchro.
+        payload.remove('country');
+        await _client.from('preferences').upsert(payload);
+      }
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadPrefs error: $e');
     }
@@ -209,13 +219,25 @@ class CloudSyncService {
   Future<void> fetchAndApplyPreferences() async {
     if (!_signedIn) return;
     try {
-      final rows = await _client.from('preferences').select().limit(1);
+      final uid = _userId;
+      if (uid == null) return;
+      final rows = await _client
+          .from('preferences')
+          .select()
+          .eq('user_id', uid)
+          .limit(1);
       if (rows.isEmpty) return;
       final row = rows.first;
       final prefs = PrefsService.instance;
       final regionId = row['region'] as String?;
       if (regionId != null) {
         await prefs.setRegion(Region.fromId(regionId));
+      }
+      // Le pays, s'il est connu côté cloud, affine la région.
+      final countryIso = row['country'] as String?;
+      final country = Country.fromIso(countryIso);
+      if (country != null) {
+        await prefs.setCountry(country);
       }
       if (row['dark_mode'] is bool) {
         await prefs.setDarkMode(row['dark_mode'] as bool);
@@ -294,17 +316,32 @@ class CloudSyncService {
   }
 
   /// Charge l'XP depuis le cloud et l'applique dans les prefs locales.
+  ///
+  /// ⚠️ La table user_xp est lisible par tous les utilisateurs
+  /// authentifiés (visiteurs Tamassi) : le filtre user_id est
+  /// indispensable, sinon on récupère la ligne d'un utilisateur
+  /// arbitraire. On ne rétrograde jamais un XP local plus élevé
+  /// (progression offline).
   Future<void> fetchAndApplyXp() async {
     if (!_signedIn) return;
     try {
-      final rows = await _client.from('user_xp').select().limit(1);
+      final uid = _userId;
+      if (uid == null) return;
+      final rows = await _client
+          .from('user_xp')
+          .select()
+          .eq('user_id', uid)
+          .limit(1);
       if (rows.isEmpty) return;
       final row = rows.first;
       final xp = (row['xp'] as int?) ?? 1;
       final starter = row['starter'] as String?;
       final name = row['creature_name'] as String?;
       final prefs = PrefsService.instance;
-      await prefs.setString('kultiva.creature.xp', xp.toString());
+      final localXp =
+          int.tryParse(prefs.getString('kultiva.creature.xp') ?? '') ?? 1;
+      final merged = xp > localXp ? xp : localXp;
+      await prefs.setString('kultiva.creature.xp', merged.toString());
       if (starter != null && starter.isNotEmpty) {
         await prefs.setString('kultiva.creature.starter', starter);
       }

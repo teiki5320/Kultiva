@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/photo_service.dart';
+import '../../services/prefs_service.dart';
 import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
@@ -176,7 +177,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
           Stack(
             children: [
               SeasonHeader(
-                season: Season.fromMonth(DateTime.now().month),
+                season: Season.of(DateTime.now().month,
+                    PrefsService.instance.region.value),
                 month: DateTime.now().month,
                 height: 160,
                 hideLabel: true,

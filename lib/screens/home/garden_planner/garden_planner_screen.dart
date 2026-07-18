@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
 import '../../../models/garden_plan.dart';
+import '../../../models/region_data.dart';
 import '../../../models/vegetable.dart';
 import '../../../models/weather_data.dart';
 import '../../../services/culture_service.dart';
@@ -39,12 +40,35 @@ class CategoryFilter extends PickerFilter {
 }
 
 /// Saison utilisée pour filtrer le plant picker.
+///
+/// Les quatre saisons européennes servent en France ; l'Afrique de
+/// l'Ouest filtre sur saison sèche / hivernage.
 enum PlannerSeason {
   all,
   spring,
   summer,
   autumn,
-  winter;
+  winter,
+  dry,
+  rains;
+
+  /// Saisons proposées dans le filtre selon la région active.
+  static List<PlannerSeason> optionsFor(Region region) {
+    if (region == Region.westAfrica) {
+      return const <PlannerSeason>[
+        PlannerSeason.all,
+        PlannerSeason.dry,
+        PlannerSeason.rains,
+      ];
+    }
+    return const <PlannerSeason>[
+      PlannerSeason.all,
+      PlannerSeason.spring,
+      PlannerSeason.summer,
+      PlannerSeason.autumn,
+      PlannerSeason.winter,
+    ];
+  }
 
   String get label {
     switch (this) {
@@ -58,6 +82,10 @@ enum PlannerSeason {
         return 'Automne';
       case PlannerSeason.winter:
         return 'Hiver';
+      case PlannerSeason.dry:
+        return 'Saison sèche';
+      case PlannerSeason.rains:
+        return 'Hivernage';
     }
   }
 
@@ -73,10 +101,14 @@ enum PlannerSeason {
         return '🍂';
       case PlannerSeason.winter:
         return '❄️';
+      case PlannerSeason.dry:
+        return '☀️';
+      case PlannerSeason.rains:
+        return '🌧️';
     }
   }
 
-  /// Mois (1-12) couverts par cette saison dans l'hémisphère nord.
+  /// Mois (1-12) couverts par cette saison.
   Set<int> get months {
     switch (this) {
       case PlannerSeason.all:
@@ -89,6 +121,10 @@ enum PlannerSeason {
         return const <int>{9, 10, 11};
       case PlannerSeason.winter:
         return const <int>{12, 1, 2};
+      case PlannerSeason.dry:
+        return const <int>{11, 12, 1, 2, 3, 4, 5};
+      case PlannerSeason.rains:
+        return const <int>{6, 7, 8, 9, 10};
     }
   }
 }

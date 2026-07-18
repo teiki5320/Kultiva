@@ -222,8 +222,11 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           ),
-        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier en haut).
+        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier
+        // en haut). Amazon ne livrant pas en Afrique de l'Ouest, le lien
+        // partenaire n'est proposé qu'en France.
         if (vegetable.amazonUrl != null &&
+            PrefsService.instance.region.value == Region.france &&
             vegetable.category != VegetableCategory.accessories) ...[
           const SizedBox(height: 20),
           SizedBox(
@@ -268,7 +271,8 @@ class _HeaderCard extends StatelessWidget {
   MedalTier _loadTier() {
     final plantations =
         Plantation.decodeAll(PrefsService.instance.plantationsJson);
-    return computeMedalTier(vegetable.id, plantations);
+    return computeMedalTier(vegetable.id, plantations,
+        region: PrefsService.instance.region.value);
   }
 
   @override
@@ -339,7 +343,8 @@ class _HeaderCard extends StatelessWidget {
                   size: 78,
                   showCornerMedal: tier != MedalTier.none,
                 ),
-                if (vegetable.amazonUrl != null)
+                if (vegetable.amazonUrl != null &&
+                    PrefsService.instance.region.value == Region.france)
                   _MiniActionBlock(
                     emoji: '🛒',
                     label: 'Acheter',

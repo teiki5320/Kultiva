@@ -97,7 +97,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               Stack(
                 children: [
                   SeasonHeader(
-                    season: Season.fromMonth(_selectedMonth),
+                    season: Season.of(_selectedMonth, region),
                     month: _selectedMonth,
                     height: 170,
                   ),

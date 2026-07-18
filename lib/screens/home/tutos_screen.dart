@@ -124,6 +124,18 @@ const _categories = <_TutoCategory>[
       _TutoItem(emoji: '🪴', label: 'Potager en balcon', htmlAsset: 'assets/tutos/potager_balcon.html'),
     ],
   ),
+  _TutoCategory(
+    emoji: '🌴',
+    imagePath: 'assets/images/tuto_climat_tropical.png',
+    label: 'Climat tropical',
+    color: Color(0xFF26A69A),
+    items: [
+      _TutoItem(emoji: '☀️', label: 'Jardiner en saison sèche', htmlAsset: 'assets/tutos/jardiner_saison_seche.html'),
+      _TutoItem(emoji: '🌧️', label: "Préparer l'hivernage", htmlAsset: 'assets/tutos/preparer_hivernage.html'),
+      _TutoItem(emoji: '⛱️', label: 'Fabriquer une ombrière', htmlAsset: 'assets/tutos/fabriquer_ombriere.html'),
+      _TutoItem(emoji: '🍠', label: "Cultiver l'igname", htmlAsset: 'assets/tutos/cultiver_igname.html'),
+    ],
+  ),
 ];
 
 class TutosScreen extends StatelessWidget {

@@ -88,6 +88,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     // On ne await pas — c'est du best-effort async.
     NotificationService.checkAndNotify(activeVegIds);
     NotificationService.checkAndNotifyHeatwave();
+    NotificationService.checkAndNotifyFirstRains();
   }
 
   VoidCallback get onSignOut => widget.onSignOut;

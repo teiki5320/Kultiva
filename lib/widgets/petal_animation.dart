@@ -2,19 +2,41 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-/// Saison en cours — déduite du mois courant.
+import '../models/region_data.dart';
+
+/// Saison en cours — déduite du mois courant et de la région.
+///
+/// La France suit les quatre saisons européennes ; l'Afrique de l'Ouest
+/// suit le rythme tropical : harmattan (saison sèche fraîche, nov-fév),
+/// saison sèche chaude (mars-mai) et hivernage (saison des pluies,
+/// juin-oct).
 enum Season {
   spring,
   summer,
   autumn,
-  winter;
+  winter,
+  harmattan,
+  drySeason,
+  rainySeason;
 
-  /// Calcule la saison à partir d'un numéro de mois (1-12).
+  /// Calcule la saison européenne à partir d'un numéro de mois (1-12).
+  ///
+  /// Préférer [Season.of] qui tient compte de la région active.
   static Season fromMonth(int month) {
     if (month >= 3 && month <= 5) return Season.spring;
     if (month >= 6 && month <= 8) return Season.summer;
     if (month >= 9 && month <= 11) return Season.autumn;
     return Season.winter;
+  }
+
+  /// Calcule la saison selon la région active.
+  static Season of(int month, Region region) {
+    if (region == Region.westAfrica) {
+      if (month >= 6 && month <= 10) return Season.rainySeason;
+      if (month >= 3 && month <= 5) return Season.drySeason;
+      return Season.harmattan;
+    }
+    return fromMonth(month);
   }
 
   String get label {
@@ -27,6 +49,12 @@ enum Season {
         return 'Automne';
       case Season.winter:
         return 'Hiver';
+      case Season.harmattan:
+        return 'Harmattan';
+      case Season.drySeason:
+        return 'Saison sèche';
+      case Season.rainySeason:
+        return 'Hivernage';
     }
   }
 
@@ -40,6 +68,12 @@ enum Season {
         return '🍂';
       case Season.winter:
         return '❄️';
+      case Season.harmattan:
+        return '🌬️';
+      case Season.drySeason:
+        return '☀️';
+      case Season.rainySeason:
+        return '🌧️';
     }
   }
 
@@ -54,20 +88,30 @@ enum Season {
         return const ['🍂', '🍁', '🍂'];
       case Season.winter:
         return const ['❄️', '❄️', '❄️', '❅'];
+      case Season.harmattan:
+        return const ['🌾', '✨', '🍂', '✨'];
+      case Season.drySeason:
+        return const ['☀️', '✨', '🦋', '✨'];
+      case Season.rainySeason:
+        return const ['💧', '💧', '🌱', '💧'];
     }
   }
 
   /// Chemin de l'illustration kawaii dans le bundle d'assets.
   ///
   /// Si le fichier n'est pas fourni, [SeasonHeader] retombe automatiquement
-  /// sur un dégradé pastel correspondant à la saison.
+  /// sur un dégradé pastel correspondant à la saison. Les saisons
+  /// tropicales réutilisent les illustrations existantes les plus proches.
   String get assetPath {
     switch (this) {
       case Season.spring:
+      case Season.rainySeason:
         return 'assets/images/spring.png';
       case Season.summer:
+      case Season.drySeason:
         return 'assets/images/summer.png';
       case Season.autumn:
+      case Season.harmattan:
         return 'assets/images/autumn.png';
       case Season.winter:
         return 'assets/images/winter.png';
@@ -167,13 +211,17 @@ class _SeasonParticleAnimationState extends State<SeasonParticleAnimation>
     double dy;
     switch (widget.season) {
       case Season.summer:
-        // Papillons : vol en sinusoïde autour du point d'origine.
+      case Season.drySeason:
+        // Papillons / chaleur : vol en sinusoïde autour du point d'origine.
         dy = (p.startY + sin((t + p.phase) * 2 * pi) * 0.15 + 1.0) % 1.0;
         break;
       case Season.spring:
       case Season.autumn:
       case Season.winter:
-        // Chute régulière du haut vers le bas.
+      case Season.harmattan:
+      case Season.rainySeason:
+        // Chute régulière du haut vers le bas (pétales, feuilles,
+        // flocons, poussière d'harmattan, gouttes de pluie).
         dy = (p.startY + t * p.speed) % 1.0;
         break;
     }

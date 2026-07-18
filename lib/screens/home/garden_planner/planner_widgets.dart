@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../data/companions.dart';
 import '../../../data/regions/france.dart';
+import '../../../data/regions/west_africa.dart';
 import '../../../data/vegetables_base.dart';
+import '../../../models/region_data.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/garden_plan.dart';
 import '../../../models/vegetable.dart';
@@ -729,10 +731,18 @@ class PlannerPlantPicker extends StatelessWidget {
     required this.onPickedDrop,
   });
 
-  /// Map vegetableId → mois de semis France. Construit une seule fois.
-  static final Map<String, Set<int>> _sowingByVegetable = <String, Set<int>>{
-    for (final r in franceData) r.vegetableId: r.sowingMonths.toSet(),
-  };
+  /// Map vegetableId → mois de semis, par région. Construit une seule
+  /// fois par région puis mis en cache.
+  static final Map<Region, Map<String, Set<int>>> _sowingCache =
+      <Region, Map<String, Set<int>>>{};
+
+  static Map<String, Set<int>> _sowingFor(Region region) =>
+      _sowingCache.putIfAbsent(region, () {
+        final list = region == Region.france ? franceData : westAfricaData;
+        return <String, Set<int>>{
+          for (final r in list) r.vegetableId: r.sowingMonths.toSet(),
+        };
+      });
 
   /// Catégories qui ont au moins une plante avec densityPerSqFt.
   /// Ordre : feuilles, fruits, racines, tiges, bulbes, tubercules,
@@ -751,6 +761,8 @@ class PlannerPlantPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final region = PrefsService.instance.region.value;
+    final sowing = _sowingFor(region);
     return ValueListenableBuilder<Set<String>>(
       valueListenable: PrefsService.instance.favorites,
       builder: (ctx, favs, _) {
@@ -763,9 +775,9 @@ class PlannerPlantPicker extends StatelessWidget {
               v.category != (filter as CategoryFilter).category) {
             return false;
           }
-          // Filtre saison.
+          // Filtre saison (calendrier de la région active).
           if (season == PlannerSeason.all) return true;
-          final months = _sowingByVegetable[v.id];
+          final months = sowing[v.id];
           if (months == null || months.isEmpty) return false;
           return months.intersection(season.months).isNotEmpty;
         }).toList();
@@ -806,7 +818,8 @@ class PlannerPlantPicker extends StatelessWidget {
                 tooltip: 'Filtrer par saison',
                 initialValue: season,
                 onSelected: onSeasonChanged,
-                itemBuilder: (_) => PlannerSeason.values
+                itemBuilder: (_) => PlannerSeason.optionsFor(
+                        PrefsService.instance.region.value)
                     .map((s) => PopupMenuItem<PlannerSeason>(
                           value: s,
                           child: Row(

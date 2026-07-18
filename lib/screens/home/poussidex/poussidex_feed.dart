@@ -4,6 +4,7 @@ import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../models/feed_post.dart';
 import '../../../services/feed_service.dart';
+import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/plantation_photo.dart';
 
@@ -156,8 +157,9 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
   }
 
   PhotoChallenge? _findChallenge(String id) {
+    final region = PrefsService.instance.region.value;
     for (final c in allChallenges) {
-      if (c.id == id) return c;
+      if (c.id == id) return c.resolveFor(region);
     }
     return null;
   }

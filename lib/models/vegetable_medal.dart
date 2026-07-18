@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'plantation.dart';
+import 'region_data.dart';
 
 /// Palier de médaille d'une espèce dans le Poussidex.
 ///
@@ -101,17 +102,22 @@ extension MedalTierX on MedalTier {
 ///  - shiny  : 5 récoltes cumulées OU un plant actif >= 180 jours
 MedalTier computeMedalTier(
   String vegetableId,
-  List<Plantation> plantations,
-) {
+  List<Plantation> plantations, {
+  Region region = Region.france,
+}) {
   final mine = plantations.where((p) => p.vegetableId == vegetableId).toList();
   if (mine.isEmpty) return MedalTier.none;
 
   final totalHarvests =
       mine.fold<int>(0, (sum, p) => sum + p.harvestCount);
 
-  // Saisons distinctes où cette espèce a été plantée (printemps=3-5,
-  // été=6-8, automne=9-11, hiver=12,1,2).
+  // Saisons distinctes où cette espèce a été plantée.
+  // France : printemps=3-5, été=6-8, automne=9-11, hiver=12,1,2.
+  // Afrique de l'Ouest : saison sèche=11-5, hivernage (pluies)=6-10.
   int seasonOf(int month) {
+    if (region == Region.westAfrica) {
+      return (month >= 6 && month <= 10) ? 0 : 1;
+    }
     if (month >= 3 && month <= 5) return 0;
     if (month >= 6 && month <= 8) return 1;
     if (month >= 9 && month <= 11) return 2;
@@ -132,11 +138,14 @@ MedalTier computeMedalTier(
 
 /// Retourne la map {vegetableId → MedalTier} pour toutes les espèces
 /// apparaissant au moins une fois dans [plantations].
-Map<String, MedalTier> computeAllMedals(List<Plantation> plantations) {
+Map<String, MedalTier> computeAllMedals(
+  List<Plantation> plantations, {
+  Region region = Region.france,
+}) {
   final result = <String, MedalTier>{};
   final ids = <String>{for (final p in plantations) p.vegetableId};
   for (final id in ids) {
-    result[id] = computeMedalTier(id, plantations);
+    result[id] = computeMedalTier(id, plantations, region: region);
   }
   return result;
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/country.dart';
 import '../models/region_data.dart';
+import '../services/geolocation_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 
@@ -220,14 +222,47 @@ class _OnboardingPage extends StatelessWidget {
   }
 }
 
-class _RegionSelectorPage extends StatelessWidget {
+class _RegionSelectorPage extends StatefulWidget {
   const _RegionSelectorPage();
 
   @override
+  State<_RegionSelectorPage> createState() => _RegionSelectorPageState();
+}
+
+class _RegionSelectorPageState extends State<_RegionSelectorPage> {
+  bool _detecting = false;
+
+  Future<void> _detectCountry() async {
+    setState(() => _detecting = true);
+    final detected = await GeolocationService.detectCountry();
+    if (!mounted) return;
+    setState(() => _detecting = false);
+    if (detected != null) {
+      await PrefsService.instance.setCountry(detected);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('${detected.flag} Tu jardines : ${detected.label} !'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Impossible de détecter ton pays — choisis-le dans la liste.",
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Region>(
-      valueListenable: PrefsService.instance.region,
-      builder: (context, region, _) {
+    return ValueListenableBuilder<Country?>(
+      valueListenable: PrefsService.instance.country,
+      builder: (context, country, _) {
+        final region = PrefsService.instance.region.value;
         return SingleChildScrollView(
           padding:
               const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -238,15 +273,15 @@ class _RegionSelectorPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(52),
                 child: Image.asset(
                   'assets/images/onboarding_4.png',
-                  width: 200, height: 200,
+                  width: 160, height: 160,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) =>
-                      const Text('🌍', style: TextStyle(fontSize: 100)),
+                      const Text('🌍', style: TextStyle(fontSize: 90)),
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                'Choisis ta région',
+                'Où jardines-tu ?',
                 textAlign: TextAlign.center,
                 style:
                     Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -255,20 +290,54 @@ class _RegionSelectorPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                "Les conseils de semis s'adaptent à ta zone.",
+                "Calendrier de semis, saisons et conseils s'adaptent "
+                'à ton pays.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: KultivaColors.textSecondary,
                     ),
               ),
-              const SizedBox(height: 24),
-              for (final r in Region.values)
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: _detecting ? null : _detectCountry,
+                icon: _detecting
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.my_location),
+                label: Text(_detecting
+                    ? 'Détection en cours…'
+                    : 'Détecter mon pays'),
+              ),
+              const SizedBox(height: 16),
+              _CountryTile(
+                country: Country.france,
+                selected: country == Country.france ||
+                    (country == null && region == Region.france),
+                onTap: () =>
+                    PrefsService.instance.setCountry(Country.france),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "🌍 Afrique de l'Ouest",
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: KultivaColors.textSecondary,
+                      ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              for (final c in Country.westAfricanCountries)
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  child: _RegionTile(
-                    region: r,
-                    selected: r == region,
-                    onTap: () => PrefsService.instance.setRegion(r),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: _CountryTile(
+                    country: c,
+                    selected: c == country,
+                    onTap: () => PrefsService.instance.setCountry(c),
                   ),
                 ),
             ],
@@ -279,13 +348,13 @@ class _RegionSelectorPage extends StatelessWidget {
   }
 }
 
-class _RegionTile extends StatelessWidget {
-  final Region region;
+class _CountryTile extends StatelessWidget {
+  final Country country;
   final bool selected;
   final VoidCallback onTap;
 
-  const _RegionTile({
-    required this.region,
+  const _CountryTile({
+    required this.country,
     required this.selected,
     required this.onTap,
   });
@@ -312,11 +381,11 @@ class _RegionTile extends StatelessWidget {
         ),
         child: Row(
           children: <Widget>[
-            Text(region.emoji, style: const TextStyle(fontSize: 36)),
+            Text(country.flag, style: const TextStyle(fontSize: 32)),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
-                region.label,
+                country.label,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),

@@ -1,6 +1,8 @@
 import '../models/culture_entry.dart';
+import '../models/region_data.dart';
 import '../models/watering_advice.dart';
 import '../models/weather_data.dart';
+import '../utils/climate.dart';
 
 /// Retourne une suggestion d'arrosage pour [culture] selon la météo
 /// fournie. [weather] peut être null (pas encore chargée) → renvoie
@@ -9,9 +11,14 @@ import '../models/weather_data.dart';
 /// - Si pluie >= 5 mm prévue dans les 48h → skip
 /// - Si dernière pluie >= 5 mm il y a < 2 jours → skip
 /// - Si sécheresse >= 5 jours sans arrosage utilisateur → overdue
-/// - Si Tmax >= 30 °C aujourd'hui → heatwave (arrose tôt le matin)
+/// - Si Tmax >= seuil canicule régional (30 °C France, 40 °C Afrique
+///   de l'Ouest) aujourd'hui → heatwave (arrose tôt le matin)
 /// - Sinon, conseil neutre selon le dernier arrosage
-WateringAdvice? suggestWatering(CultureEntry culture, WeatherData? weather) {
+WateringAdvice? suggestWatering(
+  CultureEntry culture,
+  WeatherData? weather, {
+  Region region = Region.france,
+}) {
   if (weather == null) return null;
 
   // Index 7 = aujourd'hui dans le tableau (7 jours passés + aujourd'hui
@@ -55,7 +62,7 @@ WateringAdvice? suggestWatering(CultureEntry culture, WeatherData? weather) {
           "l'arrosage aujourd'hui.",
     );
   }
-  if (tmax >= 30 && daysSinceWater >= 1) {
+  if (tmax >= heatwaveThresholdFor(region) && daysSinceWater >= 1) {
     return WateringAdvice(
       urgency: WateringUrgency.heatwave,
       emoji: '🥵',

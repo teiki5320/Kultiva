@@ -116,7 +116,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     // lecture de données déjà présentes, sans déclencher de snackbar
     // historique — on se contente d'aligner l'état).
     _unlockedBadges = computeUnlockedBadges(level: _currentXp());
-    _medals = computeAllMedals(_plantations);
+    _medals = computeAllMedals(_plantations,
+        region: PrefsService.instance.region.value);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
     if (mounted) setState(() => _loaded = true);
     // Le tuto n'est PAS déclenché ici — RootTabs l'appelle via

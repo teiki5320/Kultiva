@@ -122,8 +122,10 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
 
   @override
   Widget build(BuildContext context) {
+    final challenges =
+        challengesFor(PrefsService.instance.region.value);
     final completedCount =
-        allChallenges.where((c) => _completed.containsKey(c.id)).length;
+        challenges.where((c) => _completed.containsKey(c.id)).length;
     return Column(
       children: <Widget>[
         // Compteur de progression.
@@ -132,7 +134,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
           child: Row(
             children: <Widget>[
               Text(
-                '📸 $completedCount / ${allChallenges.length} défis complétés',
+                '📸 $completedCount / ${challenges.length} défis complétés',
                 style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 14,
@@ -145,9 +147,9 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
-                    value: allChallenges.isEmpty
+                    value: challenges.isEmpty
                         ? 0
-                        : completedCount / allChallenges.length,
+                        : completedCount / challenges.length,
                     minHeight: 6,
                     backgroundColor: Colors.grey.shade200,
                     valueColor: const AlwaysStoppedAnimation<Color>(
@@ -168,9 +170,9 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
             ),
-            itemCount: allChallenges.length,
+            itemCount: challenges.length,
             itemBuilder: (context, i) {
-              final c = allChallenges[i];
+              final c = challenges[i];
               final photoPath = _completed[c.id];
               return _ChallengeTile(
                 challenge: c,

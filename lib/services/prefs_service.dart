@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/country.dart';
 import '../models/region_data.dart';
 import 'notification_service.dart';
 
@@ -14,6 +15,7 @@ class PrefsService {
   static final PrefsService instance = PrefsService._();
 
   static const _kRegion = 'kultiva.region';
+  static const _kCountry = 'kultiva.country';
   static const _kDarkMode = 'kultiva.darkMode';
   static const _kNotifications = 'kultiva.notifications';
   static const _kOnboardingDone = 'kultiva.onboardingDone';
@@ -31,6 +33,7 @@ class PrefsService {
   static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
   static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
   static const _kLastHeatwaveCheck = 'kultiva.lastHeatwaveNotificationCheck';
+  static const _kLastFirstRainsCheck = 'kultiva.lastFirstRainsNotification';
   static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kJardinsTutorialDone = 'kultiva.jardinsTutorialDone';
@@ -38,6 +41,11 @@ class PrefsService {
   SharedPreferences? _prefs;
 
   final ValueNotifier<Region> region = ValueNotifier<Region>(Region.france);
+
+  /// Pays choisi par l'utilisateur (France ou pays francophone d'Afrique
+  /// de l'Ouest). Null pour les utilisateurs historiques qui n'ont que la
+  /// région — la région reste le pivot pour tous les calendriers.
+  final ValueNotifier<Country?> country = ValueNotifier<Country?>(null);
   final ValueNotifier<bool> darkMode = ValueNotifier<bool>(false);
   final ValueNotifier<bool> notifications = ValueNotifier<bool>(true);
   final ValueNotifier<Set<String>> favorites =
@@ -74,6 +82,9 @@ class PrefsService {
   Future<void> load() async {
     _prefs = await SharedPreferences.getInstance();
     region.value = Region.fromId(_prefs!.getString(_kRegion));
+    country.value = Country.fromIso(_prefs!.getString(_kCountry));
+    // Le pays, s'il est connu, fait autorité sur la région.
+    if (country.value != null) region.value = country.value!.region;
     darkMode.value = _prefs!.getBool(_kDarkMode) ?? false;
     notifications.value = _prefs!.getBool(_kNotifications) ?? true;
     favorites.value =
@@ -107,7 +118,22 @@ class PrefsService {
 
   Future<void> setRegion(Region value) async {
     region.value = value;
+    // Une région choisie sans pays invalide le pays mémorisé s'il est
+    // incohérent (ex. passage manuel AO → France).
+    if (country.value != null && country.value!.region != value) {
+      country.value = null;
+      await _prefs?.remove(_kCountry);
+    }
     await _prefs?.setString(_kRegion, value.id);
+    _notifyPrefsChanged();
+  }
+
+  /// Choisit un pays et aligne la région dessus.
+  Future<void> setCountry(Country value) async {
+    country.value = value;
+    region.value = value.region;
+    await _prefs?.setString(_kCountry, value.isoCode);
+    await _prefs?.setString(_kRegion, value.region.id);
     _notifyPrefsChanged();
   }
 
@@ -243,6 +269,17 @@ class PrefsService {
 
   Future<void> setLastHeatwaveNotificationCheck(DateTime t) async {
     await _prefs?.setString(_kLastHeatwaveCheck, t.toIso8601String());
+  }
+
+  /// Dernière notif « premières pluies » envoyée (throttle 30 jours).
+  DateTime? get lastFirstRainsNotificationCheck {
+    final iso = _prefs?.getString(_kLastFirstRainsCheck);
+    if (iso == null) return null;
+    return DateTime.tryParse(iso);
+  }
+
+  Future<void> setLastFirstRainsNotificationCheck(DateTime t) async {
+    await _prefs?.setString(_kLastFirstRainsCheck, t.toIso8601String());
   }
 
   // --- Watering history ---

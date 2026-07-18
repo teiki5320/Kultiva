@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../models/region_data.dart';
 import '../../../models/weather_data.dart';
+import '../../../services/prefs_service.dart';
 import '../../../services/weather_service.dart';
 import '../my_garden_screen.dart';
 
@@ -258,8 +260,13 @@ class WeatherParticlePainter extends CustomPainter {
       if (c >= 1 && c <= 3) return WeatherType.cloudy;
       return WeatherType.clear;
     }
-    // Fallback saisonnier.
+    // Fallback saisonnier, adapté à la région (pas de neige sous les
+    // tropiques : hivernage pluvieux, saison sèche ensoleillée).
     final month = DateTime.now().month;
+    if (PrefsService.instance.region.value == Region.westAfrica) {
+      if (month >= 6 && month <= 10) return WeatherType.rain;
+      return WeatherType.clear;
+    }
     if (month >= 3 && month <= 5) return WeatherType.petals;
     if (month >= 6 && month <= 8) return WeatherType.clear;
     if (month >= 9 && month <= 11) return WeatherType.leaves;

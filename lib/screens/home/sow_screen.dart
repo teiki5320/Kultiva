@@ -139,11 +139,11 @@ class _SowScreenState extends State<SowScreen> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final month = now.month;
-    final season = Season.fromMonth(month);
 
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
+        final season = Season.of(month, region);
         final data = _dataFor(region);
 
         final toSow = <Vegetable>[];

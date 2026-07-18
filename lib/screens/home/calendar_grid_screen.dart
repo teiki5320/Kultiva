@@ -70,7 +70,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
               Stack(
                 children: [
                   SeasonHeader(
-                    season: Season.fromMonth(_filterMonth ?? now),
+                    season: Season.of(_filterMonth ?? now, region),
                     month: _filterMonth ?? now,
                     height: 150,
                   ),

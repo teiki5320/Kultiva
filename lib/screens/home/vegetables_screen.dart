@@ -27,6 +27,16 @@ class VegetablesScreen extends StatefulWidget {
 }
 
 class _VegetablesScreenState extends State<VegetablesScreen> {
+  /// Accessoires de protection contre le froid, sans objet en zone
+  /// tropicale — masqués quand la région n'est pas la France.
+  static const Set<String> _winterOnlyAccessories = <String>{
+    'acc_voile_hivernage',
+    'acc_voile_forcage',
+    'acc_chassis',
+    'acc_cloche',
+    'acc_serre_tunnel',
+  };
+
   final TextEditingController _searchCtrl = TextEditingController();
   VegetableCategory? _selectedCategory;
   AccessorySubCategory? _selectedAccSub;
@@ -52,6 +62,12 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
       // Exclure les accessoires sauf si explicitement sélectionnés.
       if (_selectedCategory == null && !_favOnly &&
           v.category == VegetableCategory.accessories) {
+        return false;
+      }
+      // Hors France, masquer les accessoires anti-froid sans objet
+      // sous les tropiques (voile d'hivernage, châssis, cloche…).
+      if (region != Region.france &&
+          _winterOnlyAccessories.contains(v.id)) {
         return false;
       }
       if (_selectedCategory != null && v.category != _selectedCategory) {
@@ -399,7 +415,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   Map<String, MedalTier> _loadMedals() {
     final plantations =
         Plantation.decodeAll(PrefsService.instance.plantationsJson);
-    return computeAllMedals(plantations);
+    return computeAllMedals(plantations,
+        region: PrefsService.instance.region.value);
   }
 
   Widget _buildList(

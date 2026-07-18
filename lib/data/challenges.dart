@@ -1,3 +1,4 @@
+import '../models/region_data.dart';
 import '../models/vegetable_medal.dart';
 
 /// Un défi photo dans le Poussidex.
@@ -5,12 +6,20 @@ import '../models/vegetable_medal.dart';
 /// Contrairement aux anciens badges auto, un défi nécessite une
 /// action volontaire : prendre et soumettre une photo spécifique.
 /// La photo est la preuve ET le contenu partageable sur Instagram.
+///
+/// Certains défis européens (givre, hiver…) ont une variante Afrique
+/// de l'Ouest ([waEmoji]/[waName]/[waDescription]) : même id et même
+/// palier, donc les badges de complétion restent atteignables dans
+/// les deux régions.
 class PhotoChallenge {
   final String id;
   final String emoji;
   final String name;
   final String description;
   final MedalTier tier;
+  final String? waEmoji;
+  final String? waName;
+  final String? waDescription;
 
   const PhotoChallenge({
     required this.id,
@@ -18,8 +27,31 @@ class PhotoChallenge {
     required this.name,
     required this.description,
     required this.tier,
+    this.waEmoji,
+    this.waName,
+    this.waDescription,
   });
+
+  /// Version du défi adaptée à la région (identique si aucune
+  /// variante n'est définie).
+  PhotoChallenge resolveFor(Region region) {
+    if (region != Region.westAfrica ||
+        (waEmoji == null && waName == null && waDescription == null)) {
+      return this;
+    }
+    return PhotoChallenge(
+      id: id,
+      emoji: waEmoji ?? emoji,
+      name: waName ?? name,
+      description: waDescription ?? description,
+      tier: tier,
+    );
+  }
 }
+
+/// Liste des défis avec les variantes régionales déjà résolues.
+List<PhotoChallenge> challengesFor(Region region) =>
+    <PhotoChallenge>[for (final c in allChallenges) c.resolveFor(region)];
 
 const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
   // ─── BRONZE (10) — accessibles dès le début ────────────────────────
@@ -297,6 +329,9 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     name: 'Givre',
     description: 'Ton jardin couvert de givre au petit matin.',
     tier: MedalTier.gold,
+    waEmoji: '🌬️',
+    waName: 'Harmattan',
+    waDescription: 'Ton jardin dans la brume sèche de l\'harmattan.',
   ),
   PhotoChallenge(
     id: 'halloween',
@@ -304,6 +339,9 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     name: 'Halloween',
     description: 'Une courge ou citrouille sculptée.',
     tier: MedalTier.gold,
+    waEmoji: '🫛',
+    waName: 'Panier de gombo',
+    waDescription: 'Ta plus belle récolte de gombo dans un panier.',
   ),
   PhotoChallenge(
     id: 'bbq',
@@ -340,6 +378,10 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     name: 'Saison morte',
     description: 'Ton jardin en plein hiver. La beauté dans le repos.',
     tier: MedalTier.shiny,
+    waEmoji: '☀️',
+    waName: 'Cœur de saison sèche',
+    waDescription:
+        'Ton jardin en pleine saison sèche. La vie malgré la soif.',
   ),
   PhotoChallenge(
     id: 'starry_sky',
@@ -354,6 +396,10 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     name: '14 juillet',
     description: 'Ton jardin pendant les feux d\'artifice.',
     tier: MedalTier.shiny,
+    waEmoji: '🌧️',
+    waName: 'Premières pluies',
+    waDescription:
+        'Ton jardin sous la première grande pluie de l\'hivernage.',
   ),
   PhotoChallenge(
     id: 'four_leaf_clover',
@@ -361,6 +407,10 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     name: 'Trèfle 4 feuilles',
     description: 'Un vrai trèfle à 4 feuilles trouvé au jardin.',
     tier: MedalTier.shiny,
+    waEmoji: '🌱',
+    waName: 'Pousse surprise',
+    waDescription:
+        'Une plante spontanée inattendue découverte dans ton jardin.',
   ),
   PhotoChallenge(
     id: 'rare_species',

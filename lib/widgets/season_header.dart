@@ -127,11 +127,18 @@ class SeasonHeader extends StatelessWidget {
       case Season.spring:
         return const <Color>[KultivaColors.springA, KultivaColors.springB];
       case Season.summer:
+      case Season.drySeason:
         return const <Color>[KultivaColors.summerA, KultivaColors.summerB];
       case Season.autumn:
         return const <Color>[KultivaColors.autumnA, KultivaColors.autumnB];
       case Season.winter:
         return const <Color>[KultivaColors.winterA, KultivaColors.winterB];
+      case Season.harmattan:
+        // Ocre doré : poussière d'harmattan sur ciel sec.
+        return const <Color>[Color(0xFFF2D8A7), Color(0xFFE3B87A)];
+      case Season.rainySeason:
+        // Vert profond d'hivernage, ciel chargé.
+        return const <Color>[Color(0xFFA9D8B8), Color(0xFF7BB894)];
     }
   }
 }

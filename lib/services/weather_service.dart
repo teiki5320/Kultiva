@@ -4,15 +4,19 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/country.dart';
 import '../models/weather_data.dart';
+import 'prefs_service.dart';
 
 /// Service météo utilisant l'API Open-Meteo (gratuit, sans clé API).
 class WeatherService {
   WeatherService._();
 
-  /// Coordonnées de Paris, utilisées si la géoloc n'est pas dispo.
-  static const double _fallbackLat = 48.8566;
-  static const double _fallbackLon = 2.3522;
+  /// Position de secours si la géoloc n'est pas dispo : la capitale du
+  /// pays choisi par l'utilisateur (Dakar, Abidjan, Bamako…), Paris par
+  /// défaut pour la France ou en l'absence de choix.
+  static Country get _fallbackCountry =>
+      PrefsService.instance.country.value ?? Country.france;
 
   static WeatherData? _cached;
   static DateTime? _lastFetch;
@@ -63,7 +67,8 @@ class WeatherService {
       final current = data['current'] as Map<String, dynamic>;
       final daily = data['daily'] as Map<String, dynamic>;
 
-      final name = isFallback ? 'Paris' : await _reverseGeocode(lat, lon);
+      final name =
+          isFallback ? _fallbackCountry.capitalName : await _reverseGeocode(lat, lon);
       _cached = WeatherData(
         latitude: lat,
         longitude: lon,
@@ -97,12 +102,12 @@ class WeatherService {
   /// 1. Tente `getCurrentPosition` (fraîche, jusqu'à 15 s).
   /// 2. Si timeout/erreur : tente `getLastKnownPosition` (instantané,
   ///    utilise le dernier fix mémorisé par l'OS).
-  /// 3. Si toujours rien : Paris fallback.
+  /// 3. Si toujours rien : capitale du pays choisi en secours.
   ///
   /// Tuple : (latitude, longitude, isFallback).
   static Future<(double, double, bool)> _resolveCoordinates() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) return _parisFallback();
+    if (!serviceEnabled) return _capitalFallback();
 
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -110,7 +115,7 @@ class WeatherService {
     }
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
-      return _parisFallback();
+      return _capitalFallback();
     }
 
     // 1. Fraîche — avec 15 s de timeout.
@@ -130,11 +135,13 @@ class WeatherService {
         }
       } catch (_) {}
     }
-    return _parisFallback();
+    return _capitalFallback();
   }
 
-  static (double, double, bool) _parisFallback() =>
-      (_fallbackLat, _fallbackLon, true);
+  static (double, double, bool) _capitalFallback() {
+    final c = _fallbackCountry;
+    return (c.capitalLat, c.capitalLon, true);
+  }
 
   /// Reverse-geocode les coords en nom de ville via les APIs natives
   /// (CLGeocoder iOS, Geocoder Android). Retourne null si le lookup
