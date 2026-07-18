@@ -3429,6 +3429,281 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     densityPerSqFt: 4,
   ),
 
+  // ════════════════════════════════════════════════════════════════════════
+  // CULTURES OUEST-AFRICAINES
+  // ════════════════════════════════════════════════════════════════════════
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Mil (petit mil / millet perlé)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'mil',
+    name: 'Mil',
+    emoji: '🌾',
+    category: VegetableCategory.seeds,
+    description:
+        "Céréale reine du Sahel, aussi appelée petit mil ou millet perlé. Base du couscous de mil et des bouillies, elle pousse là où presque rien d'autre ne résiste.",
+    note: "Champion de la sécheresse — nourrit le Sahel depuis plus de 3 000 ans.",
+    sowingTechnique: "Semis direct en poquets de 3-4 graines, dès les premières pluies",
+    sowingDepth: "2 à 3 cm",
+    germinationTemp: "22 à 35 °C",
+    germinationDays: "3 à 7 jours",
+    exposure: "Plein soleil",
+    spacing: "30 × 60 cm",
+    watering: "Faible, très résistant à la sécheresse",
+    soil: "Sableux, léger, même pauvre",
+    yieldEstimate: "150 à 400 g/m² (grains)",
+    harvestTimeBySeason: {
+      'spring': '100 à 120 jours (semis en mai, climat tempéré chaud)',
+      'summer': "90 à 110 jours (semis aux premières pluies, Afrique de l'Ouest)",
+    },
+    imageAsset: 'assets/images/vegetables/mil.png',
+    densityPerSqFt: 2,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Fonio
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'fonio',
+    name: 'Fonio',
+    emoji: '🌾',
+    category: VegetableCategory.seeds,
+    description:
+        "Minuscule céréale ancestrale d'Afrique de l'Ouest au goût fin et à la digestion facile. Semée à la volée, elle couvre le sol en quelques jours et se contente de terres pauvres.",
+    note: "La céréale la plus rapide du monde : certaines variétés mûrissent en 8 semaines !",
+    sowingTechnique: "Semis à la volée très dense, puis léger ratissage",
+    sowingDepth: "1 cm",
+    germinationTemp: "22 à 30 °C",
+    germinationDays: "3 à 5 jours",
+    exposure: "Plein soleil",
+    spacing: "Semis dense à la volée",
+    watering: "Faible, se contente des pluies",
+    soil: "Sableux, pauvre, bien drainé",
+    yieldEstimate: "80 à 150 g/m² (grains)",
+    harvestTimeBySeason: {
+      'summer': '60 à 90 jours (semis en début de saison des pluies)',
+    },
+    imageAsset: 'assets/images/vegetables/fonio.png',
+    densityPerSqFt: 4,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Moringa
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'moringa',
+    name: 'Moringa',
+    emoji: '🌳',
+    category: VegetableCategory.leaves,
+    description:
+        "Arbre-légume tropical dont les petites feuilles concentrent protéines, fer et vitamines. Surnommé « arbre de vie », il repousse après chaque coupe et nourrit toute l'année.",
+    note: "Coupe régulièrement la cime : l'arbre reste bas et produit plus de feuilles.",
+    sowingTechnique: "Semis en poquets ou bouturage de grosses branches",
+    sowingDepth: "2 cm",
+    germinationTemp: "25 à 35 °C",
+    germinationDays: "5 à 12 jours",
+    exposure: "Plein soleil",
+    spacing: "50 × 100 cm en haie fourragère, 3 m en arbre isolé",
+    watering: "Faible, très résistant à la sécheresse une fois installé",
+    soil: "Léger, sableux, bien drainé",
+    yieldEstimate: "1 à 2 kg de feuilles/arbre/an (taille régulière)",
+    harvestTimeBySeason: {
+      'summer': '60 à 90 jours pour les premières feuilles (semis en saison des pluies)',
+    },
+    imageAsset: 'assets/images/vegetables/moringa.png',
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Aubergine africaine (djakhatou)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'aubergine_africaine',
+    name: 'Aubergine africaine',
+    emoji: '🍆',
+    category: VegetableCategory.fruits,
+    description:
+        "Petite aubergine ronde et légèrement amère, appelée djakhatou au Sénégal ou gboma au Togo. Indispensable dans le thiéboudienne et les sauces mijotées.",
+    note: "Plus rustique que l'aubergine classique — elle produit pendant des mois.",
+    sowingTechnique: "Semis en pépinière puis repiquage à 4-5 feuilles",
+    sowingDepth: "1 cm",
+    germinationTemp: "25 à 30 °C",
+    germinationDays: "6 à 12 jours",
+    exposure: "Plein soleil",
+    spacing: "50 × 80 cm",
+    watering: "Régulier, au pied",
+    soil: "Riche, profond, bien drainé",
+    yieldEstimate: "1,5 à 3 kg/pied",
+    harvestTimeBySeason: {
+      'spring': '100 à 120 jours (semis sous abri, climat tempéré chaud)',
+      'summer': '80 à 100 jours (pépinière en début de saison des pluies)',
+    },
+    imageAsset: 'assets/images/vegetables/aubergine_africaine.png',
+    densityPerSqFt: 1,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Corète potagère (crincrin)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'corete',
+    name: 'Corète potagère',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Feuille mucilagineuse star des sauces gluantes : c'est elle qui donne la fameuse sauce crincrin au Bénin et la mouloukhiya au Sahel. Croissance éclair en climat chaud.",
+    note: "Récolte les jeunes pousses : la plante se ramifie et en redonne aussitôt.",
+    sowingTechnique: "Semis direct en ligne ou à la volée",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "25 à 35 °C",
+    germinationDays: "3 à 7 jours",
+    exposure: "Plein soleil",
+    spacing: "20 × 30 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Riche, frais, humifère",
+    yieldEstimate: "1,5 à 3 kg/m² (feuilles)",
+    harvestTimeBySeason: {
+      'summer': '40 à 60 jours (saison des pluies, récoltes répétées)',
+    },
+    imageAsset: 'assets/images/vegetables/corete.png',
+    densityPerSqFt: 4,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Célosie (épinard de Lagos)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'celosie',
+    name: 'Célosie',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Épinard de Lagos aux feuilles tendres et aux jolis plumeaux colorés. L'un des légumes-feuilles les plus cultivés du Nigéria au Bénin — à la fois beau et bon.",
+    note: "Soupe du soir et jardin fleuri : la célosie fait les deux à la fois !",
+    sowingTechnique: "Semis en pépinière puis repiquage, ou semis direct clair",
+    sowingDepth: "0,5 cm",
+    germinationTemp: "22 à 30 °C",
+    germinationDays: "4 à 8 jours",
+    exposure: "Plein soleil à mi-ombre légère",
+    spacing: "20 × 25 cm",
+    watering: "Régulier, garder le sol frais",
+    soil: "Riche, humifère, bien drainé",
+    yieldEstimate: "1,5 à 2,5 kg/m² (feuilles)",
+    harvestTimeBySeason: {
+      'summer': '30 à 50 jours (saison des pluies, coupes répétées)',
+    },
+    imageAsset: 'assets/images/vegetables/celosie.png',
+    densityPerSqFt: 4,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Baselle (épinard de Ceylan)
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'baselle',
+    name: 'Baselle',
+    emoji: '🥬',
+    category: VegetableCategory.leaves,
+    description:
+        "Épinard de Ceylan : une liane aux feuilles charnues et brillantes qui adore la chaleur humide, quand les épinards classiques déclarent forfait.",
+    note: "Grimpante généreuse — offre-lui un treillis et récolte toute la saison chaude.",
+    sowingTechnique: "Semis en poquets ou bouturage de tiges, avec support",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "22 à 30 °C",
+    germinationDays: "10 à 20 jours",
+    exposure: "Soleil à mi-ombre",
+    spacing: "30 × 50 cm",
+    watering: "Régulier, aime l'humidité",
+    soil: "Riche, frais, humifère",
+    yieldEstimate: "2 à 4 kg/m² (feuilles)",
+    harvestTimeBySeason: {
+      'spring': '70 à 90 jours (semis au chaud, climat tempéré)',
+      'summer': '50 à 70 jours (saison chaude et humide, récoltes répétées)',
+    },
+    imageAsset: 'assets/images/vegetables/baselle.png',
+    densityPerSqFt: 2,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Citronnelle
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'citronnelle',
+    name: 'Citronnelle',
+    emoji: '🌿',
+    category: VegetableCategory.aromatics,
+    description:
+        "Grande herbe au parfum de citron, indispensable en tisane et en cuisine. Sa touffe dense éloigne aussi les moustiques autour de la terrasse.",
+    note: "Se multiplie par simple éclat de touffe — un brin raciné suffit.",
+    sowingTechnique: "Division de touffe ou bouture de tige racinée dans l'eau",
+    sowingDepth: "Éclats plantés au niveau du collet",
+    germinationTemp: "22 à 30 °C",
+    germinationDays: "10 à 15 jours (enracinement)",
+    exposure: "Plein soleil",
+    spacing: "50 × 60 cm",
+    watering: "Régulier en saison sèche, modéré le reste du temps",
+    soil: "Riche, frais, bien drainé",
+    yieldEstimate: "Tiges à couper toute l'année en climat chaud",
+    harvestTimeBySeason: {
+      'spring': '90 à 120 jours (plantation au chaud, climat tempéré)',
+      'summer': '60 à 90 jours (climat tropical, touffe établie)',
+    },
+    imageAsset: 'assets/images/vegetables/citronnelle.png',
+    densityPerSqFt: 1,
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Papayer
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'papayer',
+    name: 'Papayer',
+    emoji: '🍈',
+    category: VegetableCategory.fruits,
+    description:
+        "Fruitier tropical express : semé une année, il offre des papayes dès la suivante. Son tronc tendre et sa couronne de grandes feuilles embellissent le jardin de case.",
+    note: "Plante plusieurs pieds : certains papayers sont mâles et ne donnent pas de fruits.",
+    sowingTechnique: "Semis de graines fraîches en poquets ou en sachets",
+    sowingDepth: "1 à 2 cm",
+    germinationTemp: "25 à 35 °C",
+    germinationDays: "15 à 30 jours",
+    exposure: "Plein soleil, à l'abri du vent",
+    spacing: "2,5 à 3 m en tous sens",
+    watering: "Régulier, sans excès — redoute l'eau stagnante",
+    soil: "Riche, profond, très bien drainé",
+    yieldEstimate: "30 à 60 fruits/arbre/an",
+    harvestTimeBySeason: {
+      'summer': '9 à 12 mois du semis aux premiers fruits (climat tropical)',
+    },
+    imageAsset: 'assets/images/vegetables/papayer.png',
+  ),
+
+  // ──────────────────────────────────────────────────────────────────────
+  // Bananier plantain
+  // ──────────────────────────────────────────────────────────────────────
+  Vegetable(
+    id: 'bananier_plantain',
+    name: 'Bananier plantain',
+    emoji: '🍌',
+    category: VegetableCategory.fruits,
+    description:
+        "Base alimentaire des régions humides : ses régimes de plantains se dégustent frits (alloco), bouillis ou braisés. Une touffe bien menée produit pendant des années.",
+    note: "Après la récolte, coupe le pied : un rejet prend le relais pour le cycle suivant.",
+    sowingTechnique: "Plantation de rejets (baïonnette) dans un grand trou enrichi de fumier",
+    sowingDepth: "30 à 40 cm (trou de plantation)",
+    germinationTemp: "25 à 35 °C",
+    germinationDays: "20 à 30 jours (reprise du rejet)",
+    exposure: "Plein soleil, à l'abri du vent",
+    spacing: "2,5 × 3 m",
+    watering: "Abondant, gourmand en eau toute l'année",
+    soil: "Profond, riche, humifère, bien drainé",
+    yieldEstimate: "1 régime de 10 à 20 kg/pied et par cycle",
+    harvestTimeBySeason: {
+      'summer': '10 à 14 mois (plantation en début de saison des pluies)',
+    },
+    imageAsset: 'assets/images/vegetables/bananier_plantain.png',
+  ),
+
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
@@ -3685,6 +3960,17 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     amazonUrl: 'https://www.amazon.fr/s?k=ferramol+anti+limaces+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_anti_limaces.png',
+  ),
+  Vegetable(
+    id: 'acc_ombriere',
+    name: "Filet d'ombrage 30-50 %",
+    emoji: '⛱️',
+    category: VegetableCategory.accessories,
+    note: 'Protège les cultures du soleil brûlant',
+    description: "Toile tissée à tendre au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable sous climat tropical et en canicule : semis, salades et jeunes plants ne grillent plus aux heures chaudes.",
+    amazonUrl: 'https://www.amazon.fr/s?k=filet+ombrage+jardin&tag=kultiva-21',
+    accessorySub: AccessorySubCategory.protection,
+    imageAsset: 'assets/images/accessories/acc_ombriere.png',
   ),
   // ── Tuteurage & support (sous catégorie structures) ──
   Vegetable(

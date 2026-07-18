@@ -281,6 +281,56 @@ const List<LexiconEntry> lexicon = <LexiconEntry>[
     "Période du 11 au 13 mai, traditionnellement les dernières gelées en France. Avant cette date, on évite de sortir les légumes fragiles (tomate, courgette, basilic). Après = place libre !",
   ),
 
+  // ─── Jardinage tropical & Afrique de l'Ouest ─────────────────────
+  LexiconEntry(
+    'harmattan',
+    "Vent sec et poussiéreux venu du Sahara qui souffle sur l'Afrique de l'Ouest de novembre à mars. Il dessèche les cultures en quelques jours : paille généreusement, arrose le soir et abrite les jeunes plants derrière une haie ou une ombrière.",
+  ),
+  LexiconEntry(
+    'hivernage',
+    "En Afrique de l'Ouest, c'est le nom de la saison des pluies (environ juin à octobre selon la latitude). C'est LA grande saison de culture : mil, maïs, niébé et arachide se sèment dès les premières pluies utiles.",
+  ),
+  LexiconEntry(
+    'saison sèche',
+    "Période sans pluie (environ novembre à mai en Afrique de l'Ouest). Le maraîchage y reste possible près d'un point d'eau : c'est même la meilleure saison pour tomates, oignons, choux et salades, loin de l'humidité et des maladies.",
+  ),
+  LexiconEntry(
+    'maraîchage',
+    "Culture intensive de légumes frais sur de petites surfaces, souvent irriguée à l'arrosoir ou au goutte-à-goutte. En Afrique de l'Ouest, les périmètres maraîchers battent leur plein en saison sèche, autour des bas-fonds et des puits.",
+  ),
+  LexiconEntry(
+    'jardin de case',
+    "Petit jardin vivrier installé juste autour de la maison (la « case ») : quelques légumes-feuilles, un papayer, un moringa, des aromates... Arrosé avec les eaux du ménage, il fournit la sauce du jour à portée de main.",
+  ),
+  LexiconEntry(
+    'billon',
+    "Butte de terre allongée formée à la houe, sur laquelle on sème ou repique. Le billon draine l'excès d'eau en saison des pluies, réchauffe le sol et facilite le buttage — incontournable pour igname, patate douce et manioc.",
+  ),
+  LexiconEntry(
+    "butte d'igname",
+    "Gros monticule de terre meuble (50 cm à 1 m de haut) monté à la houe pour chaque plant d'igname. La butte offre au tubercule un volume de terre souple et profonde où grossir sans se déformer.",
+  ),
+  LexiconEntry(
+    'zaï',
+    "Technique sahélienne : creuser en saison sèche des petites cuvettes (20-30 cm) remplies de fumier ou compost, où l'on sème aux premières pluies. Chaque trou concentre eau et fertilité — il fait reverdir même les sols durcis.",
+  ),
+  LexiconEntry(
+    'demi-lune',
+    "Cuvette en forme de croissant creusée perpendiculairement à la pente pour capter l'eau de ruissellement. Comme le zaï, cette technique sahélienne permet de cultiver mil ou sorgho sur des terres dégradées.",
+  ),
+  LexiconEntry(
+    'ombrière',
+    "Structure légère (filet d'ombrage, claie de tiges ou de palmes) tendue au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable pour réussir pépinières et salades sous le soleil tropical ou en canicule.",
+  ),
+  LexiconEntry(
+    'canari',
+    "Grande jarre en terre cuite poreuse, enterrée au milieu des cultures et remplie d'eau. L'eau suinte lentement à travers l'argile et abreuve les racines voisines — un goutte-à-goutte traditionnel, cousin des oyas.",
+  ),
+  LexiconEntry(
+    'semenceau',
+    "Fragment de tubercule (ou petit tubercule entier) utilisé comme semence, notamment pour l'igname et la pomme de terre. Choisis des semenceaux sains et fermes : c'est la garantie d'une belle levée.",
+  ),
+
   // ─── Spécifique app Kultiva ──────────────────────────────────────
   LexiconEntry(
     'tamassi',

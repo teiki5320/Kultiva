@@ -66,6 +66,24 @@ const Map<String, List<String>> companionMap = {
   'mache': ['poireau', 'oignon', 'carotte', 'fraise'],
   'sesame': ['niebe', 'arachide', 'mais', 'sorgho'],
 
+  // ── Cultures ouest-africaines ──
+  // Mil × niébé : l'association sahélienne classique — le niébé fixe
+  // l'azote et couvre le sol entre les poquets de mil.
+  'mil': ['niebe', 'arachide', 'sorgho'],
+  'fonio': ['niebe', 'arachide'],
+  // Moringa : son ombrage léger protège les légumes-feuilles du soleil.
+  'moringa': ['niebe', 'corete', 'celosie'],
+  'aubergine_africaine': ['basilic', 'niebe', 'gombo', 'piment'],
+  'corete': ['gombo', 'celosie', 'amarante', 'niebe'],
+  'celosie': ['corete', 'amarante', 'gombo'],
+  // Baselle : grimpante — le maïs peut lui servir de tuteur vivant.
+  'baselle': ['mais', 'gombo', 'laitue'],
+  // Citronnelle : son odeur éloigne moustiques et insectes des cultures.
+  'citronnelle': ['tomate', 'chou_pomme', 'piment'],
+  'papayer': ['niebe', 'patate_douce', 'basilic'],
+  // Bananier plantain : culture étagée traditionnelle avec taro et papayer.
+  'bananier_plantain': ['taro', 'patate_douce', 'papayer'],
+
   // ── Fleurs comestibles ──
   // Capucine : "plante-piège" qui attire les pucerons loin des cultures.
   'capucine': ['tomate', 'courgette', 'aubergine', 'chou_pomme', 'chou_kale', 'haricot'],
@@ -162,6 +180,13 @@ const Map<String, List<String>> incompatibleMap = {
   'sorgho': ['oignon', 'ail'],
   'taro': ['oignon', 'ail'],
   'thym': ['concombre'],
+
+  // ── Cultures ouest-africaines ──
+  'mil': ['oignon', 'ail'],
+  'aubergine_africaine': ['pomme_de_terre', 'fenouil'],
+  'corete': ['fenouil'],
+  'celosie': ['betterave', 'blette'],
+  'baselle': ['fenouil'],
 
   // ── Engrais verts : précautions de rotation ──
   // Moutarde blanche est crucifère — ne pas la faire suivre par des choux

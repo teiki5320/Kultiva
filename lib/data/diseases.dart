@@ -6,6 +6,8 @@ const Map<String, List<Disease>> diseaseMap = {
     Disease('Mildiou', 'Bouillie bordelaise préventive, éviter de mouiller le feuillage, tailler les gourmands'),
     Disease('Pucerons', 'Pulvériser du savon noir dilué, favoriser les coccinelles'),
     Disease('Cul noir (nécrose apicale)', "Pas une maladie — manque de calcium lié à l'arrosage irrégulier. Pailler et arroser régulièrement"),
+    Disease('Virose TYLCV (feuilles jaunes enroulées)', "Transmise par les aleurodes (mouches blanches) — arracher et détruire les plants atteints, filet anti-insectes dès la pépinière, plants sains"),
+    Disease('Aleurode (mouche blanche)', 'Plaquettes jaunes engluées, savon noir sous les feuilles, filet anti-insectes en pépinière'),
   ],
   'carotte': [
     Disease('Mouche de la carotte', 'Filet anti-insectes, associer avec oignon/poireau, semer après mi-juin'),
@@ -69,6 +71,7 @@ const Map<String, List<Disease>> diseaseMap = {
   'gombo': [
     Disease('Jassides (cicadelles)', 'Neem (huile ou purin), savon noir'),
     Disease('Fusariose', 'Rotation des cultures, variétés résistantes'),
+    Disease('Aleurode (mouche blanche)', 'Plaquettes jaunes engluées, savon noir sous les feuilles, huile de neem'),
   ],
   'patate_douce': [
     Disease('Charançon de la patate douce', 'Rotation, boutures saines, récolte rapide'),
@@ -83,10 +86,13 @@ const Map<String, List<Disease>> diseaseMap = {
   'niebe': [
     Disease('Bruche du niébé', 'Séchage rapide des graines, stockage hermétique, cendres'),
     Disease('Thrips', 'Huile de neem, plaquettes bleues collantes'),
+    Disease('Maruca (foreuse des gousses)', 'Huile de neem dès la floraison, semis précoce, ramasser et détruire les gousses percées'),
   ],
   'mais': [
     Disease('Pyrale du maïs', 'Trichogrammes (guêpes parasitoïdes), Bacillus thuringiensis'),
     Disease('Charbon du maïs', 'Rotation, détruire les galles avant éclatement'),
+    Disease("Chenille légionnaire d'automne (Spodoptera frugiperda)", 'Semis précoce dès les premières pluies, ramasser les chenilles dans le cornet, cendres ou sable dans le cornet, Bacillus thuringiensis'),
+    Disease('Striga (plante parasite)', 'Rotation avec des légumineuses (niébé, arachide), fumure organique généreuse, arracher avant floraison'),
   ],
   'courge_butternut': [
     Disease('Oïdium', 'Lait dilué, bicarbonate de soude'),
@@ -258,6 +264,7 @@ const Map<String, List<Disease>> diseaseMap = {
     Disease('Charbon couvert du sorgho', 'Semences traitées à l\'eau chaude, rotation 3 ans'),
     Disease('Pucerons des panicules', 'Savon noir au stade épiaison, attirer les auxiliaires'),
     Disease('Foreuse des tiges', 'Détruire les chaumes après récolte, Bacillus thuringiensis'),
+    Disease('Striga (plante parasite)', 'Rotation avec des légumineuses (niébé, arachide), fumure organique généreuse, arracher avant floraison'),
   ],
   'taro': [
     Disease('Mildiou du taro (Phytophthora)', 'Drainage du sol, rotation 3 ans, plants sains'),
@@ -268,6 +275,48 @@ const Map<String, List<Disease>> diseaseMap = {
     Disease('Pourriture racinaire', 'Sol très drainant, éviter arrosage excessif, butter légèrement'),
     Disease('Cochenilles', 'Huile de neem, alcool à brûler dilué au coton-tige'),
     Disease('Araignées rouges', 'Brumisations régulières (préfèrent l\'air sec)'),
+  ],
+
+  // ── Cultures ouest-africaines ──
+  'mil': [
+    Disease("Mineuse de l'épi du mil", 'Semis précoce et groupé au village, détruire les chaumes après récolte'),
+    Disease('Striga (plante parasite)', 'Rotation avec des légumineuses (niébé, arachide), fumure organique, arracher avant floraison'),
+  ],
+  'fonio': [
+    Disease('Oiseaux granivores (mange-mil)', 'Filets ou épouvantails à maturité, récolter dès que les grains durcissent'),
+    Disease('Fonte des semis', 'Semis clair sur sol drainé, éviter les excès d\'eau à la levée'),
+  ],
+  'moringa': [
+    Disease('Chenilles défoliatrices', 'Ramassage manuel le soir, Bacillus thuringiensis, tailler pour faire repartir le feuillage'),
+    Disease('Termites (jeunes plants)', 'Cendres au pied, arrosages réguliers la première année, éviter le bois mort au sol'),
+  ],
+  'aubergine_africaine': [
+    Disease('Flétrissement bactérien', 'Rotation longue, plants sains, arracher et détruire les pieds flétris'),
+    Disease('Foreuse des fruits et des tiges', 'Ramasser les fruits percés, huile de neem, filet anti-insectes en pépinière'),
+  ],
+  'corete': [
+    Disease('Altises', 'Garder le sol humide, filet anti-insectes, semis dense'),
+    Disease('Nématodes à galles', 'Rotation, apports de compost mûr, planter des œillets d\'Inde (Tagetes)'),
+  ],
+  'celosie': [
+    Disease('Cercosporiose (taches foliaires)', 'Espacement suffisant, supprimer les feuilles atteintes, éviter d\'arroser le feuillage'),
+    Disease('Chenilles défoliatrices', 'Ramassage manuel le soir, Bacillus thuringiensis'),
+  ],
+  'baselle': [
+    Disease('Taches foliaires (Cercospora)', 'Aérer, récolter souvent, supprimer les feuilles atteintes'),
+    Disease('Limaces et escargots', 'Pièges à bière, cendres au pied, ramassage le soir'),
+  ],
+  'citronnelle': [
+    Disease('Rouille de la citronnelle', 'Couper et brûler les feuilles atteintes, diviser les touffes trop denses'),
+    Disease('Cochenilles', 'Savon noir, huile de neem à la base des tiges'),
+  ],
+  'papayer': [
+    Disease('Cochenilles farineuses', 'Savon noir, huile de neem, favoriser les coccinelles'),
+    Disease('Virose ringspot (PRSV)', 'Maladie virale incurable — arracher les plants atteints, lutter contre les pucerons vecteurs, replanter ailleurs'),
+  ],
+  'bananier_plantain': [
+    Disease('Charançon du bananier', 'Rejets sains (parés et trempés), pièges à disques de pseudo-tronc, détruire les souches après récolte'),
+    Disease('Cercosporiose noire', 'Supprimer et brûler les feuilles striées, aérer la parcelle, éviter l\'eau stagnante'),
   ],
 
   // ── Arbres fruitiers ──

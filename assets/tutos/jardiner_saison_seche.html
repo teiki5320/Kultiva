@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jardiner en saison sèche</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf8f4;--texte:#524c3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#d99a5b;--accent-soft:#ecc79c;--accent-bg:#f6e3c8}
+body{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Climat tropical</div>
+    <div class="icone-principale">☀️</div>
+    <div class="titre-fiche">Jardiner en saison sèche</div>
+    <div class="sous-titre-fiche">Chaque goutte d'eau compte</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">En saison sèche, le soleil tape fort et l'eau devient précieuse. Avec un paillage épais, un arrosage malin et un peu d'ombre, ton potager peut rester vert même quand la pluie se fait attendre. 💪</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">💧</span> Économiser chaque goutte</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Paille épais 🍂</div><div class="etape-texte">Couvre le sol de 10 à 15 cm d'herbes sèches, feuilles mortes, tiges de mil ou de maïs. Le paillage garde la fraîcheur et divise les arrosages par deux.</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Arrose au pied, matin ou soir 🌅</div><div class="etape-texte">Verse l'eau directement au pied des plants, tôt le matin ou au coucher du soleil. En pleine journée, la moitié de l'eau s'évapore avant d'atteindre les racines.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Enterre un canari (oya) 🏺</div><div class="etape-texte">Enterre un pot en terre cuite non vernissée jusqu'au col, remplis-le d'eau et pose un couvercle. L'eau traverse doucement la paroi et abreuve les racines pendant plusieurs jours.</div></div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Creuse zaï et demi-lunes 🌙</div><div class="etape-texte">De petites cuvettes (zaï) ou des demi-lunes de terre en aval de la pente captent l'eau d'arrosage et des rares pluies. Dépose du compost au fond : c'est un garde-manger pour tes plants.</div></div></div>
+    <div class="etape"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Offre de l'ombre ⛱️</div><div class="etape-texte">Un filet d'ombrage, des palmes tressées ou des cultures hautes (maïs, manioc) protègent les légumes fragiles du soleil de midi.</div></div></div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">🪓</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">« Un binage vaut deux arrosages » : gratte légèrement la surface du sol entre deux arrosages. Tu casses les petits canaux par lesquels l'eau s'évapore, et l'humidité reste en profondeur.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🕛</div><div class="eviter-texte"><strong>Arroser en pleine journée :</strong> l'eau s'évapore avant de servir, et les gouttes sur les feuilles peuvent les brûler.</div></div>
+    <div class="eviter"><div class="eviter-icone">💦</div><div class="eviter-texte"><strong>Les petits arrosages de surface :</strong> ils rendent les racines paresseuses. Mieux vaut arroser copieusement 2-3 fois par semaine que un peu tous les jours.</div></div>
+    <div class="eviter"><div class="eviter-icone">🏜️</div><div class="eviter-texte"><strong>Laisser le sol nu :</strong> un sol à découvert sèche, durcit et se fissure. Couvre-le toujours, même d'une fine couche.</div></div>
+    <div class="eviter"><div class="eviter-icone">🧪</div><div class="eviter-texte"><strong>Forcer sur l'engrais :</strong> en pleine chaleur, les plants stressés absorbent mal. Un sol paillé et un peu de compost suffisent.</div></div>
+  </div>
+</div>
+</body>
+</html>

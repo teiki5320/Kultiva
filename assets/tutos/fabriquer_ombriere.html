@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabriquer une ombrière</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf8f4;--texte:#524c3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#7aa874;--accent-soft:#b3d1ae;--accent-bg:#dfeddb}
+body{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Climat tropical</div>
+    <div class="icone-principale">⛱️</div>
+    <div class="titre-fiche">Fabriquer une ombrière</div>
+    <div class="sous-titre-fiche">Un coin de fraîcheur pour ton potager</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">Une ombrière filtre 30 à 50 % du soleil et fait baisser la température de plusieurs degrés. Sous son abri, laitues, choux et tomates continuent de pousser même en pleine saison chaude. 😎</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🔨</span> Construis ta structure</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Choisis l'emplacement 🧭</div><div class="etape-texte">Repère la course du soleil : l'ombrière doit surtout couvrir tes cultures aux heures les plus chaudes (11h-16h). Une orientation est-ouest donne une ombre régulière toute la journée.</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Plante les poteaux 🎋</div><div class="etape-texte">4 à 6 poteaux en bois ou en bambou, enterrés de 40-50 cm et bien tassés. Vise 1,8 à 2 m de hauteur : assez haut pour circuler et laisser l'air passer.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Relie et consolide 🪢</div><div class="etape-texte">Fixe des traverses entre les poteaux (clous, fil de fer ou corde solide) et ajoute des diagonales dans les angles : c'est ce qui résistera aux coups de vent.</div></div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Tends la couverture 🕸️</div><div class="etape-texte">Filet d'ombrage 30-50 % bien tendu et attaché tous les 50 cm. Pas de filet ? Des palmes tressées, nattes ou seccos posés sur les traverses font très bien le travail.</div></div></div>
+    <div class="etape"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Installe tes cultures 🌱</div><div class="etape-texte">Place dessous les planches de légumes-feuilles et la pépinière. Laisse les côtés ouverts pour que la brise circule et que la pluie puisse entrer.</div></div></div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🥬</span> Qui en profite le plus ?</div>
+    <div class="etape"><div class="etape-num">🥬</div><div class="etape-content"><div class="etape-titre">Laitue et salades</div><div class="etape-texte">Sans ombre, elles montent en graines et deviennent amères dès qu'il fait trop chaud.</div></div></div>
+    <div class="etape"><div class="etape-num">🥦</div><div class="etape-content"><div class="etape-titre">Chou</div><div class="etape-texte">Il pomme beaucoup mieux au frais. L'ombrière limite aussi le stress hydrique.</div></div></div>
+    <div class="etape"><div class="etape-num">🍅</div><div class="etape-content"><div class="etape-titre">Tomate en saison chaude</div><div class="etape-texte">Au-delà de 35 °C, ses fleurs coulent sans donner de fruits. Un voile à 30 % la garde productive.</div></div></div>
+    <div class="etape"><div class="etape-num">🌱</div><div class="etape-content"><div class="etape-titre">Semis et jeunes plants</div><div class="etape-texte">La pépinière entière adore l'ombrière : levée plus régulière, arrosages moins fréquents.</div></div></div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">🔄</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">Fixe ton filet avec des attaches faciles à défaire : en saison fraîche ou par temps couvert, retire-le pour redonner un maximum de lumière à tes plants. Une ombrière, ça se module !</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🌑</div><div class="eviter-texte"><strong>Un ombrage trop dense (plus de 60 %) :</strong> les plants filent, s'affaiblissent et produisent peu. 30-50 %, c'est l'équilibre parfait.</div></div>
+    <div class="eviter"><div class="eviter-icone">🛍️</div><div class="eviter-texte"><strong>La bâche plastique pleine :</strong> elle bloque la pluie, garde la chaleur et transforme l'abri en four. Il faut que l'air et l'eau passent.</div></div>
+    <div class="eviter"><div class="eviter-icone">📏</div><div class="eviter-texte"><strong>Une structure trop basse :</strong> sous 1,5 m, la chaleur s'accumule et tu te casses le dos pour jardiner.</div></div>
+    <div class="eviter"><div class="eviter-icone">💨</div><div class="eviter-texte"><strong>Négliger le vent :</strong> un filet mal fixé devient une voile. Ancre bien les poteaux et vérifie les attaches après chaque tempête.</div></div>
+  </div>
+</div>
+</body>
+</html>

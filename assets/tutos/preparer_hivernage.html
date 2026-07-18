@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Préparer l'hivernage</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf8f4;--texte:#524c3d;--texte-doux:#928a78;--blanc:#ffffff;--ombre:0 4px 16px rgba(0,0,0,0.06);--accent:#6b9bd1;--accent-soft:#a9c6e8;--accent-bg:#dcE9f6}
+body{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--texte);line-height:1.5;-webkit-font-smoothing:antialiased;padding:20px 0}
+.fiche{max-width:420px;margin:0 auto;padding:20px 16px 40px}
+.fiche-header{background:var(--accent-bg);border-radius:24px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden}
+.fiche-header::after{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:var(--accent-soft);border-radius:50%;opacity:0.5}
+.categorie{display:inline-block;background:var(--blanc);font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:500;font-size:12px;padding:4px 12px;border-radius:12px;margin-bottom:12px;position:relative;z-index:1}
+.icone-principale{width:72px;height:72px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:var(--ombre);margin-bottom:16px;position:relative;z-index:1}
+.titre-fiche{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:700;font-size:26px;line-height:1.2;position:relative;z-index:1}
+.sous-titre-fiche{color:var(--texte-doux);font-size:14px;margin-top:6px;font-weight:500;position:relative;z-index:1}
+.essentiel{background:var(--blanc);border-radius:20px;padding:18px 20px;margin-bottom:20px;box-shadow:var(--ombre);border-left:4px solid var(--accent)}
+.essentiel-label{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.essentiel-texte{font-size:15px;font-weight:500}
+.section{margin-bottom:24px}
+.section-titre{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.etape{background:var(--blanc);border-radius:18px;padding:16px;margin-bottom:10px;display:flex;gap:14px;box-shadow:var(--ombre)}
+.etape-num{flex-shrink:0;width:32px;height:32px;background:var(--accent);color:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:700;font-size:14px}
+.etape-content{flex:1}
+.etape-titre{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:15px;margin-bottom:3px}
+.etape-texte{font-size:13px;color:var(--texte-doux);line-height:1.4}
+.conseil{background:linear-gradient(135deg,var(--accent-bg),var(--accent-soft));border-radius:20px;padding:18px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.conseil-icone{flex-shrink:0;width:44px;height:44px;background:var(--blanc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--ombre)}
+.conseil-label{font-family:-apple-system,'SF Pro Rounded','Segoe UI',Roboto,sans-serif;font-weight:600;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.conseil-texte{font-size:14px;font-weight:500;line-height:1.4}
+.eviter{background:#fff5f5;border-radius:18px;padding:14px 16px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;border-left:3px solid #e4a8b0}
+.eviter-icone{font-size:18px;flex-shrink:0}
+.eviter-texte{font-size:13px;line-height:1.4}
+</style>
+</head>
+<body>
+<div class="fiche">
+  <div class="fiche-header">
+    <div class="categorie">Climat tropical</div>
+    <div class="icone-principale">🌧️</div>
+    <div class="titre-fiche">Préparer l'hivernage</div>
+    <div class="sous-titre-fiche">Prêt avant les premières pluies</div>
+  </div>
+  <div class="essentiel">
+    <div class="essentiel-label">L'essentiel</div>
+    <div class="essentiel-texte">L'hivernage, c'est la saison des pluies : la grande saison de culture ! Le secret, c'est de tout préparer <strong>avant</strong> les premières gouttes. Un jardin prêt à temps profite de chaque pluie dès le premier jour. 🌦️</div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🛠️</span> Avant les premières pluies</div>
+    <div class="etape"><div class="etape-num">1</div><div class="etape-content"><div class="etape-titre">Nettoie la parcelle 🧹</div><div class="etape-texte">Désherbe, retire les vieux plants et les débris. Les mauvaises herbes profitent des pluies encore plus vite que tes légumes !</div></div></div>
+    <div class="etape"><div class="etape-num">2</div><div class="etape-content"><div class="etape-titre">Monte planches, buttes et billons ⛰️</div><div class="etape-texte">Cultive surélevé : des billons ou des buttes de 20 à 40 cm gardent les racines hors de l'eau quand les grosses averses arrivent.</div></div></div>
+    <div class="etape"><div class="etape-num">3</div><div class="etape-content"><div class="etape-titre">Pense au drainage 🚿</div><div class="etape-texte">Creuse de petites rigoles entre les planches pour évacuer l'excès d'eau vers l'extérieur du jardin. Un potager inondé, c'est des racines qui étouffent.</div></div></div>
+    <div class="etape"><div class="etape-num">4</div><div class="etape-content"><div class="etape-titre">Nourris le sol 🪱</div><div class="etape-texte">Incorpore du compost ou du fumier bien décomposé dans les buttes. Les pluies feront descendre les nutriments pile au niveau des racines.</div></div></div>
+    <div class="etape"><div class="etape-num">5</div><div class="etape-content"><div class="etape-titre">Prépare tes semences 🌰</div><div class="etape-texte">Trie tes graines, garde les plus belles et jette celles qui sont abîmées ou moisies. Tout doit être prêt pour semer dès que la pluie s'installe.</div></div></div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🌱</span> À semer dès les premières pluies</div>
+    <div class="etape"><div class="etape-num">🫘</div><div class="etape-content"><div class="etape-titre">Niébé</div><div class="etape-texte">Le haricot local, costaud et généreux. Il enrichit même le sol en azote pour les cultures suivantes.</div></div></div>
+    <div class="etape"><div class="etape-num">🌽</div><div class="etape-content"><div class="etape-titre">Maïs</div><div class="etape-texte">Sème en poquets de 2-3 graines dès que la terre est bien humide sur 10 cm de profondeur.</div></div></div>
+    <div class="etape"><div class="etape-num">🌶️</div><div class="etape-content"><div class="etape-titre">Gombo</div><div class="etape-texte">Fais tremper les graines une nuit avant de semer : elles germeront deux fois plus vite.</div></div></div>
+    <div class="etape"><div class="etape-num">🥜</div><div class="etape-content"><div class="etape-titre">Arachide</div><div class="etape-texte">Sème en lignes sur les billons, dans un sol léger et bien drainé. Elle aussi nourrit le sol en azote.</div></div></div>
+  </div>
+  <div class="conseil">
+    <div class="conseil-icone">⏳</div>
+    <div>
+      <div class="conseil-label">Le conseil du jardinier</div>
+      <div class="conseil-texte">Ne sème pas tout à la première averse ! Attends 2-3 bonnes pluies rapprochées : c'est le signe que la saison est vraiment installée. Et échelonne tes semis sur plusieurs semaines pour étaler les récoltes.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-titre"><span style="font-size:22px">🚫</span> À éviter</div>
+    <div class="eviter"><div class="eviter-icone">🌊</div><div class="eviter-texte"><strong>Semer à plat en zone inondable :</strong> sans buttes ni billons, une seule grosse averse peut noyer tous tes semis.</div></div>
+    <div class="eviter"><div class="eviter-icone">🍄</div><div class="eviter-texte"><strong>Ignorer les maladies fongiques :</strong> chaleur + humidité = paradis des champignons. Espace bien les plants, évite de mouiller le feuillage et retire vite les feuilles tachées.</div></div>
+    <div class="eviter"><div class="eviter-icone">🌿</div><div class="eviter-texte"><strong>Laisser les herbes gagner :</strong> en hivernage, elles poussent à toute vitesse. Un petit désherbage chaque semaine vaut mieux qu'un grand chantier chaque mois.</div></div>
+    <div class="eviter"><div class="eviter-icone">🐌</div><div class="eviter-texte"><strong>Oublier limaces et escargots :</strong> la pluie les réveille. Surveille les jeunes plants, surtout les premiers soirs humides.</div></div>
+  </div>
+</div>
+</body>
+</html>

@@ -299,6 +299,58 @@ const Map<String, RotationData> rotationMap = {
     goodAfter: ['haricot', 'laitue', 'tomate', 'carotte'],
     family: 'Lamiacées',
   ),
+
+  // ── Cultures ouest-africaines ──
+  'mil': RotationData(
+    waitYears: 2,
+    goodAfter: ['niebe', 'arachide', 'haricot'],
+    family: 'Poacées',
+  ),
+  'fonio': RotationData(
+    waitYears: 2,
+    goodAfter: ['niebe', 'arachide'],
+    family: 'Poacées',
+  ),
+  'moringa': RotationData(
+    waitYears: 5,
+    goodAfter: ['niebe', 'arachide', 'mais'],
+    family: 'Moringacées',
+  ),
+  'aubergine_africaine': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'haricot', 'laitue', 'carotte'],
+    family: 'Solanacées',
+  ),
+  'corete': RotationData(
+    waitYears: 2,
+    goodAfter: ['niebe', 'arachide', 'mais'],
+    family: 'Malvacées',
+  ),
+  'celosie': RotationData(
+    waitYears: 2,
+    goodAfter: ['niebe', 'mais', 'arachide'],
+    family: 'Amarantacées',
+  ),
+  'baselle': RotationData(
+    waitYears: 2,
+    goodAfter: ['niebe', 'haricot', 'mais'],
+    family: 'Basellacées',
+  ),
+  'citronnelle': RotationData(
+    waitYears: 3,
+    goodAfter: ['niebe', 'arachide', 'haricot'],
+    family: 'Poacées',
+  ),
+  'papayer': RotationData(
+    waitYears: 4,
+    goodAfter: ['niebe', 'arachide', 'mais'],
+    family: 'Caricacées',
+  ),
+  'bananier_plantain': RotationData(
+    waitYears: 4,
+    goodAfter: ['niebe', 'arachide', 'taro'],
+    family: 'Musacées',
+  ),
 };
 
 /// Données de rotation pour un légume.
