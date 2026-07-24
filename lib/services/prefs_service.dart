@@ -178,15 +178,13 @@ class PrefsService {
     await _prefs?.setBool(_kOnboardingDone, value);
   }
 
-  bool get gardenTutorialDone =>
-      _prefs?.getBool(_kGardenTutorialDone) ?? false;
+  bool get gardenTutorialDone => _prefs?.getBool(_kGardenTutorialDone) ?? false;
 
   Future<void> setGardenTutorialDone(bool value) async {
     await _prefs?.setBool(_kGardenTutorialDone, value);
   }
 
-  bool isFavorite(String vegetableId) =>
-      favorites.value.contains(vegetableId);
+  bool isFavorite(String vegetableId) => favorites.value.contains(vegetableId);
 
   Future<void> toggleFavorite(String vegetableId) async {
     final next = Set<String>.from(favorites.value);
@@ -312,6 +310,53 @@ class PrefsService {
 
   String? get authEmail => _prefs?.getString(_kAuthEmail);
   String? get authName => _prefs?.getString(_kAuthName);
+
+  /// Purge toutes les données rattachées à un compte : Poussidex, badges,
+  /// cultures, jardins, Tamassi (XP/starter/nom/streak), défis, favoris,
+  /// historique d'arrosage et statistiques. Appelé à la déconnexion et à
+  /// la suppression de compte, pour qu'un autre compte ne récupère jamais
+  /// les données du précédent sur le même appareil.
+  ///
+  /// Les préférences de l'appareil (son, thème, région, notifications)
+  /// sont conservées : elles sont re-synchronisées depuis le cloud à la
+  /// prochaine connexion.
+  Future<void> clearUserScopedData() async {
+    final p = _prefs;
+    if (p == null) return;
+    const exactKeys = <String>[
+      _kPlantations,
+      _kUnlockedBadges,
+      _kCultures,
+      _kFavorites,
+      _kWateringHistory,
+      _kGardenGrid,
+      _kGridMigrated,
+      _kGardenTutorialDone,
+      'kultiva.creature.xp',
+      'kultiva.creature.starter',
+      'kultiva.creature.name',
+      'kultiva.creature.streak',
+      'kultiva.creature.lastSeen',
+      'kultiva.creature.lastWater',
+      'kultiva.creature.lastFertilize',
+      'kultiva.creature.lastCaress',
+      'kultiva.challenges.v1',
+      'garden_plans_v1',
+    ];
+    for (final k in exactKeys) {
+      await p.remove(k);
+    }
+    // Statistiques Tamassi : clés dynamiques `tamassi.stats.*`.
+    final statKeys =
+        p.getKeys().where((k) => k.startsWith('tamassi.stats.')).toList();
+    for (final k in statKeys) {
+      await p.remove(k);
+    }
+    // Remet les notifiers réactifs à l'état vierge.
+    favorites.value = <String>{};
+    plantationsVersion.value = plantationsVersion.value + 1;
+    culturesVersion.value = culturesVersion.value + 1;
+  }
 
   Future<void> setAuth({String? email, String? name}) async {
     if (email == null) {

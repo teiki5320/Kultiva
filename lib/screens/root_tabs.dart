@@ -25,6 +25,16 @@ class RootTabs extends StatefulWidget {
   static final ValueNotifier<String?> poussidexFilter =
       ValueNotifier<String?>(null);
 
+  /// Incrémenté pour demander un retour à l'écran de connexion. Les
+  /// Paramètres sont poussés via un proxy qui n'a pas accès au callback
+  /// onSignOut du bootstrap : ce notifier fait le pont (déconnexion et
+  /// suppression de compte).
+  static final ValueNotifier<int> signOutRequested = ValueNotifier<int>(0);
+
+  /// Demande un retour à l'écran de connexion depuis n'importe où.
+  static void requestSignOut() =>
+      signOutRequested.value = signOutRequested.value + 1;
+
   @override
   State<RootTabs> createState() => _RootTabsState();
 }
@@ -39,6 +49,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     RootTabs.tabIndex.addListener(_onTabIndexExternalChange);
+    RootTabs.signOutRequested.addListener(_onSignOutRequested);
     // Premier check juste après le boot — si des plants ont soif, notif.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _runWateringCheck();
@@ -49,7 +60,14 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     RootTabs.tabIndex.removeListener(_onTabIndexExternalChange);
+    RootTabs.signOutRequested.removeListener(_onSignOutRequested);
     super.dispose();
+  }
+
+  /// Déconnexion ou suppression de compte demandée depuis les Paramètres.
+  void _onSignOutRequested() {
+    if (!mounted) return;
+    widget.onSignOut();
   }
 
   /// Un deep-link (depuis un tuto HTML) a demandé un changement d'onglet.

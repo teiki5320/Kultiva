@@ -6,8 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'
-    hide AuthException;
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthException;
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 import '../config/supabase_config.dart';
@@ -222,6 +221,36 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  /// Supprime définitivement le compte (exigence Apple 5.1.1(v) : toute
+  /// app qui permet de créer un compte doit permettre de le supprimer
+  /// depuis l'app).
+  ///
+  /// Invoque l'edge function `delete-account` (service_role) qui purge
+  /// les photos du bucket + supprime la ligne auth.users → cascade sur
+  /// toutes les tables. Puis efface la session locale. L'appelant est
+  /// identifié par son JWT (attaché automatiquement par le client) ;
+  /// impossible de supprimer le compte d'autrui.
+  ///
+  /// ⚠️ Nécessite le déploiement manuel de l'edge function
+  /// (`supabase functions deploy delete-account`).
+  Future<void> deleteAccount() async {
+    if (_client.auth.currentSession == null) {
+      throw const AuthException('Aucune session active.');
+    }
+    try {
+      await _client.functions.invoke('delete-account');
+    } on FunctionException catch (e) {
+      throw AuthException(
+        'Suppression du compte impossible pour le moment '
+        '(code ${e.status}). Réessaie plus tard.',
+      );
+    } catch (e) {
+      throw AuthException('Suppression du compte échouée : $e');
+    }
+    // Le compte serveur est supprimé : on invalide la session locale.
+    await signOut();
+  }
+
   /// Déconnexion — efface la session locale.
   Future<void> signOut() async {
     try {
@@ -261,16 +290,14 @@ class AuthService extends ChangeNotifier {
 
   void _validatePassword(String password) {
     if (password.length < 6) {
-      throw const AuthException(
-          'Mot de passe trop court (6 caractères min.)');
+      throw const AuthException('Mot de passe trop court (6 caractères min.)');
     }
   }
 
   /// Traduit les messages d'erreur Supabase en français + convivial.
   String _friendlyError(sb.AuthException e) {
     final msg = e.message.toLowerCase();
-    if (msg.contains('invalid login') ||
-        msg.contains('invalid credentials')) {
+    if (msg.contains('invalid login') || msg.contains('invalid credentials')) {
       return 'Email ou mot de passe incorrect.';
     }
     if (msg.contains('user already registered')) {

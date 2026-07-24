@@ -18,6 +18,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
+import '../root_tabs.dart';
 import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
@@ -212,7 +213,8 @@ class _SowScreenState extends State<SowScreen> {
                       top: 48,
                       right: 12,
                       child: Semantics(
-                        label: 'Météo : ${_weather!.currentTemp.toStringAsFixed(0)} degrés, ${_weather!.weatherLabel}',
+                        label:
+                            'Météo : ${_weather!.currentTemp.toStringAsFixed(0)} degrés, ${_weather!.weatherLabel}',
                         button: true,
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).push(
@@ -313,8 +315,7 @@ class _SowScreenState extends State<SowScreen> {
                             bubbleColor: const Color(0xFF7BAFD4),
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                  builder: (_) =>
-                                      const CalendarGridScreen()),
+                                  builder: (_) => const CalendarGridScreen()),
                             ),
                           ),
                         ),
@@ -332,8 +333,8 @@ class _SowScreenState extends State<SowScreen> {
                             bubbleColor: KultivaColors.terracotta,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                builder: (_) => VegetableDetailScreen(
-                                    vegetable: vegOfDay),
+                                builder: (_) =>
+                                    VegetableDetailScreen(vegetable: vegOfDay),
                               ),
                             ),
                           ),
@@ -499,101 +500,107 @@ class _KawaiiCard extends StatelessWidget {
       label: '$label, $subtitle',
       button: true,
       child: GestureDetector(
-      onTap: () {
-        AudioService.instance.play(Sfx.tap);
-        onTap();
-      },
-      child: Container(
-        height: 130,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: gradientColors,
-          ),
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: [
-            BoxShadow(
-              color: gradientColors.last.withValues(alpha: 0.35),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
+        onTap: () {
+          AudioService.instance.play(Sfx.tap);
+          onTap();
+        },
+        child: Container(
+          height: 130,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: gradientColors,
             ),
-          ],
-        ),
-        child: Stack(
-          clipBehavior: Clip.hardEdge,
-          children: [
-            Positioned(
-              top: -8,
-              right: -8,
-              child: _Bubble(size: 40, color: bubbleColor.withValues(alpha: 0.15)),
-            ),
-            Positioned(
-              bottom: 10,
-              right: 12,
-              child: _Bubble(size: 24, color: bubbleColor.withValues(alpha: 0.12)),
-            ),
-            Positioned(
-              top: 20,
-              right: 30,
-              child: _Bubble(size: 14, color: bubbleColor.withValues(alpha: 0.10)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.7),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: bubbleColor.withValues(alpha: 0.15),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: imagePath != null
-                        ? ClipOval(
-                            child: Image.asset(imagePath!,
-                                width: 44, height: 44, fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) =>
-                                    Text(emoji, style: const TextStyle(fontSize: 22))),
-                          )
-                        : Text(emoji, style: const TextStyle(fontSize: 22)),
-                  ),
-                  const Spacer(),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      color: KultivaColors.textPrimary.withValues(alpha: 0.9),
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: KultivaColors.textPrimary.withValues(alpha: 0.55),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: gradientColors.last.withValues(alpha: 0.35),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              Positioned(
+                top: -8,
+                right: -8,
+                child: _Bubble(
+                    size: 40, color: bubbleColor.withValues(alpha: 0.15)),
+              ),
+              Positioned(
+                bottom: 10,
+                right: 12,
+                child: _Bubble(
+                    size: 24, color: bubbleColor.withValues(alpha: 0.12)),
+              ),
+              Positioned(
+                top: 20,
+                right: 30,
+                child: _Bubble(
+                    size: 14, color: bubbleColor.withValues(alpha: 0.10)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.7),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: bubbleColor.withValues(alpha: 0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      alignment: Alignment.center,
+                      child: imagePath != null
+                          ? ClipOval(
+                              child: Image.asset(imagePath!,
+                                  width: 44,
+                                  height: 44,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Text(emoji,
+                                      style: const TextStyle(fontSize: 22))),
+                            )
+                          : Text(emoji, style: const TextStyle(fontSize: 22)),
+                    ),
+                    const Spacer(),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        color: KultivaColors.textPrimary.withValues(alpha: 0.9),
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color:
+                            KultivaColors.textPrimary.withValues(alpha: 0.55),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }
@@ -654,22 +661,26 @@ class _SlideBase extends StatelessWidget {
           Positioned(
             top: -12,
             right: -12,
-            child: _Bubble(size: 50, color: bubbleColor.withValues(alpha: 0.12)),
+            child:
+                _Bubble(size: 50, color: bubbleColor.withValues(alpha: 0.12)),
           ),
           Positioned(
             bottom: 14,
             right: 20,
-            child: _Bubble(size: 28, color: bubbleColor.withValues(alpha: 0.10)),
+            child:
+                _Bubble(size: 28, color: bubbleColor.withValues(alpha: 0.10)),
           ),
           Positioned(
             top: 30,
             right: 50,
-            child: _Bubble(size: 16, color: bubbleColor.withValues(alpha: 0.08)),
+            child:
+                _Bubble(size: 16, color: bubbleColor.withValues(alpha: 0.08)),
           ),
           Positioned(
             bottom: 40,
             left: -10,
-            child: _Bubble(size: 32, color: bubbleColor.withValues(alpha: 0.06)),
+            child:
+                _Bubble(size: 32, color: bubbleColor.withValues(alpha: 0.06)),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -711,8 +722,7 @@ class _SlideVegOfDay extends StatelessWidget {
               ],
             ),
             alignment: Alignment.center,
-            child: Text(vegetable.emoji,
-                style: const TextStyle(fontSize: 32)),
+            child: Text(vegetable.emoji, style: const TextStyle(fontSize: 32)),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -816,7 +826,8 @@ class _SlideWeather extends StatelessWidget {
                             ? '${weather!.rainNext3Days.toStringAsFixed(1)} mm de pluie prévus sous 3 jours'
                             : 'Pas de pluie prévue sur 3 jours',
                         style: TextStyle(
-                          color: KultivaColors.textPrimary.withValues(alpha: 0.55),
+                          color:
+                              KultivaColors.textPrimary.withValues(alpha: 0.55),
                           fontSize: 12,
                           height: 1.3,
                         ),
@@ -836,14 +847,16 @@ class _SlideWeather extends StatelessWidget {
                           height: 24,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.5,
-                            color: const Color(0xFF7BAFD4).withValues(alpha: 0.6),
+                            color:
+                                const Color(0xFF7BAFD4).withValues(alpha: 0.6),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Text(
                           'Chargement météo...',
                           style: TextStyle(
-                            color: KultivaColors.textPrimary.withValues(alpha: 0.5),
+                            color: KultivaColors.textPrimary
+                                .withValues(alpha: 0.5),
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                           ),
@@ -930,7 +943,13 @@ class _SlideTip extends StatelessWidget {
 class _SettingsProxy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SettingsScreen(onSignOut: () => Navigator.of(context).pop());
+    // À la déconnexion / suppression de compte : on ferme les Paramètres
+    // PUIS on demande à RootTabs de repartir vers l'écran de connexion
+    // (sinon l'utilisateur reste bloqué dans les onglets, déconnecté).
+    return SettingsScreen(onSignOut: () {
+      Navigator.of(context).pop();
+      RootTabs.requestSignOut();
+    });
   }
 }
 
@@ -947,8 +966,18 @@ class _SlideSeason extends StatelessWidget {
   });
 
   static const List<String> _monthNames = [
-    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+    'janvier',
+    'février',
+    'mars',
+    'avril',
+    'mai',
+    'juin',
+    'juillet',
+    'août',
+    'septembre',
+    'octobre',
+    'novembre',
+    'décembre',
   ];
 
   @override

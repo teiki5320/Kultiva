@@ -84,8 +84,7 @@ class CloudSyncService {
       return Plantation.decodeAll(PrefsService.instance.plantationsJson);
     }
 
-    final local =
-        Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    final local = Plantation.decodeAll(PrefsService.instance.plantationsJson);
     final cloud = await fetchPlantations();
 
     // Index par ID pour fusion rapide.
@@ -117,12 +116,12 @@ class CloudSyncService {
     return result;
   }
 
-  /// Vide TOUTES les données locales (plantations, badges, prefs).
-  /// À appeler au sign-out pour éviter qu'un autre compte se retrouve
-  /// avec les données du précédent.
+  /// Vide TOUTES les données locales rattachées au compte (Poussidex,
+  /// badges, cultures, jardins, Tamassi, défis, favoris, stats). À appeler
+  /// au sign-out et à la suppression de compte pour éviter qu'un autre
+  /// compte se retrouve avec les données du précédent sur le même appareil.
   Future<void> clearLocalData() async {
-    await PrefsService.instance.setPlantationsJson('[]');
-    await PrefsService.instance.setUnlockedBadges(<String>{});
+    await PrefsService.instance.clearUserScopedData();
   }
 
   // ══════════════════════════════════════════════════════════════════
@@ -147,18 +146,12 @@ class CloudSyncService {
         await _client.from('unlocked_badges').upsert(rows);
       }
       // Supprime du cloud les badges qui ne sont plus dans le set local.
-      final cloud = await _client
-          .from('unlocked_badges')
-          .select('badge_id');
-      final cloudIds = cloud
-          .map<String>((row) => row['badge_id'] as String)
-          .toSet();
+      final cloud = await _client.from('unlocked_badges').select('badge_id');
+      final cloudIds =
+          cloud.map<String>((row) => row['badge_id'] as String).toSet();
       final toDelete = cloudIds.difference(unlocked);
       for (final id in toDelete) {
-        await _client
-            .from('unlocked_badges')
-            .delete()
-            .eq('badge_id', id);
+        await _client.from('unlocked_badges').delete().eq('badge_id', id);
       }
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadBadges error: $e');
@@ -170,9 +163,7 @@ class CloudSyncService {
     if (!_signedIn) return <String>{};
     try {
       final data = await _client.from('unlocked_badges').select('badge_id');
-      return data
-          .map<String>((row) => row['badge_id'] as String)
-          .toSet();
+      return data.map<String>((row) => row['badge_id'] as String).toSet();
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.fetchBadges error: $e');
       return <String>{};
@@ -327,11 +318,8 @@ class CloudSyncService {
     try {
       final uid = _userId;
       if (uid == null) return;
-      final rows = await _client
-          .from('user_xp')
-          .select()
-          .eq('user_id', uid)
-          .limit(1);
+      final rows =
+          await _client.from('user_xp').select().eq('user_id', uid).limit(1);
       if (rows.isEmpty) return;
       final row = rows.first;
       final xp = (row['xp'] as int?) ?? 1;
@@ -355,8 +343,7 @@ class CloudSyncService {
 
   Future<void> _uploadCurrentXp() async {
     final prefs = PrefsService.instance;
-    final xp =
-        int.tryParse(prefs.getString('kultiva.creature.xp') ?? '') ?? 1;
+    final xp = int.tryParse(prefs.getString('kultiva.creature.xp') ?? '') ?? 1;
     final starter = prefs.getString('kultiva.creature.starter');
     final name = prefs.getString('kultiva.creature.name');
     await uploadXp(xp: xp, starter: starter, creatureName: name);
@@ -504,8 +491,7 @@ class CloudSyncService {
       'planted_at': p.plantedAt.toIso8601String(),
       'harvested_at': p.harvestedAt?.toIso8601String(),
       'harvest_count': p.harvestCount,
-      'watered_at':
-          p.wateredAt.map((d) => d.toIso8601String()).toList(),
+      'watered_at': p.wateredAt.map((d) => d.toIso8601String()).toList(),
       'note': p.note,
       'photo_paths': cloudPhotos,
     };
@@ -522,9 +508,7 @@ class CloudSyncService {
           ? null
           : DateTime.parse(row['harvested_at'] as String),
       harvestCount: (row['harvest_count'] as int?) ?? 0,
-      wateredAt: watered
-          .map((e) => DateTime.parse(e as String))
-          .toList(),
+      wateredAt: watered.map((e) => DateTime.parse(e as String)).toList(),
       note: row['note'] as String?,
       photoPaths: photos.map((e) => e as String).toList(),
     );
