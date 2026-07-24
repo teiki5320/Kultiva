@@ -5,7 +5,10 @@ version: 1.0.0+5
 
 environment:
   sdk: ^3.5.0
-  flutter: ">=3.24.0"
+  # Borne réelle : le code utilise des APIs (RadioGroup, activeThumbColor,
+  # scaleByDouble/translateByDouble) apparues vers Flutter 3.35+. Sous 3.32
+  # le projet ne compile pas — la contrainte ">=3.24" d'origine était fausse.
+  flutter: ">=3.38.0"
 
 dependencies:
   flutter:

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -317,8 +318,7 @@ class TamassiViewState extends State<TamassiView>
         } else if (animal.emoji == '🦋') {
           TamassiStats.addToSet('animals', 'butterfly');
         }
-        _crossingCtrl.duration =
-            Duration(milliseconds: animal.durationMs);
+        _crossingCtrl.duration = Duration(milliseconds: animal.durationMs);
         _crossingCtrl.forward(from: 0).whenComplete(() {
           if (mounted) setState(() => _currentCrossing = null);
         });
@@ -349,8 +349,7 @@ class TamassiViewState extends State<TamassiView>
       pool.addAll(const <CrossingAnimal>[
         CrossingAnimal(
             emoji: '🦔', style: CrossingStyle.groundSlow, durationMs: 8000),
-        CrossingAnimal(
-            emoji: '🐸', style: CrossingStyle.hop, durationMs: 5000),
+        CrossingAnimal(emoji: '🐸', style: CrossingStyle.hop, durationMs: 5000),
         CrossingAnimal(
             emoji: '🐿️', style: CrossingStyle.groundSlow, durationMs: 4000),
       ]);
@@ -372,9 +371,7 @@ class TamassiViewState extends State<TamassiView>
           CrossingAnimal(
               emoji: '🐸', style: CrossingStyle.hop, durationMs: 5000),
           CrossingAnimal(
-              emoji: '🐌',
-              style: CrossingStyle.groundSlow,
-              durationMs: 11000),
+              emoji: '🐌', style: CrossingStyle.groundSlow, durationMs: 11000),
         ]);
       } else if (code >= 71 && code <= 77) {
         // Neige : pingouin qui glisse.
@@ -604,22 +601,22 @@ class TamassiViewState extends State<TamassiView>
                                 // Gauche : Soleia.
                                 Expanded(
                                   child: StarterTapZone(
-                                    onTap: () => _selectStarter(
-                                        CreatureStarter.soleia),
+                                    onTap: () =>
+                                        _selectStarter(CreatureStarter.soleia),
                                   ),
                                 ),
                                 // Centre : Spira.
                                 Expanded(
                                   child: StarterTapZone(
-                                    onTap: () => _selectStarter(
-                                        CreatureStarter.spira),
+                                    onTap: () =>
+                                        _selectStarter(CreatureStarter.spira),
                                   ),
                                 ),
                                 // Droite : Poussia.
                                 Expanded(
                                   child: StarterTapZone(
-                                    onTap: () => _selectStarter(
-                                        CreatureStarter.poussia),
+                                    onTap: () =>
+                                        _selectStarter(CreatureStarter.poussia),
                                   ),
                                 ),
                               ],
@@ -678,8 +675,7 @@ class TamassiViewState extends State<TamassiView>
                   );
                 },
                 child: const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -701,33 +697,36 @@ class TamassiViewState extends State<TamassiView>
           ),
         ),
         // Bouton debug "+10 XP" en haut à droite (test d'évolution).
-        Positioned(
-          top: 8,
-          right: 8,
-          child: SafeArea(
-            child: Material(
-              color: Colors.black.withValues(alpha: 0.55),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(14),
-                onTap: () => _gainXp(10, '🧪 Debug'),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Text(
-                    '+10 XP',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 12,
+        // Réservé au build debug — jamais livré aux utilisateurs (l'XP
+        // est désormais branché et poussé dans la table publique user_xp).
+        if (kDebugMode)
+          Positioned(
+            top: 8,
+            right: 8,
+            child: SafeArea(
+              child: Material(
+                color: Colors.black.withValues(alpha: 0.55),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: () => _gainXp(10, '🧪 Debug'),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: Text(
+                      '+10 XP',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
         // Visite d'ami : un autre Tamassi traverse l'écran en bas.
         if (_currentVisitor != null)
           AnimatedBuilder(
@@ -737,9 +736,8 @@ class TamassiViewState extends State<TamassiView>
               final p = _visitCtrl.value;
               final w = MediaQuery.of(context).size.width;
               final h = MediaQuery.of(context).size.height;
-              final x = _visitorLTR
-                  ? -120 + p * (w + 240)
-                  : w + 120 - p * (w + 240);
+              final x =
+                  _visitorLTR ? -120 + p * (w + 240) : w + 120 - p * (w + 240);
               final y = h * 0.62 + 6.0 * sin(p * pi * 4);
               return Positioned(
                 left: x,
@@ -757,9 +755,8 @@ class TamassiViewState extends State<TamassiView>
               final p = _crossingCtrl.value;
               final w = MediaQuery.of(context).size.width;
               final h = MediaQuery.of(context).size.height;
-              final x = _crossingLTR
-                  ? -80 + p * (w + 160)
-                  : w + 80 - p * (w + 160);
+              final x =
+                  _crossingLTR ? -80 + p * (w + 160) : w + 80 - p * (w + 160);
               late final double y;
               late final double rotateZ;
               late final double rotateY;
@@ -787,7 +784,8 @@ class TamassiViewState extends State<TamassiView>
                 case CrossingStyle.hop:
                   // Série de bonds paraboliques.
                   final hopPhase = (p * 4) % 1.0;
-                  final hopHeight = 40.0 * (1 - (hopPhase * 2 - 1) * (hopPhase * 2 - 1));
+                  final hopHeight =
+                      40.0 * (1 - (hopPhase * 2 - 1) * (hopPhase * 2 - 1));
                   y = h * 0.75 - hopHeight;
                   rotateZ = 0;
                   rotateY = _crossingLTR ? 0 : pi;
@@ -835,13 +833,11 @@ class TamassiViewState extends State<TamassiView>
             if (_streak >= 2) ...<Widget>[
               const SizedBox(height: 4),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: Colors.orange.shade50,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: Colors.orange.shade300, width: 1),
+                  border: Border.all(color: Colors.orange.shade300, width: 1),
                 ),
                 child: Text(
                   '🔥 $_streak jours',
@@ -932,9 +928,8 @@ class TamassiViewState extends State<TamassiView>
                                 ? bannerP.clamp(0.0, 1.0) *
                                     (p > 0.8 ? (0.9 - p) / 0.1 : 1.0)
                                 : 0.0;
-                            final bannerScale = 0.3 +
-                                bannerP * 1.0 +
-                                sin(bannerP * pi) * 0.05;
+                            final bannerScale =
+                                0.3 + bannerP * 1.0 + sin(bannerP * pi) * 0.05;
                             return Stack(
                               children: <Widget>[
                                 // Flash blanc.
@@ -959,8 +954,8 @@ class TamassiViewState extends State<TamassiView>
                                   Positioned.fill(
                                     child: CustomPaint(
                                       painter: ConfettiPainter(
-                                        progress: ((p - 0.1) / 0.85)
-                                            .clamp(0.0, 1.0),
+                                        progress:
+                                            ((p - 0.1) / 0.85).clamp(0.0, 1.0),
                                       ),
                                     ),
                                   ),
@@ -1045,8 +1040,7 @@ class TamassiViewState extends State<TamassiView>
                                           horizontal: 22, vertical: 10),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(20),
                                         boxShadow: const <BoxShadow>[
                                           BoxShadow(
                                             color: Colors.black26,
@@ -1079,37 +1073,39 @@ class TamassiViewState extends State<TamassiView>
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 4),
               child: XpBar(level: lv),
             ),
-            // Slider debug (à retirer quand le système XP sera branché).
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-              child: Row(
-                children: <Widget>[
-                  const Text('1',
-                      style: TextStyle(fontWeight: FontWeight.w700)),
-                  Expanded(
-                    child: Slider(
-                      value: _level,
-                      min: 1,
-                      max: 100,
-                      divisions: 99,
-                      label: '$lv',
-                      activeColor: KultivaColors.primaryGreen,
-                      onChanged: (v) {
-                        setState(() {
-                          _level = v;
-                          _xp = v.round();
-                        });
-                        PrefsService.instance
-                            .setString(_kXp, _xp.toString());
-                        _checkLevelUp();
-                      },
+            // Slider debug de niveau — réservé au build debug (le système
+            // XP est désormais branché ; ce slider écrivait l'XP sans le
+            // pousser au cloud, créant une divergence local/cloud).
+            if (kDebugMode)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                child: Row(
+                  children: <Widget>[
+                    const Text('1',
+                        style: TextStyle(fontWeight: FontWeight.w700)),
+                    Expanded(
+                      child: Slider(
+                        value: _level,
+                        min: 1,
+                        max: 100,
+                        divisions: 99,
+                        label: '$lv',
+                        activeColor: KultivaColors.primaryGreen,
+                        onChanged: (v) {
+                          setState(() {
+                            _level = v;
+                            _xp = v.round();
+                          });
+                          PrefsService.instance.setString(_kXp, _xp.toString());
+                          _checkLevelUp();
+                        },
+                      ),
                     ),
-                  ),
-                  const Text('100',
-                      style: TextStyle(fontWeight: FontWeight.w700)),
-                ],
+                    const Text('100',
+                        style: TextStyle(fontWeight: FontWeight.w700)),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ],
@@ -1144,7 +1140,9 @@ class _StarterTapZoneState extends State<StarterTapZone> {
         duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
-          color: _pressed ? Colors.white.withValues(alpha: 0.25) : Colors.transparent,
+          color: _pressed
+              ? Colors.white.withValues(alpha: 0.25)
+              : Colors.transparent,
         ),
       ),
     );
@@ -1202,4 +1200,3 @@ class TamassiActionButton extends StatelessWidget {
     );
   }
 }
-
