@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -39,10 +40,12 @@ class NotificationService {
       return;
     }
     try {
-      // Timezone : initialise la DB de fuseaux puis règle le local.
+      // Timezone : initialise la DB de fuseaux puis règle le local sur le
+      // fuseau RÉEL du device. Sans ce setLocalLocation, `tz.local` reste
+      // UTC (package timezone) et les rappels planifiés sonnent 1-2h trop
+      // tard en France.
       tz.initializeTimeZones();
-      // Par défaut on prend le fuseau du device (France = Europe/Paris).
-      // `tz.local` est déjà correct sauf override explicite.
+      await _configureLocalTimezone();
 
       const androidSettings =
           AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -67,6 +70,25 @@ class NotificationService {
       _initialized = true;
     } catch (_) {
       _initialized = true;
+    }
+  }
+
+  /// Règle `tz.local` sur le fuseau du device. En cas d'échec, retombe sur
+  /// un fuseau cohérent avec la région (Afrique de l'Ouest ≈ GMT, sinon
+  /// Europe/Paris) plutôt que de rester en UTC.
+  static Future<void> _configureLocalTimezone() async {
+    try {
+      final name = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(name));
+    } catch (_) {
+      final fallback = PrefsService.instance.region.value == Region.westAfrica
+          ? 'Africa/Abidjan'
+          : 'Europe/Paris';
+      try {
+        tz.setLocalLocation(tz.getLocation(fallback));
+      } catch (_) {
+        // Dernier recours : on laisse tz.local (UTC).
+      }
     }
   }
 
@@ -151,8 +173,7 @@ class NotificationService {
       const androidDetails = AndroidNotificationDetails(
         'kultiva_tamassi_daily',
         'Rappel Tamassi',
-        channelDescription:
-            'Rappel quotidien pour venir voir ton Tamassi.',
+        channelDescription: 'Rappel quotidien pour venir voir ton Tamassi.',
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
       );
@@ -202,8 +223,7 @@ class NotificationService {
 
     // Throttle : 24h minimum entre 2 notifs d'arrosage.
     final last = PrefsService.instance.lastWateringNotificationCheck;
-    if (last != null &&
-        DateTime.now().difference(last).inHours < 24) {
+    if (last != null && DateTime.now().difference(last).inHours < 24) {
       return;
     }
 
@@ -212,17 +232,14 @@ class NotificationService {
       if (weather == null) return;
 
       final alerts = await WateringService.analyzeGarden(gardenVegIds);
-      final urgent = alerts
-          .where((a) => a.needsWatering && !a.rainExpected)
-          .toList();
+      final urgent =
+          alerts.where((a) => a.needsWatering && !a.rainExpected).toList();
 
       if (urgent.isEmpty) return;
 
       final names = urgent.take(3).map((a) => a.vegetable.name).join(', ');
-      final suffix =
-          urgent.length > 3 ? ' et ${urgent.length - 3} autres' : '';
-      final body =
-          '${weather.consecutiveDryDays} jours sans pluie. '
+      final suffix = urgent.length > 3 ? ' et ${urgent.length - 3} autres' : '';
+      final body = '${weather.consecutiveDryDays} jours sans pluie. '
           '$names$suffix ont besoin d\'eau !';
 
       const androidDetails = AndroidNotificationDetails(
@@ -261,8 +278,7 @@ class NotificationService {
     if (!PrefsService.instance.notifications.value) return;
 
     final last = PrefsService.instance.lastHeatwaveNotificationCheck;
-    if (last != null &&
-        DateTime.now().difference(last).inDays < 7) {
+    if (last != null && DateTime.now().difference(last).inDays < 7) {
       return;
     }
     try {
@@ -302,8 +318,8 @@ class NotificationService {
         final categories = <VegetableCategory, int>{};
         for (final c in actives) {
           try {
-            final v = vegetablesBase
-                .firstWhere((veg) => veg.id == c.vegetableId);
+            final v =
+                vegetablesBase.firstWhere((veg) => veg.id == c.vegetableId);
             categories[v.category] = (categories[v.category] ?? 0) + 1;
           } catch (_) {}
         }

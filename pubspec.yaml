@@ -33,6 +33,10 @@ dependencies:
   # Notifications (planification mensuelle + alertes météo)
   flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4
+  # Fuseau horaire réel du device : sans lui, tz.local reste UTC et les
+  # notifications planifiées (rappel mensuel 9h, Tamassi 19h) sonnaient
+  # 1 à 2h trop tard en France. Épinglé en 1.x (API String simple).
+  flutter_timezone: ^1.0.8
 
   # URL launcher (liens Amazon)
   url_launcher: ^6.2.2

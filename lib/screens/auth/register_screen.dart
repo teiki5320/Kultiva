@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
@@ -29,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _submit() async {
+    if (_loading) return; // évite une double soumission (touche « done »)
     if (!_formKey.currentState!.validate()) return;
     setState(() {
       _loading = true;
@@ -40,12 +43,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordCtrl.text,
         name: _nameCtrl.text.trim(),
       );
-      // Sync complet. Si l'user avait joué offline avant de créer
-      // son compte, ses plants + badges + prefs sont poussés au cloud.
-      await CloudSyncService.instance.syncAllOnLogin();
+      if (!mounted) return;
+      // Si la confirmation d'email est activée côté Supabase, l'inscription
+      // réussit mais AUCUNE session n'est ouverte tant que l'email n'est
+      // pas validé. On informe l'utilisateur et on le renvoie au login au
+      // lieu de le lâcher dans l'app déconnecté.
+      if (!AuthService.instance.isSignedIn) {
+        await showDialog<void>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Vérifie ta boîte mail'),
+            content: const Text(
+              'Ton compte est créé ! On vient de t\'envoyer un email de '
+              'confirmation. Clique sur le lien, puis reviens te connecter.',
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        if (mounted) Navigator.of(context).pop(); // retour à l'écran login
+        return;
+      }
+      // Session active (confirmation désactivée) : on navigue tout de
+      // suite, la synchro cloud (plants + badges + prefs) tourne en fond.
+      unawaited(CloudSyncService.instance.syncAllOnLogin());
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
-      setState(() => _error = e.message);
+      if (mounted) setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -59,8 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: SafeArea(
         child: ListView(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           children: <Widget>[
             Center(
               child: Container(
