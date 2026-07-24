@@ -13,6 +13,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Localisations Material/Cupertino : sans elles, le DatePicker et les
+  # widgets Material s'affichent en anglais (« July 2026 », « Select date »)
+  # au milieu d'une app 100 % française. Locale fr-FR forcée dans main.dart.
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.8
 
   # UI

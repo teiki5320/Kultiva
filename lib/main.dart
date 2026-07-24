@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -82,6 +83,15 @@ class KultivaApp extends StatelessWidget {
         return MaterialApp(
           title: 'Kultiva',
           debugShowCheckedModeBanner: false,
+          // App 100 % francophone : locale fixée en fr-FR pour que les
+          // DatePicker et widgets Material soient en français.
+          locale: const Locale('fr', 'FR'),
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const <Locale>[Locale('fr', 'FR')],
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,

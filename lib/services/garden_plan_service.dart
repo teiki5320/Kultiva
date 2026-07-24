@@ -30,16 +30,25 @@ class GardenPlanService {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_prefsKey);
     if (raw != null && raw.isNotEmpty) {
+      // Décodage tolérant ENTRÉE PAR ENTRÉE : une seule entrée corrompue
+      // (schéma qui évolue, écriture partielle…) ne doit pas effacer TOUS
+      // les jardins — sinon la prochaine sauvegarde réécrivait une liste
+      // vide et supprimait aussi les jardins valides.
+      final decoded = <GardenPlan>[];
       try {
         final list = jsonDecode(raw) as List<dynamic>;
-        plans.value = list
-            .map((e) => GardenPlan.fromJson(e as Map<String, dynamic>))
-            .toList()
-          ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+        for (final e in list) {
+          try {
+            decoded.add(GardenPlan.fromJson(e as Map<String, dynamic>));
+          } catch (_) {
+            // Entrée fautive ignorée, les autres sont conservées.
+          }
+        }
       } catch (_) {
-        // Données corrompues → on repart à zéro plutôt que crasher.
-        plans.value = <GardenPlan>[];
+        // JSON racine illisible : rien de récupérable.
       }
+      decoded.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+      plans.value = decoded;
     }
     _loaded = true;
   }

@@ -126,13 +126,12 @@ class PlannerGridCell extends StatelessWidget {
                   veg.imageAsset!,
                   fit: BoxFit.contain,
                   errorBuilder: (_, __, ___) => Center(
-                    child: Text(veg.emoji,
-                        style: const TextStyle(fontSize: 22)),
+                    child:
+                        Text(veg.emoji, style: const TextStyle(fontSize: 22)),
                   ),
                 )
               : Center(
-                  child: Text(veg.emoji,
-                      style: const TextStyle(fontSize: 22)),
+                  child: Text(veg.emoji, style: const TextStyle(fontSize: 22)),
                 ),
         ),
         if (status == CompanionStatus.good)
@@ -152,8 +151,7 @@ class PlannerGridCell extends StatelessWidget {
             bottom: 2,
             right: 2,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.92),
                 borderRadius: BorderRadius.circular(8),
@@ -188,8 +186,7 @@ class PlannerCellActionSheet extends StatefulWidget {
   });
 
   @override
-  State<PlannerCellActionSheet> createState() =>
-      _PlannerCellActionSheetState();
+  State<PlannerCellActionSheet> createState() => _PlannerCellActionSheetState();
 }
 
 class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
@@ -277,16 +274,13 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
     final cid = widget.cell.cultureId;
     CultureEntry? culture;
     if (cid != null) {
-      final matching = CultureService.instance
-          .loadAll()
-          .where((c) => c.id == cid)
-          .toList();
+      final matching =
+          CultureService.instance.loadAll().where((c) => c.id == cid).toList();
       if (matching.isNotEmpty) culture = matching.first;
     }
     final lastWater =
         culture?.wateredAt.isNotEmpty == true ? culture!.wateredAt.last : null;
-    final daysSinceStarted =
-        DateTime.now().difference(_plantedAt).inDays;
+    final daysSinceStarted = DateTime.now().difference(_plantedAt).inDays;
     final phase = deducedPhase(veg, daysSinceStarted);
     final wateringDays = veg.effectiveWateringDays;
     final wateringColor = _wateringBadgeColor(lastWater, wateringDays);
@@ -306,8 +300,8 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                     height: 44,
                     child: Image.asset(
                       veg.imageAsset!,
-                      errorBuilder: (_, __, ___) => Text(veg.emoji,
-                          style: const TextStyle(fontSize: 32)),
+                      errorBuilder: (_, __, ___) =>
+                          Text(veg.emoji, style: const TextStyle(fontSize: 32)),
                     ),
                   )
                 else
@@ -426,8 +420,8 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                         style: TextStyle(
                           fontSize: 11,
                           height: 1.4,
-                          color: KultivaColors.textPrimary
-                              .withValues(alpha: 0.8),
+                          color:
+                              KultivaColors.textPrimary.withValues(alpha: 0.8),
                         ),
                       ),
                     ],
@@ -462,9 +456,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
             Row(
               children: <Widget>[
                 IconButton.filledTonal(
-                  onPressed: _count > 1
-                      ? () => setState(() => _count--)
-                      : null,
+                  onPressed: _count > 1 ? () => setState(() => _count--) : null,
                   icon: const Icon(Icons.remove),
                 ),
                 Expanded(
@@ -790,7 +782,9 @@ class PlannerPlantPicker extends StatelessWidget {
       BuildContext context, List<Vegetable> plants, Set<String> favs) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        // Surface du thème (fond crème en clair, sombre en dark) : le
+        // blanc en dur rendait le picker illisible en thème sombre.
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -818,19 +812,19 @@ class PlannerPlantPicker extends StatelessWidget {
                 tooltip: 'Filtrer par saison',
                 initialValue: season,
                 onSelected: onSeasonChanged,
-                itemBuilder: (_) => PlannerSeason.optionsFor(
-                        PrefsService.instance.region.value)
-                    .map((s) => PopupMenuItem<PlannerSeason>(
-                          value: s,
-                          child: Row(
-                            children: <Widget>[
-                              Text(s.emoji),
-                              const SizedBox(width: 8),
-                              Text(s.label),
-                            ],
-                          ),
-                        ))
-                    .toList(),
+                itemBuilder: (_) =>
+                    PlannerSeason.optionsFor(PrefsService.instance.region.value)
+                        .map((s) => PopupMenuItem<PlannerSeason>(
+                              value: s,
+                              child: Row(
+                                children: <Widget>[
+                                  Text(s.emoji),
+                                  const SizedBox(width: 8),
+                                  Text(s.label),
+                                ],
+                              ),
+                            ))
+                        .toList(),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -905,8 +899,7 @@ class PlannerPlantPicker extends StatelessWidget {
     return ChoiceChip(
       selected: selected,
       onSelected: (_) => onFilterChanged(f),
-      label: Text('$emoji  ${f.label}',
-          style: const TextStyle(fontSize: 11)),
+      label: Text('$emoji  ${f.label}', style: const TextStyle(fontSize: 11)),
       visualDensity: VisualDensity.compact,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -1045,8 +1038,7 @@ class PlannerIrrigationBanner extends StatelessWidget {
                       shape: BoxShape.circle,
                       boxShadow: <BoxShadow>[
                         BoxShadow(
-                          color: KultivaColors.waterBlue
-                              .withValues(alpha: 0.3),
+                          color: KultivaColors.waterBlue.withValues(alpha: 0.3),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
@@ -1086,7 +1078,8 @@ class PlannerIrrigationBanner extends StatelessWidget {
         color: Colors.blue,
       );
     }
-    final dailyRain = w.dailyPrecipitation.take(3).fold<double>(0, (s, p) => s + p);
+    final dailyRain =
+        w.dailyPrecipitation.take(3).fold<double>(0, (s, p) => s + p);
     final maxTempNext3 =
         w.dailyTempMax.take(3).fold<double>(0, (m, t) => t > m ? t : m);
 
@@ -1167,8 +1160,7 @@ class PlannerPlantCard extends StatelessWidget {
               top: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 4, vertical: 1),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                 decoration: BoxDecoration(
                   color: KultivaColors.primaryGreen,
                   borderRadius: BorderRadius.circular(8),

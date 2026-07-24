@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
+import '../../../models/culture_entry.dart';
 import '../../../models/garden_plan.dart';
 import '../../../models/region_data.dart';
 import '../../../models/vegetable.dart';
@@ -158,6 +159,18 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
   PickerFilter _filter = const FavoritesFilter();
   WeatherData? _weather;
 
+  // ─── Réconciliation des cultures liées ──────────────────────────────
+  // Les CultureEntry sont créées immédiatement au placement (pour que le
+  // suivi/arrosage marche pendant l'édition) mais le plan n'est persisté
+  // qu'au « Sauvegarder ». Pour éviter cultures orphelines (placer puis
+  // Annuler) et cultureId pendouillants (Vider puis Annuler), on diffère :
+  //  - les cultures créées CETTE session sont annulées si on quitte sans
+  //    sauvegarder ;
+  //  - les suppressions de cultures ne sont appliquées qu'à la sauvegarde
+  //    (Annuler laisse la culture, cohérente avec le plan persisté).
+  final Set<String> _sessionCreatedCultureIds = <String>{};
+  final Set<String> _pendingCultureRemovals = <String>{};
+
   @override
   void initState() {
     super.initState();
@@ -169,10 +182,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
         final created = await showModalBottomSheet<GardenPlan>(
           context: context,
           isScrollControlled: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           shape: const RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           builder: (_) => const GardenPlanConfigSheet(),
         );
@@ -194,64 +206,70 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
         body: Center(child: CircularProgressIndicator()),
       );
     }
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: TextButton(
-          onPressed: _onCancel,
-          style: TextButton.styleFrom(
-            foregroundColor: KultivaColors.primaryGreen,
-          ),
-          child: const Text('Annuler'),
-        ),
-        leadingWidth: 90,
-        title: Text(
-          plan.name,
-          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: KultivaColors.primaryGreen,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-              ),
-              onPressed: _dirty ? _onSave : null,
-              child: const Text(
-                'Sauvegarder',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+    // PopScope : le back système/geste ne doit pas quitter en silence et
+    // perdre les modifications (mêmes garde-fous que le bouton Annuler).
+    return PopScope(
+      canPop: !_dirty,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        _onCancel();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: TextButton(
+            onPressed: _onCancel,
+            style: TextButton.styleFrom(
+              foregroundColor: KultivaColors.primaryGreen,
             ),
+            child: const Text('Annuler'),
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            // Barre Configurer / Conseils.
-            _buildToolBar(),
-            // Banner irrigation (visible si grille non vide).
-            if (plan.cells.isNotEmpty)
-              PlannerIrrigationBanner(weather: _weather, plan: plan),
-            // Grille élastique, prend tout l'espace dispo.
-            Expanded(child: _buildGrid(plan)),
-            // Plant picker fixé en bas.
-            PlannerPlantPicker(
-              season: _season,
-              filter: _filter,
-              onSeasonChanged: (s) => setState(() => _season = s),
-              onFilterChanged: (f) => setState(() => _filter = f),
-              onPickedDrop: (vegId, col, row) =>
-                  _onPlacePlant(vegId, col, row),
+          leadingWidth: 90,
+          title: Text(
+            plan.name,
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: KultivaColors.primaryGreen,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                onPressed: _dirty ? _onSave : null,
+                child: const Text(
+                  'Sauvegarder',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
             ),
           ],
+        ),
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              // Barre Configurer / Conseils.
+              _buildToolBar(),
+              // Banner irrigation (visible si grille non vide).
+              if (plan.cells.isNotEmpty)
+                PlannerIrrigationBanner(weather: _weather, plan: plan),
+              // Grille élastique, prend tout l'espace dispo.
+              Expanded(child: _buildGrid(plan)),
+              // Plant picker fixé en bas.
+              PlannerPlantPicker(
+                season: _season,
+                filter: _filter,
+                onSeasonChanged: (s) => setState(() => _season = s),
+                onFilterChanged: (f) => setState(() => _filter = f),
+                onPickedDrop: (vegId, col, row) =>
+                    _onPlacePlant(vegId, col, row),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -284,8 +302,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           const Spacer(),
           if (_totalPlants > 0) ...<Widget>[
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: KultivaColors.lightGreen.withValues(alpha: 0.35),
                 borderRadius: BorderRadius.circular(12),
@@ -357,8 +374,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
                           status: plan.cellAt(c, r) == null
                               ? CompanionStatus.neutral
                               : statusFor(
-                                  vegetableId:
-                                      plan.cellAt(c, r)!.vegetableId,
+                                  vegetableId: plan.cellAt(c, r)!.vegetableId,
                                   neighbors: _neighborsOf(plan, c, r),
                                 ),
                           onAccept: (vegId) => _onPlacePlant(vegId, c, r),
@@ -381,6 +397,12 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
   Future<void> _onPlacePlant(String vegId, int col, int row) async {
     final plan = _plan;
     if (plan == null) return;
+    // Case déjà occupée : on programme la suppression de la culture de
+    // l'ancien plant (sinon elle devient orpheline en étant écrasée).
+    final occupant = plan.cellAt(col, row);
+    if (occupant?.cultureId != null) {
+      _scheduleCultureRemoval(occupant!.cultureId!);
+    }
     final veg = vegetablesBase.firstWhere(
       (v) => v.id == vegId,
       orElse: () => vegetablesBase.first,
@@ -395,6 +417,10 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
       vegetableId: vegId,
       startedAt: plantedAt,
     );
+    _sessionCreatedCultureIds.add(culture.id);
+    if (!mounted) return;
+    final cur = _plan;
+    if (cur == null) return;
 
     final cell = PlannedCell(
       col: col,
@@ -405,9 +431,21 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
       cultureId: culture.id,
     );
     setState(() {
-      _plan = plan.withCell(col, row, cell);
+      _plan = cur.withCell(col, row, cell);
       _dirty = true;
     });
+  }
+
+  /// Programme la suppression d'une culture liée. Si elle a été créée
+  /// pendant cette session (jamais dans un plan sauvegardé), on la retire
+  /// tout de suite ; sinon on diffère à la sauvegarde — ainsi « Annuler »
+  /// la laisse intacte, cohérente avec le plan persisté.
+  void _scheduleCultureRemoval(String cultureId) {
+    if (_sessionCreatedCultureIds.remove(cultureId)) {
+      CultureService.instance.remove(cultureId);
+    } else {
+      _pendingCultureRemovals.add(cultureId);
+    }
   }
 
   void _onTapCell(int col, int row) {
@@ -421,33 +459,38 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
       builder: (_) => PlannerCellActionSheet(
         cell: cell,
         onCountChanged: (newCount) {
+          // Toujours repartir de l'état COURANT (_plan) et de la cellule
+          // fraîche : sinon un changement de date fait juste avant serait
+          // écrasé par une closure figée sur un plan/cellule périmés.
+          final cur = _plan;
+          final fresh = cur?.cellAt(col, row);
+          if (cur == null || fresh == null) return;
           setState(() {
-            _plan = plan.withCell(col, row, cell.copyWith(count: newCount));
+            _plan = cur.withCell(col, row, fresh.copyWith(count: newCount));
             _dirty = true;
           });
         },
         onPlantedAtChanged: (newDate) async {
-          // Met à jour la cellule avec la nouvelle date.
-          final fresh = plan.cellAt(col, row);
-          if (fresh == null) return;
+          final cur = _plan;
+          final fresh = cur?.cellAt(col, row);
+          if (cur == null || fresh == null) return;
           setState(() {
-            _plan = plan.withCell(
-              col,
-              row,
-              fresh.copyWith(plantedAt: newDate),
-            );
+            _plan = cur.withCell(col, row, fresh.copyWith(plantedAt: newDate));
             _dirty = true;
           });
-          // Synchronise la culture liée pour que la phase déduite
-          // soit cohérente partout (sheet de mesures, etc.).
+          // Synchronise la culture liée pour que la phase déduite soit
+          // cohérente partout. Recherche sûre : pas de cultures.first sur
+          // une liste vide (crash si la culture a été supprimée entre-temps).
           final cid = fresh.cultureId;
           if (cid == null) return;
-          final cultures = CultureService.instance.loadAll();
-          final existing = cultures.firstWhere(
-            (c) => c.id == cid,
-            orElse: () => cultures.first,
-          );
-          if (existing.id == cid) {
+          CultureEntry? existing;
+          for (final c in CultureService.instance.loadAll()) {
+            if (c.id == cid) {
+              existing = c;
+              break;
+            }
+          }
+          if (existing != null) {
             await CultureService.instance.update(
               existing.copyWith(startedAt: newDate),
             );
@@ -455,13 +498,14 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
         },
         onClear: () async {
           Navigator.of(context).pop();
-          // Refonte cohérence : si la cellule a une culture liée
-          // (créée auto au placement), on la supprime avec.
-          if (cell.cultureId != null) {
-            await CultureService.instance.remove(cell.cultureId!);
-          }
+          // Suppression différée (voir _scheduleCultureRemoval) : « Vider »
+          // puis « Annuler » ne laisse plus de cultureId pendouillant.
+          final cid = _plan?.cellAt(col, row)?.cultureId;
+          if (cid != null) _scheduleCultureRemoval(cid);
+          final cur = _plan;
+          if (cur == null) return;
           setState(() {
-            _plan = plan.withCell(col, row, null);
+            _plan = cur.withCell(col, row, null);
             _dirty = true;
           });
         },
@@ -473,7 +517,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     final updated = await showModalBottomSheet<GardenPlan>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -491,7 +535,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -501,7 +545,8 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
 
   Future<void> _onCancel() async {
     if (!_dirty) {
-      Navigator.of(context).pop();
+      _rollbackSessionCultures();
+      if (mounted) Navigator.of(context).pop();
       return;
     }
     final discard = await showDialog<bool>(
@@ -522,13 +567,33 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
       ),
     );
     if (discard == true && mounted) {
+      _rollbackSessionCultures();
       Navigator.of(context).pop();
     }
+  }
+
+  /// Quitter sans sauvegarder : les cultures créées pendant la session
+  /// n'appartiennent à aucun plan persisté → on les supprime. Les
+  /// suppressions différées sont au contraire abandonnées (ces cultures
+  /// restent, cohérentes avec le plan sauvegardé).
+  void _rollbackSessionCultures() {
+    for (final id in _sessionCreatedCultureIds) {
+      CultureService.instance.remove(id);
+    }
+    _sessionCreatedCultureIds.clear();
+    _pendingCultureRemovals.clear();
   }
 
   Future<void> _onSave() async {
     final plan = _plan;
     if (plan == null) return;
+    // Applique les suppressions de cultures différées, puis engage les
+    // cultures créées cette session (elles appartiennent au plan sauvé).
+    for (final id in _pendingCultureRemovals) {
+      await CultureService.instance.remove(id);
+    }
+    _pendingCultureRemovals.clear();
+    _sessionCreatedCultureIds.clear();
     await GardenPlanService.instance.save(plan);
     if (!mounted) return;
     setState(() => _dirty = false);
