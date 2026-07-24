@@ -1,7 +1,7 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-05-27.
+> Dernière mise à jour : 2026-07-24.
 
 ## 🎯 Contexte
 
@@ -41,13 +41,17 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 **Frontend / mobile**
 
-- Flutter **≥3.24** / Dart **^3.5** (canal `stable`)
+- Flutter **≥3.38** / Dart **^3.5** (canal `stable`) — le code ne compile
+  pas sous 3.32 (RadioGroup, activeThumbColor, scaleByDouble). CI épinglée
+  sur `3.41.6`.
 - Material3, thèmes clair et sombre
 - `google_fonts` ^6.1 — typographie **Nunito**
 - `shared_preferences` ^2.2 — persistance locale
 - `url_launcher` ^6.2 — liens affiliés Amazon
-- `flutter_local_notifications` ^17.2.3 + `timezone` ^0.9 — rappels mensuels,
-  quotidiens (Tamassi), arrosage et canicule
+- `flutter_local_notifications` ^17.2.3 + `timezone` ^0.9 +
+  `flutter_timezone` ^1.0.8 — rappels mensuels, quotidiens (Tamassi),
+  arrosage et canicule, planifiés dans le **fuseau réel** du device
+- `flutter_localizations` (SDK) — locale fr-FR globale (DatePicker français)
 - `pdf` ^3.10 + `printing` ^5.12 — export PDF du calendrier
 - `geolocator` ^11.0 + `geocoding` ^3.0 — détection régionale + nom de ville
 - `permission_handler` ^11.3 — permissions caméra / localisation
@@ -63,8 +67,9 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 **Backend / services**
 
 - **Supabase** (`supabase_flutter` ^2.5) — auth, Postgres, Storage
-  (`plant-photos`, `news-images`) ; une edge function (`seed-species` pour sync
-  catalogue vers Kultivaprix)
+  (`plant-photos`, `news-images`) ; deux edge functions (`seed-species`
+  pour sync catalogue vers Kultivaprix ; `delete-account` pour la
+  suppression de compte in-app, à déployer manuellement)
 - **Open-Meteo** — météo 7 jours, aucune clé d'API requise
 - **Google Sign-In** (`google_sign_in` ^6.2) — OAuth natif
 - **Apple Sign-In** (`sign_in_with_apple` ^6.1) avec nonce SHA-256 (`crypto`)
@@ -142,7 +147,8 @@ Kultiva/
 │                           # companion_status, heatwave_tips,
 │                           # rotation_advisor
 ├── supabase/
-│   └── migrations/         # 001_initial_schema → 011_sync_xp_rpc
+│   ├── migrations/         # 001_initial_schema → 014_sync_xp_monotonic
+│   └── functions/          # delete-account (suppression de compte)
 ├── assets/
 │   ├── images/             # créatures (3 variantes, 35 images), badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
@@ -400,6 +406,24 @@ Décisions et évolutions significatives :
   54 légumes `harvestTimeBySeason` complétés (120/120), 38 images d'accessoires
   kawaii générées (ComfyUI), lien Instagram `@toa.kultiva` câblé, version
   bumpée à 1.0.0+5.
+- **Cap Afrique de l'Ouest (juillet 2026)** : 8 pays francophones,
+  détection auto, saisons tropicales, calendrier AO complet, 10 cultures
+  locales, migrations 012-013, manifest Android réparé (géoloc + notifs),
+  assets 245→33 Mo (voir `_plans/rapport-cap-afrique-2026-07-18.md`).
+- **Corrections pré-publication (24 juillet 2026)** : sections 1-4 de
+  l'audit du 7 juillet. Bloquants stores (suppression de compte in-app via
+  edge function `delete-account`, `CFBundleVersion`, portrait, splash natif,
+  contrainte Flutter ≥3.38, CI épinglée + job appbundle, debug XP masqué) ;
+  fiabilité sync cloud (`Plantation.merge` champ par champ, `uploadBadges`
+  additif, prefs LWW par `updated_at`, timeouts 12 s, login non bloquant,
+  `clearLocalData` complète, migration 014 `sync_xp` monotone) ; bugs UX
+  (navigation déconnexion, `Scaffold` settings, inscription confirmation
+  email, `tz.local` via `flutter_timezone`, streak/reset Tamassi, badges
+  union, cycle de vie du planner + `PopScope` + thème sombre, décodage
+  tolérant `garden_plan`, `flutter_localizations` fr-FR) ; bonus (tri/
+  recherche sans accents, `feed_service` fiable, `ReviewService` branché,
+  purge photos orphelines). +16 tests → 164. Voir
+  `_plans/rapport-corrections-2026-07-24.md`.
 
 ## 💬 Instructions pour Claude Code
 
@@ -429,9 +453,14 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 À signaler à l'utilisateur / à traiter dans un futur ticket :
 
-1. **Aucun test de widget ni d'intégration** — seuls les modèles, données
-   et `watering_advisor` sont couverts (129 tests, 1 565 LoC). Aucun des
-   autres services n'a de test.
+0. **Actions manuelles Supabase avant publication** (bloquant review Apple) :
+   appliquer les migrations **012, 013, 014** dans SQL Editor et **déployer
+   l'edge function `delete-account`** (`supabase functions deploy
+   delete-account`). Sans ce déploiement, « Supprimer mon compte » échoue.
+   Détails dans `_plans/rapport-corrections-2026-07-24.md`.
+1. **Aucun test de widget ni d'intégration** — les modèles, données,
+   `watering_advisor`, `Plantation.merge`, `PrefsService` (purge/LWW) et
+   `text_normalize` sont couverts (164 tests). Pas encore de test de widget.
 2. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
    c'est correct pour une anon key JWT publique, mais à documenter pour éviter
    tout doute.
