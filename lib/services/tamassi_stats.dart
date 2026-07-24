@@ -71,8 +71,14 @@ class TamassiStats {
       rainLogins: readInt('rain'),
       snowLogins: readInt('snow'),
       sunnyLogins: readInt('sunny'),
-      maxStreak:
-          int.tryParse(p.getString('kultiva.creature.streak') ?? '') ?? 0,
+      // Maximum historique (kultiva.creature.maxStreak), PAS la streak
+      // courante : sinon les badges streak_* seraient révoqués dès qu'un
+      // jour est manqué (la streak courante retombe à 1). On retombe sur
+      // la streak courante si le max n'a jamais été écrit (compat).
+      maxStreak: int.tryParse(p.getString('kultiva.creature.maxStreak') ??
+              p.getString('kultiva.creature.streak') ??
+              '') ??
+          0,
       tabsVisited: readSet('tabs'),
       seasonsLoggedIn: readSet('seasons'),
       animalsSeen: readSet('animals'),

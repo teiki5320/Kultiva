@@ -35,6 +35,7 @@ class TamassiViewState extends State<TamassiView>
   static const _kStarter = 'kultiva.creature.starter';
   static const _kName = 'kultiva.creature.name';
   static const _kStreak = 'kultiva.creature.streak';
+  static const _kMaxStreak = 'kultiva.creature.maxStreak';
   static const _kLastSeen = 'kultiva.creature.lastSeen';
 
   double _level = 5;
@@ -182,9 +183,15 @@ class TamassiViewState extends State<TamassiView>
     return PrefsService.instance.getString(dayKeyPref) != todayKey;
   }
 
-  String _todayKey() {
-    final d = DateTime.now();
-    return '${d.year}-${d.month}-${d.day}';
+  String _todayKey() => _dateKey(DateTime.now());
+
+  /// Clé de date normalisée `yyyy-MM-dd` (zéros de tête) : indispensable
+  /// pour que `DateTime.tryParse` sache la relire (l'ancienne clé non
+  /// paddée « 2026-7-8 » cassait le calcul de streak la plupart de l'année).
+  static String _dateKey(DateTime d) {
+    final m = d.month.toString().padLeft(2, '0');
+    final day = d.day.toString().padLeft(2, '0');
+    return '${d.year}-$m-$day';
   }
 
   Future<void> _gainXp(int amount, String reason) async {
@@ -218,15 +225,19 @@ class TamassiViewState extends State<TamassiView>
 
   void _onResetRequested() {
     if (!mounted) return;
-    PrefsService.instance.setString(_kXp, '1');
+    // Le dialogue de reset promet « Ton niveau actuel sera conservé » :
+    // on NE touche donc PAS l'XP. On réinitialise seulement le starter/nom
+    // pour repasser par l'écran de sélection. Les cooldowns du jour sont
+    // remis à zéro pour pouvoir dorloter le nouveau compagnon aussitôt.
     PrefsService.instance.setString(_kLastWater, '');
     PrefsService.instance.setString(_kLastFertilize, '');
     PrefsService.instance.setString(_kLastCaress, '');
     setState(() {
       _starter = null;
       _creatureName = '';
-      _xp = 1;
-      _level = 1;
+      // Le stade ne change pas (l'XP est conservé) : on réaligne _prevStage
+      // pour éviter une fausse animation « ÉVOLUTION » au prochain gain.
+      _prevStage = _stageName;
     });
   }
 
@@ -258,8 +269,8 @@ class TamassiViewState extends State<TamassiView>
     final lastSeenRaw = prefs.getString(_kLastSeen);
     final storedStreak = int.tryParse(prefs.getString(_kStreak) ?? '') ?? 0;
     final today = DateTime.now();
-    final todayKey = '${today.year}-${today.month}-${today.day}';
-    int next = storedStreak;
+    final todayKey = _dateKey(today);
+    int next;
     if (lastSeenRaw == null) {
       next = 1;
     } else if (lastSeenRaw == todayKey) {
@@ -270,12 +281,22 @@ class TamassiViewState extends State<TamassiView>
       if (last == null) {
         next = 1;
       } else {
-        final diff = today.difference(last).inDays;
+        // Différence en jours calendaires (minuit à minuit), pas en
+        // tranches de 24h : +1 seulement si hier, sinon on repart à 1.
+        final lastDay = DateTime(last.year, last.month, last.day);
+        final todayDay = DateTime(today.year, today.month, today.day);
+        final diff = todayDay.difference(lastDay).inDays;
         next = diff == 1 ? storedStreak + 1 : 1;
       }
     }
     prefs.setString(_kLastSeen, todayKey);
     prefs.setString(_kStreak, next.toString());
+    // Mémorise le maximum historique : les badges streak_* se basent
+    // dessus et ne doivent pas être révoqués après un jour manqué.
+    final storedMax = int.tryParse(prefs.getString(_kMaxStreak) ?? '') ?? 0;
+    if (next > storedMax) {
+      prefs.setString(_kMaxStreak, next.toString());
+    }
     _streak = next;
   }
 
@@ -388,7 +409,9 @@ class TamassiViewState extends State<TamassiView>
 
   void _loadCreature() {
     final raw = PrefsService.instance.getString(_kStarter);
-    if (raw != null) {
+    // Une chaîne vide (écrite par « Tout recommencer ») ne doit pas
+    // résoudre en Poussia : on veut alors revoir l'écran de sélection.
+    if (raw != null && raw.isNotEmpty) {
       _starter = CreatureStarter.values.firstWhere(
         (s) => s.name == raw,
         orElse: () => CreatureStarter.poussia,

@@ -28,8 +28,7 @@ final ValueNotifier<int> tamassiResetNotifier = ValueNotifier<int>(0);
 final ValueNotifier<int?> debugHourOverride = ValueNotifier<int?>(null);
 
 /// Heure effective : override si set, sinon heure système.
-int effectiveHour() =>
-    debugHourOverride.value ?? DateTime.now().hour;
+int effectiveHour() => debugHourOverride.value ?? DateTime.now().hour;
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -109,13 +108,15 @@ class MyGardenScreenState extends State<MyGardenScreen> {
 
   Future<void> _bootstrap() async {
     await _maybeMigrate();
-    _plantations =
-        Plantation.decodeAll(PrefsService.instance.plantationsJson);
-    _unlockedBadges = PrefsService.instance.unlockedBadges;
-    // Met à jour (au cas où des badges seraient débloqués par la simple
-    // lecture de données déjà présentes, sans déclencher de snackbar
-    // historique — on se contente d'aligner l'état).
-    _unlockedBadges = computeUnlockedBadges(level: _currentXp());
+    _plantations = Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    // UNION avec les badges déjà débloqués (restaurés du cloud ou gagnés
+    // par des actions dont les stats sont purement locales) : on ne
+    // recalcule QUE pour AJOUTER d'éventuels badges de niveau, jamais pour
+    // remplacer le set — sinon un boot après réinstallation révoquait les
+    // badges d'action jusqu'au prochain merge cloud.
+    final storedBadges = PrefsService.instance.unlockedBadges;
+    final levelBadges = computeUnlockedBadges(level: _currentXp());
+    _unlockedBadges = <String>{...storedBadges, ...levelBadges};
     _medals = computeAllMedals(_plantations,
         region: PrefsService.instance.region.value);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
@@ -130,8 +131,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _showTutorialIfNeeded();
   }
 
-  final GlobalKey<TamassiViewState> _tamassiKey =
-      GlobalKey<TamassiViewState>();
+  final GlobalKey<TamassiViewState> _tamassiKey = GlobalKey<TamassiViewState>();
 
   /// Convertit l'ancienne grille 2D en plantations une seule fois,
   /// puis marque la migration comme faite pour ne plus la rejouer.
@@ -140,8 +140,18 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     final legacy = PrefsService.instance.gardenGrid;
     final migrated = migrateGridToPlantations(legacy);
     if (migrated.isNotEmpty) {
+      // Fusionne avec les plantations déjà présentes (ex. restaurées du
+      // cloud par mergeOnLogin) au lieu de les écraser par les seules
+      // entrées de la grille legacy.
+      final existing =
+          Plantation.decodeAll(PrefsService.instance.plantationsJson);
+      final byId = <String, Plantation>{for (final p in existing) p.id: p};
+      for (final p in migrated) {
+        final prev = byId[p.id];
+        byId[p.id] = prev == null ? p : Plantation.merge(prev, p);
+      }
       await PrefsService.instance
-          .setPlantationsJson(Plantation.encodeAll(migrated));
+          .setPlantationsJson(Plantation.encodeAll(byId.values.toList()));
     }
     await PrefsService.instance.setGridMigrated(true);
   }
@@ -258,7 +268,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     }
   }
 }
-
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Empty states spécifiques à chaque filtre
