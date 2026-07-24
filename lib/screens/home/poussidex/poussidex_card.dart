@@ -98,106 +98,106 @@ class PlantationCard extends StatelessWidget {
       label: '${vegetable.name}, $statusLabel, planté le $plantedLabel'
           '${tier != MedalTier.none ? ', médaille ${tier.label}' : ''}',
       child: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: cc.withValues(alpha: 0.7), width: 2),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: cc.withValues(alpha: 0.15),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  vegetable.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 13,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (!plantation.isActive)
-                const Text('🧺', style: TextStyle(fontSize: 14))
-              else if (thirsty)
-                const Text('💧', style: TextStyle(fontSize: 14))
-              else if (mature)
-                const Text('✨', style: TextStyle(fontSize: 14)),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Expanded(
-            child: Center(
-              child: plantation.photoPaths.isNotEmpty
-                  ? _PhotoWithTier(
-                      path: plantation.photoPaths.last,
-                      tier: tier,
-                      familyColor: cc,
-                      fallbackEmoji: vegetable.emoji,
-                    )
-                  : MedalBadge(
-                      emoji: vegetable.emoji,
-                      tier: tier,
-                      familyColor: cc,
-                      size: 78,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: cc.withValues(alpha: 0.7), width: 2),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: cc.withValues(alpha: 0.15),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    vegetable.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13,
                     ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                plantation.isActive
-                    ? 'Jour ${days + 1}${mature ? " ★" : "/$expected"}'
-                    : 'Récolté',
-                style: const TextStyle(
-                  color: KultivaColors.textSecondary,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-              Text(
-                plantedLabel,
-                style: TextStyle(
-                  color: KultivaColors.textSecondary.withValues(alpha: 0.7),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 3),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: plantation.isActive ? progress : 1.0,
-              minHeight: 5,
-              backgroundColor: cc.withValues(alpha: 0.12),
-              valueColor: AlwaysStoppedAnimation<Color>(cc),
+                if (!plantation.isActive)
+                  const Text('🧺', style: TextStyle(fontSize: 14))
+                else if (thirsty)
+                  const Text('💧', style: TextStyle(fontSize: 14))
+                else if (mature)
+                  const Text('✨', style: TextStyle(fontSize: 14)),
+              ],
             ),
-          ),
-          const SizedBox(height: 6),
-          Row(
-            children: <Widget>[
-              _StatChip(icon: '💧', count: watered),
-              const SizedBox(width: 6),
-              _StatChip(icon: '🧺', count: harvested),
-            ],
-          ),
-        ],
+            const SizedBox(height: 6),
+            Expanded(
+              child: Center(
+                child: plantation.photoPaths.isNotEmpty
+                    ? _PhotoWithTier(
+                        path: plantation.photoPaths.last,
+                        tier: tier,
+                        familyColor: cc,
+                        fallbackEmoji: vegetable.emoji,
+                      )
+                    : MedalBadge(
+                        emoji: vegetable.emoji,
+                        tier: tier,
+                        familyColor: cc,
+                        size: 78,
+                      ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  plantation.isActive
+                      ? 'Jour ${days + 1}${mature ? " ★" : "/$expected"}'
+                      : 'Récolté',
+                  style: const TextStyle(
+                    color: KultivaColors.textSecondary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  plantedLabel,
+                  style: TextStyle(
+                    color: KultivaColors.textSecondary.withValues(alpha: 0.7),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 3),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: plantation.isActive ? progress : 1.0,
+                minHeight: 5,
+                backgroundColor: cc.withValues(alpha: 0.12),
+                valueColor: AlwaysStoppedAnimation<Color>(cc),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: <Widget>[
+                _StatChip(icon: '💧', count: watered),
+                const SizedBox(width: 6),
+                _StatChip(icon: '🧺', count: harvested),
+              ],
+            ),
+          ],
+        ),
       ),
-    ),
     );
   }
 }
@@ -220,9 +220,8 @@ class _PhotoWithTier extends StatelessWidget {
     const double size = 82;
     final double radius = 12;
     final Color ring = tier == MedalTier.none ? familyColor : tier.color;
-    final double ringWidth = tier == MedalTier.none
-        ? 0
-        : (tier == MedalTier.shiny ? 3 : 2.5);
+    final double ringWidth =
+        tier == MedalTier.none ? 0 : (tier == MedalTier.shiny ? 3 : 2.5);
 
     Widget image = ClipRRect(
       borderRadius: BorderRadius.circular(radius),

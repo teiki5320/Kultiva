@@ -171,8 +171,7 @@ class _SoilGardenCard extends StatelessWidget {
             ),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color:
-                    KultivaColors.primaryGreen.withValues(alpha: 0.15),
+                color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
                 blurRadius: 14,
                 offset: const Offset(0, 6),
               ),

@@ -23,16 +23,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       imagePath: 'assets/images/onboarding_1.png',
       fallbackEmoji: '🌱',
       title: 'Bienvenue sur Kultiva',
-      subtitle:
-          "Le potager kawaii dans ta poche. Calendrier de semis, suivi "
+      subtitle: "Le potager kawaii dans ta poche. Calendrier de semis, suivi "
           "de tes plants, météo, conseils — tout au même endroit, en français.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_2.png',
       fallbackEmoji: '📔',
       title: 'Ton cahier de culture',
-      subtitle:
-          "Crée ton potager pleine terre, place tes plants par "
+      subtitle: "Crée ton potager pleine terre, place tes plants par "
           "glisser-déposer dans les cases et suis chaque phase de "
           "croissance.",
     ),
@@ -40,16 +38,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       imagePath: 'assets/images/onboarding_3.png',
       fallbackEmoji: '🌦️',
       title: 'Météo + alertes arrosage',
-      subtitle:
-          "L'app suit la météo de ton jardin et te prévient quand "
+      subtitle: "L'app suit la météo de ton jardin et te prévient quand "
           "il faut arroser, protéger d'une canicule ou rentrer un plant.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_poussidex.png',
       fallbackEmoji: '🐣',
       title: 'Tamassi, ton compagnon',
-      subtitle:
-          "Adopte une créature kawaii qui évolue avec toi. Parfait "
+      subtitle: "Adopte une créature kawaii qui évolue avec toi. Parfait "
           "pour faire jardiner les enfants — défis photo, badges, "
           "11 stades à débloquer ensemble.",
     ),
@@ -57,8 +53,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       imagePath: 'assets/images/onboarding_tutos.png',
       fallbackEmoji: '📚',
       title: 'Apprends à ton rythme',
-      subtitle:
-          "L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
+      subtitle: "L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
           "bien arroser, lutter contre les nuisibles et apprendre les "
           "bons gestes au jardin.",
     ),
@@ -116,8 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               }),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Row(
                 children: <Widget>[
                   if (_page > 0)
@@ -186,7 +180,8 @@ class _OnboardingPage extends StatelessWidget {
               height: 240,
               fit: BoxFit.cover,
               errorBuilder: (_, __, ___) => Container(
-                width: 240, height: 240,
+                width: 240,
+                height: 240,
                 decoration: BoxDecoration(
                   color: KultivaColors.lightGreen.withValues(alpha: 0.35),
                   borderRadius: BorderRadius.circular(52),
@@ -242,8 +237,7 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text('${detected.flag} Tu jardines : ${detected.label} !'),
+          content: Text('${detected.flag} Tu jardines : ${detected.label} !'),
         ),
       );
     } else {
@@ -264,8 +258,7 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
       builder: (context, country, _) {
         final region = PrefsService.instance.region.value;
         return SingleChildScrollView(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -273,7 +266,8 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                 borderRadius: BorderRadius.circular(52),
                 child: Image.asset(
                   'assets/images/onboarding_4.png',
-                  width: 160, height: 160,
+                  width: 160,
+                  height: 160,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) =>
                       const Text('🌍', style: TextStyle(fontSize: 90)),
@@ -283,10 +277,9 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
               Text(
                 'Où jardines-tu ?',
                 textAlign: TextAlign.center,
-                style:
-                    Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
               ),
               const SizedBox(height: 8),
               Text(
@@ -307,17 +300,15 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.my_location),
-                label: Text(_detecting
-                    ? 'Détection en cours…'
-                    : 'Détecter mon pays'),
+                label: Text(
+                    _detecting ? 'Détection en cours…' : 'Détecter mon pays'),
               ),
               const SizedBox(height: 16),
               _CountryTile(
                 country: Country.france,
                 selected: country == Country.france ||
                     (country == null && region == Region.france),
-                onTap: () =>
-                    PrefsService.instance.setCountry(Country.france),
+                onTap: () => PrefsService.instance.setCountry(Country.france),
               ),
               const SizedBox(height: 10),
               Align(

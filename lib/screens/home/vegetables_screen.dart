@@ -10,6 +10,7 @@ import '../../models/vegetable_medal.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
+import '../../utils/text_normalize.dart';
 import '../../widgets/medal_badge.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
@@ -54,20 +55,19 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
   List<Vegetable> _filter(Region region, Set<String> favs) {
     final now = DateTime.now().month;
-    final regionData =
-        region == Region.france ? franceData : westAfricaData;
+    final regionData = region == Region.france ? franceData : westAfricaData;
 
     final filtered = vegetablesBase.where((v) {
       if (_favOnly && !favs.contains(v.id)) return false;
       // Exclure les accessoires sauf si explicitement sélectionnés.
-      if (_selectedCategory == null && !_favOnly &&
+      if (_selectedCategory == null &&
+          !_favOnly &&
           v.category == VegetableCategory.accessories) {
         return false;
       }
       // Hors France, masquer les accessoires anti-froid sans objet
       // sous les tropiques (voile d'hivernage, châssis, cloche…).
-      if (region != Region.france &&
-          _winterOnlyAccessories.contains(v.id)) {
+      if (region != Region.france && _winterOnlyAccessories.contains(v.id)) {
         return false;
       }
       if (_selectedCategory != null && v.category != _selectedCategory) {
@@ -80,20 +80,21 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return false;
       }
       if (_query.isNotEmpty) {
-        final q = _query.toLowerCase();
-        return v.name.toLowerCase().contains(q) ||
-            (v.description?.toLowerCase().contains(q) ?? false);
+        // Recherche insensible aux accents : « echalote » trouve « Échalote ».
+        final q = foldAccents(_query);
+        return foldAccents(v.name).contains(q) ||
+            (v.description != null && foldAccents(v.description!).contains(q));
       }
       return true;
     }).toList();
 
     switch (_sortMode) {
       case _SortMode.alpha:
-        filtered.sort((a, b) => a.name.compareTo(b.name));
+        filtered.sort((a, b) => compareFolded(a.name, b.name));
       case _SortMode.category:
         filtered.sort((a, b) {
-          final cmp = a.category.label.compareTo(b.category.label);
-          return cmp != 0 ? cmp : a.name.compareTo(b.name);
+          final cmp = compareFolded(a.category.label, b.category.label);
+          return cmp != 0 ? cmp : compareFolded(a.name, b.name);
         });
       case _SortMode.sowNow:
         filtered.sort((a, b) {
@@ -103,7 +104,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               (rd) => rd.vegetableId == b.id && rd.sowingMonths.contains(now));
           if (aCanSow && !bCanSow) return -1;
           if (!aCanSow && bCanSow) return 1;
-          return a.name.compareTo(b.name);
+          return compareFolded(a.name, b.name);
         });
     }
     return filtered;
@@ -111,8 +112,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
   bool _canSow(Vegetable v, List<RegionData> regionData) {
     final now = DateTime.now().month;
-    return regionData.any(
-        (rd) => rd.vegetableId == v.id && rd.sowingMonths.contains(now));
+    return regionData
+        .any((rd) => rd.vegetableId == v.id && rd.sowingMonths.contains(now));
   }
 
   @override
@@ -155,7 +156,10 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             errorBuilder: (_, __, ___) => const DecoratedBox(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  colors: [KultivaColors.springA, KultivaColors.springB],
+                                  colors: [
+                                    KultivaColors.springA,
+                                    KultivaColors.springB
+                                  ],
                                 ),
                               ),
                             ),
@@ -174,16 +178,21 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                           ),
                           const _VegParticleAnimation(),
                           Positioned(
-                            left: 20, bottom: 12,
+                            left: 20,
+                            bottom: 12,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Étal',
+                                const Text(
+                                  'Étal',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 22,
-                                    shadows: [Shadow(color: Colors.black45, blurRadius: 8)],
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.black45, blurRadius: 8)
+                                    ],
                                   ),
                                 ),
                                 Text(
@@ -192,55 +201,64 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                                     color: Colors.white.withValues(alpha: 0.8),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12,
-                                    shadows: const [Shadow(color: Colors.black38, blurRadius: 6)],
+                                    shadows: const [
+                                      Shadow(
+                                          color: Colors.black38, blurRadius: 6)
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                      Positioned(
-                        right: 8, bottom: 6,
-                        child: Row(
-                          children: [
-                            Semantics(
-                              label: _gridView
-                                  ? 'Afficher en liste'
-                                  : 'Afficher en grille',
-                              button: true,
-                              child: IconButton(
-                                icon: Icon(_gridView
-                                    ? Icons.view_list_rounded
-                                    : Icons.grid_view_rounded,
-                                    color: Colors.white, size: 20),
-                                onPressed: () =>
-                                    setState(() => _gridView = !_gridView),
-                              ),
-                            ),
-                            PopupMenuButton<_SortMode>(
-                              icon: const Icon(Icons.sort,
-                                  color: Colors.white, size: 20),
-                              onSelected: (m) =>
-                                  setState(() => _sortMode = m),
-                              itemBuilder: (_) => [
-                                const PopupMenuItem(value: _SortMode.alpha,
-                                    child: Text('Alphabétique')),
-                                const PopupMenuItem(value: _SortMode.category,
-                                    child: Text('Par catégorie')),
-                                const PopupMenuItem(value: _SortMode.sowNow,
-                                    child: Text('À semer ce mois')),
+                          Positioned(
+                            right: 8,
+                            bottom: 6,
+                            child: Row(
+                              children: [
+                                Semantics(
+                                  label: _gridView
+                                      ? 'Afficher en liste'
+                                      : 'Afficher en grille',
+                                  button: true,
+                                  child: IconButton(
+                                    icon: Icon(
+                                        _gridView
+                                            ? Icons.view_list_rounded
+                                            : Icons.grid_view_rounded,
+                                        color: Colors.white,
+                                        size: 20),
+                                    onPressed: () =>
+                                        setState(() => _gridView = !_gridView),
+                                  ),
+                                ),
+                                PopupMenuButton<_SortMode>(
+                                  icon: const Icon(Icons.sort,
+                                      color: Colors.white, size: 20),
+                                  onSelected: (m) =>
+                                      setState(() => _sortMode = m),
+                                  itemBuilder: (_) => [
+                                    const PopupMenuItem(
+                                        value: _SortMode.alpha,
+                                        child: Text('Alphabétique')),
+                                    const PopupMenuItem(
+                                        value: _SortMode.category,
+                                        child: Text('Par catégorie')),
+                                    const PopupMenuItem(
+                                        value: _SortMode.sowNow,
+                                        child: Text('À semer ce mois')),
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                   // Barre de recherche.
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Semantics(
                       label: 'Rechercher un légume',
                       textField: true,
@@ -294,8 +312,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                               label: 'Toutes',
                               emoji: '✨',
                               color: KultivaColors.primaryGreen,
-                              selected:
-                                  _selectedCategory == null && !_favOnly,
+                              selected: _selectedCategory == null && !_favOnly,
                               onTap: () => setState(() {
                                 _selectedCategory = null;
                                 _selectedAccSub = null;
@@ -307,7 +324,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             child: _PastelChip(
                               label: VegetableCategory.accessories.label,
                               emoji: VegetableCategory.accessories.emoji,
-                              color: _categoryColor(VegetableCategory.accessories),
+                              color:
+                                  _categoryColor(VegetableCategory.accessories),
                               selected: _selectedCategory ==
                                   VegetableCategory.accessories,
                               onTap: () => setState(() {
@@ -376,8 +394,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('🌱',
-                                    style: TextStyle(fontSize: 48)),
+                                Text('🌱', style: TextStyle(fontSize: 48)),
                                 SizedBox(height: 12),
                                 Text(
                                   'Aucun légume trouvé',
@@ -419,11 +436,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         region: PrefsService.instance.region.value);
   }
 
-  Widget _buildList(
-      List<Vegetable> list,
-      Set<String> favs,
-      List<RegionData> regionData,
-      Map<String, MedalTier> medals) {
+  Widget _buildList(List<Vegetable> list, Set<String> favs,
+      List<RegionData> regionData, Map<String, MedalTier> medals) {
     return ListView.builder(
       padding: const EdgeInsets.only(bottom: 16),
       itemCount: list.length,
@@ -434,8 +448,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           canSowNow: _canSow(v, regionData),
           isFavorite: favs.contains(v.id),
           medalTier: medals[v.id] ?? MedalTier.none,
-          onFavoriteToggle: () =>
-              PrefsService.instance.toggleFavorite(v.id),
+          onFavoriteToggle: () => PrefsService.instance.toggleFavorite(v.id),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => VegetableDetailScreen(
@@ -450,15 +463,16 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     );
   }
 
-  Widget _buildGrid(
-      List<Vegetable> list,
-      Set<String> favs,
-      List<RegionData> regionData,
-      Map<String, MedalTier> medals) {
+  Widget _buildGrid(List<Vegetable> list, Set<String> favs,
+      List<RegionData> regionData, Map<String, MedalTier> medals) {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Adapter le nombre de colonnes à la largeur.
-        final cols = constraints.maxWidth > 900 ? 8 : (constraints.maxWidth > 600 ? 6 : (constraints.maxWidth > 400 ? 4 : 3));
+        final cols = constraints.maxWidth > 900
+            ? 8
+            : (constraints.maxWidth > 600
+                ? 6
+                : (constraints.maxWidth > 400 ? 4 : 3));
         return GridView.builder(
           padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -469,105 +483,103 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
           ),
           itemCount: list.length,
           itemBuilder: (context, i) {
-        final v = list[i];
-        final isFav = favs.contains(v.id);
-        final cc = _categoryColor(v.category);
-        final tier = medals[v.id] ?? MedalTier.none;
-        return GestureDetector(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => VegetableDetailScreen(
-                vegetable: v,
-                vegetables: list,
-                initialIndex: i,
-              ),
-            ),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  cc.withValues(alpha: 0.12),
-                  cc.withValues(alpha: 0.25),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(20),
-              // Contour couleur famille pour repérage visuel.
-              border: Border.all(
-                color: cc.withValues(alpha: 0.7),
-                width: 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: cc.withValues(alpha: 0.2),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+            final v = list[i];
+            final isFav = favs.contains(v.id);
+            final cc = _categoryColor(v.category);
+            final tier = medals[v.id] ?? MedalTier.none;
+            return GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => VegetableDetailScreen(
+                    vegetable: v,
+                    vegetables: list,
+                    initialIndex: i,
+                  ),
                 ),
-              ],
-            ),
-            child: Stack(
-              clipBehavior: Clip.hardEdge,
-              children: [
-                Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Emoji dans cercle + anneau médaille si espèce
-                      // déjà collectionnée.
-                      MedalBadge(
-                        emoji: v.emoji,
-                        imageAsset: v.imageAsset,
-                        tier: tier,
-                        familyColor: cc,
-                        size: 48,
-                        showCornerMedal: tier != MedalTier.none,
-                      ),
-                      const SizedBox(height: 6),
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          v.name,
-                          style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      cc.withValues(alpha: 0.12),
+                      cc.withValues(alpha: 0.25),
                     ],
                   ),
-                ),
-                // Favori.
-                if (isFav)
-                  const Positioned(
-                    top: 6,
-                    right: 6,
-                    child: Icon(Icons.favorite,
-                        size: 14, color: KultivaColors.terracotta),
+                  borderRadius: BorderRadius.circular(20),
+                  // Contour couleur famille pour repérage visuel.
+                  border: Border.all(
+                    color: cc.withValues(alpha: 0.7),
+                    width: 2,
                   ),
-                // Indicateur catégorie.
-                Positioned(
-                  bottom: 6,
-                  right: 6,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _categoryColor(v.category),
+                  boxShadow: [
+                    BoxShadow(
+                      color: cc.withValues(alpha: 0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+                child: Stack(
+                  clipBehavior: Clip.hardEdge,
+                  children: [
+                    Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Emoji dans cercle + anneau médaille si espèce
+                          // déjà collectionnée.
+                          MedalBadge(
+                            emoji: v.emoji,
+                            imageAsset: v.imageAsset,
+                            tier: tier,
+                            familyColor: cc,
+                            size: 48,
+                            showCornerMedal: tier != MedalTier.none,
+                          ),
+                          const SizedBox(height: 6),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Text(
+                              v.name,
+                              style: const TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.w700),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Favori.
+                    if (isFav)
+                      const Positioned(
+                        top: 6,
+                        right: 6,
+                        child: Icon(Icons.favorite,
+                            size: 14, color: KultivaColors.terracotta),
+                      ),
+                    // Indicateur catégorie.
+                    Positioned(
+                      bottom: 6,
+                      right: 6,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _categoryColor(v.category),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         );
-      },
-    );
       },
     );
   }
@@ -599,30 +611,30 @@ class _PastelChip extends StatelessWidget {
         label: '$label${selected ? ', sélectionné' : ''}',
         button: true,
         child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            // Sélectionné : fond coloré. Non sélectionné : fond blanc +
-            // bordure couleur famille pour se repérer visuellement.
-            color: selected ? color.withValues(alpha: 0.2) : Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: color,
-              width: selected ? 2.5 : 2,
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              // Sélectionné : fond coloré. Non sélectionné : fond blanc +
+              // bordure couleur famille pour se repérer visuellement.
+              color: selected ? color.withValues(alpha: 0.2) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: color,
+                width: selected ? 2.5 : 2,
+              ),
             ),
-          ),
-          child: Text(
-            '$emoji $label',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
-              color: color,
+            child: Text(
+              '$emoji $label',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+                color: color,
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -679,4 +691,3 @@ class _VegParticleAnimationState extends State<_VegParticleAnimation>
     );
   }
 }
-

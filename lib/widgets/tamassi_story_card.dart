@@ -56,8 +56,8 @@ class _TamassiStoryDialogState extends State<_TamassiStoryDialog> {
     setState(() => _sharing = true);
     try {
       await Future<void>.delayed(const Duration(milliseconds: 60));
-      final boundary = _cardKey.currentContext!.findRenderObject()
-          as RenderRepaintBoundary;
+      final boundary =
+          _cardKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       final ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
@@ -73,9 +73,8 @@ class _TamassiStoryDialogState extends State<_TamassiStoryDialog> {
         <XFile>[XFile(file.path)],
         text: 'Voici ${widget.creatureName}, mon Tamassi niveau '
             '${widget.level} sur Kultiva ! 🌱',
-        sharePositionOrigin: box != null
-            ? box.localToGlobal(Offset.zero) & box.size
-            : null,
+        sharePositionOrigin:
+            box != null ? box.localToGlobal(Offset.zero) & box.size : null,
       );
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
@@ -188,14 +187,22 @@ class _TamassiStoryVisual extends StatelessWidget {
         fit: StackFit.expand,
         children: <Widget>[
           // Décor : petites fleurs en coin.
-          const Positioned(top: 20, right: 28,
-            child: Text('🌸', style: TextStyle(fontSize: 30))),
-          const Positioned(top: 60, left: 30,
-            child: Text('🌼', style: TextStyle(fontSize: 22))),
-          const Positioned(bottom: 80, left: 24,
-            child: Text('🌿', style: TextStyle(fontSize: 26))),
-          const Positioned(bottom: 100, right: 30,
-            child: Text('✨', style: TextStyle(fontSize: 22))),
+          const Positioned(
+              top: 20,
+              right: 28,
+              child: Text('🌸', style: TextStyle(fontSize: 30))),
+          const Positioned(
+              top: 60,
+              left: 30,
+              child: Text('🌼', style: TextStyle(fontSize: 22))),
+          const Positioned(
+              bottom: 80,
+              left: 24,
+              child: Text('🌿', style: TextStyle(fontSize: 26))),
+          const Positioned(
+              bottom: 100,
+              right: 30,
+              child: Text('✨', style: TextStyle(fontSize: 22))),
           // Créature centrée.
           Center(
             child: Column(
@@ -212,8 +219,8 @@ class _TamassiStoryVisual extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(14),

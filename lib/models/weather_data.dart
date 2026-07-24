@@ -48,7 +48,8 @@ class WeatherData {
   /// en comptant depuis aujourd'hui vers le passé.
   int get consecutiveDryDays {
     // Index 7 = aujourd'hui dans la liste de 15 jours (7 passés + aujourd'hui + 7 futurs)
-    final todayIndex = dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
+    final todayIndex =
+        dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
     int count = 0;
     for (int i = todayIndex; i >= 0; i--) {
       if (dailyPrecipitation[i] < 1.0) {
@@ -62,9 +63,12 @@ class WeatherData {
 
   /// Pluie prévue dans les 3 prochains jours (mm cumulés).
   double get rainNext3Days {
-    final todayIndex = dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
+    final todayIndex =
+        dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
     double sum = 0;
-    for (int i = todayIndex + 1; i <= todayIndex + 3 && i < dailyPrecipitation.length; i++) {
+    for (int i = todayIndex + 1;
+        i <= todayIndex + 3 && i < dailyPrecipitation.length;
+        i++) {
       sum += dailyPrecipitation[i];
     }
     return sum;

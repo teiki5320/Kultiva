@@ -155,8 +155,7 @@ class _SeasonParticleAnimationState extends State<SeasonParticleAnimation>
   @override
   void didUpdateWidget(covariant SeasonParticleAnimation oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.season != widget.season ||
-        oldWidget.count != widget.count) {
+    if (oldWidget.season != widget.season || oldWidget.count != widget.count) {
       setState(() => _particles = _createParticles());
     }
   }
@@ -194,8 +193,7 @@ class _SeasonParticleAnimationState extends State<SeasonParticleAnimation>
               return Stack(
                 clipBehavior: Clip.hardEdge,
                 children: <Widget>[
-                  for (final p in _particles)
-                    _buildParticle(p, constraints),
+                  for (final p in _particles) _buildParticle(p, constraints),
                 ],
               );
             },

@@ -16,22 +16,19 @@ void main() {
 
     test('chaque région a un label non vide', () {
       for (final r in Region.values) {
-        expect(r.label, isNotEmpty,
-            reason: '${r.id} a un label vide');
+        expect(r.label, isNotEmpty, reason: '${r.id} a un label vide');
       }
     });
 
     test('chaque région a un emoji non vide', () {
       for (final r in Region.values) {
-        expect(r.emoji, isNotEmpty,
-            reason: '${r.id} a un emoji vide');
+        expect(r.emoji, isNotEmpty, reason: '${r.id} a un emoji vide');
       }
     });
 
     test('chaque région a un id non vide', () {
       for (final r in Region.values) {
-        expect(r.id, isNotEmpty,
-            reason: '${r.name} a un id vide');
+        expect(r.id, isNotEmpty, reason: '${r.name} a un id vide');
       }
     });
 

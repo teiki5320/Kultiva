@@ -122,7 +122,8 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     id: 'banana_scale',
     emoji: '🍌',
     name: 'Comparaison',
-    description: 'Ton légume à côté d\'un objet du quotidien pour montrer sa taille.',
+    description:
+        'Ton légume à côté d\'un objet du quotidien pour montrer sa taille.',
     tier: MedalTier.bronze,
   ),
   PhotoChallenge(
@@ -380,8 +381,7 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     tier: MedalTier.shiny,
     waEmoji: '☀️',
     waName: 'Cœur de saison sèche',
-    waDescription:
-        'Ton jardin en pleine saison sèche. La vie malgré la soif.',
+    waDescription: 'Ton jardin en pleine saison sèche. La vie malgré la soif.',
   ),
   PhotoChallenge(
     id: 'starry_sky',
@@ -398,8 +398,7 @@ const List<PhotoChallenge> allChallenges = <PhotoChallenge>[
     tier: MedalTier.shiny,
     waEmoji: '🌧️',
     waName: 'Premières pluies',
-    waDescription:
-        'Ton jardin sous la première grande pluie de l\'hivernage.',
+    waDescription: 'Ton jardin sous la première grande pluie de l\'hivernage.',
   ),
   PhotoChallenge(
     id: 'four_leaf_clover',

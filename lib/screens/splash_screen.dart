@@ -55,9 +55,12 @@ class _SplashScreenState extends State<SplashScreen>
                   borderRadius: BorderRadius.circular(36),
                   child: Image.asset(
                     'assets/images/onboarding_1.png',
-                    width: 160, height: 160, fit: BoxFit.cover,
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Container(
-                      width: 140, height: 140,
+                      width: 140,
+                      height: 140,
                       decoration: BoxDecoration(
                         color: KultivaColors.lightGreen.withValues(alpha: 0.4),
                         borderRadius: BorderRadius.circular(36),

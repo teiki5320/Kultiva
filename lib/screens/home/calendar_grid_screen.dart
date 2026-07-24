@@ -7,6 +7,7 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../utils/months.dart';
+import '../../utils/text_normalize.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
@@ -47,20 +48,20 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
             region == Region.france ? franceData : westAfricaData;
         var entries = regionData.toList()
           ..sort((a, b) {
-            final va = vegetablesBase
-                .where((v) => v.id == a.vegetableId)
-                .firstOrNull;
-            final vb = vegetablesBase
-                .where((v) => v.id == b.vegetableId)
-                .firstOrNull;
-            return (va?.name ?? '').compareTo(vb?.name ?? '');
+            final va =
+                vegetablesBase.where((v) => v.id == a.vegetableId).firstOrNull;
+            final vb =
+                vegetablesBase.where((v) => v.id == b.vegetableId).firstOrNull;
+            return compareFolded(va?.name ?? '', vb?.name ?? '');
           });
 
         // Filtre par mois actif.
         if (_filterMonth != null) {
-          entries = entries.where((rd) =>
-              rd.sowingMonths.contains(_filterMonth) ||
-              rd.harvestMonths.contains(_filterMonth)).toList();
+          entries = entries
+              .where((rd) =>
+                  rd.sowingMonths.contains(_filterMonth) ||
+                  rd.harvestMonths.contains(_filterMonth))
+              .toList();
         }
 
         return Scaffold(
@@ -75,7 +76,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                     height: 150,
                   ),
                   Positioned(
-                    top: 8, left: 8,
+                    top: 8,
+                    left: 8,
                     child: SafeArea(
                       child: GestureDetector(
                         onTap: () => Navigator.of(context).pop(),
@@ -93,7 +95,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                   ),
                   if (_filterMonth != null)
                     Positioned(
-                      top: 8, right: 8,
+                      top: 8,
+                      right: 8,
                       child: SafeArea(
                         child: GestureDetector(
                           onTap: () => setState(() => _filterMonth = null),
@@ -113,19 +116,24 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
               ),
               // Légende.
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 color: KultivaColors.lightGreen.withValues(alpha: 0.1),
                 child: Row(
                   children: [
-                    const _LegendItem(color: KultivaColors.primaryGreen, label: 'Semis'),
+                    const _LegendItem(
+                        color: KultivaColors.primaryGreen, label: 'Semis'),
                     const SizedBox(width: 16),
-                    const _LegendItem(color: KultivaColors.terracotta, label: 'Récolte'),
+                    const _LegendItem(
+                        color: KultivaColors.terracotta, label: 'Récolte'),
                     const Spacer(),
                     if (_filterMonth != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
+                          color: KultivaColors.primaryGreen
+                              .withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -171,15 +179,18 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                           DataColumn(
                             label: GestureDetector(
                               onTap: () => setState(() {
-                                _filterMonth = _filterMonth == m + 1 ? null : m + 1;
+                                _filterMonth =
+                                    _filterMonth == m + 1 ? null : m + 1;
                               }),
                               child: Container(
                                 width: 42,
-                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 4),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: _filterMonth == m + 1
-                                      ? KultivaColors.primaryGreen.withValues(alpha: 0.2)
+                                      ? KultivaColors.primaryGreen
+                                          .withValues(alpha: 0.2)
                                       : null,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -216,8 +227,9 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                                       fontWeight: FontWeight.w600,
                                       color: KultivaColors.primaryGreen,
                                       decoration: TextDecoration.underline,
-                                      decorationColor:
-                                          KultivaColors.primaryGreen.withValues(alpha: 0.3),
+                                      decorationColor: KultivaColors
+                                          .primaryGreen
+                                          .withValues(alpha: 0.3),
                                     ),
                                   ),
                                 ),
@@ -262,15 +274,16 @@ class _LegendItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 14, height: 14,
+          width: 14,
+          height: 14,
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(4),
           ),
         ),
         const SizedBox(width: 6),
-        Text(label, style: const TextStyle(
-          fontSize: 12, fontWeight: FontWeight.w700)),
+        Text(label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
       ],
     );
   }
@@ -326,9 +339,8 @@ class _MonthCell extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSow ? KultivaColors.primaryGreen : KultivaColors.terracotta,
         borderRadius: BorderRadius.circular(4),
-        border: isCurrentMonth
-            ? Border.all(color: Colors.white, width: 2)
-            : null,
+        border:
+            isCurrentMonth ? Border.all(color: Colors.white, width: 2) : null,
       ),
     );
   }

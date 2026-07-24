@@ -86,7 +86,8 @@ void main() {
       );
     });
 
-    test('terminated plant, even old, does NOT count for shiny via survival', () {
+    test('terminated plant, even old, does NOT count for shiny via survival',
+        () {
       final tier = computeMedalTier('tomate', [
         _plant(
           vegId: 'tomate',

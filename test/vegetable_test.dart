@@ -50,7 +50,8 @@ void main() {
       final validIds = vegetablesBase.map((v) => v.id).toSet();
       for (final rd in franceData) {
         expect(validIds.contains(rd.vegetableId), isTrue,
-            reason: 'France data references unknown vegetableId: ${rd.vegetableId}');
+            reason:
+                'France data references unknown vegetableId: ${rd.vegetableId}');
       }
     });
 
@@ -79,7 +80,8 @@ void main() {
       final validIds = vegetablesBase.map((v) => v.id).toSet();
       for (final rd in westAfricaData) {
         expect(validIds.contains(rd.vegetableId), isTrue,
-            reason: 'West Africa data references unknown vegetableId: ${rd.vegetableId}');
+            reason:
+                'West Africa data references unknown vegetableId: ${rd.vegetableId}');
       }
     });
 
@@ -108,10 +110,12 @@ void main() {
       final validIds = vegetablesBase.map((v) => v.id).toSet();
       for (final entry in companionMap.entries) {
         expect(validIds.contains(entry.key), isTrue,
-            reason: 'companionMap key "${entry.key}" is not a valid vegetable ID');
+            reason:
+                'companionMap key "${entry.key}" is not a valid vegetable ID');
         for (final id in entry.value) {
           expect(validIds.contains(id), isTrue,
-              reason: 'Companion "$id" of "${entry.key}" is not a valid vegetable ID');
+              reason:
+                  'Companion "$id" of "${entry.key}" is not a valid vegetable ID');
         }
       }
     });
@@ -120,10 +124,12 @@ void main() {
       final validIds = vegetablesBase.map((v) => v.id).toSet();
       for (final entry in incompatibleMap.entries) {
         expect(validIds.contains(entry.key), isTrue,
-            reason: 'incompatibleMap key "${entry.key}" is not a valid vegetable ID');
+            reason:
+                'incompatibleMap key "${entry.key}" is not a valid vegetable ID');
         for (final id in entry.value) {
           expect(validIds.contains(id), isTrue,
-              reason: 'Incompatible "$id" of "${entry.key}" is not a valid vegetable ID');
+              reason:
+                  'Incompatible "$id" of "${entry.key}" is not a valid vegetable ID');
         }
       }
     });
@@ -135,7 +141,8 @@ void main() {
           final incompatibles = incompatibleMap[vegId]!.toSet();
           final overlap = companions.intersection(incompatibles);
           expect(overlap, isEmpty,
-              reason: '"$vegId" has overlapping companion/incompatible: $overlap');
+              reason:
+                  '"$vegId" has overlapping companion/incompatible: $overlap');
         }
       }
     });

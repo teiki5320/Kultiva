@@ -191,8 +191,8 @@ class _PodiumSection extends StatelessWidget {
                 ),
                 if (first != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: color,
                       borderRadius: BorderRadius.circular(10),
@@ -300,9 +300,8 @@ class _PodiumStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final veg = vegetablesBase
-        .where((v) => v.id == stats.vegetableId)
-        .firstOrNull;
+    final veg =
+        vegetablesBase.where((v) => v.id == stats.vegetableId).firstOrNull;
     if (veg == null) return const SizedBox();
 
     final stepHeight = rank == 1 ? 80.0 : (rank == 2 ? 58.0 : 40.0);
@@ -335,7 +334,8 @@ class _PodiumStep extends StatelessWidget {
                   border: Border.all(color: stepColor, width: 3),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: stepColor.withValues(alpha: rank == 1 ? 0.55 : 0.3),
+                      color:
+                          stepColor.withValues(alpha: rank == 1 ? 0.55 : 0.3),
                       blurRadius: rank == 1 ? 14 : 8,
                       spreadRadius: rank == 1 ? 1 : 0,
                     ),

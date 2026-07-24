@@ -36,124 +36,127 @@ class VegetableCard extends StatelessWidget {
           '${isFavorite ? ', favori' : ''}',
       button: onTap != null,
       child: Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onTap == null ? null : () {
-          AudioService.instance.play(Sfx.tap);
-          onTap!();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              // Emoji dans cercle pastel — anneau de palier si espèce
-              // déjà collectionnée.
-              MedalBadge(
-                emoji: vegetable.emoji,
-                imageAsset: vegetable.imageAsset,
-                tier: medalTier,
-                familyColor: cc,
-                size: 54,
-                showCornerMedal: medalTier != MedalTier.none,
-              ),
-              const SizedBox(width: 12),
-              // Contenu.
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            vegetable.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                        if (canSowNow)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: KultivaColors.primaryGreen,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Text(
-                              'Semer',
-                              style: TextStyle(
-                                color: Colors.white,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          onTap: onTap == null
+              ? null
+              : () {
+                  AudioService.instance.play(Sfx.tap);
+                  onTap!();
+                },
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                // Emoji dans cercle pastel — anneau de palier si espèce
+                // déjà collectionnée.
+                MedalBadge(
+                  emoji: vegetable.emoji,
+                  imageAsset: vegetable.imageAsset,
+                  tier: medalTier,
+                  familyColor: cc,
+                  size: 54,
+                  showCornerMedal: medalTier != MedalTier.none,
+                ),
+                const SizedBox(width: 12),
+                // Contenu.
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              vegetable.name,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w800,
-                                fontSize: 10,
+                                fontSize: 15,
                               ),
                             ),
                           ),
-                      ],
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      vegetable.note ??
-                          vegetable.description ??
-                          vegetable.category.label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: KultivaColors.textPrimary.withValues(alpha: 0.5),
+                          if (canSowNow)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: KultivaColors.primaryGreen,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text(
+                                'Semer',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    // Catégorie chip.
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: cc.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        vegetable.category.label,
+                      const SizedBox(height: 3),
+                      Text(
+                        vegetable.note ??
+                            vegetable.description ??
+                            vegetable.category.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                          color: cc,
+                          fontSize: 12,
+                          color:
+                              KultivaColors.textPrimary.withValues(alpha: 0.5),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      // Catégorie chip.
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: cc.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          vegetable.category.label,
+                          style: TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: cc,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (onFavoriteToggle != null)
+                  Semantics(
+                    label: isFavorite
+                        ? 'Retirer ${vegetable.name} des favoris'
+                        : 'Ajouter ${vegetable.name} aux favoris',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: () {
+                        AudioService.instance.play(Sfx.favorite);
+                        onFavoriteToggle!();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          size: 20,
+                          color: isFavorite
+                              ? KultivaColors.terracotta
+                              : Colors.grey.shade300,
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              if (onFavoriteToggle != null)
-                Semantics(
-                  label: isFavorite
-                      ? 'Retirer ${vegetable.name} des favoris'
-                      : 'Ajouter ${vegetable.name} aux favoris',
-                  button: true,
-                  child: GestureDetector(
-                    onTap: () {
-                      AudioService.instance.play(Sfx.favorite);
-                      onFavoriteToggle!();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        size: 20,
-                        color: isFavorite
-                            ? KultivaColors.terracotta
-                            : Colors.grey.shade300,
-                      ),
-                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }

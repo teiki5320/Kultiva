@@ -183,8 +183,8 @@ void main() {
     });
 
     test('le défi givre devient Harmattan en AO, même id et palier', () {
-      final frost = challengesFor(Region.westAfrica)
-          .firstWhere((c) => c.id == 'frost');
+      final frost =
+          challengesFor(Region.westAfrica).firstWhere((c) => c.id == 'frost');
       expect(frost.name, equals('Harmattan'));
       expect(frost.emoji, isNot(equals('❄️')));
       final frostFr =
@@ -196,8 +196,7 @@ void main() {
 
   group('Calendrier Afrique de l\'Ouest complet', () {
     test('chaque légume du catalogue a une entrée west_africa', () {
-      final covered =
-          westAfricaData.map((r) => r.vegetableId).toSet();
+      final covered = westAfricaData.map((r) => r.vegetableId).toSet();
       final missing = <String>[];
       for (final v in vegetablesBase) {
         if (v.category == VegetableCategory.accessories) continue;

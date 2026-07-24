@@ -47,8 +47,7 @@ class PoussidexStatsView extends StatelessWidget {
     // Top familles.
     final families = <VegetableCategory, int>{};
     for (final p in plantations) {
-      final v =
-          vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
+      final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
       if (v == null) continue;
       families[v.category] = (families[v.category] ?? 0) + 1;
     }
@@ -73,9 +72,8 @@ class PoussidexStatsView extends StatelessWidget {
         }
       }
     }
-    final maxBucket = buckets.isEmpty
-        ? 0
-        : buckets.reduce((a, b) => a > b ? a : b);
+    final maxBucket =
+        buckets.isEmpty ? 0 : buckets.reduce((a, b) => a > b ? a : b);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
@@ -122,8 +120,7 @@ class PoussidexStatsView extends StatelessWidget {
           const SizedBox(height: 20),
           if (topFamilies.isNotEmpty) ...<Widget>[
             const Text('🎭  Top familles',
-                style: TextStyle(
-                    fontWeight: FontWeight.w800, fontSize: 15)),
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
             const SizedBox(height: 10),
             for (final e in topFamilies)
               _FamilyBar(
@@ -136,14 +133,12 @@ class PoussidexStatsView extends StatelessWidget {
             const SizedBox(height: 20),
           ],
           const Text('💧  Arrosages — 30 derniers jours',
-              style:
-                  TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
           const SizedBox(height: 10),
           _WateringChart(buckets: buckets, maxValue: maxBucket),
           const SizedBox(height: 20),
           const Text('📅  Repères',
-              style:
-                  TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
           const SizedBox(height: 8),
           _RepereRow(
             icon: '🌱',
@@ -303,8 +298,8 @@ class _FamilyBar extends StatelessWidget {
           SizedBox(
             width: 82,
             child: Text(label,
-                style: const TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.w700)),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
           ),
           Expanded(
             child: ClipRRect(
@@ -350,8 +345,7 @@ class _WateringChart extends StatelessWidget {
         ),
         child: const Text(
           "Aucun arrosage sur les 30 derniers jours.",
-          style: TextStyle(
-              color: KultivaColors.textSecondary, fontSize: 12),
+          style: TextStyle(color: KultivaColors.textSecondary, fontSize: 12),
         ),
       );
     }
@@ -414,8 +408,8 @@ class _RepereRow extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(label,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w700, fontSize: 13)),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
           ),
           Text(
             value,

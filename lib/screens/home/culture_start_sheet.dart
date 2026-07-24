@@ -251,8 +251,18 @@ class _CultureStartSheetState extends State<CultureStartSheet> {
 
   String _formatDate(DateTime d) {
     const months = <String>[
-      'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-      'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+      'janvier',
+      'février',
+      'mars',
+      'avril',
+      'mai',
+      'juin',
+      'juillet',
+      'août',
+      'septembre',
+      'octobre',
+      'novembre',
+      'décembre',
     ];
     return '${d.day} ${months[d.month - 1]} ${d.year}';
   }

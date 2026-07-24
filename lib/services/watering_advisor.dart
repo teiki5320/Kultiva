@@ -37,20 +37,17 @@ WateringAdvice? suggestWatering(
   ].fold<double>(0, (a, b) => a + b);
 
   final lastWater = culture.lastWatering;
-  final daysSinceWater = lastWater == null
-      ? 999
-      : DateTime.now().difference(lastWater).inDays;
+  final daysSinceWater =
+      lastWater == null ? 999 : DateTime.now().difference(lastWater).inDays;
 
-  final tmax = today < weather.dailyTempMax.length
-      ? weather.dailyTempMax[today]
-      : 20.0;
+  final tmax =
+      today < weather.dailyTempMax.length ? weather.dailyTempMax[today] : 20.0;
 
   if (rainNext48h >= 5) {
     return WateringAdvice(
       urgency: WateringUrgency.skip,
       emoji: '🌧️',
-      message:
-          "Pas besoin d'arroser : ${rainNext48h.toStringAsFixed(0)} mm "
+      message: "Pas besoin d'arroser : ${rainNext48h.toStringAsFixed(0)} mm "
           "de pluie prévus dans 48 h.",
     );
   }
@@ -66,8 +63,7 @@ WateringAdvice? suggestWatering(
     return WateringAdvice(
       urgency: WateringUrgency.heatwave,
       emoji: '🥵',
-      message:
-          "Canicule prévue (${tmax.toStringAsFixed(0)}°C). Arrose tôt "
+      message: "Canicule prévue (${tmax.toStringAsFixed(0)}°C). Arrose tôt "
           "le matin ou en soirée, et pense au paillage.",
     );
   }
@@ -75,8 +71,7 @@ WateringAdvice? suggestWatering(
     return WateringAdvice(
       urgency: WateringUrgency.overdue,
       emoji: '🚱',
-      message:
-          "Sécheresse depuis ${weather.consecutiveDryDays} jours et "
+      message: "Sécheresse depuis ${weather.consecutiveDryDays} jours et "
           "pas d'arrosage depuis $daysSinceWater j. C'est urgent.",
     );
   }
@@ -84,8 +79,7 @@ WateringAdvice? suggestWatering(
     return WateringAdvice(
       urgency: WateringUrgency.dueSoon,
       emoji: '💧',
-      message:
-          "Pas d'arrosage depuis $daysSinceWater j et pas de pluie "
+      message: "Pas d'arrosage depuis $daysSinceWater j et pas de pluie "
           "prévue. Pense à arroser ce soir.",
     );
   }

@@ -102,7 +102,8 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                     height: 170,
                   ),
                   Positioned(
-                    top: 8, left: 8,
+                    top: 8,
+                    left: 8,
                     child: SafeArea(
                       child: GestureDetector(
                         onTap: () => Navigator.of(context).pop(),
@@ -153,8 +154,8 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color:
-                                  KultivaColors.primaryGreen.withValues(alpha: 0.15),
+                              color: KultivaColors.primaryGreen
+                                  .withValues(alpha: 0.15),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -210,7 +211,8 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               if (activeVegs.isNotEmpty) ...[
                 _SectionHeader(
                   icon: isHarvest ? '🧺' : '✅',
-                  title: '${isHarvest ? "À récolter" : "À semer"} en ${monthNamesLongCap[_selectedMonth - 1]}',
+                  title:
+                      '${isHarvest ? "À récolter" : "À semer"} en ${monthNamesLongCap[_selectedMonth - 1]}',
                 ),
                 ValueListenableBuilder<Set<String>>(
                   valueListenable: PrefsService.instance.favorites,

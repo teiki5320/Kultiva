@@ -102,8 +102,7 @@ class AppTheme {
           backgroundColor: KultivaColors.primaryGreen,
           foregroundColor: Colors.white,
           textStyle: GoogleFonts.nunito(fontWeight: FontWeight.w800),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -120,8 +119,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: KultivaColors.textPrimary,
           textStyle: GoogleFonts.nunito(fontWeight: FontWeight.w700),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -146,10 +144,8 @@ class AppTheme {
           borderSide:
               const BorderSide(color: KultivaColors.primaryGreen, width: 2),
         ),
-        hintStyle:
-            GoogleFonts.nunito(color: KultivaColors.textSecondary),
-        labelStyle:
-            GoogleFonts.nunito(color: KultivaColors.textSecondary),
+        hintStyle: GoogleFonts.nunito(color: KultivaColors.textSecondary),
+        labelStyle: GoogleFonts.nunito(color: KultivaColors.textSecondary),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
@@ -208,8 +204,8 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: KultivaColors.darkSurface,
         selectedColor: KultivaColors.darkPrimaryGreen,
-        labelStyle:
-            GoogleFonts.nunito(color: Colors.white, fontWeight: FontWeight.w700),
+        labelStyle: GoogleFonts.nunito(
+            color: Colors.white, fontWeight: FontWeight.w700),
         secondaryLabelStyle: GoogleFonts.nunito(
           color: Colors.black,
           fontWeight: FontWeight.w800,
@@ -226,8 +222,7 @@ class AppTheme {
           backgroundColor: KultivaColors.darkPrimaryGreen,
           foregroundColor: Colors.black,
           textStyle: GoogleFonts.nunito(fontWeight: FontWeight.w800),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -244,8 +239,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.white,
           textStyle: GoogleFonts.nunito(fontWeight: FontWeight.w700),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -267,11 +261,13 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(
-              color: KultivaColors.darkPrimaryGreen, width: 2),
+          borderSide:
+              const BorderSide(color: KultivaColors.darkPrimaryGreen, width: 2),
         ),
-        hintStyle: GoogleFonts.nunito(color: Colors.white.withValues(alpha: 0.6)),
-        labelStyle: GoogleFonts.nunito(color: Colors.white.withValues(alpha: 0.6)),
+        hintStyle:
+            GoogleFonts.nunito(color: Colors.white.withValues(alpha: 0.6)),
+        labelStyle:
+            GoogleFonts.nunito(color: Colors.white.withValues(alpha: 0.6)),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: KultivaColors.darkSurface,

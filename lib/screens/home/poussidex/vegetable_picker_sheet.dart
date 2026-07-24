@@ -99,8 +99,8 @@ class _VegetablePickerSheetState extends State<VegetablePickerSheet> {
                       ? const Center(
                           child: Text(
                             'Aucun résultat',
-                            style: TextStyle(
-                                color: KultivaColors.textSecondary),
+                            style:
+                                TextStyle(color: KultivaColors.textSecondary),
                           ),
                         )
                       : ListView.builder(
@@ -118,11 +118,9 @@ class _VegetablePickerSheetState extends State<VegetablePickerSheet> {
                               subtitle: Text(v.category.label),
                               trailing: isFav
                                   ? const Icon(Icons.favorite,
-                                      size: 16,
-                                      color: KultivaColors.terracotta)
+                                      size: 16, color: KultivaColors.terracotta)
                                   : null,
-                              onTap: () =>
-                                  Navigator.of(context).pop(v.id),
+                              onTap: () => Navigator.of(context).pop(v.id),
                             );
                           },
                         ),

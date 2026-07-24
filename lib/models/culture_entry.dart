@@ -69,8 +69,7 @@ class CultureEntry {
     this.wateredAt = const <DateTime>[],
   });
 
-  DateTime? get lastWatering =>
-      wateredAt.isEmpty ? null : wateredAt.last;
+  DateTime? get lastWatering => wateredAt.isEmpty ? null : wateredAt.last;
 
   /// Renvoie un tableau de [days] booléens (le plus ancien en
   /// premier) indiquant si la culture a été arrosée ce jour-là.
@@ -90,8 +89,7 @@ class CultureEntry {
 
   bool get isActive => endedAt == null;
 
-  int get daysSinceStarted =>
-      DateTime.now().difference(startedAt).inDays;
+  int get daysSinceStarted => DateTime.now().difference(startedAt).inDays;
 
   CultureEntry copyWith({
     DateTime? startedAt,
@@ -125,8 +123,7 @@ class CultureEntry {
         'note': note,
         'linkedPlantationId': linkedPlantationId,
         'phase': phase.id,
-        'wateredAt':
-            wateredAt.map((d) => d.toIso8601String()).toList(),
+        'wateredAt': wateredAt.map((d) => d.toIso8601String()).toList(),
       };
 
   factory CultureEntry.fromJson(Map<String, dynamic> json) {

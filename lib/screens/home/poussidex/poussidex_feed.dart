@@ -53,20 +53,40 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
 
   Future<void> _toggleLike(int index) async {
     final post = _posts[index];
-    final nowLiked = await FeedService.instance.toggleLike(post.id);
+    final bool nowLiked;
+    try {
+      nowLiked = await FeedService.instance.toggleLike(post.id);
+    } catch (_) {
+      // Échec réseau/DB : on n'applique AUCUN delta (sinon compteur faux).
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impossible de liker pour le moment. Réessaie.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      return;
+    }
     if (!mounted) return;
+    // Retrouver le post par id APRÈS l'await : un refresh a pu réordonner
+    // ou raccourcir la liste (l'index capté serait alors faux → RangeError
+    // ou like appliqué au mauvais post).
+    final i = _posts.indexWhere((p) => p.id == post.id);
+    if (i < 0) return;
+    final current = _posts[i];
     setState(() {
-      _posts[index] = FeedPost(
-        id: post.id,
-        userId: post.userId,
-        userName: post.userName,
-        challengeId: post.challengeId,
-        photoUrl: post.photoUrl,
-        caption: post.caption,
-        likesCount: post.likesCount + (nowLiked ? 1 : -1),
+      _posts[i] = FeedPost(
+        id: current.id,
+        userId: current.userId,
+        userName: current.userName,
+        challengeId: current.challengeId,
+        photoUrl: current.photoUrl,
+        caption: current.caption,
+        likesCount: current.likesCount + (nowLiked ? 1 : -1),
         likedByMe: nowLiked,
-        reportedByMe: post.reportedByMe,
-        createdAt: post.createdAt,
+        reportedByMe: current.reportedByMe,
+        createdAt: current.createdAt,
       );
     });
   }
@@ -126,18 +146,23 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
     final ok = await FeedService.instance.reportPost(post.id, reason);
     if (!mounted) return;
     if (ok) {
+      // Retrouver par id après les awaits (dialog + réseau) : la liste a
+      // pu être rafraîchie/réordonnée entre-temps.
+      final i = _posts.indexWhere((p) => p.id == post.id);
+      if (i < 0) return;
+      final current = _posts[i];
       setState(() {
-        _posts[index] = FeedPost(
-          id: post.id,
-          userId: post.userId,
-          userName: post.userName,
-          challengeId: post.challengeId,
-          photoUrl: post.photoUrl,
-          caption: post.caption,
-          likesCount: post.likesCount,
-          likedByMe: post.likedByMe,
+        _posts[i] = FeedPost(
+          id: current.id,
+          userId: current.userId,
+          userName: current.userName,
+          challengeId: current.challengeId,
+          photoUrl: current.photoUrl,
+          caption: current.caption,
+          likesCount: current.likesCount,
+          likedByMe: current.likedByMe,
           reportedByMe: true,
-          createdAt: post.createdAt,
+          createdAt: current.createdAt,
         );
       });
       ScaffoldMessenger.of(context).showSnackBar(
@@ -410,9 +435,7 @@ class _FeedPostCard extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Icon(
-                        post.likedByMe
-                            ? Icons.favorite
-                            : Icons.favorite_border,
+                        post.likedByMe ? Icons.favorite : Icons.favorite_border,
                         size: 24,
                         color: post.likedByMe
                             ? Colors.red.shade400
@@ -435,8 +458,8 @@ class _FeedPostCard extends StatelessWidget {
                 const Spacer(),
                 if (challenge != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(8),

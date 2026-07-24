@@ -108,8 +108,8 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                             ? const SizedBox(
                                 width: 16,
                                 height: 16,
-                                child: CircularProgressIndicator(
-                                    strokeWidth: 2),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
                               )
                             : const Icon(Icons.my_location, size: 20),
                       ),
@@ -253,8 +253,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text(
-                  "Localisation refusée. Tape ta ville à la main."),
+              content: Text("Localisation refusée. Tape ta ville à la main."),
             ),
           );
         }
@@ -288,12 +287,10 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
   }
 
   Future<void> _save() async {
-    final name = _nameCtrl.text.trim().isEmpty
-        ? 'Jardin'
-        : _nameCtrl.text.trim();
-    final location = _locationCtrl.text.trim().isEmpty
-        ? null
-        : _locationCtrl.text.trim();
+    final name =
+        _nameCtrl.text.trim().isEmpty ? 'Jardin' : _nameCtrl.text.trim();
+    final location =
+        _locationCtrl.text.trim().isEmpty ? null : _locationCtrl.text.trim();
     final cols = _widthCm ~/ 30;
     final rows = _heightCm ~/ 30;
 
@@ -388,7 +385,8 @@ class _SizePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initialIndex = _sizesCm.indexOf(valueCm).clamp(0, _sizesCm.length - 1);
+    final initialIndex =
+        _sizesCm.indexOf(valueCm).clamp(0, _sizesCm.length - 1);
     return Column(
       children: <Widget>[
         Text(

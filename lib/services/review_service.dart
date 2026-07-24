@@ -17,10 +17,17 @@ class ReviewService {
     if (unlockedBadgeCount < 3) return;
     final already = PrefsService.instance.getString(_prefsKey) == 'true';
     if (already) return;
-    final inAppReview = InAppReview.instance;
-    if (await inAppReview.isAvailable()) {
-      await inAppReview.requestReview();
-      await PrefsService.instance.setString(_prefsKey, 'true');
+    try {
+      final inAppReview = InAppReview.instance;
+      if (await inAppReview.isAvailable()) {
+        // On marque AVANT d'ouvrir le dialogue : si l'app est tuée
+        // pendant, on ne re-sollicitera pas l'utilisateur au prochain
+        // lancement (demande unique, non intrusive).
+        await PrefsService.instance.setString(_prefsKey, 'true');
+        await inAppReview.requestReview();
+      }
+    } catch (_) {
+      // PlatformException possible (store indisponible) : silencieux.
     }
   }
 }

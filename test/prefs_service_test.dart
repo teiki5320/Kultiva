@@ -68,8 +68,7 @@ void main() {
       expect(prefs.prefsUpdatedAt, isNotNull);
     });
 
-    test('appliquer des prefs cloud ne bump PAS le timestamp local',
-        () async {
+    test('appliquer des prefs cloud ne bump PAS le timestamp local', () async {
       expect(prefs.prefsUpdatedAt, isNull);
       await prefs.applyRemotePreferences(() async {
         await prefs.setDarkMode(true);

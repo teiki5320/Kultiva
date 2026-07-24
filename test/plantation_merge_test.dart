@@ -27,8 +27,7 @@ void main() {
       ]);
     });
 
-    test('union des photos (locale + cloud), sans doublon, ordre a puis b',
-        () {
+    test('union des photos (locale + cloud), sans doublon, ordre a puis b', () {
       final a = Plantation(
         id: 'p1',
         vegetableId: 'tomate',

@@ -187,9 +187,8 @@ class GardenFilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final suffix = hideCount
-        ? ''
-        : (total != null ? ' $count/$total' : ' ($count)');
+    final suffix =
+        hideCount ? '' : (total != null ? ' $count/$total' : ' ($count)');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(

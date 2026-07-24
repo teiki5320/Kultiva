@@ -108,8 +108,7 @@ MedalTier computeMedalTier(
   final mine = plantations.where((p) => p.vegetableId == vegetableId).toList();
   if (mine.isEmpty) return MedalTier.none;
 
-  final totalHarvests =
-      mine.fold<int>(0, (sum, p) => sum + p.harvestCount);
+  final totalHarvests = mine.fold<int>(0, (sum, p) => sum + p.harvestCount);
 
   // Saisons distinctes où cette espèce a été plantée.
   // France : printemps=3-5, été=6-8, automne=9-11, hiver=12,1,2.
@@ -123,6 +122,7 @@ MedalTier computeMedalTier(
     if (month >= 9 && month <= 11) return 2;
     return 3;
   }
+
   final seasons = <int>{for (final p in mine) seasonOf(p.plantedAt.month)};
 
   final now = DateTime.now();

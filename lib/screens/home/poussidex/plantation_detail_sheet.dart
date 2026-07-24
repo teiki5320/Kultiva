@@ -52,12 +52,10 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
     final expected = expectedHarvestDays(v, p.plantedAt);
     final remaining = (expected - days).clamp(0, expected);
     final progress = (days / expected).clamp(0.0, 1.0);
-    final thirsty =
-        p.isActive && p.daysSinceWatered >= v.effectiveWateringDays;
+    final thirsty = p.isActive && p.daysSinceWatered >= v.effectiveWateringDays;
 
     final events = <_TimelineEvent>[];
-    events.add(_TimelineEvent(
-        date: p.plantedAt, emoji: '🌱', label: 'Planté'));
+    events.add(_TimelineEvent(date: p.plantedAt, emoji: '🌱', label: 'Planté'));
     for (final w in p.wateredAt) {
       events.add(_TimelineEvent(date: w, emoji: '💧', label: 'Arrosé'));
     }
@@ -104,8 +102,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                       ),
                     ],
                   ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 18),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -118,8 +116,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                               color: cc.withValues(alpha: 0.5), width: 2),
                         ),
                         alignment: Alignment.center,
-                        child: Text(v.emoji,
-                            style: const TextStyle(fontSize: 52)),
+                        child:
+                            Text(v.emoji, style: const TextStyle(fontSize: 52)),
                       ),
                       const SizedBox(height: 12),
                       Text(v.name,
@@ -184,8 +182,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                 icon: '📅',
                 label: 'Planté le ${_fmtDate(p.plantedAt)}',
               ),
-              if (v.watering != null)
-                _InfoRow(icon: '🌊', label: v.watering!),
+              if (v.watering != null) _InfoRow(icon: '🌊', label: v.watering!),
               const SizedBox(height: 18),
               _PhotoGallery(
                 photos: p.photoPaths,
@@ -216,8 +213,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: p.isActive ? widget.onWater : null,
-                      icon: const Text('💧',
-                          style: TextStyle(fontSize: 18)),
+                      icon: const Text('💧', style: TextStyle(fontSize: 18)),
                       label: const Text('Arroser'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: KultivaColors.waterBlue,
@@ -230,8 +226,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: p.isActive ? widget.onHarvest : null,
-                      icon: const Text('🧺',
-                          style: TextStyle(fontSize: 18)),
+                      icon: const Text('🧺', style: TextStyle(fontSize: 18)),
                       label: const Text('Récolter'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: KultivaColors.terracotta,
@@ -249,8 +244,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: widget.onTerminate,
-                        icon: const Text('🏁',
-                            style: TextStyle(fontSize: 14)),
+                        icon: const Text('🏁', style: TextStyle(fontSize: 14)),
                         label: const Text('Terminer'),
                       ),
                     ),
@@ -269,8 +263,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
               const SizedBox(height: 24),
               const Text(
                 '📜 Historique',
-                style: TextStyle(
-                    fontWeight: FontWeight.w800, fontSize: 15),
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
               ),
               const SizedBox(height: 8),
               for (final e in events)
@@ -299,8 +292,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
               Navigator.of(context).pop();
               widget.onRemove();
             },
-            child: const Text('Retirer',
-                style: TextStyle(color: Colors.red)),
+            child: const Text('Retirer', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -392,8 +384,8 @@ class _TimelineTile extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Text(event.label,
-                style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600)),
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
           ),
           Text(
             formatter(event.date),
@@ -461,8 +453,7 @@ class _PhotoGallery extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               'Photos${photos.isEmpty ? "" : " (${photos.length})"}',
-              style: const TextStyle(
-                  fontWeight: FontWeight.w800, fontSize: 14),
+              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
             ),
           ],
         ),
@@ -541,8 +532,8 @@ class _PhotoThumb extends StatelessWidget {
               errorBuilder: (_, __, ___) => Container(
                 color: Colors.grey.shade200,
                 alignment: Alignment.center,
-                child: const Icon(Icons.broken_image_outlined,
-                    color: Colors.grey),
+                child:
+                    const Icon(Icons.broken_image_outlined, color: Colors.grey),
               ),
             ),
           ),
@@ -579,8 +570,7 @@ class _PhotoThumb extends StatelessWidget {
                   color: Colors.black.withValues(alpha: 0.5),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.close,
-                    size: 14, color: Colors.white),
+                child: const Icon(Icons.close, size: 14, color: Colors.white),
               ),
             ),
           ),
@@ -676,9 +666,7 @@ class _NoteEditorState extends State<_NoteEditor> {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                text == null || text.isEmpty
-                    ? 'Ajouter une note…'
-                    : text,
+                text == null || text.isEmpty ? 'Ajouter une note…' : text,
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,

@@ -118,8 +118,8 @@ class _PlantCreatureState extends State<PlantCreature>
       final filtered = _tiltX * 0.8 + (event.x / 9.8) * 0.2;
       _tiltX = filtered.clamp(-1.0, 1.0);
       // Shake : magnitude globale d'accélération.
-      final mag = math.sqrt(
-          event.x * event.x + event.y * event.y + event.z * event.z);
+      final mag =
+          math.sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
       final delta = (mag - _lastAccelMagnitude).abs();
       _lastAccelMagnitude = mag;
       if (delta > 18 && !_shaking) {
@@ -350,147 +350,153 @@ class _PlantCreatureState extends State<PlantCreature>
     return Semantics(
       label: 'Tamassi ${widget.starter.name}, niveau ${widget.level}',
       child: GestureDetector(
-      onTap: _onTap,
-      onPanUpdate: _onPanUpdate,
-      onPanEnd: _onPanEnd,
-      behavior: HitTestBehavior.opaque,
-      child: SizedBox.square(
-        dimension: widget.size,
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: <Widget>[
-            AnimatedBuilder(
-              animation: Listenable.merge(<Listenable>[
-                _breathCtrl, _blinkCtrl, _swayCtrl, _tapCtrl,
-                _danceCtrl, _sneezeCtrl, _shakeCtrl,
-              ]),
-              builder: (context, _) {
-                final t = _breathCtrl.value;
-                final breathScale = _sleeping
-                    ? 1.0 + 0.015 * math.sin(t * math.pi)
-                    : 1.0 + 0.03 * math.sin(t * math.pi);
-                final sway =
-                    0.03 * math.sin(_swayCtrl.value * math.pi * 2 - math.pi);
-                final tap = _tapCtrl.value;
-                final squash = tap < 0.3
-                    ? 1.0 - 0.12 * (tap / 0.3)
-                    : 1.0 - 0.12 * (1.0 - (tap - 0.3) / 0.7);
-                final stretch = tap < 0.3
-                    ? 1.0 + 0.08 * (tap / 0.3)
-                    : 1.0 + 0.08 * (1.0 - (tap - 0.3) / 0.7);
-                final dance = _danceCtrl.value > 0
-                    ? math.sin(_danceCtrl.value * math.pi * 4) * 0.12
-                    : 0.0;
-                final sneeze = _sneezeCtrl.value;
-                final sneezeScale = sneeze < 0.3
-                    ? 1.0 - 0.10 * (sneeze / 0.3)
-                    : 1.0 + 0.10 * math.sin((sneeze - 0.3) / 0.7 * math.pi);
-                final lookDx = _eyeLook.dx * widget.size * 0.04;
-                final lookDy = _eyeLook.dy * widget.size * 0.02;
-                // Inclinaison du téléphone : rotation douce.
-                final tilt = -_tiltX * 0.18;
-                // Shake : spin 360° quand secoué.
-                final shakeSpin = _shakeCtrl.value > 0
-                    ? _shakeCtrl.value * math.pi * 2
-                    : 0.0;
-                return Transform.translate(
-                  offset: Offset(lookDx, lookDy),
-                  child: Transform(
-                    alignment: Alignment.bottomCenter,
-                    transform: Matrix4.identity()
-                      ..rotateZ(sway + dance + tilt + shakeSpin)
-                      ..scaleByDouble(
-                        squash * breathScale * sneezeScale,
-                        stretch * breathScale * sneezeScale,
-                        squash * breathScale * sneezeScale,
-                        1.0,
-                      ),
-                    child: _buildCreatureVisual(),
-                  ),
-                );
-              },
-            ),
-            // Emoji flottant au tap.
-            if (_showTapEmoji)
+        onTap: _onTap,
+        onPanUpdate: _onPanUpdate,
+        onPanEnd: _onPanEnd,
+        behavior: HitTestBehavior.opaque,
+        child: SizedBox.square(
+          dimension: widget.size,
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: <Widget>[
               AnimatedBuilder(
-                animation: _tapCtrl,
-                builder: (context, child) {
-                  final p = _tapCtrl.value;
+                animation: Listenable.merge(<Listenable>[
+                  _breathCtrl,
+                  _blinkCtrl,
+                  _swayCtrl,
+                  _tapCtrl,
+                  _danceCtrl,
+                  _sneezeCtrl,
+                  _shakeCtrl,
+                ]),
+                builder: (context, _) {
+                  final t = _breathCtrl.value;
+                  final breathScale = _sleeping
+                      ? 1.0 + 0.015 * math.sin(t * math.pi)
+                      : 1.0 + 0.03 * math.sin(t * math.pi);
+                  final sway =
+                      0.03 * math.sin(_swayCtrl.value * math.pi * 2 - math.pi);
+                  final tap = _tapCtrl.value;
+                  final squash = tap < 0.3
+                      ? 1.0 - 0.12 * (tap / 0.3)
+                      : 1.0 - 0.12 * (1.0 - (tap - 0.3) / 0.7);
+                  final stretch = tap < 0.3
+                      ? 1.0 + 0.08 * (tap / 0.3)
+                      : 1.0 + 0.08 * (1.0 - (tap - 0.3) / 0.7);
+                  final dance = _danceCtrl.value > 0
+                      ? math.sin(_danceCtrl.value * math.pi * 4) * 0.12
+                      : 0.0;
+                  final sneeze = _sneezeCtrl.value;
+                  final sneezeScale = sneeze < 0.3
+                      ? 1.0 - 0.10 * (sneeze / 0.3)
+                      : 1.0 + 0.10 * math.sin((sneeze - 0.3) / 0.7 * math.pi);
+                  final lookDx = _eyeLook.dx * widget.size * 0.04;
+                  final lookDy = _eyeLook.dy * widget.size * 0.02;
+                  // Inclinaison du téléphone : rotation douce.
+                  final tilt = -_tiltX * 0.18;
+                  // Shake : spin 360° quand secoué.
+                  final shakeSpin = _shakeCtrl.value > 0
+                      ? _shakeCtrl.value * math.pi * 2
+                      : 0.0;
+                  return Transform.translate(
+                    offset: Offset(lookDx, lookDy),
+                    child: Transform(
+                      alignment: Alignment.bottomCenter,
+                      transform: Matrix4.identity()
+                        ..rotateZ(sway + dance + tilt + shakeSpin)
+                        ..scaleByDouble(
+                          squash * breathScale * sneezeScale,
+                          stretch * breathScale * sneezeScale,
+                          squash * breathScale * sneezeScale,
+                          1.0,
+                        ),
+                      child: _buildCreatureVisual(),
+                    ),
+                  );
+                },
+              ),
+              // Emoji flottant au tap.
+              if (_showTapEmoji)
+                AnimatedBuilder(
+                  animation: _tapCtrl,
+                  builder: (context, child) {
+                    final p = _tapCtrl.value;
+                    return Positioned(
+                      top: widget.size * 0.05 - p * widget.size * 0.15,
+                      child: Opacity(
+                        opacity: (1.0 - p).clamp(0.0, 1.0),
+                        child: Transform.scale(
+                          scale: 0.5 + p * 0.8,
+                          child: Text(_tapEmoji,
+                              style: const TextStyle(fontSize: 30)),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              // "Zzz" quand dort.
+              AnimatedBuilder(
+                animation: _sleepCtrl,
+                builder: (_, __) {
+                  if (_sleepCtrl.value == 0) return const SizedBox.shrink();
                   return Positioned(
-                    top: widget.size * 0.05 - p * widget.size * 0.15,
+                    top: -8,
+                    right: widget.size * 0.10,
                     child: Opacity(
-                      opacity: (1.0 - p).clamp(0.0, 1.0),
-                      child: Transform.scale(
-                        scale: 0.5 + p * 0.8,
-                        child: Text(_tapEmoji,
-                            style: const TextStyle(fontSize: 30)),
+                      opacity: _sleepCtrl.value,
+                      child: const Text(
+                        '💤',
+                        style: TextStyle(fontSize: 32),
                       ),
                     ),
                   );
                 },
               ),
-            // "Zzz" quand dort.
-            AnimatedBuilder(
-              animation: _sleepCtrl,
-              builder: (_, __) {
-                if (_sleepCtrl.value == 0) return const SizedBox.shrink();
-                return Positioned(
-                  top: -8,
-                  right: widget.size * 0.10,
-                  child: Opacity(
-                    opacity: _sleepCtrl.value,
-                    child: const Text(
-                      '💤',
-                      style: TextStyle(fontSize: 32),
-                    ),
-                  ),
-                );
-              },
-            ),
-            // Bulle "Atchoum!" + goutte lors de l'éternuement.
-            if (_sneezing)
-              AnimatedBuilder(
-                animation: _sneezeCtrl,
-                builder: (_, __) {
-                  final p = _sneezeCtrl.value;
-                  final opacity =
-                      p < 0.1 ? p / 0.1 : (1 - (p - 0.5) / 0.5).clamp(0.0, 1.0);
-                  return Positioned(
-                    top: widget.size * 0.05,
-                    right: -widget.size * 0.05,
-                    child: Opacity(
-                      opacity: opacity,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: const <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 6,
-                              offset: Offset(0, 2),
+              // Bulle "Atchoum!" + goutte lors de l'éternuement.
+              if (_sneezing)
+                AnimatedBuilder(
+                  animation: _sneezeCtrl,
+                  builder: (_, __) {
+                    final p = _sneezeCtrl.value;
+                    final opacity = p < 0.1
+                        ? p / 0.1
+                        : (1 - (p - 0.5) / 0.5).clamp(0.0, 1.0);
+                    return Positioned(
+                      top: widget.size * 0.05,
+                      right: -widget.size * 0.05,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            boxShadow: const <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 6,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: const Text(
+                            'Atchoum !',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
                             ),
-                          ],
-                        ),
-                        child: const Text(
-                          'Atchoum !',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 13,
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-          ],
+                    );
+                  },
+                ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }
@@ -714,8 +720,8 @@ class _CreaturePainter extends CustomPainter {
       ..cubicTo(cx - w * 0.06, h * 0.62, cx + w * 0.06, h * 0.54,
           cx - w * 0.015, h * 0.44)
       ..lineTo(cx + w * 0.015, h * 0.44)
-      ..cubicTo(cx + w * 0.08, h * 0.54, cx - w * 0.04, h * 0.62,
-          cx + w * 0.02, h * 0.80)
+      ..cubicTo(cx + w * 0.08, h * 0.54, cx - w * 0.04, h * 0.62, cx + w * 0.02,
+          h * 0.80)
       ..close();
     canvas.drawPath(
       stemPath,
@@ -812,9 +818,12 @@ class _CreaturePainter extends CustomPainter {
       )
       ..lineTo(stemEnd.dx + w * 0.015, stemEnd.dy)
       ..cubicTo(
-        cx + w * 0.11, h * 0.58,
-        cx - w * 0.05, h * 0.72,
-        stemStart.dx + w * 0.02, stemStart.dy,
+        cx + w * 0.11,
+        h * 0.58,
+        cx - w * 0.05,
+        h * 0.72,
+        stemStart.dx + w * 0.02,
+        stemStart.dy,
       )
       ..close();
     final stemPaint = Paint()
@@ -865,12 +874,16 @@ class _CreaturePainter extends CustomPainter {
     final topLeafBase = Offset(cx + w * 0.02, h * 0.18);
     topLeafPath.moveTo(topLeafBase.dx - w * 0.01, topLeafBase.dy);
     topLeafPath.quadraticBezierTo(
-      cx + w * 0.10, h * 0.10,
-      cx + w * 0.14, h * 0.06,
+      cx + w * 0.10,
+      h * 0.10,
+      cx + w * 0.14,
+      h * 0.06,
     );
     topLeafPath.quadraticBezierTo(
-      cx + w * 0.08, h * 0.12,
-      cx + w * 0.06, h * 0.18,
+      cx + w * 0.08,
+      h * 0.12,
+      cx + w * 0.06,
+      h * 0.18,
     );
     topLeafPath.close();
     canvas.drawPath(
@@ -940,14 +953,15 @@ class _CreaturePainter extends CustomPainter {
         ..shader = const RadialGradient(
           center: Alignment(0, -0.5),
           colors: <Color>[Color(0xFF8B6B4A), Color(0xFF5A3A1A)],
-        ).createShader(Rect.fromLTWH(cx - w * 0.25, h * 0.82, w * 0.5, h * 0.12)),
+        ).createShader(
+            Rect.fromLTWH(cx - w * 0.25, h * 0.82, w * 0.5, h * 0.12)),
     );
 
     // Tige.
     final stemPath = Path()
       ..moveTo(cx - w * 0.018, h * 0.84)
-      ..cubicTo(cx - w * 0.06, h * 0.65, cx + w * 0.06, h * 0.50,
-          cx - w * 0.01, h * 0.32)
+      ..cubicTo(cx - w * 0.06, h * 0.65, cx + w * 0.06, h * 0.50, cx - w * 0.01,
+          h * 0.32)
       ..lineTo(cx + w * 0.01, h * 0.32)
       ..cubicTo(cx + w * 0.08, h * 0.50, cx - w * 0.04, h * 0.65,
           cx + w * 0.018, h * 0.84)
@@ -985,17 +999,21 @@ class _CreaturePainter extends CustomPainter {
       final petalTip = flowerCenter +
           Offset(math.cos(angle) * petalLen, math.sin(angle) * petalLen);
       final perpAngle = angle + math.pi / 2;
-      final perpOff =
-          Offset(math.cos(perpAngle) * w * 0.04, math.sin(perpAngle) * w * 0.04);
+      final perpOff = Offset(
+          math.cos(perpAngle) * w * 0.04, math.sin(perpAngle) * w * 0.04);
       final petal = Path()
         ..moveTo(flowerCenter.dx, flowerCenter.dy)
         ..quadraticBezierTo(
-          petalTip.dx + perpOff.dx, petalTip.dy + perpOff.dy,
-          petalTip.dx, petalTip.dy,
+          petalTip.dx + perpOff.dx,
+          petalTip.dy + perpOff.dy,
+          petalTip.dx,
+          petalTip.dy,
         )
         ..quadraticBezierTo(
-          petalTip.dx - perpOff.dx, petalTip.dy - perpOff.dy,
-          flowerCenter.dx, flowerCenter.dy,
+          petalTip.dx - perpOff.dx,
+          petalTip.dy - perpOff.dy,
+          flowerCenter.dx,
+          flowerCenter.dy,
         );
       canvas.drawPath(
         petal,
@@ -1050,8 +1068,10 @@ class _CreaturePainter extends CustomPainter {
     final mouth = Path()
       ..moveTo(flowerCenter.dx - w * 0.02, flowerCenter.dy + w * 0.05)
       ..quadraticBezierTo(
-        flowerCenter.dx, flowerCenter.dy + w * 0.065,
-        flowerCenter.dx + w * 0.02, flowerCenter.dy + w * 0.05,
+        flowerCenter.dx,
+        flowerCenter.dy + w * 0.065,
+        flowerCenter.dx + w * 0.02,
+        flowerCenter.dy + w * 0.05,
       );
     canvas.drawPath(
       mouth,
@@ -1111,7 +1131,8 @@ class _CreaturePainter extends CustomPainter {
             Color(0xFFA07240),
             Color(0xFF7A5530),
           ],
-        ).createShader(Rect.fromLTWH(cx - w * 0.04, h * 0.48, w * 0.08, h * 0.38)),
+        ).createShader(
+            Rect.fromLTWH(cx - w * 0.04, h * 0.48, w * 0.08, h * 0.38)),
     );
 
     // Branches latérales.
@@ -1197,8 +1218,10 @@ class _CreaturePainter extends CustomPainter {
     final mouth = Path()
       ..moveTo(cx - w * 0.04, canopyCenter.dy + h * 0.10)
       ..quadraticBezierTo(
-        cx, canopyCenter.dy + h * 0.14,
-        cx + w * 0.04, canopyCenter.dy + h * 0.10,
+        cx,
+        canopyCenter.dy + h * 0.14,
+        cx + w * 0.04,
+        canopyCenter.dy + h * 0.10,
       );
     canvas.drawPath(
       mouth,
@@ -1229,8 +1252,8 @@ class _CreaturePainter extends CustomPainter {
     // Tige.
     final stemPath = Path()
       ..moveTo(cx - w * 0.018, h * 0.84)
-      ..cubicTo(cx - w * 0.06, h * 0.65, cx + w * 0.06, h * 0.50,
-          cx - w * 0.01, h * 0.32)
+      ..cubicTo(cx - w * 0.06, h * 0.65, cx + w * 0.06, h * 0.50, cx - w * 0.01,
+          h * 0.32)
       ..lineTo(cx + w * 0.01, h * 0.32)
       ..cubicTo(cx + w * 0.08, h * 0.50, cx - w * 0.04, h * 0.65,
           cx + w * 0.018, h * 0.84)
@@ -1260,14 +1283,20 @@ class _CreaturePainter extends CustomPainter {
     final budPath = Path();
     budPath.moveTo(cx, h * 0.08);
     budPath.cubicTo(
-      cx + w * 0.12, h * 0.14,
-      cx + w * 0.12, h * 0.32,
-      cx, h * 0.36,
+      cx + w * 0.12,
+      h * 0.14,
+      cx + w * 0.12,
+      h * 0.32,
+      cx,
+      h * 0.36,
     );
     budPath.cubicTo(
-      cx - w * 0.12, h * 0.32,
-      cx - w * 0.12, h * 0.14,
-      cx, h * 0.08,
+      cx - w * 0.12,
+      h * 0.32,
+      cx - w * 0.12,
+      h * 0.14,
+      cx,
+      h * 0.08,
     );
     budPath.close();
     canvas.drawPath(
@@ -1461,8 +1490,8 @@ class _CreaturePainter extends CustomPainter {
             Color(0xFFA07240),
             Color(0xFF7A5530),
           ],
-        ).createShader(Rect.fromLTWH(
-            cx - w * 0.025, h * 0.56, w * 0.05, h * 0.30)),
+        ).createShader(
+            Rect.fromLTWH(cx - w * 0.025, h * 0.56, w * 0.05, h * 0.30)),
     );
 
     // Canopée plus petite.
@@ -1511,8 +1540,10 @@ class _CreaturePainter extends CustomPainter {
     final mouth = Path()
       ..moveTo(cx - w * 0.03, canopyCenter.dy + h * 0.08)
       ..quadraticBezierTo(
-        cx, canopyCenter.dy + h * 0.11,
-        cx + w * 0.03, canopyCenter.dy + h * 0.08,
+        cx,
+        canopyCenter.dy + h * 0.11,
+        cx + w * 0.03,
+        canopyCenter.dy + h * 0.08,
       );
     canvas.drawPath(
       mouth,
@@ -1612,7 +1643,8 @@ class _CreaturePainter extends CustomPainter {
     // 5 pétales roses + centre jaune.
     for (int i = 0; i < 5; i++) {
       final angle = (i * math.pi * 2 / 5) - math.pi / 2;
-      final p = center + Offset(math.cos(angle) * radius, math.sin(angle) * radius);
+      final p =
+          center + Offset(math.cos(angle) * radius, math.sin(angle) * radius);
       canvas.drawCircle(
         p,
         radius * 0.55,
@@ -1651,10 +1683,13 @@ class _CreaturePainter extends CustomPainter {
     // 4 rayons.
     for (int i = 0; i < 4; i++) {
       final angle = i * math.pi / 2;
-      final p1 = center + Offset(math.cos(angle) * w * 0.015, math.sin(angle) * w * 0.015);
-      final p2 = center + Offset(math.cos(angle) * w * 0.04, math.sin(angle) * w * 0.04);
+      final p1 = center +
+          Offset(math.cos(angle) * w * 0.015, math.sin(angle) * w * 0.015);
+      final p2 = center +
+          Offset(math.cos(angle) * w * 0.04, math.sin(angle) * w * 0.04);
       canvas.drawLine(
-        p1, p2,
+        p1,
+        p2,
         Paint()
           ..color = Colors.white
           ..strokeWidth = w * 0.006

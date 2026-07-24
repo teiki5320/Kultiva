@@ -14,7 +14,8 @@ import '../models/vegetable.dart';
 class PdfService {
   PdfService._();
 
-  static Future<void> printVegetableSheet(Vegetable vegetable, Region region) async {
+  static Future<void> printVegetableSheet(
+      Vegetable vegetable, Region region) async {
     final doc = pw.Document();
     final regionData = _findRegionData(vegetable.id, region);
 
@@ -39,7 +40,8 @@ class PdfService {
                   pw.Spacer(),
                   pw.Text(
                     vegetable.category.label,
-                    style: const pw.TextStyle(fontSize: 14, color: PdfColors.grey600),
+                    style: const pw.TextStyle(
+                        fontSize: 14, color: PdfColors.grey600),
                   ),
                 ],
               ),
@@ -73,9 +75,11 @@ class PdfService {
                   ),
                 ),
                 pw.SizedBox(height: 8),
-                _buildMonthBar('Semis', regionData.sowingMonths, PdfColors.green),
+                _buildMonthBar(
+                    'Semis', regionData.sowingMonths, PdfColors.green),
                 pw.SizedBox(height: 4),
-                _buildMonthBar('Récolte', regionData.harvestMonths, PdfColors.orange),
+                _buildMonthBar(
+                    'Récolte', regionData.harvestMonths, PdfColors.orange),
                 if (regionData.regionalNote != null) ...[
                   pw.SizedBox(height: 6),
                   pw.Container(
@@ -151,7 +155,8 @@ class PdfService {
               pw.SizedBox(height: 4),
               pw.Text(
                 'Fiche générée par Kultiva',
-                style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey500),
+                style:
+                    const pw.TextStyle(fontSize: 9, color: PdfColors.grey500),
               ),
             ],
           );
@@ -173,9 +178,8 @@ class PdfService {
     required List<CultureEntry> cultures,
   }) async {
     final doc = pw.Document();
-    final soilCultures = cultures
-        .where((c) => c.startedAt.year == year)
-        .toList();
+    final soilCultures =
+        cultures.where((c) => c.startedAt.year == year).toList();
     final totalCultures = soilCultures.length;
     final waterings = soilCultures.fold<int>(
       0,
@@ -285,8 +289,9 @@ class PdfService {
                 ),
               ),
               pw.SizedBox(height: 8),
-              for (final entry in (categories.entries.toList()
-                ..sort((a, b) => b.value.compareTo(a.value))))
+              for (final entry
+                  in (categories.entries.toList()
+                    ..sort((a, b) => b.value.compareTo(a.value))))
                 pw.Padding(
                   padding: const pw.EdgeInsets.symmetric(vertical: 2),
                   child: pw.Text(
@@ -356,7 +361,18 @@ class PdfService {
   }
 
   static const List<String> _shortMonths = [
-    'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D',
+    'J',
+    'F',
+    'M',
+    'A',
+    'M',
+    'J',
+    'J',
+    'A',
+    'S',
+    'O',
+    'N',
+    'D',
   ];
 
   static pw.Widget _buildMonthBar(
@@ -365,7 +381,9 @@ class PdfService {
       children: [
         pw.SizedBox(
           width: 60,
-          child: pw.Text(label, style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
+          child: pw.Text(label,
+              style:
+                  pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
         ),
         ...List.generate(12, (i) {
           final m = i + 1;
@@ -406,7 +424,10 @@ class PdfService {
             pw.Padding(
               padding: const pw.EdgeInsets.symmetric(vertical: 2),
               child: pw.Text(r[0]!,
-                  style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold, color: PdfColors.grey700)),
+                  style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold,
+                      color: PdfColors.grey700)),
             ),
             pw.Padding(
               padding: const pw.EdgeInsets.symmetric(vertical: 2),
@@ -431,7 +452,8 @@ class PdfService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text('$label : ',
-            style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold, color: color)),
+            style: pw.TextStyle(
+                fontSize: 10, fontWeight: pw.FontWeight.bold, color: color)),
         pw.Expanded(
           child: pw.Text(names, style: const pw.TextStyle(fontSize: 10)),
         ),

@@ -11,6 +11,7 @@ import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
 import '../../services/plantation_migration.dart';
 import '../../services/prefs_service.dart';
+import '../../services/review_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import 'my_garden/garden_header.dart';
@@ -179,6 +180,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     // La créature célèbre le défi complété et gagne +20 XP.
     _tamassiKey.currentState?.triggerCelebration();
     _tamassiKey.currentState?.awardChallengeXp(challengeId);
+    // Moment positif : on peut solliciter (au plus une fois) une note store.
+    ReviewService.instance
+        .maybeRequestReview(unlockedBadgeCount: _unlockedBadges.length);
   }
 
   @override

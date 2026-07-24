@@ -63,7 +63,8 @@ class AudioService {
     if (!PrefsService.instance.musicEnabled.value) return;
     try {
       await _musicPlayer.setReleaseMode(ReleaseMode.loop);
-      await _musicPlayer.setVolume(PrefsService.instance.soundVolume.value * 0.5);
+      await _musicPlayer
+          .setVolume(PrefsService.instance.soundVolume.value * 0.5);
       await _musicPlayer.play(AssetSource('sounds/music_loop.mp3'));
       _musicPlaying = true;
     } catch (e) {

@@ -258,8 +258,7 @@ class _BadgeCardVisual extends StatelessWidget {
             // Bandeau du nom.
             Container(
               width: double.infinity,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: frameColor.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),
@@ -327,8 +326,7 @@ class _BadgeCardVisual extends StatelessWidget {
             // Description.
             Container(
               width: double.infinity,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                 color: Colors.grey.shade50,
                 borderRadius: BorderRadius.circular(10),
@@ -465,8 +463,7 @@ class _HolographicOverlay extends StatelessWidget {
     final right = (shinePos + 0.18).clamp(0.0, 1.0);
 
     // Intensité du reflet : maximum au tilt maximal, faible au repos.
-    final tiltMagnitude =
-        (rotationY.abs() + rotationX.abs()).clamp(0.0, 1.0);
+    final tiltMagnitude = (rotationY.abs() + rotationX.abs()).clamp(0.0, 1.0);
     final shineOpacity = 0.15 + tiltMagnitude * 0.4;
 
     // Angle du gradient arc-en-ciel : rotate selon rotationY pour donner
@@ -566,7 +563,8 @@ class _BadgeCardBack extends StatelessWidget {
             colors: tierColors.innerGradient,
           ),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: frameColor.withValues(alpha: 0.5), width: 2),
+          border:
+              Border.all(color: frameColor.withValues(alpha: 0.5), width: 2),
         ),
         child: Stack(
           children: <Widget>[
@@ -724,8 +722,7 @@ class _TierColors {
   }
 
   _TierColors _faded() {
-    Color dim(Color c) =>
-        Color.lerp(c, Colors.grey.shade400, 0.55) ?? c;
+    Color dim(Color c) => Color.lerp(c, Colors.grey.shade400, 0.55) ?? c;
     return _TierColors(
       frame: dim(frame),
       glow: glow.withValues(alpha: 0),

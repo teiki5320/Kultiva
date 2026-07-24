@@ -67,8 +67,9 @@ class WeatherService {
       final current = data['current'] as Map<String, dynamic>;
       final daily = data['daily'] as Map<String, dynamic>;
 
-      final name =
-          isFallback ? _fallbackCountry.capitalName : await _reverseGeocode(lat, lon);
+      final name = isFallback
+          ? _fallbackCountry.capitalName
+          : await _reverseGeocode(lat, lon);
       _cached = WeatherData(
         latitude: lat,
         longitude: lon,

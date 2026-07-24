@@ -26,7 +26,17 @@ class CrossingAnimal {
 
 /// Seuils d'évolution de la créature (11 stades).
 const List<int> kEvolutionThresholds = <int>[
-  1, 5, 10, 15, 20, 30, 40, 50, 60, 75, 100,
+  1,
+  5,
+  10,
+  15,
+  20,
+  30,
+  40,
+  50,
+  60,
+  75,
+  100,
 ];
 
 /// Barre de progression XP vers la prochaine évolution.
@@ -53,9 +63,8 @@ class XpBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final (cur, next) = _bounds;
     final maxed = cur == next;
-    final progress = maxed
-        ? 1.0
-        : ((level - cur) / (next - cur)).clamp(0.0, 1.0);
+    final progress =
+        maxed ? 1.0 : ((level - cur) / (next - cur)).clamp(0.0, 1.0);
     const accent = Color(0xFFE8808E); // rose-rouge du contour
     const fill = Color(0xFFE8A8B0); // rose rempli
     const track = Color(0xFFFFF5F5); // blanc rosé (fond de barre)
@@ -86,8 +95,7 @@ class XpBar extends StatelessWidget {
                         border: Border.all(color: accent, width: 2),
                       ),
                       child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(barHeight / 2),
+                        borderRadius: BorderRadius.circular(barHeight / 2),
                         child: TweenAnimationBuilder<double>(
                           duration: const Duration(milliseconds: 400),
                           curve: Curves.easeOut,
@@ -129,11 +137,10 @@ class XpBar extends StatelessWidget {
                     curve: Curves.easeOut,
                     tween: Tween<double>(begin: 0, end: progress),
                     builder: (context, value, _) {
-                      final x = (barWidth * value.clamp(0.0, 1.0)) -
-                          peachSize / 2;
+                      final x =
+                          (barWidth * value.clamp(0.0, 1.0)) - peachSize / 2;
                       return Positioned(
-                        left: x.clamp(-peachSize / 2,
-                            barWidth - peachSize / 2),
+                        left: x.clamp(-peachSize / 2, barWidth - peachSize / 2),
                         top: 0,
                         child: const Text(
                           '🍑',
@@ -168,8 +175,7 @@ class FireflyOrbitPainter extends CustomPainter {
       final speed = 0.5 + (i % 3) * 0.15;
       final angle = (progress * speed + i / count) * 2 * pi;
       // Rayon variable sur chaque luciole.
-      final radiusVariation =
-          1.0 + 0.15 * sin(progress * 2 * pi + i * 1.1);
+      final radiusVariation = 1.0 + 0.15 * sin(progress * 2 * pi + i * 1.1);
       final r = baseRadius * (0.85 + (i % 2) * 0.1) * radiusVariation;
       // Léger bob vertical.
       final yBob = sin(progress * 4 * pi + i * 0.8) * size.height * 0.02;
@@ -179,19 +185,22 @@ class FireflyOrbitPainter extends CustomPainter {
       final opacity = (0.3 + blink * 0.7).clamp(0.0, 1.0);
       // Halo doux autour du point lumineux.
       canvas.drawCircle(
-        p, 10,
+        p,
+        10,
         Paint()
           ..color = const Color(0xFFFFF3A0).withValues(alpha: opacity * 0.22)
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6),
       );
       // Point lumineux.
       canvas.drawCircle(
-        p, 3.2,
+        p,
+        3.2,
         Paint()..color = const Color(0xFFFFE37A).withValues(alpha: opacity),
       );
       // Reflet blanc central.
       canvas.drawCircle(
-        p, 1.4,
+        p,
+        1.4,
         Paint()..color = Colors.white.withValues(alpha: opacity),
       );
     }
@@ -220,19 +229,15 @@ class EvolutionRaysPainter extends CustomPainter {
       final angle = (i * 2 * pi / rayCount);
       final rayPath = Path()
         ..moveTo(0, 0)
-        ..lineTo(cos(angle - 0.04) * maxRadius,
-            sin(angle - 0.04) * maxRadius)
-        ..lineTo(
-            cos(angle + 0.04) * maxRadius, sin(angle + 0.04) * maxRadius)
+        ..lineTo(cos(angle - 0.04) * maxRadius, sin(angle - 0.04) * maxRadius)
+        ..lineTo(cos(angle + 0.04) * maxRadius, sin(angle + 0.04) * maxRadius)
         ..close();
       canvas.drawPath(
         rayPath,
         Paint()
           ..shader = RadialGradient(
             colors: <Color>[
-              Color.lerp(
-                      const Color(0xFFFFE066),
-                      const Color(0xFFFFB04C),
+              Color.lerp(const Color(0xFFFFE066), const Color(0xFFFFB04C),
                       (i % 2).toDouble())!
                   .withValues(alpha: opacity * 0.7),
               Colors.transparent,
@@ -288,8 +293,7 @@ class ConfettiPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant ConfettiPainter old) =>
-      old.progress != progress;
+  bool shouldRepaint(covariant ConfettiPainter old) => old.progress != progress;
 }
 
 /// Mini-Tamassi d'un autre joueur qui passe en visite, avec son nom.
@@ -343,8 +347,7 @@ class VisitorBubble extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
@@ -447,16 +450,22 @@ class EffectPainter extends CustomPainter {
       final dropPath = Path()
         ..moveTo(startX, y - dropSize * 2)
         ..quadraticBezierTo(
-          startX + dropSize, y - dropSize,
-          startX + dropSize * 0.6, y + dropSize * 0.8,
+          startX + dropSize,
+          y - dropSize,
+          startX + dropSize * 0.6,
+          y + dropSize * 0.8,
         )
         ..quadraticBezierTo(
-          startX, y + dropSize,
-          startX - dropSize * 0.6, y + dropSize * 0.8,
+          startX,
+          y + dropSize,
+          startX - dropSize * 0.6,
+          y + dropSize * 0.8,
         )
         ..quadraticBezierTo(
-          startX - dropSize, y - dropSize,
-          startX, y - dropSize * 2,
+          startX - dropSize,
+          y - dropSize,
+          startX,
+          y - dropSize * 2,
         )
         ..close();
       canvas.drawPath(
@@ -469,8 +478,8 @@ class EffectPainter extends CustomPainter {
               const Color(0xFF9BD4FF).withValues(alpha: 0.9),
               const Color(0xFF3A9BE8).withValues(alpha: 0.95),
             ],
-          ).createShader(Rect.fromCircle(
-              center: Offset(startX, y), radius: dropSize * 2)),
+          ).createShader(
+              Rect.fromCircle(center: Offset(startX, y), radius: dropSize * 2)),
       );
       // Splash quand la goutte atteint le bas (dernier 25% du localP).
       if (localP > 0.75) {

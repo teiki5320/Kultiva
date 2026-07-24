@@ -116,9 +116,7 @@ class MedalBadge extends StatelessWidget {
 
     if (!showCornerMedal || tier == MedalTier.none) {
       return Semantics(
-        label: tier == MedalTier.none
-            ? emoji
-            : 'Médaille ${tier.label}',
+        label: tier == MedalTier.none ? emoji : 'Médaille ${tier.label}',
         image: true,
         child: ring,
       );
@@ -129,39 +127,39 @@ class MedalBadge extends StatelessWidget {
       label: 'Médaille ${tier.label}',
       image: true,
       child: SizedBox(
-      width: size,
-      height: size,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          ring,
-          Positioned(
-            top: -2,
-            right: -4,
-            child: Container(
-              width: cornerSize,
-              height: cornerSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.18),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                tier.emoji,
-                style: TextStyle(fontSize: cornerSize * 0.62),
+        width: size,
+        height: size,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            ring,
+            Positioned(
+              top: -2,
+              right: -4,
+              child: Container(
+                width: cornerSize,
+                height: cornerSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.18),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  tier.emoji,
+                  style: TextStyle(fontSize: cornerSize * 0.62),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -184,8 +182,7 @@ class MedalBadge extends StatelessWidget {
   ///  4. l'emoji centré.
   /// Pour les autres paliers, simple cercle teinté famille.
   Widget _buildInnerCircle(double emojiSize) {
-    final isMetallic =
-        tier == MedalTier.silver || tier == MedalTier.gold;
+    final isMetallic = tier == MedalTier.silver || tier == MedalTier.gold;
     if (!isMetallic) {
       return Container(
         width: size,

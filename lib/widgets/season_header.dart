@@ -83,39 +83,40 @@ class SeasonHeader extends StatelessWidget {
             SeasonParticleAnimation(season: season),
             // Libellé (masqué si hideLabel=true, pour que l'écran météo
             // puisse afficher son propre titre/localisation à la place).
-            if (!hideLabel) Positioned(
-              left: 20,
-              right: 20,
-              bottom: 20,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    '${season.emoji}  ${season.label}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          shadows: const <Shadow>[
-                            Shadow(color: Colors.black38, blurRadius: 8),
-                          ],
-                        ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _months[month - 1],
-                    style:
-                        Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              shadows: const <Shadow>[
-                                Shadow(color: Colors.black45, blurRadius: 10),
-                              ],
-                            ),
-                  ),
-                ],
+            if (!hideLabel)
+              Positioned(
+                left: 20,
+                right: 20,
+                bottom: 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      '${season.emoji}  ${season.label}',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        shadows: const <Shadow>[
+                          Shadow(color: Colors.black38, blurRadius: 8),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _months[month - 1],
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        shadows: const <Shadow>[
+                          Shadow(color: Colors.black45, blurRadius: 10),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

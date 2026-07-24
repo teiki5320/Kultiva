@@ -28,9 +28,8 @@ class PoussidexJournalView extends StatelessWidget {
     for (final p in plantations) {
       final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
       final label = v == null ? p.vegetableId : '${v.emoji} ${v.name}';
-      final color = v == null
-          ? KultivaColors.primaryGreen
-          : v.category.familyColor;
+      final color =
+          v == null ? KultivaColors.primaryGreen : v.category.familyColor;
 
       events.add(_JournalEvent(
         date: p.plantedAt,
@@ -175,7 +174,8 @@ class _JournalTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '${event.action} ${event.vegetableLabel} à ${_timeLabel(event.date)}',
+      label:
+          '${event.action} ${event.vegetableLabel} à ${_timeLabel(event.date)}',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(

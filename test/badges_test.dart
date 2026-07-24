@@ -60,10 +60,19 @@ void main() {
           completedChallengeIds: <String>{'first_sprout'},
         ),
       );
-      expect(set, containsAll(<String>[
-        'first_step', 'named', 'first_water', 'first_fertilize',
-        'first_pet', 'first_challenge', 'streak_3', 'morning', 'level_15',
-      ]));
+      expect(
+          set,
+          containsAll(<String>[
+            'first_step',
+            'named',
+            'first_water',
+            'first_fertilize',
+            'first_pet',
+            'first_challenge',
+            'streak_3',
+            'morning',
+            'level_15',
+          ]));
     });
 
     test('level 100 unlocks arbre légendaire', () {

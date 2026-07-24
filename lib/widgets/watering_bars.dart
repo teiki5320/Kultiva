@@ -25,25 +25,25 @@ class WateringBars extends StatelessWidget {
       label: 'Arrosage : $wateredCount jour${wateredCount > 1 ? 's' : ''}'
           ' sur ${history.length}',
       child: SizedBox(
-      height: height,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          for (var i = 0; i < history.length; i++) ...<Widget>[
-            if (i > 0) const SizedBox(width: 2),
-            Expanded(
-              child: Container(
-                height: history[i] ? height : height * 0.25,
-                decoration: BoxDecoration(
-                  color: history[i] ? c : c.withValues(alpha: 0.18),
-                  borderRadius: BorderRadius.circular(2),
+        height: height,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            for (var i = 0; i < history.length; i++) ...<Widget>[
+              if (i > 0) const SizedBox(width: 2),
+              Expanded(
+                child: Container(
+                  height: history[i] ? height : height * 0.25,
+                  decoration: BoxDecoration(
+                    color: history[i] ? c : c.withValues(alpha: 0.18),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
-    ),
     );
   }
 }

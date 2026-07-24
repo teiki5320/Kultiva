@@ -22,24 +22,24 @@ enum ClimateZone {
 /// et portent chacun leur zone climatique et leur capitale (utilisée comme
 /// position météo de secours quand la géolocalisation est refusée).
 enum Country {
-  france('FR', 'France', '🇫🇷', Region.france, ClimateZone.temperate,
-      48.8566, 2.3522, 'Paris'),
+  france('FR', 'France', '🇫🇷', Region.france, ClimateZone.temperate, 48.8566,
+      2.3522, 'Paris'),
   senegal('SN', 'Sénégal', '🇸🇳', Region.westAfrica, ClimateZone.sahel,
       14.6928, -17.4467, 'Dakar'),
   coteDivoire('CI', "Côte d'Ivoire", '🇨🇮', Region.westAfrica,
       ClimateZone.guinean, 5.3600, -4.0083, 'Abidjan'),
-  mali('ML', 'Mali', '🇲🇱', Region.westAfrica, ClimateZone.sahel,
-      12.6392, -8.0029, 'Bamako'),
+  mali('ML', 'Mali', '🇲🇱', Region.westAfrica, ClimateZone.sahel, 12.6392,
+      -8.0029, 'Bamako'),
   burkinaFaso('BF', 'Burkina Faso', '🇧🇫', Region.westAfrica,
       ClimateZone.sudan, 12.3714, -1.5197, 'Ouagadougou'),
-  benin('BJ', 'Bénin', '🇧🇯', Region.westAfrica, ClimateZone.guinean,
-      6.3703, 2.3912, 'Cotonou'),
-  togo('TG', 'Togo', '🇹🇬', Region.westAfrica, ClimateZone.guinean,
-      6.1256, 1.2254, 'Lomé'),
-  niger('NE', 'Niger', '🇳🇪', Region.westAfrica, ClimateZone.sahel,
-      13.5137, 2.1098, 'Niamey'),
-  guinee('GN', 'Guinée', '🇬🇳', Region.westAfrica, ClimateZone.guinean,
-      9.6412, -13.5784, 'Conakry');
+  benin('BJ', 'Bénin', '🇧🇯', Region.westAfrica, ClimateZone.guinean, 6.3703,
+      2.3912, 'Cotonou'),
+  togo('TG', 'Togo', '🇹🇬', Region.westAfrica, ClimateZone.guinean, 6.1256,
+      1.2254, 'Lomé'),
+  niger('NE', 'Niger', '🇳🇪', Region.westAfrica, ClimateZone.sahel, 13.5137,
+      2.1098, 'Niamey'),
+  guinee('GN', 'Guinée', '🇬🇳', Region.westAfrica, ClimateZone.guinean, 9.6412,
+      -13.5784, 'Conakry');
 
   final String isoCode;
   final String label;

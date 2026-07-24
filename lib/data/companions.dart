@@ -86,15 +86,36 @@ const Map<String, List<String>> companionMap = {
 
   // ── Fleurs comestibles ──
   // Capucine : "plante-piège" qui attire les pucerons loin des cultures.
-  'capucine': ['tomate', 'courgette', 'aubergine', 'chou_pomme', 'chou_kale', 'haricot'],
+  'capucine': [
+    'tomate',
+    'courgette',
+    'aubergine',
+    'chou_pomme',
+    'chou_kale',
+    'haricot'
+  ],
   // Souci (calendula) : repousse nématodes et pucerons.
   'souci': ['tomate', 'asperge', 'fraise', 'haricot', 'pomme_de_terre'],
   // Bourrache : très mellifère, dope pollinisation.
-  'bourrache': ['fraise', 'tomate', 'courgette', 'concombre', 'cerisier', 'pommier'],
+  'bourrache': [
+    'fraise',
+    'tomate',
+    'courgette',
+    'concombre',
+    'cerisier',
+    'pommier'
+  ],
   // Pensée : surtout décoratif, neutre au potager.
   'pensee': ['laitue', 'fraise'],
   // Œillet d'Inde : anti-nématodes, à planter au pied des solanacées.
-  'oeillet_inde': ['tomate', 'aubergine', 'haricot', 'chou_pomme', 'pomme_de_terre', 'fraise'],
+  'oeillet_inde': [
+    'tomate',
+    'aubergine',
+    'haricot',
+    'chou_pomme',
+    'pomme_de_terre',
+    'fraise'
+  ],
 
   // ── Fleurs utiles au potager ──
   // Tournesol : tuteur vivant pour le maïs et les haricots grimpants.
@@ -102,7 +123,14 @@ const Map<String, List<String>> companionMap = {
   // Tagète : anti-nématodes puissant.
   'tagete': ['tomate', 'aubergine', 'pomme_de_terre', 'haricot', 'fraise'],
   // Lavande : repousse pucerons et fourmis, attire abeilles.
-  'lavande': ['carotte', 'chou_pomme', 'fraise', 'pommier', 'poirier', 'cerisier'],
+  'lavande': [
+    'carotte',
+    'chou_pomme',
+    'fraise',
+    'pommier',
+    'poirier',
+    'cerisier'
+  ],
   // Cosmos : mellifère, attire syrphes et auxiliaires.
   'cosmos': ['tomate', 'courgette', 'concombre', 'fraise'],
   // Zinnia : papillons et abeilles.
@@ -112,12 +140,24 @@ const Map<String, List<String>> companionMap = {
 
   // ── Engrais verts (couvre-sols, fixateurs d'azote, mellifères) ──
   // Phacélie : universelle — toutes cultures gourmandes en humus.
-  'phacelie': ['tomate', 'courgette', 'pomme_de_terre', 'chou_pomme', 'haricot'],
+  'phacelie': [
+    'tomate',
+    'courgette',
+    'pomme_de_terre',
+    'chou_pomme',
+    'haricot'
+  ],
   // Moutarde blanche : précède bien les solanacées et cucurbitacées.
   // À ne pas faire suivre par les choux (même famille).
   'moutarde_blanche': ['tomate', 'pomme_de_terre', 'courgette', 'potiron'],
   // Trèfle incarnat : fixe l'azote — précède les cultures gourmandes.
-  'trefle_incarnat': ['tomate', 'courgette', 'mais', 'chou_pomme', 'pomme_de_terre'],
+  'trefle_incarnat': [
+    'tomate',
+    'courgette',
+    'mais',
+    'chou_pomme',
+    'pomme_de_terre'
+  ],
   // Sarrasin : universel, tolère les sols pauvres.
   'sarrasin': ['tomate', 'pomme_de_terre', 'courgette', 'haricot'],
 };
@@ -191,5 +231,14 @@ const Map<String, List<String>> incompatibleMap = {
   // ── Engrais verts : précautions de rotation ──
   // Moutarde blanche est crucifère — ne pas la faire suivre par des choux
   // (hernie du chou) ni précéder par des cultures sensibles aux altises.
-  'moutarde_blanche': ['chou_pomme', 'chou_fleur', 'brocoli', 'chou_kale', 'chou_bruxelles', 'radis', 'navet', 'roquette'],
+  'moutarde_blanche': [
+    'chou_pomme',
+    'chou_fleur',
+    'brocoli',
+    'chou_kale',
+    'chou_bruxelles',
+    'radis',
+    'navet',
+    'roquette'
+  ],
 };

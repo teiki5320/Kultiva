@@ -155,48 +155,77 @@ class _KawaiiBackgroundState extends State<KawaiiBackground>
       return <Widget>[
         // Lune.
         const Positioned(
-          top: 20, right: 30,
+          top: 20,
+          right: 30,
           child: Text('🌙', style: TextStyle(fontSize: 42)),
         ),
         // Étoiles.
-        const Positioned(top: 30, left: 40,
-          child: Text('⭐', style: TextStyle(fontSize: 14))),
-        const Positioned(top: 60, left: 140,
-          child: Text('⭐', style: TextStyle(fontSize: 10))),
-        const Positioned(top: 80, right: 80,
-          child: Text('⭐', style: TextStyle(fontSize: 12))),
-        const Positioned(top: 120, left: 60,
-          child: Text('⭐', style: TextStyle(fontSize: 8))),
-        const Positioned(top: 50, right: 150,
-          child: Text('⭐', style: TextStyle(fontSize: 11))),
-        const Positioned(top: 160, right: 50,
-          child: Text('⭐', style: TextStyle(fontSize: 9))),
+        const Positioned(
+            top: 30,
+            left: 40,
+            child: Text('⭐', style: TextStyle(fontSize: 14))),
+        const Positioned(
+            top: 60,
+            left: 140,
+            child: Text('⭐', style: TextStyle(fontSize: 10))),
+        const Positioned(
+            top: 80,
+            right: 80,
+            child: Text('⭐', style: TextStyle(fontSize: 12))),
+        const Positioned(
+            top: 120,
+            left: 60,
+            child: Text('⭐', style: TextStyle(fontSize: 8))),
+        const Positioned(
+            top: 50,
+            right: 150,
+            child: Text('⭐', style: TextStyle(fontSize: 11))),
+        const Positioned(
+            top: 160,
+            right: 50,
+            child: Text('⭐', style: TextStyle(fontSize: 9))),
       ];
     }
     // Jour.
-    final isSunny = _weather == null ||
-        (_weather!.currentWeatherCode <= 2);
+    final isSunny = _weather == null || (_weather!.currentWeatherCode <= 2);
     return <Widget>[
       if (isSunny)
-        const Positioned(top: 15, right: 25,
-          child: Text('☀️', style: TextStyle(fontSize: 36)))
+        const Positioned(
+            top: 15,
+            right: 25,
+            child: Text('☀️', style: TextStyle(fontSize: 36)))
       else ...<Widget>[
-        Positioned(top: 20, left: 30,
-          child: Text('☁️', style: TextStyle(
-            fontSize: 44, color: Colors.white.withValues(alpha: 0.9)))),
-        Positioned(top: 60, right: 40,
-          child: Text('☁️', style: TextStyle(
-            fontSize: 32, color: Colors.white.withValues(alpha: 0.8)))),
-        Positioned(top: 140, left: 20,
-          child: Text('☁️', style: TextStyle(
-            fontSize: 28, color: Colors.white.withValues(alpha: 0.7)))),
+        Positioned(
+            top: 20,
+            left: 30,
+            child: Text('☁️',
+                style: TextStyle(
+                    fontSize: 44, color: Colors.white.withValues(alpha: 0.9)))),
+        Positioned(
+            top: 60,
+            right: 40,
+            child: Text('☁️',
+                style: TextStyle(
+                    fontSize: 32, color: Colors.white.withValues(alpha: 0.8)))),
+        Positioned(
+            top: 140,
+            left: 20,
+            child: Text('☁️',
+                style: TextStyle(
+                    fontSize: 28, color: Colors.white.withValues(alpha: 0.7)))),
       ],
-      const Positioned(bottom: 20, left: 20,
-        child: Text('🌸', style: TextStyle(fontSize: 26))),
-      const Positioned(bottom: 40, right: 30,
-        child: Text('🌼', style: TextStyle(fontSize: 22))),
-      const Positioned(bottom: 12, left: 160,
-        child: Text('🌿', style: TextStyle(fontSize: 20))),
+      const Positioned(
+          bottom: 20,
+          left: 20,
+          child: Text('🌸', style: TextStyle(fontSize: 26))),
+      const Positioned(
+          bottom: 40,
+          right: 30,
+          child: Text('🌼', style: TextStyle(fontSize: 22))),
+      const Positioned(
+          bottom: 12,
+          left: 160,
+          child: Text('🌿', style: TextStyle(fontSize: 20))),
     ];
   }
 }
@@ -302,7 +331,8 @@ class WeatherParticlePainter extends CustomPainter {
       final x = baseX + drift;
       final r = 2.0 + rng.nextDouble() * 3;
       canvas.drawCircle(
-        Offset(x, y), r,
+        Offset(x, y),
+        r,
         Paint()..color = Colors.white.withValues(alpha: 0.8),
       );
     }
@@ -314,7 +344,8 @@ class WeatherParticlePainter extends CustomPainter {
     if (flash < 0.03) {
       canvas.drawRect(
         Offset.zero & size,
-        Paint()..color = Colors.white.withValues(alpha: 0.3 * (1 - flash / 0.03)),
+        Paint()
+          ..color = Colors.white.withValues(alpha: 0.3 * (1 - flash / 0.03)),
       );
     }
   }
@@ -328,7 +359,8 @@ class WeatherParticlePainter extends CustomPainter {
       final opacity = (sin(phase * pi * 2) * 0.5 + 0.5) * 0.5;
       final r = 2.0 + rng.nextDouble() * 2;
       canvas.drawCircle(
-        Offset(x, y), r,
+        Offset(x, y),
+        r,
         Paint()..color = const Color(0xFFFFE066).withValues(alpha: opacity),
       );
     }
@@ -406,5 +438,12 @@ class WeatherParticlePainter extends CustomPainter {
 }
 
 enum WeatherType {
-  clear, cloudy, rain, heavyRain, snow, storm, petals, leaves,
+  clear,
+  cloudy,
+  rain,
+  heavyRain,
+  snow,
+  storm,
+  petals,
+  leaves,
 }

@@ -43,7 +43,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
   late int _currentIndex;
   late List<Vegetable> _list;
 
-
   @override
   void initState() {
     super.initState();
@@ -96,14 +95,14 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
       builder: (context, region, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-                '${_currentVegetable.emoji}  ${_currentVegetable.name}'),
+            title:
+                Text('${_currentVegetable.emoji}  ${_currentVegetable.name}'),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.picture_as_pdf),
                 tooltip: 'Exporter PDF',
-                onPressed: () => PdfService.printVegetableSheet(
-                    _currentVegetable, region),
+                onPressed: () =>
+                    PdfService.printVegetableSheet(_currentVegetable, region),
               ),
               ValueListenableBuilder<Set<String>>(
                 valueListenable: PrefsService.instance.favorites,
@@ -312,8 +311,8 @@ class _HeaderCard extends StatelessWidget {
               const SizedBox(height: 6),
               Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: tier.color.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
@@ -420,9 +419,8 @@ class _MonthsCard extends StatelessWidget {
                         Container(
                           height: 32,
                           decoration: BoxDecoration(
-                            color: active
-                                ? color
-                                : color.withValues(alpha: 0.12),
+                            color:
+                                active ? color : color.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
@@ -431,15 +429,11 @@ class _MonthsCard extends StatelessWidget {
                           shortMonths[i],
                           style: TextStyle(
                             fontSize: 10,
-                            fontWeight: active
-                                ? FontWeight.w800
-                                : FontWeight.w600,
+                            fontWeight:
+                                active ? FontWeight.w800 : FontWeight.w600,
                             color: active
                                 ? color
-                                : Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.color,
+                                : Theme.of(context).textTheme.bodySmall?.color,
                           ),
                         ),
                       ],
@@ -533,9 +527,8 @@ class _HarvestTimeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final entries = _order.entries
-        .where((e) => times.containsKey(e.key))
-        .toList();
+    final entries =
+        _order.entries.where((e) => times.containsKey(e.key)).toList();
     if (entries.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(top: 12),
@@ -580,8 +573,7 @@ class _HarvestTimeSection extends StatelessWidget {
                       Expanded(
                         child: Text(
                           times[e.key]!,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],

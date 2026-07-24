@@ -14,6 +14,7 @@ import 'services/audio_service.dart';
 import 'services/auth_service.dart';
 import 'services/cloud_sync_service.dart';
 import 'services/notification_service.dart';
+import 'services/photo_service.dart';
 import 'services/prefs_service.dart';
 import 'theme/app_theme.dart';
 
@@ -48,6 +49,8 @@ Future<void> main() async {
   if (AuthService.instance.isSignedIn) {
     CloudSyncService.instance.syncAllOnLogin();
   }
+  // Purge best-effort des photos locales orphelines (non bloquant).
+  PhotoService.purgeOrphans();
   // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
   if (PrefsService.instance.notifications.value) {
     await NotificationService.scheduleMonthlyReminder();

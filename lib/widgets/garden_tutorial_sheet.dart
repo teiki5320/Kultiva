@@ -26,8 +26,7 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
     _TutoSlide(
       emoji: '👨‍👩‍👧',
       title: 'Le potager, en famille',
-      subtitle:
-          "Le Poussidex est pensé pour faire jardiner les enfants. "
+      subtitle: "Le Poussidex est pensé pour faire jardiner les enfants. "
           "Ton enfant choisit un compagnon kawaii — Spira, Soleia ou "
           "Poussia — qui grandit chaque fois qu'il s'occupe du jardin.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
@@ -35,8 +34,7 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
     _TutoSlide(
       emoji: '🌱',
       title: 'Un compagnon qui évolue',
-      subtitle:
-          "À chaque arrosage, chaque photo, chaque défi relevé, le "
+      subtitle: "À chaque arrosage, chaque photo, chaque défi relevé, le "
           "Tamassi gagne de l'XP et change d'apparence. 11 stades à "
           "débloquer ensemble — de la petite graine à l'arbre légendaire.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
@@ -44,8 +42,7 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
     _TutoSlide(
       emoji: '📸',
       title: 'Des défis photo qui les motivent',
-      subtitle:
-          "« Le légume le plus grand », « La fleur la plus jolie »... "
+      subtitle: "« Le légume le plus grand », « La fleur la plus jolie »... "
           "Une trentaine de défis qui transforment les enfants en "
           "petits explorateurs du jardin. Une photo = une badge.",
       gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
@@ -53,8 +50,7 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
     _TutoSlide(
       emoji: '🏆',
       title: 'Une collection à compléter',
-      subtitle:
-          "Les badges débloqués s'ajoutent à un album façon collection "
+      subtitle: "Les badges débloqués s'ajoutent à un album façon collection "
           "Pokémon : bronze, argent, or et shiny. Idéal pour donner "
           "envie aux enfants de revenir au jardin.",
       gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
@@ -141,8 +137,7 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
             ),
             const SizedBox(height: 12),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: Row(
                 children: [
                   if (_page > 0)

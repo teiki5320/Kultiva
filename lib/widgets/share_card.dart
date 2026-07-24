@@ -42,8 +42,8 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
     try {
       // Attendre une frame pour garantir que le RepaintBoundary est rendu.
       await Future<void>.delayed(const Duration(milliseconds: 60));
-      final boundary = _cardKey.currentContext!.findRenderObject()
-          as RenderRepaintBoundary;
+      final boundary =
+          _cardKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       final ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
@@ -171,8 +171,7 @@ class _ShareCardContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text('🪴',
-                  style: TextStyle(fontSize: 24)),
+              const Text('🪴', style: TextStyle(fontSize: 24)),
               Text(
                 'POUSSIDEX',
                 style: TextStyle(
@@ -223,8 +222,7 @@ class _ShareCardContent extends StatelessWidget {
           Text(
             vegetable.name,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                fontWeight: FontWeight.w900, fontSize: 28),
+            style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
           ),
           Text(
             vegetable.category.label,
@@ -240,12 +238,9 @@ class _ShareCardContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _StatBlock(
-                  label: 'Jour', value: '${days + 1}'),
-              _StatBlock(
-                  label: '💧', value: '${plantation.wateredAt.length}'),
-              _StatBlock(
-                  label: '🧺', value: '${plantation.harvestCount}'),
+              _StatBlock(label: 'Jour', value: '${days + 1}'),
+              _StatBlock(label: '💧', value: '${plantation.wateredAt.length}'),
+              _StatBlock(label: '🧺', value: '${plantation.harvestCount}'),
             ],
           ),
           const SizedBox(height: 10),
@@ -274,8 +269,7 @@ class _StatBlock extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text(value,
-            style: const TextStyle(
-                fontWeight: FontWeight.w900, fontSize: 22)),
+            style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 22)),
         Text(label,
             style: const TextStyle(
               fontWeight: FontWeight.w700,

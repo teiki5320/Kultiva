@@ -169,8 +169,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
       body: Stack(
         children: <Widget>[
           WebViewWidget(controller: _controller),
-          if (_loading)
-            const Center(child: CircularProgressIndicator()),
+          if (_loading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

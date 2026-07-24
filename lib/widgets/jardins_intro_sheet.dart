@@ -24,8 +24,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
     _IntroSlide(
       emoji: '🌿',
       title: 'Mes jardins',
-      subtitle:
-          "Crée autant de jardins pleine terre que tu veux, "
+      subtitle: "Crée autant de jardins pleine terre que tu veux, "
           "chacun avec sa grille de cases. L'app suit tes plants "
           "et te conseille tout au long de la saison.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
@@ -33,8 +32,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
     _IntroSlide(
       emoji: '🟢',
       title: 'Place tes plants',
-      subtitle:
-          "Choisis un plant en bas, dépose-le sur une case. La case "
+      subtitle: "Choisis un plant en bas, dépose-le sur une case. La case "
           "se remplit avec un emoji + le nombre de plants. Tap pour "
           "ouvrir la fiche détaillée.",
       gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
@@ -42,8 +40,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
     _IntroSlide(
       emoji: '💧',
       title: 'Suis tes plants au quotidien',
-      subtitle:
-          "Bouton « Arroser » dans chaque fiche, conseils d'irrigation "
+      subtitle: "Bouton « Arroser » dans chaque fiche, conseils d'irrigation "
           "adaptés au légume, et un badge couleur pour savoir si tu "
           "as arrosé récemment ou pas.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
@@ -51,8 +48,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
     _IntroSlide(
       emoji: '📅',
       title: 'Date de plantation = stade',
-      subtitle:
-          "Tu peux corriger la date de plantation à tout moment. "
+      subtitle: "Tu peux corriger la date de plantation à tout moment. "
           "L'app calcule automatiquement le stade (semis / croissance / "
           "floraison / fructification) et adapte ses conseils.",
       gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
@@ -139,8 +135,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
             ),
             const SizedBox(height: 12),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: Row(
                 children: [
                   if (_page > 0)

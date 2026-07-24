@@ -189,7 +189,8 @@ class GardenPlan {
   String toJsonString() => jsonEncode(toJson());
 
   factory GardenPlan.fromJson(Map<String, dynamic> j) {
-    final cellsJson = (j['cells'] as Map<String, dynamic>? ?? <String, dynamic>{});
+    final cellsJson =
+        (j['cells'] as Map<String, dynamic>? ?? <String, dynamic>{});
     final cells = cellsJson.map(
       (k, v) => MapEntry(k, PlannedCell.fromJson(v as Map<String, dynamic>)),
     );

@@ -51,8 +51,8 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
     setState(() => _sharing = true);
     try {
       await Future<void>.delayed(const Duration(milliseconds: 60));
-      final boundary = _cardKey.currentContext!.findRenderObject()
-          as RenderRepaintBoundary;
+      final boundary =
+          _cardKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
       final ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
@@ -68,9 +68,8 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
         <XFile>[XFile(file.path)],
         text: 'J\'ai complété le défi "${widget.challenge.name}" '
             'sur Kultiva ! ${widget.challenge.emoji} 🌱',
-        sharePositionOrigin: box != null
-            ? box.localToGlobal(Offset.zero) & box.size
-            : null,
+        sharePositionOrigin:
+            box != null ? box.localToGlobal(Offset.zero) & box.size : null,
       );
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
@@ -194,8 +193,8 @@ class _StoryCardVisual extends StatelessWidget {
             errorBuilder: (_, __, ___) => Container(
               color: color.withValues(alpha: 0.3),
               alignment: Alignment.center,
-              child: Text(challenge.emoji,
-                  style: const TextStyle(fontSize: 80)),
+              child:
+                  Text(challenge.emoji, style: const TextStyle(fontSize: 80)),
             ),
           ),
           // Dégradé noir en haut + en bas pour la lisibilité du texte.
@@ -222,8 +221,8 @@ class _StoryCardVisual extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: color,
                     borderRadius: BorderRadius.circular(14),
@@ -281,8 +280,8 @@ class _StoryCardVisual extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),

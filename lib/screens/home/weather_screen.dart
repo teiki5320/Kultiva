@@ -94,8 +94,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             SizedBox(width: 10),
             Expanded(
               child: Text('Localisation désactivée',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w800, fontSize: 17)),
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
             ),
           ],
         ),
@@ -177,14 +176,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
           Stack(
             children: [
               SeasonHeader(
-                season: Season.of(DateTime.now().month,
-                    PrefsService.instance.region.value),
+                season: Season.of(
+                    DateTime.now().month, PrefsService.instance.region.value),
                 month: DateTime.now().month,
                 height: 160,
                 hideLabel: true,
               ),
               Positioned(
-                top: 8, left: 8,
+                top: 8,
+                left: 8,
                 child: SafeArea(
                   child: Semantics(
                     label: 'Retour',
@@ -205,7 +205,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 ),
               ),
               Positioned(
-                top: 8, right: 8,
+                top: 8,
+                right: 8,
                 child: SafeArea(
                   child: Semantics(
                     label: 'Rafraîchir la météo',
@@ -226,7 +227,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 ),
               ),
               Positioned(
-                bottom: 16, left: 20, right: 20,
+                bottom: 16,
+                left: 20,
+                right: 20,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -279,8 +282,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               : null,
                         ),
                         Row(
-                          children: List.generate(_weather!.dailyDates.length,
-                              (i) {
+                          children:
+                              List.generate(_weather!.dailyDates.length, (i) {
                             final active = i == _currentIndex;
                             return AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
@@ -334,118 +337,123 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Semantics(
       label: daySemanticLabel,
       child: SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        children: [
-          Text(_dayLabel(offset),
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: KultivaColors.textPrimary,
-              )),
-          const SizedBox(height: 8),
-          ExcludeSemantics(
-            child: Text(emoji, style: const TextStyle(fontSize: 80)),
-          ),
-          const SizedBox(height: 8),
-          if (offset == 0) ...[
-            Semantics(
-              label: '${w.currentTemp.toStringAsFixed(0)} degrés',
-              child: Text('${w.currentTemp.toStringAsFixed(0)}°C',
-                  style: const TextStyle(
-                      fontSize: 48, fontWeight: FontWeight.w800)),
-            ),
-            Text(w.weatherLabel,
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Text(_dayLabel(offset),
                 style: const TextStyle(
-                    fontSize: 14, color: KultivaColors.textSecondary)),
-          ] else
-            Semantics(
-              label: '${tmax.toStringAsFixed(0)} degrés',
-              child: Text('${tmax.toStringAsFixed(0)}°C',
-                  style: const TextStyle(
-                      fontSize: 48, fontWeight: FontWeight.w800)),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: KultivaColors.textPrimary,
+                )),
+            const SizedBox(height: 8),
+            ExcludeSemantics(
+              child: Text(emoji, style: const TextStyle(fontSize: 80)),
             ),
-          const SizedBox(height: 16),
-          // Température min/max.
-          Semantics(
-            label: 'Minimum ${tmin.toStringAsFixed(0)} degrés, maximum ${tmax.toStringAsFixed(0)} degrés',
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              decoration: BoxDecoration(
-                color: KultivaColors.lightGreen.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const ExcludeSemantics(child: Text('🌡', style: TextStyle(fontSize: 18))),
-                  const SizedBox(width: 8),
-                  Text('Min ${tmin.toStringAsFixed(0)}°',
-                      style: const TextStyle(fontWeight: FontWeight.w700)),
-                  const SizedBox(width: 16),
-                  Text('Max ${tmax.toStringAsFixed(0)}°',
-                      style: const TextStyle(fontWeight: FontWeight.w700)),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          // Précipitations.
-          Semantics(
-            label: '${rain.toStringAsFixed(1)} millimètres de pluie',
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              decoration: BoxDecoration(
-                color: KultivaColors.waterBlue.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const ExcludeSemantics(child: Text('💧', style: TextStyle(fontSize: 18))),
-                  const SizedBox(width: 8),
-                  Text('${rain.toStringAsFixed(1)} mm de pluie',
-                      style: const TextStyle(fontWeight: FontWeight.w700)),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          // Conseil jardinage.
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                KultivaColors.summerA.withValues(alpha: 0.3),
-                KultivaColors.terracotta.withValues(alpha: 0.15),
-              ]),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: KultivaColors.terracotta.withValues(alpha: 0.2),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('💡 Conseil jardinage',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
-                      color: KultivaColors.terracotta.withValues(alpha: 0.8),
-                    )),
-                const SizedBox(height: 6),
-                Text(advice,
+            const SizedBox(height: 8),
+            if (offset == 0) ...[
+              Semantics(
+                label: '${w.currentTemp.toStringAsFixed(0)} degrés',
+                child: Text('${w.currentTemp.toStringAsFixed(0)}°C',
                     style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        height: 1.4)),
-              ],
+                        fontSize: 48, fontWeight: FontWeight.w800)),
+              ),
+              Text(w.weatherLabel,
+                  style: const TextStyle(
+                      fontSize: 14, color: KultivaColors.textSecondary)),
+            ] else
+              Semantics(
+                label: '${tmax.toStringAsFixed(0)} degrés',
+                child: Text('${tmax.toStringAsFixed(0)}°C',
+                    style: const TextStyle(
+                        fontSize: 48, fontWeight: FontWeight.w800)),
+              ),
+            const SizedBox(height: 16),
+            // Température min/max.
+            Semantics(
+              label:
+                  'Minimum ${tmin.toStringAsFixed(0)} degrés, maximum ${tmax.toStringAsFixed(0)} degrés',
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: KultivaColors.lightGreen.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                        child: Text('🌡', style: TextStyle(fontSize: 18))),
+                    const SizedBox(width: 8),
+                    Text('Min ${tmin.toStringAsFixed(0)}°',
+                        style: const TextStyle(fontWeight: FontWeight.w700)),
+                    const SizedBox(width: 16),
+                    Text('Max ${tmax.toStringAsFixed(0)}°',
+                        style: const TextStyle(fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            // Précipitations.
+            Semantics(
+              label: '${rain.toStringAsFixed(1)} millimètres de pluie',
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: KultivaColors.waterBlue.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ExcludeSemantics(
+                        child: Text('💧', style: TextStyle(fontSize: 18))),
+                    const SizedBox(width: 8),
+                    Text('${rain.toStringAsFixed(1)} mm de pluie',
+                        style: const TextStyle(fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Conseil jardinage.
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  KultivaColors.summerA.withValues(alpha: 0.3),
+                  KultivaColors.terracotta.withValues(alpha: 0.15),
+                ]),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: KultivaColors.terracotta.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('💡 Conseil jardinage',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5,
+                        color: KultivaColors.terracotta.withValues(alpha: 0.8),
+                      )),
+                  const SizedBox(height: 6),
+                  Text(advice,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          height: 1.4)),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
     );
   }
 }

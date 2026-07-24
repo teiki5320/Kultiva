@@ -27,8 +27,8 @@ class CultureService {
   /// Cultures terminées, les plus récemment finies en premier.
   List<CultureEntry> ended() {
     final list = loadAll().where((c) => !c.isActive).toList();
-    list.sort((a, b) => (b.endedAt ?? b.startedAt)
-        .compareTo(a.endedAt ?? a.startedAt));
+    list.sort((a, b) =>
+        (b.endedAt ?? b.startedAt).compareTo(a.endedAt ?? a.startedAt));
     return list;
   }
 

@@ -387,7 +387,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "0,5 à 1 kg/m²",
     amazonUrl: "https://www.amazon.fr/s?k=ail+a+planter&tag=kultiva-21",
     harvestTimeBySeason: {
-      'autumn': '240 à 270 jours (ail blanc et violet, planté en octobre-novembre)',
+      'autumn':
+          '240 à 270 jours (ail blanc et violet, planté en octobre-novembre)',
       'spring': '180 à 210 jours (ail rose, planté en février-mars)',
     },
     imageAsset: 'assets/images/vegetables/ail.png',
@@ -414,7 +415,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré, augmenter à la floraison",
     soil: "Meuble, profond, légèrement acide",
     yieldEstimate: "2 à 4 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=pomme+de+terre+a+planter&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=pomme+de+terre+a+planter&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '70 à 90 jours (variétés précoces, plantation en mars)',
       'summer': '90 à 120 jours (variétés de conservation)',
@@ -562,7 +564,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré, réduire avant récolte",
     soil: "Léger, sableux, bien drainé",
     yieldEstimate: "2 à 4 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=patate+douce+a+planter&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=patate+douce+a+planter&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '130 à 150 jours (plantation sous abri en avril)',
       'summer': '90 à 120 jours (pleine terre, climat chaud)',
@@ -712,7 +715,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Abondant, au pied",
     soil: "Riche, profond, bien fumé",
     yieldEstimate: "3 à 5 fruits/pied",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+courge+butternut&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+courge+butternut&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '100 à 120 jours (semis sous abri en avril)',
       'summer': '90 à 110 jours (semis direct en mai)',
@@ -1114,7 +1118,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Grand tubercule tropical, base de l'alimentation en Afrique de l'Ouest. Riche en amidon.",
     note: "Cycle long (8 à 12 mois) — planter en début de saison des pluies.",
-    sowingTechnique: "Plantation de fragments de tubercules ou de mini-semenceaux",
+    sowingTechnique:
+        "Plantation de fragments de tubercules ou de mini-semenceaux",
     sowingDepth: "10 à 15 cm",
     germinationTemp: "25 à 30 °C",
     germinationDays: "20 à 40 jours",
@@ -1169,7 +1174,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.seeds,
     description:
         "Haricot à œil noir, pilier des protéines végétales en Afrique de l'Ouest. Très résistant à la chaleur.",
-    note: "Culture facile, enrichit le sol en azote comme toutes les légumineuses.",
+    note:
+        "Culture facile, enrichit le sol en azote comme toutes les légumineuses.",
     sowingTechnique: "Semis direct en poquets de 2-3 graines",
     sowingDepth: "3 à 5 cm",
     germinationTemp: "20 à 30 °C",
@@ -1210,7 +1216,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "6 à 10 têtes/pied",
     amazonUrl: "https://www.amazon.fr/s?k=graines+artichaut&tag=kultiva-21",
     harvestTimeBySeason: {
-      'spring': '150 à 180 jours (plantation d\'oeilletons au printemps, 1re année)',
+      'spring':
+          '150 à 180 jours (plantation d\'oeilletons au printemps, 1re année)',
       'summer': '90 à 120 jours (vivace installée, à partir de la 2e année)',
     },
     imageAsset: 'assets/images/vegetables/artichaut.png',
@@ -1277,7 +1284,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.leaves,
     description:
         "Petite salade d'hiver au goût doux et noisette, ultra-rustique au froid.",
-    note: "La salade d'hiver par excellence — semée en automne, récoltée en hiver.",
+    note:
+        "La salade d'hiver par excellence — semée en automne, récoltée en hiver.",
     sowingTechnique: "Semis direct à la volée ou en ligne",
     sowingDepth: "0,5 cm",
     germinationTemp: "10 à 15 °C",
@@ -1392,7 +1400,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré, supporte la sécheresse",
     soil: "Ordinaire, bien drainé",
     yieldEstimate: "0,5 à 1 kg de calices/pied",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+bissap+hibiscus&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+bissap+hibiscus&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '140 à 150 jours (semis en mai, climat tempéré chaud)',
       'summer': '120 à 140 jours (saison des pluies, Afrique de l\'Ouest)',
@@ -1408,7 +1417,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.seeds,
     description:
         "Petite graine oléagineuse au goût de noisette, base du tahini et de nombreuses pâtisseries.",
-    note: "Récolter avant que les capsules ne s'ouvrent — elles libèrent les graines.",
+    note:
+        "Récolter avant que les capsules ne s'ouvrent — elles libèrent les graines.",
     sowingTechnique: "Semis direct en sol chaud",
     sowingDepth: "0,5 à 1 cm",
     germinationTemp: "20 à 30 °C",
@@ -1418,7 +1428,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible, résiste à la sécheresse",
     soil: "Léger, sableux, bien drainé",
     yieldEstimate: "100 à 300 g/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+sesame+a+semer&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+sesame+a+semer&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '110 à 120 jours (semis en mai, climat tempéré chaud)',
       'summer': '90 à 105 jours (saison des pluies, Afrique de l\'Ouest)',
@@ -1471,7 +1482,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "500 g à 1 kg/pied/an",
     amazonUrl: "https://www.amazon.fr/s?k=griffes+asperge&tag=kultiva-21",
     harvestTimeBySeason: {
-      'spring': '2 à 3 ans avant la première récolte (griffes plantées au printemps)',
+      'spring':
+          '2 à 3 ans avant la première récolte (griffes plantées au printemps)',
       'summer': 'Récolte printanière annuelle dès la 3e année (avril à juin)',
     },
     imageAsset: 'assets/images/vegetables/asperge.png',
@@ -1522,9 +1534,11 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier (phase racine), faible (phase forçage)",
     soil: "Profond, meuble",
     yieldEstimate: "1 chicon par racine",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+endive+chicoree&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+endive+chicoree&tag=kultiva-21",
     harvestTimeBySeason: {
-      'spring': '150 à 180 jours (semis en mai, arrachage en automne, forçage en cave)',
+      'spring':
+          '150 à 180 jours (semis en mai, arrachage en automne, forçage en cave)',
       'autumn': '160 à 190 jours (forçage inclus, récolte hivernale)',
     },
     imageAsset: 'assets/images/vegetables/endive.png',
@@ -1547,7 +1561,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier",
     soil: "Riche, argileux, frais",
     yieldEstimate: "1 à 2 kg/pied",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+chou+bruxelles&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+chou+bruxelles&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '130 à 150 jours (semis de mars-avril)',
       'summer': '120 à 140 jours (semis de mai, récolte d\'automne-hiver)',
@@ -1698,7 +1713,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Petit concombre récolté jeune, parfait pour les conserves au vinaigre. Plante prolifique, croissance rapide en plein soleil.",
     note: "Récolte tous les 2 jours pour des cornichons fermes.",
-    sowingTechnique: "Semis en godet sous abri ou semis direct après les gelées",
+    sowingTechnique:
+        "Semis en godet sous abri ou semis direct après les gelées",
     sowingDepth: "1 à 2 cm",
     germinationTemp: "18 à 25 °C",
     germinationDays: "7 à 10 jours",
@@ -1784,7 +1800,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.tubers,
     description:
         "Tubercule rustique à saveur d'artichaut. Plante vivace géante de 2 à 3 m, productive et increvable, mais peut devenir envahissante.",
-    note: "Une fois planté, revient chaque année — choisir l'emplacement avec soin.",
+    note:
+        "Une fois planté, revient chaque année — choisir l'emplacement avec soin.",
     sowingTechnique: "Plantation de tubercules au printemps",
     sowingDepth: "8 à 10 cm",
     germinationTemp: "10 à 15 °C",
@@ -1794,7 +1811,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible, plante très rustique",
     soil: "Tout type, même pauvre",
     yieldEstimate: "3 à 4 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=tubercules+topinambour&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=tubercules+topinambour&tag=kultiva-21",
     harvestTimeBySeason: {
       'autumn': '180 à 210 jours',
       'winter': '200 à 240 jours',
@@ -1910,7 +1928,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Permanent, sol détrempé",
     soil: "Argileux, riche en humus, très humide",
     yieldEstimate: "1 à 2 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+cresson+fontaine&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+cresson+fontaine&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': '50 à 70 jours',
       'autumn': '60 à 80 jours',
@@ -1996,7 +2015,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier, garder le sol frais",
     soil: "Riche, frais, bien drainé",
     yieldEstimate: "4 à 6 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+chou+chinois+napa&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+chou+chinois+napa&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': '60 à 80 jours',
       'autumn': '70 à 90 jours',
@@ -2016,7 +2036,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Arbrisseau aromatique méditerranéen aux feuilles persistantes. Très résistant à la sécheresse, présent toute l'année au jardin.",
     note: "Plante vivace — un seul plant suffit pour des années.",
-    sowingTechnique: "Semis difficile — préférer le bouturage ou l'achat de plant",
+    sowingTechnique:
+        "Semis difficile — préférer le bouturage ou l'achat de plant",
     sowingDepth: "0,3 cm",
     germinationTemp: "18 à 25 °C",
     germinationDays: "21 à 30 jours",
@@ -2056,7 +2077,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible",
     soil: "Sec, calcaire, drainé",
     yieldEstimate: "Récolte permanente",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+sauge+officinale&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+sauge+officinale&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Récolte permanente",
       'summer': "Récolte permanente",
@@ -2106,7 +2128,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.aromatics,
     description:
         "Aromate fin au goût anisé, indispensable à la cuisine française (béarnaise, vinaigre d'estragon). Préférer la variété française à la russe (moins parfumée).",
-    note: "Multiplication par division — les graines donnent souvent l'estragon russe sans saveur.",
+    note:
+        "Multiplication par division — les graines donnent souvent l'estragon russe sans saveur.",
     sowingTechnique: "Plantation de plant — éviter les graines",
     sowingDepth: "—",
     germinationTemp: "—",
@@ -2116,7 +2139,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Léger, drainé, neutre",
     yieldEstimate: "Récolte permanente",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+estragon+francais&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+estragon+francais&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Récolte permanente",
       'summer': "Récolte permanente",
@@ -2233,7 +2257,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Frais, humifère, drainé",
     yieldEstimate: "Récolte permanente",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+melisse+citronnelle&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+melisse+citronnelle&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Récolte permanente",
       'summer': "Récolte permanente",
@@ -2263,7 +2288,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Léger, drainé, neutre",
     yieldEstimate: "Récolte sur la belle saison",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+verveine+citronnee&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+verveine+citronnee&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Récolte permanente",
       'autumn': "Récolte permanente",
@@ -2322,7 +2348,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Léger, drainé, neutre",
     yieldEstimate: "Récolte des fleurs sur 2 mois",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+camomille+romaine&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+camomille+romaine&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "70 à 90 jours",
     },
@@ -2379,7 +2406,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible",
     soil: "Pauvre, calcaire, drainé",
     yieldEstimate: "150 à 250 g/m² (grains secs)",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+lentille+verte+puy&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+lentille+verte+puy&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "100 à 110 jours",
     },
@@ -2435,7 +2463,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier en floraison",
     soil: "Frais, drainé, peu fumé",
     yieldEstimate: "1,5 à 2,5 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+pois+mange+tout&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+pois+mange+tout&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "60 à 75 jours",
       'summer': "55 à 70 jours",
@@ -2464,7 +2493,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier, surtout en floraison",
     soil: "Frais, drainé, peu fumé",
     yieldEstimate: "1,5 à 3 kg/m²",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+haricot+beurre&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+haricot+beurre&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "60 à 75 jours",
       'summer': "50 à 65 jours",
@@ -2483,7 +2513,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Petit fruit rouge parfumé sur arbuste vivace. Variétés remontantes (deux récoltes) ou non remontantes (une grosse récolte en juin).",
-    note: "Pailler généreusement et tailler chaque hiver pour rester productif.",
+    note:
+        "Pailler généreusement et tailler chaque hiver pour rester productif.",
     sowingTechnique: "Plantation de plants ou drageons",
     sowingDepth: "—",
     germinationTemp: "—",
@@ -2575,7 +2606,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier en fructification",
     soil: "Frais, humifère, drainé",
     yieldEstimate: "5 à 10 kg/pied",
-    amazonUrl: "https://www.amazon.fr/s?k=murier+sans+epines+plant&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=murier+sans+epines+plant&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à septembre",
     },
@@ -2714,7 +2746,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Vaporisation légère",
     soil: "Compost fourni dans le kit",
     yieldEstimate: "1 à 2 kg sur 2 mois",
-    amazonUrl: "https://www.amazon.fr/s?k=kit+culture+champignon+paris&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=kit+culture+champignon+paris&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "21 à 35 jours",
       'autumn': "21 à 35 jours",
@@ -2733,7 +2766,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Arbre fruitier roi du verger français, des centaines de variétés (Reinette, Golden, Gala, Chanteclerc...). Vit 50 ans et plus.",
-    note: "La plupart des variétés ont besoin d'un pollinisateur — planter à plusieurs.",
+    note:
+        "La plupart des variétés ont besoin d'un pollinisateur — planter à plusieurs.",
     sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
     sowingDepth: "—",
     germinationTemp: "—",
@@ -2743,7 +2777,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier les 2 premières années",
     soil: "Profond, frais, drainé",
     yieldEstimate: "20 à 100 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+pommier+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+pommier+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Variétés précoces de juillet à août",
       'autumn': "Variétés de saison de septembre à novembre",
@@ -2771,7 +2806,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier les 2 premières années",
     soil: "Profond, frais, drainé, légèrement acide",
     yieldEstimate: "30 à 80 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+poirier+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+poirier+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Variétés précoces en août",
       'autumn': "Variétés de saison de septembre à octobre",
@@ -2789,7 +2825,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Arbre fruitier généreux à l'origine de nombreuses variétés (Reine-Claude, Mirabelle, Quetsche). Productif et facile, peu exigeant.",
-    note: "Récolter à pleine maturité — les prunes ne mûrissent pas après cueillette.",
+    note:
+        "Récolter à pleine maturité — les prunes ne mûrissent pas après cueillette.",
     sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
     sowingDepth: "—",
     germinationTemp: "—",
@@ -2799,7 +2836,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier les 2 premières années",
     soil: "Frais, profond, drainé",
     yieldEstimate: "20 à 60 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+prunier+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+prunier+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à septembre selon la variété",
     },
@@ -2816,7 +2854,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Arbre fruitier emblématique du printemps, sublime en floraison rose. Production rapide (3-4 ans) et abondante de cerises sucrées (bigarreau) ou acidulées (griotte).",
-    note: "Filets anti-oiseaux indispensables à la maturité — ils adorent les cerises.",
+    note:
+        "Filets anti-oiseaux indispensables à la maturité — ils adorent les cerises.",
     sowingTechnique: "Plantation de scion ou jeune arbre en hiver",
     sowingDepth: "—",
     germinationTemp: "—",
@@ -2826,7 +2865,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier les 2 premières années",
     soil: "Profond, drainé, calcaire toléré",
     yieldEstimate: "20 à 40 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+cerisier+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+cerisier+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Récolte en juin-juillet",
     },
@@ -2853,7 +2893,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier les 2 premières années",
     soil: "Profond, drainé, calcaire toléré",
     yieldEstimate: "30 à 80 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+abricotier+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+abricotier+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Récolte en juillet",
     },
@@ -2880,7 +2921,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Régulier les 2 premières années",
     soil: "Frais, profond, drainé",
     yieldEstimate: "20 à 50 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+pecher+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+pecher+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à août",
     },
@@ -2907,7 +2949,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible une fois installé",
     soil: "Tout type, drainé",
     yieldEstimate: "20 à 50 kg/arbre adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+figuier+arbre+fruitier&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+figuier+arbre+fruitier&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Figues fleurs en juin-juillet",
       'autumn': "Récolte principale en août-octobre",
@@ -2953,7 +2996,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Liane fruitière classique, raisins blancs ou noirs sucrés. Magnifique en pergola, productive et longue durée de vie (50 ans et plus).",
-    note: "Tailler tous les hivers pour limiter la pousse et concentrer la sève.",
+    note:
+        "Tailler tous les hivers pour limiter la pousse et concentrer la sève.",
     sowingTechnique: "Plantation de plant en hiver",
     sowingDepth: "—",
     germinationTemp: "—",
@@ -2963,7 +3007,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible une fois installée",
     soil: "Drainé, calcaire toléré",
     yieldEstimate: "5 à 15 kg/pied adulte",
-    amazonUrl: "https://www.amazon.fr/s?k=plant+vigne+raisin+table&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=plant+vigne+raisin+table&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Variétés précoces en août",
       'autumn': "Récolte principale de septembre à octobre",
@@ -3047,7 +3092,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Tout type, drainé",
     yieldEstimate: "Floraison continue sur 5 mois",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+souci+calendula&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+souci+calendula&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Floraison de mai à novembre",
       'summer': "Floraison continue",
@@ -3135,7 +3181,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Tout type, drainé",
     yieldEstimate: "Floraison continue sur 4 mois",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+oeillet+inde+tagete&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+oeillet+inde+tagete&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Floraison de juin à octobre",
       'summer': "Floraison continue",
@@ -3192,7 +3239,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Modéré",
     soil: "Tout type, drainé",
     yieldEstimate: "Floraison continue sur 4 mois",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+tagete+nematicide&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+tagete+nematicide&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Floraison de juin à octobre",
     },
@@ -3294,7 +3342,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.flowers,
     description:
         "Fleur sauvage bleue des champs de blé, devenue rare en culture. Très mellifère, fleurs comestibles à parsemer en salade.",
-    note: "Se ressème spontanément — laisser quelques fleurs monter en graines.",
+    note:
+        "Se ressème spontanément — laisser quelques fleurs monter en graines.",
     sowingTechnique: "Semis direct en place",
     sowingDepth: "0,5 cm",
     germinationTemp: "12 à 18 °C",
@@ -3333,7 +3382,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible",
     soil: "Tout type",
     yieldEstimate: "Couvre-sol et engrais vert",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+phacelie+engrais+vert&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+phacelie+engrais+vert&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Enfouir 8 à 10 semaines après semis",
       'summer': "Enfouir 6 à 8 semaines après semis",
@@ -3353,7 +3403,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.flowers,
     description:
         "Engrais vert rapide : germe et fleurit en 6 semaines. Désinfecte le sol (effet biocide), structure et étouffe les adventices.",
-    note: "Idéale entre deux cultures — semer en septembre après récoltes d'été.",
+    note:
+        "Idéale entre deux cultures — semer en septembre après récoltes d'été.",
     sowingTechnique: "Semis à la volée puis griffage",
     sowingDepth: "0,5 à 1 cm",
     germinationTemp: "10 à 20 °C",
@@ -3363,7 +3414,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible",
     soil: "Tout type",
     yieldEstimate: "Couvre-sol et engrais vert",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+moutarde+blanche+engrais+vert&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+moutarde+blanche+engrais+vert&tag=kultiva-21",
     harvestTimeBySeason: {
       'spring': "Enfouir 6 à 8 semaines après semis",
       'summer': "Enfouir 5 à 7 semaines après semis",
@@ -3393,7 +3445,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible",
     soil: "Tout type, drainé",
     yieldEstimate: "Engrais vert riche en azote",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+trefle+incarnat+engrais+vert&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+trefle+incarnat+engrais+vert&tag=kultiva-21",
     harvestTimeBySeason: {
       'autumn': "Semer fin août-septembre, enfouir au printemps",
     },
@@ -3411,7 +3464,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.flowers,
     description:
         "Engrais vert à floraison blanche très mellifère, croissance ultra-rapide. Idéal pour étouffer un terrain envahi en pleine saison.",
-    note: "Détruit par les gelées — ne pas le laisser grainer pour éviter les repousses.",
+    note:
+        "Détruit par les gelées — ne pas le laisser grainer pour éviter les repousses.",
     sowingTechnique: "Semis à la volée puis griffage",
     sowingDepth: "1 à 2 cm",
     germinationTemp: "12 à 20 °C",
@@ -3421,7 +3475,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     watering: "Faible",
     soil: "Tout type, même pauvre",
     yieldEstimate: "Couvre-sol et engrais vert",
-    amazonUrl: "https://www.amazon.fr/s?k=graines+sarrasin+engrais+vert&tag=kultiva-21",
+    amazonUrl:
+        "https://www.amazon.fr/s?k=graines+sarrasin+engrais+vert&tag=kultiva-21",
     harvestTimeBySeason: {
       'summer': "Enfouir 6 à 8 semaines après semis",
     },
@@ -3443,8 +3498,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.seeds,
     description:
         "Céréale reine du Sahel, aussi appelée petit mil ou millet perlé. Base du couscous de mil et des bouillies, elle pousse là où presque rien d'autre ne résiste.",
-    note: "Champion de la sécheresse — nourrit le Sahel depuis plus de 3 000 ans.",
-    sowingTechnique: "Semis direct en poquets de 3-4 graines, dès les premières pluies",
+    note:
+        "Champion de la sécheresse — nourrit le Sahel depuis plus de 3 000 ans.",
+    sowingTechnique:
+        "Semis direct en poquets de 3-4 graines, dès les premières pluies",
     sowingDepth: "2 à 3 cm",
     germinationTemp: "22 à 35 °C",
     germinationDays: "3 à 7 jours",
@@ -3455,7 +3512,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     yieldEstimate: "150 à 400 g/m² (grains)",
     harvestTimeBySeason: {
       'spring': '100 à 120 jours (semis en mai, climat tempéré chaud)',
-      'summer': "90 à 110 jours (semis aux premières pluies, Afrique de l'Ouest)",
+      'summer':
+          "90 à 110 jours (semis aux premières pluies, Afrique de l'Ouest)",
     },
     imageAsset: 'assets/images/vegetables/mil.png',
     densityPerSqFt: 2,
@@ -3471,7 +3529,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.seeds,
     description:
         "Minuscule céréale ancestrale d'Afrique de l'Ouest au goût fin et à la digestion facile. Semée à la volée, elle couvre le sol en quelques jours et se contente de terres pauvres.",
-    note: "La céréale la plus rapide du monde : certaines variétés mûrissent en 8 semaines !",
+    note:
+        "La céréale la plus rapide du monde : certaines variétés mûrissent en 8 semaines !",
     sowingTechnique: "Semis à la volée très dense, puis léger ratissage",
     sowingDepth: "1 cm",
     germinationTemp: "22 à 30 °C",
@@ -3498,7 +3557,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.leaves,
     description:
         "Arbre-légume tropical dont les petites feuilles concentrent protéines, fer et vitamines. Surnommé « arbre de vie », il repousse après chaque coupe et nourrit toute l'année.",
-    note: "Coupe régulièrement la cime : l'arbre reste bas et produit plus de feuilles.",
+    note:
+        "Coupe régulièrement la cime : l'arbre reste bas et produit plus de feuilles.",
     sowingTechnique: "Semis en poquets ou bouturage de grosses branches",
     sowingDepth: "2 cm",
     germinationTemp: "25 à 35 °C",
@@ -3509,7 +3569,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     soil: "Léger, sableux, bien drainé",
     yieldEstimate: "1 à 2 kg de feuilles/arbre/an (taille régulière)",
     harvestTimeBySeason: {
-      'summer': '60 à 90 jours pour les premières feuilles (semis en saison des pluies)',
+      'summer':
+          '60 à 90 jours pour les premières feuilles (semis en saison des pluies)',
     },
     imageAsset: 'assets/images/vegetables/moringa.png',
   ),
@@ -3524,7 +3585,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Petite aubergine ronde et légèrement amère, appelée djakhatou au Sénégal ou gboma au Togo. Indispensable dans le thiéboudienne et les sauces mijotées.",
-    note: "Plus rustique que l'aubergine classique — elle produit pendant des mois.",
+    note:
+        "Plus rustique que l'aubergine classique — elle produit pendant des mois.",
     sowingTechnique: "Semis en pépinière puis repiquage à 4-5 feuilles",
     sowingDepth: "1 cm",
     germinationTemp: "25 à 30 °C",
@@ -3552,7 +3614,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.leaves,
     description:
         "Feuille mucilagineuse star des sauces gluantes : c'est elle qui donne la fameuse sauce crincrin au Bénin et la mouloukhiya au Sahel. Croissance éclair en climat chaud.",
-    note: "Récolte les jeunes pousses : la plante se ramifie et en redonne aussitôt.",
+    note:
+        "Récolte les jeunes pousses : la plante se ramifie et en redonne aussitôt.",
     sowingTechnique: "Semis direct en ligne ou à la volée",
     sowingDepth: "0,5 cm",
     germinationTemp: "25 à 35 °C",
@@ -3579,7 +3642,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.leaves,
     description:
         "Épinard de Lagos aux feuilles tendres et aux jolis plumeaux colorés. L'un des légumes-feuilles les plus cultivés du Nigéria au Bénin — à la fois beau et bon.",
-    note: "Soupe du soir et jardin fleuri : la célosie fait les deux à la fois !",
+    note:
+        "Soupe du soir et jardin fleuri : la célosie fait les deux à la fois !",
     sowingTechnique: "Semis en pépinière puis repiquage, ou semis direct clair",
     sowingDepth: "0,5 cm",
     germinationTemp: "22 à 30 °C",
@@ -3606,7 +3670,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.leaves,
     description:
         "Épinard de Ceylan : une liane aux feuilles charnues et brillantes qui adore la chaleur humide, quand les épinards classiques déclarent forfait.",
-    note: "Grimpante généreuse — offre-lui un treillis et récolte toute la saison chaude.",
+    note:
+        "Grimpante généreuse — offre-lui un treillis et récolte toute la saison chaude.",
     sowingTechnique: "Semis en poquets ou bouturage de tiges, avec support",
     sowingDepth: "1 à 2 cm",
     germinationTemp: "22 à 30 °C",
@@ -3662,7 +3727,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Fruitier tropical express : semé une année, il offre des papayes dès la suivante. Son tronc tendre et sa couronne de grandes feuilles embellissent le jardin de case.",
-    note: "Plante plusieurs pieds : certains papayers sont mâles et ne donnent pas de fruits.",
+    note:
+        "Plante plusieurs pieds : certains papayers sont mâles et ne donnent pas de fruits.",
     sowingTechnique: "Semis de graines fraîches en poquets ou en sachets",
     sowingDepth: "1 à 2 cm",
     germinationTemp: "25 à 35 °C",
@@ -3688,8 +3754,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     category: VegetableCategory.fruits,
     description:
         "Base alimentaire des régions humides : ses régimes de plantains se dégustent frits (alloco), bouillis ou braisés. Une touffe bien menée produit pendant des années.",
-    note: "Après la récolte, coupe le pied : un rejet prend le relais pour le cycle suivant.",
-    sowingTechnique: "Plantation de rejets (baïonnette) dans un grand trou enrichi de fumier",
+    note:
+        "Après la récolte, coupe le pied : un rejet prend le relais pour le cycle suivant.",
+    sowingTechnique:
+        "Plantation de rejets (baïonnette) dans un grand trou enrichi de fumier",
     sowingDepth: "30 à 40 cm (trou de plantation)",
     germinationTemp: "25 à 35 °C",
     germinationDays: "20 à 30 jours (reprise du rejet)",
@@ -3711,7 +3779,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '✂️',
     category: VegetableCategory.accessories,
     note: 'Indispensable pour tailler et récolter',
-    description: 'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.',
+    description:
+        'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.',
     amazonUrl: 'https://www.amazon.fr/s?k=sécateur+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_secateur.png',
@@ -3722,7 +3791,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🚿',
     category: VegetableCategory.accessories,
     note: 'Pour un arrosage doux et précis',
-    description: 'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.',
+    description:
+        'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.',
     amazonUrl: 'https://www.amazon.fr/s?k=arrosoir+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_arrosoir.png',
@@ -3733,7 +3803,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪴',
     category: VegetableCategory.accessories,
     note: 'La base pour des plants en bonne santé',
-    description: 'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.',
+    description:
+        'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.',
     amazonUrl: 'https://www.amazon.fr/s?k=terreau+bio+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_terreau.png',
@@ -3744,7 +3815,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🧪',
     category: VegetableCategory.accessories,
     note: 'Nourrir le sol naturellement',
-    description: 'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.',
+    description:
+        'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.',
     amazonUrl: 'https://www.amazon.fr/s?k=engrais+bio+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_engrais.png',
@@ -3755,7 +3827,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '📦',
     category: VegetableCategory.accessories,
     note: 'Potager surélevé pour balcon ou terrasse',
-    description: 'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.',
+    description:
+        'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.',
     amazonUrl: 'https://www.amazon.fr/s?k=bac+potager+surélevé&tag=kultiva-21',
     accessorySub: AccessorySubCategory.pots,
     imageAsset: 'assets/images/accessories/acc_bac.png',
@@ -3766,7 +3839,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🥢',
     category: VegetableCategory.accessories,
     note: 'Soutenir tomates, haricots, pois...',
-    description: 'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.',
+    description:
+        'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.',
     amazonUrl: 'https://www.amazon.fr/s?k=tuteur+potager+bambou&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_tuteur.png',
@@ -3777,8 +3851,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🌱',
     category: VegetableCategory.accessories,
     note: 'Coffret de graines variées pour démarrer',
-    description: 'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.',
-    amazonUrl: 'https://www.amazon.fr/s?k=kit+graines+potager+bio&tag=kultiva-21',
+    description:
+        'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.',
+    amazonUrl:
+        'https://www.amazon.fr/s?k=kit+graines+potager+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.seeds,
     imageAsset: 'assets/images/accessories/acc_graines.png',
   ),
@@ -3788,7 +3864,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🧤',
     category: VegetableCategory.accessories,
     note: 'Protéger ses mains au jardin',
-    description: 'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.',
+    description:
+        'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.',
     amazonUrl: 'https://www.amazon.fr/s?k=gants+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_gants.png',
@@ -3800,7 +3877,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '⛺',
     category: VegetableCategory.accessories,
     note: 'Prolonger la saison de culture',
-    description: "Petit tunnel en plastique avec armature métallique : protège les jeunes plants du froid au printemps et permet de cultiver tomates, poivrons même dans le nord.",
+    description:
+        "Petit tunnel en plastique avec armature métallique : protège les jeunes plants du froid au printemps et permet de cultiver tomates, poivrons même dans le nord.",
     amazonUrl: 'https://www.amazon.fr/s?k=serre+jardin+tunnel&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_serre_tunnel.png',
@@ -3811,8 +3889,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪟',
     category: VegetableCategory.accessories,
     note: "Mini-serre pour semis d'hiver",
-    description: "Couche froide vitrée, idéale pour les semis précoces de février à avril. Permet de gagner 4-6 semaines sur le calendrier.",
-    amazonUrl: 'https://www.amazon.fr/s?k=chassis+culture+jardinage&tag=kultiva-21',
+    description:
+        "Couche froide vitrée, idéale pour les semis précoces de février à avril. Permet de gagner 4-6 semaines sur le calendrier.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=chassis+culture+jardinage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_chassis.png',
   ),
@@ -3822,7 +3902,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🟫',
     category: VegetableCategory.accessories,
     note: "L'incontournable pour débuter",
-    description: "Cadre en bois posé au sol, divisé en cases de 30×30 cm. Méthode simple, esthétique et productive — parfait pour un petit jardin.",
+    description:
+        "Cadre en bois posé au sol, divisé en cases de 30×30 cm. Méthode simple, esthétique et productive — parfait pour un petit jardin.",
     amazonUrl: 'https://www.amazon.fr/s?k=carre+potager+bois&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_carre_potager.png',
@@ -3833,7 +3914,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪑',
     category: VegetableCategory.accessories,
     note: 'Jardiner debout, sans mal au dos',
-    description: "Bac surélevé sur pieds (60-90 cm de haut). Idéal balcon, terrasse ou personnes à mobilité réduite. Profondeur min 30 cm pour les légumes.",
+    description:
+        "Bac surélevé sur pieds (60-90 cm de haut). Idéal balcon, terrasse ou personnes à mobilité réduite. Profondeur min 30 cm pour les légumes.",
     amazonUrl: 'https://www.amazon.fr/s?k=table+culture+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_table_culture.png',
@@ -3844,8 +3926,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🔔',
     category: VegetableCategory.accessories,
     note: 'Protéger un plant individuellement',
-    description: "Cloche transparente à poser sur un plant fragile : forçage de printemps, protection contre le gel ou les limaces. Réutilisable saison après saison.",
-    amazonUrl: 'https://www.amazon.fr/s?k=cloche+horticole+jardin&tag=kultiva-21',
+    description:
+        "Cloche transparente à poser sur un plant fragile : forçage de printemps, protection contre le gel ou les limaces. Réutilisable saison après saison.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=cloche+horticole+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_cloche.png',
   ),
@@ -3856,8 +3940,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '💧',
     category: VegetableCategory.accessories,
     note: "Économise jusqu'à 50% d'eau",
-    description: "Système d'arrosage automatique avec tuyaux et goutteurs. Délivre l'eau directement au pied des plants, idéal en été et pour partir en vacances.",
-    amazonUrl: 'https://www.amazon.fr/s?k=kit+goutte+a+goutte+jardin&tag=kultiva-21',
+    description:
+        "Système d'arrosage automatique avec tuyaux et goutteurs. Délivre l'eau directement au pied des plants, idéal en été et pour partir en vacances.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=kit+goutte+a+goutte+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
     imageAsset: 'assets/images/accessories/acc_goutte_a_goutte.png',
   ),
@@ -3867,8 +3953,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '⏱️',
     category: VegetableCategory.accessories,
     note: 'Arroser même en ton absence',
-    description: "Se branche sur le robinet et programme l'arrosage automatiquement (durée + créneau). À combiner avec un kit goutte à goutte ou un tuyau perforé.",
-    amazonUrl: 'https://www.amazon.fr/s?k=programmateur+arrosage+robinet&tag=kultiva-21',
+    description:
+        "Se branche sur le robinet et programme l'arrosage automatiquement (durée + créneau). À combiner avec un kit goutte à goutte ou un tuyau perforé.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=programmateur+arrosage+robinet&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
     imageAsset: 'assets/images/accessories/acc_programmateur.png',
   ),
@@ -3878,8 +3966,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🛢️',
     category: VegetableCategory.accessories,
     note: "L'eau de pluie, gratuite et idéale",
-    description: "Cuve 200-500 L à raccorder sur une descente de gouttière. L'eau de pluie est sans calcaire, à température ambiante : parfaite pour le potager.",
-    amazonUrl: 'https://www.amazon.fr/s?k=recuperateur+eau+pluie+300L&tag=kultiva-21',
+    description:
+        "Cuve 200-500 L à raccorder sur une descente de gouttière. L'eau de pluie est sans calcaire, à température ambiante : parfaite pour le potager.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=recuperateur+eau+pluie+300L&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
     imageAsset: 'assets/images/accessories/acc_recuperateur.png',
   ),
@@ -3889,8 +3979,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🏺',
     category: VegetableCategory.accessories,
     note: 'Arrosage ancestral et économe',
-    description: "Pot en terre cuite poreuse à enterrer entre les plants : se remplit d'eau et la diffuse lentement. Réduit l'arrosage à 1 fois par semaine.",
-    amazonUrl: 'https://www.amazon.fr/s?k=oyas+terre+cuite+arrosage&tag=kultiva-21',
+    description:
+        "Pot en terre cuite poreuse à enterrer entre les plants : se remplit d'eau et la diffuse lentement. Réduit l'arrosage à 1 fois par semaine.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=oyas+terre+cuite+arrosage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
     imageAsset: 'assets/images/accessories/acc_oyas.png',
   ),
@@ -3900,8 +3992,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '〰️',
     category: VegetableCategory.accessories,
     note: 'Alternative simple au goutte à goutte',
-    description: "Tuyau qui suinte sur toute sa longueur et arrose les plants en ligne. Facile à installer, idéal pour les rangs de salades, carottes, fraisiers.",
-    amazonUrl: 'https://www.amazon.fr/s?k=tuyau+microporeux+arrosage&tag=kultiva-21',
+    description:
+        "Tuyau qui suinte sur toute sa longueur et arrose les plants en ligne. Facile à installer, idéal pour les rangs de salades, carottes, fraisiers.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=tuyau+microporeux+arrosage&tag=kultiva-21',
     accessorySub: AccessorySubCategory.watering,
     imageAsset: 'assets/images/accessories/acc_tuyau_microporeux.png',
   ),
@@ -3912,8 +4006,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪤',
     category: VegetableCategory.accessories,
     note: 'Stop pucerons, mouches, papillons',
-    description: "Voile à fines mailles à poser sur les cultures. Empêche piéride du chou, mouche de la carotte, altises et pucerons sans aucun traitement.",
-    amazonUrl: 'https://www.amazon.fr/s?k=filet+anti+insectes+potager&tag=kultiva-21',
+    description:
+        "Voile à fines mailles à poser sur les cultures. Empêche piéride du chou, mouche de la carotte, altises et pucerons sans aucun traitement.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=filet+anti+insectes+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_filet_insectes.png',
   ),
@@ -3923,8 +4019,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '❄️',
     category: VegetableCategory.accessories,
     note: 'Protège du gel jusqu\'à -5°C',
-    description: "Voile blanc épais (P30) à poser sur les plants sensibles en hiver. Protège artichauts, poireaux, choux, oliviers, agrumes en pots.",
-    amazonUrl: 'https://www.amazon.fr/s?k=voile+hivernage+jardin&tag=kultiva-21',
+    description:
+        "Voile blanc épais (P30) à poser sur les plants sensibles en hiver. Protège artichauts, poireaux, choux, oliviers, agrumes en pots.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=voile+hivernage+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_voile_hivernage.png',
   ),
@@ -3934,8 +4032,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🌬️',
     category: VegetableCategory.accessories,
     note: 'Gagner 2-3 semaines au printemps',
-    description: "Voile léger (P17) à poser au printemps pour réchauffer le sol et démarrer plus tôt salades, radis, carottes. Laisse passer pluie et lumière.",
-    amazonUrl: 'https://www.amazon.fr/s?k=voile+forcage+printemps&tag=kultiva-21',
+    description:
+        "Voile léger (P17) à poser au printemps pour réchauffer le sol et démarrer plus tôt salades, radis, carottes. Laisse passer pluie et lumière.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=voile+forcage+printemps&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_voile_forcage.png',
   ),
@@ -3945,8 +4045,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🐦',
     category: VegetableCategory.accessories,
     note: 'Sauve tes fraises et tes cerises',
-    description: "Filet à mailles larges à tendre au-dessus des fraisiers, des arbres fruitiers ou des semis. Empêche merles et étourneaux de tout picorer.",
-    amazonUrl: 'https://www.amazon.fr/s?k=filet+anti+oiseaux+potager&tag=kultiva-21',
+    description:
+        "Filet à mailles larges à tendre au-dessus des fraisiers, des arbres fruitiers ou des semis. Empêche merles et étourneaux de tout picorer.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=filet+anti+oiseaux+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_filet_oiseaux.png',
   ),
@@ -3956,8 +4058,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🐌',
     category: VegetableCategory.accessories,
     note: "Le seul anti-limace bio efficace",
-    description: "Granulés à base de phosphate de fer, autorisés en agriculture biologique. Non toxiques pour hérissons, oiseaux et animaux domestiques.",
-    amazonUrl: 'https://www.amazon.fr/s?k=ferramol+anti+limaces+bio&tag=kultiva-21',
+    description:
+        "Granulés à base de phosphate de fer, autorisés en agriculture biologique. Non toxiques pour hérissons, oiseaux et animaux domestiques.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=ferramol+anti+limaces+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_anti_limaces.png',
   ),
@@ -3967,7 +4071,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '⛱️',
     category: VegetableCategory.accessories,
     note: 'Protège les cultures du soleil brûlant',
-    description: "Toile tissée à tendre au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable sous climat tropical et en canicule : semis, salades et jeunes plants ne grillent plus aux heures chaudes.",
+    description:
+        "Toile tissée à tendre au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable sous climat tropical et en canicule : semis, salades et jeunes plants ne grillent plus aux heures chaudes.",
     amazonUrl: 'https://www.amazon.fr/s?k=filet+ombrage+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.protection,
     imageAsset: 'assets/images/accessories/acc_ombriere.png',
@@ -3979,8 +4084,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '▦',
     category: VegetableCategory.accessories,
     note: 'Pour conduire les tomates indéterminées',
-    description: "Grille rigide à planter derrière les tomates. Permet de palisser les branches au fur et à mesure, plus solide que les tuteurs simples.",
-    amazonUrl: 'https://www.amazon.fr/s?k=treillis+tomates+jardin&tag=kultiva-21',
+    description:
+        "Grille rigide à planter derrière les tomates. Permet de palisser les branches au fur et à mesure, plus solide que les tuteurs simples.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=treillis+tomates+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_treillis_tomate.png',
   ),
@@ -3990,8 +4097,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🌉',
     category: VegetableCategory.accessories,
     note: 'Pour courges et plantes grimpantes',
-    description: "Arche métallique 2 m de haut : parfaite pour faire grimper haricots à rames, courges, concombres, kiwis. Décoratif et productif.",
-    amazonUrl: 'https://www.amazon.fr/s?k=arche+jardin+plantes+grimpantes&tag=kultiva-21',
+    description:
+        "Arche métallique 2 m de haut : parfaite pour faire grimper haricots à rames, courges, concombres, kiwis. Décoratif et productif.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=arche+jardin+plantes+grimpantes&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_arche.png',
   ),
@@ -4001,8 +4110,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🌀',
     category: VegetableCategory.accessories,
     note: 'Spécial tomates, pas besoin de lier',
-    description: "Tuteur en métal en forme de spirale : la tige de tomate s'enroule naturellement dedans. Pas besoin de ficelle ni d'attaches, gain de temps énorme.",
-    amazonUrl: 'https://www.amazon.fr/s?k=tuteurs+spirale+tomate&tag=kultiva-21',
+    description:
+        "Tuteur en métal en forme de spirale : la tige de tomate s'enroule naturellement dedans. Pas besoin de ficelle ni d'attaches, gain de temps énorme.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=tuteurs+spirale+tomate&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_tuteurs_spirales.png',
   ),
@@ -4012,7 +4123,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🎋',
     category: VegetableCategory.accessories,
     note: 'Pour haricots et pois grimpants',
-    description: "Bambous longs (1,80 à 2,40 m) à planter en tipi ou en ligne. Naturels, robustes et réutilisables plusieurs années.",
+    description:
+        "Bambous longs (1,80 à 2,40 m) à planter en tipi ou en ligne. Naturels, robustes et réutilisables plusieurs années.",
     amazonUrl: 'https://www.amazon.fr/s?k=rames+bambou+haricot&tag=kultiva-21',
     accessorySub: AccessorySubCategory.structures,
     imageAsset: 'assets/images/accessories/acc_rames_bambou.png',
@@ -4024,8 +4136,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '♻️',
     category: VegetableCategory.accessories,
     note: 'Recycle tes déchets en or noir',
-    description: "Bac de 300-600 L pour transformer épluchures et déchets verts en compost. Volume conseillé : 1 m³ pour un jardin moyen.",
-    amazonUrl: 'https://www.amazon.fr/s?k=composteur+jardin+400L&tag=kultiva-21',
+    description:
+        "Bac de 300-600 L pour transformer épluchures et déchets verts en compost. Volume conseillé : 1 m³ pour un jardin moyen.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=composteur+jardin+400L&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_composteur.png',
   ),
@@ -4035,8 +4149,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪱',
     category: VegetableCategory.accessories,
     note: 'Compostage en appartement',
-    description: "Bac compact pour appartement : les vers décomposent les déchets de cuisine et produisent un engrais liquide ultra-puissant. Sans odeur.",
-    amazonUrl: 'https://www.amazon.fr/s?k=lombricomposteur+appartement&tag=kultiva-21',
+    description:
+        "Bac compact pour appartement : les vers décomposent les déchets de cuisine et produisent un engrais liquide ultra-puissant. Sans odeur.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=lombricomposteur+appartement&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_lombricomposteur.png',
   ),
@@ -4046,8 +4162,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '⚡',
     category: VegetableCategory.accessories,
     note: 'Accélère la décomposition',
-    description: "Mélange de micro-organismes à saupoudrer sur le compost. Réduit le temps de maturation de 12 à 6 mois et limite les odeurs.",
-    amazonUrl: 'https://www.amazon.fr/s?k=activateur+compost+bio&tag=kultiva-21',
+    description:
+        "Mélange de micro-organismes à saupoudrer sur le compost. Réduit le temps de maturation de 12 à 6 mois et limite les odeurs.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=activateur+compost+bio&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_activateur_compost.png',
   ),
@@ -4057,8 +4175,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🌾',
     category: VegetableCategory.accessories,
     note: 'Garde l\'humidité, nourrit le sol',
-    description: "Paillis 100% végétal à étaler en couche de 5-7 cm autour des plants. Garde le sol humide, freine les mauvaises herbes, se décompose en humus.",
-    amazonUrl: 'https://www.amazon.fr/s?k=paillis+chanvre+potager&tag=kultiva-21',
+    description:
+        "Paillis 100% végétal à étaler en couche de 5-7 cm autour des plants. Garde le sol humide, freine les mauvaises herbes, se décompose en humus.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=paillis+chanvre+potager&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_paillis_chanvre.png',
   ),
@@ -4068,8 +4188,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪵',
     category: VegetableCategory.accessories,
     note: 'Paillis longue durée pour massifs',
-    description: "Écorces de pin maritime, idéales pour les massifs et arbres fruitiers. Décoratif, dure 2-3 ans, acidifie légèrement le sol (parfait pour fraisiers).",
-    amazonUrl: 'https://www.amazon.fr/s?k=mulch+ecorces+pin+jardin&tag=kultiva-21',
+    description:
+        "Écorces de pin maritime, idéales pour les massifs et arbres fruitiers. Décoratif, dure 2-3 ans, acidifie légèrement le sol (parfait pour fraisiers).",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=mulch+ecorces+pin+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.soil,
     imageAsset: 'assets/images/accessories/acc_mulch_ecorces.png',
   ),
@@ -4079,8 +4201,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🍴',
     category: VegetableCategory.accessories,
     note: 'Aérer le sol sans le retourner',
-    description: "Fourche à 4-5 dents : ameublit la terre en profondeur sans détruire la vie du sol. Indispensable pour qui pratique le \"sol vivant\".",
-    amazonUrl: 'https://www.amazon.fr/s?k=grelinette+fourche+beche&tag=kultiva-21',
+    description:
+        "Fourche à 4-5 dents : ameublit la terre en profondeur sans détruire la vie du sol. Indispensable pour qui pratique le \"sol vivant\".",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=grelinette+fourche+beche&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_grelinette.png',
   ),
@@ -4091,8 +4215,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🪓',
     category: VegetableCategory.accessories,
     note: '"Un binage vaut deux arrosages"',
-    description: "Petit outil à main pour gratter la surface du sol et casser la croûte. Permet d'aérer la terre et d'arracher les jeunes herbes.",
-    amazonUrl: 'https://www.amazon.fr/s?k=binette+serfouette+jardin&tag=kultiva-21',
+    description:
+        "Petit outil à main pour gratter la surface du sol et casser la croûte. Permet d'aérer la terre et d'arracher les jeunes herbes.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=binette+serfouette+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_binette.png',
   ),
@@ -4102,8 +4228,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🥄',
     category: VegetableCategory.accessories,
     note: 'Pour planter ail, oignons, tulipes',
-    description: "Outil cylindrique qui creuse un trou parfait à la bonne profondeur. Idéal pour planter ail, échalotes, tulipes, jacinthes en quantité.",
-    amazonUrl: 'https://www.amazon.fr/s?k=plantoir+bulbes+jardin&tag=kultiva-21',
+    description:
+        "Outil cylindrique qui creuse un trou parfait à la bonne profondeur. Idéal pour planter ail, échalotes, tulipes, jacinthes en quantité.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=plantoir+bulbes+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_plantoir.png',
   ),
@@ -4113,7 +4241,8 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🥄',
     category: VegetableCategory.accessories,
     note: 'Pour repiquer les jeunes plants',
-    description: "Petite pelle étroite pour repiquer les semis sans abîmer les racines. Indispensable au printemps pour la mise en place du potager.",
+    description:
+        "Petite pelle étroite pour repiquer les semis sans abîmer les racines. Indispensable au printemps pour la mise en place du potager.",
     amazonUrl: 'https://www.amazon.fr/s?k=transplantoir+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_transplantoir.png',
@@ -4124,8 +4253,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🏷️',
     category: VegetableCategory.accessories,
     note: 'Garder la trace de tes variétés',
-    description: "Lot d'étiquettes en ardoise ou plastique avec marqueur. Indispensable pour ne pas oublier ce que tu as semé et où.",
-    amazonUrl: 'https://www.amazon.fr/s?k=etiquettes+plantes+ardoise&tag=kultiva-21',
+    description:
+        "Lot d'étiquettes en ardoise ou plastique avec marqueur. Indispensable pour ne pas oublier ce que tu as semé et où.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=etiquettes+plantes+ardoise&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_etiquettes.png',
   ),
@@ -4135,8 +4266,10 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     emoji: '🧺',
     category: VegetableCategory.accessories,
     note: 'Pour transporter les légumes',
-    description: "Panier en osier ou plastique aéré pour récolter et transporter tes légumes du jardin à la cuisine sans les abîmer.",
-    amazonUrl: 'https://www.amazon.fr/s?k=panier+recolte+osier+jardin&tag=kultiva-21',
+    description:
+        "Panier en osier ou plastique aéré pour récolter et transporter tes légumes du jardin à la cuisine sans les abîmer.",
+    amazonUrl:
+        'https://www.amazon.fr/s?k=panier+recolte+osier+jardin&tag=kultiva-21',
     accessorySub: AccessorySubCategory.tools,
     imageAsset: 'assets/images/accessories/acc_panier_recolte.png',
   ),

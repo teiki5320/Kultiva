@@ -184,13 +184,15 @@ void main() {
     });
 
     test('les valeurs sont dans l\'ordre attendu', () {
-      expect(WateringUrgency.values, equals(<WateringUrgency>[
-        WateringUrgency.skip,
-        WateringUrgency.ok,
-        WateringUrgency.dueSoon,
-        WateringUrgency.overdue,
-        WateringUrgency.heatwave,
-      ]));
+      expect(
+          WateringUrgency.values,
+          equals(<WateringUrgency>[
+            WateringUrgency.skip,
+            WateringUrgency.ok,
+            WateringUrgency.dueSoon,
+            WateringUrgency.overdue,
+            WateringUrgency.heatwave,
+          ]));
     });
   });
 

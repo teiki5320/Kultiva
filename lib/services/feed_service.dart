@@ -52,12 +52,10 @@ class FeedService {
           _client.from('post_likes').select('post_id').eq('user_id', uid),
           _client.from('post_reports').select('post_id').eq('user_id', uid),
         ]);
-        myLikes = results[0]
-            .map<String>((row) => row['post_id'] as String)
-            .toSet();
-        myReports = results[1]
-            .map<String>((row) => row['post_id'] as String)
-            .toSet();
+        myLikes =
+            results[0].map<String>((row) => row['post_id'] as String).toSet();
+        myReports =
+            results[1].map<String>((row) => row['post_id'] as String).toSet();
       } else {
         myLikes = <String>{};
         myReports = <String>{};
@@ -65,8 +63,8 @@ class FeedService {
 
       return data.map<FeedPost>((row) {
         final profiles = row['profiles'] as Map<String, dynamic>?;
-        final name = profiles?['display_name'] as String? ??
-            'Jardinier anonyme';
+        final name =
+            profiles?['display_name'] as String? ?? 'Jardinier anonyme';
         final postId = row['id'] as String;
         return FeedPost(
           id: postId,
@@ -82,8 +80,11 @@ class FeedService {
         );
       }).toList();
     } catch (e) {
+      // On RELANCE l'erreur : le caller (poussidex_feed) a un écran
+      // d'erreur + bouton « Réessayer ». L'avaler affichait un feed
+      // « vide » mensonger hors-ligne, avec le retry inatteignable.
       if (kDebugMode) debugPrint('FeedService.fetchFeed error: $e');
-      return <FeedPost>[];
+      rethrow;
     }
   }
 
@@ -104,37 +105,46 @@ class FeedService {
     }
   }
 
-  /// Like ou unlike un post.
+  /// Like ou unlike un post. Retourne `true` si le post est désormais
+  /// liké, `false` s'il est déliké.
+  ///
+  /// **Throw** en cas d'erreur réseau/DB : le caller ne doit appliquer le
+  /// delta de compteur qu'en cas de succès. L'ancienne version renvoyait
+  /// `false` aussi bien pour un unlike que pour une erreur → l'UI affichait
+  /// « -1 like » (voire des valeurs négatives) sur simple coupure réseau.
   Future<bool> toggleLike(String postId) async {
     final uid = _userId;
-    if (uid == null) return false;
-    try {
-      // Vérifier si déjà liké.
-      final existing = await _client
+    if (uid == null) {
+      throw Exception('Pas de session Supabase active');
+    }
+    // Vérifier si déjà liké.
+    final existing = await _client
+        .from('post_likes')
+        .select()
+        .eq('user_id', uid)
+        .eq('post_id', postId)
+        .maybeSingle();
+    if (existing != null) {
+      // Unlike.
+      await _client
           .from('post_likes')
-          .select()
+          .delete()
           .eq('user_id', uid)
-          .eq('post_id', postId)
-          .maybeSingle();
-      if (existing != null) {
-        // Unlike.
-        await _client
-            .from('post_likes')
-            .delete()
-            .eq('user_id', uid)
-            .eq('post_id', postId);
-        return false;
-      } else {
-        // Like.
-        await _client.from('post_likes').insert(<String, dynamic>{
-          'user_id': uid,
-          'post_id': postId,
-        });
-        return true;
-      }
-    } catch (e) {
-      if (kDebugMode) debugPrint('FeedService.toggleLike error: $e');
+          .eq('post_id', postId);
       return false;
+    }
+    // Like.
+    try {
+      await _client.from('post_likes').insert(<String, dynamic>{
+        'user_id': uid,
+        'post_id': postId,
+      });
+      return true;
+    } on PostgrestException catch (e) {
+      // 23505 = violation de contrainte unique : un double-tap concurrent
+      // a déjà inséré le like. Le post est bien liké, pas d'erreur.
+      if (e.code == '23505') return true;
+      rethrow;
     }
   }
 }

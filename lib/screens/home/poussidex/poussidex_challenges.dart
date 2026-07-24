@@ -122,8 +122,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
 
   @override
   Widget build(BuildContext context) {
-    final challenges =
-        challengesFor(PrefsService.instance.region.value);
+    final challenges = challengesFor(PrefsService.instance.region.value);
     final completedCount =
         challenges.where((c) => _completed.containsKey(c.id)).length;
     return Column(
@@ -178,9 +177,7 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
                 challenge: c,
                 photoPath: photoPath,
                 onParticipate: () => _participate(c),
-                onTap: photoPath != null
-                    ? () => _showCompletedCard(c)
-                    : null,
+                onTap: photoPath != null ? () => _showCompletedCard(c) : null,
               );
             },
           ),
