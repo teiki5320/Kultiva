@@ -37,6 +37,7 @@ class PrefsService {
   static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kJardinsTutorialDone = 'kultiva.jardinsTutorialDone';
+  static const _kPrefsUpdatedAt = 'kultiva.prefs.updatedAt';
 
   SharedPreferences? _prefs;
 
@@ -70,7 +71,36 @@ class PrefsService {
   /// dépendance circulaire. Réglé une fois dans main().
   VoidCallback? onPreferencesChanged;
 
+  /// Quand true, l'application de préférences venues du cloud est en
+  /// cours : on ne bump pas le timestamp local et on ne re-uploade pas
+  /// (sinon chaque champ appliqué déclencherait un upload concurrent et
+  /// ferait croire que le local est plus récent que le cloud).
+  bool _applyingRemote = false;
+
+  /// Horodatage de la dernière modification locale des préférences
+  /// (UTC). Sert au last-write-wins contre le cloud, pour ne pas écraser
+  /// un choix fait hors-ligne par une valeur cloud périmée.
+  DateTime? get prefsUpdatedAt {
+    final iso = _prefs?.getString(_kPrefsUpdatedAt);
+    if (iso == null) return null;
+    return DateTime.tryParse(iso);
+  }
+
+  /// Applique des préférences venues du cloud sans re-déclencher d'upload
+  /// ni bumper le timestamp local.
+  Future<void> applyRemotePreferences(Future<void> Function() body) async {
+    _applyingRemote = true;
+    try {
+      await body();
+    } finally {
+      _applyingRemote = false;
+    }
+  }
+
   void _notifyPrefsChanged() {
+    if (_applyingRemote) return;
+    _prefs?.setString(
+        _kPrefsUpdatedAt, DateTime.now().toUtc().toIso8601String());
     try {
       onPreferencesChanged?.call();
     } catch (_) {}

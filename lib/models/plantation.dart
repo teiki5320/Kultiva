@@ -29,12 +29,10 @@ class Plantation {
   bool get isActive => harvestedAt == null;
 
   /// Jours écoulés depuis la mise en terre.
-  int get daysSincePlanted =>
-      DateTime.now().difference(plantedAt).inDays;
+  int get daysSincePlanted => DateTime.now().difference(plantedAt).inDays;
 
   /// Dernier arrosage manuel ; null si jamais arrosé.
-  DateTime? get lastWatered =>
-      wateredAt.isEmpty ? null : wateredAt.last;
+  DateTime? get lastWatered => wateredAt.isEmpty ? null : wateredAt.last;
 
   /// Jours depuis dernier arrosage (ou plantation si jamais arrosé).
   int get daysSinceWatered {
@@ -89,6 +87,60 @@ class Plantation {
       photoPaths: ((json['photoPaths'] as List?) ?? const <dynamic>[])
           .map((e) => e as String)
           .toList(),
+    );
+  }
+
+  /// Fusion champ par champ de deux versions d'une même plantation (même
+  /// [id]) — typiquement une locale et une cloud au merge multi-appareils.
+  /// On ne jette JAMAIS de données : les arrosages et photos sont
+  /// unionnés, les compteurs pris au maximum, la note la plus riche
+  /// conservée. Remplace l'ancienne heuristique « l'objet entier avec le
+  /// meilleur score gagne » qui perdait notes et photos du perdant.
+  static Plantation merge(Plantation a, Plantation b) {
+    assert(a.id == b.id, 'merge exige le même id');
+    // Arrosages : union dédupliquée (par milliseconde) puis triée.
+    final wateredByMs = <int, DateTime>{};
+    for (final d in <DateTime>[...a.wateredAt, ...b.wateredAt]) {
+      wateredByMs[d.millisecondsSinceEpoch] = d;
+    }
+    final watered = wateredByMs.values.toList()..sort((x, y) => x.compareTo(y));
+    // Photos : union en préservant l'ordre (a puis les nouvelles de b).
+    final photos = <String>[
+      ...a.photoPaths,
+      ...b.photoPaths.where((p) => !a.photoPaths.contains(p)),
+    ];
+    // harvestedAt : la plus tardive des deux, ou l'unique non-nulle.
+    DateTime? harvested;
+    if (a.harvestedAt == null) {
+      harvested = b.harvestedAt;
+    } else if (b.harvestedAt == null) {
+      harvested = a.harvestedAt;
+    } else {
+      harvested = a.harvestedAt!.isAfter(b.harvestedAt!)
+          ? a.harvestedAt
+          : b.harvestedAt;
+    }
+    // Note : on garde la plus informative (non-vide, puis la plus longue).
+    final noteA = a.note?.trim() ?? '';
+    final noteB = b.note?.trim() ?? '';
+    String? note;
+    if (noteA.isEmpty) {
+      note = noteB.isEmpty ? null : b.note;
+    } else if (noteB.isEmpty) {
+      note = a.note;
+    } else {
+      note = noteA.length >= noteB.length ? a.note : b.note;
+    }
+    return Plantation(
+      id: a.id,
+      vegetableId: a.vegetableId,
+      plantedAt: a.plantedAt.isBefore(b.plantedAt) ? a.plantedAt : b.plantedAt,
+      harvestedAt: harvested,
+      harvestCount:
+          a.harvestCount > b.harvestCount ? a.harvestCount : b.harvestCount,
+      wateredAt: watered,
+      note: note,
+      photoPaths: photos,
     );
   }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
@@ -55,11 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
       await action();
       // Vérifie qu'on est bien loggé (l'user peut annuler un flow OAuth).
       if (!AuthService.instance.isSignedIn) return;
-      // Sync cloud après login OK : plantations + badges + prefs + photos.
-      await CloudSyncService.instance.syncAllOnLogin();
+      // Contrat local-first : on navigue tout de suite, la synchro cloud
+      // (plantations + badges + prefs + photos) tourne en arrière-plan
+      // et ne bloque pas l'écran de connexion sur un réseau lent.
+      unawaited(CloudSyncService.instance.syncAllOnLogin());
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {
-      setState(() => _error = e.message);
+      if (mounted) setState(() => _error = e.message);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -67,8 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// Sign in with Apple n'a de sens que sur iOS / macOS natifs.
   /// Ailleurs on masque le bouton.
-  bool get _showAppleButton =>
-      !kIsWeb && (Platform.isIOS || Platform.isMacOS);
+  bool get _showAppleButton => !kIsWeb && (Platform.isIOS || Platform.isMacOS);
 
   /// Le bouton Google s'affiche dès qu'un Web Client ID a été
   /// configuré dans SupabaseConfig. Sinon on le cache pour ne pas
@@ -80,8 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           children: <Widget>[
             const SizedBox(height: 16),
             Center(
@@ -89,7 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(28),
                 child: Image.asset(
                   'assets/images/onboarding_1.png',
-                  width: 100, height: 100,
+                  width: 100,
+                  height: 100,
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
                     width: 100,

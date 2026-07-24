@@ -28,6 +28,12 @@ class CloudSyncService {
   bool get _signedIn => AuthService.instance.isSignedIn;
   String? get _userId => _client.auth.currentUser?.id;
 
+  /// Timeout explicite sur toutes les requêtes réseau : sur un réseau à
+  /// moitié mort, on échoue proprement (catch → best-effort) au lieu de
+  /// bloquer l'UI indéfiniment. Le contrat local-first n'attend jamais
+  /// le réseau de toute façon.
+  static const Duration _netTimeout = Duration(seconds: 12);
+
   /// Upload l'état complet des plantations locales vers le cloud.
   /// Utilise `upsert` pour créer ou mettre à jour les enregistrements
   /// par ID. Fire-and-forget : ne bloque pas l'UI.
@@ -42,7 +48,7 @@ class CloudSyncService {
         return;
       }
       final rows = plantations.map((p) => _toRow(p, uid)).toList();
-      await _client.from('plantations').upsert(rows);
+      await _client.from('plantations').upsert(rows).timeout(_netTimeout);
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadAll error: $e');
     }
@@ -53,7 +59,11 @@ class CloudSyncService {
   Future<void> deletePlantation(String id) async {
     if (!_signedIn) return;
     try {
-      await _client.from('plantations').delete().eq('id', id);
+      await _client
+          .from('plantations')
+          .delete()
+          .eq('id', id)
+          .timeout(_netTimeout);
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.delete error: $e');
     }
@@ -64,7 +74,8 @@ class CloudSyncService {
   Future<List<Plantation>> fetchPlantations() async {
     if (!_signedIn) return <Plantation>[];
     try {
-      final data = await _client.from('plantations').select();
+      final data =
+          await _client.from('plantations').select().timeout(_netTimeout);
       return data.map<Plantation>(_fromRow).toList();
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.fetch error: $e');
@@ -97,12 +108,10 @@ class CloudSyncService {
       if (existing == null) {
         merged[p.id] = p;
       } else {
-        // Last-write-wins : on garde celui qui a le plus de données
-        // (plus de récoltes / arrosages / photos). C'est une heuristique
-        // raisonnable tant qu'on n'a pas un champ updated_at côté
-        // Plantation — à raffiner plus tard.
-        final pick = _pickLatest(existing, p);
-        merged[p.id] = pick;
+        // Fusion champ par champ (arrosages + photos unionnés, compteurs
+        // au max, note la plus riche) : aucune donnée du « perdant » n'est
+        // jetée, contrairement à l'ancienne heuristique par score.
+        merged[p.id] = Plantation.merge(existing, p);
       }
     }
 
@@ -128,31 +137,28 @@ class CloudSyncService {
   // Badges
   // ══════════════════════════════════════════════════════════════════
 
-  /// Upload l'état complet des badges débloqués vers le cloud.
-  /// Stratégie : upsert l'ensemble actuel, puis delete les badges en
-  /// cloud qui ne sont plus dans le set local (au cas où on a reset).
+  /// Upload les badges débloqués vers le cloud — **additif uniquement**.
+  ///
+  /// Un badge ne se « dé-débloque » jamais en jeu normal : on se contente
+  /// d'un upsert du set fourni. On NE supprime PLUS les badges cloud
+  /// absents du set local : après un échec transitoire de `fetchBadges`
+  /// (timeout), le set mergé retombait au seul local et l'ancienne
+  /// version effaçait alors du cloud tous les badges gagnés sur un autre
+  /// appareil. La suppression réelle d'un compte passe par la cascade
+  /// Postgres (edge function delete-account).
   Future<void> uploadBadges(Set<String> unlocked) async {
     if (!_signedIn) return;
     final uid = _userId;
     if (uid == null) return;
+    if (unlocked.isEmpty) return;
     try {
-      if (unlocked.isNotEmpty) {
-        final rows = unlocked
-            .map((id) => <String, dynamic>{
-                  'user_id': uid,
-                  'badge_id': id,
-                })
-            .toList();
-        await _client.from('unlocked_badges').upsert(rows);
-      }
-      // Supprime du cloud les badges qui ne sont plus dans le set local.
-      final cloud = await _client.from('unlocked_badges').select('badge_id');
-      final cloudIds =
-          cloud.map<String>((row) => row['badge_id'] as String).toSet();
-      final toDelete = cloudIds.difference(unlocked);
-      for (final id in toDelete) {
-        await _client.from('unlocked_badges').delete().eq('badge_id', id);
-      }
+      final rows = unlocked
+          .map((id) => <String, dynamic>{
+                'user_id': uid,
+                'badge_id': id,
+              })
+          .toList();
+      await _client.from('unlocked_badges').upsert(rows).timeout(_netTimeout);
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadBadges error: $e');
     }
@@ -162,7 +168,10 @@ class CloudSyncService {
   Future<Set<String>> fetchBadges() async {
     if (!_signedIn) return <String>{};
     try {
-      final data = await _client.from('unlocked_badges').select('badge_id');
+      final data = await _client
+          .from('unlocked_badges')
+          .select('badge_id')
+          .timeout(_netTimeout);
       return data.map<String>((row) => row['badge_id'] as String).toSet();
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.fetchBadges error: $e');
@@ -193,12 +202,12 @@ class CloudSyncService {
         'sound_volume': prefs.soundVolume.value,
       };
       try {
-        await _client.from('preferences').upsert(payload);
+        await _client.from('preferences').upsert(payload).timeout(_netTimeout);
       } on PostgrestException {
         // Colonne `country` absente tant que la migration 013 n'est pas
         // appliquée : on retente sans, pour ne pas casser la synchro.
         payload.remove('country');
-        await _client.from('preferences').upsert(payload);
+        await _client.from('preferences').upsert(payload).timeout(_netTimeout);
       }
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadPrefs error: $e');
@@ -207,6 +216,12 @@ class CloudSyncService {
 
   /// Télécharge les préférences depuis le cloud et les applique
   /// localement. Silencieux si aucune ligne (première fois).
+  ///
+  /// Last-write-wins par `updated_at` : si le local a été modifié plus
+  /// récemment (choix fait hors-ligne dont l'upload avait échoué), on ne
+  /// l'écrase PAS — le local sera repoussé par `uploadPreferences` juste
+  /// après. L'application se fait via `applyRemotePreferences` pour ne pas
+  /// re-déclencher d'upload ni fausser le timestamp local.
   Future<void> fetchAndApplyPreferences() async {
     if (!_signedIn) return;
     try {
@@ -216,36 +231,48 @@ class CloudSyncService {
           .from('preferences')
           .select()
           .eq('user_id', uid)
-          .limit(1);
+          .limit(1)
+          .timeout(_netTimeout);
       if (rows.isEmpty) return;
       final row = rows.first;
       final prefs = PrefsService.instance;
-      final regionId = row['region'] as String?;
-      if (regionId != null) {
-        await prefs.setRegion(Region.fromId(regionId));
+      // Ne pas écraser des prefs modifiées offline plus récemment.
+      final cloudUpdated =
+          DateTime.tryParse(row['updated_at']?.toString() ?? '');
+      final localUpdated = prefs.prefsUpdatedAt;
+      if (cloudUpdated != null &&
+          localUpdated != null &&
+          localUpdated.isAfter(cloudUpdated)) {
+        return;
       }
-      // Le pays, s'il est connu côté cloud, affine la région.
-      final countryIso = row['country'] as String?;
-      final country = Country.fromIso(countryIso);
-      if (country != null) {
-        await prefs.setCountry(country);
-      }
-      if (row['dark_mode'] is bool) {
-        await prefs.setDarkMode(row['dark_mode'] as bool);
-      }
-      if (row['notifications'] is bool) {
-        await prefs.setNotifications(row['notifications'] as bool);
-      }
-      if (row['sound_enabled'] is bool) {
-        await prefs.setSoundEnabled(row['sound_enabled'] as bool);
-      }
-      if (row['music_enabled'] is bool) {
-        await prefs.setMusicEnabled(row['music_enabled'] as bool);
-      }
-      final sv = row['sound_volume'];
-      if (sv is num) {
-        await prefs.setSoundVolume(sv.toDouble());
-      }
+      await prefs.applyRemotePreferences(() async {
+        final regionId = row['region'] as String?;
+        if (regionId != null) {
+          await prefs.setRegion(Region.fromId(regionId));
+        }
+        // Le pays, s'il est connu côté cloud, affine la région.
+        final countryIso = row['country'] as String?;
+        final country = Country.fromIso(countryIso);
+        if (country != null) {
+          await prefs.setCountry(country);
+        }
+        if (row['dark_mode'] is bool) {
+          await prefs.setDarkMode(row['dark_mode'] as bool);
+        }
+        if (row['notifications'] is bool) {
+          await prefs.setNotifications(row['notifications'] as bool);
+        }
+        if (row['sound_enabled'] is bool) {
+          await prefs.setSoundEnabled(row['sound_enabled'] as bool);
+        }
+        if (row['music_enabled'] is bool) {
+          await prefs.setMusicEnabled(row['music_enabled'] as bool);
+        }
+        final sv = row['sound_volume'];
+        if (sv is num) {
+          await prefs.setSoundVolume(sv.toDouble());
+        }
+      });
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.fetchPrefs error: $e');
     }
@@ -300,7 +327,7 @@ class CloudSyncService {
         'total_xp': xp,
         'p_starter': starter,
         'p_creature_name': creatureName,
-      });
+      }).timeout(_netTimeout);
     } catch (e) {
       if (kDebugMode) debugPrint('CloudSync.uploadXp error: $e');
     }
@@ -318,8 +345,12 @@ class CloudSyncService {
     try {
       final uid = _userId;
       if (uid == null) return;
-      final rows =
-          await _client.from('user_xp').select().eq('user_id', uid).limit(1);
+      final rows = await _client
+          .from('user_xp')
+          .select()
+          .eq('user_id', uid)
+          .limit(1)
+          .timeout(_netTimeout);
       if (rows.isEmpty) return;
       final row = rows.first;
       final xp = (row['xp'] as int?) ?? 1;
@@ -362,7 +393,8 @@ class CloudSyncService {
           .select('xp, starter, creature_name, user_id')
           .neq('user_id', uid)
           .not('starter', 'is', null)
-          .limit(count * 4);
+          .limit(count * 4)
+          .timeout(_netTimeout);
       final visitors = rows
           .map<TamassiVisitor>((r) => TamassiVisitor(
                 xp: (r['xp'] as int?) ?? 1,
@@ -512,19 +544,5 @@ class CloudSyncService {
       note: row['note'] as String?,
       photoPaths: photos.map((e) => e as String).toList(),
     );
-  }
-
-  /// Choisit la version la plus "récente" entre 2 plantations ayant le
-  /// même ID. Heuristique : plus de récoltes + plus d'arrosages gagne.
-  Plantation _pickLatest(Plantation a, Plantation b) {
-    final scoreA = a.harvestCount + a.wateredAt.length;
-    final scoreB = b.harvestCount + b.wateredAt.length;
-    if (scoreB > scoreA) return b;
-    if (scoreA > scoreB) return a;
-    // Égalité : on prend celui avec la dernière action (arrosage le
-    // plus récent, ou planté le plus récemment).
-    final lastA = a.wateredAt.isNotEmpty ? a.wateredAt.last : a.plantedAt;
-    final lastB = b.wateredAt.isNotEmpty ? b.wateredAt.last : b.plantedAt;
-    return lastB.isAfter(lastA) ? b : a;
   }
 }
