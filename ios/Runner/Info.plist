@@ -63,6 +63,11 @@
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		</array>
+		<!-- Requis avec un verrouillage portrait : sans plein écran
+	     déclaré, App Store Connect exige les 4 orientations iPad pour
+	     le multitâche (rejet ITMS-90474). -->
+		<key>UIRequiresFullScreen</key>
+		<true/>
 		<!-- URL schemes pour OAuth.
 	     Pour activer Sign in with Google, remplace la chaîne vide dans
 	     CFBundleURLSchemes ci-dessous par ton REVERSED_CLIENT_ID de

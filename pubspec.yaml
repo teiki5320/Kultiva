@@ -40,8 +40,11 @@ dependencies:
   timezone: ^0.9.4
   # Fuseau horaire réel du device : sans lui, tz.local reste UTC et les
   # notifications planifiées (rappel mensuel 9h, Tamassi 19h) sonnaient
-  # 1 à 2h trop tard en France. Épinglé en 1.x (API String simple).
-  flutter_timezone: ^1.0.8
+  # 1 à 2h trop tard en France. ^3.x requis : les 1.x utilisent l'API
+  # Android v1 (Registrar) supprimée des Flutter récents (build cassé),
+  # et les 4.x changent le type de retour (TimezoneInfo au lieu de
+  # String). getLocalTimezone() reste identique en 3.x.
+  flutter_timezone: ^3.0.1
 
   # URL launcher (liens Amazon)
   url_launcher: ^6.2.2
