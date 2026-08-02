@@ -59,6 +59,22 @@ enum Country {
   static List<Country> get westAfricanCountries =>
       values.where((c) => c.isWestAfrica).toList();
 
+  /// Liste des pays pour les sélecteurs : le pays suggéré (détecté ou
+  /// déduit de la langue du téléphone) en premier, puis tous les autres
+  /// par ordre alphabétique — la France n'est PAS privilégiée : un
+  /// utilisateur sénégalais doit arriver sur une appli sénégalaise.
+  static List<Country> ordered({Country? first}) {
+    String key(Country c) => c.label
+        .toLowerCase()
+        .replaceAll('é', 'e')
+        .replaceAll('è', 'e')
+        .replaceAll('ô', 'o');
+    final rest = List<Country>.from(values)
+      ..sort((a, b) => key(a).compareTo(key(b)));
+    if (first == null) return rest;
+    return <Country>[first, ...rest.where((c) => c != first)];
+  }
+
   /// Retrouve un pays depuis son code ISO 3166-1 alpha-2 (ex. 'SN').
   /// Retourne null si le code est inconnu ou absent.
   static Country? fromIso(String? code) {

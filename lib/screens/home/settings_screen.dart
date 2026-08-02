@@ -50,14 +50,15 @@ class SettingsScreen extends StatelessWidget {
                           },
                           child: Column(
                             children: <Widget>[
-                              for (int i = 0;
-                                  i < Country.values.length;
-                                  i++) ...<Widget>[
+                              // Ordre alphabétique : aucun pays n'est
+                              // privilégié (le pays courant est coché).
+                              for (final (i, c)
+                                  in Country.ordered().indexed) ...<Widget>[
                                 if (i > 0) const Divider(height: 0, indent: 16),
                                 RadioListTile<Country>(
-                                  value: Country.values[i],
+                                  value: c,
                                   title: Text(
-                                    '${Country.values[i].flag}   ${Country.values[i].label}',
+                                    '${c.flag}   ${c.label}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),

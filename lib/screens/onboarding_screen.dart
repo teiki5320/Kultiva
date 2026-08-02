@@ -227,11 +227,41 @@ class _RegionSelectorPage extends StatefulWidget {
 class _RegionSelectorPageState extends State<_RegionSelectorPage> {
   bool _detecting = false;
 
+  /// Pays proposé en tête de liste : déduit de la région du téléphone
+  /// (fr_SN → Sénégal, aucune permission requise) puis affiné par
+  /// géolocalisation passive. Un utilisateur sénégalais doit arriver
+  /// sur une appli sénégalaise, pas sur une appli française déclinée.
+  Country? _suggested;
+
+  @override
+  void initState() {
+    super.initState();
+    final localeIso =
+        WidgetsBinding.instance.platformDispatcher.locale.countryCode;
+    _suggested = Country.fromIso(localeIso);
+    _refinePassively();
+  }
+
+  /// Géolocalisation silencieuse : uniquement si la permission est déjà
+  /// accordée (aucun dialogue système surprise). Pré-sélectionne le pays
+  /// détecté tant que l'utilisateur n'a rien choisi lui-même.
+  Future<void> _refinePassively() async {
+    final detected = await GeolocationService.detectCountryPassive();
+    if (!mounted || detected == null) return;
+    setState(() => _suggested = detected);
+    if (PrefsService.instance.country.value == null) {
+      await PrefsService.instance.setCountry(detected);
+    }
+  }
+
   Future<void> _detectCountry() async {
     setState(() => _detecting = true);
     final detected = await GeolocationService.detectCountry();
     if (!mounted) return;
-    setState(() => _detecting = false);
+    setState(() {
+      _detecting = false;
+      if (detected != null) _suggested = detected;
+    });
     if (detected != null) {
       await PrefsService.instance.setCountry(detected);
       if (!mounted) return;
@@ -257,6 +287,13 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
       valueListenable: PrefsService.instance.country,
       builder: (context, country, _) {
         final region = PrefsService.instance.region.value;
+        final countries = Country.ordered(first: _suggested);
+        bool isSelected(Country c) =>
+            c == country ||
+            (country == null &&
+                c == Country.france &&
+                region == Region.france &&
+                _suggested == null);
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: Column(
@@ -291,7 +328,18 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                     ),
               ),
               const SizedBox(height: 16),
-              FilledButton.icon(
+              for (final c in countries)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: _CountryTile(
+                    country: c,
+                    selected: isSelected(c),
+                    suggested: c == _suggested,
+                    onTap: () => PrefsService.instance.setCountry(c),
+                  ),
+                ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
                 onPressed: _detecting ? null : _detectCountry,
                 icon: _detecting
                     ? const SizedBox(
@@ -303,34 +351,6 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                 label: Text(
                     _detecting ? 'Détection en cours…' : 'Détecter mon pays'),
               ),
-              const SizedBox(height: 16),
-              _CountryTile(
-                country: Country.france,
-                selected: country == Country.france ||
-                    (country == null && region == Region.france),
-                onTap: () => PrefsService.instance.setCountry(Country.france),
-              ),
-              const SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "🌍 Afrique de l'Ouest",
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: KultivaColors.textSecondary,
-                      ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              for (final c in Country.westAfricanCountries)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: _CountryTile(
-                    country: c,
-                    selected: c == country,
-                    onTap: () => PrefsService.instance.setCountry(c),
-                  ),
-                ),
             ],
           ),
         );
@@ -342,11 +362,13 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
 class _CountryTile extends StatelessWidget {
   final Country country;
   final bool selected;
+  final bool suggested;
   final VoidCallback onTap;
 
   const _CountryTile({
     required this.country,
     required this.selected,
+    this.suggested = false,
     required this.onTap,
   });
 
@@ -382,6 +404,23 @@ class _CountryTile extends StatelessWidget {
                     ),
               ),
             ),
+            if (suggested && !selected)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                decoration: BoxDecoration(
+                  color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: const Text(
+                  '📍 Suggéré',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: KultivaColors.primaryGreen,
+                  ),
+                ),
+              ),
             if (selected)
               const Icon(
                 Icons.check_circle,

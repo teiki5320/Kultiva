@@ -54,5 +54,20 @@ void main() {
         expect(c.capitalLat, greaterThan(0));
       }
     });
+
+    test('ordered : pays suggéré en premier, pas de privilège France', () {
+      // Sans suggestion : ordre alphabétique, Bénin d'abord — la France
+      // est dans le lot comme les autres.
+      final neutral = Country.ordered();
+      expect(neutral.length, equals(9));
+      expect(neutral.first, equals(Country.benin));
+      expect(neutral, containsAll(Country.values));
+
+      // Avec suggestion : le pays détecté passe en tête, sans doublon.
+      final sn = Country.ordered(first: Country.senegal);
+      expect(sn.first, equals(Country.senegal));
+      expect(sn.length, equals(9));
+      expect(sn.toSet().length, equals(9));
+    });
   });
 }

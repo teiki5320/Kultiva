@@ -15,11 +15,22 @@ import '../models/region_data.dart';
 class GeolocationService {
   GeolocationService._();
 
-  /// Tente de déterminer le pays à partir de la position GPS.
+  /// Tente de déterminer le pays à partir de la position GPS, en
+  /// demandant la permission de localisation si nécessaire.
   /// Retourne null si la localisation est indisponible, refusée, ou si
   /// le pays détecté n'est pas couvert par Kultiva.
-  static Future<Country?> detectCountry() async {
-    final position = await _currentPosition();
+  static Future<Country?> detectCountry() =>
+      _detect(requestPermission: true);
+
+  /// Variante passive : ne déclenche JAMAIS le dialogue de permission.
+  /// Utilisée à l'onboarding pour suggérer silencieusement le pays quand
+  /// la permission est déjà accordée.
+  static Future<Country?> detectCountryPassive() =>
+      _detect(requestPermission: false);
+
+  static Future<Country?> _detect({required bool requestPermission}) async {
+    final position =
+        await _currentPosition(requestPermission: requestPermission);
     if (position == null) return null;
 
     try {
@@ -45,7 +56,7 @@ class GeolocationService {
     if (country != null) return country.region;
 
     // Secours sans géocodage : boîte englobante Afrique de l'Ouest.
-    final position = await _currentPosition();
+    final position = await _currentPosition(requestPermission: true);
     if (position == null) return null;
     if (Country.coordsInWestAfrica(position.latitude, position.longitude)) {
       return Region.westAfrica;
@@ -56,7 +67,8 @@ class GeolocationService {
   static Position? _lastPosition;
   static DateTime? _lastPositionAt;
 
-  static Future<Position?> _currentPosition() async {
+  static Future<Position?> _currentPosition(
+      {required bool requestPermission}) async {
     try {
       // Réutilise la position obtenue il y a moins d'une minute pour ne
       // pas relancer deux acquisitions GPS dans le même parcours.
@@ -72,6 +84,7 @@ class GeolocationService {
 
       var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
+        if (!requestPermission) return null;
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied ||
             permission == LocationPermission.deniedForever) {
