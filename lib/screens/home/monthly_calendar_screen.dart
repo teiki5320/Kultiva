@@ -53,7 +53,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
         return regionalCalendar(region);
       case Region.westAfrica:
         return regionalCalendar(region,
-            zone: PrefsService.instance.country.value?.zone);
+            zone: PrefsService.instance.effectiveZone);
     }
   }
 
@@ -97,7 +97,8 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               Stack(
                 children: [
                   SeasonHeader(
-                    season: Season.of(_selectedMonth, region),
+                    season: Season.of(_selectedMonth, region,
+                        zone: PrefsService.instance.effectiveZone),
                     month: _selectedMonth,
                     height: 170,
                   ),

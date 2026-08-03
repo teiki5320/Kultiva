@@ -195,6 +195,7 @@ class CloudSyncService {
         'user_id': uid,
         'region': prefs.region.value.id,
         'country': prefs.country.value?.isoCode,
+        'climate_zone': prefs.climateZone.value?.name,
         'dark_mode': prefs.darkMode.value,
         'notifications': prefs.notifications.value,
         'sound_enabled': prefs.soundEnabled.value,
@@ -204,9 +205,11 @@ class CloudSyncService {
       try {
         await _client.from('preferences').upsert(payload).timeout(_netTimeout);
       } on PostgrestException {
-        // Colonne `country` absente tant que la migration 013 n'est pas
-        // appliquée : on retente sans, pour ne pas casser la synchro.
+        // Colonnes `country`/`climate_zone` absentes tant que les
+        // migrations 013/016 ne sont pas appliquées : on retente sans,
+        // pour ne pas casser la synchro.
         payload.remove('country');
+        payload.remove('climate_zone');
         await _client.from('preferences').upsert(payload).timeout(_netTimeout);
       }
     } catch (e) {
@@ -250,11 +253,13 @@ class CloudSyncService {
         if (regionId != null) {
           await prefs.setRegion(Region.fromId(regionId));
         }
-        // Le pays, s'il est connu côté cloud, affine la région.
+        // Le pays, s'il est connu côté cloud, affine la région ; la
+        // sous-zone climatique (climate_zone) l'affine encore.
         final countryIso = row['country'] as String?;
         final country = Country.fromIso(countryIso);
         if (country != null) {
-          await prefs.setCountry(country);
+          final zone = ClimateZone.fromName(row['climate_zone'] as String?);
+          await prefs.setCountry(country, zone: zone);
         }
         if (row['dark_mode'] is bool) {
           await prefs.setDarkMode(row['dark_mode'] as bool);

@@ -44,7 +44,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
         final regionData =
-            regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
+            regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
         var entries = regionData.toList()
           ..sort((a, b) {
             final va =
@@ -70,7 +70,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
               Stack(
                 children: [
                   SeasonHeader(
-                    season: Season.of(_filterMonth ?? now, region),
+                    season: Season.of(_filterMonth ?? now, region,
+                        zone: PrefsService.instance.effectiveZone),
                     month: _filterMonth ?? now,
                     height: 150,
                   ),

@@ -730,7 +730,7 @@ class PlannerPlantPicker extends StatelessWidget {
   static Map<String, Set<int>> _sowingFor(Region region) =>
       _sowingCache.putIfAbsent(region, () {
         final list =
-            regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
+            regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
         return <String, Set<int>>{
           for (final r in list) r.vegetableId: r.sowingMonths.toSet(),
         };

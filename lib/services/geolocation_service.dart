@@ -20,15 +20,26 @@ class GeolocationService {
   /// Retourne null si la localisation est indisponible, refusée, ou si
   /// le pays détecté n'est pas couvert par Kultiva.
   static Future<Country?> detectCountry() =>
-      _detect(requestPermission: true);
+      _detectCountryOnly(requestPermission: true);
 
   /// Variante passive : ne déclenche JAMAIS le dialogue de permission.
   /// Utilisée à l'onboarding pour suggérer silencieusement le pays quand
   /// la permission est déjà accordée.
-  static Future<Country?> detectCountryPassive() =>
-      _detect(requestPermission: false);
+  static Future<Country?> detectCountryPassive() async =>
+      (await _detect(requestPermission: false))?.country;
 
-  static Future<Country?> _detect({required bool requestPermission}) async {
+  static Future<Country?> _detectCountryOnly(
+          {required bool requestPermission}) async =>
+      (await _detect(requestPermission: requestPermission))?.country;
+
+  /// Détecte le pays ET affine la sous-zone climatique par latitude
+  /// (le nord de la Côte d'Ivoire n'est pas Abidjan…). Retourne null si
+  /// la localisation est indisponible/refusée ou le pays non couvert.
+  static Future<({Country country, ClimateZone zone})?>
+      detectCountryAndZone() => _detect(requestPermission: true);
+
+  static Future<({Country country, ClimateZone zone})?> _detect(
+      {required bool requestPermission}) async {
     final position =
         await _currentPosition(requestPermission: requestPermission);
     if (position == null) return null;
@@ -41,7 +52,9 @@ class GeolocationService {
       if (placemarks.isNotEmpty) {
         final iso = placemarks.first.isoCountryCode;
         final country = Country.fromIso(iso);
-        if (country != null) return country;
+        if (country != null) {
+          return (country: country, zone: country.zoneAt(position.latitude));
+        }
       }
     } catch (_) {
       // Géocodage indisponible (offline, quota…) → secours ci-dessous.

@@ -256,18 +256,21 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
 
   Future<void> _detectCountry() async {
     setState(() => _detecting = true);
-    final detected = await GeolocationService.detectCountry();
+    // Détecte le pays ET affine la sous-zone climatique par latitude.
+    final detected = await GeolocationService.detectCountryAndZone();
     if (!mounted) return;
     setState(() {
       _detecting = false;
-      if (detected != null) _suggested = detected;
+      if (detected != null) _suggested = detected.country;
     });
     if (detected != null) {
-      await PrefsService.instance.setCountry(detected);
+      await PrefsService.instance
+          .setCountry(detected.country, zone: detected.zone);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${detected.flag} Tu jardines : ${detected.label} !'),
+          content: Text(
+              '${detected.country.flag} Tu jardines : ${detected.country.label} !'),
         ),
       );
     } else {

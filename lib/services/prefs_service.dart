@@ -16,6 +16,7 @@ class PrefsService {
 
   static const _kRegion = 'kultiva.region';
   static const _kCountry = 'kultiva.country';
+  static const _kClimateZone = 'kultiva.climateZone';
   static const _kDarkMode = 'kultiva.darkMode';
   static const _kNotifications = 'kultiva.notifications';
   static const _kOnboardingDone = 'kultiva.onboardingDone';
@@ -47,6 +48,17 @@ class PrefsService {
   /// de l'Ouest). Null pour les utilisateurs historiques qui n'ont que la
   /// région — la région reste le pivot pour tous les calendriers.
   final ValueNotifier<Country?> country = ValueNotifier<Country?>(null);
+
+  /// Sous-zone climatique choisie/détectée (affine calendriers et
+  /// saisons dans un même pays). Null = utiliser la zone par défaut du
+  /// pays. Voir [effectiveZone].
+  final ValueNotifier<ClimateZone?> climateZone =
+      ValueNotifier<ClimateZone?>(null);
+
+  /// Zone climatique effective : la sous-zone détectée/choisie si elle
+  /// existe, sinon la zone par défaut du pays. Utilisée par tous les
+  /// calendriers et saisons régionalisés.
+  ClimateZone? get effectiveZone => climateZone.value ?? country.value?.zone;
   final ValueNotifier<bool> darkMode = ValueNotifier<bool>(false);
   final ValueNotifier<bool> notifications = ValueNotifier<bool>(true);
   final ValueNotifier<Set<String>> favorites =
@@ -115,6 +127,7 @@ class PrefsService {
     country.value = Country.fromIso(_prefs!.getString(_kCountry));
     // Le pays, s'il est connu, fait autorité sur la région.
     if (country.value != null) region.value = country.value!.region;
+    climateZone.value = ClimateZone.fromName(_prefs!.getString(_kClimateZone));
     darkMode.value = _prefs!.getBool(_kDarkMode) ?? false;
     notifications.value = _prefs!.getBool(_kNotifications) ?? true;
     favorites.value =
@@ -154,16 +167,40 @@ class PrefsService {
       country.value = null;
       await _prefs?.remove(_kCountry);
     }
+    // La sous-zone n'a de sens qu'en Afrique de l'Ouest.
+    if (value != Region.westAfrica && climateZone.value != null) {
+      climateZone.value = null;
+      await _prefs?.remove(_kClimateZone);
+    }
     await _prefs?.setString(_kRegion, value.id);
     _notifyPrefsChanged();
   }
 
-  /// Choisit un pays et aligne la région dessus.
-  Future<void> setCountry(Country value) async {
+  /// Choisit un pays et aligne la région dessus. [zone] est la sous-zone
+  /// affinée (par latitude GPS ou choix manuel) ; null réinitialise sur
+  /// la zone par défaut du pays.
+  Future<void> setCountry(Country value, {ClimateZone? zone}) async {
     country.value = value;
     region.value = value.region;
+    climateZone.value = zone;
     await _prefs?.setString(_kCountry, value.isoCode);
     await _prefs?.setString(_kRegion, value.region.id);
+    if (zone == null) {
+      await _prefs?.remove(_kClimateZone);
+    } else {
+      await _prefs?.setString(_kClimateZone, zone.name);
+    }
+    _notifyPrefsChanged();
+  }
+
+  /// Change uniquement la sous-zone climatique (sélecteur manuel).
+  Future<void> setClimateZone(ClimateZone? zone) async {
+    climateZone.value = zone;
+    if (zone == null) {
+      await _prefs?.remove(_kClimateZone);
+    } else {
+      await _prefs?.setString(_kClimateZone, zone.name);
+    }
     _notifyPrefsChanged();
   }
 

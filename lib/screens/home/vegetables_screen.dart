@@ -55,7 +55,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   List<Vegetable> _filter(Region region, Set<String> favs) {
     final now = DateTime.now().month;
     final regionData =
-        regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
+        regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
 
     final filtered = vegetablesBase.where((v) {
       if (_favOnly && !favs.contains(v.id)) return false;
@@ -133,7 +133,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             }
             final filtered = _filter(region, favs);
             final regionData =
-                regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
+                regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
             return SafeArea(
               bottom: false,
               child: Column(

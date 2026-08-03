@@ -177,7 +177,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
             children: [
               SeasonHeader(
                 season: Season.of(
-                    DateTime.now().month, PrefsService.instance.region.value),
+                    DateTime.now().month, PrefsService.instance.region.value,
+                    zone: PrefsService.instance.effectiveZone),
                 month: DateTime.now().month,
                 height: 160,
                 hideLabel: true,

@@ -79,15 +79,16 @@ class SettingsScreen extends StatelessWidget {
                       width: double.infinity,
                       child: OutlinedButton.icon(
                         onPressed: () async {
-                          final country =
-                              await GeolocationService.detectCountry();
+                          final detected = await GeolocationService
+                              .detectCountryAndZone();
                           if (!context.mounted) return;
-                          if (country != null) {
-                            PrefsService.instance.setCountry(country);
+                          if (detected != null) {
+                            PrefsService.instance.setCountry(detected.country,
+                                zone: detected.zone);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Pays détecté : ${country.flag} ${country.label}',
+                                  'Pays détecté : ${detected.country.flag} ${detected.country.label}',
                                 ),
                               ),
                             );
@@ -105,6 +106,63 @@ class SettingsScreen extends StatelessWidget {
                         label: const Text('Détecter mon pays automatiquement'),
                       ),
                     ),
+                  ),
+                  // Sélecteur de sous-zone climatique (Afrique de l'Ouest) :
+                  // affine les calendriers dans un même pays (Bamako
+                  // soudanien, nord Côte d'Ivoire…).
+                  ValueListenableBuilder<Country?>(
+                    valueListenable: PrefsService.instance.country,
+                    builder: (context, country, _) {
+                      if (country == null || !country.isWestAfrica) {
+                        return const SizedBox.shrink();
+                      }
+                      return ValueListenableBuilder<ClimateZone?>(
+                        valueListenable: PrefsService.instance.climateZone,
+                        builder: (context, zone, _) {
+                          final effective =
+                              PrefsService.instance.effectiveZone;
+                          return Column(
+                            children: <Widget>[
+                              const SizedBox(height: 8),
+                              const _SectionTitle(title: '🌦️  Ma zone'),
+                              Card(
+                                child: RadioGroup<ClimateZone>(
+                                  groupValue: effective,
+                                  onChanged: (v) {
+                                    if (v != null) {
+                                      PrefsService.instance.setClimateZone(v);
+                                    }
+                                  },
+                                  child: Column(
+                                    children: <Widget>[
+                                      for (final (i, z) in ClimateZone
+                                          .westAfricanZones
+                                          .indexed) ...<Widget>[
+                                        if (i > 0)
+                                          const Divider(
+                                              height: 0, indent: 16),
+                                        RadioListTile<ClimateZone>(
+                                          value: z,
+                                          title: Text(
+                                            z.label,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          subtitle: Text(z.description),
+                                          activeColor:
+                                              KultivaColors.primaryGreen,
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                   const _SectionTitle(title: '🔔  Notifications'),

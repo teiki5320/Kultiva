@@ -3,6 +3,7 @@ import 'package:kultiva/models/country.dart';
 import 'package:kultiva/models/region_data.dart';
 
 void main() {
+  _zoneTests();
   group('Country', () {
     test('9 pays : France + 8 pays francophones AO', () {
       expect(Country.values.length, equals(9));
@@ -68,6 +69,61 @@ void main() {
       expect(sn.first, equals(Country.senegal));
       expect(sn.length, equals(9));
       expect(sn.toSet().length, equals(9));
+    });
+  });
+}
+
+void _zoneTests() {
+  group('Country.zoneAt — affinage par latitude', () {
+    test('latitude nulle → zone par défaut du pays', () {
+      expect(Country.mali.zoneAt(null), equals(Country.mali.zone));
+      expect(Country.senegal.zoneAt(null), equals(ClimateZone.sahel));
+    });
+
+    test('Mali : Bamako (12,6°N) est soudanien, le nord reste sahélien', () {
+      expect(Country.mali.zoneAt(12.6), equals(ClimateZone.sudan));
+      expect(Country.mali.zoneAt(16.3), equals(ClimateZone.sahel)); // Tombouctou
+    });
+
+    test('Côte d\'Ivoire : Abidjan guinéen, Korhogo soudanien', () {
+      expect(Country.coteDivoire.zoneAt(5.3), equals(ClimateZone.guinean));
+      expect(Country.coteDivoire.zoneAt(9.4), equals(ClimateZone.sudan));
+    });
+
+    test('Sénégal : Dakar sahélien, Casamance (Ziguinchor 12,5°N) plus humide',
+        () {
+      expect(Country.senegal.zoneAt(14.7), equals(ClimateZone.sahel));
+      expect(Country.senegal.zoneAt(12.5), equals(ClimateZone.sudan));
+    });
+
+    test('France reste tempérée quelle que soit la latitude', () {
+      expect(Country.france.zoneAt(48.8), equals(ClimateZone.temperate));
+      expect(Country.france.zoneAt(5.0), equals(ClimateZone.temperate));
+    });
+
+    test('la capitale de chaque pays retombe sur une zone AO cohérente', () {
+      for (final c in Country.westAfricanCountries) {
+        final z = c.zoneAt(c.capitalLat);
+        expect(ClimateZone.westAfricanZones, contains(z),
+            reason: '${c.label} : $z');
+      }
+    });
+  });
+
+  group('ClimateZone', () {
+    test('fromName roundtrip', () {
+      for (final z in ClimateZone.values) {
+        expect(ClimateZone.fromName(z.name), equals(z));
+      }
+      expect(ClimateZone.fromName(null), isNull);
+      expect(ClimateZone.fromName('xxx'), isNull);
+    });
+
+    test('chaque zone a un label et une description', () {
+      for (final z in ClimateZone.values) {
+        expect(z.label, isNotEmpty);
+        expect(z.description, isNotEmpty);
+      }
     });
   });
 }

@@ -68,7 +68,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
         return regionalCalendar(region);
       case Region.westAfrica:
         return regionalCalendar(region,
-            zone: PrefsService.instance.country.value?.zone);
+            zone: PrefsService.instance.effectiveZone);
     }
   }
 

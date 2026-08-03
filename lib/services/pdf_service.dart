@@ -353,7 +353,7 @@ class PdfService {
 
   static RegionData? _findRegionData(String vegetableId, Region region) {
     final list =
-        regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
+        regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
     try {
       return list.firstWhere((rd) => rd.vegetableId == vegetableId);
     } catch (_) {

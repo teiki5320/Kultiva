@@ -90,7 +90,7 @@ class _SowScreenState extends State<SowScreen> {
         return regionalCalendar(region);
       case Region.westAfrica:
         return regionalCalendar(region,
-            zone: PrefsService.instance.country.value?.zone);
+            zone: PrefsService.instance.effectiveZone);
     }
   }
 
@@ -144,7 +144,8 @@ class _SowScreenState extends State<SowScreen> {
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
-        final season = Season.of(month, region);
+        final season = Season.of(month, region,
+            zone: PrefsService.instance.effectiveZone);
         final data = _dataFor(region);
 
         final toSow = <Vegetable>[];
