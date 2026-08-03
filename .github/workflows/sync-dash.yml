@@ -1,0 +1,59 @@
+name: Sync fiches → Dash
+
+# Pousse docs/INFRA.md et docs/MARKETING.md vers le repo Dash
+# (dashboard de suivi des applications) à chaque modification sur main.
+#
+# Nécessite le secret DASH_TOKEN : un fine-grained PAT limité au repo
+# teiki5320/Dash avec la permission "Contents: Read and write"
+# (GitHub → Settings → Developer settings → Fine-grained tokens).
+# Tant que le secret est absent, le workflow s'arrête proprement
+# sans erreur — il s'activera dès que le secret sera ajouté.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/INFRA.md'
+      - 'docs/MARKETING.md'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Kultiva
+        uses: actions/checkout@v4
+
+      - name: Vérifier le secret DASH_TOKEN
+        id: check
+        env:
+          DASH_TOKEN: ${{ secrets.DASH_TOKEN }}
+        run: |
+          if [ -z "$DASH_TOKEN" ]; then
+            echo "::notice::Secret DASH_TOKEN absent — sync vers Dash ignorée."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pousser les fiches vers Dash
+        if: steps.check.outputs.skip != 'true'
+        env:
+          DASH_TOKEN: ${{ secrets.DASH_TOKEN }}
+        run: |
+          git clone --depth 1 "https://x-access-token:${DASH_TOKEN}@github.com/teiki5320/Dash.git" /tmp/dash
+          mkdir -p /tmp/dash/apps/kultiva
+          cp docs/INFRA.md /tmp/dash/apps/kultiva/infra.md
+          cp docs/MARKETING.md /tmp/dash/apps/kultiva/marketing.md
+          cd /tmp/dash
+          git config user.name "kultiva-sync[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps/kultiva
+          if git diff --cached --quiet; then
+            echo "Fiches identiques — rien à pousser."
+          else
+            git commit -m "sync: fiches Kultiva (INFRA.md + MARKETING.md)"
+            git push origin HEAD:main
+          fi
