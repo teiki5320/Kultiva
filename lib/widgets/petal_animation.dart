@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../models/country.dart';
 import '../models/region_data.dart';
 
 /// Saison en cours — déduite du mois courant et de la région.
@@ -29,14 +30,32 @@ enum Season {
     return Season.winter;
   }
 
-  /// Calcule la saison selon la région active.
-  static Season of(int month, Region region) {
-    if (region == Region.westAfrica) {
-      if (month >= 6 && month <= 10) return Season.rainySeason;
-      if (month >= 3 && month <= 5) return Season.drySeason;
-      return Season.harmattan;
+  /// Calcule la saison selon la région active, affinée par la zone
+  /// climatique du pays quand elle est connue :
+  /// - sahélienne : pluies courtes (juin-sept), harmattan marqué ;
+  /// - soudanienne (défaut AO) : pluies mai/juin-octobre ;
+  /// - guinéenne côtière : deux saisons des pluies (avril-juillet et
+  ///   septembre-novembre), petite saison sèche en août, harmattan bref.
+  static Season of(int month, Region region, {ClimateZone? zone}) {
+    if (region != Region.westAfrica) return fromMonth(month);
+    switch (zone) {
+      case ClimateZone.sahel:
+        if (month >= 6 && month <= 9) return Season.rainySeason;
+        if (month >= 11 || month <= 2) return Season.harmattan;
+        return Season.drySeason;
+      case ClimateZone.guinean:
+        if ((month >= 4 && month <= 7) || (month >= 9 && month <= 11)) {
+          return Season.rainySeason;
+        }
+        if (month == 12 || month == 1) return Season.harmattan;
+        return Season.drySeason;
+      case ClimateZone.sudan:
+      case ClimateZone.temperate:
+      case null:
+        if (month >= 6 && month <= 10) return Season.rainySeason;
+        if (month >= 3 && month <= 5) return Season.drySeason;
+        return Season.harmattan;
     }
-    return fromMonth(month);
   }
 
   String get label {
