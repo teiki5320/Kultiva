@@ -6,6 +6,7 @@ import '../data/regions/regional_calendar.dart';
 import '../data/companions.dart';
 import '../data/diseases.dart';
 import '../data/local_names.dart';
+import '../data/market_buying_tips.dart';
 import '../data/market_data.dart';
 import '../data/recipes.dart';
 import '../data/rotation.dart';
@@ -217,6 +218,10 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
         if (rotationMap.containsKey(vegetable.id))
           _RotationSection(data: rotationMap[vegetable.id]!),
+        if (region == Region.westAfrica &&
+            marketBuyingTips[vegetable.id] != null &&
+            vegetable.category != VegetableCategory.accessories)
+          _BuyingTipsSection(tips: marketBuyingTips[vegetable.id]!),
         if (region == Region.westAfrica &&
             marketData[vegetable.id] != null)
           _MarketSection(info: marketData[vegetable.id]!),
@@ -1120,6 +1125,73 @@ class _RecipesSection extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Conseils d'achat au marché (semences, semenceaux, boutures, rejets),
+/// affichés en Afrique de l'Ouest à la place du lien Amazon indisponible.
+class _BuyingTipsSection extends StatelessWidget {
+  final List<BuyingTip> tips;
+  const _BuyingTipsSection({required this.tips});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        color: KultivaColors.terracotta.withValues(alpha: 0.10),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '🛍️  Bien acheter au marché',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              for (final t in tips)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: KultivaColors.terracotta
+                              .withValues(alpha: 0.18),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          t.what,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            color: KultivaColors.terracotta,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        t.advice,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: KultivaColors.textPrimary,
+                          height: 1.35,
                         ),
                       ),
                     ],
