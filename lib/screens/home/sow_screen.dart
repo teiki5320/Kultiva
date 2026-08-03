@@ -23,7 +23,6 @@ import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
 import 'mes_jardins_screen.dart';
 import 'settings_screen.dart';
-import 'water_screen.dart';
 import 'weather_screen.dart';
 
 /// URL Instagram Kultiva — ouverte au tap sur la carte « Actualités ».
@@ -380,27 +379,6 @@ class _SowScreenState extends State<SowScreen> {
                         ),
                       ],
                     ),
-                    // Suivi de l'eau — Afrique de l'Ouest uniquement
-                    // (l'eau est la contrainte n°1 du jardinier sahélien).
-                    if (region == Region.westAfrica) ...<Widget>[
-                      const SizedBox(height: 12),
-                      _KawaiiCard(
-                        emoji: '💧',
-                        imagePath: null,
-                        label: 'Suivi de l\'eau',
-                        subtitle: 'Pluies, arrosage, économies',
-                        gradientColors: const <Color>[
-                          Color(0xFFA9D8E8),
-                          Color(0xFFCDE9F2),
-                        ],
-                        bubbleColor: const Color(0xFF4A9BC9),
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const WaterScreen(),
-                          ),
-                        ),
-                      ),
-                    ],
                   ],
                 ),
               ),
