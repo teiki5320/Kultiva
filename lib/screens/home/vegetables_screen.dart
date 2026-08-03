@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/regions/france.dart';
-import '../../data/regions/west_africa.dart';
+import '../../data/regions/regional_calendar.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/region_data.dart';
@@ -55,7 +54,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
   List<Vegetable> _filter(Region region, Set<String> favs) {
     final now = DateTime.now().month;
-    final regionData = region == Region.france ? franceData : westAfricaData;
+    final regionData =
+        regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
 
     final filtered = vegetablesBase.where((v) {
       if (_favOnly && !favs.contains(v.id)) return false;
@@ -133,7 +133,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
             }
             final filtered = _filter(region, favs);
             final regionData =
-                region == Region.france ? franceData : westAfricaData;
+                regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
             return SafeArea(
               bottom: false,
               child: Column(

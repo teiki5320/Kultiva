@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/audio_service.dart';
-import '../data/regions/france.dart';
-import '../data/regions/west_africa.dart';
+import '../data/regions/regional_calendar.dart';
 import '../data/companions.dart';
 import '../data/diseases.dart';
+import '../data/local_names.dart';
+import '../data/market_data.dart';
+import '../data/recipes.dart';
 import '../data/rotation.dart';
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
@@ -62,9 +64,10 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
   List<RegionData> _dataFor(Region region) {
     switch (region) {
       case Region.france:
-        return franceData;
+        return regionalCalendar(region);
       case Region.westAfrica:
-        return westAfricaData;
+        return regionalCalendar(region,
+            zone: PrefsService.instance.country.value?.zone);
     }
   }
 
@@ -141,6 +144,11 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: <Widget>[
         _HeaderCard(vegetable: vegetable),
+        if (region == Region.westAfrica &&
+            localNames[vegetable.id] != null) ...<Widget>[
+          const SizedBox(height: 12),
+          _LocalNamesCard(names: localNames[vegetable.id]!),
+        ],
         const SizedBox(height: 16),
         if (data != null && data.sowingMonths.isNotEmpty)
           _MonthsCard(
@@ -209,6 +217,11 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
         if (rotationMap.containsKey(vegetable.id))
           _RotationSection(data: rotationMap[vegetable.id]!),
+        if (region == Region.westAfrica &&
+            marketData[vegetable.id] != null)
+          _MarketSection(info: marketData[vegetable.id]!),
+        if (recipesByVegetable[vegetable.id] != null)
+          _RecipesSection(recipes: recipesByVegetable[vegetable.id]!),
         if (_list.length > 1)
           const Padding(
             padding: EdgeInsets.only(top: 12),
@@ -907,6 +920,211 @@ class _MiniActionBlock extends StatelessWidget {
                   fontStyle: FontStyle.italic,
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Noms locaux de la culture (wolof, bambara, haoussa…), affichés en
+/// Afrique de l'Ouest pour que le jardinier reconnaisse son légume.
+class _LocalNamesCard extends StatelessWidget {
+  final List<LocalName> names;
+  const _LocalNamesCard({required this.names});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: KultivaColors.lightGreen.withValues(alpha: 0.18),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              '🗣️  Noms locaux',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: <Widget>[
+                for (final n in names)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: KultivaColors.lightGreen,
+                      ),
+                    ),
+                    child: Text.rich(
+                      TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: '${n.name}  ',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        TextSpan(
+                          text: n.language,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Estimation maraîchage (rendement + valeur marché en FCFA), affichée
+/// en Afrique de l'Ouest pour les jardiniers qui cultivent pour vendre.
+class _MarketSection extends StatelessWidget {
+  final MarketInfo info;
+  const _MarketSection({required this.info});
+
+  @override
+  Widget build(BuildContext context) {
+    final yieldStr = info.yieldPerPlantKg >= 1
+        ? '${info.yieldPerPlantKg.toStringAsFixed(info.yieldPerPlantKg % 1 == 0 ? 0 : 1)} kg'
+        : '${(info.yieldPerPlantKg * 1000).round()} g';
+    final value = (info.yieldPerPlantKg * info.priceFcfaPerKg).round();
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '💰  Maraîchage',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'Ordres de grandeur indicatifs (marchés urbains).',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: KultivaColors.textSecondary,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 10),
+              _MarketRow('Rendement', '~$yieldStr par pied/cycle'),
+              _MarketRow('Prix marché', '~${info.priceFcfaPerKg} FCFA / kg'),
+              _MarketRow('Valeur estimée', '~$value FCFA par pied'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MarketRow extends StatelessWidget {
+  final String label;
+  final String value;
+  const _MarketRow(this.label, this.value);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 130,
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                color: KultivaColors.textSecondary,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Idées de plats liées à la récolte — boucle le jardin vers la cuisine.
+class _RecipesSection extends StatelessWidget {
+  final List<Recipe> recipes;
+  const _RecipesSection({required this.recipes});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '🍲  En cuisine',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const SizedBox(height: 10),
+              for (final r in recipes)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(r.emoji, style: const TextStyle(fontSize: 22)),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              r.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            Text(
+                              r.description,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: KultivaColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

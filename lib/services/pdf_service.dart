@@ -3,11 +3,11 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../data/companions.dart';
-import '../data/regions/france.dart';
-import '../data/regions/west_africa.dart';
+import '../data/regions/regional_calendar.dart';
 import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
 import '../models/region_data.dart';
+import 'prefs_service.dart';
 import '../models/vegetable.dart';
 
 /// Génère et affiche un PDF de la fiche complète d'un légume.
@@ -352,7 +352,8 @@ class PdfService {
       '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}';
 
   static RegionData? _findRegionData(String vegetableId, Region region) {
-    final list = region == Region.france ? franceData : westAfricaData;
+    final list =
+        regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
     try {
       return list.firstWhere((rd) => rd.vegetableId == vegetableId);
     } catch (_) {

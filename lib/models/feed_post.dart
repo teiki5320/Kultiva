@@ -11,6 +11,10 @@ class FeedPost {
   final bool reportedByMe;
   final DateTime createdAt;
 
+  /// Code ISO du pays du jardinier (ex. 'SN'), null pour les anciens
+  /// posts ou si le pays n'est pas choisi.
+  final String? country;
+
   const FeedPost({
     required this.id,
     required this.userId,
@@ -22,5 +26,6 @@ class FeedPost {
     required this.likedByMe,
     this.reportedByMe = false,
     required this.createdAt,
+    this.country,
   });
 }

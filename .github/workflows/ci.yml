@@ -67,3 +67,10 @@ jobs:
         # retombe sur la clé debug : le build valide quand même le
         # manifest, la fusion des plugins et le desugaring.
         run: flutter build appbundle --release
+
+      - name: Build APK par ABI (léger, cible Afrique de l'Ouest)
+        # Beaucoup d'utilisateurs AO installent par APK direct (hors
+        # Play Store) sur des Android d'entrée de gamme : --split-per-abi
+        # produit des APK ~2× plus légers que l'APK universel. Valide
+        # aussi que le split fonctionne.
+        run: flutter build apk --release --split-per-abi

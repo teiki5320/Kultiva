@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/regions/france.dart';
-import '../../data/regions/west_africa.dart';
+import '../../data/regions/regional_calendar.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
@@ -51,9 +50,10 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
   List<RegionData> _dataFor(Region region) {
     switch (region) {
       case Region.france:
-        return franceData;
+        return regionalCalendar(region);
       case Region.westAfrica:
-        return westAfricaData;
+        return regionalCalendar(region,
+            zone: PrefsService.instance.country.value?.zone);
     }
   }
 

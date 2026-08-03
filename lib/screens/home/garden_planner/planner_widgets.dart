@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/companions.dart';
-import '../../../data/regions/france.dart';
-import '../../../data/regions/west_africa.dart';
+import '../../../data/regions/regional_calendar.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/region_data.dart';
 import '../../../models/culture_entry.dart';
@@ -730,7 +729,8 @@ class PlannerPlantPicker extends StatelessWidget {
 
   static Map<String, Set<int>> _sowingFor(Region region) =>
       _sowingCache.putIfAbsent(region, () {
-        final list = region == Region.france ? franceData : westAfricaData;
+        final list =
+            regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
         return <String, Set<int>>{
           for (final r in list) r.vegetableId: r.sowingMonths.toSet(),
         };

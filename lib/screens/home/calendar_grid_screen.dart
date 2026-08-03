@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/regions/france.dart';
-import '../../data/regions/west_africa.dart';
+import '../../data/regions/regional_calendar.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
@@ -45,7 +44,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
         final regionData =
-            region == Region.france ? franceData : westAfricaData;
+            regionalCalendar(region, zone: PrefsService.instance.country.value?.zone);
         var entries = regionData.toList()
           ..sort((a, b) {
             final va =

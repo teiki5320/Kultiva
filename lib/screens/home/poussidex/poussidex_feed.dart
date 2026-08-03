@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
+import '../../../models/country.dart';
 import '../../../models/feed_post.dart';
 import '../../../services/feed_service.dart';
 import '../../../services/prefs_service.dart';
@@ -22,6 +23,16 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
   bool _loading = true;
   String? _error;
 
+  /// Pays de l'utilisateur (filtre « Mon pays »), null hors Afrique
+  /// de l'Ouest — le filtre n'est alors pas proposé.
+  Country? get _userCountry {
+    final c = PrefsService.instance.country.value;
+    return (c != null && c.isWestAfrica) ? c : null;
+  }
+
+  /// Vrai = ne montrer que les jardins de mon pays (défaut en AO).
+  bool _myCountryOnly = true;
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +45,11 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
       _error = null;
     });
     try {
-      final posts = await FeedService.instance.fetchFeed();
+      final country = _userCountry;
+      final posts = await FeedService.instance.fetchFeed(
+        countryIso:
+            (_myCountryOnly && country != null) ? country.isoCode : null,
+      );
       if (mounted) {
         setState(() {
           _posts = posts;
@@ -227,8 +242,39 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
         ),
       );
     }
+    final filterBar = _userCountry == null
+        ? const SizedBox.shrink()
+        : Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: Row(
+              children: <Widget>[
+                ChoiceChip(
+                  label: Text(
+                      '${_userCountry!.flag} ${_userCountry!.label}'),
+                  selected: _myCountryOnly,
+                  onSelected: (_) {
+                    setState(() => _myCountryOnly = true);
+                    _loadFeed();
+                  },
+                ),
+                const SizedBox(width: 8),
+                ChoiceChip(
+                  label: const Text('🌍 Tous les jardins'),
+                  selected: !_myCountryOnly,
+                  onSelected: (_) {
+                    setState(() => _myCountryOnly = false);
+                    _loadFeed();
+                  },
+                ),
+              ],
+            ),
+          );
     if (_posts.isEmpty) {
-      return const Center(
+      return Column(
+        children: <Widget>[
+          filterBar,
+          const Expanded(
+            child: Center(
         child: Padding(
           padding: EdgeInsets.all(32),
           child: Column(
@@ -248,25 +294,35 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
             ],
           ),
         ),
+            ),
+          ),
+        ],
       );
     }
-    return RefreshIndicator(
-      onRefresh: _loadFeed,
-      child: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
-        itemCount: _posts.length,
-        itemBuilder: (context, i) {
-          final post = _posts[i];
-          final challenge = _findChallenge(post.challengeId);
-          return _FeedPostCard(
-            post: post,
-            challenge: challenge,
-            onLike: () => _toggleLike(i),
-            onReport: () => _reportPost(i),
-            timeAgo: _timeAgo(post.createdAt),
-          );
-        },
-      ),
+    return Column(
+      children: <Widget>[
+        filterBar,
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: _loadFeed,
+            child: ListView.builder(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+              itemCount: _posts.length,
+              itemBuilder: (context, i) {
+                final post = _posts[i];
+                final challenge = _findChallenge(post.challengeId);
+                return _FeedPostCard(
+                  post: post,
+                  challenge: challenge,
+                  onLike: () => _toggleLike(i),
+                  onReport: () => _reportPost(i),
+                  timeAgo: _timeAgo(post.createdAt),
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

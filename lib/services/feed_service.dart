@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/feed_post.dart';
+import 'prefs_service.dart';
 
 /// Service pour le feed communautaire des défis photo.
 class FeedService {
@@ -22,25 +23,42 @@ class FeedService {
     if (uid == null) {
       throw Exception('Pas de session Supabase active');
     }
-    await _client.from('challenge_posts').insert(<String, dynamic>{
+    final payload = <String, dynamic>{
       'user_id': uid,
       'challenge_id': challengeId,
       'photo_url': photoUrl,
       'caption': caption,
-    });
+      'country': PrefsService.instance.country.value?.isoCode,
+    };
+    try {
+      await _client.from('challenge_posts').insert(payload);
+    } on PostgrestException {
+      // Colonne `country` absente tant que la migration 015 n'est pas
+      // appliquée : on republie sans, pour ne pas bloquer le défi.
+      payload.remove('country');
+      await _client.from('challenge_posts').insert(payload);
+    }
   }
 
   /// Récupère les posts du feed (les plus récents en premier).
   /// [limit] = nombre de posts à charger, [offset] pour la pagination.
-  Future<List<FeedPost>> fetchFeed({int limit = 20, int offset = 0}) async {
+  /// [countryIso] filtre les posts d'un pays (ex. 'SN'), null = tous.
+  Future<List<FeedPost>> fetchFeed({
+    int limit = 20,
+    int offset = 0,
+    String? countryIso,
+  }) async {
     final uid = _userId;
     try {
       // Requête avec jointure sur profiles pour le display_name.
       // On utilise une jointure LEFT (pas inner) pour que les posts
       // s'affichent même si le profil n'existe pas encore.
-      final data = await _client
-          .from('challenge_posts')
-          .select('*, profiles(display_name)')
+      var query =
+          _client.from('challenge_posts').select('*, profiles(display_name)');
+      if (countryIso != null) {
+        query = query.eq('country', countryIso);
+      }
+      final data = await query
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
@@ -77,6 +95,7 @@ class FeedService {
           likedByMe: myLikes.contains(postId),
           reportedByMe: myReports.contains(postId),
           createdAt: DateTime.parse(row['created_at'] as String),
+          country: row['country'] as String?,
         );
       }).toList();
     } catch (e) {
