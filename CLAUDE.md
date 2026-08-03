@@ -1,7 +1,7 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-07-24.
+> Dernière mise à jour : 2026-08-03.
 
 ## 🎯 Contexte
 
@@ -10,7 +10,8 @@ pastel kawaii japonais. Elle s'adresse aux jardiniers amateurs de **France
 métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 
 - un calendrier mensuel de semis et de récolte adapté à la région ;
-- un **catalogue** de 158 légumes, aromates, tubercules et accessoires ;
+- un **catalogue** de 169 légumes, aromates, tubercules et accessoires
+  (dont 130 cultures + 10 cultures d'Afrique de l'Ouest) ;
 - le **Poussidex** : collection chronologique des plants de l'utilisateur, avec
   photos, notes, historique d'arrosage et compteur de récoltes ;
 - **Mes jardins** : potager carré multi-jardins avec placement par
@@ -31,10 +32,11 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - un lien avec **Kultivaprix** (projet sœur, comparateur de prix) via sync
   unidirectionnelle du catalogue vers Supabase.
 
-**Statut** : en phase de polish pré-publication (v1.0.0+5) — CI iOS (Xcode
-Cloud) + CI GitHub Actions branchées, config de signing Android active, landing
-page marketing prête, conformité Amazon Associates en place, Sentry crash
-reporting branché, splash natif configuré, privacy policy RGPD en place.
+**Statut** : bi-marché **France + Afrique de l'Ouest** (v1.0.0+5), en polish
+pré-publication — détection du pays et sous-zone climatique, calendriers et
+saisons tropicaux, contenu local (noms, maraîchage, recettes, achat au marché),
+feed par pays. CI iOS (Xcode Cloud) + GitHub Actions branchées, signing Android
+actif, landing prête, Sentry, splash natif, privacy policy RGPD.
 L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 ## 🛠️ Stack technique
@@ -115,8 +117,9 @@ Kultiva/
 │   │                               # my_garden/ (tamassi_view,
 │   │                               # kawaii_background, garden_header),
 │   │                               # poussidex/* (8 fichiers)
-│   ├── models/             # 12 fichiers
+│   ├── models/             # 13 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
+│   │                       # country (pays + zone climatique),
 │   │                       # region_data, culture_entry, garden_plan,
 │   │                       # weather_data, tamassi_visitor, feed_post,
 │   │                       # photo_pick_result, watering_alert,
@@ -128,10 +131,14 @@ Kultiva/
 │   │                       # plantation_migration, culture, garden_plan,
 │   │                       # review
 │   ├── data/               # 9 fichiers — 6 320 LoC
-│   │   ├── vegetables_base.dart    # 158 entrées (120 légumes + 38 accessoires)
+│   │   ├── vegetables_base.dart    # 169 entrées (130 cultures + 39 accessoires)
 │   │   ├── badges.dart (51) / challenges.dart (51) / diseases.dart
 │   │   ├── companions.dart / rotation.dart / lexicon.dart
-│   │   └── regions/        # france.dart, west_africa.dart
+│   │   ├── local_names.dart / market_data.dart / market_buying_tips.dart
+│   │   ├── recipes.dart      # noms locaux, maraîchage FCFA, achat, cuisine (AO)
+│   │   └── regions/          # france.dart, west_africa.dart,
+│   │                         # west_africa_zones.dart (sous-zones),
+│   │                         # regional_calendar.dart (sélecteur zone-aware)
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
 │   ├── widgets/            # 15 fichiers — 5 365 LoC
@@ -147,7 +154,7 @@ Kultiva/
 │                           # companion_status, heatwave_tips,
 │                           # rotation_advisor
 ├── supabase/
-│   ├── migrations/         # 001_initial_schema → 014_sync_xp_monotonic
+│   ├── migrations/         # 001_initial_schema → 016_preferences_climate_zone
 │   └── functions/          # delete-account (suppression de compte)
 ├── assets/
 │   ├── images/             # créatures (3 variantes, 35 images), badges (50),
@@ -424,6 +431,33 @@ Décisions et évolutions significatives :
   recherche sans accents, `feed_service` fiable, `ReviewService` branché,
   purge photos orphelines). +16 tests → 164. Voir
   `_plans/rapport-corrections-2026-07-24.md`.
+- **Virage Afrique de l'Ouest (août 2026)** — l'app n'est plus une
+  déclinaison France mais bi-marché :
+  - **Modèle `Country`** (`lib/models/country.dart`) : France + 8 pays
+    francophones AO, chacun avec drapeau, capitale (fallback météo) et
+    zone climatique. La `Region` reste le pivot ; le pays l'affine.
+  - **Détection** : à l'onboarding, le pays de l'utilisateur apparaît
+    **en premier** (déduit de la langue du device, affiné par géoloc
+    passive) — pas de privilège France. `GeolocationService.detectCountryAndZone`.
+  - **Zones climatiques v2** : `ClimateZone {sahel, sudan, guinean}` ;
+    `Country.zoneAt(latitude)` affine la sous-zone (Bamako soudanien, nord
+    Côte d'Ivoire vs Abidjan…). `PrefsService.effectiveZone` alimente
+    calendriers ET saisons. Surcharges dans `lib/data/regions/west_africa_zones.dart`,
+    appliquées par `regionalCalendar(region, zone:)` (`regional_calendar.dart`).
+  - **Saisons tropicales** : `Season.of(month, region, {zone})` →
+    harmattan / saison sèche / hivernage (plus de flocons en AO), gradients
+    ocre/vert. Seuil canicule 40 °C (AO) vs 30 °C, alerte « premières pluies ».
+  - **Contenu** : calendrier AO 130 cultures + 10 locales (mil, fonio,
+    moringa, djakhatou, corète…), noms locaux (`local_names.dart`),
+    mode maraîchage FCFA (`market_data.dart`), conseils d'achat au marché
+    (`market_buying_tips.dart`, remplace Amazon masqué en AO), recettes
+    (`recipes.dart`), maladies tropicales, 4 tutos AO, feed filtrable par
+    pays.
+  - **Poids/data** : assets 245→33 Mo, Nunito bundlée, tutos 100 % hors-ligne,
+    APK `--split-per-abi` en CI.
+  - **Migrations 012-016** (FK feed→profiles, `country`, `sync_xp`,
+    `challenge_posts.country`, `preferences.climate_zone`). Fiches stores
+    par pays dans `docs/store-listings.md`. Tests → 183.
 
 ## 💬 Instructions pour Claude Code
 
@@ -454,13 +488,16 @@ Règles spécifiques au projet pour être efficace dès la première action :
 À signaler à l'utilisateur / à traiter dans un futur ticket :
 
 0. **Actions manuelles Supabase avant publication** (bloquant review Apple) :
-   appliquer les migrations **012, 013, 014** dans SQL Editor et **déployer
+   appliquer les migrations **012 → 016** dans SQL Editor et **déployer
    l'edge function `delete-account`** (`supabase functions deploy
    delete-account`). Sans ce déploiement, « Supprimer mon compte » échoue.
-   Détails dans `_plans/rapport-corrections-2026-07-24.md`.
-1. **Aucun test de widget ni d'intégration** — les modèles, données,
-   `watering_advisor`, `Plantation.merge`, `PrefsService` (purge/LWW) et
-   `text_normalize` sont couverts (164 tests). Pas encore de test de widget.
+   Les migrations 012-016 sont tolérées côté client (retry sans la colonne),
+   mais feed par pays, sync du pays et de la sous-zone ne s'activent qu'une
+   fois appliquées. Détails dans `_plans/rapport-corrections-2026-07-24.md`.
+1. **Aucun test de widget ni d'intégration** — modèles, données, zones
+   climatiques, `Country.zoneAt`, `watering_advisor`, `Plantation.merge`,
+   `PrefsService` et `text_normalize` sont couverts (183 tests). Pas encore
+   de test de widget.
 2. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
    c'est correct pour une anon key JWT publique, mais à documenter pour éviter
    tout doute.

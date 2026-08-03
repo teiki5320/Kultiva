@@ -1,7 +1,7 @@
 # 🗺️ Kultiva — Roadmap
 
-> Dernière mise à jour : **2026-07-24**
-> Statut global : **pré-publication (v1.0.0+5)**
+> Dernière mise à jour : **2026-08-03**
+> Statut global : **bi-marché France + Afrique de l'Ouest, pré-publication (v1.0.0+5)**
 
 ## 🎯 Vision
 
@@ -33,16 +33,18 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 - [x] Audit pré-publication mai 2026 : extraction 6 modèles, Sentry, in_app_review, splash natif, privacy policy RGPD, migrations 009-011, 3 nouveaux tests, ~600 lignes de code mort supprimées, 10 deprecated APIs corrigés, découpe `my_garden_screen.dart`, 54 légumes `harvestTimeBySeason` complétés, 38 images accessoires kawaii, lien Instagram, version 1.0.0+5
 - [x] Chantier « Cap Afrique de l'Ouest » (juillet 2026) : 8 pays francophones, détection auto, saisons tropicales, calendrier AO complet, 10 cultures locales, maladies tropicales, migrations 012-013, assets 245→33 Mo (voir `_plans/rapport-cap-afrique-2026-07-18.md`)
 - [x] Corrections pré-publication (24 juillet 2026) : sections 1-4 de l'audit du 7 juillet — bloquants stores (suppression de compte in-app, versioning iOS, portrait, splash, CI durcie), fiabilité sync cloud (merge champ par champ, badges additifs, prefs LWW, timeouts, migration 014), bugs UX majeurs (navigation déconnexion, notifications tz, streak/reset Tamassi, cycle de vie du planner, thème sombre, fr-FR), bonus (accents, feed, note store, purge photos). +16 tests (voir `_plans/rapport-corrections-2026-07-24.md`)
+- [x] **Virage Afrique de l'Ouest (août 2026)** : app bi-marché — modèle `Country` (France + 8 pays AO), pays détecté et affiché **en premier** à l'onboarding, **zones climatiques v2** (sous-zone par latitude GPS + choix manuel : sahel/soudanien/guinéen), saisons tropicales zone-aware, calendrier AO par zone, contenu local (noms wolof/bambara/haoussa…, maraîchage FCFA, conseils d'achat au marché, recettes, maladies tropicales, 4 tutos), feed filtrable par pays, seuil canicule 40 °C + alerte premières pluies, assets 245→33 Mo, APK par ABI, migrations 012-016, fiches stores par pays. +19 tests → 183
 
 ### 📋 À faire — Publication
 
-- [ ] **Appliquer migration 014 + déployer l'edge function `delete-account`** dans Supabase (prérequis de la review Apple — voir `_plans/rapport-corrections-2026-07-24.md`)
-- [ ] Soumettre l'app sur App Store et Google Play (listing, captures, descriptions, politique de confidentialité)
+- [ ] **Appliquer les migrations 012 → 016 + déployer l'edge function `delete-account`** dans Supabase (prérequis review Apple + activation feed par pays / sync sous-zone — voir rapports `_plans/`)
+- [ ] Soumettre l'app sur App Store et Google Play (utiliser `docs/store-listings.md` : fiches France + 8 pays AO ; fiches personnalisées Play par pays)
 - [ ] Remplacer les liens `href="#"` dans `landing/index.html` par les vrais liens App Store / Play Store
+- [ ] (Option) Regénérer en ComfyUI les 10 visuels de cultures AO + ombrière (actuellement dessinés en vectoriel, 112 Ko)
 
 ### 📋 À faire — Qualité / dette technique
 
-- [ ] Étendre la couverture de tests vers les widgets et un parcours d'intégration (actuellement : 164 tests sur modèles, données, `watering_advisor`, `Plantation.merge`, `PrefsService` purge/LWW et `text_normalize` — aucun test de widget)
+- [ ] Étendre la couverture de tests vers les widgets et un parcours d'intégration (actuellement : 183 tests sur modèles, données, zones climatiques, `Country.zoneAt`, `watering_advisor`, `Plantation.merge`, `PrefsService` et `text_normalize` — aucun test de widget)
 - [x] ~~Finir les ~40 avertissements de lint restants~~ — audit mai 2026 : zéro API dépréciée restante
 - [x] Découper `tamassi_view.dart` (1 740 → 1 205 + 544) et `garden_planner_screen.dart` (1 778 → 503 + 1 298)
 
@@ -56,6 +58,7 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 
 ### 💡 Idées futures
 
+- [ ] **Ancrage Afrique de l'Ouest, suite** : Tamassi local (4e créature inspirée de la flore locale, noms à l'adoption) ; audio/TTS des fiches et tutos ; partenariats terrain (ONG, jardins scolaires) ; affiliation semenciers AO (Tropicasem/Technisem)
 - [ ] **À discuter** : reconnaissance de plante par photo (style PlantNet / Picture This), avec écran de scan caméra et conseils photo
 - [ ] Internationalisation avec extraction des strings et ajout de l'anglais
 - [ ] Mode hors ligne complet avec assets météo et tutoriels téléchargeables
