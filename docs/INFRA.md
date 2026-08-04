@@ -123,8 +123,12 @@
 
 ## 🌐 Web & réseaux sociaux
 
-- **Landing** : `landing/index.html` (statique). ⚠️ Hébergement à
-  choisir + liens stores encore en `href="#"`.
+- **Email de support** : `kultiva.toa@gmail.com` (Gmail dédiée) —
+  adresse publique affichée sur la landing et dans la privacy policy,
+  à renseigner comme contact dans App Store Connect / Play Console.
+- **Landing** : `landing/index.html` + `landing/privacy.html`
+  (statiques). ⚠️ Hébergement à choisir + liens stores encore en
+  `href="#"`.
 - **Instagram** : `@toa.kultiva` (lien câblé dans l'app).
 - **Privacy policy** : HTML embarquée + lien dans les réglages (RGPD).
 
