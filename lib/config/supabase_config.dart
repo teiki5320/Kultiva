@@ -37,12 +37,14 @@ class GoogleOAuthConfig {
   /// Client ID de type "Web" — utilisé par google_sign_in pour
   /// demander un idToken que Supabase peut valider.
   /// Nullable : mettre à `null` désactive le bouton Google côté login.
+  // ignore: unnecessary_nullable_for_final_variable_declarations
   static const String? webClientId =
       '56977548622-l52olnkn81icjbo6aqk6b5trssjpbqiu.apps.googleusercontent.com';
 
   /// Client ID de type "iOS" — nécessaire pour que le SDK Google
   /// natif puisse ouvrir la feuille de connexion sur iPhone.
   /// Dérivé du REVERSED_CLIENT_ID dans Info.plist.
+  // ignore: unnecessary_nullable_for_final_variable_declarations
   static const String? iosClientId =
       '56977548622-fokr6eq79msehbmphcler1pldmokg8fv.apps.googleusercontent.com';
 }
