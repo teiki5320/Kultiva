@@ -64,7 +64,7 @@ Future<void> main() async {
   }
   await SentryFlutter.init(
     (options) {
-      // TODO: remplacer par le vrai DSN Sentry (https://sentry.io → Settings → DSN).
+      // DSN Sentry du projet — public par design (voir docs/INFRA.md).
       options.dsn =
           'https://0ea500cdcb663dfbe9e22a7b4e309721@o4511455467864064.ingest.de.sentry.io/4511455478808656';
       // Échantillonnage bas : limite le trafic réseau de télémétrie

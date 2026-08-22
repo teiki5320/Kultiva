@@ -165,10 +165,10 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes cani
 Photographie tes plants et retrouve toute leur histoire : notes, arrosages, récoltes. Gagne des médailles bronze, argent et or pour chaque légume.
 
 📸 DÉFIS PHOTO ET COMMUNAUTÉ
-50 défis photo, 50 badges à débloquer et un feed communautaire pour partager tes plus belles récoltes.
+51 défis photo, 51 badges à débloquer et un feed communautaire pour partager tes plus belles récoltes.
 
 🎓 POUR APPRENDRE EN S'AMUSANT
-30 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
+33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
 
 Et surtout : Kultiva fonctionne sans connexion. Tes données restent sur ton téléphone ; la synchronisation cloud est facultative et gratuite.
 

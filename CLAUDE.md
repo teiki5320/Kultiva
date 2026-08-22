@@ -1,7 +1,7 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-08-03.
+> Dernière mise à jour : 2026-08-22.
 
 ## 🎯 Contexte
 
@@ -25,7 +25,7 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - de la gamification : badges, défis, médailles bronze/argent/or par légume ;
 - une synchronisation **cloud facultative** via Supabase (auth + Postgres +
   Storage) ;
-- des tutoriels HTML embarqués (29 fiches), un lexique, un guide de maladies et
+- des tutoriels HTML embarqués (33 fiches), un lexique, un guide de maladies et
   de compagnonnage ;
 - un **cahier de culture** pleine terre avec étapes phénologiques auto-suggérées,
   avertissement de rotation et conseils canicule personnalisés ;
@@ -162,16 +162,19 @@ Kultiva/
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
 │   │                       # app_icon
 │   ├── sounds/             # 8 fichiers (1 musique + 7 SFX)
-│   └── tutos/              # 29 fichiers HTML + screens/
+│   └── tutos/              # 34 fichiers HTML (33 tutos + privacy) + screens/
 ├── .github/workflows/      # ci.yml, sync-catalog.yml
 ├── tool/                   # export_catalog.dart (sync Kultivaprix)
-├── docs/                   # catalog-sync, kultivaprix-handoff,
-│                           # news-publication-guide, v5-test-checklist
+├── docs/                   # INFRA (fiche technique), MARKETING (plan),
+│                           # FICHE_APP_STORE (fiche ASC copiable),
+│                           # store-listings, catalog-sync,
+│                           # kultivaprix-handoff, news-publication-guide,
+│                           # v5-test-checklist
 ├── _plans/                 # roadmap.md
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
-├── landing/                # Site HTML statique marketing (index.html + img/)
-├── test/                   # 11 fichiers — 1 565 LoC
+├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
+├── test/                   # 18 fichiers — 2 307 LoC
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -458,6 +461,15 @@ Décisions et évolutions significatives :
   - **Migrations 012-016** (FK feed→profiles, `country`, `sync_xp`,
     `challenge_posts.country`, `preferences.climate_zone`). Fiches stores
     par pays dans `docs/store-listings.md`. Tests → 183.
+- **Préparation stores (août 2026)** : fiches `docs/INFRA.md` +
+  `docs/MARKETING.md` au format du dashboard « Mes apps » (repo Dashboard),
+  `docs/FICHE_APP_STORE.md` (fiche ASC prête à coller, décomptes vérifiés,
+  mots-clés 98/100 octets), page publique `landing/privacy.html`, e-mail de
+  support `kultiva.toa@gmail.com` câblé partout, landing en WebP
+  (5,6 Mo → 0,2 Mo), chiffres marketing corrigés (33 tutos, 51 défis/51
+  badges), audit `_plans/audit-2026-08-21.md` (analyze 3 infos,
+  183 tests verts). Décisions ouvertes : mode invité (5.1.1), DSA
+  (affiliation → trader), iPad (captures 13″ exigées).
 
 ## 💬 Instructions pour Claude Code
 
@@ -503,6 +515,11 @@ Règles spécifiques au projet pour être efficace dès la première action :
    tout doute.
 3. **Fichiers volumineux restants** — `tamassi_view.dart` (1 740 LoC),
    `garden_planner_screen.dart` (1 777 LoC). Candidats à un découpage futur.
-4. **Liens stores dans `landing/index.html`** — les boutons Télécharger
+4. **Connexion obligatoire au premier lancement** — l'écran de login n'a
+   pas de « continuer sans compte », alors que le calendrier et les fiches
+   n'exigent pas de compte : risque guideline 5.1.1 à la review Apple.
+   Décision en attente : mode invité (recommandé) ou compte de démo seul.
+   Voir `_plans/audit-2026-08-21.md`.
+5. **Liens stores dans `landing/index.html`** — les boutons Télécharger
    pointent vers `href="#"`. À remplacer par les vrais liens App Store /
    Play Store une fois l'app publiée.

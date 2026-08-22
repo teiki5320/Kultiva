@@ -67,10 +67,10 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes cani
 Photographie tes plants et retrouve toute leur histoire : notes, arrosages, récoltes. Gagne des médailles bronze, argent et or pour chaque légume.
 
 📸 DÉFIS PHOTO ET COMMUNAUTÉ
-50 défis photo, 50 badges à débloquer et un feed communautaire pour partager tes plus belles récoltes.
+51 défis photo, 51 badges à débloquer et un feed communautaire pour partager tes plus belles récoltes.
 
 🎓 POUR APPRENDRE EN S'AMUSANT
-30 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
+33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
 
 Et surtout : Kultiva fonctionne sans connexion. Tes données restent sur ton téléphone ; la synchronisation cloud est facultative et gratuite.
 
@@ -135,10 +135,10 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents et conseils c
 Chaque semis, chaque arrosage, chaque récolte fait grandir Tamassi, ton compagnon kawaii. XP, niveaux, émotions : le jardin devient un jeu, pour toi comme pour les enfants.
 
 📖 LE POUSSIDEX + DÉFIS PHOTO
-Ta collection de plants en photos, avec médailles bronze, argent et or, 50 défis photo et un feed communautaire pour montrer tes plus beaux gombos.
+Ta collection de plants en photos, avec médailles bronze, argent et or, 51 défis photo et un feed communautaire pour montrer tes plus beaux gombos.
 
 🎓 POUR PROGRESSER
-30 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (le niébé entre les poquets de mil, ça marche aussi dans l'app).
+33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (le niébé entre les poquets de mil, ça marche aussi dans l'app).
 
 📶 PENSÉ POUR TON RÉSEAU
 Kultiva fonctionne 100 % hors connexion : tes données restent sur ton téléphone, et l'app reste légère. La synchronisation cloud est facultative et gratuite.
