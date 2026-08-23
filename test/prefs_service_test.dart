@@ -81,4 +81,32 @@ void main() {
       expect(prefs.prefsUpdatedAt, isNull);
     });
   });
+
+  group('guestMode', () {
+    test('faux par défaut : une app fraîche n\'est pas en mode invité',
+        () async {
+      expect(prefs.guestMode, false);
+    });
+
+    test('le choix « Continuer sans compte » est persisté', () async {
+      await prefs.setGuestMode(true);
+      expect(prefs.guestMode, true);
+      // Rechargement (redémarrage de l'app) : le choix survit.
+      await prefs.load();
+      expect(prefs.guestMode, true);
+    });
+
+    test('la connexion lève le mode invité', () async {
+      await prefs.setGuestMode(true);
+      await prefs.setGuestMode(false);
+      expect(prefs.guestMode, false);
+    });
+
+    test('une purge des données de compte ne réactive pas le mode invité',
+        () async {
+      await prefs.setGuestMode(false);
+      await prefs.clearUserScopedData();
+      expect(prefs.guestMode, false);
+    });
+  });
 }

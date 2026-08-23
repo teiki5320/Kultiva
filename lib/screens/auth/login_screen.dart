@@ -7,12 +7,23 @@ import 'package:flutter/material.dart';
 import '../../config/supabase_config.dart';
 import '../../services/auth_service.dart';
 import '../../services/cloud_sync_service.dart';
+import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback onSignedIn;
-  const LoginScreen({super.key, required this.onSignedIn});
+
+  /// Appelé quand l'utilisateur choisit « Continuer sans compte ».
+  /// Optionnel : quand l'écran est ouvert depuis les Paramètres pour se
+  /// connecter, on ne propose pas de repartir en invité.
+  final VoidCallback? onContinueAsGuest;
+
+  const LoginScreen({
+    super.key,
+    required this.onSignedIn,
+    this.onContinueAsGuest,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -56,6 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await action();
       // Vérifie qu'on est bien loggé (l'user peut annuler un flow OAuth).
       if (!AuthService.instance.isSignedIn) return;
+      // On quitte le mode invité : l'utilisateur a désormais un compte.
+      await PrefsService.instance.setGuestMode(false);
       // Contrat local-first : on navigue tout de suite, la synchro cloud
       // (plantations + badges + prefs + photos) tourne en arrière-plan
       // et ne bloque pas l'écran de connexion sur un réseau lent.
@@ -66,6 +79,14 @@ class _LoginScreenState extends State<LoginScreen> {
     } finally {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  /// Mode invité : on mémorise le choix et on entre dans l'app. Rien ne
+  /// part vers le cloud tant qu'aucun compte n'existe — tout reste en
+  /// local, conformément au contrat local-first.
+  Future<void> _continueAsGuest() async {
+    await PrefsService.instance.setGuestMode(true);
+    if (mounted) widget.onContinueAsGuest?.call();
   }
 
   /// Sign in with Apple n'a de sens que sur iOS / macOS natifs.
@@ -222,6 +243,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   icon: const Icon(Icons.apple, size: 20),
                   label: const Text('Continuer avec Apple'),
                 ),
+            ],
+            if (widget.onContinueAsGuest != null) ...<Widget>[
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: _loading ? null : _continueAsGuest,
+                child: const Text(
+                  'Continuer sans compte',
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Le calendrier, le catalogue, ton potager et les tutos '
+                'fonctionnent sans compte, hors connexion. Le compte sert '
+                'à sauvegarder ton jardin et à rejoindre la communauté.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: KultivaColors.textSecondary,
+                    ),
+              ),
             ],
           ],
         ),

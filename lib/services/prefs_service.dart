@@ -20,6 +20,7 @@ class PrefsService {
   static const _kDarkMode = 'kultiva.darkMode';
   static const _kNotifications = 'kultiva.notifications';
   static const _kOnboardingDone = 'kultiva.onboardingDone';
+  static const _kGuestMode = 'kultiva.guestMode';
   static const _kFavorites = 'kultiva.favorites';
   static const _kAuthEmail = 'kultiva.auth.email';
   static const _kAuthName = 'kultiva.auth.name';
@@ -243,6 +244,19 @@ class PrefsService {
 
   Future<void> setOnboardingDone(bool value) async {
     await _prefs?.setBool(_kOnboardingDone, value);
+  }
+
+  /// Mode invité : l'utilisateur a choisi « Continuer sans compte ».
+  ///
+  /// Tout le cœur de l'app (calendrier, catalogue, Poussidex, jardins,
+  /// Tamassi, tutos) fonctionne alors en local pur — contrat local-first.
+  /// Seuls le feed communautaire et la synchronisation cloud demandent
+  /// un compte. Le drapeau est remis à `false` dès qu'une session
+  /// Supabase existe (voir [setGuestMode]).
+  bool get guestMode => _prefs?.getBool(_kGuestMode) ?? false;
+
+  Future<void> setGuestMode(bool value) async {
+    await _prefs?.setBool(_kGuestMode, value);
   }
 
   bool get gardenTutorialDone => _prefs?.getBool(_kGardenTutorialDone) ?? false;

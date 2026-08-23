@@ -6,6 +6,7 @@ import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../services/audio_service.dart';
+import '../../../services/auth_service.dart';
 import '../../../services/cloud_sync_service.dart';
 import '../../../services/feed_service.dart';
 import '../../../models/photo_pick_result.dart';
@@ -69,26 +70,31 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
     setState(() => _completed[challenge.id] = path);
     await _saveCompleted();
     widget.onPhotoTaken?.call(challenge.id, path);
-    // Upload la photo vers le cloud.
-    final url = await CloudSyncService.instance.uploadPhoto(
-      localPath: path,
-      plantationId: 'challenge_${challenge.id}',
-    );
     String? feedError;
-    if (url != null) {
-      setState(() => _completed[challenge.id] = url);
-      await _saveCompleted();
-      // Publier dans le feed communautaire.
-      try {
-        await FeedService.instance.publishChallengePost(
-          challengeId: challenge.id,
-          photoUrl: url,
-        );
-      } catch (e) {
-        feedError = e.toString();
+    // Sans compte, le défi est validé en local : ni upload ni publication
+    // dans le feed, et surtout aucun message d'erreur — le mode invité
+    // doit rester une expérience complète, pas une version dégradée.
+    if (AuthService.instance.isSignedIn) {
+      // Upload la photo vers le cloud.
+      final url = await CloudSyncService.instance.uploadPhoto(
+        localPath: path,
+        plantationId: 'challenge_${challenge.id}',
+      );
+      if (url != null) {
+        setState(() => _completed[challenge.id] = url);
+        await _saveCompleted();
+        // Publier dans le feed communautaire.
+        try {
+          await FeedService.instance.publishChallengePost(
+            challengeId: challenge.id,
+            photoUrl: url,
+          );
+        } catch (e) {
+          feedError = e.toString();
+        }
+      } else {
+        feedError = 'Upload photo vers le cloud échoué';
       }
-    } else {
-      feedError = 'Upload photo vers le cloud échoué';
     }
     if (!mounted) return;
     // Montrer l'animation d'abord, PUIS le message d'erreur (sinon

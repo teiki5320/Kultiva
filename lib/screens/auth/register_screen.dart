@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/cloud_sync_service.dart';
+import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -70,6 +71,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
       // Session active (confirmation désactivée) : on navigue tout de
       // suite, la synchro cloud (plants + badges + prefs) tourne en fond.
+      // Le mode invité est levé — les données locales accumulées sans
+      // compte sont poussées par la synchro de connexion.
+      await PrefsService.instance.setGuestMode(false);
       unawaited(CloudSyncService.instance.syncAllOnLogin());
       if (mounted) widget.onSignedIn();
     } on AuthException catch (e) {

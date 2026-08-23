@@ -124,7 +124,7 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
     // Skip splash: go directly to onboarding/auth/main.
     if (!PrefsService.instance.onboardingDone) {
       _step = _BootStep.onboarding;
-    } else if (!AuthService.instance.isSignedIn) {
+    } else if (!_hasAccess) {
       _step = _BootStep.auth;
     } else {
       _step = _BootStep.main;
@@ -135,7 +135,7 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
     setState(() {
       if (!PrefsService.instance.onboardingDone) {
         _step = _BootStep.onboarding;
-      } else if (!AuthService.instance.isSignedIn) {
+      } else if (!_hasAccess) {
         _step = _BootStep.auth;
       } else {
         _step = _BootStep.main;
@@ -145,12 +145,22 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
 
   void _afterOnboarding() {
     setState(() {
-      _step = AuthService.instance.isSignedIn ? _BootStep.main : _BootStep.auth;
+      _step = _hasAccess ? _BootStep.main : _BootStep.auth;
     });
   }
 
+  /// L'app est accessible soit avec une session Supabase, soit en mode
+  /// invité — le cœur de Kultiva est local-first et n'exige aucun compte.
+  bool get _hasAccess =>
+      AuthService.instance.isSignedIn || PrefsService.instance.guestMode;
+
   void _afterSignIn() => setState(() => _step = _BootStep.main);
 
+  /// Choix « Continuer sans compte » depuis l'écran de connexion.
+  void _afterGuest() => setState(() => _step = _BootStep.main);
+
+  /// Déconnexion, ou sortie volontaire du mode invité pour se connecter :
+  /// dans les deux cas on repasse par l'écran d'authentification.
   void _afterSignOut() => setState(() => _step = _BootStep.auth);
 
   @override
@@ -161,7 +171,10 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
       case _BootStep.onboarding:
         return OnboardingScreen(onDone: _afterOnboarding);
       case _BootStep.auth:
-        return LoginScreen(onSignedIn: _afterSignIn);
+        return LoginScreen(
+          onSignedIn: _afterSignIn,
+          onContinueAsGuest: _afterGuest,
+        );
       case _BootStep.main:
         return RootTabs(onSignOut: _afterSignOut);
     }

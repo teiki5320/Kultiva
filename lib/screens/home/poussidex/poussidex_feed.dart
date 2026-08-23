@@ -5,9 +5,11 @@ import '../../../models/vegetable_medal.dart';
 import '../../../models/country.dart';
 import '../../../models/feed_post.dart';
 import '../../../services/feed_service.dart';
+import '../../../services/auth_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/plantation_photo.dart';
+import '../../root_tabs.dart';
 
 /// Feed communautaire : scroll vertical des photos de défis postées
 /// par tous les utilisateurs Kultiva, du plus récent au plus ancien.
@@ -33,10 +35,19 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
   /// Vrai = ne montrer que les jardins de mon pays (défaut en AO).
   bool _myCountryOnly = true;
 
+  /// Le feed est la seule partie de Kultiva qui exige un compte : il
+  /// affiche des photos d'autres jardiniers et permet d'interagir avec
+  /// eux. En mode invité on montre une invitation plutôt qu'un feed vide.
+  bool get _isGuest => !AuthService.instance.isSignedIn;
+
   @override
   void initState() {
     super.initState();
-    _loadFeed();
+    if (_isGuest) {
+      _loading = false;
+    } else {
+      _loadFeed();
+    }
   }
 
   Future<void> _loadFeed() async {
@@ -215,6 +226,9 @@ class _PoussidexFeedState extends State<PoussidexFeed> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isGuest) {
+      return const _FeedGuestInvite();
+    }
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -529,6 +543,57 @@ class _FeedPostCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Écran affiché à la place du feed quand l'utilisateur navigue sans
+/// compte : on explique ce qu'il rate et on propose de se connecter,
+/// sans jamais bloquer le reste de l'app.
+class _FeedGuestInvite extends StatelessWidget {
+  const _FeedGuestInvite();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Text('🌻', style: TextStyle(fontSize: 56)),
+            const SizedBox(height: 16),
+            Text(
+              'Rejoins la communauté',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Le feed rassemble les photos de défis des autres jardiniers. '
+              'Il faut un compte pour les voir et participer — le reste de '
+              'Kultiva reste accessible sans compte.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: KultivaColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () async {
+                // On lève le mode invité et on renvoie vers l'écran de
+                // connexion. Aucune donnée locale n'est effacée.
+                await PrefsService.instance.setGuestMode(false);
+                RootTabs.requestSignOut();
+              },
+              icon: const Icon(Icons.login, size: 20),
+              label: const Text('Se connecter ou créer un compte'),
+            ),
+          ],
+        ),
       ),
     );
   }

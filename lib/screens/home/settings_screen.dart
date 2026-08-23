@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/country.dart';
@@ -79,8 +80,8 @@ class SettingsScreen extends StatelessWidget {
                       width: double.infinity,
                       child: OutlinedButton.icon(
                         onPressed: () async {
-                          final detected = await GeolocationService
-                              .detectCountryAndZone();
+                          final detected =
+                              await GeolocationService.detectCountryAndZone();
                           if (!context.mounted) return;
                           if (detected != null) {
                             PrefsService.instance.setCountry(detected.country,
@@ -119,8 +120,7 @@ class SettingsScreen extends StatelessWidget {
                       return ValueListenableBuilder<ClimateZone?>(
                         valueListenable: PrefsService.instance.climateZone,
                         builder: (context, zone, _) {
-                          final effective =
-                              PrefsService.instance.effectiveZone;
+                          final effective = PrefsService.instance.effectiveZone;
                           return Column(
                             children: <Widget>[
                               const SizedBox(height: 8),
@@ -139,8 +139,7 @@ class SettingsScreen extends StatelessWidget {
                                           .westAfricanZones
                                           .indexed) ...<Widget>[
                                         if (i > 0)
-                                          const Divider(
-                                              height: 0, indent: 16),
+                                          const Divider(height: 0, indent: 16),
                                         RadioListTile<ClimateZone>(
                                           value: z,
                                           title: Text(
@@ -334,91 +333,95 @@ class SettingsScreen extends StatelessWidget {
                                 }
                               },
                             ),
-                            const Divider(height: 0, indent: 16),
-                            ValueListenableBuilder<int?>(
-                              valueListenable: debugHourOverride,
-                              builder: (context, override, _) {
-                                final isAuto = override == null;
-                                final displayHour =
-                                    override ?? DateTime.now().hour;
-                                final period = isAuto
-                                    ? 'auto'
-                                    : '${displayHour.toString().padLeft(2, '0')}h';
-                                return ExpansionTile(
-                                  leading: const Icon(
-                                    Icons.wb_sunny_outlined,
-                                    color: KultivaColors.primaryGreen,
-                                  ),
-                                  title: const Text(
-                                    'Heure de test (debug)',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700),
-                                  ),
-                                  subtitle: Text(
-                                    'Force l\'heure du fond Tamassi · $period',
-                                    style: const TextStyle(fontSize: 11),
-                                  ),
-                                  children: <Widget>[
-                                    SwitchListTile(
-                                      dense: true,
-                                      title: const Text('Mode automatique'),
-                                      subtitle: const Text(
-                                        'Utilise l\'heure réelle du téléphone',
-                                        style: TextStyle(fontSize: 11),
-                                      ),
-                                      value: isAuto,
-                                      onChanged: (v) =>
-                                          debugHourOverride.value =
-                                              v ? null : DateTime.now().hour,
+                            if (kDebugMode) ...<Widget>[
+                              const Divider(height: 0, indent: 16),
+                              ValueListenableBuilder<int?>(
+                                valueListenable: debugHourOverride,
+                                builder: (context, override, _) {
+                                  final isAuto = override == null;
+                                  final displayHour =
+                                      override ?? DateTime.now().hour;
+                                  final period = isAuto
+                                      ? 'auto'
+                                      : '${displayHour.toString().padLeft(2, '0')}h';
+                                  return ExpansionTile(
+                                    leading: const Icon(
+                                      Icons.wb_sunny_outlined,
+                                      color: KultivaColors.primaryGreen,
                                     ),
-                                    if (!isAuto)
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 8),
-                                        child: Row(
-                                          children: <Widget>[
-                                            const Text('0h',
-                                                style: TextStyle(fontSize: 12)),
-                                            Expanded(
-                                              child: Slider(
-                                                value: displayHour.toDouble(),
-                                                min: 0,
-                                                max: 23,
-                                                divisions: 23,
-                                                label: '${displayHour}h',
-                                                activeColor:
-                                                    KultivaColors.primaryGreen,
-                                                onChanged: (v) =>
-                                                    debugHourOverride.value =
-                                                        v.round(),
+                                    title: const Text(
+                                      'Heure de test (debug)',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    subtitle: Text(
+                                      'Force l\'heure du fond Tamassi · $period',
+                                      style: const TextStyle(fontSize: 11),
+                                    ),
+                                    children: <Widget>[
+                                      SwitchListTile(
+                                        dense: true,
+                                        title: const Text('Mode automatique'),
+                                        subtitle: const Text(
+                                          'Utilise l\'heure réelle du téléphone',
+                                          style: TextStyle(fontSize: 11),
+                                        ),
+                                        value: isAuto,
+                                        onChanged: (v) =>
+                                            debugHourOverride.value =
+                                                v ? null : DateTime.now().hour,
+                                      ),
+                                      if (!isAuto)
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 8),
+                                          child: Row(
+                                            children: <Widget>[
+                                              const Text('0h',
+                                                  style:
+                                                      TextStyle(fontSize: 12)),
+                                              Expanded(
+                                                child: Slider(
+                                                  value: displayHour.toDouble(),
+                                                  min: 0,
+                                                  max: 23,
+                                                  divisions: 23,
+                                                  label: '${displayHour}h',
+                                                  activeColor: KultivaColors
+                                                      .primaryGreen,
+                                                  onChanged: (v) =>
+                                                      debugHourOverride.value =
+                                                          v.round(),
+                                                ),
                                               ),
-                                            ),
-                                            const Text('23h',
-                                                style: TextStyle(fontSize: 12)),
-                                          ],
+                                              const Text('23h',
+                                                  style:
+                                                      TextStyle(fontSize: 12)),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    if (!isAuto)
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            16, 0, 16, 12),
-                                        child: Wrap(
-                                          spacing: 8,
-                                          children: <int>[7, 14, 19, 23]
-                                              .map((h) => ActionChip(
-                                                    label: Text(
-                                                        '${h.toString().padLeft(2, '0')}h'),
-                                                    onPressed: () =>
-                                                        debugHourOverride
-                                                            .value = h,
-                                                  ))
-                                              .toList(),
+                                      if (!isAuto)
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              16, 0, 16, 12),
+                                          child: Wrap(
+                                            spacing: 8,
+                                            children: <int>[7, 14, 19, 23]
+                                                .map((h) => ActionChip(
+                                                      label: Text(
+                                                          '${h.toString().padLeft(2, '0')}h'),
+                                                      onPressed: () =>
+                                                          debugHourOverride
+                                                              .value = h,
+                                                    ))
+                                                .toList(),
+                                          ),
                                         ),
-                                      ),
-                                  ],
-                                );
-                              },
-                            ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
                             const Divider(height: 0, indent: 16),
                             ListTile(
                               leading: const Icon(
@@ -481,44 +484,74 @@ class SettingsScreen extends StatelessWidget {
                               },
                             ),
                             const Divider(height: 0, indent: 16),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.logout,
-                                color: KultivaColors.terracotta,
-                              ),
-                              title: const Text(
-                                'Se déconnecter',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                            // En mode invité il n'y a ni session à fermer ni
+                            // compte à supprimer : on propose d'en créer un.
+                            if (!auth.isSignedIn)
+                              ListTile(
+                                leading: const Icon(
+                                  Icons.login,
+                                  color: KultivaColors.primaryGreen,
                                 ),
-                              ),
-                              onTap: () async {
-                                await AuthService.instance.signOut();
-                                await CloudSyncService.instance
-                                    .clearLocalData();
-                                onSignOut();
-                              },
-                            ),
-                            const Divider(height: 0, indent: 16),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.delete_forever,
-                                color: KultivaColors.terracotta,
-                              ),
-                              title: const Text(
-                                'Supprimer mon compte',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                                title: const Text(
+                                  'Se connecter ou créer un compte',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                subtitle: const Text(
+                                  'Pour sauvegarder ton jardin dans le cloud '
+                                  'et rejoindre la communauté',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                onTap: () async {
+                                  // On quitte le mode invité SANS effacer
+                                  // quoi que ce soit : le jardin local sera
+                                  // poussé vers le cloud à la connexion.
+                                  await PrefsService.instance
+                                      .setGuestMode(false);
+                                  onSignOut();
+                                },
+                              )
+                            else ...<Widget>[
+                              ListTile(
+                                leading: const Icon(
+                                  Icons.logout,
                                   color: KultivaColors.terracotta,
                                 ),
+                                title: const Text(
+                                  'Se déconnecter',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                onTap: () async {
+                                  await AuthService.instance.signOut();
+                                  await CloudSyncService.instance
+                                      .clearLocalData();
+                                  onSignOut();
+                                },
                               ),
-                              subtitle: const Text(
-                                'Efface définitivement ton compte et toutes '
-                                'tes données',
-                                style: TextStyle(fontSize: 11),
+                              const Divider(height: 0, indent: 16),
+                              ListTile(
+                                leading: const Icon(
+                                  Icons.delete_forever,
+                                  color: KultivaColors.terracotta,
+                                ),
+                                title: const Text(
+                                  'Supprimer mon compte',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: KultivaColors.terracotta,
+                                  ),
+                                ),
+                                subtitle: const Text(
+                                  'Efface définitivement ton compte et toutes '
+                                  'tes données',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                onTap: () => _confirmAndDeleteAccount(context),
                               ),
-                              onTap: () => _confirmAndDeleteAccount(context),
-                            ),
+                            ],
                           ],
                         );
                       },
