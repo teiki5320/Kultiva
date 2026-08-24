@@ -8,7 +8,6 @@ import '../../../models/vegetable_medal.dart';
 import '../../../services/audio_service.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/cloud_sync_service.dart';
-import '../../../services/feed_service.dart';
 import '../../../models/photo_pick_result.dart';
 import '../../../services/photo_service.dart';
 import '../../../services/prefs_service.dart';
@@ -70,12 +69,16 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
     setState(() => _completed[challenge.id] = path);
     await _saveCompleted();
     widget.onPhotoTaken?.call(challenge.id, path);
-    String? feedError;
-    // Sans compte, le défi est validé en local : ni upload ni publication
-    // dans le feed, et surtout aucun message d'erreur — le mode invité
-    // doit rester une expérience complète, pas une version dégradée.
+    String? syncError;
+    // Sans compte, le défi est validé en local : ni sauvegarde cloud ni
+    // message d'erreur — le mode invité doit rester une expérience
+    // complète, pas une version dégradée.
+    //
+    // La photo est sauvegardée dans le cloud de l'utilisateur, pour lui
+    // seul. Elle n'est PAS publiée : le feed communautaire est retiré de
+    // la v1 (voir CLAUDE.md § Alertes), donc aucune photo de défi ne
+    // part vers `challenge_posts`.
     if (AuthService.instance.isSignedIn) {
-      // Upload la photo vers le cloud.
       final url = await CloudSyncService.instance.uploadPhoto(
         localPath: path,
         plantationId: 'challenge_${challenge.id}',
@@ -83,17 +86,8 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       if (url != null) {
         setState(() => _completed[challenge.id] = url);
         await _saveCompleted();
-        // Publier dans le feed communautaire.
-        try {
-          await FeedService.instance.publishChallengePost(
-            challengeId: challenge.id,
-            photoUrl: url,
-          );
-        } catch (e) {
-          feedError = e.toString();
-        }
       } else {
-        feedError = 'Upload photo vers le cloud échoué';
+        syncError = 'Sauvegarde de la photo dans le cloud échouée';
       }
     }
     if (!mounted) return;
@@ -115,10 +109,11 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       photoPath: finalPath,
     );
     // Snackbar d'erreur APRÈS les animations.
-    if (feedError != null && mounted) {
+    if (syncError != null && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('⚠️ Feed : $feedError'),
+          content:
+              Text('⚠️ $syncError — le défi reste validé sur ton appareil'),
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 5),
         ),

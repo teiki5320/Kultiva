@@ -500,7 +500,7 @@ class SettingsScreen extends StatelessWidget {
                                 ),
                                 subtitle: const Text(
                                   'Pour sauvegarder ton jardin dans le cloud '
-                                  'et rejoindre la communauté',
+                                  'et le retrouver sur tes autres appareils',
                                   style: TextStyle(fontSize: 11),
                                 ),
                                 onTap: () async {

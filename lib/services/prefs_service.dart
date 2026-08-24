@@ -250,8 +250,8 @@ class PrefsService {
   ///
   /// Tout le cœur de l'app (calendrier, catalogue, Poussidex, jardins,
   /// Tamassi, tutos) fonctionne alors en local pur — contrat local-first.
-  /// Seuls le feed communautaire et la synchronisation cloud demandent
-  /// un compte. Le drapeau est remis à `false` dès qu'une session
+  /// Seule la synchronisation cloud demande un compte. Le drapeau est
+  /// remis à `false` dès qu'une session
   /// Supabase existe (voir [setGuestMode]).
   bool get guestMode => _prefs?.getBool(_kGuestMode) ?? false;
 

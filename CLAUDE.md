@@ -21,7 +21,8 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
   (XP, niveaux, émotions, 3 variantes : Poussia, Soleia, Spira) ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
   l'API Open-Meteo (gratuite, sans clé) ;
-- un **feed communautaire** de défis photo (51 badges, 51 défis, médailles, likes) ;
+- des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
+  restent privées — le feed communautaire a été retiré de la v1) ;
 - de la gamification : badges, défis, médailles bronze/argent/or par légume ;
 - une synchronisation **cloud facultative** via Supabase (auth + Postgres +
   Storage) ;
@@ -35,7 +36,7 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 **Statut** : bi-marché **France + Afrique de l'Ouest** (v1.0.0+5), en polish
 pré-publication — détection du pays et sous-zone climatique, calendriers et
 saisons tropicaux, contenu local (noms, maraîchage, recettes, achat au marché),
-feed par pays. CI iOS (Xcode Cloud) + GitHub Actions branchées, signing Android
+CI iOS (Xcode Cloud) + GitHub Actions branchées, signing Android
 actif, landing prête, Sentry, splash natif, privacy policy RGPD.
 L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
@@ -116,18 +117,18 @@ Kultiva/
 │   │                               # garden_plan_config_sheet,
 │   │                               # my_garden/ (tamassi_view,
 │   │                               # kawaii_background, garden_header),
-│   │                               # poussidex/* (8 fichiers)
-│   ├── models/             # 13 fichiers
+│   │                               # poussidex/* (7 fichiers)
+│   ├── models/             # 12 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
 │   │                       # country (pays + zone climatique),
 │   │                       # region_data, culture_entry, garden_plan,
-│   │                       # weather_data, tamassi_visitor, feed_post,
+│   │                       # weather_data, tamassi_visitor,
 │   │                       # photo_pick_result, watering_alert,
 │   │                       # watering_advice
-│   ├── services/           # 17 fichiers
+│   ├── services/           # 16 fichiers
 │   │                       # auth, prefs, cloud_sync, weather, geolocation,
 │   │                       # notification, photo, audio, watering,
-│   │                       # watering_advisor, feed, pdf, tamassi_stats,
+│   │                       # watering_advisor, pdf, tamassi_stats,
 │   │                       # plantation_migration, culture, garden_plan,
 │   │                       # review
 │   ├── data/               # 9 fichiers — 6 320 LoC
@@ -454,8 +455,7 @@ Décisions et évolutions significatives :
     moringa, djakhatou, corète…), noms locaux (`local_names.dart`),
     mode maraîchage FCFA (`market_data.dart`), conseils d'achat au marché
     (`market_buying_tips.dart`, remplace Amazon masqué en AO), recettes
-    (`recipes.dart`), maladies tropicales, 4 tutos AO, feed filtrable par
-    pays.
+    (`recipes.dart`), maladies tropicales, 4 tutos AO.
   - **Poids/data** : assets 245→33 Mo, Nunito bundlée, tutos 100 % hors-ligne,
     APK `--split-per-abi` en CI.
   - **Migrations 012-016** (FK feed→profiles, `country`, `sync_xp`,
@@ -466,7 +466,8 @@ Décisions et évolutions significatives :
   `docs/FICHE_APP_STORE.md` (fiche ASC prête à coller, décomptes vérifiés,
   mots-clés 98/100 octets), page publique `landing/privacy.html`, e-mail de
   support `kultiva.toa@gmail.com` câblé partout, landing en WebP
-  (5,6 Mo → 0,2 Mo), chiffres marketing corrigés (33 tutos, 51 défis/51
+  (5,6 Mo → 0,2 Mo), chiffres marketing corrigés (33 tutos ; le 51/51 annoncé était faux,
+  recompté à 50/50 le 24/08 — voir plus bas
   badges), audit `_plans/audit-2026-08-21.md` (analyze 3 infos,
   183 tests verts). Décisions ouvertes : mode invité (5.1.1), DSA
   (affiliation → trader), iPad (captures 13″ exigées).
@@ -520,18 +521,25 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `PrefsService.guestMode` persisté, levé à la connexion comme à
    l'inscription. Vérifié sur simulateur iPhone 17.
 
-5. **⚠️ Le feed communautaire n'est branché nulle part** —
-   `PoussidexFeed` (`lib/screens/home/poussidex/poussidex_feed.dart`,
-   280 LoC : filtrage par pays, likes, signalement) n'est importé ni
-   instancié par aucun fichier. Pourtant les défis téléversent bien les
-   photos vers `challenge_posts`
-   (`poussidex_challenges.dart:88` → `FeedService.publishChallengePost`).
-   Conséquence : les utilisateurs envoient du contenu que personne ne
-   voit, et **aucun bouton de signalement n'existe dans l'app**, alors
-   que la fiche App Store, la description et la landing promettent une
-   communauté modérée. À trancher avant publication — brancher le feed,
-   ou couper l'envoi et retirer la promesse (risque de rejet
-   guideline 1.2). Voir l'avertissement dans `docs/FICHE_APP_STORE.md` §2.8.
+5. **Le feed communautaire a été retiré de la v1 (24/08/2026).**
+   `PoussidexFeed` n'avait jamais été branché à l'interface, alors que
+   les défis téléversaient quand même les photos vers `challenge_posts` :
+   du contenu que personne ne voyait, sans bouton de signalement, contre
+   une promesse de communauté modérée dans la fiche et la landing —
+   risque de rejet guideline 1.2. Décision de Jean : couper pour la v1.
+   Supprimés : `poussidex_feed.dart`, `feed_service.dart`,
+   `feed_post.dart` ; l'appel `publishChallengePost` est retiré des
+   défis (les photos restent locales, et dans le cloud **privé** du
+   compte). Fiche App Store, `store-listings.md`, les deux privacy
+   policies et la landing alignées. Conséquence utile : plus de contenu
+   généré par les utilisateurs → **classification 4+ au lieu de 13+**.
+
+   **Pour le rétablir** : le code est dans l'historique git (avant
+   `main`@24/08/2026) et les tables Supabase (`challenge_posts`,
+   `post_likes`) sont intactes. Il faudra alors brancher l'écran,
+   ajouter le **blocage d'utilisateur** (guideline 1.2 exige signalement
+   ET blocage), repasser le questionnaire d'âge en CGU/13+ et remettre
+   les mentions dans les fiches et les privacy policies.
 
 6. **Liens stores dans `landing/index.html`** — les boutons Télécharger
    pointent vers `href="#"`. À remplacer par les vrais liens App Store /

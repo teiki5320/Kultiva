@@ -66,8 +66,8 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes cani
 📖 LE POUSSIDEX, TA COLLECTION DE PLANTS
 Photographie tes plants et retrouve toute leur histoire : notes, arrosages, récoltes. Gagne des médailles bronze, argent et or pour chaque légume.
 
-📸 DÉFIS PHOTO ET COMMUNAUTÉ
-51 défis photo, 51 badges à débloquer et un feed communautaire pour partager tes plus belles récoltes.
+📸 DÉFIS PHOTO ET COLLECTION
+50 défis photo et 50 badges à débloquer, avec médailles bronze, argent et or.
 
 🎓 POUR APPRENDRE EN S'AMUSANT
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
@@ -135,7 +135,7 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents et conseils c
 Chaque semis, chaque arrosage, chaque récolte fait grandir Tamassi, ton compagnon kawaii. XP, niveaux, émotions : le jardin devient un jeu, pour toi comme pour les enfants.
 
 📖 LE POUSSIDEX + DÉFIS PHOTO
-Ta collection de plants en photos, avec médailles bronze, argent et or, 51 défis photo et un feed communautaire pour montrer tes plus beaux gombos.
+Ta collection de plants en photos, avec médailles bronze, argent et or, et 50 défis photo pour suivre tes plus beaux gombos.
 
 🎓 POUR PROGRESSER
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (le niébé entre les poquets de mil, ça marche aussi dans l'app).
@@ -405,7 +405,7 @@ page App Store) :**
 4. Météo d'une ville de la région + alerte premières pluies
 5. Tamassi en gros plan
 6. Mes jardins avec cultures locales associées (mil + niébé entre les poquets)
-7. Défis photo / feed communautaire
+7. Défis photo et badges
 
 **Jeu unique App Store `fr-FR` (organique, partagé monde)** : panacher —
 1. Tamassi + slogan, 2. calendrier, 3. Mes jardins, 4. fiche gombo (AO),

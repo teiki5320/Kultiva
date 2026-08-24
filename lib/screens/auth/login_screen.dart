@@ -257,7 +257,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 'Le calendrier, le catalogue, ton potager et les tutos '
                 'fonctionnent sans compte, hors connexion. Le compte sert '
-                'à sauvegarder ton jardin et à rejoindre la communauté.',
+                'à sauvegarder ton jardin et à le retrouver sur tes autres\n'
+                'appareils.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: KultivaColors.textSecondary,

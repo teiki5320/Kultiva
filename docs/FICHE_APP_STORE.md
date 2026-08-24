@@ -54,17 +54,22 @@ Réponses à donner, dans l'ordre des sept catégories :
 | --- | --- | --- |
 | Contrôles intégrés (contrôle parental, vérification d'âge) | **Aucun** | L'app n'en propose pas — c'est une réponse valide, pas un manque |
 | Capacités — accès web sans restriction | **Non** | Les WebView n'affichent que les tutos HTML embarqués, pas de navigation libre |
-| Capacités — contenu généré par les utilisateurs | **Oui** | Le feed de défis photo est du CGU en large diffusion ; signalement in-app + modération existent (exigés par la guideline 1.2) |
-| Capacités — réseaux sociaux | **Non** | Pas de profils suivis, pas d'abonnés, pas de messagerie — un feed de photos modéré n'est pas un réseau social |
+| Capacités — contenu généré par les utilisateurs | **Non** | Depuis le retrait du feed (v1), aucune photo n'est partagée ni affichée à d'autres utilisateurs. Les photos de défis restent sur l'appareil, et dans le cloud privé du compte s'il y en a un |
+| Capacités — réseaux sociaux | **Non** | Pas de profils, pas d'abonnés, pas de messagerie, pas de feed |
 | Thèmes matures (grossièretés, horreur, alcool/tabac/drogues) | **Aucun** | |
 | Médical ou bien-être | **Non** | Des conseils de jardinage ne sont pas du contenu médical |
 | Sexualité ou nudité | **Aucune** | |
 | Violence | **Aucune** | |
 | Activités basées sur le hasard (jeux d'argent, loot boxes, concours) | **Aucune** | Les défis photo n'ont ni mise ni prix monnayable ; les badges sont débloqués par l'action, pas par le hasard |
 
-**Résultat attendu : 13+**, à cause du contenu généré par les
-utilisateurs — c'est le feed qui fixe le palier, pas ton contenu.
-Si ASC affiche autre chose, laisse son calcul faire foi.
+**Résultat attendu : 4+.** Le feed communautaire ayant été retiré de
+la v1, plus rien ne relève du contenu généré par les utilisateurs — le
+palier 13+ tombe. Si ASC affiche autre chose, laisse son calcul faire
+foi.
+
+⚠️ Si le feed revient dans une version ultérieure, il faudra repasser
+« contenu généré par les utilisateurs » à **Oui**, remonter au palier
+13+, et livrer signalement **et** blocage d'utilisateur (guideline 1.2).
 
 ### 1.4 Documents sur le chiffrement
 
@@ -145,7 +150,7 @@ Modifiable à tout moment sans nouvelle version :
 Semis, récoltes, météo de ton jardin et Tamassi, ta créature kawaii : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
 ```
 
-### 2.3 Description — 2 324/4 000 caractères
+### 2.3 Description — 2 341/4 000 caractères
 
 Texte brut, sans HTML. Les trois premières lignes accrochent avant le
 « plus » :
@@ -176,8 +181,8 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes cani
 📖 LE POUSSIDEX, TA COLLECTION DE PLANTS
 Photographie tes plants et retrouve toute leur histoire : notes, arrosages, récoltes. Gagne des médailles bronze, argent et or pour chaque légume.
 
-📸 DÉFIS PHOTO ET COMMUNAUTÉ
-51 défis photo, 51 badges à débloquer et un feed communautaire pour partager tes plus belles récoltes.
+📸 DÉFIS PHOTO ET COLLECTION
+50 défis photo et 50 badges à débloquer, avec médailles bronze, argent et or. Ta progression au jardin, comme un Pokédex du potager.
 
 🎓 POUR APPRENDRE EN S'AMUSANT
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
@@ -241,25 +246,15 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 | Téléphone | → **voir « À préparer »** |
 | Compte de démonstration | **Recommandé, plus obligatoire** — depuis le mode invité, le testeur accède à tout sans compte via « Continuer sans compte ». Fournis-en un quand même pour qu'il puisse vérifier la synchronisation cloud et la suppression de compte. → **voir « À préparer »** |
 
-> ⚠️ **NE PAS COLLER EN L'ÉTAT (24/08/2026).** La puce « Feed
-> communautaire » décrit un écran de signalement qui **n'existe pas dans
-> l'app** : `PoussidexFeed` n'est branché à aucune interface. Les défis
-> téléversent pourtant bien les photos vers `challenge_posts`. Il faut
-> trancher avant de soumettre — brancher le feed, ou couper l'envoi et
-> retirer la promesse « communauté » de la fiche, de la description
-> (§2.3) et de la landing. Annoncer à Apple une modération inexistante
-> expose à un rejet (guideline 1.2, contenus générés par les
-> utilisateurs).
-
-**Notes au testeur** — 1 617/4 000 octets, à coller telles quelles :
+**Notes au testeur** — 1 645/4 000 caractères, à coller telles quelles :
 
 ```
 Kultiva est une application de jardinage 100 % en français, destinée à la France et à 8 pays francophones d'Afrique de l'Ouest.
 
-• Connexion : AUCUN compte n'est nécessaire. L'écran d'accueil propose « Continuer sans compte » : le calendrier, le catalogue, le potager et les tutos fonctionnent intégralement hors connexion. Le compte ne sert qu'à sauvegarder le jardin dans le cloud et à rejoindre la communauté ; pour le tester, utilise le compte de démonstration fourni ci-dessus ou « Continuer avec Apple ». La suppression de compte est dans Réglages → Supprimer mon compte.
+• Connexion : AUCUN compte n'est nécessaire. L'écran d'accueil propose « Continuer sans compte » : le calendrier, le catalogue, le potager et les tutos fonctionnent intégralement hors connexion. Le compte ne sert qu'à sauvegarder le jardin dans le cloud et à le retrouver sur un autre appareil ; pour le tester, utilise le compte de démonstration fourni ci-dessus ou « Continuer avec Apple ». La suppression de compte est dans Réglages → Supprimer mon compte.
 • Localisation : facultative. En cas de refus, l'app bascule automatiquement sur la météo de Paris (ou de la capitale du pays choisi) — ce n'est pas un bug.
 • Premier lancement : l'app propose de choisir son pays ; la liste s'adapte à la langue de l'appareil et, si la permission existe déjà, à sa position.
-• Feed communautaire (défis photo) : contenu généré par les utilisateurs. Chaque post peut être signalé (bouton « Signaler ce post ») ; les contenus signalés sont masqués après modération côté serveur.
+• Défis photo : les photos prises pour les défis restent sur l'appareil. Avec un compte, elles sont sauvegardées dans le stockage privé de l'utilisateur. Elles ne sont jamais partagées ni affichées à d'autres utilisateurs — l'app ne contient aucun feed ni contenu généré par les utilisateurs.
 • Liens « Lien partenaire » (Amazon) : présents uniquement sur les fiches légumes du marché France, masqués pour l'Afrique de l'Ouest.
 • Notifications : locales uniquement (rappels de semis, d'arrosage, Tamassi) — aucun push serveur.
 • La créature Tamassi réagit aux mouvements du téléphone (accéléromètre) : comportement volontaire, pas un bug.
@@ -299,7 +294,7 @@ Réponses au questionnaire, type par type :
 | --- | --- | --- | --- | --- |
 | Coordonnées | Adresse e-mail | **Oui** | Non | Fonctionnement de l'app (compte) |
 | Coordonnées | Nom (nom affiché) | **Oui** | Non | Fonctionnement de l'app |
-| Contenu utilisateur | Photos ou vidéos | **Oui** | Non | Fonctionnement de l'app (Poussidex, défis — uploadées si sync active) |
+| Contenu utilisateur | Photos ou vidéos | **Oui** | Non | Fonctionnement de l'app (Poussidex, défis — sauvegardées dans l'espace privé du compte si la sync est active ; jamais publiées ni partagées) |
 | Contenu utilisateur | Autre contenu utilisateur (plantations, notes, XP) | **Oui** | Non | Fonctionnement de l'app |
 | Identifiants | Identifiant utilisateur | **Oui** | Non | Fonctionnement de l'app |
 | Localisation | Position précise | **Non** | Non | Fonctionnement de l'app (coordonnées envoyées à Open-Meteo pour la météo, jamais stockées sur nos serveurs) |
