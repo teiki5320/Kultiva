@@ -74,25 +74,37 @@ posée à l'upload.
 
 ### 1.5 Réglementations — déclaration DSA (obligatoire pour l'UE)
 
-⚠️ **Décision à prendre avant de soumettre** — l'app est gratuite, sans
-publicité ni achat intégré, MAIS elle contient des **liens d'affiliation
-Amazon** (tag `kultiva-21`, marché France) : une source de revenus, qui
-te classe a priori **trader**.
+✅ **Décision prise (24/08/2026) : on garde l'affiliation Amazon → tu te
+déclares TRADER.**
 
-- **Option A — te déclarer trader** : tu fournis une adresse postale
-  (une boîte postale est acceptée), un téléphone et un e-mail, vérifiés
-  puis **affichés publiquement** sur la fiche App Store dans les 27 pays
-  de l'UE.
-- **Option B — retirer l'affiliation au lancement** (je peux masquer les
-  boutons Amazon comme c'est déjà fait pour l'Afrique de l'Ouest) : sans
-  aucune monétisation, un développeur individuel peut se déclarer
-  **non-trader** — aucune coordonnée publiée. L'affiliation pourra être
-  réactivée plus tard, en changeant le statut à ce moment-là.
+Les 159 liens d'affiliation (tag `kultiva-21`, marché France, déjà
+masqués en Afrique de l'Ouest) constituent une source de revenus : le
+statut trader est donc celui qui s'applique.
 
-Le chemin dans ASC : Entreprise → Accords → section Conformité →
-Digital Services Act (le statut peut ensuite s'ajuster par app dans
-Informations sur l'app → Réglementations). Ceci n'est pas un avis
-juridique — en cas de doute réel, vérifie avec un professionnel.
+**Ce que ça implique concrètement.** Tu fournis une adresse postale, un
+téléphone et un e-mail. Apple les vérifie, puis les **affiche
+publiquement** sur ta fiche App Store dans les 27 pays de l'UE.
+
+**Protège tes coordonnées personnelles** — c'est permis et recommandé :
+
+- **Adresse** : une **boîte postale est acceptée**. Inutile de publier
+  ton domicile. Une BP coûte quelques dizaines d'euros par an à La Poste.
+- **E-mail** : utilise `kultiva.toa@gmail.com`, déjà câblé partout dans
+  l'app et sur la landing — pas ton adresse personnelle.
+- **Téléphone** : le numéro sera public. Si tu ne veux pas exposer ton
+  mobile, un numéro secondaire (ligne VoIP, forfait dédié) fait l'affaire.
+
+**Chemin dans ASC** : Entreprise → Accords → section Conformité →
+Digital Services Act. Le statut peut ensuite s'ajuster app par app dans
+Informations sur l'app → Réglementations.
+
+**Si tu changes d'avis** : retirer l'affiliation permet de repasser
+non-trader, sans aucune coordonnée publiée. Le masquage est déjà
+implémenté (c'est le comportement actif en Afrique de l'Ouest), donc
+c'est une petite modification. Le statut se change à tout moment.
+
+Ceci n'est pas un avis juridique — en cas de doute réel, vérifie avec un
+professionnel.
 
 ---
 
@@ -227,14 +239,24 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 | Nom | Jean Perraudeau |
 | E-mail | `kultiva.toa@gmail.com` |
 | Téléphone | → **voir « À préparer »** |
-| Compte de démonstration | **OBLIGATOIRE** — l'écran de connexion n'a pas de mode invité, le testeur ne peut rien voir sans compte. → **voir « À préparer »** |
+| Compte de démonstration | **Recommandé, plus obligatoire** — depuis le mode invité, le testeur accède à tout sans compte via « Continuer sans compte ». Fournis-en un quand même pour qu'il puisse vérifier la synchronisation cloud et la suppression de compte. → **voir « À préparer »** |
 
-**Notes au testeur** — 1 404/4 000 octets, à coller telles quelles :
+> ⚠️ **NE PAS COLLER EN L'ÉTAT (24/08/2026).** La puce « Feed
+> communautaire » décrit un écran de signalement qui **n'existe pas dans
+> l'app** : `PoussidexFeed` n'est branché à aucune interface. Les défis
+> téléversent pourtant bien les photos vers `challenge_posts`. Il faut
+> trancher avant de soumettre — brancher le feed, ou couper l'envoi et
+> retirer la promesse « communauté » de la fiche, de la description
+> (§2.3) et de la landing. Annoncer à Apple une modération inexistante
+> expose à un rejet (guideline 1.2, contenus générés par les
+> utilisateurs).
+
+**Notes au testeur** — 1 617/4 000 octets, à coller telles quelles :
 
 ```
 Kultiva est une application de jardinage 100 % en français, destinée à la France et à 8 pays francophones d'Afrique de l'Ouest.
 
-• Connexion : l'app demande un compte au premier lancement — utilise le compte de démonstration fourni ci-dessus (« Se connecter »), ou « Continuer avec Apple ». La suppression de compte est disponible dans Réglages → Supprimer mon compte.
+• Connexion : AUCUN compte n'est nécessaire. L'écran d'accueil propose « Continuer sans compte » : le calendrier, le catalogue, le potager et les tutos fonctionnent intégralement hors connexion. Le compte ne sert qu'à sauvegarder le jardin dans le cloud et à rejoindre la communauté ; pour le tester, utilise le compte de démonstration fourni ci-dessus ou « Continuer avec Apple ». La suppression de compte est dans Réglages → Supprimer mon compte.
 • Localisation : facultative. En cas de refus, l'app bascule automatiquement sur la météo de Paris (ou de la capitale du pays choisi) — ce n'est pas un bug.
 • Premier lancement : l'app propose de choisir son pays ; la liste s'adapte à la langue de l'appareil et, si la permission existe déjà, à sa position.
 • Feed communautaire (défis photo) : contenu généré par les utilisateurs. Chaque post peut être signalé (bouton « Signaler ce post ») ; les contenus signalés sont masqués après modération côté serveur.
@@ -298,9 +320,9 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 3. **Un compte de démonstration** : crée un compte e-mail + mot de passe
    dédié dans l'app, ajoute 2-3 plantations, une photo, fais grandir un
    peu le Tamassi — le testeur ET les captures d'écran s'en serviront.
-4. **La décision DSA** (§1.5) : trader avec coordonnées publiques dans
-   l'UE, ou retrait de l'affiliation Amazon pour te déclarer non-trader
-   (dis-le-moi, je fais la modification de code dans les deux cas).
+4. **Tes coordonnées de trader** (§1.5, décision prise : on garde
+   l'affiliation) — adresse postale (**une BP suffit**), téléphone et
+   e-mail, qui seront **publics dans l'UE**.
 5. **Les captures d'écran** : 8 en iPhone 6,9″ + les mêmes en iPad 13″
    (§2.1).
 
@@ -321,5 +343,5 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | URL d'assistance / marketing / confidentialité | ⏳ Toi — après le déploiement Vercel |
 | Téléphone (revue) | ⏳ Toi |
 | Compte de démonstration | ⏳ Toi (5 min dans l'app) |
-| Déclaration DSA | ⏳ Toi — décision option A ou B (§1.5) |
+| Déclaration DSA | ✅ Décidé : **trader** (§1.5) — ⏳ reste à saisir tes coordonnées dans ASC |
 | Captures d'écran | ⏳ Toi (avec le compte de démo rempli) |

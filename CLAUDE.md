@@ -499,13 +499,12 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 À signaler à l'utilisateur / à traiter dans un futur ticket :
 
-0. **Actions manuelles Supabase avant publication** (bloquant review Apple) :
-   appliquer les migrations **012 → 016** dans SQL Editor et **déployer
-   l'edge function `delete-account`** (`supabase functions deploy
-   delete-account`). Sans ce déploiement, « Supprimer mon compte » échoue.
-   Les migrations 012-016 sont tolérées côté client (retry sans la colonne),
-   mais feed par pays, sync du pays et de la sous-zone ne s'activent qu'une
-   fois appliquées. Détails dans `_plans/rapport-corrections-2026-07-24.md`.
+0. ~~**Actions manuelles Supabase avant publication**~~ — ✅ **FAIT
+   (vérifié le 24/08/2026 par appels API)** : migrations 012 → 016
+   appliquées (`preferences.country`, `preferences.climate_zone`,
+   `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
+   function `delete-account` déployée.
+
 1. **Aucun test de widget ni d'intégration** — modèles, données, zones
    climatiques, `Country.zoneAt`, `watering_advisor`, `Plantation.merge`,
    `PrefsService` et `text_normalize` sont couverts (183 tests). Pas encore
@@ -515,11 +514,25 @@ Règles spécifiques au projet pour être efficace dès la première action :
    tout doute.
 3. **Fichiers volumineux restants** — `tamassi_view.dart` (1 740 LoC),
    `garden_planner_screen.dart` (1 777 LoC). Candidats à un découpage futur.
-4. **Connexion obligatoire au premier lancement** — l'écran de login n'a
-   pas de « continuer sans compte », alors que le calendrier et les fiches
-   n'exigent pas de compte : risque guideline 5.1.1 à la review Apple.
-   Décision en attente : mode invité (recommandé) ou compte de démo seul.
-   Voir `_plans/audit-2026-08-21.md`.
-5. **Liens stores dans `landing/index.html`** — les boutons Télécharger
+4. ~~**Connexion obligatoire au premier lancement**~~ — ✅ **RÉSOLU
+   (24/08/2026, commit d60b962)** : mode invité livré. Bouton
+   « Continuer sans compte » sur l'écran de connexion,
+   `PrefsService.guestMode` persisté, levé à la connexion comme à
+   l'inscription. Vérifié sur simulateur iPhone 17.
+
+5. **⚠️ Le feed communautaire n'est branché nulle part** —
+   `PoussidexFeed` (`lib/screens/home/poussidex/poussidex_feed.dart`,
+   280 LoC : filtrage par pays, likes, signalement) n'est importé ni
+   instancié par aucun fichier. Pourtant les défis téléversent bien les
+   photos vers `challenge_posts`
+   (`poussidex_challenges.dart:88` → `FeedService.publishChallengePost`).
+   Conséquence : les utilisateurs envoient du contenu que personne ne
+   voit, et **aucun bouton de signalement n'existe dans l'app**, alors
+   que la fiche App Store, la description et la landing promettent une
+   communauté modérée. À trancher avant publication — brancher le feed,
+   ou couper l'envoi et retirer la promesse (risque de rejet
+   guideline 1.2). Voir l'avertissement dans `docs/FICHE_APP_STORE.md` §2.8.
+
+6. **Liens stores dans `landing/index.html`** — les boutons Télécharger
    pointent vers `href="#"`. À remplacer par les vrais liens App Store /
    Play Store une fois l'app publiée.
