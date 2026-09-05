@@ -81,7 +81,7 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 - Android : Gradle 8.14, Kotlin + Java 17, signing release via
   `android/key.properties`, core library desugaring activé (desugar_jdk_libs
-  2.1.4), app ID `com.toa.kultiva`, min SDK 21
+  2.1.4), app ID `com.toa.kultiva`, min SDK 24 / target SDK 36
 - iOS : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), Apple Sign-In
   entitlement, URL scheme Google, permissions caméra / photos / localisation
   déclarées dans `Info.plist` (en français)

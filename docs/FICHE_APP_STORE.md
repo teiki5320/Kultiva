@@ -329,7 +329,7 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | --- | --- |
 | Nom, sous-titre, texte promo, description, mots-clés | ✅ Prêts à coller (décomptes vérifiés) |
 | Catégories, droits sur le contenu, UGS | ✅ Réponses fournies |
-| Questionnaire de classification par âge | ✅ Réponses fournies (attendu : 13+) |
+| Questionnaire de classification par âge | ✅ Réponses fournies (attendu : **4+** depuis le retrait du feed, §1.3) |
 | Chiffrement | ✅ Rien à faire (Info.plist déjà configuré) |
 | Droits d'auteur, version, publication | ✅ Prêts |
 | Questionnaire de confidentialité | ✅ Réponses fournies — il ne manque que l'URL |
