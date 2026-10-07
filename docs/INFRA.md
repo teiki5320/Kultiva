@@ -107,5 +107,5 @@ Généré le 2026-08-21 par un scan du dépôt. Pour mettre à jour : relancer c
 ## Notes
 
 - Valeurs **publiques par design** (leur présence dans le code est normale) : URL + `anonKey` Supabase, client IDs Google OAuth, DSN Sentry, tag Amazon.
-- E-mail de support public : `kultiva.toa@gmail.com` (affiché sur la landing et dans la privacy policy).
+- E-mail de support public : `kultiva@toakeur.com` (affiché sur la landing et dans la privacy policy).
 - Reprise sur machine neuve : cloner le dépôt, Flutter ≥ 3.38, `flutter pub get` puis `flutter run` — aucun secret requis côté client ; release Android = keystore + `key.properties` depuis le coffre-fort ; release iOS = accès au compte Apple.

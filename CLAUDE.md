@@ -465,7 +465,7 @@ Décisions et évolutions significatives :
   `docs/MARKETING.md` au format du dashboard « Mes apps » (repo Dashboard),
   `docs/FICHE_APP_STORE.md` (fiche ASC prête à coller, décomptes vérifiés,
   mots-clés 98/100 octets), page publique `landing/privacy.html`, e-mail de
-  support `kultiva.toa@gmail.com` câblé partout, landing en WebP
+  support `kultiva@toakeur.com` câblé partout, landing en WebP
   (5,6 Mo → 0,2 Mo), chiffres marketing corrigés (33 tutos ; le 51/51 annoncé était faux,
   recompté à 50/50 le 24/08 — voir plus bas
   badges), audit `_plans/audit-2026-08-21.md` (analyze 3 infos,

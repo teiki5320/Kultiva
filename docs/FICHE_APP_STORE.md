@@ -94,7 +94,7 @@ publiquement** sur ta fiche App Store dans les 27 pays de l'UE.
 
 - **Adresse** : une **boîte postale est acceptée**. Inutile de publier
   ton domicile. Une BP coûte quelques dizaines d'euros par an à La Poste.
-- **E-mail** : utilise `kultiva.toa@gmail.com`, déjà câblé partout dans
+- **E-mail** : utilise `kultiva@toakeur.com`, déjà câblé partout dans
   l'app et sur la landing — pas ton adresse personnelle.
 - **Téléphone** : le numéro sera public. Si tu ne veux pas exposer ton
   mobile, un numéro secondaire (ligne VoIP, forfait dédié) fait l'affaire.
@@ -242,7 +242,7 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 | Champ | Valeur |
 | --- | --- |
 | Nom | Jean Perraudeau |
-| E-mail | `kultiva.toa@gmail.com` |
+| E-mail | `kultiva@toakeur.com` |
 | Téléphone | → **voir « À préparer »** |
 | Compte de démonstration | **Recommandé, plus obligatoire** — depuis le mode invité, le testeur accède à tout sans compte via « Continuer sans compte ». Fournis-en un quand même pour qu'il puisse vérifier la synchronisation cloud et la suppression de compte. → **voir « À préparer »** |
 
