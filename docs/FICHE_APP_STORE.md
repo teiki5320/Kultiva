@@ -211,8 +211,8 @@ jardinage,semis,jardin,légumes,calendrier,récolte,plantes,graines,balcon,mét�
 
 | Champ | Valeur |
 | --- | --- |
-| URL d'assistance (obligatoire) | → l'URL du site déployé sur Vercel — **voir « À préparer »** |
-| URL marketing (facultative) | La même URL, ou laisser vide |
+| URL d'assistance (obligatoire) | `https://kultiva.toakeur.com` |
+| URL marketing (facultative) | `https://kultiva.toakeur.com` (la même), ou laisser vide |
 
 ### 2.6 Version
 
@@ -285,8 +285,8 @@ caler le lancement sur le calendrier marketing, cf.
 (comptes, contenu) et Sentry (crashs) tournent — une fausse déclaration
 est un motif de rejet, voire de retrait après publication.
 
-**URL de la politique de confidentialité** : l'URL Vercel +
-`/privacy.html` — voir « À préparer ».
+**URL de la politique de confidentialité** :
+`https://kultiva.toakeur.com/privacy.html`
 
 Réponses au questionnaire, type par type :
 
@@ -309,16 +309,13 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 
 1. **Ton numéro de téléphone** — champ obligatoire des informations
    pour la revue.
-2. **L'URL du site** une fois le déploiement Vercel fait → à coller
-   dans : URL d'assistance (§2.5), URL marketing (§2.5) et URL de
-   politique de confidentialité (§4, en ajoutant `/privacy.html`).
-3. **Un compte de démonstration** : crée un compte e-mail + mot de passe
+2. **Un compte de démonstration** : crée un compte e-mail + mot de passe
    dédié dans l'app, ajoute 2-3 plantations, une photo, fais grandir un
    peu le Tamassi — le testeur ET les captures d'écran s'en serviront.
-4. **Tes coordonnées de trader** (§1.5, décision prise : on garde
+3. **Tes coordonnées de trader** (§1.5, décision prise : on garde
    l'affiliation) — adresse postale (**une BP suffit**), téléphone et
    e-mail, qui seront **publics dans l'UE**.
-5. **Les captures d'écran** : 8 en iPhone 6,9″ + les mêmes en iPad 13″
+4. **Les captures d'écran** : 8 en iPhone 6,9″ + les mêmes en iPad 13″
    (§2.1).
 
 ---
@@ -332,10 +329,10 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | Questionnaire de classification par âge | ✅ Réponses fournies (attendu : **4+** depuis le retrait du feed, §1.3) |
 | Chiffrement | ✅ Rien à faire (Info.plist déjà configuré) |
 | Droits d'auteur, version, publication | ✅ Prêts |
-| Questionnaire de confidentialité | ✅ Réponses fournies — il ne manque que l'URL |
+| Questionnaire de confidentialité | ✅ Réponses fournies, URL comprise (§4) |
 | Notes au testeur | ✅ Prêtes à coller |
 | Build | ✅ Xcode Cloud opérationnel — sélectionner le dernier |
-| URL d'assistance / marketing / confidentialité | ⏳ Toi — après le déploiement Vercel |
+| URL d'assistance / marketing / confidentialité | ✅ `kultiva.toakeur.com` en ligne (§2.5, §4) — ⏳ Toi : les coller dans ASC |
 | Téléphone (revue) | ⏳ Toi |
 | Compte de démonstration | ⏳ Toi (5 min dans l'app) |
 | Déclaration DSA | ✅ Décidé : **trader** (§1.5) — ⏳ reste à saisir tes coordonnées dans ASC |
