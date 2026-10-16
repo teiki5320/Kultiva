@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 PUBSPEC="pubspec.yaml"
 
 if [ ! -f "$PUBSPEC" ]; then
-  echo "❌ pubspec.yaml introuvable. Lance ce script depuis ~/Code/kultiva"
+  echo "❌ pubspec.yaml introuvable. Lance ce script depuis ~/Dev/apps/kultiva"
   exit 1
 fi
 
