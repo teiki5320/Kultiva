@@ -62,8 +62,7 @@
 ## 📅 Calendrier + 🛒 Étal
 
 - [ ] Calendrier mensuel adapté à la région choisie
-- [ ] Lien « Acheter » (Amazon Associates) fonctionnel sur la fiche légume
-- [ ] Mention « Lien partenaire » bien visible
+- [ ] Aucun bouton « Acheter » ni mention « Lien partenaire » sur la fiche légume (liens Amazon retirés le 20/10/2026)
 
 ## 🔄 Cross-fonctionnalités
 

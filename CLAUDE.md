@@ -1,7 +1,7 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-08-22.
+> Dernière mise à jour : 2026-10-21.
 
 ## 🎯 Contexte
 
@@ -50,9 +50,10 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - Material3, thèmes clair et sombre
 - `google_fonts` ^6.1 — typographie **Nunito**
 - `shared_preferences` ^2.2 — persistance locale
-- `url_launcher` ^6.2 — liens affiliés Amazon
+- `url_launcher` ^6.2 — liens externes (Instagram ; boutons « Acheter »
+  Amazon retirés le 20/10/2026, plus aucune affiliation)
 - `flutter_local_notifications` ^17.2.3 + `timezone` ^0.9 +
-  `flutter_timezone` ^1.0.8 — rappels mensuels, quotidiens (Tamassi),
+  `flutter_timezone` ^3.0.1 — rappels mensuels, quotidiens (Tamassi),
   arrosage et canicule, planifiés dans le **fuseau réel** du device
 - `flutter_localizations` (SDK) — locale fr-FR globale (DatePicker français)
 - `pdf` ^3.10 + `printing` ^5.12 — export PDF du calendrier
@@ -133,7 +134,7 @@ Kultiva/
 │   │                       # review
 │   ├── data/               # 9 fichiers — 6 320 LoC
 │   │   ├── vegetables_base.dart    # 169 entrées (130 cultures + 39 accessoires)
-│   │   ├── badges.dart (51) / challenges.dart (51) / diseases.dart
+│   │   ├── badges.dart (50) / challenges.dart (50) / diseases.dart
 │   │   ├── companions.dart / rotation.dart / lexicon.dart
 │   │   ├── local_names.dart / market_data.dart / market_buying_tips.dart
 │   │   ├── recipes.dart      # noms locaux, maraîchage FCFA, achat, cuisine (AO)
@@ -399,8 +400,10 @@ Décisions et évolutions significatives :
   gestion de la géolocalisation refusée avec fallback Paris.
 - **Météo** : nom de ville affiché dans le header, bouton rafraîchir ajouté,
   alertes canicule avec tips par légume.
-- **Amazon Associates** : mention « Lien partenaire » visible + bouton agrandi
-  pour conformité du programme d'affiliation.
+- **Amazon Associates** (abandonné) : mention « Lien partenaire » visible +
+  bouton agrandi pour conformité du programme d'affiliation. Les 159 liens
+  ont été retirés le 20/10/2026 (commit 0dbe0e4, compte fermé par Amazon le
+  18/10) : le bouton ne s'affiche plus, faute d'`amazonUrl`.
 - **Gros ménage lint** : 308 substitutions `withOpacity` → `withValues` sur
   38 fichiers, >90 % des avertissements résorbés.
 - **Sync catalogue Kultivaprix** : workflow GitHub Actions + edge function
@@ -470,7 +473,8 @@ Décisions et évolutions significatives :
   recompté à 50/50 le 24/08 — voir plus bas
   badges), audit `_plans/audit-2026-08-21.md` (analyze 3 infos,
   183 tests verts). Décisions ouvertes : mode invité (5.1.1), DSA
-  (affiliation → trader), iPad (captures 13″ exigées).
+  (affiliation → trader ; affiliation retirée le 20/10/2026, à revoir),
+  iPad (captures 13″ exigées).
 
 ## 💬 Instructions pour Claude Code
 
@@ -508,7 +512,8 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
 1. **Aucun test de widget ni d'intégration** — modèles, données, zones
    climatiques, `Country.zoneAt`, `watering_advisor`, `Plantation.merge`,
-   `PrefsService` et `text_normalize` sont couverts (183 tests). Pas encore
+   `PrefsService` et `text_normalize` sont couverts (187 blocs `test` /
+   `testWidgets` comptés le 21/10/2026). Pas encore
    de test de widget.
 2. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
    c'est correct pour une anon key JWT publique, mais à documenter pour éviter
@@ -544,3 +549,9 @@ Règles spécifiques au projet pour être efficace dès la première action :
 6. **Liens stores dans `landing/index.html`** — les boutons Télécharger
    pointent vers `href="#"`. À remplacer par les vrais liens App Store /
    Play Store une fois l'app publiée.
+
+7. **Projet Supabase en pause** (statut INACTIVE, pas supprimé ; vérifié
+   le 21/10/2026) — tant qu'il n'est pas relancé depuis le dashboard
+   Supabase, ni connexion ni synchronisation (le mode invité marche), et
+   le workflow `sync-catalog.yml` échoue à chaque modification du
+   catalogue (comme le 20/10/2026) : c'est attendu, pas un bug.

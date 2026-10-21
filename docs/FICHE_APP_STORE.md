@@ -43,7 +43,7 @@ Ton potager kawaii de poche
 | UGS (SKU) | `kultiva-ios-001` — identifiant interne, jamais public, n'importe quelle chaîne unique convient |
 | Catégorie principale | **Style de vie** |
 | Catégorie secondaire | **Éducation** (tutoriels, lexique, guide des maladies) |
-| Droits relatifs au contenu | **« Non, elle ne contient pas de contenu de tiers »** — tout le contenu (textes, illustrations, tutos) est produit pour l'app ; les liens Amazon sont des liens sortants, pas du contenu tiers affiché |
+| Droits relatifs au contenu | **« Non, elle ne contient pas de contenu de tiers »** — tout le contenu (textes, illustrations, tutos) est produit pour l'app |
 | Contrat de licence | Laisser le contrat standard d'Apple (ne rien toucher) |
 
 ### 1.3 Classifications par âge (questionnaire 2025)
@@ -79,14 +79,14 @@ posée à l'upload.
 
 ### 1.5 Réglementations — déclaration DSA (obligatoire pour l'UE)
 
-✅ **Décision prise (24/08/2026) : on garde l'affiliation Amazon → tu te
-déclares TRADER.**
+⚠️ **Décision à revoir (21/10/2026).** Le 24/08/2026, on avait choisi
+de garder l'affiliation Amazon, donc de te déclarer **trader**. Mais les
+159 liens d'affiliation ont été retirés le 20/10/2026 (le compte Amazon
+du tag `kultiva-21` avait été fermé le 18/10). L'app ne tire plus aucun
+revenu : le statut **non-trader**, sans aucune coordonnée publiée,
+redevient possible. À trancher avant la soumission.
 
-Les 159 liens d'affiliation (tag `kultiva-21`, marché France, déjà
-masqués en Afrique de l'Ouest) constituent une source de revenus : le
-statut trader est donc celui qui s'applique.
-
-**Ce que ça implique concrètement.** Tu fournis une adresse postale, un
+**Si tu restes trader, ce que ça implique concrètement.** Tu fournis une adresse postale, un
 téléphone et un e-mail. Apple les vérifie, puis les **affiche
 publiquement** sur ta fiche App Store dans les 27 pays de l'UE.
 
@@ -103,10 +103,8 @@ publiquement** sur ta fiche App Store dans les 27 pays de l'UE.
 Digital Services Act. Le statut peut ensuite s'ajuster app par app dans
 Informations sur l'app → Réglementations.
 
-**Si tu changes d'avis** : retirer l'affiliation permet de repasser
-non-trader, sans aucune coordonnée publiée. Le masquage est déjà
-implémenté (c'est le comportement actif en Afrique de l'Ouest), donc
-c'est une petite modification. Le statut se change à tout moment.
+**Si tu passes non-trader** : aucune coordonnée n'est publiée. Le
+statut se change à tout moment.
 
 Ceci n'est pas un avis juridique — en cas de doute réel, vérifie avec un
 professionnel.
@@ -255,7 +253,6 @@ Kultiva est une application de jardinage 100 % en français, destinée à la Fra
 • Localisation : facultative. En cas de refus, l'app bascule automatiquement sur la météo de Paris (ou de la capitale du pays choisi) — ce n'est pas un bug.
 • Premier lancement : l'app propose de choisir son pays ; la liste s'adapte à la langue de l'appareil et, si la permission existe déjà, à sa position.
 • Défis photo : les photos prises pour les défis restent sur l'appareil. Avec un compte, elles sont sauvegardées dans le stockage privé de l'utilisateur. Elles ne sont jamais partagées ni affichées à d'autres utilisateurs — l'app ne contient aucun feed ni contenu généré par les utilisateurs.
-• Liens « Lien partenaire » (Amazon) : présents uniquement sur les fiches légumes du marché France, masqués pour l'Afrique de l'Ouest.
 • Notifications : locales uniquement (rappels de semis, d'arrosage, Tamassi) — aucun push serveur.
 • La créature Tamassi réagit aux mouvements du téléphone (accéléromètre) : comportement volontaire, pas un bug.
 • L'app fonctionne hors ligne après la première connexion ; la synchronisation cloud se fait en arrière-plan.
@@ -312,8 +309,8 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 2. **Un compte de démonstration** : crée un compte e-mail + mot de passe
    dédié dans l'app, ajoute 2-3 plantations, une photo, fais grandir un
    peu le Tamassi — le testeur ET les captures d'écran s'en serviront.
-3. **Tes coordonnées de trader** (§1.5, décision prise : on garde
-   l'affiliation) — adresse postale (**une BP suffit**), téléphone et
+3. **Tes coordonnées de trader**, seulement si tu restes trader (§1.5,
+   à revoir depuis le retrait de l'affiliation) — adresse postale (**une BP suffit**), téléphone et
    e-mail, qui seront **publics dans l'UE**.
 4. **Les captures d'écran** : 8 en iPhone 6,9″ + les mêmes en iPad 13″
    (§2.1).

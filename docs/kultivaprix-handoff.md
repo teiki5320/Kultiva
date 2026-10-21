@@ -42,7 +42,7 @@ create table public.species (
   watering_days_max       int,
   yield_estimate          text,
   harvest_time_by_season  jsonb,              -- {"spring":"90 à 110 jours", "summer":"...", "autumn":"...", "winter":"..."}
-  amazon_url              text,               -- lien affilié Amazon (tag=kultiva-21)
+  amazon_url              text,               -- ancien lien affilié Amazon, vide depuis le 20/10/2026 (affiliation retirée)
   regions                 jsonb,              -- voir plus bas
   updated_at              timestamptz default now()
 );

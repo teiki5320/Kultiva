@@ -9,14 +9,14 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 ## ✨ Ce qu'on y trouve
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région
-- 🌽 **Catalogue de plus de 120 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
+- 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
 - 📓 **Mes jardins** : potager carré multi-jardins, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), conseils contextuels selon la météo
 - 📖 **Poussidex** : ta collection chronologique des plants en photos, avec notes, historique d'arrosage et compteur de récoltes
 - 🐣 **Tamassi** : créature virtuelle qui évolue avec ton activité au jardin (XP, niveaux, émotions, visiteurs)
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
-- 🌐 **Feed communautaire** de défis photo avec 50 défis, 50 badges et médailles bronze / argent / or
+- 🏅 **Défis photo** : 50 défis, 50 badges et médailles bronze / argent / or (les photos restent privées)
 - 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et compagnon kawaii adaptés à un usage en famille
-- 🎓 **30 tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
+- 🎓 **33 tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
 - ☁️ **Synchronisation Supabase facultative** (auth Google/Apple, sync plantations, badges, photos)
 
 L'app est **local-first** : tout fonctionne sans connexion. La synchro cloud est en arrière-plan, jamais bloquante.
@@ -30,7 +30,7 @@ Le choix se fait au premier lancement et peut être modifié à tout moment dans
 
 ## 🛠️ Stack technique
 
-- **Flutter ≥ 3.24** / **Dart ^3.5** (canal stable)
+- **Flutter ≥ 3.38** / **Dart ^3.5** (canal stable)
 - **Supabase** (auth + Postgres + Storage) pour la sync cloud optionnelle
 - **Open-Meteo** pour la météo (gratuit, sans clé)
 - Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`
@@ -57,7 +57,7 @@ cd ios && pod install --repo-update && cd ..
 Routine quotidienne sur le Mac de Jean après une modif côté Claude Code (branche `main`) :
 
 ```bash
-cd ~/Code/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
+cd ~/Dev/apps/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
 ```
 
 ## 📦 Build de release

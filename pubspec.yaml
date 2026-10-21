@@ -46,7 +46,7 @@ dependencies:
   # String). getLocalTimezone() reste identique en 3.x.
   flutter_timezone: ^3.0.1
 
-  # URL launcher (liens Amazon)
+  # URL launcher (liens externes, ex. Instagram ; plus de lien Amazon depuis le 20/10/2026)
   url_launcher: ^6.2.2
 
   # Export PDF
