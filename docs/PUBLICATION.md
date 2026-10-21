@@ -210,10 +210,6 @@ Google « Se connecter » ont été laissées à supprimer le 9 octobre 2026 :
 
 ## Ce qui a été réglé depuis
 
-- **Liens Amazon retirés** (20 octobre) — les 159 liens « Acheter »
-  du catalogue (tag `kultiva-21`, compte fermé par Amazon le
-  18 octobre) ont été supprimés ; plus aucune affiliation dans l'app
-  ni sur le site.
 - **Site en ligne** (7 octobre) — `landing/` publié sur GitHub Pages à
   l'adresse `kultiva.toakeur.com`.
 - **Adresse de contact** (7 octobre) — `kultiva@toakeur.com` partout
@@ -222,6 +218,8 @@ Google « Se connecter » ont été laissées à supprimer le 9 octobre 2026 :
 - **Liens Amazon retirés** (20 octobre) — le tag `kultiva-21` dépendait
   du compte Amazon Partenaires fermé le 18 octobre : les 159 liens
   « Acheter » ont été ôtés du catalogue, le bouton ne s'affiche plus.
+- **Mention « Partenaire Amazon » ôtée du site** (21 octobre) — dernière
+  trace de l'affiliation, dans le pied de page de `landing/index.html`.
 
 ## Ce qui a été réglé fin août 2026
 
