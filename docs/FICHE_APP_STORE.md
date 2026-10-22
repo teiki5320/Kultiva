@@ -244,7 +244,7 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 | Téléphone | → **voir « À préparer »** |
 | Compte de démonstration | **Recommandé, plus obligatoire** — depuis le mode invité, le testeur accède à tout sans compte via « Continuer sans compte ». Fournis-en un quand même pour qu'il puisse vérifier la synchronisation cloud et la suppression de compte. → **voir « À préparer »** |
 
-**Notes au testeur** — 1 645/4 000 caractères, à coller telles quelles :
+**Notes au testeur** — 1 510/4 000 caractères, à coller telles quelles :
 
 ```
 Kultiva est une application de jardinage 100 % en français, destinée à la France et à 8 pays francophones d'Afrique de l'Ouest.
