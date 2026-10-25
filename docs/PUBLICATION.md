@@ -29,7 +29,7 @@
 | Construction | [ok] Xcode Cloud (`ci_post_clone.sh`, Flutter 3.41.6) | [ok] App Bundle construit par la CI GitHub Actions |
 | Signature | [ok] gérée par Xcode Cloud, équipe `K597U7X3FZ` | [ok] keystore local, valable jusqu'en 2053 |
 | Classification | [à faire] 4+ attendu, questionnaire prêt à reporter | [à faire] questionnaire de contenu à remplir |
-| Cible | [ok] iOS 13.0 et plus, iPhone et iPad, portrait | [ok] valeurs par défaut de Flutter, rien de figé dans le dépôt |
+| Cible | [ok] iOS 15.0 et plus (depuis le 25 octobre 2026 : Xcode et les pods, dont Sentry, l’exigent ; avant : 13.0), iPhone et iPad, portrait | [ok] valeurs par défaut de Flutter, rien de figé dans le dépôt |
 | Permissions | [ok] caméra, photos, localisation (textes en français) | [ok] localisation, notifications, alarmes exactes |
 | Poids | [pas encore] à mesurer au premier envoi (35 Mo d'assets) | [pas encore] à mesurer au premier envoi (35 Mo d'assets) |
 

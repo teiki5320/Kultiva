@@ -1,5 +1,5 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '13.0'
+# Plateforme minimale, la même que l'appli (Runner : IPHONEOS_DEPLOYMENT_TARGET = 15.0 ; Xcode exige au moins 15.0).
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -39,6 +39,16 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+
+    # Tous les pods visent au moins la même version d'iOS que l'appli (15.0).
+    # Sans ça, certains pods (dont Sentry) gardent une cible trop basse
+    # et l'archive Xcode Cloud échoue (build 94, 24 octobre 2026).
+    target.build_configurations.each do |config|
+      cible = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+      if cible.nil? || Gem::Version.new(cible) < Gem::Version.new('15.0')
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      end
+    end
 
     # permission_handler (v11+) exige ces macros pour que les
     # permissions correspondantes soient actives sur iOS. Sans ça
