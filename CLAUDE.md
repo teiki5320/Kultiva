@@ -612,7 +612,10 @@ Règles spécifiques au projet pour être efficace dès la première action :
    l'appareil hors Open-Meteo et Sentry.
 
    **Conséquence à assumer** : changer de téléphone fait perdre le
-   jardin. Un export/import de fichier reste à faire.
+   jardin. Décision du 30/10/2026 : **pas d'export/import de
+   fichier** — une sauvegarde manuelle ne protège que ceux qui y
+   pensent avant de casser leur téléphone. Si la portabilité redevient
+   un besoin, elle passera par la synchro (voir ci-dessous).
 
    **Pour rétablir la synchro** : ne pas reprendre Supabase. La piste
    retenue est **Cloudflare** (Worker + D1 + R2, gratuit, ne s'endort

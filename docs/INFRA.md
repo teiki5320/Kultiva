@@ -57,7 +57,7 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 
 - **Rôle** : **aucun depuis le 30 octobre 2026.** L'app n'a plus d'écran de connexion. Supprimés : `lib/screens/auth/`, `auth_service.dart`, `cloud_sync_service.dart`, `supabase_config.dart`, les dépendances `supabase_flutter`, `google_sign_in`, `sign_in_with_apple` et `crypto` (−36 paquets, −70 lignes de `Podfile.lock`), l'entitlement Apple Sign-In et le schéma d'URL Google de `Info.plist`.
 - **Effet sur la soumission** : plus d'obligation Apple de suppression de compte in-app, questionnaire de confidentialité réduit à deux types (localisation, plantages), guideline 4.8 sans objet, et plus de clés Google « Se connecter » à recréer.
-- **Contrepartie assumée** : changer de téléphone fait perdre le jardin. Un export/import de fichier reste à écrire.
+- **Contrepartie assumée** : changer de téléphone fait perdre le jardin. Décision du 30 octobre 2026 : **pas d'export/import de fichier** — une sauvegarde manuelle ne protège que ceux qui y pensent avant de casser leur téléphone, c'est-à-dire presque personne. Si la portabilité redevient un besoin, elle passera par la synchro (voir ci-dessus).
 - **Coût** : 0 €.
 
 ### 4. API tierce (météo Open-Meteo)

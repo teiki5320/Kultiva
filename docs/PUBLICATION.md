@@ -206,8 +206,11 @@ suppression de compte in-app, questionnaire de confidentialité réduit à
 deux types (localisation, plantages), guideline 4.8 sans objet, et plus
 de clés Google « Se connecter » à recréer.
 
-**Ce que ça coûte** : changer de téléphone fait perdre le jardin. Un
-export/import de fichier reste à écrire.
+**Ce que ça coûte** : changer de téléphone fait perdre le jardin.
+Décision du 30 octobre : **pas d'export/import de fichier** — une
+sauvegarde manuelle ne protège que ceux qui y pensent avant de casser
+leur téléphone. Si la portabilité redevient un besoin, elle passera par
+la synchro (Cloudflare, ci-dessous).
 
 | | |
 |---|---|
