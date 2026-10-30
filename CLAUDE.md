@@ -56,7 +56,9 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `flutter_localizations` (SDK) — locale fr-FR globale (DatePicker français)
 - `pdf` ^3.10 + `printing` ^5.12 — export PDF du calendrier
 - `geolocator` ^11.0 + `geocoding` ^3.0 — détection régionale + nom de ville
-- `permission_handler` ^11.3 — permissions caméra / localisation
+- `permission_handler` ^13.0 — uniquement `openAppSettings()` (renvoyer
+  vers les réglages système après un refus de la caméra). Exige le SDK
+  Android 37, installé explicitement par la CI.
 - `http` ^1.2 — appels Open-Meteo
 - `audioplayers` ^6.1 — SFX et musique de fond
 - `image_picker` ^1.0 + `path_provider` ^2.1 — caméra / galerie et stockage local
@@ -78,14 +80,18 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 **Outillage / plateformes**
 
-- Android : Gradle 8.14, Kotlin + Java 17, signing release via
+- Android : Gradle 8.14, Kotlin 2.2.20 (le pin en 2.1.x pour
+  sentry_flutter 8 est levé ; Flutter 3.47 exige ≥ 2.2.20), Java 17,
+  compile contre le SDK 37 via permission_handler, signing release via
   `android/key.properties`, core library desugaring activé (desugar_jdk_libs
   2.1.4), app ID `com.toa.kultiva`, min SDK 24 / target SDK 36
 - iOS : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), permissions
   caméra / photos / localisation
   déclarées dans `Info.plist` (en français)
-- CI : GitHub Actions (`ci.yml` : `flutter analyze` + `flutter test` sur push
-  main et PR ; `site.yml` : publication du dossier `landing/`)
+- CI : GitHub Actions (`ci.yml` : `flutter analyze` + `flutter test` +
+  build appbundle et APK par ABI, sur push main et PR ; `site.yml` :
+  publication du dossier `landing/`). Flutter épinglé en **3.47.3**,
+  aligné sur le Mac : une CI en retard ne voit pas ce qui casse en local
 - Lints : `flutter_lints` ^5.0 + règles custom (`prefer_const_constructors`,
   `prefer_const_literals_to_create_immutables`, `avoid_print`,
   `use_key_in_widget_constructors`). Exclusion : `tool/**`.
@@ -174,11 +180,13 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 18 fichiers — 2 307 LoC
+├── test/                   # 26 fichiers — 280 tests
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
-│                           # watering_advisor, widget_test
+│                           # watering_advisor, plantation_service,
+│                           # corrupt_save, assets_exist,
+│                           # text_scale, ipad_landscape, widget_test
 ├── pubspec.yaml
 ├── analysis_options.yaml
 └── README.md
@@ -542,11 +550,14 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Aucun test de widget ni d'intégration** — modèles, données, zones
-   climatiques, `Country.zoneAt`, `watering_advisor`, `Plantation.merge`,
-   `PrefsService` et `text_normalize` sont couverts (187 blocs `test` /
-   `testWidgets` comptés le 21/10/2026). Pas encore
-   de test de widget.
+1. **Pas de test d'intégration** — 280 tests au 30/10/2026, dont une
+   première couche de widgets : `text_scale_test.dart` monte dix écrans
+   sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
+   fait de même aux dimensions d'un iPad en portrait et en paysage, et
+   `assets_exist_test.dart` vérifie que chaque image déclarée existe.
+   Aucun parcours complet n'est joué de bout en bout, et **rien n'a
+   encore été essayé avec VoiceOver réellement activé** : un test voit
+   qu'une boîte ne déborde pas, pas qu'un écran est agréable à écouter.
 2. ~~**L'`anonKey` Supabase est committée**~~ — sans objet depuis le
    retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
    est supprimé.
@@ -658,6 +669,31 @@ Règles spécifiques au projet pour être efficace dès la première action :
    jamais, juridiction EU disponible), avec Google + Apple **seulement**
    — le Worker n'a alors qu'à vérifier le jeton d'identité, sans jamais
    manipuler de mot de passe.
+
+9. **Le runtime iOS n'est pas installé sur ce Mac** — `xcrun simctl
+   list runtimes` ne renvoie rien, donc aucun simulateur ne démarre et
+   personne n'a encore **vu l'iPad tourner** depuis que la rotation a
+   été rendue aux tablettes (30/10/2026). Le SDK est là, le runtime
+   non. Pour l'installer :
+
+   ```bash
+   xcodebuild -downloadPlatform iOS
+   ```
+
+   ⚠️ Environ 8 Go, et le disque n'avait que 13 Go libres le
+   30/10/2026 (94 % plein). À faire une fois de la place gagnée.
+
+10. **Le build Android ne marche qu'avec le JDK d'Android Studio** —
+    le `java` du PATH est un OpenJDK 25 (Homebrew) que Gradle 8.14 ne
+    supporte pas. Préfixer :
+
+    ```bash
+    JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" flutter build apk --release
+    ```
+
+11. **Les planches 4K d'origine** (294 crédits OpenART) sont hors du
+    dépôt, dans `~/Dev/apps/kultiva-planches-sources/`. Le découpeur,
+    lui, est versionné : `assets/images/vegetables_kawaii/_split.py`.
 
 ## Fiches à jour à chaque changement (règle de Jean, 22 octobre 2026)
 
