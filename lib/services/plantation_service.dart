@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import '../models/plantation.dart';
+import 'error_reporter.dart';
 import 'photo_service.dart';
 import 'prefs_service.dart';
 
@@ -24,6 +25,12 @@ class PlantationService extends ChangeNotifier {
   static final Random _rng = Random();
 
   List<Plantation> _plantations = <Plantation>[];
+
+  /// Vrai quand la sauvegarde n'a pas pu être décodée. On gèle alors
+  /// toute écriture : persister la liste vide qu'on a en mémoire
+  /// effacerait définitivement la collection de l'utilisateur. Même
+  /// garde-fou que la purge des photos orphelines.
+  bool _corrupted = false;
 
   /// Plantations connues, de la plus récente à la plus ancienne.
   List<Plantation> get all => List<Plantation>.unmodifiable(_plantations);
@@ -55,7 +62,19 @@ class PlantationService extends ChangeNotifier {
   }
 
   void _reload() {
-    _plantations = Plantation.decodeAll(PrefsService.instance.plantationsJson)
+    final decoded =
+        Plantation.decodeAllOrNull(PrefsService.instance.plantationsJson);
+    if (decoded == null) {
+      _corrupted = true;
+      ErrorReporter.report(
+        'plantations_decode',
+        StateError('plantationsJson illisible'),
+        StackTrace.current,
+      );
+      return;
+    }
+    _corrupted = false;
+    _plantations = decoded
       ..sort((a, b) => b.plantedAt.compareTo(a.plantedAt));
     notifyListeners();
   }
@@ -218,6 +237,10 @@ class PlantationService extends ChangeNotifier {
   }
 
   Future<void> _persist() async {
+    // Sauvegarde illisible : on ne réécrit rien. Mieux vaut une app qui
+    // n'enregistre pas ce geste-ci qu'une app qui remplace toute la
+    // collection par ce seul geste.
+    if (_corrupted) return;
     // On maintient l'invariant « du plus récent au plus ancien » ici, et
     // pas seulement à la lecture : `add` accepte une date de mise en
     // terre passée, qui ne va pas forcément en tête.

@@ -70,7 +70,11 @@ class NotificationService {
               AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
       _initialized = true;
-    } catch (_) {
+    } catch (e, s) {
+      // L'app continue sans notifications, mais en silence l'utilisateur
+      // ne reçoit plus AUCUN rappel (mensuel, Tamassi, arrosage,
+      // canicule) sans qu'on puisse le savoir.
+      await ErrorReporter.report('notifications_init', e, s);
       _initialized = true;
     }
   }

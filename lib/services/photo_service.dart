@@ -89,7 +89,12 @@ class PhotoService {
     try {
       final f = File(path);
       if (await f.exists()) await f.delete();
-    } catch (_) {}
+    } catch (e, s) {
+      // Pas bloquant — le fichier reste sur le disque et la purge des
+      // orphelines le rattrapera — mais un échec répété signale un
+      // problème de stockage qu'on veut voir.
+      await ErrorReporter.report('photo_delete', e, s);
+    }
   }
 
   /// Purge best-effort les fichiers photo locaux qui ne sont plus

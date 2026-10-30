@@ -403,10 +403,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     if (occupant?.cultureId != null) {
       _scheduleCultureRemoval(occupant!.cultureId!);
     }
-    final veg = vegetablesBase.firstWhere(
-      (v) => v.id == vegId,
-      orElse: () => vegetablesBase.first,
-    );
+    final veg = vegetableById(vegId);
     final density = veg.densityPerSqFt ?? 1;
     final plantedAt = DateTime.now();
 

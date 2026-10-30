@@ -137,7 +137,13 @@ class CultureEntry {
   /// Décode la liste des cultures du cahier. Filtre silencieusement
   /// les entrées dont `method == 'hydroponic'` pour rester compatible
   /// avec les sauvegardes antérieures à la v2 pleine-terre-only.
-  static List<CultureEntry> decodeAll(String? raw) {
+  static List<CultureEntry> decodeAll(String? raw) =>
+      decodeAllOrNull(raw) ?? <CultureEntry>[];
+
+  /// Comme [decodeAll], mais renvoie `null` quand la sauvegarde est
+  /// illisible, pour que l'appelant ne confonde pas « cahier vide » et
+  /// « cahier corrompu » avant d'écrire par-dessus.
+  static List<CultureEntry>? decodeAllOrNull(String? raw) {
     if (raw == null || raw.isEmpty) return <CultureEntry>[];
     try {
       final list = jsonDecode(raw) as List<dynamic>;
@@ -147,7 +153,7 @@ class CultureEntry {
           .map<CultureEntry>(CultureEntry.fromJson)
           .toList();
     } catch (_) {
-      return <CultureEntry>[];
+      return null;
     }
   }
 }

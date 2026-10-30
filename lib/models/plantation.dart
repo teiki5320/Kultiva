@@ -151,7 +151,19 @@ class Plantation {
   static String encodeAll(List<Plantation> list) =>
       jsonEncode(list.map((p) => p.toJson()).toList());
 
-  static List<Plantation> decodeAll(String? raw) {
+  /// Décode la collection, ou renvoie une liste vide si la sauvegarde
+  /// est illisible.
+  ///
+  /// ⚠️ Une liste vide est donc ambiguë : « aucun plant » ou
+  /// « sauvegarde corrompue ». Pour tout code qui **écrit** ensuite,
+  /// utiliser [decodeAllOrNull] : repartir d'une liste vide puis
+  /// persister effacerait la collection de l'utilisateur.
+  static List<Plantation> decodeAll(String? raw) =>
+      decodeAllOrNull(raw) ?? <Plantation>[];
+
+  /// Comme [decodeAll], mais distingue « vide » de « illisible » :
+  /// renvoie `null` quand le contenu n'a pas pu être décodé.
+  static List<Plantation>? decodeAllOrNull(String? raw) {
     if (raw == null || raw.isEmpty) return <Plantation>[];
     try {
       final list = jsonDecode(raw) as List<dynamic>;
@@ -159,7 +171,7 @@ class Plantation {
           .map((e) => Plantation.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (_) {
-      return <Plantation>[];
+      return null;
     }
   }
 }

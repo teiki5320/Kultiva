@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../models/culture_entry.dart';
+import 'error_reporter.dart';
 import 'plantation_service.dart';
 import 'prefs_service.dart';
 
@@ -45,6 +46,26 @@ class CultureService {
     final list = loadAll().where((c) => !c.isActive).toList();
     list.sort((a, b) =>
         (b.endedAt ?? b.startedAt).compareTo(a.endedAt ?? a.startedAt));
+    return list;
+  }
+
+  /// Liste du cahier destinée à être **modifiée puis réécrite**, ou
+  /// `null` si la sauvegarde est illisible.
+  ///
+  /// Les mutations partaient de `loadAll()`, qui renvoie une liste vide
+  /// aussi bien pour un cahier vide que pour un cahier corrompu : la
+  /// première modification réécrivait alors une liste d'un seul
+  /// élément, effaçant tout le reste.
+  List<CultureEntry>? _loadForWrite() {
+    final list =
+        CultureEntry.decodeAllOrNull(PrefsService.instance.culturesJson);
+    if (list == null) {
+      ErrorReporter.report(
+        'cultures_decode',
+        StateError('culturesJson illisible'),
+        StackTrace.current,
+      );
+    }
     return list;
   }
 
@@ -109,13 +130,15 @@ class CultureService {
       note: note,
       linkedPlantationId: pid,
     );
-    final list = loadAll()..add(entry);
-    await _persist(list);
+    final list = _loadForWrite();
+    if (list == null) return entry;
+    await _persist(list..add(entry));
     return entry;
   }
 
   Future<void> update(CultureEntry updated) async {
-    final list = loadAll();
+    final list = _loadForWrite();
+    if (list == null) return;
     final i = list.indexWhere((c) => c.id == updated.id);
     if (i == -1) return;
     list[i] = updated;
@@ -125,7 +148,8 @@ class CultureService {
   /// Clôt la culture, et le plant avec elle.
   Future<void> endCulture(String id, {DateTime? at}) async {
     final when = at ?? DateTime.now();
-    final list = loadAll();
+    final list = _loadForWrite();
+    if (list == null) return;
     final i = list.indexWhere((c) => c.id == id);
     if (i == -1) return;
     list[i] = list[i].copyWith(endedAt: when);
@@ -137,7 +161,8 @@ class CultureService {
   }
 
   Future<void> reopen(String id) async {
-    final list = loadAll();
+    final list = _loadForWrite();
+    if (list == null) return;
     final i = list.indexWhere((c) => c.id == id);
     if (i == -1) return;
     list[i] = list[i].copyWith(clearEndedAt: true);
@@ -156,8 +181,9 @@ class CultureService {
   /// pendant des semaines.
   Future<void> remove(String id) async {
     final culture = byId(id);
-    final list = loadAll()..removeWhere((c) => c.id == id);
-    await _persist(list);
+    final list = _loadForWrite();
+    if (list == null) return;
+    await _persist(list..removeWhere((c) => c.id == id));
     final pid = culture?.linkedPlantationId;
     if (pid != null) {
       await PlantationService.instance.removeIfPristine(pid);
@@ -190,7 +216,8 @@ class CultureService {
   /// Idempotent : une culture déjà liée est laissée telle quelle. À
   /// appeler une fois au démarrage, après `PlantationService.load()`.
   Future<void> linkLegacyEntries() async {
-    final list = loadAll();
+    final list = _loadForWrite();
+    if (list == null) return;
     var changed = false;
     for (var i = 0; i < list.length; i++) {
       final c = list[i];
@@ -219,7 +246,8 @@ class CultureService {
   /// la migration n'aurait pas vue). Renvoie null si la culture est
   /// inconnue.
   Future<String?> _plantationIdFor(String cultureId) async {
-    final list = loadAll();
+    final list = _loadForWrite();
+    if (list == null) return null;
     final i = list.indexWhere((c) => c.id == cultureId);
     if (i == -1) return null;
     final existing = list[i].linkedPlantationId;

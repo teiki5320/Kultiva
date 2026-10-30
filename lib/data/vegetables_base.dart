@@ -4054,3 +4054,26 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     imageAsset: 'assets/images/accessories/acc_panier_recolte.png',
   ),
 ];
+
+/// Repli affiché quand un identifiant de légume n'existe plus au
+/// catalogue (entrée renommée, sauvegarde plus ancienne que l'app).
+///
+/// Quatre écrans du potager carré faisaient
+/// `orElse: () => vegetablesBase.first` : ils affichaient donc **une
+/// tomate** à la place du légume introuvable, ce qui est plus trompeur
+/// que de l'avouer.
+const Vegetable unknownVegetable = Vegetable(
+  id: '_inconnu',
+  name: 'Légume inconnu',
+  emoji: '❓',
+  category: VegetableCategory.leaves,
+  note: "Ce légume n'est plus au catalogue.",
+);
+
+/// Cherche un légume par son identifiant, ou [unknownVegetable].
+Vegetable vegetableById(String id) {
+  for (final v in vegetablesBase) {
+    if (v.id == id) return v;
+  }
+  return unknownVegetable;
+}

@@ -112,10 +112,7 @@ class PlannerGridCell extends StatelessWidget {
   }
 
   Widget _buildContent(PlannedCell cell) {
-    final veg = vegetablesBase.firstWhere(
-      (v) => v.id == cell.vegetableId,
-      orElse: () => vegetablesBase.first,
-    );
+    final veg = vegetableById(cell.vegetableId);
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
@@ -271,10 +268,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final veg = vegetablesBase.firstWhere(
-      (v) => v.id == widget.cell.vegetableId,
-      orElse: () => vegetablesBase.first,
-    );
+    final veg = vegetableById(widget.cell.vegetableId);
     final maxDensity = veg.densityPerSqFt ?? 1;
     // Charge la culture liée si la cellule en a une (créée auto au
     // placement depuis la refonte cohérence avril 2026).
@@ -656,10 +650,7 @@ class PlannerCompanionInfo extends StatelessWidget {
   const PlannerCompanionInfo({super.key, required this.vegetableId});
 
   String _label(String id) {
-    final v = vegetablesBase.firstWhere(
-      (e) => e.id == id,
-      orElse: () => vegetablesBase.first,
-    );
+    final v = vegetableById(id);
     return '${v.emoji} ${v.name}';
   }
 
