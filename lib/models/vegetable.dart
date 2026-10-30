@@ -145,9 +145,6 @@ class Vegetable {
   // --- Rendement ---
   final String? yieldEstimate;
 
-  // --- Liens ---
-  final String? amazonUrl;
-
   // --- Accessoires : sous-catégorie (uniquement si category == accessories) ---
   final AccessorySubCategory? accessorySub;
 
@@ -185,7 +182,6 @@ class Vegetable {
     this.soil,
     this.wateringDaysMax,
     this.yieldEstimate,
-    this.amazonUrl,
     this.accessorySub,
     this.imageAsset,
     this.harvestTimeBySeason,

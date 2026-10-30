@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../services/audio_service.dart';
 import '../data/regions/regional_calendar.dart';
@@ -19,6 +18,7 @@ import '../services/pdf_service.dart';
 import '../services/plantation_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/readable_width.dart';
 import '../utils/months.dart';
 import '../widgets/lexicon_text.dart';
 import '../widgets/medal_badge.dart';
@@ -105,19 +105,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     return null;
   }
 
-  Future<void> _openUrl(BuildContext context, String url) async {
-    final uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Impossible d'ouvrir le lien."),
-          ),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Region>(
@@ -193,141 +180,107 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
 
   Widget _buildPage(Vegetable vegetable, Region region) {
     final data = _findRegionData(_dataFor(region), vegetable.id);
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      children: <Widget>[
-        _HeaderCard(vegetable: vegetable),
-        if (region == Region.westAfrica &&
-            localNames[vegetable.id] != null) ...<Widget>[
-          const SizedBox(height: 12),
-          _LocalNamesCard(names: localNames[vegetable.id]!),
-        ],
-        const SizedBox(height: 16),
-        if (data != null && data.sowingMonths.isNotEmpty)
-          _MonthsCard(
-            title: 'Semis — ${region.label}',
-            months: data.sowingMonths,
-            color: KultivaColors.primaryGreen,
-            shortMonths: monthNamesShortCap,
-          ),
-        if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
-          const SizedBox(height: 12),
-          _MonthsCard(
-            title: 'Récolte — ${region.label}',
-            months: data.harvestMonths,
-            color: KultivaColors.terracotta,
-            shortMonths: monthNamesShortCap,
-          ),
-        ],
-        if (data != null && data.regionalNote != null) ...<Widget>[
-          const SizedBox(height: 12),
-          _RegionalNoteCard(
-            region: region,
-            note: data.regionalNote!,
-          ),
-        ],
-        const SizedBox(height: 16),
-        _InfoSection(
-          title: '🌱  Semis',
-          rows: <_Row>[
-            _Row('Technique', vegetable.sowingTechnique),
-            _Row('Profondeur', vegetable.sowingDepth),
-            _Row('Température', vegetable.germinationTemp),
-            _Row('Levée', vegetable.germinationDays),
+    return ReadableWidth(
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        children: <Widget>[
+          _HeaderCard(vegetable: vegetable),
+          if (region == Region.westAfrica &&
+              localNames[vegetable.id] != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _LocalNamesCard(names: localNames[vegetable.id]!),
           ],
-        ),
-        _InfoSection(
-          title: '🌿  Culture',
-          rows: <_Row>[
-            _Row('Exposition', vegetable.exposure),
-            _Row('Espacement', vegetable.spacing),
-            _Row('Arrosage', vegetable.watering),
-            _Row('Sol', vegetable.soil),
-          ],
-        ),
-        if (vegetable.harvestTimeBySeason != null &&
-            vegetable.harvestTimeBySeason!.isNotEmpty)
-          _HarvestTimeSection(times: vegetable.harvestTimeBySeason!),
-        _InfoSection(
-          title: '📦  Rendement',
-          rows: <_Row>[
-            _Row('Estimation', vegetable.yieldEstimate),
-          ],
-        ),
-        if (companionMap.containsKey(vegetable.id))
-          _CompanionSection(
-            title: '🤝  Bons voisins',
-            ids: companionMap[vegetable.id]!,
-            color: KultivaColors.primaryGreen,
-          ),
-        if (incompatibleMap.containsKey(vegetable.id))
-          _CompanionSection(
-            title: '⛔  À éviter à côté',
-            ids: incompatibleMap[vegetable.id]!,
-            color: KultivaColors.terracotta,
-          ),
-        if (diseaseMap.containsKey(vegetable.id))
-          _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
-        if (rotationMap.containsKey(vegetable.id))
-          _RotationSection(data: rotationMap[vegetable.id]!),
-        if (region == Region.westAfrica &&
-            marketBuyingTips[vegetable.id] != null &&
-            vegetable.category != VegetableCategory.accessories)
-          _BuyingTipsSection(tips: marketBuyingTips[vegetable.id]!),
-        if (region == Region.westAfrica && marketData[vegetable.id] != null)
-          _MarketSection(info: marketData[vegetable.id]!),
-        if (recipesByVegetable[vegetable.id] != null)
-          _RecipesSection(recipes: recipesByVegetable[vegetable.id]!),
-        if (_list.length > 1)
-          const Padding(
-            padding: EdgeInsets.only(top: 12),
-            child: Text(
-              '← Swipe pour naviguer →',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: KultivaColors.textSecondary,
-                fontSize: 12,
-              ),
+          const SizedBox(height: 16),
+          if (data != null && data.sowingMonths.isNotEmpty)
+            _MonthsCard(
+              title: 'Semis — ${region.label}',
+              months: data.sowingMonths,
+              color: KultivaColors.primaryGreen,
+              shortMonths: monthNamesShortCap,
             ),
+          if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 12),
+            _MonthsCard(
+              title: 'Récolte — ${region.label}',
+              months: data.harvestMonths,
+              color: KultivaColors.terracotta,
+              shortMonths: monthNamesShortCap,
+            ),
+          ],
+          if (data != null && data.regionalNote != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _RegionalNoteCard(
+              region: region,
+              note: data.regionalNote!,
+            ),
+          ],
+          const SizedBox(height: 16),
+          _InfoSection(
+            title: '🌱  Semis',
+            rows: <_Row>[
+              _Row('Technique', vegetable.sowingTechnique),
+              _Row('Profondeur', vegetable.sowingDepth),
+              _Row('Température', vegetable.germinationTemp),
+              _Row('Levée', vegetable.germinationDays),
+            ],
           ),
-        // Bouton Acheter en bas (sauf accessoires qui ont déjà le panier
-        // en haut). Amazon ne livrant pas en Afrique de l'Ouest, le lien
-        // partenaire n'est proposé qu'en France.
-        if (vegetable.amazonUrl != null &&
-            PrefsService.instance.region.value == Region.france &&
-            vegetable.category != VegetableCategory.accessories) ...[
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => _openUrl(context, vegetable.amazonUrl!),
-              icon: const Text('🛒', style: TextStyle(fontSize: 24)),
-              label: const Text('Acheter',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: KultivaColors.terracotta,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+          _InfoSection(
+            title: '🌿  Culture',
+            rows: <_Row>[
+              _Row('Exposition', vegetable.exposure),
+              _Row('Espacement', vegetable.spacing),
+              _Row('Arrosage', vegetable.watering),
+              _Row('Sol', vegetable.soil),
+            ],
+          ),
+          if (vegetable.harvestTimeBySeason != null &&
+              vegetable.harvestTimeBySeason!.isNotEmpty)
+            _HarvestTimeSection(times: vegetable.harvestTimeBySeason!),
+          _InfoSection(
+            title: '📦  Rendement',
+            rows: <_Row>[
+              _Row('Estimation', vegetable.yieldEstimate),
+            ],
+          ),
+          if (companionMap.containsKey(vegetable.id))
+            _CompanionSection(
+              title: '🤝  Bons voisins',
+              ids: companionMap[vegetable.id]!,
+              color: KultivaColors.primaryGreen,
+            ),
+          if (incompatibleMap.containsKey(vegetable.id))
+            _CompanionSection(
+              title: '⛔  À éviter à côté',
+              ids: incompatibleMap[vegetable.id]!,
+              color: KultivaColors.terracotta,
+            ),
+          if (diseaseMap.containsKey(vegetable.id))
+            _DiseaseSection(diseases: diseaseMap[vegetable.id]!),
+          if (rotationMap.containsKey(vegetable.id))
+            _RotationSection(data: rotationMap[vegetable.id]!),
+          if (region == Region.westAfrica &&
+              marketBuyingTips[vegetable.id] != null &&
+              vegetable.category != VegetableCategory.accessories)
+            _BuyingTipsSection(tips: marketBuyingTips[vegetable.id]!),
+          if (region == Region.westAfrica && marketData[vegetable.id] != null)
+            _MarketSection(info: marketData[vegetable.id]!),
+          if (recipesByVegetable[vegetable.id] != null)
+            _RecipesSection(recipes: recipesByVegetable[vegetable.id]!),
+          if (_list.length > 1)
+            const Padding(
+              padding: EdgeInsets.only(top: 12),
+              child: Text(
+                '← Swipe pour naviguer →',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: KultivaColors.textSecondary,
+                  fontSize: 12,
                 ),
-                elevation: 3,
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Lien partenaire · Kultiva touche une petite commission si tu achètes.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 11,
-              color: Color(0xFF8a8c80),
-              fontStyle: FontStyle.italic,
-            ),
-          ),
+          const SizedBox(height: 24),
         ],
-        const SizedBox(height: 24),
-      ],
+      ),
     );
   }
 }
@@ -399,40 +352,15 @@ class _HeaderCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                MedalBadge(
-                  emoji: vegetable.emoji,
-                  imageAsset: vegetable.imageAsset,
-                  tier: tier,
-                  familyColor: KultivaColors.primaryGreen,
-                  size: 78,
-                  showCornerMedal: tier != MedalTier.none,
-                ),
-                if (vegetable.amazonUrl != null &&
-                    PrefsService.instance.region.value == Region.france)
-                  _MiniActionBlock(
-                    emoji: '🛒',
-                    label: 'Acheter',
-                    sublabel: 'Lien partenaire',
-                    gradientColors: [
-                      KultivaColors.terracotta.withValues(alpha: 0.28),
-                      KultivaColors.summerA.withValues(alpha: 0.4),
-                    ],
-                    foreground: KultivaColors.terracotta,
-                    tooltip: 'Lien partenaire Amazon — Kultiva touche '
-                        'une petite commission si tu achètes.',
-                    onTap: () {
-                      AudioService.instance.play(Sfx.cart);
-                      launchUrl(
-                        Uri.parse(vegetable.amazonUrl!),
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
-                  ),
-              ],
+            Center(
+              child: MedalBadge(
+                emoji: vegetable.emoji,
+                imageAsset: vegetable.imageAsset,
+                tier: tier,
+                familyColor: KultivaColors.primaryGreen,
+                size: 78,
+                showCornerMedal: tier != MedalTier.none,
+              ),
             ),
             if (vegetable.description != null) ...<Widget>[
               const SizedBox(height: 16),
@@ -914,84 +842,6 @@ class _RegionalNoteCard extends StatelessWidget {
   }
 }
 
-class _MiniActionBlock extends StatelessWidget {
-  final String emoji;
-  final String label;
-  final String sublabel;
-  final List<Color> gradientColors;
-  final Color foreground;
-  final String tooltip;
-  final VoidCallback onTap;
-
-  const _MiniActionBlock({
-    required this.emoji,
-    required this.label,
-    required this.sublabel,
-    required this.gradientColors,
-    required this.foreground,
-    required this.tooltip,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip,
-      child: Semantics(
-        label: '$label, $sublabel',
-        hint: tooltip,
-        button: true,
-        excludeSemantics: true,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 78,
-            height: 78,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: gradientColors),
-              borderRadius: BorderRadius.circular(22),
-              boxShadow: [
-                BoxShadow(
-                  color: foreground.withValues(alpha: 0.22),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(emoji, style: const TextStyle(fontSize: 28)),
-                const SizedBox(height: 2),
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 10.5,
-                    fontWeight: FontWeight.w800,
-                    color: foreground,
-                  ),
-                ),
-                Text(
-                  sublabel,
-                  style: TextStyle(
-                    fontSize: 7.5,
-                    fontWeight: FontWeight.w500,
-                    color: foreground.withValues(alpha: 0.7),
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Noms locaux de la culture (wolof, bambara, haoussa…), affichés en
-/// Afrique de l'Ouest pour que le jardinier reconnaisse son légume.
 class _LocalNamesCard extends StatelessWidget {
   final List<LocalName> names;
   const _LocalNamesCard({required this.names});
