@@ -40,7 +40,7 @@ void main() {
     test('chaque badge a son médaillon', () {
       final manquants = <String>[];
       for (final b in allBadges) {
-        final path = 'assets/images/badges/${b.id}.png';
+        final path = 'assets/images/badges/${b.id}.webp';
         if (!File(path).existsSync()) manquants.add(b.id);
       }
       expect(manquants, isEmpty, reason: 'Badges sans image : $manquants');

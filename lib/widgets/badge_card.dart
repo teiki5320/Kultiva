@@ -283,7 +283,7 @@ class _BadgeCardVisual extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               // Illustration centrale : image custom si dispo dans
-              // assets/images/badges/<id>.png, sinon gros emoji + sparkles.
+              // assets/images/badges/<id>.webp, sinon gros emoji + sparkles.
               // Superposée d'un effet holographique qui réagit à la
               // rotation de la carte (sur les badges débloqués uniquement).
               Expanded(
@@ -307,7 +307,7 @@ class _BadgeCardVisual extends StatelessWidget {
                         Opacity(
                           opacity: unlocked ? 1.0 : 0.35,
                           child: Image.asset(
-                            'assets/images/badges/${badge.id}.png',
+                            'assets/images/badges/${badge.id}.webp',
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) => _EmojiFallback(
                               emoji: badge.emoji,
@@ -385,7 +385,7 @@ class _BadgeCardVisual extends StatelessWidget {
   }
 }
 
-/// Fallback quand l'image `assets/images/badges/<id>.png` n'existe pas
+/// Fallback quand l'image `assets/images/badges/<id>.webp` n'existe pas
 /// encore : gros emoji centré + sparkles décoratifs.
 class _EmojiFallback extends StatelessWidget {
   final String emoji;
