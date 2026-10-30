@@ -7,6 +7,7 @@ import 'package:kultiva/models/vegetable_medal.dart';
 import 'package:kultiva/screens/home/poussidex/poussidex_badges.dart';
 import 'package:kultiva/screens/home/poussidex/poussidex_card.dart';
 import 'package:kultiva/theme/app_theme.dart';
+import 'package:kultiva/utils/text_scale.dart';
 import 'package:kultiva/widgets/vegetable_card.dart';
 
 /// Premiers tests d'interface du projet.
@@ -108,6 +109,43 @@ void main() {
       )));
       expect(tester.takeException(), isNull);
       expect(find.text(tomate.name), findsOneWidget);
+    });
+  });
+
+  group('Taille de texte agrandie', () {
+    // Beaucoup de boîtes de l'app ont une hauteur fixe. Quand
+    // l'utilisateur agrandit la police dans les réglages de son
+    // téléphone — ce que fait toute personne qui voit mal — le contenu
+    // déborde et Flutter affiche la bande jaune et noire.
+    Widget scaled(Widget child, double factor) => MediaQuery(
+          data: MediaQueryData(textScaler: TextScaler.linear(factor)),
+          child: _host(child),
+        );
+
+    testWidgets('scaledHeight suit le réglage du téléphone', (tester) async {
+      late double normal;
+      late double grand;
+      await tester.pumpWidget(scaled(
+        Builder(builder: (c) {
+          normal = scaledHeight(c, 48);
+          return const SizedBox.shrink();
+        }),
+        1.0,
+      ));
+      await tester.pumpWidget(scaled(
+        Builder(builder: (c) {
+          grand = scaledHeight(c, 48);
+          return const SizedBox.shrink();
+        }),
+        1.3,
+      ));
+      expect(normal, 48);
+      expect(grand, greaterThan(normal));
+    });
+
+    testWidgets('une carte de légume ne déborde pas à 1,3', (tester) async {
+      await tester.pumpWidget(scaled(VegetableCard(vegetable: tomate), 1.3));
+      expect(tester.takeException(), isNull);
     });
   });
 

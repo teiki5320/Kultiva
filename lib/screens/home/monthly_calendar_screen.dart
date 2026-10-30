@@ -7,6 +7,7 @@ import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../services/audio_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/text_scale.dart';
 import '../../utils/category_colors.dart';
 import '../../utils/months.dart';
 import '../../widgets/petal_animation.dart';
@@ -125,7 +126,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               const SizedBox(height: 8),
               // Month selector.
               SizedBox(
-                height: 72,
+                height: scaledHeight(context, 72),
                 child: PageView.builder(
                   controller: _monthController,
                   itemCount: 12,
@@ -181,7 +182,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               const SizedBox(height: 8),
               // Filter chips par catégorie (Toutes / Racines / Aromatiques / etc.)
               SizedBox(
-                height: 44,
+                height: scaledHeight(context, 44),
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 12),

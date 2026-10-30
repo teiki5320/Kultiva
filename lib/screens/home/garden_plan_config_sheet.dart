@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../models/garden_plan.dart';
 import '../../services/garden_plan_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/text_scale.dart';
 
 /// Bottom sheet de configuration d'un jardin (création ou édition).
 ///
@@ -400,7 +401,7 @@ class _SizePicker extends StatelessWidget {
         const SizedBox(height: 4),
         Container(
           width: 100,
-          height: 110,
+          height: scaledHeight(context, 110),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),

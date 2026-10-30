@@ -8,6 +8,7 @@ import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/text_scale.dart';
 import '../../utils/category_colors.dart';
 import '../../utils/text_normalize.dart';
 import '../../widgets/medal_badge.dart';
@@ -287,7 +288,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                   ),
                   // Chips fixes (Favoris / Toutes / Accessoires).
                   SizedBox(
-                    height: 48,
+                    height: scaledHeight(context, 48),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Row(
@@ -346,7 +347,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                   //  - familles si Favoris ou Toutes
                   //  - sous-catégories accessoires si Accessoires
                   SizedBox(
-                    height: 44,
+                    height: scaledHeight(context, 44),
                     child: _selectedCategory == VegetableCategory.accessories
                         ? ListView(
                             scrollDirection: Axis.horizontal,
