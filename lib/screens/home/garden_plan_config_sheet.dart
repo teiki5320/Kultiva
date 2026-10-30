@@ -75,6 +75,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.close, size: 22),
+                  tooltip: 'Fermer',
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],

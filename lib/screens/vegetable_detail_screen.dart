@@ -143,6 +143,9 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
                       isFav ? Icons.favorite : Icons.favorite_border,
                       color: KultivaColors.terracotta,
                     ),
+                    tooltip: isFav
+                        ? 'Retirer ${_currentVegetable.name} des favoris'
+                        : 'Ajouter ${_currentVegetable.name} aux favoris',
                     onPressed: () => PrefsService.instance
                         .toggleFavorite(_currentVegetable.id),
                   );

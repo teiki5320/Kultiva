@@ -399,138 +399,143 @@ class _TutoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (item.htmlAsset != null) {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => TutoFicheScreen(
-                titre: item.label,
-                assetPath: item.htmlAsset!,
+    return Semantics(
+      label: item.label,
+      hint: item.htmlAsset != null ? 'Ouvre la fiche' : null,
+      button: item.htmlAsset != null,
+      child: GestureDetector(
+        onTap: () {
+          if (item.htmlAsset != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => TutoFicheScreen(
+                  titre: item.label,
+                  assetPath: item.htmlAsset!,
+                ),
               ),
+            );
+          }
+        },
+        child: Container(
+          width: wide ? double.infinity : 90,
+          margin: wide
+              ? const EdgeInsets.symmetric(vertical: 4)
+              : const EdgeInsets.symmetric(horizontal: 4),
+          padding: wide
+              ? const EdgeInsets.symmetric(horizontal: 20, vertical: 18)
+              : EdgeInsets.zero,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                color.withValues(alpha: 0.12),
+                color.withValues(alpha: 0.25),
+              ],
             ),
-          );
-        }
-      },
-      child: Container(
-        width: wide ? double.infinity : 90,
-        margin: wide
-            ? const EdgeInsets.symmetric(vertical: 4)
-            : const EdgeInsets.symmetric(horizontal: 4),
-        padding: wide
-            ? const EdgeInsets.symmetric(horizontal: 20, vertical: 18)
-            : EdgeInsets.zero,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              color.withValues(alpha: 0.12),
-              color.withValues(alpha: 0.25),
+            borderRadius: BorderRadius.circular(wide ? 22 : 18),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.15),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
             ],
           ),
-          borderRadius: BorderRadius.circular(wide ? 22 : 18),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: 0.15),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: wide
-            ? Row(
-                children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.8),
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child:
-                        Text(item.emoji, style: const TextStyle(fontSize: 32)),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          item.label,
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w800,
-                            color: KultivaColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          'Le tour complet — dashboard, Étal, Poussidex',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: KultivaColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Icon(Icons.chevron_right, color: color, size: 28),
-                ],
-              )
-            : Stack(
-                clipBehavior: Clip.hardEdge,
-                children: [
-                  Positioned(
-                    top: -6,
-                    right: -6,
-                    child: Container(
-                      width: 22,
-                      height: 22,
+          child: wide
+              ? Row(
+                  children: [
+                    Container(
+                      width: 64,
+                      height: 64,
                       decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.8),
                         shape: BoxShape.circle,
-                        color: color.withValues(alpha: 0.1),
                       ),
+                      alignment: Alignment.center,
+                      child: Text(item.emoji,
+                          style: const TextStyle(fontSize: 32)),
                     ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(item.emoji,
-                              style: const TextStyle(fontSize: 20)),
-                        ),
-                        const SizedBox(height: 6),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Text(
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
                             item.label,
                             style: const TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w700,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
                               color: KultivaColors.textPrimary,
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Le tour complet — dashboard, Étal, Poussidex',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: KultivaColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                    Icon(Icons.chevron_right, color: color, size: 28),
+                  ],
+                )
+              : Stack(
+                  clipBehavior: Clip.hardEdge,
+                  children: [
+                    Positioned(
+                      top: -6,
+                      right: -6,
+                      child: Container(
+                        width: 22,
+                        height: 22,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: color.withValues(alpha: 0.1),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.7),
+                              shape: BoxShape.circle,
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(item.emoji,
+                                style: const TextStyle(fontSize: 20)),
+                          ),
+                          const SizedBox(height: 6),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              item.label,
+                              style: const TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w700,
+                                color: KultivaColors.textPrimary,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }

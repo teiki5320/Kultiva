@@ -286,6 +286,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.chevron_left),
+                          tooltip: 'Jour précédent',
                           onPressed: _currentIndex > 0
                               ? () => _pageCtrl.previousPage(
                                   duration: const Duration(milliseconds: 250),
@@ -313,6 +314,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.chevron_right),
+                          tooltip: 'Jour suivant',
                           onPressed: _currentIndex <
                                   _weather!.dailyDates.length - 1
                               ? () => _pageCtrl.nextPage(

@@ -216,25 +216,33 @@ class GardenFilterChip extends StatelessWidget {
         hideCount ? '' : (total != null ? ' $count/$total' : ' ($count)');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          decoration: BoxDecoration(
-            color: selected ? color.withValues(alpha: 0.2) : Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: color,
-              width: selected ? 2.5 : 2,
+      child: Semantics(
+        // Sans cette annotation, VoiceOver lisait « Mes plants 12 » sans
+        // dire que c'est un onglet ni lequel est ouvert : on ne pouvait
+        // pas savoir où on était dans le Poussidex.
+        label: '$label$suffix',
+        button: true,
+        selected: selected,
+        child: GestureDetector(
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: selected ? color.withValues(alpha: 0.2) : Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: color,
+                width: selected ? 2.5 : 2,
+              ),
             ),
-          ),
-          child: Text(
-            '$label$suffix',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
-              color: color,
+            child: Text(
+              '$label$suffix',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+                color: color,
+              ),
             ),
           ),
         ),

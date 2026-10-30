@@ -201,131 +201,139 @@ class _ChallengeTile extends StatelessWidget {
     final done = photoPath != null;
     final color = _tierColor;
 
-    return GestureDetector(
-      onTap: done ? onTap : onParticipate,
-      child: Container(
-        decoration: BoxDecoration(
-          color: done ? color.withValues(alpha: 0.12) : Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: done ? color : Colors.grey.shade300,
-            width: done ? 2.5 : 1.5,
+    return Semantics(
+      label: done
+          ? 'Défi ${challenge.name}, réussi'
+          : 'Défi ${challenge.name}, à faire',
+      hint: done ? 'Revoir ta photo' : 'Prendre la photo',
+      button: true,
+      child: GestureDetector(
+        onTap: done ? onTap : onParticipate,
+        child: Container(
+          decoration: BoxDecoration(
+            color: done ? color.withValues(alpha: 0.12) : Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: done ? color : Colors.grey.shade300,
+              width: done ? 2.5 : 1.5,
+            ),
+            boxShadow: done
+                ? <BoxShadow>[
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ]
+                : const <BoxShadow>[],
           ),
-          boxShadow: done
-              ? <BoxShadow>[
-                  BoxShadow(
-                    color: color.withValues(alpha: 0.25),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
+          child: Column(
+            children: <Widget>[
+              // Zone photo / emoji.
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
-                ]
-              : const <BoxShadow>[],
-        ),
-        child: Column(
-          children: <Widget>[
-            // Zone photo / emoji.
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-                child: done
-                    ? Stack(
-                        fit: StackFit.expand,
-                        children: <Widget>[
-                          PlantationPhoto(
-                            pathOrUrl: photoPath!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Center(
-                              child: Text(
-                                challenge.emoji,
-                                style: const TextStyle(fontSize: 40),
-                              ),
-                            ),
-                          ),
-                          // Pastille "fait" ✓.
-                          Positioned(
-                            top: 6,
-                            right: 6,
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: color,
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.2),
-                                    blurRadius: 4,
-                                  ),
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.check,
-                                size: 14,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                  child: done
+                      ? Stack(
+                          fit: StackFit.expand,
                           children: <Widget>[
-                            Text(
-                              challenge.emoji,
-                              style: const TextStyle(fontSize: 40),
-                            ),
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: color.withValues(alpha: 0.15),
-                                borderRadius: BorderRadius.circular(8),
+                            PlantationPhoto(
+                              pathOrUrl: photoPath!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Center(
+                                child: Text(
+                                  challenge.emoji,
+                                  style: const TextStyle(fontSize: 40),
+                                ),
                               ),
-                              child: Text(
-                                '📷 Participer',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w800,
+                            ),
+                            // Pastille "fait" ✓.
+                            Positioned(
+                              top: 6,
+                              right: 6,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
                                   color: color,
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      color:
+                                          Colors.black.withValues(alpha: 0.2),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.check,
+                                  size: 14,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
                           ],
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                challenge.emoji,
+                                style: const TextStyle(fontSize: 40),
+                              ),
+                              const SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: color.withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  '📷 Participer',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: color,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                ),
+              ),
+              // Nom + tier.
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      challenge.name,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 12,
+                        color: done ? null : Colors.grey.shade600,
                       ),
-              ),
-            ),
-            // Nom + tier.
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    challenge.name,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 12,
-                      color: done ? null : Colors.grey.shade600,
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    challenge.tier.emoji,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      challenge.tier.emoji,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

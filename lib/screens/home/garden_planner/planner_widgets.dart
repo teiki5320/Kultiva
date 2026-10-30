@@ -1258,6 +1258,7 @@ class PlannerTipsSheet extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.close),
+                  tooltip: 'Fermer',
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],

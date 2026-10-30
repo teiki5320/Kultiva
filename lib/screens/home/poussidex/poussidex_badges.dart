@@ -60,106 +60,115 @@ class _BadgeTile extends StatelessWidget {
     final c = unlocked
         ? base
         : (Color.lerp(base, Colors.grey.shade400, 0.55) ?? base);
-    return GestureDetector(
-      onTap: unlocked
-          ? () => showBadgeCard(
-                context,
-                badge: badge,
-                unlocked: unlocked,
-              )
-          : null,
-      child: Container(
-        decoration: BoxDecoration(
-          color: c.withValues(alpha: unlocked ? 0.12 : 0.06),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: c,
-            width: unlocked ? 2.5 : 1.5,
+    return Semantics(
+      // L'état du badge est porté par la couleur seule : grisé = verrouillé.
+      // Un lecteur d'écran ne voit pas une couleur, il faut le dire.
+      label: unlocked
+          ? 'Badge ${badge.name}, débloqué'
+          : 'Badge ${badge.name}, verrouillé',
+      hint: unlocked ? 'Ouvre la carte du badge' : null,
+      button: unlocked,
+      child: GestureDetector(
+        onTap: unlocked
+            ? () => showBadgeCard(
+                  context,
+                  badge: badge,
+                  unlocked: unlocked,
+                )
+            : null,
+        child: Container(
+          decoration: BoxDecoration(
+            color: c.withValues(alpha: unlocked ? 0.12 : 0.06),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: c,
+              width: unlocked ? 2.5 : 1.5,
+            ),
+            boxShadow: unlocked
+                ? <BoxShadow>[
+                    BoxShadow(
+                      color: base.withValues(alpha: 0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : const <BoxShadow>[],
           ),
-          boxShadow: unlocked
-              ? <BoxShadow>[
-                  BoxShadow(
-                    color: base.withValues(alpha: 0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+          padding: const EdgeInsets.all(12),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  const SizedBox(height: 4),
+                  Opacity(
+                    opacity: unlocked ? 1.0 : 0.3,
+                    child: Text(
+                      badge.emoji,
+                      style: const TextStyle(fontSize: 44),
+                    ),
                   ),
-                ]
-              : const <BoxShadow>[],
-        ),
-        padding: const EdgeInsets.all(12),
-        child: Stack(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                const SizedBox(height: 4),
-                Opacity(
-                  opacity: unlocked ? 1.0 : 0.3,
-                  child: Text(
-                    badge.emoji,
-                    style: const TextStyle(fontSize: 44),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  badge.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 13,
-                    color: unlocked ? null : Colors.grey.shade500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Expanded(
-                  child: Text(
-                    badge.description,
+                  const SizedBox(height: 6),
+                  Text(
+                    badge.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 10,
-                      height: 1.3,
-                      color: unlocked
-                          ? KultivaColors.textSecondary
-                          : Colors.grey.shade400,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 13,
+                      color: unlocked ? null : Colors.grey.shade500,
                     ),
-                    maxLines: 4,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                if (!unlocked)
-                  Icon(Icons.lock_outline,
-                      size: 14, color: Colors.grey.shade400),
-              ],
-            ),
-            // Pastille médaille dans le coin haut-droit (badges
-            // débloqués seulement, pour signaler visuellement la rareté).
-            if (unlocked)
-              Positioned(
-                top: -4,
-                right: -4,
-                child: Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    border: Border.all(color: c, width: 1.5),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: c.withValues(alpha: 0.3),
-                        blurRadius: 4,
+                  const SizedBox(height: 4),
+                  Expanded(
+                    child: Text(
+                      badge.description,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10,
+                        height: 1.3,
+                        color: unlocked
+                            ? KultivaColors.textSecondary
+                            : Colors.grey.shade400,
                       ),
-                    ],
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    badge.tier.emoji,
-                    style: const TextStyle(fontSize: 11),
+                  if (!unlocked)
+                    Icon(Icons.lock_outline,
+                        size: 14, color: Colors.grey.shade400),
+                ],
+              ),
+              // Pastille médaille dans le coin haut-droit (badges
+              // débloqués seulement, pour signaler visuellement la rareté).
+              if (unlocked)
+                Positioned(
+                  top: -4,
+                  right: -4,
+                  child: Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all(color: c, width: 1.5),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: c.withValues(alpha: 0.3),
+                          blurRadius: 4,
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      badge.tier.emoji,
+                      style: const TextStyle(fontSize: 11),
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

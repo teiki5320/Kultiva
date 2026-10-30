@@ -153,8 +153,7 @@ class _PoussidexCollectionViewState extends State<PoussidexCollectionView> {
                 AudioService.instance.play(Sfx.celebrate);
                 PlantationService.instance.harvest(fresh.id);
               },
-              onTerminate: () =>
-                  PlantationService.instance.terminate(fresh.id),
+              onTerminate: () => PlantationService.instance.terminate(fresh.id),
               onRemove: () {
                 Navigator.of(sheetCtx).pop();
                 _confirmRemove(fresh, v);
@@ -216,15 +215,20 @@ class _PoussidexCollectionViewState extends State<PoussidexCollectionView> {
         final p = widget.plantations[i];
         final v = _vegetableFor(p);
         if (v == null) return const SizedBox.shrink();
-        return GestureDetector(
-          onTap: () {
-            AudioService.instance.play(Sfx.tap);
-            _openDetail(p, v);
-          },
-          child: PlantationCard(
-            plantation: p,
-            vegetable: v,
-            tier: widget.medals[p.vegetableId] ?? MedalTier.none,
+        return Semantics(
+          label: 'Plant de ${v.name}',
+          hint: 'Ouvre sa fiche',
+          button: true,
+          child: GestureDetector(
+            onTap: () {
+              AudioService.instance.play(Sfx.tap);
+              _openDetail(p, v);
+            },
+            child: PlantationCard(
+              plantation: p,
+              vegetable: v,
+              tier: widget.medals[p.vegetableId] ?? MedalTier.none,
+            ),
           ),
         );
       },
