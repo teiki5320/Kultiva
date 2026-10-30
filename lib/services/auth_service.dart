@@ -83,6 +83,10 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
     } on sb.AuthException catch (e) {
       throw AuthException(_friendlyError(e));
+    } on AuthException {
+      rethrow;
+    } catch (e) {
+      throw AuthException('Inscription échouée : $e');
     }
   }
 
@@ -106,6 +110,14 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
     } on sb.AuthException catch (e) {
       throw AuthException(_friendlyError(e));
+    } on AuthException {
+      rethrow;
+    } catch (e) {
+      // Filet de sécurité, comme pour Google et Apple : sans lui, une
+      // exception d'un autre type remonterait brute jusqu'à l'écran,
+      // qui ne rattrape que les AuthException — l'utilisateur verrait
+      // le bouton s'arrêter de tourner sans un mot d'explication.
+      throw AuthException('Connexion échouée : $e');
     }
   }
 
@@ -306,8 +318,19 @@ class AuthService extends ChangeNotifier {
     if (msg.contains('email not confirmed')) {
       return 'Email non confirmé — vérifie ta boîte mail.';
     }
-    if (msg.contains('network')) {
-      return 'Pas de connexion internet.';
+    // Panne réseau. `gotrue` emballe les erreurs HTTP dans un
+    // AuthRetryableFetchException dont le message est le texte brut de
+    // l'exception — par exemple « ClientException with SocketException:
+    // Failed host lookup: '<projet>.supabase.co' ». Sans ce filtre, ce
+    // texte s'affichait tel quel : en anglais, technique, et révélant
+    // l'adresse du backend.
+    if (e is sb.AuthRetryableFetchException ||
+        msg.contains('network') ||
+        msg.contains('socketexception') ||
+        msg.contains('clientexception') ||
+        msg.contains('failed host lookup') ||
+        msg.contains('timeout')) {
+      return 'Serveur injoignable — vérifie ta connexion et réessaie.';
     }
     return e.message;
   }

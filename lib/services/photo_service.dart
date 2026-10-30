@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../models/photo_pick_result.dart';
 import '../models/plantation.dart';
+import 'error_reporter.dart';
 import 'prefs_service.dart';
 
 /// Service pour capturer ou importer une photo et la sauvegarder
@@ -101,6 +102,13 @@ class PhotoService {
       final photosDir = Directory('${docsDir.path}/plant_photos');
       if (!await photosDir.exists()) return;
       final keep = _referencedLocalPaths();
+      // Garde-fou : `null` signifie que l'inventaire des photos encore
+      // référencées n'a pas pu être reconstitué entièrement. On ne
+      // supprime alors RIEN. Sans ce test, des préférences corrompues
+      // donnaient un inventaire vide — et la purge effaçait toutes les
+      // photos du jardin, irrécupérables pour un utilisateur sans
+      // compte.
+      if (keep == null) return;
       await for (final entity in photosDir.list()) {
         if (entity is File && !keep.contains(entity.path)) {
           try {
@@ -108,15 +116,36 @@ class PhotoService {
           } catch (_) {}
         }
       }
-    } catch (_) {}
+    } catch (e, s) {
+      await ErrorReporter.report('photo_purge', e, s);
+    }
   }
 
   /// Chemins locaux encore référencés (plantations + défis complétés).
-  static Set<String> _referencedLocalPaths() {
+  ///
+  /// Renvoie `null` si l'inventaire est incomplet — c'est-à-dire si l'un
+  /// des deux magasins n'a pas pu être décodé. L'appelant doit alors
+  /// s'abstenir de supprimer quoi que ce soit.
+  ///
+  /// Le décodage est fait ici et volontairement **strict**, au lieu de
+  /// passer par `Plantation.decodeAll`, qui renvoie une liste vide en cas
+  /// d'échec : cette tolérance est la bonne pour l'affichage, mais ici
+  /// « rien à garder » et « je ne sais pas quoi garder » ne doivent
+  /// surtout pas se confondre.
+  static Set<String>? _referencedLocalPaths() {
     final keep = <String>{};
-    for (final p
-        in Plantation.decodeAll(PrefsService.instance.plantationsJson)) {
-      keep.addAll(p.photoPaths.where((s) => !s.startsWith('http')));
+    final plantationsRaw = PrefsService.instance.plantationsJson;
+    if (plantationsRaw != null && plantationsRaw.isNotEmpty) {
+      try {
+        final list = jsonDecode(plantationsRaw) as List<dynamic>;
+        for (final e in list) {
+          final p = Plantation.fromJson(e as Map<String, dynamic>);
+          keep.addAll(p.photoPaths.where((s) => !s.startsWith('http')));
+        }
+      } catch (e, s) {
+        ErrorReporter.report('photo_keepset_plantations', e, s);
+        return null;
+      }
     }
     final raw = PrefsService.instance.getString('kultiva.challenges.v1');
     if (raw != null && raw.isNotEmpty) {
@@ -127,7 +156,10 @@ class PhotoService {
             keep.add(v);
           }
         }
-      } catch (_) {}
+      } catch (e, s) {
+        ErrorReporter.report('photo_keepset_challenges', e, s);
+        return null;
+      }
     }
     return keep;
   }

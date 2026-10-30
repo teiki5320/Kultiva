@@ -20,6 +20,41 @@ import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Sentry est initialisé AVANT le bootstrap, pas après : tout ce que
+  // fait `_bootstrapAndRun` (Supabase, préférences, notifications,
+  // fuseau horaire) tourne ainsi dans la zone surveillée. Sinon un
+  // plantage au démarrage — la phase la plus fragile — ne remonterait
+  // jamais, et l'utilisateur ne verrait qu'un écran vide.
+  await SentryFlutter.init(
+    (options) {
+      // DSN Sentry du projet — public par design (voir docs/INFRA.md).
+      options.dsn =
+          'https://0ea500cdcb663dfbe9e22a7b4e309721@o4511455467864064.ingest.de.sentry.io/4511455478808656';
+      // Échantillonnage bas : limite le trafic réseau de télémétrie
+      // (forfaits data limités) tout en gardant les crash reports.
+      options.tracesSampleRate = 0.05;
+    },
+    appRunner: _bootstrapAndRun,
+  );
+}
+
+/// Exécute une étape de démarrage non critique : si elle échoue, on la
+/// signale à Sentry et l'app démarre quand même. Un plugin de
+/// notifications capricieux ou une purge de photos impossible ne doit
+/// pas empêcher d'ouvrir le calendrier.
+Future<void> _guard(String step, Future<void> Function() body) async {
+  try {
+    await body();
+  } catch (e, s) {
+    await Sentry.captureException(
+      e,
+      stackTrace: s,
+      withScope: (scope) => scope.setTag('bootstrap_step', step),
+    );
+  }
+}
+
+Future<void> _bootstrapAndRun() async {
   // Kultiva est verrouillée en portrait (aucune vue paysage). Complète
   // le verrouillage déclaré côté iOS (Info.plist) pour Android.
   await SystemChrome.setPreferredOrientations([
@@ -42,7 +77,7 @@ Future<void> main() async {
     CloudSyncService.instance.uploadPreferences();
   };
   await AuthService.instance.load();
-  await NotificationService.init();
+  await _guard('notifications_init', NotificationService.init);
   // Si l'utilisateur a déjà une session (il avait ouvert l'app avant),
   // on synchronise plants + badges + prefs avec le cloud en arrière-
   // plan. Pas de await : l'UI démarre tout de suite.
@@ -53,26 +88,25 @@ Future<void> main() async {
   PhotoService.purgeOrphans();
   // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
   if (PrefsService.instance.notifications.value) {
-    await NotificationService.scheduleMonthlyReminder();
+    await _guard(
+      'monthly_reminder',
+      NotificationService.scheduleMonthlyReminder,
+    );
   }
   // Re-programme le rappel quotidien Tamassi si activé.
   if (PrefsService.instance.tamassiDailyReminder.value) {
-    await NotificationService.scheduleDailyTamassiReminder();
+    await _guard(
+      'daily_reminder',
+      NotificationService.scheduleDailyTamassiReminder,
+    );
   }
   if (PrefsService.instance.musicEnabled.value) {
-    AudioService.instance.startMusic();
+    await _guard(
+      'start_music',
+      () async => AudioService.instance.startMusic(),
+    );
   }
-  await SentryFlutter.init(
-    (options) {
-      // DSN Sentry du projet — public par design (voir docs/INFRA.md).
-      options.dsn =
-          'https://0ea500cdcb663dfbe9e22a7b4e309721@o4511455467864064.ingest.de.sentry.io/4511455478808656';
-      // Échantillonnage bas : limite le trafic réseau de télémétrie
-      // (forfaits data limités) tout en gardant les crash reports.
-      options.tracesSampleRate = 0.05;
-    },
-    appRunner: () => runApp(const KultivaApp()),
-  );
+  runApp(const KultivaApp());
 }
 
 class KultivaApp extends StatelessWidget {

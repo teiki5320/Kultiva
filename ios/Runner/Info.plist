@@ -94,6 +94,12 @@
 		<string>Kultiva peut enregistrer une copie de tes photos de plants dans ta galerie.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>Kultiva utilise ta localisation pour afficher la météo de ton jardin (prévisions pluie + températures).</string>
+		<!-- Kultiva ne demande jamais la localisation en arrière-plan, mais
+		     geolocator embarque les APIs « Always » : Apple réclame donc la
+		     clé à chaque envoi (avertissement ITMS-90683). Même texte que
+		     ci-dessus, puisque l'usage réel est identique. -->
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Kultiva utilise ta localisation pour afficher la météo de ton jardin (prévisions pluie + températures).</string>
 		<!-- Kultiva n'utilise aucun chiffrement non exempté : évite la question
 	     « conformité export » à chaque upload TestFlight/App Store. -->
 		<key>ITSAppUsesNonExemptEncryption</key>

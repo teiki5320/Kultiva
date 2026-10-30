@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../config/app_info.dart';
 import '../../models/country.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
@@ -580,7 +581,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Center(
                     child: Text(
-                      'Kultiva v1.0',
+                      AppInfo.label,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: KultivaColors.textSecondary,
                           ),

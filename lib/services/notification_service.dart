@@ -10,6 +10,7 @@ import '../models/vegetable.dart';
 import '../utils/climate.dart';
 import '../utils/heatwave_tips.dart';
 import 'culture_service.dart';
+import 'error_reporter.dart';
 import 'prefs_service.dart';
 import 'watering_service.dart';
 import 'weather_service.dart';
@@ -264,7 +265,13 @@ class NotificationService {
       );
       await PrefsService.instance
           .setLastWateringNotificationCheck(DateTime.now());
-    } catch (_) {}
+    } catch (e, st) {
+      // Une alerte qui ne part pas est invisible pour
+      // l'utilisateur comme pour nous : sans remontée, la
+      // fonctionnalité peut être morte sur un parc entier
+      // d'appareils sans que personne ne le sache.
+      await ErrorReporter.report('notif_watering', e, st);
+    }
   }
 
   /// Vérifie si une canicule est prévue dans les 3 prochains jours
@@ -355,7 +362,13 @@ class NotificationService {
       );
       await PrefsService.instance
           .setLastHeatwaveNotificationCheck(DateTime.now());
-    } catch (_) {}
+    } catch (e, st) {
+      // Une alerte qui ne part pas est invisible pour
+      // l'utilisateur comme pour nous : sans remontée, la
+      // fonctionnalité peut être morte sur un parc entier
+      // d'appareils sans que personne ne le sache.
+      await ErrorReporter.report('notif_heatwave', e, st);
+    }
   }
 
   /// Alerte « premières pluies » — Afrique de l'Ouest uniquement.
@@ -415,6 +428,12 @@ class NotificationService {
       );
       await PrefsService.instance
           .setLastFirstRainsNotificationCheck(DateTime.now());
-    } catch (_) {}
+    } catch (e, st) {
+      // Une alerte qui ne part pas est invisible pour
+      // l'utilisateur comme pour nous : sans remontée, la
+      // fonctionnalité peut être morte sur un parc entier
+      // d'appareils sans que personne ne le sache.
+      await ErrorReporter.report('notif_first_rains', e, st);
+    }
   }
 }
