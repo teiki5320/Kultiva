@@ -59,6 +59,21 @@ flutter --version
 # Le projet iOS est intégré via CocoaPods : on désactive explicitement
 # le mode Swift Package Manager (activé par défaut sur les Flutter
 # récents) pour que les plugins passent bien par `pod install`.
+#
+# ⚠️ À rouvrir un jour. Des plugins commencent à abandonner CocoaPods :
+# `sentry_flutter` 10 ne fournit plus de podspec, seulement un
+# `Package.swift`. Avec SPM désactivé, un tel plugin disparaît
+# silencieusement du build iOS — le `Podfile.lock` n'en porte plus
+# trace et le crash reporting cesse d'être embarqué, sans qu'aucune
+# étape n'échoue. C'est pour cela que le projet est resté en
+# sentry_flutter 9 (voir `pubspec.yaml`).
+#
+# Basculer demande trois choses ensemble : passer cette ligne à
+# `--enable-swift-package-manager`, laisser `flutter build ios` migrer
+# `project.pbxproj` et le scheme, puis **vérifier un vrai build iOS**.
+# Essayé le 30/10/2026, annulé : la machine de développement n'a aucun
+# runtime iOS installé, donc rien n'était vérifiable, et migrer un
+# système de build à l'aveugle avant une soumission n'a pas de sens.
 flutter config --no-enable-swift-package-manager || true
 
 echo "📦 flutter precache --ios"
