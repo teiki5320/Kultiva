@@ -102,10 +102,17 @@ class PlannerGridCell extends StatelessWidget {
           ),
           child: Material(
             color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(14),
-              onTap: onTap,
-              child: c == null ? null : _buildContent(c),
+            child: Semantics(
+              label: c == null
+                  ? 'Case vide'
+                  : 'Case plantée : ${vegetableById(c.vegetableId).name}',
+              hint: c == null ? 'Poser un plant' : 'Ouvrir la fiche du plant',
+              button: true,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(14),
+                onTap: onTap,
+                child: c == null ? null : _buildContent(c),
+              ),
             ),
           ),
         );
@@ -336,49 +343,54 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
             const SizedBox(height: 12),
 
             // ─── Date de plantation (modifiable) ──────────────────
-            InkWell(
-              onTap: () => _pickDate(context),
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  color: KultivaColors.lightGreen.withValues(alpha: 0.25),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: KultivaColors.lightGreen.withValues(alpha: 0.6),
-                  ),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    const Text('🌱', style: TextStyle(fontSize: 16)),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            _formatPlantedAt(_plantedAt),
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Stade : ${phase.emoji} ${phase.label}',
-                            style: const TextStyle(
-                              fontSize: 11,
-                              color: KultivaColors.textSecondary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
+            Semantics(
+              label: 'Date de plantation',
+              hint: 'Choisir une autre date',
+              button: true,
+              child: InkWell(
+                onTap: () => _pickDate(context),
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: KultivaColors.lightGreen.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: KultivaColors.lightGreen.withValues(alpha: 0.6),
                     ),
-                    const Icon(Icons.edit_calendar_outlined, size: 18),
-                  ],
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      const Text('🌱', style: TextStyle(fontSize: 16)),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              _formatPlantedAt(_plantedAt),
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Stade : ${phase.emoji} ${phase.label}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: KultivaColors.textSecondary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.edit_calendar_outlined, size: 18),
+                    ],
+                  ),
                 ),
               ),
             ),

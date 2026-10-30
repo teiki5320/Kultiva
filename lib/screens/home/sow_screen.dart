@@ -14,6 +14,7 @@ import '../../services/prefs_service.dart';
 import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/text_scale.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
@@ -708,8 +709,8 @@ class _SlideVegOfDay extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: scaledHeight(context, 60),
+            height: scaledHeight(context, 60),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.75),
               shape: BoxShape.circle,
@@ -787,8 +788,8 @@ class _SlideWeather extends StatelessWidget {
           ? Row(
               children: [
                 Container(
-                  width: 60,
-                  height: 60,
+                  width: scaledHeight(context, 60),
+                  height: scaledHeight(context, 60),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.75),
                     shape: BoxShape.circle,
@@ -894,8 +895,8 @@ class _SlideTip extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 52,
-            height: 52,
+            width: scaledHeight(context, 52),
+            height: scaledHeight(context, 52),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.7),
               shape: BoxShape.circle,
@@ -982,8 +983,8 @@ class _SlideSeason extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: scaledHeight(context, 60),
+            height: scaledHeight(context, 60),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.7),
               shape: BoxShape.circle,

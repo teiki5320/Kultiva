@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import '../utils/text_scale.dart';
 
 /// Sheet de présentation à la première ouverture de « Mes jardins ».
 ///
@@ -203,8 +204,8 @@ class _SlideView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 140,
-            height: 140,
+            width: scaledHeight(context, 140),
+            height: scaledHeight(context, 140),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
