@@ -77,8 +77,14 @@ class PlantationService extends ChangeNotifier {
   // ───────────────────────────────────────────────────────────────────────
 
   /// Ajoute un plant à la collection. [plantedAt] permet de saisir une
-  /// mise en terre passée ; par défaut, maintenant.
-  Future<Plantation> add(String vegetableId, {DateTime? plantedAt}) async {
+  /// mise en terre passée ; par défaut, maintenant. [wateredAt] sert à
+  /// reprendre un historique existant (rattachement d'une culture du
+  /// cahier qui avait déjà ses arrosages).
+  Future<Plantation> add(
+    String vegetableId, {
+    DateTime? plantedAt,
+    List<DateTime>? wateredAt,
+  }) async {
     final now = DateTime.now();
     final plantation = Plantation(
       // Même forme d'identifiant que la migration : horodatage + aléa,
@@ -86,6 +92,7 @@ class PlantationService extends ChangeNotifier {
       id: '${now.millisecondsSinceEpoch}_${_rng.nextInt(99999)}',
       vegetableId: vegetableId,
       plantedAt: plantedAt ?? now,
+      wateredAt: wateredAt ?? const <DateTime>[],
     );
     _plantations = <Plantation>[plantation, ..._plantations];
     await _persist();
@@ -98,6 +105,23 @@ class PlantationService extends ChangeNotifier {
       _update(id, (p) => p.copyWith(
             wateredAt: <DateTime>[...p.wateredAt, at ?? DateTime.now()],
           ));
+
+  /// Arrose plusieurs plants d'un coup (bouton « Arroser tout » du
+  /// potager carré) en **une seule** écriture : arroser case par case
+  /// relançait une sérialisation complète de la collection par plant.
+  Future<void> waterMany(Iterable<String> ids, {DateTime? at}) async {
+    final targets = ids.toSet();
+    if (targets.isEmpty) return;
+    final when = at ?? DateTime.now();
+    var touched = false;
+    _plantations = _plantations.map((p) {
+      if (!targets.contains(p.id)) return p;
+      touched = true;
+      return p.copyWith(wateredAt: <DateTime>[...p.wateredAt, when]);
+    }).toList();
+    if (!touched) return;
+    await _persist();
+  }
 
   /// Incrémente le compteur de récoltes **sans** clore la culture : une
   /// tomate se récolte plusieurs fois.
@@ -139,6 +163,27 @@ class PlantationService extends ChangeNotifier {
     if (!path.startsWith('http')) {
       await PhotoService.deleteFile(path);
     }
+  }
+
+  /// Retire un plant **seulement s'il n'a aucune trace de vie** : ni
+  /// arrosage, ni récolte, ni photo, ni note.
+  ///
+  /// Sert au potager carré : déplacer ou remplacer une case qu'on vient
+  /// de poser ne doit pas laisser un plant fantôme dans la collection
+  /// (il gonflerait les médailles), mais une case qu'on a arrosée
+  /// pendant trois semaines reste un vrai souvenir, même si on
+  /// réorganise la grille. Renvoie `true` si le plant a été retiré.
+  Future<bool> removeIfPristine(String id) async {
+    final p = byId(id);
+    if (p == null) return false;
+    final pristine = p.wateredAt.isEmpty &&
+        p.harvestCount == 0 &&
+        p.photoPaths.isEmpty &&
+        (p.note == null || p.note!.trim().isEmpty) &&
+        p.harvestedAt == null;
+    if (!pristine) return false;
+    await remove(id);
+    return true;
   }
 
   /// Retire un plant de la collection, ses photos locales avec lui.

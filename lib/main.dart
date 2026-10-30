@@ -8,8 +8,11 @@ import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
 import 'screens/splash_screen.dart';
 import 'services/audio_service.dart';
+import 'services/culture_service.dart';
 import 'services/notification_service.dart';
 import 'services/photo_service.dart';
+import 'services/plantation_migration.dart';
+import 'services/plantation_service.dart';
 import 'services/prefs_service.dart';
 import 'theme/app_theme.dart';
 
@@ -60,6 +63,18 @@ Future<void> _bootstrapAndRun() async {
   // data limités, notamment en Afrique de l'Ouest).
   GoogleFonts.config.allowRuntimeFetching = false;
   await PrefsService.instance.load();
+  // La collection de plants est chargée ICI, par le démarrage, et non
+  // par l'écran « Mon jardin » comme avant : le service qui détient les
+  // plantations ne doit pas dépendre du passage de l'utilisateur sur un
+  // onglet. Si un « Je l'ai planté » partait avant ce chargement, le
+  // service écrirait sa liste vide par-dessus la collection.
+  await _guard('plantations_init', () async {
+    await migrateLegacyGridIfNeeded();
+    PlantationService.instance.load();
+    // Rattache les cultures du cahier antérieures au 30/10/2026 à un
+    // dossier de plant (un seul registre d'arrosage).
+    await CultureService.instance.linkLegacyEntries();
+  });
   await _guard('notifications_init', NotificationService.init);
   // Purge best-effort des photos locales orphelines (non bloquant).
   PhotoService.purgeOrphans();

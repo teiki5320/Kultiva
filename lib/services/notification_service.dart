@@ -5,12 +5,13 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../data/vegetables_base.dart';
+import '../models/plantation.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
 import '../utils/climate.dart';
 import '../utils/heatwave_tips.dart';
-import 'culture_service.dart';
 import 'error_reporter.dart';
+import 'plantation_service.dart';
 import 'prefs_service.dart';
 import 'watering_service.dart';
 import 'weather_service.dart';
@@ -217,9 +218,9 @@ class NotificationService {
   ///  - Throttle : max 1 notif d'arrosage toutes les 24h.
   ///  - Silencieux s'il n'y a aucun plant en cours ou aucun plant en
   ///    détresse.
-  static Future<void> checkAndNotify(List<String> gardenVegIds) async {
+  static Future<void> checkAndNotify(List<Plantation> gardenPlants) async {
     if (kIsWeb || !_initialized) return;
-    if (gardenVegIds.isEmpty) return;
+    if (gardenPlants.isEmpty) return;
     if (!PrefsService.instance.notifications.value) return;
 
     // Throttle : 24h minimum entre 2 notifs d'arrosage.
@@ -232,7 +233,7 @@ class NotificationService {
       final weather = await WeatherService.getWeather();
       if (weather == null) return;
 
-      final alerts = await WateringService.analyzeGarden(gardenVegIds);
+      final alerts = await WateringService.analyzeGarden(gardenPlants);
       final urgent =
           alerts.where((a) => a.needsWatering && !a.rainExpected).toList();
 
@@ -240,7 +241,12 @@ class NotificationService {
 
       final names = urgent.take(3).map((a) => a.vegetable.name).join(', ');
       final suffix = urgent.length > 3 ? ' et ${urgent.length - 3} autres' : '';
-      final body = '${weather.consecutiveDryDays} jours sans pluie. '
+      // On annonce les jours sans **eau** (pluie ou arrosage), pas les
+      // jours sans pluie : un plant arrosé hier n'a pas soif, et le dire
+      // autrement donnerait une notification que l'utilisateur sait
+      // fausse.
+      final days = urgent.first.daysSinceWater;
+      final body = '$days jours sans eau. '
           '$names$suffix ont besoin d\'eau !';
 
       const androidDetails = AndroidNotificationDetails(
@@ -314,9 +320,14 @@ class NotificationService {
       }
       if (maxStreak < 2) return;
 
-      // Conseil légume-spécifique : on prend les cultures actives,
-      // on garde la catégorie la plus représentée.
-      final actives = CultureService.instance.active();
+      // Conseil légume-spécifique : on prend les plants en cours, on
+      // garde la catégorie la plus représentée.
+      //
+      // Lisait les cultures du cahier alors que l'alerte d'arrosage
+      // lisait les plants : les deux moitiés du même système
+      // regardaient deux jardins différents. Elles lisent maintenant le
+      // même registre.
+      final actives = PlantationService.instance.active;
       String tip;
       if (actives.isEmpty) {
         tip = 'Arrose tôt le matin ou en soirée, paille tes plants '

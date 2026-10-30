@@ -1,12 +1,18 @@
-import '../models/culture_entry.dart';
 import '../models/region_data.dart';
 import '../models/watering_advice.dart';
 import '../models/weather_data.dart';
 import '../utils/climate.dart';
 
-/// Retourne une suggestion d'arrosage pour [culture] selon la météo
+/// Retourne une suggestion d'arrosage pour un plant dont le dernier
+/// arrosage est [lastWatering] (null = jamais arrosé), selon la météo
 /// fournie. [weather] peut être null (pas encore chargée) → renvoie
-/// null. La logique reste volontairement simple :
+/// null.
+///
+/// Prend une date plutôt qu'une `CultureEntry` : le même moteur sert au
+/// cahier de culture et aux plants du Poussidex, qui partagent
+/// désormais un seul registre d'arrosage.
+///
+/// La logique reste volontairement simple :
 ///
 /// - Si pluie >= 5 mm prévue dans les 48h → skip
 /// - Si dernière pluie >= 5 mm il y a < 2 jours → skip
@@ -15,7 +21,7 @@ import '../utils/climate.dart';
 ///   de l'Ouest) aujourd'hui → heatwave (arrose tôt le matin)
 /// - Sinon, conseil neutre selon le dernier arrosage
 WateringAdvice? suggestWatering(
-  CultureEntry culture,
+  DateTime? lastWatering,
   WeatherData? weather, {
   Region region = Region.france,
 }) {
@@ -36,9 +42,9 @@ WateringAdvice? suggestWatering(
     if (today - 1 >= 0) daily[today - 1],
   ].fold<double>(0, (a, b) => a + b);
 
-  final lastWater = culture.lastWatering;
-  final daysSinceWater =
-      lastWater == null ? 999 : DateTime.now().difference(lastWater).inDays;
+  final daysSinceWater = lastWatering == null
+      ? 999
+      : DateTime.now().difference(lastWatering).inDays;
 
   // 20 °C = valeur neutre, déjà utilisée quand la série est trop
   // courte. Un NaN (température non fournie par Open-Meteo) prend le

@@ -7,6 +7,7 @@ import '../data/regions/regional_calendar.dart';
 import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
 import '../models/region_data.dart';
+import 'culture_service.dart';
 import 'prefs_service.dart';
 import '../models/vegetable.dart';
 
@@ -181,10 +182,15 @@ class PdfService {
     final soilCultures =
         cultures.where((c) => c.startedAt.year == year).toList();
     final totalCultures = soilCultures.length;
-    final waterings = soilCultures.fold<int>(
-      0,
-      (sum, c) => sum + c.wateredAt.length,
-    );
+    // Les arrosages sont lus via le service : ils vivent dans le
+    // dossier du plant depuis le rattachement du 30/10/2026, et
+    // `c.wateredAt` ne porte plus que les anciennes sauvegardes.
+    final wateringCounts = <String, int>{
+      for (final c in soilCultures)
+        c.id: CultureService.instance.wateringsFor(c).length,
+    };
+    final waterings =
+        wateringCounts.values.fold<int>(0, (sum, n) => sum + n);
     final categories = <VegetableCategory, int>{};
     final byVeg = <String, int>{};
     var totalDuration = 0;
@@ -315,7 +321,7 @@ class PdfService {
                     '${_fmtShort(c.startedAt)} → '
                     '${c.endedAt == null ? "en cours" : _fmtShort(c.endedAt!)}'
                     '   ${_vegName(c.vegetableId)}'
-                    '   (${c.wateredAt.length} arrosages)',
+                    '   (${wateringCounts[c.id] ?? 0} arrosages)',
                     style: const pw.TextStyle(fontSize: 11),
                   ),
                 ),

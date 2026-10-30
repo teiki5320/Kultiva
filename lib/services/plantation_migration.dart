@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import '../models/plantation.dart';
+import 'prefs_service.dart';
 
 /// Convertit l'ancienne représentation grille 2D (cells + watered) en
 /// une liste de [Plantation]. Fonction pure, extraite pour pouvoir être
@@ -51,4 +52,30 @@ List<Plantation> migrateGridToPlantations(String? legacy, {int? seed}) {
   } catch (_) {
     return <Plantation>[];
   }
+}
+
+/// Applique une fois la migration de l'ancienne grille 2D vers la
+/// collection de plants, si elle n'a pas déjà eu lieu.
+///
+/// Vivait dans `my_garden_screen._maybeMigrate()` : de la logique
+/// métier dans un widget, qui ne tournait donc que si l'utilisateur
+/// atteignait cet écran. Elle appartient au démarrage.
+Future<void> migrateLegacyGridIfNeeded() async {
+  final prefs = PrefsService.instance;
+  if (prefs.gridMigrated) return;
+  final migrated = migrateGridToPlantations(prefs.gardenGrid);
+  if (migrated.isNotEmpty) {
+    // Fusionne avec les plantations déjà présentes au lieu de les
+    // écraser par les seules entrées de la grille legacy.
+    final existing = Plantation.decodeAll(prefs.plantationsJson);
+    final byId = <String, Plantation>{for (final p in existing) p.id: p};
+    for (final p in migrated) {
+      final prev = byId[p.id];
+      byId[p.id] = prev == null ? p : Plantation.merge(prev, p);
+    }
+    await prefs.setPlantationsJson(
+      Plantation.encodeAll(byId.values.toList()),
+    );
+  }
+  await prefs.setGridMigrated(true);
 }

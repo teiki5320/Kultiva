@@ -78,14 +78,13 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   void _runWateringCheck() {
     final plantations =
         Plantation.decodeAll(PrefsService.instance.plantationsJson);
-    final activeVegIds = plantations
-        .where((p) => p.isActive)
-        .map((p) => p.vegetableId)
-        .toSet()
-        .toList();
-    if (activeVegIds.isEmpty) return;
+    final actives = plantations.where((p) => p.isActive).toList();
+    if (actives.isEmpty) return;
+    // On passe les plants eux-mêmes, et pas seulement leurs espèces :
+    // l'alerte a besoin de leurs dates d'arrosage pour ne pas réclamer
+    // de l'eau pour un plant qu'on vient d'arroser.
     // On ne await pas — c'est du best-effort async.
-    NotificationService.checkAndNotify(activeVegIds);
+    NotificationService.checkAndNotify(actives);
     NotificationService.checkAndNotifyHeatwave();
     NotificationService.checkAndNotifyFirstRains();
   }

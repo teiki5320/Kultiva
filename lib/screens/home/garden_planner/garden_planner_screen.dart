@@ -458,6 +458,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
       isScrollControlled: true,
       builder: (_) => PlannerCellActionSheet(
         cell: cell,
+        weather: _weather,
         onCountChanged: (newCount) {
           // Toujours repartir de l'état COURANT (_plan) et de la cellule
           // fraîche : sinon un changement de date fait juste avant serait

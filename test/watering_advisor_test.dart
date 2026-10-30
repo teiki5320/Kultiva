@@ -1,19 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kultiva/models/culture_entry.dart';
 import 'package:kultiva/models/watering_advice.dart';
 import 'package:kultiva/models/weather_data.dart';
 import 'package:kultiva/services/watering_advisor.dart';
 
-/// Construit une entrée de culture avec les champs essentiels pour les tests.
-CultureEntry _culture({
-  List<DateTime>? wateredAt,
-}) {
-  return CultureEntry(
-    id: 'test-001',
-    vegetableId: 'tomate',
-    startedAt: DateTime(2025, 4, 1),
-    wateredAt: wateredAt ?? const <DateTime>[],
-  );
+/// Dernier arrosage d'une série, ou null si le plant n'a jamais été
+/// arrosé — c'est tout ce que le conseiller a besoin de savoir du plant.
+DateTime? _lastWater({List<DateTime>? wateredAt}) {
+  final list = wateredAt ?? const <DateTime>[];
+  return list.isEmpty ? null : list.last;
 }
 
 /// Construit un WeatherData de test avec 15 jours de données (index 7 = aujourd'hui).
@@ -52,7 +46,7 @@ WeatherData _weather({
 void main() {
   group('suggestWatering — météo nulle', () {
     test('retourne null quand weather est null', () {
-      final result = suggestWatering(_culture(), null);
+      final result = suggestWatering(_lastWater(), null);
       expect(result, isNull);
     });
   });
@@ -63,7 +57,7 @@ void main() {
       final weather = _weather(
         futurePrecip: [3.0, 3.0, 0, 0, 0, 0, 0],
       );
-      final result = suggestWatering(_culture(), weather);
+      final result = suggestWatering(_lastWater(), weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.skip));
     });
@@ -72,7 +66,7 @@ void main() {
       final weather = _weather(
         futurePrecip: [2.5, 2.5, 0, 0, 0, 0, 0],
       );
-      final result = suggestWatering(_culture(), weather);
+      final result = suggestWatering(_lastWater(), weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.skip));
     });
@@ -81,7 +75,7 @@ void main() {
       final weather = _weather(
         futurePrecip: [2.5, 2.4, 0, 0, 0, 0, 0],
       );
-      final result = suggestWatering(_culture(), weather);
+      final result = suggestWatering(_lastWater(), weather);
       expect(result, isNotNull);
       expect(result!.urgency, isNot(equals(WateringUrgency.skip)));
     });
@@ -94,10 +88,10 @@ void main() {
         pastPrecip: [0, 0, 0, 0, 0, 0, 3.0, 3.0],
       );
       // Arrosage récent pour ne pas déclencher overdue/dueSoon
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: [DateTime.now().subtract(const Duration(hours: 6))],
       );
-      final result = suggestWatering(culture, weather);
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.skip));
     });
@@ -109,10 +103,10 @@ void main() {
       tempMax[7] = 35.0; // Index 7 = aujourd'hui
       final weather = _weather(tempMax: tempMax);
       // Dernier arrosage hier (>= 1 jour)
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: [DateTime.now().subtract(const Duration(days: 2))],
       );
-      final result = suggestWatering(culture, weather);
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.heatwave));
     });
@@ -121,10 +115,10 @@ void main() {
       final tempMax = List<double>.filled(15, 20.0);
       tempMax[7] = 29.0;
       final weather = _weather(tempMax: tempMax);
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: [DateTime.now().subtract(const Duration(days: 2))],
       );
-      final result = suggestWatering(culture, weather);
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, isNot(equals(WateringUrgency.heatwave)));
     });
@@ -135,18 +129,18 @@ void main() {
       // Pas de pluie sur les 8 derniers jours (tout à 0 → consecutiveDryDays >= 3)
       final weather = _weather();
       // Dernier arrosage il y a 6 jours
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: [DateTime.now().subtract(const Duration(days: 6))],
       );
-      final result = suggestWatering(culture, weather);
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.overdue));
     });
 
     test('jamais arrosé + temps sec → overdue', () {
       final weather = _weather();
-      final culture = _culture(); // wateredAt vide → daysSinceWater = 999
-      final result = suggestWatering(culture, weather);
+      final lastWater = _lastWater(); // wateredAt vide → daysSinceWater = 999
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.overdue));
     });
@@ -156,10 +150,10 @@ void main() {
     test('>= 3 jours sans arrosage mais < 5 jours, temps sec → dueSoon', () {
       final weather = _weather();
       // Dernier arrosage il y a 3 jours
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: [DateTime.now().subtract(const Duration(days: 3))],
       );
-      final result = suggestWatering(culture, weather);
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.dueSoon));
     });
@@ -169,10 +163,10 @@ void main() {
     test('arrosage récent (< 3 jours) et temps calme → ok', () {
       final weather = _weather();
       // Dernier arrosage il y a quelques heures
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: [DateTime.now().subtract(const Duration(hours: 12))],
       );
-      final result = suggestWatering(culture, weather);
+      final result = suggestWatering(lastWater, weather);
       expect(result, isNotNull);
       expect(result!.urgency, equals(WateringUrgency.ok));
     });
@@ -204,21 +198,21 @@ void main() {
       // comparaisons avec NaN sont fausses, donc la chaleur serait
       // ignorée en silence — d'où le repli sur 20 °C, la même valeur
       // neutre que pour une série trop courte.
-      final culture = _culture(
+      final lastWater = _lastWater(
         wateredAt: <DateTime>[
           DateTime.now().subtract(const Duration(days: 5)),
         ],
       );
       final inconnu = suggestWatering(
-        culture,
+        lastWater,
         _weather(tempMax: List<double>.filled(15, double.nan)),
       );
       final neutre = suggestWatering(
-        culture,
+        lastWater,
         _weather(tempMax: List<double>.filled(15, 20)),
       );
       final chaud = suggestWatering(
-        culture,
+        lastWater,
         _weather(tempMax: List<double>.filled(15, 35)),
       );
 

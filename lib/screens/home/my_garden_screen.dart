@@ -9,7 +9,6 @@ import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
-import '../../services/plantation_migration.dart';
 import '../../services/plantation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/review_service.dart';
@@ -119,8 +118,9 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   Future<void> _bootstrap() async {
-    await _maybeMigrate();
-    PlantationService.instance.load();
+    // Le chargement de la collection et la migration de l'ancienne
+    // grille ont lieu au démarrage de l'app (`main.dart`) : cet écran
+    // se contente de lire le service.
     _plantations = PlantationService.instance.all;
     // UNION avec les badges déjà débloqués (restaurés du cloud ou gagnés
     // par des actions dont les stats sont purement locales) : on ne
@@ -161,26 +161,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
 
   /// Convertit l'ancienne grille 2D en plantations une seule fois,
   /// puis marque la migration comme faite pour ne plus la rejouer.
-  Future<void> _maybeMigrate() async {
-    if (PrefsService.instance.gridMigrated) return;
-    final legacy = PrefsService.instance.gardenGrid;
-    final migrated = migrateGridToPlantations(legacy);
-    if (migrated.isNotEmpty) {
-      // Fusionne avec les plantations déjà présentes (ex. restaurées du
-      // cloud par mergeOnLogin) au lieu de les écraser par les seules
-      // entrées de la grille legacy.
-      final existing =
-          Plantation.decodeAll(PrefsService.instance.plantationsJson);
-      final byId = <String, Plantation>{for (final p in existing) p.id: p};
-      for (final p in migrated) {
-        final prev = byId[p.id];
-        byId[p.id] = prev == null ? p : Plantation.merge(prev, p);
-      }
-      await PrefsService.instance
-          .setPlantationsJson(Plantation.encodeAll(byId.values.toList()));
-    }
-    await PrefsService.instance.setGridMigrated(true);
-  }
 
   void _showTutorialIfNeeded() {
     if (PrefsService.instance.gardenTutorialDone) return;

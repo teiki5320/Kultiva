@@ -11,6 +11,7 @@ import '../../../models/weather_data.dart';
 import '../../../services/audio_service.dart';
 import '../../../services/culture_service.dart';
 import '../../../services/prefs_service.dart';
+import '../../../services/watering_advisor.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/companion_status.dart';
 import '../../../utils/phenology.dart';
@@ -176,12 +177,19 @@ class PlannerCellActionSheet extends StatefulWidget {
   final ValueChanged<int> onCountChanged;
   final ValueChanged<DateTime> onPlantedAtChanged;
   final VoidCallback onClear;
+
+  /// Météo du jardin, pour le conseil d'arrosage du plant. Null tant
+  /// qu'elle n'est pas chargée (ou si la localisation est refusée) : le
+  /// conseil est alors simplement masqué.
+  final WeatherData? weather;
+
   const PlannerCellActionSheet({
     super.key,
     required this.cell,
     required this.onCountChanged,
     required this.onPlantedAtChanged,
     required this.onClear,
+    this.weather,
   });
 
   @override
@@ -277,12 +285,24 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
           CultureService.instance.loadAll().where((c) => c.id == cid).toList();
       if (matching.isNotEmpty) culture = matching.first;
     }
-    final lastWater =
-        culture?.wateredAt.isNotEmpty == true ? culture!.wateredAt.last : null;
+    // Les arrosages vivent dans le dossier du plant depuis le
+    // rattachement du 30/10/2026 : on passe par le service, qui sait
+    // aussi relire les anciennes sauvegardes.
+    final lastWater = culture == null
+        ? null
+        : CultureService.instance.lastWateringFor(culture);
     final daysSinceStarted = DateTime.now().difference(_plantedAt).inDays;
     final phase = deducedPhase(veg, daysSinceStarted);
     final wateringDays = veg.effectiveWateringDays;
     final wateringColor = _wateringBadgeColor(lastWater, wateringDays);
+    // Conseil d'arrosage du jour pour CE plant : croise son dernier
+    // arrosage, la pluie tombée, la pluie prévue et le seuil de
+    // canicule de la région.
+    final advice = suggestWatering(
+      lastWater,
+      widget.weather,
+      region: PrefsService.instance.region.value,
+    );
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -412,6 +432,32 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                         ),
                       ],
                     ),
+                    // Conseil du jour, calculé sur la météo réelle. Il
+                    // passe AVANT le conseil générique de la fiche :
+                    // « saute l'arrosage, il a plu » est plus utile que
+                    // « arrose régulièrement ».
+                    if (advice != null) ...<Widget>[
+                      const SizedBox(height: 8),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(advice.emoji,
+                              style: const TextStyle(fontSize: 14)),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              advice.message,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                height: 1.35,
+                                fontWeight: FontWeight.w700,
+                                color: KultivaColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     if (veg.watering != null) ...<Widget>[
                       const SizedBox(height: 6),
                       Text(
@@ -946,13 +992,11 @@ class PlannerIrrigationBanner extends StatelessWidget {
       return;
     }
     AudioService.instance.play(Sfx.water);
-    for (final id in ids) {
-      await CultureService.instance.markWatered(id);
-    }
+    final count = await CultureService.instance.markManyWatered(ids);
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('💧 ${ids.length} plant(s) arrosé(s)'),
+          content: Text('💧 $count plant(s) arrosé(s)'),
           duration: const Duration(seconds: 2),
         ),
       );
