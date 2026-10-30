@@ -111,7 +111,11 @@ Kultiva/
 │   │                               # garden_planner, mes_jardins,
 │   │                               # garden_plan_config_sheet,
 │   │                               # my_garden/ (tamassi_view,
-│   │                               # kawaii_background, garden_header),
+│   │                               # tamassi_widgets, kawaii_background,
+│   │                               # garden_header),
+│   │                               # garden_planner/ (screen +
+│   │                               # planner_cell / _advice / _plants,
+│   │                               # planner_widgets = point d'entrée),
 │   │                               # poussidex/* (7 fichiers)
 │   ├── models/             # 12 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
@@ -145,8 +149,9 @@ Kultiva/
 │   │                       # jardins_intro_sheet, lexicon_text, medal_badge,
 │   │                       # plantation_photo, tamassi_story_card,
 │   │                       # vegetable_card, camera_permission_dialog
-│   └── utils/              # 6 fichiers — 428 LoC
+│   └── utils/              # 7 fichiers
 │                           # category_colors, months, phenology,
+│                           # text_scale (hauteurs qui suivent la police),
 │                           # companion_status, heatwave_tips,
 │                           # rotation_advisor
 ├── supabase/
@@ -525,8 +530,15 @@ Règles spécifiques au projet pour être efficace dès la première action :
 2. ~~**L'`anonKey` Supabase est committée**~~ — sans objet depuis le
    retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
    est supprimé.
-3. **Fichiers volumineux restants** — `tamassi_view.dart` (1 740 LoC),
-   `garden_planner_screen.dart` (1 777 LoC). Candidats à un découpage futur.
+3. **Fichiers volumineux restants** — mesurés le 30/10/2026 :
+   `plant_creature.dart` (1 838), `vegetable_detail_screen.dart`
+   (1 258), `tamassi_view.dart` (1 216). `vegetables_base.dart` (4 079)
+   est un fichier de données, il n'est pas concerné.
+   `planner_widgets.dart` a été découpé le 30/10 en `planner_cell`,
+   `planner_advice` et `planner_plants`, le fichier d'origine servant de
+   point d'entrée. ⚠️ Les chiffres précédents (1 740 / 1 777) étaient
+   périmés : ces deux fichiers avaient déjà été découpés. **Mesurer
+   avant de citer.**
 4. ~~**Connexion obligatoire au premier lancement**~~ — ✅ **RÉSOLU
    (24/08/2026, commit d60b962)** : mode invité livré. Bouton
    « Continuer sans compte » sur l'écran de connexion,
