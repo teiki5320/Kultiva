@@ -17,8 +17,8 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - **Mes jardins** : potager carré multi-jardins avec placement par
   glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos),
   conseils contextuels selon la météo ;
-- **Tamassi** : créature virtuelle animée qui évolue avec l'activité au jardin
-  (XP, niveaux, émotions, 3 variantes : Poussia, Soleia, Spira) ;
+- **Poussidex** : collection de plants, 50 défis photo et 50 badges, joignable
+  depuis le dashboard (ce n'est plus un onglet depuis le 30/10/2026) ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
   l'API Open-Meteo (gratuite, sans clé) ;
 - des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
@@ -29,7 +29,6 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
   de compagnonnage ;
 - un **cahier de culture** pleine terre avec étapes phénologiques auto-suggérées,
   avertissement de rotation et conseils canicule personnalisés ;
-- des **« visiteurs » de Tamassi générés localement**, sans réseau.
 
 **Statut** : bi-marché **France + Afrique de l'Ouest** (v1.0.0+5), en polish
 pré-publication — détection du pays et sous-zone climatique, calendriers et
@@ -52,7 +51,7 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `url_launcher` ^6.2 — liens externes (Instagram ; boutons « Acheter »
   Amazon remis le 30/10/2026, tag `kultiva1-21`, France seulement)
 - `flutter_local_notifications` ^17.2.3 + `timezone` ^0.9 +
-  `flutter_timezone` ^3.0.1 — rappels mensuels, quotidiens (Tamassi),
+  `flutter_timezone` ^3.0.1 — rappels mensuels,
   arrosage et canicule, planifiés dans le **fuseau réel** du device
 - `flutter_localizations` (SDK) — locale fr-FR globale (DatePicker français)
 - `pdf` ^3.10 + `printing` ^5.12 — export PDF du calendrier
@@ -117,9 +116,7 @@ Kultiva/
 │   │                               # tuto_fiche (WebView),
 │   │                               # garden_planner, mes_jardins,
 │   │                               # garden_plan_config_sheet,
-│   │                               # my_garden/ (tamassi_view,
-│   │                               # tamassi_widgets, kawaii_background,
-│   │                               # garden_header),
+│   │                               # my_garden/ (garden_header),
 │   │                               # garden_planner/ (screen +
 │   │                               # planner_cell / _advice / _plants,
 │   │                               # planner_widgets = point d'entrée),
@@ -128,14 +125,14 @@ Kultiva/
 │   │                       # plantation, vegetable, vegetable_medal,
 │   │                       # country (pays + zone climatique),
 │   │                       # region_data, culture_entry, garden_plan,
-│   │                       # weather_data, tamassi_visitor,
+│   │                       # weather_data,
 │   │                       # photo_pick_result, watering_alert,
 │   │                       # watering_advice
 │   ├── services/           # 16 fichiers
 │   │                       # prefs, plantation, error_reporter, weather,
 │   │                       # geolocation,
 │   │                       # notification, photo, audio, watering,
-│   │                       # watering_advisor, pdf, tamassi_stats,
+│   │                       # watering_advisor, pdf, garden_stats,
 │   │                       # plantation_migration, culture, garden_plan,
 │   │                       # review
 │   ├── data/               # 9 fichiers — 6 320 LoC
@@ -154,7 +151,7 @@ Kultiva/
 │   │                       # petal_animation, season_header, share_card,
 │   │                       # challenge_story_card, garden_tutorial_sheet,
 │   │                       # jardins_intro_sheet, lexicon_text, medal_badge,
-│   │                       # plantation_photo, tamassi_story_card,
+│   │                       # plantation_photo,
 │   │                       # vegetable_card, camera_permission_dialog
 │   └── utils/              # 7 fichiers
 │                           # category_colors, months, phenology,
@@ -215,7 +212,7 @@ qu'il servirait de point de départ si un backend revenait un jour
 | `preferences`      | `user_id`           | Own only                                        |
 | `challenge_posts`  | `id`                | Lecture publique (authentifiés), écriture own   |
 | `post_likes`       | `(user_id,post_id)` | Lecture publique, écriture own ; trigger counter|
-| `user_xp`          | `user_id`           | Lecture publique (visiteurs Tamassi), écriture own |
+| `user_xp`          | `user_id`           | Lecture publique, écriture own (table d'un ancien XP, sans objet) |
 | `news_items`       | `id` (uuid)         | Lecture publique (anon+auth), écriture service_role uniquement |
 
 Triggers : `handle_new_user` (auto-profile), `touch_updated_at` (4 tables),
@@ -320,7 +317,7 @@ cd ios && pod install --repo-update && cd ..
 - **Gradients saisonniers** : printemps rose-vert, été jaune-vert, automne
   orange, hiver bleu-gris.
 - **Animations** : pétales qui tombent, papillons, feuilles, flocons selon la
-  saison ; créature Tamassi animée via accéléromètre.
+  saison.
 - **Tone of voice** : chaleureux, ludique, enfantin. Exemples : « Kultiva
   utilise ta localisation pour afficher la météo de ton jardin », « Le potager
   kawaii dans ta poche 🌱 ».
@@ -519,6 +516,23 @@ Décisions et évolutions significatives :
   (affiliation → trader ; affiliation retirée le 20/10/2026, à revoir),
   iPad (captures 13″ exigées).
 
+- **Tamassi supprimé, badges réécrits (31/10/2026)** : la créature
+  virtuelle disparaît — 10 fichiers, ~90 Ko de code, 3,7 Mo d'images,
+  le rappel quotidien de 19 h, les visiteurs générés localement. Le
+  point dur était ailleurs : **35 des 50 badges dépendaient d'elle**
+  (caresses, XP, connexions du matin, abeilles aperçues). Ils comptent
+  maintenant des plants, arrosages, récoltes, photos, cases et
+  jardins, via un nouveau `GardenStats` qui recalcule depuis les
+  services au lieu de tenir des compteurs parallèles. **Les 50
+  identifiants sont inchangés** : les médaillons sont des fichiers
+  nommés d'après eux. Le Poussidex garde Mes plants / Défis / Badges
+  et se joint depuis le dashboard.
+- **Nouvel ordre des onglets (30/10/2026)** : Home, **Cahier**, Étal,
+  Tutos. Le cahier de culture passe devant le catalogue ; le Poussidex
+  quitte la barre. ⚠️ Les tutos HTML naviguent par index
+  (`RootTabs.tabIndex`) : tout changement d'ordre doit passer par
+  `tuto_fiche_screen.dart`, et `test/onglets_test.dart` le verrouille.
+
 ## 💬 Instructions pour Claude Code
 
 Règles spécifiques au projet pour être efficace dès la première action :
@@ -570,7 +584,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    est supprimé.
 3. **Fichiers volumineux restants** — mesurés le 30/10/2026 :
    `plant_creature.dart` (1 838), `vegetable_detail_screen.dart`
-   (1 258), `tamassi_view.dart` (1 216). `vegetables_base.dart` (4 079)
+   (1 258). `vegetables_base.dart` (4 079)
    est un fichier de données, il n'est pas concerné.
    `planner_widgets.dart` a été découpé le 30/10 en `planner_cell`,
    `planner_advice` et `planner_plants`, le fichier d'origine servant de
@@ -701,6 +715,18 @@ Règles spécifiques au projet pour être efficace dès la première action :
 11. **Les planches 4K d'origine** (294 crédits OpenART) sont hors du
     dépôt, dans `~/Dev/apps/kultiva-planches-sources/`. Le découpeur,
     lui, est versionné : `assets/images/vegetables_kawaii/_split.py`.
+
+9. **La fiche App Store et les fiches par pays parlent encore de
+   Tamassi** — 53 mentions au 31/10/2026 dans
+   `docs/FICHE_APP_STORE.md`, `docs/store-listings.md` et
+   `docs/v5-test-checklist.md`, dont une section entière de la fiche
+   ASC et les mots-clés. À réécrire avant toute soumission : l'app ne
+   contient plus la créature.
+
+10. **Le tuto animé du dashboard est périmé** —
+    `assets/tutos/decouvrir_dashboard.html` montre l'ancienne barre
+    d'onglets et une scène « Poussidex Tamassi » avec sa capture
+    d'écran. Il faut le refaire, captures comprises.
 
 ## Fiches à jour à chaque changement (règle de Jean, 22 octobre 2026)
 

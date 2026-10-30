@@ -99,7 +99,7 @@ ce qui donne deux cartes très larges sur 13 pouces. L'allure générale des
 **Compte de démonstration.** Sans objet depuis le retrait des comptes :
 laisse la case « Connexion requise » décochée dans App Store Connect. Il
 reste à garnir une installation à la main pour les captures (deux ou
-trois plants, une photo, un Tamassi entamé) — des captures sur une app
+trois plants, une photo, un jardin dessiné) — des captures sur une app
 vide ne vendent rien.
 
 ~~Il n'était plus obligatoire depuis le mode
@@ -226,7 +226,7 @@ la synchro (Cloudflare, ci-dessous).
 2. ✅ **Adresse de contact** : `kultiva@toakeur.com` sur le site, la confidentialité et les textes des fiches.
 3. ✅ **Backend supprimé** : les comptes ont été retirés de la v1 le 30 octobre 2026. Plus rien à rallumer, plus de clés Google à recréer.
 4. **Compléter la fiche App Store** : fiche créée (Apple ID `6762550020`) ; restent les trois URL, l'adresse de contact, la déclaration DSA (statut de trader à revoir) et le téléphone de revue.
-5. **Garnir une installation pour les captures** : 2 ou 3 plants, une photo, un Tamassi entamé. Plus de compte de démonstration à créer.
+5. **Garnir une installation pour les captures** : 2 ou 3 plants, une photo, un jardin dessiné. Plus de compte de démonstration à créer.
 6. **Captures d'écran** : 8 en iPhone 6,9″ (1320 × 2868) et 8 en iPad 13″ (2064 × 2752).
 7. ✅ **Liens Amazon remis** : ôtés le 20 octobre 2026 (compte fermé), les 159 liens sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`. ⚠️ Pense au statut trader (DSA) à la soumission.
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 — l'avertissement ITMS-90683 disparaît au prochain build.

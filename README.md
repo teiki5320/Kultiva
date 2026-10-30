@@ -12,7 +12,7 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
 - 📓 **Mes jardins** : potager carré multi-jardins, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), conseils contextuels selon la météo
 - 📖 **Poussidex** : ta collection chronologique des plants en photos, avec notes, historique d'arrosage et compteur de récoltes
-- 🐣 **Tamassi** : créature virtuelle qui évolue avec ton activité au jardin (XP, niveaux, émotions, visiteurs)
+- 📔 **Cahier de culture** : potager carré multi-jardins, placement par glisser-déposer, suivi par plant (arrosage, phase de croissance, photos)
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
 - 🏅 **Défis photo** : 50 défis, 50 badges et médailles bronze / argent / or (les photos restent privées)
 - 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et compagnon kawaii adaptés à un usage en famille
