@@ -12,6 +12,7 @@ import '../models/vegetable.dart';
 import '../theme/app_theme.dart';
 import '../utils/months.dart';
 import 'plantation_photo.dart';
+import '../utils/text_scale.dart';
 
 /// Dialog qui affiche une prévisualisation "partage" d'une carte Poussidex
 /// et propose de l'exporter comme image (via RepaintBoundary) puis de
@@ -82,10 +83,12 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
         children: <Widget>[
           RepaintBoundary(
             key: _cardKey,
-            child: _ShareCardContent(
-              plantation: widget.plantation,
-              vegetable: widget.vegetable,
-              familyColor: widget.familyColor,
+            child: FixedTextScale(
+              child: _ShareCardContent(
+                plantation: widget.plantation,
+                vegetable: widget.vegetable,
+                familyColor: widget.familyColor,
+              ),
             ),
           ),
           const SizedBox(height: 16),

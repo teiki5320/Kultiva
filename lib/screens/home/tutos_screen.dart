@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_theme.dart';
+import '../../utils/text_scale.dart';
 import 'tuto_fiche_screen.dart';
 
 /// Catégorie de tuto avec ses vidéos.
@@ -292,6 +293,7 @@ class TutosScreen extends StatelessWidget {
                   const _TutoParticleAnimation(),
                   Positioned(
                     left: 20,
+                    right: 20,
                     bottom: 16,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,7 +368,7 @@ class TutosScreen extends StatelessWidget {
               )
             else
               SizedBox(
-                height: 100,
+                height: scaledHeight(context, 100),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 12),

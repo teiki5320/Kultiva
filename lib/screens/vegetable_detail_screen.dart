@@ -274,8 +274,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             marketBuyingTips[vegetable.id] != null &&
             vegetable.category != VegetableCategory.accessories)
           _BuyingTipsSection(tips: marketBuyingTips[vegetable.id]!),
-        if (region == Region.westAfrica &&
-            marketData[vegetable.id] != null)
+        if (region == Region.westAfrica && marketData[vegetable.id] != null)
           _MarketSection(info: marketData[vegetable.id]!),
         if (recipesByVegetable[vegetable.id] != null)
           _RecipesSection(recipes: recipesByVegetable[vegetable.id]!),
@@ -938,46 +937,52 @@ class _MiniActionBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       message: tooltip,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 78,
-          height: 78,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: gradientColors),
-            borderRadius: BorderRadius.circular(22),
-            boxShadow: [
-              BoxShadow(
-                color: foreground.withValues(alpha: 0.22),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(emoji, style: const TextStyle(fontSize: 28)),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w800,
-                  color: foreground,
+      child: Semantics(
+        label: '$label, $sublabel',
+        hint: tooltip,
+        button: true,
+        excludeSemantics: true,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 78,
+            height: 78,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: gradientColors),
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: foreground.withValues(alpha: 0.22),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-              Text(
-                sublabel,
-                style: TextStyle(
-                  fontSize: 7.5,
-                  fontWeight: FontWeight.w500,
-                  color: foreground.withValues(alpha: 0.7),
-                  fontStyle: FontStyle.italic,
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(emoji, style: const TextStyle(fontSize: 28)),
+                const SizedBox(height: 2),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: foreground,
+                  ),
                 ),
-              ),
-            ],
+                Text(
+                  sublabel,
+                  style: TextStyle(
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.w500,
+                    color: foreground.withValues(alpha: 0.7),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -1013,8 +1018,8 @@ class _LocalNamesCard extends StatelessWidget {
               children: <Widget>[
                 for (final n in names)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
@@ -1224,8 +1229,8 @@ class _BuyingTipsSection extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 3),
                         decoration: BoxDecoration(
-                          color: KultivaColors.terracotta
-                              .withValues(alpha: 0.18),
+                          color:
+                              KultivaColors.terracotta.withValues(alpha: 0.18),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(

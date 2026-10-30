@@ -141,41 +141,47 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                   itemBuilder: (context, index) {
                     final m = index + 1;
                     final active = m == _selectedMonth;
-                    return GestureDetector(
-                      onTap: () => _monthController.animateToPage(
-                        index,
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeOut,
-                      ),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 220),
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: active ? 2 : 14,
+                    return Semantics(
+                      label: monthNamesLongCap[index],
+                      button: true,
+                      selected: active,
+                      excludeSemantics: true,
+                      child: GestureDetector(
+                        onTap: () => _monthController.animateToPage(
+                          index,
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.easeOut,
                         ),
-                        decoration: BoxDecoration(
-                          color: active
-                              ? KultivaColors.primaryGreen
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: KultivaColors.primaryGreen
-                                  .withValues(alpha: 0.15),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          monthNamesShortCap[index],
-                          style: TextStyle(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 220),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: active ? 2 : 14,
+                          ),
+                          decoration: BoxDecoration(
                             color: active
-                                ? Colors.white
-                                : KultivaColors.textPrimary,
-                            fontWeight: FontWeight.w800,
-                            fontSize: active ? 18 : 14,
+                                ? KultivaColors.primaryGreen
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: KultivaColors.primaryGreen
+                                    .withValues(alpha: 0.15),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            monthNamesShortCap[index],
+                            style: TextStyle(
+                              color: active
+                                  ? Colors.white
+                                  : KultivaColors.textPrimary,
+                              fontWeight: FontWeight.w800,
+                              fontSize: active ? 18 : 14,
+                            ),
                           ),
                         ),
                       ),
@@ -335,29 +341,35 @@ class _CategoryChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: GestureDetector(
-        onTap: () {
-          AudioService.instance.play(Sfx.tap);
-          onTap();
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: selected ? color.withValues(alpha: 0.2) : Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: color,
-              width: selected ? 2.5 : 2,
+      child: Semantics(
+        label: label,
+        button: true,
+        selected: selected,
+        excludeSemantics: true,
+        child: GestureDetector(
+          onTap: () {
+            AudioService.instance.play(Sfx.tap);
+            onTap();
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: selected ? color.withValues(alpha: 0.2) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: color,
+                width: selected ? 2.5 : 2,
+              ),
             ),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            '$emoji $label',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
-              color: color,
+            alignment: Alignment.center,
+            child: Text(
+              '$emoji $label',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
+                color: color,
+              ),
             ),
           ),
         ),

@@ -9,6 +9,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../theme/app_theme.dart';
 import 'plant_creature.dart';
+import '../utils/text_scale.dart';
 
 /// Affiche une Story Card 9:16 du Tamassi avec ton nom + niveau, puis
 /// propose le partage (Instagram Stories, etc.) via le share sheet iOS.
@@ -101,11 +102,13 @@ class _TamassiStoryDialogState extends State<_TamassiStoryDialog> {
             height: 480,
             child: RepaintBoundary(
               key: _cardKey,
-              child: _TamassiStoryVisual(
-                starter: widget.starter,
-                creatureName: widget.creatureName,
-                level: widget.level,
-                stageName: widget.stageName,
+              child: FixedTextScale(
+                child: _TamassiStoryVisual(
+                  starter: widget.starter,
+                  creatureName: widget.creatureName,
+                  level: widget.level,
+                  stageName: widget.stageName,
+                ),
               ),
             ),
           ),

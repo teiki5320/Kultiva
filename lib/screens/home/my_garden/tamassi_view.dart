@@ -676,34 +676,39 @@ class TamassiViewState extends State<TamassiView>
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(14),
-                onTap: () {
-                  AudioService.instance.play(Sfx.tap);
-                  showTamassiStoryShare(
-                    context,
-                    starter: _starter!,
-                    creatureName: _creatureName,
-                    level: lv,
-                    stageName: _stageName,
-                  );
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Icon(Icons.share, color: Colors.white, size: 14),
-                      SizedBox(width: 4),
-                      Text(
-                        'Partager',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 12,
+              child: Semantics(
+                label: 'Partager $_creatureName',
+                button: true,
+                excludeSemantics: true,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(14),
+                  onTap: () {
+                    AudioService.instance.play(Sfx.tap);
+                    showTamassiStoryShare(
+                      context,
+                      starter: _starter!,
+                      creatureName: _creatureName,
+                      level: lv,
+                      stageName: _stageName,
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(Icons.share, color: Colors.white, size: 14),
+                        SizedBox(width: 4),
+                        Text(
+                          'Partager',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1142,21 +1147,25 @@ class _StarterTapZoneState extends State<StarterTapZone> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _pressed = true),
-      onTapCancel: () => setState(() => _pressed = false),
-      onTapUp: (_) {
-        setState(() => _pressed = false);
-        widget.onTap();
-      },
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          color: _pressed
-              ? Colors.white.withValues(alpha: 0.25)
-              : Colors.transparent,
+    return Semantics(
+      label: 'Caresser Tamassi',
+      button: true,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _pressed = true),
+        onTapCancel: () => setState(() => _pressed = false),
+        onTapUp: (_) {
+          setState(() => _pressed = false);
+          widget.onTap();
+        },
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            color: _pressed
+                ? Colors.white.withValues(alpha: 0.25)
+                : Colors.transparent,
+          ),
         ),
       ),
     );

@@ -388,7 +388,7 @@ class _SowScreenState extends State<SowScreen> {
 
               // ── Carrousel de slides ──
               SizedBox(
-                height: 160,
+                height: scaledHeight(context, 160),
                 child: PageView.builder(
                   controller: _slideController,
                   itemCount: slides.length,
@@ -418,9 +418,12 @@ class _SowScreenState extends State<SowScreen> {
                     }
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: GestureDetector(
-                        onTap: onTap,
-                        child: slides[i],
+                      child: Semantics(
+                        button: onTap != null,
+                        child: GestureDetector(
+                          onTap: onTap,
+                          child: slides[i],
+                        ),
                       ),
                     );
                   },
@@ -506,7 +509,7 @@ class _KawaiiCard extends StatelessWidget {
           onTap();
         },
         child: Container(
-          height: 130,
+          height: scaledHeight(context, 130),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,

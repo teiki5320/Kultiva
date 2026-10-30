@@ -29,6 +29,20 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
   /// avec une activité (semis ou récolte) durant ce mois.
   int? _filterMonth;
 
+  /// Ce qui se passe pour ce légume à ce mois-là, en mots.
+  ///
+  /// Une case de la grille est un carré de couleur : vert pour un
+  /// semis, orange pour une récolte, les deux en dégradé. Rien de
+  /// cela n'existe pour un lecteur d'écran, d'où cette phrase.
+  static String _cellActivity(RegionData rd, int month) {
+    final sow = rd.sowingMonths.contains(month);
+    final harvest = rd.harvestMonths.contains(month);
+    if (sow && harvest) return 'semis et récolte';
+    if (sow) return 'semis';
+    if (harvest) return 'récolte';
+    return 'rien à faire';
+  }
+
   void _openVegetable(Vegetable v) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -185,31 +199,38 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                         ),
                         for (int m = 0; m < 12; m++)
                           DataColumn(
-                            label: GestureDetector(
-                              onTap: () => setState(() {
-                                _filterMonth =
-                                    _filterMonth == m + 1 ? null : m + 1;
-                              }),
-                              child: Container(
-                                width: 42,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 4, horizontal: 4),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: _filterMonth == m + 1
-                                      ? KultivaColors.primaryGreen
-                                          .withValues(alpha: 0.2)
-                                      : null,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  _shortMonths[m],
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w800,
-                                    color: m + 1 == now
+                            label: Semantics(
+                              label: _fullMonths[m],
+                              hint: 'Filtre la grille sur ce mois',
+                              button: true,
+                              selected: _filterMonth == m + 1,
+                              excludeSemantics: true,
+                              child: GestureDetector(
+                                onTap: () => setState(() {
+                                  _filterMonth =
+                                      _filterMonth == m + 1 ? null : m + 1;
+                                }),
+                                child: Container(
+                                  width: 42,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 4, horizontal: 4),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: _filterMonth == m + 1
                                         ? KultivaColors.primaryGreen
+                                            .withValues(alpha: 0.2)
                                         : null,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    _shortMonths[m],
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w800,
+                                      color: m + 1 == now
+                                          ? KultivaColors.primaryGreen
+                                          : null,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -251,12 +272,19 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                             for (int m = 1; m <= 12; m++)
                               DataCell(
                                 Center(
-                                  child: GestureDetector(
-                                    onTap: () => _openVegetable(veg),
-                                    child: _MonthCell(
-                                      isSow: rd.sowingMonths.contains(m),
-                                      isHarvest: rd.harvestMonths.contains(m),
-                                      isCurrentMonth: m == now,
+                                  child: Semantics(
+                                    label:
+                                        '${veg.name}, ${_fullMonths[m - 1]} : '
+                                        '${_cellActivity(rd, m)}',
+                                    button: true,
+                                    excludeSemantics: true,
+                                    child: GestureDetector(
+                                      onTap: () => _openVegetable(veg),
+                                      child: _MonthCell(
+                                        isSow: rd.sowingMonths.contains(m),
+                                        isHarvest: rd.harvestMonths.contains(m),
+                                        isCurrentMonth: m == now,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../data/badges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../theme/app_theme.dart';
+import '../../../utils/text_scale.dart';
 import '../../../widgets/badge_card.dart';
 
 /// Grille des 25 badges Poussidex. Un tap sur un badge ouvre la carte
@@ -15,11 +16,11 @@ class PoussidexBadgesGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 170,
-        childAspectRatio: 0.95,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
+        mainAxisExtent: scaledHeight(context, 145),
       ),
       itemCount: allBadges.length,
       itemBuilder: (context, i) {

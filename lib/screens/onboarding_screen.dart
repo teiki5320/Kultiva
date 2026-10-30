@@ -377,59 +377,67 @@ class _CountryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: selected
-              ? KultivaColors.primaryGreen.withValues(alpha: 0.12)
-              : Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
+    return Semantics(
+      label: suggested && !selected
+          ? '${country.label}, suggéré d\'après ton téléphone'
+          : country.label,
+      button: true,
+      selected: selected,
+      excludeSemantics: true,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
             color: selected
-                ? KultivaColors.primaryGreen
-                : KultivaColors.lightGreen,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          children: <Widget>[
-            Text(country.flag, style: const TextStyle(fontSize: 32)),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                country.label,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
+                ? KultivaColors.primaryGreen.withValues(alpha: 0.12)
+                : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected
+                  ? KultivaColors.primaryGreen
+                  : KultivaColors.lightGreen,
+              width: selected ? 2 : 1,
             ),
-            if (suggested && !selected)
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                decoration: BoxDecoration(
-                  color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(999),
+          ),
+          child: Row(
+            children: <Widget>[
+              Text(country.flag, style: const TextStyle(fontSize: 32)),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  country.label,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                 ),
-                child: const Text(
-                  '📍 Suggéré',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: KultivaColors.primaryGreen,
+              ),
+              if (suggested && !selected)
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: const Text(
+                    '📍 Suggéré',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: KultivaColors.primaryGreen,
+                    ),
                   ),
                 ),
-              ),
-            if (selected)
-              const Icon(
-                Icons.check_circle,
-                color: KultivaColors.primaryGreen,
-              ),
-          ],
+              if (selected)
+                const Icon(
+                  Icons.check_circle,
+                  color: KultivaColors.primaryGreen,
+                ),
+            ],
+          ),
         ),
       ),
     );

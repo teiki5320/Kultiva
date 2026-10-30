@@ -8,6 +8,7 @@ import '../models/vegetable_medal.dart';
 import '../services/audio_service.dart';
 import '../theme/app_theme.dart';
 import 'lexicon_text.dart';
+import '../utils/text_scale.dart';
 
 /// Ouvre un overlay plein écran qui affiche une grande carte "Pokemon"
 /// pour un badge donné. La carte tourne légèrement en idle sur l'axe Y,
@@ -125,73 +126,76 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // Tap sur le fond → ferme.
-      onTap: () => Navigator.of(context).pop(),
-      behavior: HitTestBehavior.opaque,
-      child: Center(
-        child: AnimatedBuilder(
-          animation: Listenable.merge(<Listenable>[_idleCtrl, _flipCtrl]),
-          builder: (context, _) {
-            // Balancement idle : sinusoïde ±0.25 rad (~14°) sur Y.
-            final idleY = _dragging
-                ? 0.0
-                : math.sin(_idleCtrl.value * 2 * math.pi) * 0.25;
-            // Angle du retournement : 0 → π sur _flipCtrl.
-            final flipY = _flipCtrl.value * math.pi;
-            final totalY = _dragRotationY + idleY + flipY;
-            final totalX = _dragRotationX;
+    return Semantics(
+      onDismiss: () => Navigator.of(context).pop(),
+      child: GestureDetector(
+        // Tap sur le fond → ferme.
+        onTap: () => Navigator.of(context).pop(),
+        behavior: HitTestBehavior.opaque,
+        child: Center(
+          child: AnimatedBuilder(
+            animation: Listenable.merge(<Listenable>[_idleCtrl, _flipCtrl]),
+            builder: (context, _) {
+              // Balancement idle : sinusoïde ±0.25 rad (~14°) sur Y.
+              final idleY = _dragging
+                  ? 0.0
+                  : math.sin(_idleCtrl.value * 2 * math.pi) * 0.25;
+              // Angle du retournement : 0 → π sur _flipCtrl.
+              final flipY = _flipCtrl.value * math.pi;
+              final totalY = _dragRotationY + idleY + flipY;
+              final totalX = _dragRotationX;
 
-            final matrix = Matrix4.identity()
-              ..setEntry(3, 2, 0.0015) // perspective
-              ..rotateX(totalX)
-              ..rotateY(totalY);
+              final matrix = Matrix4.identity()
+                ..setEntry(3, 2, 0.0015) // perspective
+                ..rotateX(totalX)
+                ..rotateY(totalY);
 
-            // On détermine quelle face montrer en fonction de l'angle Y
-            // effectif (modulo 2π). Si on est dans [π/2, 3π/2] → face
-            // arrière. Sinon → face avant.
-            final normalizedY =
-                (totalY % (2 * math.pi) + 2 * math.pi) % (2 * math.pi);
-            final showBack =
-                normalizedY > math.pi / 2 && normalizedY < 3 * math.pi / 2;
+              // On détermine quelle face montrer en fonction de l'angle Y
+              // effectif (modulo 2π). Si on est dans [π/2, 3π/2] → face
+              // arrière. Sinon → face avant.
+              final normalizedY =
+                  (totalY % (2 * math.pi) + 2 * math.pi) % (2 * math.pi);
+              final showBack =
+                  normalizedY > math.pi / 2 && normalizedY < 3 * math.pi / 2;
 
-            // Contenu à afficher. Le dos est pré-inversé en miroir (Y)
-            // pour compenser la rotation — sans ça, les textes du dos
-            // apparaîtraient à l'envers.
-            final Widget content = showBack
-                ? Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()..rotateY(math.pi),
-                    child: _BadgeCardBack(
+              // Contenu à afficher. Le dos est pré-inversé en miroir (Y)
+              // pour compenser la rotation — sans ça, les textes du dos
+              // apparaîtraient à l'envers.
+              final Widget content = showBack
+                  ? Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()..rotateY(math.pi),
+                      child: _BadgeCardBack(
+                        unlocked: widget.unlocked,
+                        tier: widget.badge.tier,
+                      ),
+                    )
+                  : _BadgeCardVisual(
+                      badge: widget.badge,
                       unlocked: widget.unlocked,
-                      tier: widget.badge.tier,
-                    ),
-                  )
-                : _BadgeCardVisual(
-                    badge: widget.badge,
-                    unlocked: widget.unlocked,
-                    rotationX: totalX,
-                    rotationY: totalY,
-                  );
+                      rotationX: totalX,
+                      rotationY: totalY,
+                    );
 
-            return Semantics(
-              label: widget.unlocked
-                  ? 'Badge ${widget.badge.name}, débloqué'
-                  : 'Badge ${widget.badge.name}, verrouillé',
-              child: GestureDetector(
-                // Tap sur la carte = retournement (au lieu de rien).
-                onTap: _toggleFlip,
-                onPanStart: _onDragStart,
-                onPanUpdate: _onDragUpdate,
-                onPanEnd: _onDragEnd,
-                child: Transform(
-                  alignment: Alignment.center,
-                  transform: matrix,
-                  child: content,
+              return Semantics(
+                label: widget.unlocked
+                    ? 'Badge ${widget.badge.name}, débloqué'
+                    : 'Badge ${widget.badge.name}, verrouillé',
+                child: GestureDetector(
+                  // Tap sur la carte = retournement (au lieu de rien).
+                  onTap: _toggleFlip,
+                  onPanStart: _onDragStart,
+                  onPanUpdate: _onDragUpdate,
+                  onPanEnd: _onDragEnd,
+                  child: Transform(
+                    alignment: Alignment.center,
+                    transform: matrix,
+                    child: content,
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -220,157 +224,161 @@ class _BadgeCardVisual extends StatelessWidget {
     final tierColors = _TierColors.forBadge(badge.tier, unlocked);
     final Color frameColor = tierColors.frame;
 
-    return Container(
-      width: 280,
-      height: 400,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: tierColors.frameGradient,
-        ),
-        border: Border.all(color: frameColor, width: 4),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
-          ),
-          if (unlocked)
-            BoxShadow(
-              color: tierColors.glow,
-              blurRadius: 30,
-              spreadRadius: 2,
-            ),
-        ],
-      ),
+    return FixedTextScale(
       child: Container(
+        width: 280,
+        height: 400,
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: frameColor.withValues(alpha: 0.35)),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-        child: Column(
-          children: <Widget>[
-            // Bandeau du nom.
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: frameColor.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: frameColor.withValues(alpha: 0.5)),
-              ),
-              child: Text(
-                badge.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                  color: tierColors.text,
-                  letterSpacing: 0.4,
-                ),
-              ),
+          borderRadius: BorderRadius.circular(24),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: tierColors.frameGradient,
+          ),
+          border: Border.all(color: frameColor, width: 4),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.5),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
             ),
-            const SizedBox(height: 16),
-            // Illustration centrale : image custom si dispo dans
-            // assets/images/badges/<id>.png, sinon gros emoji + sparkles.
-            // Superposée d'un effet holographique qui réagit à la
-            // rotation de la carte (sur les badges débloqués uniquement).
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: tierColors.innerGradient,
-                    ),
-                    border: Border.all(
-                        color: frameColor.withValues(alpha: 0.4), width: 1.5),
-                  ),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      // 1. Illustration (image ou fallback emoji).
-                      Opacity(
-                        opacity: unlocked ? 1.0 : 0.35,
-                        child: Image.asset(
-                          'assets/images/badges/${badge.id}.png',
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => _EmojiFallback(
-                            emoji: badge.emoji,
-                            unlocked: unlocked,
-                          ),
-                        ),
-                      ),
-                      // 2. Effet holo (badges débloqués uniquement).
-                      if (unlocked)
-                        IgnorePointer(
-                          child: _HolographicOverlay(
-                            rotationX: rotationX,
-                            rotationY: rotationY,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+            if (unlocked)
+              BoxShadow(
+                color: tierColors.glow,
+                blurRadius: 30,
+                spreadRadius: 2,
               ),
-            ),
-            const SizedBox(height: 14),
-            // Description.
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: frameColor.withValues(alpha: 0.25)),
-              ),
-              child: LexiconText(
-                badge.description,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 11.5,
-                  height: 1.35,
-                  fontWeight: FontWeight.w600,
-                  color: unlocked
-                      ? KultivaColors.textPrimary
-                      : Colors.grey.shade500,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Bas de carte : ID + "KULTIVA".
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  '#${badge.id.toUpperCase()}',
-                  style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.grey.shade500,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                Text(
-                  'KULTIVA',
-                  style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.w900,
-                    color: frameColor,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-              ],
-            ),
           ],
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: frameColor.withValues(alpha: 0.35)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+          child: Column(
+            children: <Widget>[
+              // Bandeau du nom.
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: frameColor.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: frameColor.withValues(alpha: 0.5)),
+                ),
+                child: Text(
+                  badge.name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                    color: tierColors.text,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Illustration centrale : image custom si dispo dans
+              // assets/images/badges/<id>.png, sinon gros emoji + sparkles.
+              // Superposée d'un effet holographique qui réagit à la
+              // rotation de la carte (sur les badges débloqués uniquement).
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: tierColors.innerGradient,
+                      ),
+                      border: Border.all(
+                          color: frameColor.withValues(alpha: 0.4), width: 1.5),
+                    ),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        // 1. Illustration (image ou fallback emoji).
+                        Opacity(
+                          opacity: unlocked ? 1.0 : 0.35,
+                          child: Image.asset(
+                            'assets/images/badges/${badge.id}.png',
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => _EmojiFallback(
+                              emoji: badge.emoji,
+                              unlocked: unlocked,
+                            ),
+                          ),
+                        ),
+                        // 2. Effet holo (badges débloqués uniquement).
+                        if (unlocked)
+                          IgnorePointer(
+                            child: _HolographicOverlay(
+                              rotationX: rotationX,
+                              rotationY: rotationY,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
+              // Description.
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: frameColor.withValues(alpha: 0.25)),
+                ),
+                child: LexiconText(
+                  badge.description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11.5,
+                    height: 1.35,
+                    fontWeight: FontWeight.w600,
+                    color: unlocked
+                        ? KultivaColors.textPrimary
+                        : Colors.grey.shade500,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Bas de carte : ID + "KULTIVA".
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    '#${badge.id.toUpperCase()}',
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.grey.shade500,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  Text(
+                    'KULTIVA',
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w900,
+                      color: frameColor,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -529,116 +537,118 @@ class _BadgeCardBack extends StatelessWidget {
     final tierColors = _TierColors.forBadge(tier, unlocked);
     final Color frameColor = tierColors.frame;
 
-    return Container(
-      width: 280,
-      height: 400,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: tierColors.frameGradient,
-        ),
-        border: Border.all(color: frameColor, width: 4),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
-          ),
-          if (unlocked)
-            BoxShadow(
-              color: tierColors.glow,
-              blurRadius: 30,
-              spreadRadius: 2,
-            ),
-        ],
-      ),
+    return FixedTextScale(
       child: Container(
+        width: 280,
+        height: 400,
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: tierColors.innerGradient,
+            colors: tierColors.frameGradient,
           ),
-          borderRadius: BorderRadius.circular(16),
-          border:
-              Border.all(color: frameColor.withValues(alpha: 0.5), width: 2),
+          border: Border.all(color: frameColor, width: 4),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.5),
+              blurRadius: 24,
+              offset: const Offset(0, 10),
+            ),
+            if (unlocked)
+              BoxShadow(
+                color: tierColors.glow,
+                blurRadius: 30,
+                spreadRadius: 2,
+              ),
+          ],
         ),
-        child: Stack(
-          children: <Widget>[
-            // Motif de fond : hexagones + sparkles en mosaïque douce.
-            Positioned.fill(
-              child: Opacity(
-                opacity: 0.25,
-                child: CustomPaint(
-                  painter: _BackPatternPainter(color: frameColor),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: tierColors.innerGradient,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border:
+                Border.all(color: frameColor.withValues(alpha: 0.5), width: 2),
+          ),
+          child: Stack(
+            children: <Widget>[
+              // Motif de fond : hexagones + sparkles en mosaïque douce.
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.25,
+                  child: CustomPaint(
+                    painter: _BackPatternPainter(color: frameColor),
+                  ),
                 ),
               ),
-            ),
-            // Contenu central : gros emoji + lettrage stylisé.
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: <Widget>[
-                  const Spacer(),
-                  // Grand logo (emoji central).
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.9),
-                      border: Border.all(color: frameColor, width: 3),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: frameColor.withValues(alpha: 0.4),
-                          blurRadius: 16,
-                          spreadRadius: 1,
-                        ),
-                      ],
+              // Contenu central : gros emoji + lettrage stylisé.
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    const Spacer(),
+                    // Grand logo (emoji central).
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withValues(alpha: 0.9),
+                        border: Border.all(color: frameColor, width: 3),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: frameColor.withValues(alpha: 0.4),
+                            blurRadius: 16,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        '🪴',
+                        style: TextStyle(fontSize: 72),
+                      ),
                     ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '🪴',
-                      style: TextStyle(fontSize: 72),
+                    const SizedBox(height: 24),
+                    Text(
+                      'POUSSIDEX',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 22,
+                        letterSpacing: 4,
+                        color: tierColors.text,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'POUSSIDEX',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 22,
-                      letterSpacing: 4,
-                      color: tierColors.text,
+                    const SizedBox(height: 4),
+                    Text(
+                      'COLLECTION',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11,
+                        letterSpacing: 5,
+                        color: frameColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'COLLECTION',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 11,
-                      letterSpacing: 5,
-                      color: frameColor,
+                    const Spacer(),
+                    Text(
+                      'KULTIVA',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 10,
+                        letterSpacing: 3,
+                        color: frameColor,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    'KULTIVA',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 10,
-                      letterSpacing: 3,
-                      color: frameColor,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -876,121 +886,124 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).pop(),
-      behavior: HitTestBehavior.opaque,
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          // Burst de particules radiales une fois la carte posée.
-          if (_showParticles)
-            Positioned.fill(
-              child: IgnorePointer(
-                child: _ParticleBurst(tier: widget.badge.tier),
-              ),
-            ),
-          // Carte centrale animée.
-          AnimatedBuilder(
-            animation: Listenable.merge(<Listenable>[_ctrl, _idleCtrl]),
-            builder: (context, _) {
-              final t = _ctrl.value;
-              // Phase 1 (0 → 0.65) : chute depuis le ciel + spin.
-              // Phase 2 (0.65 → 0.95) : atterrissage avec bounce.
-              // Phase 3 (0.95 → 1.0) : stabilisation douce.
-              final fallCurve = Curves.easeIn.transform(
-                (t / 0.65).clamp(0.0, 1.0),
-              );
-              final bounceCurve = Curves.elasticOut.transform(
-                ((t - 0.65) / 0.35).clamp(0.0, 1.0),
-              );
-
-              // Translation verticale : du haut de l'écran vers le centre.
-              final dy = (1 - fallCurve) * -400;
-              // Rotation totale : 3 tours complets durant la chute, plus
-              // lente qu'avant pour laisser le temps de voir la carte.
-              final spinY = (1 - fallCurve) * 3 * 2 * math.pi;
-              // Scale : petite quand elle tombe, grossit en atterrissant.
-              final scale = 0.3 + bounceCurve * 0.7;
-              // Balancement idle une fois posée.
-              final idleY = _showParticles
-                  ? math.sin(_idleCtrl.value * 2 * math.pi) * 0.2
-                  : 0.0;
-
-              final matrix = Matrix4.identity()
-                ..setEntry(3, 2, 0.0015)
-                ..translateByDouble(0.0, dy, 0.0, 1.0)
-                ..scaleByDouble(scale, scale, scale, 1.0)
-                ..rotateY(spinY + idleY);
-
-              return Transform(
-                alignment: Alignment.center,
-                transform: matrix,
-                child: _BadgeCardVisual(
-                  badge: widget.badge,
-                  unlocked: true,
-                  rotationY: spinY + idleY,
-                ),
-              );
-            },
-          ),
-          // Banderole "NOUVEAU BADGE !" en haut quand posée.
-          if (_showParticles)
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.12,
-              child: IgnorePointer(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      '✨ NOUVEAU BADGE ✨',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 3,
-                        color: Colors.white,
-                        shadows: <Shadow>[
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.7),
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.badge.name,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        shadows: <Shadow>[
-                          Shadow(
-                            color: Colors.black.withValues(alpha: 0.6),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+    return Semantics(
+      onDismiss: () => Navigator.of(context).pop(),
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        behavior: HitTestBehavior.opaque,
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            // Burst de particules radiales une fois la carte posée.
+            if (_showParticles)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: _ParticleBurst(tier: widget.badge.tier),
                 ),
               ),
+            // Carte centrale animée.
+            AnimatedBuilder(
+              animation: Listenable.merge(<Listenable>[_ctrl, _idleCtrl]),
+              builder: (context, _) {
+                final t = _ctrl.value;
+                // Phase 1 (0 → 0.65) : chute depuis le ciel + spin.
+                // Phase 2 (0.65 → 0.95) : atterrissage avec bounce.
+                // Phase 3 (0.95 → 1.0) : stabilisation douce.
+                final fallCurve = Curves.easeIn.transform(
+                  (t / 0.65).clamp(0.0, 1.0),
+                );
+                final bounceCurve = Curves.elasticOut.transform(
+                  ((t - 0.65) / 0.35).clamp(0.0, 1.0),
+                );
+
+                // Translation verticale : du haut de l'écran vers le centre.
+                final dy = (1 - fallCurve) * -400;
+                // Rotation totale : 3 tours complets durant la chute, plus
+                // lente qu'avant pour laisser le temps de voir la carte.
+                final spinY = (1 - fallCurve) * 3 * 2 * math.pi;
+                // Scale : petite quand elle tombe, grossit en atterrissant.
+                final scale = 0.3 + bounceCurve * 0.7;
+                // Balancement idle une fois posée.
+                final idleY = _showParticles
+                    ? math.sin(_idleCtrl.value * 2 * math.pi) * 0.2
+                    : 0.0;
+
+                final matrix = Matrix4.identity()
+                  ..setEntry(3, 2, 0.0015)
+                  ..translateByDouble(0.0, dy, 0.0, 1.0)
+                  ..scaleByDouble(scale, scale, scale, 1.0)
+                  ..rotateY(spinY + idleY);
+
+                return Transform(
+                  alignment: Alignment.center,
+                  transform: matrix,
+                  child: _BadgeCardVisual(
+                    badge: widget.badge,
+                    unlocked: true,
+                    rotationY: spinY + idleY,
+                  ),
+                );
+              },
             ),
-          // Indication "Tap pour continuer" en bas une fois posée.
-          if (_showParticles)
-            Positioned(
-              bottom: MediaQuery.of(context).size.height * 0.08,
-              child: IgnorePointer(
-                child: Text(
-                  'Tape n\'importe où pour continuer',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.7),
-                    letterSpacing: 1,
+            // Banderole "NOUVEAU BADGE !" en haut quand posée.
+            if (_showParticles)
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.12,
+                child: IgnorePointer(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        '✨ NOUVEAU BADGE ✨',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 3,
+                          color: Colors.white,
+                          shadows: <Shadow>[
+                            Shadow(
+                              color: Colors.black.withValues(alpha: 0.7),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        widget.badge.name,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          shadows: <Shadow>[
+                            Shadow(
+                              color: Colors.black.withValues(alpha: 0.6),
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-        ],
+            // Indication "Tap pour continuer" en bas une fois posée.
+            if (_showParticles)
+              Positioned(
+                bottom: MediaQuery.of(context).size.height * 0.08,
+                child: IgnorePointer(
+                  child: Text(
+                    'Tape n\'importe où pour continuer',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white.withValues(alpha: 0.7),
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

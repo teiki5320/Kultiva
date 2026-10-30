@@ -5,6 +5,7 @@ import '../../../models/vegetable.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/months.dart';
+import '../../../utils/text_scale.dart';
 import '../../../widgets/plantation_photo.dart';
 import '../../../widgets/share_card.dart';
 import 'poussidex_card.dart' show expectedHarvestDays;
@@ -107,8 +108,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: 90,
-                        height: 90,
+                        width: scaledHeight(context, 90),
+                        height: scaledHeight(context, 90),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: cc.withValues(alpha: 0.18),
@@ -544,37 +545,42 @@ class _PhotoThumb extends StatelessWidget {
           Positioned(
             top: 4,
             right: 4,
-            child: GestureDetector(
-              onTap: () {
-                showDialog<void>(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: const Text('Retirer la photo ?'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Annuler'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          onRemove();
-                        },
-                        child: const Text('Retirer',
-                            style: TextStyle(color: Colors.red)),
-                      ),
-                    ],
+            child: Semantics(
+              label: 'Retirer cette photo',
+              button: true,
+              excludeSemantics: true,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text('Retirer la photo ?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Annuler'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            onRemove();
+                          },
+                          child: const Text('Retirer',
+                              style: TextStyle(color: Colors.red)),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 22,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.5),
+                    shape: BoxShape.circle,
                   ),
-                );
-              },
-              child: Container(
-                width: 22,
-                height: 22,
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.5),
-                  shape: BoxShape.circle,
+                  child: const Icon(Icons.close, size: 14, color: Colors.white),
                 ),
-                child: const Icon(Icons.close, size: 14, color: Colors.white),
               ),
             ),
           ),
@@ -653,36 +659,42 @@ class _NoteEditorState extends State<_NoteEditor> {
       );
     }
     final text = widget.initial;
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: () => setState(() => _editing = true),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200),
-        ),
-        child: Row(
-          children: <Widget>[
-            const Text('📝', style: TextStyle(fontSize: 16)),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                text == null || text.isEmpty ? 'Ajouter une note…' : text,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: text == null || text.isEmpty
-                      ? KultivaColors.textSecondary
-                      : null,
+    return Semantics(
+      label: text == null || text.isEmpty ? 'Ajouter une note' : 'Note : $text',
+      hint: 'Touche pour modifier',
+      button: true,
+      excludeSemantics: true,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => setState(() => _editing = true),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: Row(
+            children: <Widget>[
+              const Text('📝', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  text == null || text.isEmpty ? 'Ajouter une note…' : text,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: text == null || text.isEmpty
+                        ? KultivaColors.textSecondary
+                        : null,
+                  ),
                 ),
               ),
-            ),
-            const Icon(Icons.edit_outlined,
-                size: 16, color: KultivaColors.textSecondary),
-          ],
+              const Icon(Icons.edit_outlined,
+                  size: 16, color: KultivaColors.textSecondary),
+            ],
+          ),
         ),
       ),
     );

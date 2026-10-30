@@ -16,6 +16,7 @@ import '../../../services/audio_service.dart';
 import '../../../services/culture_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
+import '../../../utils/text_scale.dart';
 import 'garden_planner_screen.dart';
 
 class PlannerPlantPicker extends StatelessWidget {
@@ -161,7 +162,7 @@ class PlannerPlantPicker extends StatelessWidget {
           const SizedBox(height: 6),
           // Chips horizontaux : Favoris / Toutes / catégories.
           SizedBox(
-            height: 32,
+            height: scaledHeight(context, 32),
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
@@ -177,7 +178,7 @@ class PlannerPlantPicker extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           SizedBox(
-            height: 96,
+            height: scaledHeight(context, 96),
             child: plants.isEmpty
                 ? Center(
                     child: Text(
@@ -332,44 +333,51 @@ class PlannerIrrigationBanner extends StatelessWidget {
             color: advice.color.withValues(alpha: 0.35),
           ),
           // ─── Partie droite : bouton Arroser (bleu eau) ───
-          GestureDetector(
-            onTap: cultureCount > 0 ? () => _waterAll(context) : null,
-            child: Opacity(
-              opacity: cultureCount > 0 ? 1 : 0.45,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    width: 38,
-                    height: 38,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: KultivaColors.waterBlue,
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: KultivaColors.waterBlue.withValues(alpha: 0.3),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+          Semantics(
+            label: 'Arroser tous les plants',
+            button: true,
+            enabled: cultureCount > 0,
+            excludeSemantics: true,
+            child: GestureDetector(
+              onTap: cultureCount > 0 ? () => _waterAll(context) : null,
+              child: Opacity(
+                opacity: cultureCount > 0 ? 1 : 0.45,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      width: 38,
+                      height: 38,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: KultivaColors.waterBlue,
+                        shape: BoxShape.circle,
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color:
+                                KultivaColors.waterBlue.withValues(alpha: 0.3),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.water_drop,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.water_drop,
-                      color: Colors.white,
-                      size: 20,
+                    const SizedBox(height: 3),
+                    const Text(
+                      'Arroser',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        color: KultivaColors.waterBlue,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 3),
-                  const Text(
-                    'Arroser',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      color: KultivaColors.waterBlue,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

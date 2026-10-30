@@ -4,6 +4,7 @@ import '../../../data/vegetables_base.dart';
 import '../../../models/plantation.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
+import '../../../utils/text_scale.dart';
 
 /// Vue "Podium" : 4 podiums top 3 sur différentes métriques.
 class PoussidexPodiumView extends StatelessWidget {
@@ -235,7 +236,7 @@ class _PodiumSection extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 24, 12, 16),
               child: SizedBox(
-                height: 210,
+                height: scaledHeight(context, 210),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[

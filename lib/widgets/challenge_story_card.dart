@@ -11,6 +11,7 @@ import '../data/challenges.dart';
 import '../models/vegetable_medal.dart';
 import '../theme/app_theme.dart';
 import 'plantation_photo.dart';
+import '../utils/text_scale.dart';
 
 /// Affiche un dialogue de prévisualisation d'une Story Card 9:16
 /// (format Instagram Stories) pour un défi complété, puis propose
@@ -97,9 +98,11 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
             height: 480,
             child: RepaintBoundary(
               key: _cardKey,
-              child: _StoryCardVisual(
-                challenge: widget.challenge,
-                photoPath: widget.photoPath,
+              child: FixedTextScale(
+                child: _StoryCardVisual(
+                  challenge: widget.challenge,
+                  photoPath: widget.photoPath,
+                ),
               ),
             ),
           ),

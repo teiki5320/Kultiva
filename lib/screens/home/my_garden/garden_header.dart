@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../services/audio_service.dart';
 import '../../../theme/app_theme.dart';
+import '../../../utils/text_scale.dart';
 
 /// Filtre actif dans le Poussidex.
 enum AlbumFilter { tamassi, collection, challenges, badges }
@@ -62,6 +63,7 @@ class GardenHeader extends StatelessWidget {
             ),
             Positioned(
               left: 20,
+              right: 20,
               bottom: 14,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +129,7 @@ class GardenFilterBar extends StatelessWidget {
     // la barre défile horizontalement, tout en restant centrée quand il
     // y a la place (tablette, ou libellés courts).
     return SizedBox(
-      height: 56,
+      height: scaledHeight(context, 56),
       child: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(

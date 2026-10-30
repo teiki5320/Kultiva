@@ -6,6 +6,7 @@ import '../../../models/vegetable.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/months.dart';
+import '../../../utils/text_scale.dart';
 
 /// Vue "Stats" du Poussidex : 4 tuiles de compteurs, taux de survie,
 /// top familles, courbe d'arrosage 30 jours, repères temporels.
@@ -88,13 +89,17 @@ class PoussidexStatsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // 4 tuiles de compteurs.
-          GridView.count(
-            crossAxisCount: tileCols,
+          GridView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 1.5,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: tileCols,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              // Hauteur explicite plutôt qu'un rapport largeur/hauteur :
+              // le contenu d'une tuile ne dépend pas de sa largeur.
+              mainAxisExtent: scaledHeight(context, 100),
+            ),
             children: <Widget>[
               _StatTile(
                 emoji: '🪴',
@@ -343,7 +348,7 @@ class _WateringChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (maxValue == 0) {
       return Container(
-        height: 80,
+        height: scaledHeight(context, 80),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.grey.shade50,
@@ -357,7 +362,7 @@ class _WateringChart extends StatelessWidget {
       );
     }
     return Container(
-      height: 90,
+      height: scaledHeight(context, 90),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: const Color(0xFFE0F7FA).withValues(alpha: 0.4),
@@ -374,7 +379,8 @@ class _WateringChart extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 1),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
-                  height: 72 * (buckets[i] / maxValue).clamp(0.02, 1.0),
+                  height: scaledHeight(context, 72) *
+                      (buckets[i] / maxValue).clamp(0.02, 1.0),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       begin: Alignment.bottomCenter,

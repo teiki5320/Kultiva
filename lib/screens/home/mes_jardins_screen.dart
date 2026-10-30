@@ -144,78 +144,84 @@ class _SoilGardenCard extends StatelessWidget {
     final filledCells = plan.cells.length;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () {
-          AudioService.instance.play(Sfx.tap);
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => GardenPlannerScreen(initialPlan: plan),
-            ),
-          );
-        },
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                KultivaColors.springB.withValues(alpha: 0.55),
-                KultivaColors.springA.withValues(alpha: 0.45),
+      child: Semantics(
+        label: 'Jardin ${plan.name}, $filledCells plants',
+        hint: 'Ouvre le plan de ce jardin',
+        button: true,
+        excludeSemantics: true,
+        child: InkWell(
+          onTap: () {
+            AudioService.instance.play(Sfx.tap);
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => GardenPlannerScreen(initialPlan: plan),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[
+                  KultivaColors.springB.withValues(alpha: 0.55),
+                  KultivaColors.springA.withValues(alpha: 0.45),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: KultivaColors.primaryGreen.withValues(alpha: 0.5),
+                width: 1.4,
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
+                  blurRadius: 14,
+                  offset: const Offset(0, 6),
+                ),
               ],
             ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: KultivaColors.primaryGreen.withValues(alpha: 0.5),
-              width: 1.4,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: scaledHeight(context, 56),
+                  height: scaledHeight(context, 56),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.8),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Text('🌻', style: TextStyle(fontSize: 30)),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        plan.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Pleine terre  ·  ${plan.cols}×${plan.rows} cases  ·  '
+                        '$filledCells plants',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: KultivaColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right),
+              ],
             ),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
-                blurRadius: 14,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: scaledHeight(context, 56),
-                height: scaledHeight(context, 56),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.8),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Text('🌻', style: TextStyle(fontSize: 30)),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      plan.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Pleine terre  ·  ${plan.cols}×${plan.rows} cases  ·  '
-                      '$filledCells plants',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: KultivaColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right),
-            ],
           ),
         ),
       ),
