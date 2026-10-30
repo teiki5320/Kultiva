@@ -317,7 +317,22 @@ cd ios && pod install --repo-update && cd ..
   kawaii dans ta poche 🌱 ».
 - **Localisation** : app **fr-FR** uniquement pour l'instant.
 
-### 🎨 Génération d'images ComfyUI (prompts produits)
+### 🎨 Génération d'images
+
+> ⚠️ **Changement de style décidé le 30/10/2026** : tous les visuels du
+> catalogue (130 légumes, 50 badges) passent au **kawaii peint**,
+> générés sur **OpenArt** (GPT Image 2, image-to-image avec une planche
+> de référence). Le chantier est en cours dans
+> `assets/images/vegetables_kawaii/`, dont le README porte la recette,
+> l'avancement et la marche à suivre pour basculer.
+>
+> La formule ComfyUI ci-dessous décrit l'**ancien** style plat, celui
+> des 122 légumes et 38 accessoires encore en place. Elle interdit le
+> mot « kawaii » — c'était cohérent pour du logo plat, ça ne l'est plus
+> pour le nouveau style. Les deux ne se mélangent pas : conservée ici
+> tant que l'ancien style est à l'écran.
+
+### 🎨 Ancienne formule ComfyUI (style plat)
 
 Format retenu pour générer les visuels kawaii des plantes et accessoires —
 même style que les 38 accessoires existants. Les images générées sont
@@ -356,6 +371,11 @@ copiable dans Numbers/Sheets ou un node ComfyUI batch :
 Le filename = `{Vegetable.id}.png` (ex. `cornichon.png`, `pommier.png`).
 
 Destination : `assets/images/vegetables/<id>.png`.
+
+**Poids** : les visuels actuels sont des PNG 512 px en palette 8 bits,
+≈ 29 Ko. Le nouveau lot est en **WebP 512 px qualité 80, ≈ 8,5 Ko** —
+Flutter lit le WebP nativement, et le catalogue s'allège, ce qui compte
+pour l'Afrique de l'Ouest.
 
 ## 🚫 Pièges à éviter
 
