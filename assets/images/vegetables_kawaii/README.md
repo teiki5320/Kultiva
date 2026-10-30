@@ -11,10 +11,10 @@ un catalogue mi-plat mi-peint. On bascule quand la série est complète.
 
 | Lot | Fait | Reste |
 | --- | ---- | ----- |
-| Légumes (`assets/images/vegetables/`) | 50 | 81 |
+| Légumes (`assets/images/vegetables/`) | 130 | 1 |
 | Badges (`assets/images/badges/`) | 0 | 50 |
 
-Faits : ail, arachide, artichaut, aubergine, basilic, betterave, bissap, blette, brocoli, carotte, celeri, chou-fleur, chou kale, chou pommé, ciboulette, concombre, coriandre, courge butternut, courgette, echalote, epinard, feve, fraise, gingembre, gombo, haricot, igname, laitue, mache, mais, manioc, melon, menthe, navet, niebe, oignon, pasteque, patate douce, persil, petit pois, piment, poireau, poivron, pomme de terre, potiron, radis, roquette, sesame, thym, tomate.
+Faits : les 130 cultures du catalogue. Seul `_inconnu`, la sentinelle « Légume inconnu », garde son emoji ❓.
 
 ## Style
 
