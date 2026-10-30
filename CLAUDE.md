@@ -98,11 +98,10 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 ```
 Kultiva/
 ├── lib/                    # Code Dart principal (~31 480 LoC sur 93 fichiers)
-│   ├── main.dart           # Bootstrap : splash → onboarding → tabs
+│   ├── main.dart           # Bootstrap : onboarding → tabs
 │   ├── config/
 │   │   └── app_info.dart           # version affichée (à synchroniser avec pubspec)
-│   ├── screens/            # 31 fichiers (dont my_garden/ découpé en 3)
-│   │   ├── splash_screen.dart
+│   ├── screens/            # 28 fichiers (dont my_garden/ découpé en 3)
 │   │   ├── onboarding_screen.dart
 │   │   ├── root_tabs.dart          # Conteneur 4 onglets (Bottom nav)
 │   │   ├── vegetable_detail_screen.dart
@@ -110,7 +109,6 @@ Kultiva/
 │   │                               # settings, weather, calendrier mensuel,
 │   │                               # tuto_fiche (WebView),
 │   │                               # garden_planner, mes_jardins,
-│   │                               # culture_start_sheet,
 │   │                               # garden_plan_config_sheet,
 │   │                               # my_garden/ (tamassi_view,
 │   │                               # kawaii_background, garden_header),
@@ -140,22 +138,20 @@ Kultiva/
 │   │                         # regional_calendar.dart (sélecteur zone-aware)
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
-│   ├── widgets/            # 15 fichiers — 5 365 LoC
+│   ├── widgets/            # 14 fichiers
 │   │                       # plant_creature (55 Ko), badge_card (34 Ko),
 │   │                       # petal_animation, season_header, share_card,
 │   │                       # challenge_story_card, garden_tutorial_sheet,
 │   │                       # jardins_intro_sheet, lexicon_text, medal_badge,
 │   │                       # plantation_photo, tamassi_story_card,
-│   │                       # vegetable_card, watering_bars,
-│   │                       # camera_permission_dialog
+│   │                       # vegetable_card, camera_permission_dialog
 │   └── utils/              # 6 fichiers — 428 LoC
 │                           # category_colors, months, phenology,
 │                           # companion_status, heatwave_tips,
 │                           # rotation_advisor
 ├── supabase/
-│   ├── migrations/         # 001_initial_schema → 016_preferences_climate_zone
-│   ├── migrations/         # historique du schéma, plus utilisé par l'app
-│   └── functions/          # delete-account, déployée puis abandonnée
+│   └── migrations/         # 001 → 016 : historique du schéma, plus
+│                           # utilisé par l'app (aucun backend)
 ├── assets/
 │   ├── images/             # créatures (3 variantes, 35 images), badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
@@ -184,9 +180,11 @@ Kultiva/
 ```
 
 **Flux d'état** : `main.dart` initialise Sentry **puis** lance le
-bootstrap dans son `appRunner` (services, préférences, notifications),
-et affiche selon l'état (Splash → Onboarding si première ouverture →
-RootTabs). Il n'y a plus d'étape d'authentification.
+bootstrap dans son `appRunner` — préférences, migration de l'ancienne
+grille, chargement de la collection de plants, rattachement des cultures
+du cahier, notifications — et affiche selon l'état (Onboarding si
+première ouverture, sinon RootTabs). Plus d'authentification, et plus
+d'écran de démarrage Dart : `flutter_native_splash` s'en charge.
 
 **Schéma Supabase** — ⚠️ **historique seulement.** Plus aucune ligne de
 Dart ne touche ces tables depuis le retrait des comptes (30/10/2026). Le
@@ -234,8 +232,11 @@ Tables supprimées (migration 008) : `culture_readings`, `hydro_builds`,
 - **Thème** : couleurs centralisées dans `lib/theme/app_theme.dart`
   (`KultivaColors`). Pour les catégories de légumes, utiliser
   `lib/utils/category_colors.dart`.
-- **Photos** : stockées dans `app documents/plant_photos/` localement, puis
-  uploadées dans le bucket `plant-photos` (chemin `{user_id}/{plantation_id}/{filename}`).
+- **Photos** : stockées dans `app documents/plant_photos/`, et nulle part
+  ailleurs — il n'y a plus d'upload depuis le retrait des comptes. Les
+  orphelines sont purgées au démarrage (`PhotoService.purgeOrphans`), qui
+  **ne supprime rien** si l'inventaire des photos encore référencées n'a
+  pas pu être reconstitué.
 - **Assets** : après ajout dans `assets/`, déclarer le chemin dans la section
   `assets:` de `pubspec.yaml`. Des fichiers `.gitkeep` peuvent être nécessaires
   pour tracker des dossiers vides (cf commit `cba299c`).
@@ -364,8 +365,6 @@ Destination : `assets/images/vegetables/<id>.png`.
   (`lib/main.dart`).
 - **Synchroniser `assets/` ⇄ `pubspec.yaml`** — les incidents récents sur les
   dossiers `accessories/` et `badges/` l'ont rappelé.
-- **Ne jamais modifier une migration SQL existante** — créer toujours un nouveau
-  fichier numéroté.
 - **Ne pas mettre de logique métier dans les widgets** — elle doit vivre dans
   `lib/services/`.
 - **Ne pas utiliser `print`** — désactivé par le lint `avoid_print`.
@@ -487,6 +486,10 @@ Règles spécifiques au projet pour être efficace dès la première action :
 1. **Respecter le contrat local-only** : ne jamais introduire d'appel
    réseau bloquant dans un flux UI, et ne pas réintroduire de backend
    sans en discuter (décision du 30/10/2026).
+2. **Un seul registre par donnée** : les arrosages, récoltes et photos
+   d'un plant vivent dans sa `Plantation`, et nulle part ailleurs. Ne pas
+   recréer un stockage parallèle « juste pour cet écran » — c'est ce qui
+   a produit quatre registres d'arrosage dont trois morts.
 3. **Assets** : après `cp` d'un asset, penser à déclarer le chemin dans
    `pubspec.yaml`.
 4. **Français** : rédiger en français les strings visibles utilisateur, les
@@ -500,8 +503,9 @@ Règles spécifiques au projet pour être efficace dès la première action :
    de package de routing.
 9. **Services externes** : privilégier les APIs gratuites sans clé (cf
    Open-Meteo) quand c'est possible.
-10. **Créer une migration** quand on touche au schéma, pas un ALTER à la volée
-    côté code.
+10. **Brancher ce qu'on écrit** : un écran, un service ou un conseiller
+    qu'aucun chemin de l'app n'atteint est un bug, pas une avance. Quatre
+    fonctionnalités annoncées ont déjà été livrées sans être reliées.
 
 ## ⚠️ Alertes
 

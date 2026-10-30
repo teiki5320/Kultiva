@@ -9,6 +9,10 @@
 > les droits sont prêts ; il manque l'écran. Ce guide décrit donc la
 > procédure de publication **pour le jour où la fonctionnalité sera
 > branchée**.
+>
+> ⚠️ Et depuis le retrait des comptes (30/10/2026), l'app ne contacte
+> plus aucun backend : la brancher demanderait soit de revenir sur cette
+> décision, soit d'embarquer les actualités dans l'app elle-même.
 
 ## 🎯 En résumé
 
