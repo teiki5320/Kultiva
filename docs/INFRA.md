@@ -37,15 +37,17 @@ Mis à jour le 28 octobre 2026 d'après le dépôt, la base Supabase et le site 
 
 ### 1. GitHub
 
-- **Rôle** : dépôt du code + CI GitHub Actions — `ci.yml` (analyze + tests + builds Android AAB/APK), `sync-catalog.yml` (export du catalogue vers Supabase pour le projet sœur Kultivaprix, lancé quand le catalogue change — en échec le 20 octobre 2026, l'adresse Supabase en pause ne répondant pas) et `site.yml` (publication du dossier `landing/`, voir plus bas).
+- **Rôle** : dépôt du code + CI GitHub Actions — `ci.yml` (analyze + tests + builds Android AAB/APK) et `site.yml` (publication du dossier `landing/`, voir plus bas). Le workflow `sync-catalog.yml`, qui exportait le catalogue vers Kultivaprix, a été supprimé le 30 octobre 2026 : les deux projets n'ont plus de lien.
 - **Console** : <https://github.com/teiki5320/Kultiva> (branche par défaut : `main`)
 - **Identifiants publics** : —
-- **Secrets** : `KULTIVA_SEED_SECRET` dans repo → Settings → Secrets → Actions (même valeur configurée côté edge function `seed-species`).
+- **Secrets** : aucun secret de CI n'est plus nécessaire. `KULTIVA_SEED_SECRET` ne sert plus depuis le retrait de la sync Kultivaprix (30 octobre 2026) et peut être supprimé dans repo → Settings → Secrets → Actions.
 - **Coût** : gratuit.
 
 ### 2. Supabase
 
-- **Rôle** : backend — auth (e-mail + Google + Apple), Postgres sous RLS (`profiles`, `plantations`, `unlocked_badges`, `preferences`, `challenge_posts`, `post_likes`, `post_reports`, `user_xp`, `news_items`, `species`), Storage (`plant-photos`, `news-images`), edge functions `seed-species` et `delete-account` (suppression de compte in-app). Migrations `supabase/migrations/001 → 016`, appliquées manuellement via le SQL Editor.
+- **Rôle** : backend — auth (e-mail + Google + Apple), Postgres sous RLS, Storage (`plant-photos`), edge function `delete-account` (suppression de compte in-app, exigée par Apple). Migrations `supabase/migrations/001 → 016`, appliquées manuellement via le SQL Editor.
+- **Ce que l'app lit et écrit réellement** (vérifié le 30/10/2026) : 4 tables — `plantations`, `preferences`, `unlocked_badges`, `user_xp` — toutes en « ma ligne seulement », la fonction `sync_xp`, et le bucket `plant-photos`. Les tables `profiles`, `news_items`, `challenge_posts`, `post_likes` et `post_reports` ne sont touchées par aucune ligne de Dart ; `species` ne servait qu'à Kultivaprix et peut être supprimée.
+- **Plan** : **gratuit**, et c'est la cause de la mise en pause — Supabase met en pause tout projet gratuit après une semaine d'inactivité, et l'app n'étant pas publiée il n'y a aucun trafic. Le rallumer ne suffit donc pas : il se remettra en pause une semaine plus tard. Les données et les migrations restent conservées.
 - **État** : ⏸️ **en pause, pas supprimé.** Le 28 octobre 2026 (comme le 20 et le 27), l'API Supabase donne toujours le projet « Kultiva » (`vkiwkeknfzwdvufcqbrp`, région `eu-west-1`) avec l'état *inactif* ; son adresse ne résout toujours pas le 21 octobre ; il se rallume depuis la console. Pendant la pause, son adresse ne résout plus du tout — c'est ce qui avait fait croire, le 3 octobre, à une suppression. Conséquence : sans rallumage, pas de connexion, pas de synchronisation, pas de suppression de compte in-app. Le mode invité et tout le contenu hors ligne fonctionnent.
 - **Console** : <https://supabase.com/dashboard/project/vkiwkeknfzwdvufcqbrp>
 - **Identifiants publics** : adresse du projet `vkiwkeknfzwdvufcqbrp` (elle ne répond plus tant que le projet est en pause) + `anonKey`, commitées dans `lib/config/supabase_config.dart` — publiques par design, la sécurité repose sur les policies RLS.

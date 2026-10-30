@@ -1,12 +1,19 @@
 # 📰 Guide — Publier une actualité Kultiva
 
-> Comment ajouter une nouvelle slide dans l'app et le site, en 2 minutes.
+> Comment ajouter une nouvelle slide, en 2 minutes.
+
+> ⚠️ **À vérifier avant de s'en servir : l'app ne lit pas encore cette
+> table.** Au 30 octobre 2026, aucune ligne de Dart ne touche
+> `news_items` ni le bucket `news-images` — la carte « Actualités »
+> décrite plus bas n'existe pas dans l'interface. La table, le bucket et
+> les droits sont prêts ; il manque l'écran. Ce guide décrit donc la
+> procédure de publication **pour le jour où la fonctionnalité sera
+> branchée**.
 
 ## 🎯 En résumé
 
-L'utilisateur final voit les actus **dans l'app Kultiva** (sous forme de
-stories Instagram-like, swipables verticalement) et **sur le site
-Kultivaprix** (article complet, lien depuis la slide).
+L'utilisateur final verra les actus **dans l'app Kultiva**, sous forme
+de stories swipables verticalement.
 
 Tu es la **seule personne** qui publie. Tu utilises **Supabase Studio**
 (interface web admin gratuite, native Supabase) — pas besoin de SDK ou
@@ -20,7 +27,8 @@ de code.
 - Tu choisis **une image** principale au format **vertical 1080×1920**
   (format story Instagram). C'est cette image qui s'affichera plein
   écran dans l'app.
-- Tu rédiges l'article complet sur Kultivaprix (CMS dédié, séparé)
+- Si tu veux un article long, tu l'héberges où tu veux et tu mets son
+  URL dans `article_url` (optionnel)
 - Tu publies sur Instagram
 
 ### 2. Tu uploades l'image dans Supabase
@@ -45,7 +53,7 @@ de code.
 | `title` | court (≤ 80 chars) | `"Les fraises arrivent !"` | ✅ |
 | `caption` | court (≤ 280 chars) | `"C'est la saison des fraises gariguette. Direct du potager au panier."` | ✅ |
 | `image_url` | URL Supabase Storage | (collée à l'étape 2) | ✅ |
-| `article_url` | URL Kultivaprix | `"https://kultivaprix.fr/news/fraises-juin-2026"` | optionnel |
+| `article_url` | URL d'un article externe | `"https://kultiva.toakeur.com/news/fraises-juin-2026"` | optionnel |
 | `video_url` | URL YouTube/Insta | `"https://www.instagram.com/p/Cxxxxxx/"` | optionnel |
 | `tags` | array de strings | `["saison", "fruits", "fraise"]` | optionnel |
 | `priority` | entier | `0` (défaut) ou `10` pour mettre en haut | optionnel |
@@ -58,13 +66,6 @@ de code.
 Ouvre Kultiva sur ton iPhone → carte « Actualités » sur le dashboard →
 ta nouvelle slide apparaît en premier (les actus sont triées par
 `priority` puis `published_at` décroissant).
-
-## 📱 Côté Kultivaprix
-
-Le site Kultivaprix lit la même table `news_items`. Le mainteneur de
-Kultivaprix doit utiliser la même clé `anonKey` Supabase pour lire la
-table en lecture seule (RLS l'autorise pour tous). Voir
-`docs/kultivaprix-handoff.md` pour le code JS.
 
 ## 🎨 Conseils style
 

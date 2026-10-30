@@ -23,11 +23,11 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 - [x] Tutoriel de bienvenue parent-enfant et conseils contextuels selon la météo
 - [x] CI iOS via Xcode Cloud, signing release Android et conformité Amazon Associates en place
 - [x] Retrait complet de la feature hydroponie (sauvegardée sur la branche `archive/hydroponie-2026-05-03`)
-- [x] Landing marketing en ligne et site Kultivaprix (comparateur de prix) lié depuis l'app
+- [x] Landing marketing en ligne (`kultiva.toakeur.com`, GitHub Pages)
 - [x] README réécrit pour refléter la v2 réelle (Supabase, Poussidex, Tamassi, météo, feed, cahier de culture)
-- [x] Sync unidirectionnelle du catalogue Kultiva vers Kultivaprix via edge function Supabase et workflow GitHub Actions
+- [x] ~~Sync du catalogue vers Kultivaprix~~ — retirée le 30/10/2026, les deux projets n'ont plus de lien
 - [x] Gros ménage de lint : 308 substitutions `withOpacity` → `withValues` sur 38 fichiers, >90 % des avertissements résorbés
-- [x] Documentation de passation pour Kultivaprix (schéma, RLS, exemples curl/JS) et checklist de test V5
+- [x] Checklist de test V5 (`docs/v5-test-checklist.md`)
 - [x] CI GitHub Actions en place (`ci.yml` : `flutter analyze` + `flutter test` sur push main et PR)
 - [x] Branche V5 mergée sur `main`, première synchro catalogue déclenchée
 - [x] Audit pré-publication mai 2026 : extraction 6 modèles, Sentry, in_app_review, splash natif, privacy policy RGPD, migrations 009-011, 3 nouveaux tests, ~600 lignes de code mort supprimées, 10 deprecated APIs corrigés, découpe `my_garden_screen.dart`, 54 légumes `harvestTimeBySeason` complétés, 38 images accessoires kawaii, lien Instagram, version 1.0.0+5
@@ -54,7 +54,6 @@ Le potager kawaii dans la poche : un compagnon de jardinage francophone qui comb
 
 ### 📋 À faire — Coordination
 
-- [ ] Transmettre `docs/kultivaprix-handoff.md` à l'équipe Kultivaprix pour brancher la consommation du catalogue
 
 ### 💡 Idées futures
 

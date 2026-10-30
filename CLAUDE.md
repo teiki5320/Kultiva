@@ -30,8 +30,8 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
   de compagnonnage ;
 - un **cahier de culture** pleine terre avec étapes phénologiques auto-suggérées,
   avertissement de rotation et conseils canicule personnalisés ;
-- un lien avec **Kultivaprix** (projet sœur, comparateur de prix) via sync
-  unidirectionnelle du catalogue vers Supabase.
+- une synchronisation **cloud facultative** du jardin (Supabase), l'app
+  restant entièrement utilisable sans compte.
 
 **Statut** : bi-marché **France + Afrique de l'Ouest** (v1.0.0+5), en polish
 pré-publication — détection du pays et sous-zone climatique, calendriers et
@@ -71,9 +71,9 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 **Backend / services**
 
 - **Supabase** (`supabase_flutter` ^2.5) — auth, Postgres, Storage
-  (`plant-photos`, `news-images`) ; deux edge functions (`seed-species`
-  pour sync catalogue vers Kultivaprix ; `delete-account` pour la
-  suppression de compte in-app, à déployer manuellement)
+  (`plant-photos`, `news-images`) ; une edge function `delete-account`
+  (suppression de compte in-app, exigée par Apple, à déployer
+  manuellement)
 - **Open-Meteo** — météo 7 jours, aucune clé d'API requise
 - **Google Sign-In** (`google_sign_in` ^6.2) — OAuth natif
 - **Apple Sign-In** (`sign_in_with_apple` ^6.1) avec nonce SHA-256 (`crypto`)
@@ -87,8 +87,7 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
   entitlement, URL scheme Google, permissions caméra / photos / localisation
   déclarées dans `Info.plist` (en français)
 - CI : GitHub Actions (`ci.yml` : `flutter analyze` + `flutter test` sur push
-  main et PR ; `sync-catalog.yml` : sync catalogue vers Supabase sur modif des
-  fichiers source)
+  main et PR ; `site.yml` : publication du dossier `landing/`)
 - Lints : `flutter_lints` ^5.0 + règles custom (`prefer_const_constructors`,
   `prefer_const_literals_to_create_immutables`, `avoid_print`,
   `use_key_in_widget_constructors`). Exclusion : `tool/**`.
@@ -165,12 +164,11 @@ Kultiva/
 │   │                       # app_icon
 │   ├── sounds/             # 8 fichiers (1 musique + 7 SFX)
 │   └── tutos/              # 34 fichiers HTML (33 tutos + privacy) + screens/
-├── .github/workflows/      # ci.yml, sync-catalog.yml
-├── tool/                   # export_catalog.dart (sync Kultivaprix)
+├── .github/workflows/      # ci.yml, site.yml
 ├── docs/                   # INFRA (fiche technique), MARKETING (plan),
 │                           # FICHE_APP_STORE (fiche ASC copiable),
 │                           # store-listings, catalog-sync,
-│                           # kultivaprix-handoff, news-publication-guide,
+│                           # news-publication-guide,
 │                           # v5-test-checklist
 ├── _plans/                 # roadmap.md
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
@@ -283,7 +281,7 @@ cd ios && pod install --repo-update && cd ..
 
 # CI GitHub Actions
 # ci.yml : flutter analyze (--no-fatal-infos --no-fatal-warnings) + flutter test
-# sync-catalog.yml : export du catalogue vers Supabase (table public.species)
+# site.yml : publication du dossier landing/ sur GitHub Pages
 
 # Android signing
 # Nécessite un fichier android/key.properties (non commité) :
@@ -315,8 +313,8 @@ cd ios && pod install --repo-update && cd ..
 
 Format retenu pour générer les visuels kawaii des plantes et accessoires —
 même style que les 38 accessoires existants. Les images générées sont
-**partagées avec Kultivaprix** (projet sœur, comparateur de prix), donc le
-style doit rester identique sur les deux apps.
+le style des 38 accessoires existants, qu'il faut conserver pour que le
+catalogue reste homogène.
 
 **Formule retenue (validée Apr 2026) :**
 
@@ -349,9 +347,7 @@ copiable dans Numbers/Sheets ou un node ComfyUI batch :
 
 Le filename = `{Vegetable.id}.png` (ex. `cornichon.png`, `pommier.png`).
 
-Destination : `assets/images/vegetables/<id>.png` côté Kultiva, et même
-fichier hébergé côté Kultivaprix (à voir : Supabase Storage public bucket
-ou CDN partagé).
+Destination : `assets/images/vegetables/<id>.png`.
 
 ## 🚫 Pièges à éviter
 
@@ -380,8 +376,8 @@ ou CDN partagé).
 
 Décisions et évolutions significatives :
 
-- **CI GitHub Actions** : `ci.yml` (analyze + test sur push main et PR) et
-  `sync-catalog.yml` (export catalogue vers Supabase pour Kultivaprix).
+- **CI GitHub Actions** : `ci.yml` (analyze + test + builds Android sur
+  push main et PR) et `site.yml` (publication de `landing/`).
 - **Cahier de culture pleine terre** (v5) : multi-jardins avec placement par
   glisser-déposer, suivi par plant, phases de croissance auto-suggérées,
   avertissement de rotation, conseils canicule.
@@ -406,8 +402,13 @@ Décisions et évolutions significatives :
   18/10) : le bouton ne s'affiche plus, faute d'`amazonUrl`.
 - **Gros ménage lint** : 308 substitutions `withOpacity` → `withValues` sur
   38 fichiers, >90 % des avertissements résorbés.
-- **Sync catalogue Kultivaprix** : workflow GitHub Actions + edge function
-  Supabase `seed-species`, documentation dans `docs/catalog-sync.md`.
+- **Sync catalogue Kultivaprix** (retirée le 30/10/2026) : Kultivaprix
+  n'a plus de lien avec Kultiva. Le workflow `sync-catalog.yml`,
+  `tool/export_catalog.dart`, le snapshot `kultiva-catalog.json`, l'edge
+  function `seed-species` et les deux fiches de passation sont supprimés
+  (récupérables dans l'historique git). Le secret GitHub
+  `KULTIVA_SEED_SECRET` et la table `species` côté Supabase peuvent être
+  retirés à la main.
 - **Actualités** : table `news_items` + bucket `news-images` (migration 007),
   publication via Supabase Studio uniquement (service_role).
 - **Audit mai 2026** : extraction de 6 modèles des services vers `lib/models/`,

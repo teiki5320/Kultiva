@@ -91,7 +91,7 @@ Voir **`CLAUDE.md`** à la racine pour le détail :
 - migrations Supabase
 - pièges à éviter (versions pinées, assets à déclarer dans `pubspec.yaml`…)
 
-Le **catalogue d'espèces** est synchronisé vers Supabase pour partage avec le projet sœur **Kultivaprix** (comparateur de prix). Source de vérité : `lib/data/vegetables_base.dart`. Détails : **`docs/catalog-sync.md`**.
+Le **catalogue d'espèces** vit entièrement dans l'app. Source de vérité : `lib/data/vegetables_base.dart` (169 entrées : 130 cultures + 39 accessoires).
 
 ## 🤝 Contribuer
 
@@ -102,7 +102,6 @@ Les strings UI sont **en français** uniquement (l'app est `fr-FR` à 100%). Les
 ## 🌐 Sites compagnons
 
 - **Landing marketing** — `landing/index.html` (site HTML statique)
-- **[Kultivaprix](https://github.com/teiki5320/kultivaprix)** — comparateur de prix kawaii, consomme le catalogue d'espèces de Kultiva via Supabase
 
 ## 📜 Licence
 
