@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -52,11 +51,14 @@ Future<void> _guard(String step, Future<void> Function() body) async {
 }
 
 Future<void> _bootstrapAndRun() async {
-  // Kultiva est verrouillée en portrait (aucune vue paysage). Complète
-  // le verrouillage déclaré côté iOS (Info.plist) pour Android.
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+  // L'orientation n'est PLUS forcée ici. Cet appel verrouillait tout
+  // l'app en portrait haut, iPad compris — et écrasait même le portrait
+  // inversé qu'`Info.plist` autorisait déjà sur iPad, qui ne tournait
+  // donc dans aucun sens. Une tablette qu'on retourne et qui reste
+  // bloquée passe pour une app cassée.
+  //
+  // Le verrouillage vit maintenant là où il appartient, par plateforme :
+  // `Info.plist` (iPhone portrait, iPad libre) et le manifeste Android.
   // Nunito est bundlée dans assets/google_fonts/ : on interdit tout
   // téléchargement de police au runtime (important sur les forfaits
   // data limités, notamment en Afrique de l'Ouest).

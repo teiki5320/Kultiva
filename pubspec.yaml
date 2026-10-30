@@ -77,8 +77,21 @@ dependencies:
   # WebView pour les fiches tuto HTML
   webview_flutter: ^4.10.0
 
-  # Crash reporting (erreurs + stack traces envoyés à Sentry)
-  sentry_flutter: ^8.3.0
+  # Crash reporting (erreurs + stack traces envoyés à Sentry).
+  #
+  # Monté 8 → 9 le 30/10/2026. L'app n'utilise que `SentryFlutter.init`,
+  # `options.dsn`, `tracesSampleRate` et `captureException(withScope:)`,
+  # inchangés entre les deux.
+  #
+  # ⚠️ **Ne pas passer en 10 tel quel.** La 10 abandonne CocoaPods pour
+  # Swift Package Manager (`darwin/sentry_flutter/Package.swift`, plus
+  # aucun podspec) : le pod disparaît du `Podfile.lock` et le crash
+  # reporting iOS cesse d'être compilé dans l'app, sans que rien
+  # n'échoue bruyamment. La montée demande d'activer SPM
+  # (`flutter config --enable-swift-package-manager`), de migrer le
+  # projet Xcode et de revalider Xcode Cloud — une migration de système
+  # de build, pas une montée de dépendance.
+  sentry_flutter: ^9.30.0
 
   # Demande de note sur les stores après un moment positif
   in_app_review: ^2.0.9

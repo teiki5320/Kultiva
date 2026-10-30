@@ -53,15 +53,20 @@
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
-		<!-- Kultiva est verrouillée en portrait (app mobile fr-FR, aucune vue paysage). -->
+		<!-- Kultiva est verrouillée en portrait sur iPhone. -->
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 		</array>
+		<!-- L'iPad tourne : une tablette qu'on retourne et qui reste
+		     bloquée passe pour une app cassée. L'iPhone, lui, reste en
+		     portrait (tableau ci-dessus). -->
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
 		<!-- Requis avec un verrouillage portrait : sans plein écran
 	     déclaré, App Store Connect exige les 4 orientations iPad pour
