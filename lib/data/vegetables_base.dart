@@ -31,7 +31,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '70 à 90 jours (plein champ)',
       'autumn': '100 à 120 jours (variétés tardives)',
     },
-    imageAsset: 'assets/images/vegetables/tomate.png',
+    imageAsset: 'assets/images/vegetables/tomate.webp',
     densityPerSqFt: 1,
   ),
 
@@ -60,7 +60,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '90 à 110 jours',
       'autumn': '100 à 120 jours (variétés de garde)',
     },
-    imageAsset: 'assets/images/vegetables/carotte.png',
+    imageAsset: 'assets/images/vegetables/carotte.webp',
     densityPerSqFt: 9,
   ),
 
@@ -88,7 +88,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '60 à 75 jours (semis en avril)',
       'summer': '50 à 65 jours',
     },
-    imageAsset: 'assets/images/vegetables/courgette.png',
+    imageAsset: 'assets/images/vegetables/courgette.webp',
     densityPerSqFt: 1,
   ),
 
@@ -117,7 +117,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '40 à 55 jours',
       'autumn': '55 à 75 jours',
     },
-    imageAsset: 'assets/images/vegetables/laitue.png',
+    imageAsset: 'assets/images/vegetables/laitue.webp',
     densityPerSqFt: 4,
     // Audit 2026 : range pour laitue pommée/butterhead. Baby leaf =
     // 10-12 cm si culture serrée, romaine = 22-25 cm.
@@ -147,7 +147,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 90 jours (semis sous abri en avril)',
       'summer': '60 à 75 jours (pleine terre)',
     },
-    imageAsset: 'assets/images/vegetables/haricot.png',
+    imageAsset: 'assets/images/vegetables/haricot.webp',
     densityPerSqFt: 4,
   ),
 
@@ -175,7 +175,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '80 à 90 jours (semis précoce sous abri chauffé)',
       'summer': '70 à 85 jours (repiquage en plein champ)',
     },
-    imageAsset: 'assets/images/vegetables/aubergine.png',
+    imageAsset: 'assets/images/vegetables/aubergine.webp',
     densityPerSqFt: 1,
   ),
 
@@ -203,7 +203,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '80 à 90 jours (semis précoce sous abri chauffé)',
       'summer': '70 à 85 jours (repiquage pleine terre)',
     },
-    imageAsset: 'assets/images/vegetables/poivron.png',
+    imageAsset: 'assets/images/vegetables/poivron.webp',
     densityPerSqFt: 1,
   ),
 
@@ -232,7 +232,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '50 à 60 jours (semis de septembre)',
       'winter': '60 à 70 jours (sous abri, variétés rustiques)',
     },
-    imageAsset: 'assets/images/vegetables/epinard.png',
+    imageAsset: 'assets/images/vegetables/epinard.webp',
     densityPerSqFt: 9,
   ),
 
@@ -261,7 +261,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '90 à 120 jours (plantation de bulbilles)',
       'autumn': '150 à 180 jours (semis d\'automne, récolte au printemps)',
     },
-    imageAsset: 'assets/images/vegetables/oignon.png',
+    imageAsset: 'assets/images/vegetables/oignon.webp',
     densityPerSqFt: 16,
   ),
 
@@ -289,7 +289,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '60 à 70 jours (semis sous abri en mars-avril)',
       'summer': '50 à 60 jours (semis direct en mai-juin)',
     },
-    imageAsset: 'assets/images/vegetables/basilic.png',
+    imageAsset: 'assets/images/vegetables/basilic.webp',
     densityPerSqFt: 4,
   ),
 
@@ -321,7 +321,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '60 à 70 jours (semis sous abri en avril)',
       'summer': '50 à 60 jours (pleine terre)',
     },
-    imageAsset: 'assets/images/vegetables/concombre.png',
+    imageAsset: 'assets/images/vegetables/concombre.webp',
     densityPerSqFt: 1,
   ),
 
@@ -349,7 +349,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '90 à 100 jours (semis précoce sous abri chauffé)',
       'summer': '80 à 90 jours (repiquage pleine terre)',
     },
-    imageAsset: 'assets/images/vegetables/piment.png',
+    imageAsset: 'assets/images/vegetables/piment.webp',
     densityPerSqFt: 1,
   ),
 
@@ -378,7 +378,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
           '240 à 270 jours (ail blanc et violet, planté en octobre-novembre)',
       'spring': '180 à 210 jours (ail rose, planté en février-mars)',
     },
-    imageAsset: 'assets/images/vegetables/ail.png',
+    imageAsset: 'assets/images/vegetables/ail.webp',
     densityPerSqFt: 16,
   ),
 
@@ -406,7 +406,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 90 jours (variétés précoces, plantation en mars)',
       'summer': '90 à 120 jours (variétés de conservation)',
     },
-    imageAsset: 'assets/images/vegetables/pomme_de_terre.png',
+    imageAsset: 'assets/images/vegetables/pomme_de_terre.webp',
     densityPerSqFt: 4,
   ),
 
@@ -435,7 +435,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '25 à 35 jours',
       'autumn': '30 à 40 jours',
     },
-    imageAsset: 'assets/images/vegetables/radis.png',
+    imageAsset: 'assets/images/vegetables/radis.webp',
     densityPerSqFt: 16,
   ),
 
@@ -464,7 +464,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '100 à 120 jours (variétés d\'automne)',
       'autumn': '110 à 130 jours (variétés d\'hiver, résistantes au gel)',
     },
-    imageAsset: 'assets/images/vegetables/chou_pomme.png',
+    imageAsset: 'assets/images/vegetables/chou_pomme.webp',
     densityPerSqFt: 1,
   ),
 
@@ -492,7 +492,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '60 à 80 jours (semis de février-mars)',
       'autumn': '80 à 90 jours (semis de septembre, variétés à grain rond)',
     },
-    imageAsset: 'assets/images/vegetables/petit_pois.png',
+    imageAsset: 'assets/images/vegetables/petit_pois.webp',
     densityPerSqFt: 4,
   ),
 
@@ -521,7 +521,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '120 à 150 jours (poireau d\'automne, semis de mai)',
       'winter': '180 à 210 jours (récolte en place, variétés rustiques)',
     },
-    imageAsset: 'assets/images/vegetables/poireau.png',
+    imageAsset: 'assets/images/vegetables/poireau.webp',
     densityPerSqFt: 36,
   ),
 
@@ -549,7 +549,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '130 à 150 jours (plantation sous abri en avril)',
       'summer': '90 à 120 jours (pleine terre, climat chaud)',
     },
-    imageAsset: 'assets/images/vegetables/patate_douce.png',
+    imageAsset: 'assets/images/vegetables/patate_douce.webp',
     densityPerSqFt: 2,
   ),
 
@@ -577,7 +577,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 80 jours (semis sous abri, climat tempéré)',
       'summer': '60 à 70 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/gombo.png',
+    imageAsset: 'assets/images/vegetables/gombo.webp',
     densityPerSqFt: 1,
   ),
   // ════════════════════════════════════════════════════════════════════════
@@ -608,7 +608,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '90 à 110 jours (plantation de février-mars)',
       'autumn': '100 à 120 jours (plantation d\'octobre, récolte en été)',
     },
-    imageAsset: 'assets/images/vegetables/echalote.png',
+    imageAsset: 'assets/images/vegetables/echalote.webp',
     densityPerSqFt: 16,
   ),
 
@@ -637,7 +637,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '90 à 110 jours (variétés d\'automne)',
       'autumn': '100 à 120 jours (variétés d\'hiver, climat doux)',
     },
-    imageAsset: 'assets/images/vegetables/chou_fleur.png',
+    imageAsset: 'assets/images/vegetables/chou_fleur.webp',
     densityPerSqFt: 1,
   ),
 
@@ -666,7 +666,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '80 à 100 jours (variétés d\'automne)',
       'autumn': '90 à 110 jours (variétés tardives)',
     },
-    imageAsset: 'assets/images/vegetables/brocoli.png',
+    imageAsset: 'assets/images/vegetables/brocoli.webp',
     densityPerSqFt: 1,
   ),
 
@@ -694,7 +694,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '100 à 120 jours (semis sous abri en avril)',
       'summer': '90 à 110 jours (semis direct en mai)',
     },
-    imageAsset: 'assets/images/vegetables/courge_butternut.png',
+    imageAsset: 'assets/images/vegetables/courge_butternut.webp',
     densityPerSqFt: 1,
   ),
 
@@ -722,7 +722,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '120 à 130 jours (semis sous abri en avril)',
       'summer': '100 à 120 jours (semis direct en mai-juin)',
     },
-    imageAsset: 'assets/images/vegetables/potiron.png',
+    imageAsset: 'assets/images/vegetables/potiron.webp',
     densityPerSqFt: 1,
   ),
 
@@ -750,7 +750,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '90 à 100 jours (semis sous abri en mars-avril)',
       'summer': '75 à 90 jours (pleine terre, climat chaud)',
     },
-    imageAsset: 'assets/images/vegetables/melon.png',
+    imageAsset: 'assets/images/vegetables/melon.webp',
     densityPerSqFt: 1,
   ),
 
@@ -778,7 +778,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '100 à 110 jours (semis sous abri en mars-avril)',
       'summer': '80 à 95 jours (pleine terre, plein soleil)',
     },
-    imageAsset: 'assets/images/vegetables/pasteque.png',
+    imageAsset: 'assets/images/vegetables/pasteque.webp',
     densityPerSqFt: 1,
   ),
 
@@ -807,7 +807,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '60 à 75 jours (pleine production)',
       'autumn': '75 à 90 jours (variétés remontantes, fin de saison)',
     },
-    imageAsset: 'assets/images/vegetables/fraise.png',
+    imageAsset: 'assets/images/vegetables/fraise.webp',
     densityPerSqFt: 4,
   ),
 
@@ -836,7 +836,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '50 à 65 jours (semis de juillet-août)',
       'autumn': '60 à 75 jours (variétés de garde)',
     },
-    imageAsset: 'assets/images/vegetables/navet.png',
+    imageAsset: 'assets/images/vegetables/navet.webp',
     densityPerSqFt: 4,
   ),
 
@@ -865,7 +865,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '60 à 75 jours (semis échelonnés)',
       'autumn': '70 à 80 jours (récolte de conservation)',
     },
-    imageAsset: 'assets/images/vegetables/betterave.png',
+    imageAsset: 'assets/images/vegetables/betterave.webp',
     densityPerSqFt: 4,
   ),
 
@@ -893,7 +893,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '90 à 100 jours (semis sous abri en avril)',
       'summer': '70 à 85 jours (semis direct en mai-juin)',
     },
-    imageAsset: 'assets/images/vegetables/mais.png',
+    imageAsset: 'assets/images/vegetables/mais.webp',
     densityPerSqFt: 1,
   ),
 
@@ -922,7 +922,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '70 à 80 jours (récolte en continu)',
       'autumn': '80 à 90 jours (semis d\'été, récolte d\'automne)',
     },
-    imageAsset: 'assets/images/vegetables/persil.png',
+    imageAsset: 'assets/images/vegetables/persil.webp',
     densityPerSqFt: 4,
   ),
 
@@ -951,7 +951,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '40 à 45 jours (monte vite en graines)',
       'autumn': '50 à 60 jours (semis de septembre)',
     },
-    imageAsset: 'assets/images/vegetables/coriandre.png',
+    imageAsset: 'assets/images/vegetables/coriandre.webp',
     densityPerSqFt: 4,
   ),
 
@@ -979,7 +979,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '80 à 90 jours (semis de mars, première coupe)',
       'summer': '80 à 100 jours (vivace, récolte en continu)',
     },
-    imageAsset: 'assets/images/vegetables/ciboulette.png',
+    imageAsset: 'assets/images/vegetables/ciboulette.webp',
     densityPerSqFt: 36,
   ),
 
@@ -1007,7 +1007,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '60 à 75 jours (bouturage ou division, première coupe)',
       'summer': '60 à 90 jours (vivace, récolte en continu)',
     },
-    imageAsset: 'assets/images/vegetables/menthe.png',
+    imageAsset: 'assets/images/vegetables/menthe.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1035,7 +1035,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 90 jours (semis de mars, première récolte)',
       'summer': '90 à 120 jours (vivace, récolte en continu dès la 1re année)',
     },
-    imageAsset: 'assets/images/vegetables/thym.png',
+    imageAsset: 'assets/images/vegetables/thym.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1063,7 +1063,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '100 à 110 jours (semis d\'octobre-novembre, climat doux)',
       'spring': '80 à 100 jours (semis de février-mars)',
     },
-    imageAsset: 'assets/images/vegetables/feve.png',
+    imageAsset: 'assets/images/vegetables/feve.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1091,7 +1091,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'spring': '240 à 300 jours (plantation en début de saison des pluies)',
     },
-    imageAsset: 'assets/images/vegetables/igname.png',
+    imageAsset: 'assets/images/vegetables/igname.webp',
     densityPerSqFt: 2,
   ),
 
@@ -1118,7 +1118,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'spring': '270 à 365 jours (bouturage en début de saison des pluies)',
     },
-    imageAsset: 'assets/images/vegetables/manioc.png',
+    imageAsset: 'assets/images/vegetables/manioc.webp',
     densityPerSqFt: 2,
   ),
 
@@ -1147,7 +1147,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 90 jours (semis en climat chaud)',
       'summer': '60 à 75 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/niebe.png',
+    imageAsset: 'assets/images/vegetables/niebe.webp',
     densityPerSqFt: 4,
   ),
   // ════════════════════════════════════════════════════════════════════════
@@ -1176,7 +1176,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
           '150 à 180 jours (plantation d\'oeilletons au printemps, 1re année)',
       'summer': '90 à 120 jours (vivace installée, à partir de la 2e année)',
     },
-    imageAsset: 'assets/images/vegetables/artichaut.png',
+    imageAsset: 'assets/images/vegetables/artichaut.webp',
     densityPerSqFt: 1,
   ),
 
@@ -1202,7 +1202,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '55 à 60 jours (semis de mai-juin)',
       'autumn': '60 à 70 jours (semis de juillet-août)',
     },
-    imageAsset: 'assets/images/vegetables/blette.png',
+    imageAsset: 'assets/images/vegetables/blette.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1227,7 +1227,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '120 à 130 jours (semis sous abri en février-mars)',
       'summer': '100 à 120 jours (repiquage en mai)',
     },
-    imageAsset: 'assets/images/vegetables/celeri.png',
+    imageAsset: 'assets/images/vegetables/celeri.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1253,7 +1253,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '45 à 55 jours (semis de septembre-octobre)',
       'winter': '50 à 60 jours (récolte sous abri ou en place)',
     },
-    imageAsset: 'assets/images/vegetables/mache.png',
+    imageAsset: 'assets/images/vegetables/mache.webp',
     densityPerSqFt: 9,
   ),
 
@@ -1278,7 +1278,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '25 à 35 jours (semis de mars-avril)',
       'autumn': '30 à 40 jours (semis de septembre)',
     },
-    imageAsset: 'assets/images/vegetables/roquette.png',
+    imageAsset: 'assets/images/vegetables/roquette.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1304,7 +1304,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '65 à 80 jours (semis de juin pour récolte d\'automne)',
       'autumn': '70 à 90 jours (récolte améliorée par le gel)',
     },
-    imageAsset: 'assets/images/vegetables/chou_kale.png',
+    imageAsset: 'assets/images/vegetables/chou_kale.webp',
     densityPerSqFt: 2,
   ),
 
@@ -1329,7 +1329,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '120 à 130 jours (semis en mai, climat tempéré chaud)',
       'summer': '90 à 110 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/arachide.png',
+    imageAsset: 'assets/images/vegetables/arachide.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1354,7 +1354,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '140 à 150 jours (semis en mai, climat tempéré chaud)',
       'summer': '120 à 140 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/bissap.png',
+    imageAsset: 'assets/images/vegetables/bissap.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1380,7 +1380,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '110 à 120 jours (semis en mai, climat tempéré chaud)',
       'summer': '90 à 105 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/sesame.png',
+    imageAsset: 'assets/images/vegetables/sesame.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1404,7 +1404,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'spring': '240 à 300 jours (plantation en mars-avril, récolte en hiver)',
     },
-    imageAsset: 'assets/images/vegetables/gingembre.png',
+    imageAsset: 'assets/images/vegetables/gingembre.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1430,7 +1430,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
           '2 à 3 ans avant la première récolte (griffes plantées au printemps)',
       'summer': 'Récolte printanière annuelle dès la 3e année (avril à juin)',
     },
-    imageAsset: 'assets/images/vegetables/asperge.png',
+    imageAsset: 'assets/images/vegetables/asperge.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1456,7 +1456,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '80 à 95 jours (semis direct en mai-juin)',
       'autumn': '90 à 110 jours (semis de juillet)',
     },
-    imageAsset: 'assets/images/vegetables/fenouil.png',
+    imageAsset: 'assets/images/vegetables/fenouil.webp',
     densityPerSqFt: 1,
   ),
 
@@ -1482,7 +1482,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
           '150 à 180 jours (semis en mai, arrachage en automne, forçage en cave)',
       'autumn': '160 à 190 jours (forçage inclus, récolte hivernale)',
     },
-    imageAsset: 'assets/images/vegetables/endive.png',
+    imageAsset: 'assets/images/vegetables/endive.webp',
   ),
 
   Vegetable(
@@ -1506,7 +1506,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '130 à 150 jours (semis de mars-avril)',
       'summer': '120 à 140 jours (semis de mai, récolte d\'automne-hiver)',
     },
-    imageAsset: 'assets/images/vegetables/chou_bruxelles.png',
+    imageAsset: 'assets/images/vegetables/chou_bruxelles.webp',
     densityPerSqFt: 1,
   ),
 
@@ -1531,7 +1531,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '100 à 110 jours (semis sous abri en avril)',
       'summer': '90 à 105 jours (semis direct en mai)',
     },
-    imageAsset: 'assets/images/vegetables/potimarron.png',
+    imageAsset: 'assets/images/vegetables/potimarron.webp',
     densityPerSqFt: 1,
   ),
 
@@ -1557,7 +1557,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '60 à 80 jours (vivace, récolte en continu)',
       'autumn': '70 à 90 jours (dernières coupes avant l\'hiver)',
     },
-    imageAsset: 'assets/images/vegetables/oseille.png',
+    imageAsset: 'assets/images/vegetables/oseille.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1582,7 +1582,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '210 à 270 jours (plantation en saison chaude et humide)',
       'summer': '180 à 240 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/taro.png',
+    imageAsset: 'assets/images/vegetables/taro.webp',
     densityPerSqFt: 2,
   ),
 
@@ -1607,7 +1607,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 90 jours (semis en mai, feuilles récoltées tôt)',
       'summer': '60 à 75 jours (saison chaude, croissance rapide)',
     },
-    imageAsset: 'assets/images/vegetables/amarante.png',
+    imageAsset: 'assets/images/vegetables/amarante.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1632,7 +1632,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '110 à 120 jours (semis en mai, climat tempéré chaud)',
       'summer': '90 à 105 jours (saison des pluies, Afrique de l\'Ouest)',
     },
-    imageAsset: 'assets/images/vegetables/sorgho.png',
+    imageAsset: 'assets/images/vegetables/sorgho.webp',
     densityPerSqFt: 2,
   ),
 
@@ -1661,7 +1661,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '60 à 75 jours',
       'summer': '50 à 65 jours',
     },
-    imageAsset: 'assets/images/vegetables/cornichon.png',
+    imageAsset: 'assets/images/vegetables/cornichon.webp',
     densityPerSqFt: 1,
   ),
 
@@ -1689,7 +1689,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '150 à 180 jours',
       'autumn': '120 à 150 jours',
     },
-    imageAsset: 'assets/images/vegetables/panais.png',
+    imageAsset: 'assets/images/vegetables/panais.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1717,7 +1717,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '100 à 130 jours',
       'autumn': '90 à 110 jours',
     },
-    imageAsset: 'assets/images/vegetables/rutabaga.png',
+    imageAsset: 'assets/images/vegetables/rutabaga.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1746,7 +1746,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '180 à 210 jours',
       'winter': '200 à 240 jours',
     },
-    imageAsset: 'assets/images/vegetables/topinambour.png',
+    imageAsset: 'assets/images/vegetables/topinambour.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -1773,7 +1773,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': '120 à 150 jours',
       'winter': '150 à 180 jours',
     },
-    imageAsset: 'assets/images/vegetables/salsifis.png',
+    imageAsset: 'assets/images/vegetables/salsifis.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1801,7 +1801,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '70 à 90 jours',
       'autumn': '80 à 100 jours',
     },
-    imageAsset: 'assets/images/vegetables/radis_noir.png',
+    imageAsset: 'assets/images/vegetables/radis_noir.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1830,7 +1830,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '60 à 75 jours',
       'autumn': '70 à 90 jours',
     },
-    imageAsset: 'assets/images/vegetables/chou_rave.png',
+    imageAsset: 'assets/images/vegetables/chou_rave.webp',
     densityPerSqFt: 2,
   ),
 
@@ -1858,7 +1858,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '50 à 70 jours',
       'autumn': '60 à 80 jours',
     },
-    imageAsset: 'assets/images/vegetables/cresson.png',
+    imageAsset: 'assets/images/vegetables/cresson.webp',
     densityPerSqFt: 9,
   ),
 
@@ -1886,7 +1886,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '30 à 45 jours',
       'autumn': '40 à 55 jours',
     },
-    imageAsset: 'assets/images/vegetables/pak_choi.png',
+    imageAsset: 'assets/images/vegetables/pak_choi.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1913,7 +1913,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': '40 à 55 jours',
     },
-    imageAsset: 'assets/images/vegetables/pourpier.png',
+    imageAsset: 'assets/images/vegetables/pourpier.webp',
     densityPerSqFt: 4,
   ),
 
@@ -1941,7 +1941,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': '60 à 80 jours',
       'autumn': '70 à 90 jours',
     },
-    imageAsset: 'assets/images/vegetables/chou_chinois.png',
+    imageAsset: 'assets/images/vegetables/chou_chinois.webp',
     densityPerSqFt: 1,
   ),
 
@@ -1972,7 +1972,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
       'winter': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/romarin.png',
+    imageAsset: 'assets/images/vegetables/romarin.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2001,7 +2001,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte permanente",
       'autumn': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/sauge.png',
+    imageAsset: 'assets/images/vegetables/sauge.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2030,7 +2030,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte permanente",
       'autumn': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/origan.png',
+    imageAsset: 'assets/images/vegetables/origan.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2060,7 +2060,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte permanente",
       'autumn': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/estragon.png',
+    imageAsset: 'assets/images/vegetables/estragon.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2088,7 +2088,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "70 à 90 jours",
       'autumn': "Récolte continue jusqu'aux gelées",
     },
-    imageAsset: 'assets/images/vegetables/sarriette.png',
+    imageAsset: 'assets/images/vegetables/sarriette.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2116,7 +2116,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "40 à 60 jours",
       'summer': "30 à 50 jours",
     },
-    imageAsset: 'assets/images/vegetables/aneth.png',
+    imageAsset: 'assets/images/vegetables/aneth.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2144,7 +2144,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "45 à 60 jours",
       'autumn': "50 à 70 jours",
     },
-    imageAsset: 'assets/images/vegetables/cerfeuil.png',
+    imageAsset: 'assets/images/vegetables/cerfeuil.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2173,7 +2173,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte permanente",
       'autumn': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/melisse.png',
+    imageAsset: 'assets/images/vegetables/melisse.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2201,7 +2201,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte permanente",
       'autumn': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/verveine.png',
+    imageAsset: 'assets/images/vegetables/verveine.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2231,7 +2231,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Récolte permanente",
       'winter': "Récolte permanente",
     },
-    imageAsset: 'assets/images/vegetables/laurier_sauce.png',
+    imageAsset: 'assets/images/vegetables/laurier_sauce.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2257,7 +2257,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "70 à 90 jours",
     },
-    imageAsset: 'assets/images/vegetables/camomille.png',
+    imageAsset: 'assets/images/vegetables/camomille.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2285,7 +2285,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "60 à 80 jours",
       'autumn': "Récolte continue",
     },
-    imageAsset: 'assets/images/vegetables/marjolaine.png',
+    imageAsset: 'assets/images/vegetables/marjolaine.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2312,7 +2312,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "100 à 110 jours",
     },
-    imageAsset: 'assets/images/vegetables/lentille.png',
+    imageAsset: 'assets/images/vegetables/lentille.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2339,7 +2339,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "100 à 120 jours",
     },
-    imageAsset: 'assets/images/vegetables/pois_chiche.png',
+    imageAsset: 'assets/images/vegetables/pois_chiche.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2367,7 +2367,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "60 à 75 jours",
       'summer': "55 à 70 jours",
     },
-    imageAsset: 'assets/images/vegetables/pois_mange_tout.png',
+    imageAsset: 'assets/images/vegetables/pois_mange_tout.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2395,7 +2395,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "60 à 75 jours",
       'summer': "50 à 65 jours",
     },
-    imageAsset: 'assets/images/vegetables/haricot_beurre.png',
+    imageAsset: 'assets/images/vegetables/haricot_beurre.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2424,7 +2424,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte en juin-juillet",
       'autumn': "Récolte des remontants en septembre-octobre",
     },
-    imageAsset: 'assets/images/vegetables/framboisier.png',
+    imageAsset: 'assets/images/vegetables/framboisier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2450,7 +2450,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte en juillet",
     },
-    imageAsset: 'assets/images/vegetables/cassissier.png',
+    imageAsset: 'assets/images/vegetables/cassissier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2476,7 +2476,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte en juin-juillet",
     },
-    imageAsset: 'assets/images/vegetables/groseillier.png',
+    imageAsset: 'assets/images/vegetables/groseillier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2502,7 +2502,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à septembre",
     },
-    imageAsset: 'assets/images/vegetables/murier.png',
+    imageAsset: 'assets/images/vegetables/murier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2528,7 +2528,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à septembre",
     },
-    imageAsset: 'assets/images/vegetables/myrtillier.png',
+    imageAsset: 'assets/images/vegetables/myrtillier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2555,7 +2555,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Récolte d'avril à juin",
       'summer': "Récolte de juillet (plant établi)",
     },
-    imageAsset: 'assets/images/vegetables/rhubarbe.png',
+    imageAsset: 'assets/images/vegetables/rhubarbe.webp',
     densityPerSqFt: 1,
   ),
 
@@ -2583,7 +2583,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "21 à 35 jours",
       'autumn': "21 à 35 jours",
     },
-    imageAsset: 'assets/images/vegetables/pleurote.png',
+    imageAsset: 'assets/images/vegetables/pleurote.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2610,7 +2610,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Récolte d'avril à juin",
       'autumn': "Récolte de septembre à novembre",
     },
-    imageAsset: 'assets/images/vegetables/shiitake.png',
+    imageAsset: 'assets/images/vegetables/shiitake.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2638,7 +2638,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "21 à 35 jours",
       'winter': "Culture toute l'année en cave",
     },
-    imageAsset: 'assets/images/vegetables/champignon_paris.png',
+    imageAsset: 'assets/images/vegetables/champignon_paris.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2666,7 +2666,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Variétés précoces de juillet à août",
       'autumn': "Variétés de saison de septembre à novembre",
     },
-    imageAsset: 'assets/images/vegetables/pommier.png',
+    imageAsset: 'assets/images/vegetables/pommier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2693,7 +2693,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Variétés précoces en août",
       'autumn': "Variétés de saison de septembre à octobre",
     },
-    imageAsset: 'assets/images/vegetables/poirier.png',
+    imageAsset: 'assets/images/vegetables/poirier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2720,7 +2720,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à septembre selon la variété",
     },
-    imageAsset: 'assets/images/vegetables/prunier.png',
+    imageAsset: 'assets/images/vegetables/prunier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2747,7 +2747,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte en juin-juillet",
     },
-    imageAsset: 'assets/images/vegetables/cerisier.png',
+    imageAsset: 'assets/images/vegetables/cerisier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2773,7 +2773,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte en juillet",
     },
-    imageAsset: 'assets/images/vegetables/abricotier.png',
+    imageAsset: 'assets/images/vegetables/abricotier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2799,7 +2799,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Récolte de juillet à août",
     },
-    imageAsset: 'assets/images/vegetables/pecher.png',
+    imageAsset: 'assets/images/vegetables/pecher.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2826,7 +2826,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Figues fleurs en juin-juillet",
       'autumn': "Récolte principale en août-octobre",
     },
-    imageAsset: 'assets/images/vegetables/figuier.png',
+    imageAsset: 'assets/images/vegetables/figuier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2853,7 +2853,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Récolte de fin août à septembre",
       'autumn': "Récolte de septembre à octobre",
     },
-    imageAsset: 'assets/images/vegetables/noisetier.png',
+    imageAsset: 'assets/images/vegetables/noisetier.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2881,7 +2881,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Variétés précoces en août",
       'autumn': "Récolte principale de septembre à octobre",
     },
-    imageAsset: 'assets/images/vegetables/vigne.png',
+    imageAsset: 'assets/images/vegetables/vigne.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2907,7 +2907,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'autumn': "Récolte d'octobre à novembre",
     },
-    imageAsset: 'assets/images/vegetables/kiwi.png',
+    imageAsset: 'assets/images/vegetables/kiwi.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -2934,7 +2934,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Floraison de juin à octobre",
       'summer': "Floraison continue",
     },
-    imageAsset: 'assets/images/vegetables/capucine.png',
+    imageAsset: 'assets/images/vegetables/capucine.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2962,7 +2962,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Floraison de mai à novembre",
       'summer': "Floraison continue",
     },
-    imageAsset: 'assets/images/vegetables/souci.png',
+    imageAsset: 'assets/images/vegetables/souci.webp',
     densityPerSqFt: 4,
   ),
 
@@ -2990,7 +2990,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Floraison de mai à octobre",
       'summer': "Floraison continue",
     },
-    imageAsset: 'assets/images/vegetables/bourrache.png',
+    imageAsset: 'assets/images/vegetables/bourrache.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3019,7 +3019,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'autumn': "Floraison de septembre à novembre",
       'winter': "Floraison hivernale au sud",
     },
-    imageAsset: 'assets/images/vegetables/pensee.png',
+    imageAsset: 'assets/images/vegetables/pensee.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3047,7 +3047,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Floraison de juin à octobre",
       'summer': "Floraison continue",
     },
-    imageAsset: 'assets/images/vegetables/oeillet_inde.png',
+    imageAsset: 'assets/images/vegetables/oeillet_inde.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3074,7 +3074,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Floraison de juillet à septembre",
     },
-    imageAsset: 'assets/images/vegetables/tournesol.png',
+    imageAsset: 'assets/images/vegetables/tournesol.webp',
     densityPerSqFt: 1,
   ),
 
@@ -3101,7 +3101,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Floraison de juin à octobre",
     },
-    imageAsset: 'assets/images/vegetables/tagete.png',
+    imageAsset: 'assets/images/vegetables/tagete.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3128,7 +3128,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Floraison de juin à août",
     },
-    imageAsset: 'assets/images/vegetables/lavande.png',
+    imageAsset: 'assets/images/vegetables/lavande.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3155,7 +3155,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Floraison de juin à octobre",
     },
-    imageAsset: 'assets/images/vegetables/cosmos.png',
+    imageAsset: 'assets/images/vegetables/cosmos.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3182,7 +3182,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Floraison de juillet à octobre",
     },
-    imageAsset: 'assets/images/vegetables/zinnia.png',
+    imageAsset: 'assets/images/vegetables/zinnia.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3211,7 +3211,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': "Floraison de mai à août",
       'summer': "Floraison continue",
     },
-    imageAsset: 'assets/images/vegetables/bleuet.png',
+    imageAsset: 'assets/images/vegetables/bleuet.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3240,7 +3240,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Enfouir 6 à 8 semaines après semis",
       'autumn': "Enfouir avant les fortes gelées",
     },
-    imageAsset: 'assets/images/vegetables/phacelie.png',
+    imageAsset: 'assets/images/vegetables/phacelie.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3270,7 +3270,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer': "Enfouir 5 à 7 semaines après semis",
       'autumn': "Détruite par les gelées (-5 °C)",
     },
-    imageAsset: 'assets/images/vegetables/moutarde_blanche.png',
+    imageAsset: 'assets/images/vegetables/moutarde_blanche.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3297,7 +3297,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'autumn': "Semer fin août-septembre, enfouir au printemps",
     },
-    imageAsset: 'assets/images/vegetables/trefle_incarnat.png',
+    imageAsset: 'assets/images/vegetables/trefle_incarnat.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3325,7 +3325,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': "Enfouir 6 à 8 semaines après semis",
     },
-    imageAsset: 'assets/images/vegetables/sarrasin.png',
+    imageAsset: 'assets/images/vegetables/sarrasin.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3360,7 +3360,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer':
           "90 à 110 jours (semis aux premières pluies, Afrique de l'Ouest)",
     },
-    imageAsset: 'assets/images/vegetables/mil.png',
+    imageAsset: 'assets/images/vegetables/mil.webp',
     densityPerSqFt: 2,
   ),
 
@@ -3388,7 +3388,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': '60 à 90 jours (semis en début de saison des pluies)',
     },
-    imageAsset: 'assets/images/vegetables/fonio.png',
+    imageAsset: 'assets/images/vegetables/fonio.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3417,7 +3417,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'summer':
           '60 à 90 jours pour les premières feuilles (semis en saison des pluies)',
     },
-    imageAsset: 'assets/images/vegetables/moringa.png',
+    imageAsset: 'assets/images/vegetables/moringa.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3445,7 +3445,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '100 à 120 jours (semis sous abri, climat tempéré chaud)',
       'summer': '80 à 100 jours (pépinière en début de saison des pluies)',
     },
-    imageAsset: 'assets/images/vegetables/aubergine_africaine.png',
+    imageAsset: 'assets/images/vegetables/aubergine_africaine.webp',
     densityPerSqFt: 1,
   ),
 
@@ -3473,7 +3473,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': '40 à 60 jours (saison des pluies, récoltes répétées)',
     },
-    imageAsset: 'assets/images/vegetables/corete.png',
+    imageAsset: 'assets/images/vegetables/corete.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3501,7 +3501,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': '30 à 50 jours (saison des pluies, coupes répétées)',
     },
-    imageAsset: 'assets/images/vegetables/celosie.png',
+    imageAsset: 'assets/images/vegetables/celosie.webp',
     densityPerSqFt: 4,
   ),
 
@@ -3530,7 +3530,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '70 à 90 jours (semis au chaud, climat tempéré)',
       'summer': '50 à 70 jours (saison chaude et humide, récoltes répétées)',
     },
-    imageAsset: 'assets/images/vegetables/baselle.png',
+    imageAsset: 'assets/images/vegetables/baselle.webp',
     densityPerSqFt: 2,
   ),
 
@@ -3558,7 +3558,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
       'spring': '90 à 120 jours (plantation au chaud, climat tempéré)',
       'summer': '60 à 90 jours (climat tropical, touffe établie)',
     },
-    imageAsset: 'assets/images/vegetables/citronnelle.png',
+    imageAsset: 'assets/images/vegetables/citronnelle.webp',
     densityPerSqFt: 1,
   ),
 
@@ -3586,7 +3586,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': '9 à 12 mois du semis aux premiers fruits (climat tropical)',
     },
-    imageAsset: 'assets/images/vegetables/papayer.png',
+    imageAsset: 'assets/images/vegetables/papayer.webp',
   ),
 
   // ──────────────────────────────────────────────────────────────────────
@@ -3614,7 +3614,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     harvestTimeBySeason: {
       'summer': '10 à 14 mois (plantation en début de saison des pluies)',
     },
-    imageAsset: 'assets/images/vegetables/bananier_plantain.png',
+    imageAsset: 'assets/images/vegetables/bananier_plantain.webp',
   ),
 
   // ── Accessoires jardinage ──
