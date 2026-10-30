@@ -24,7 +24,13 @@
 set -e
 
 # ⚠️ Garder synchronisé avec FLUTTER_VERSION dans .github/workflows/ci.yml
-FLUTTER_VERSION="3.41.6"
+# et avec le Flutter installé sur le Mac. Le 30/10/2026, ce pin était
+# resté en 3.41.6 alors que le code avait avancé : `pdf_service.dart`
+# n'y compile plus (13 erreurs d'évaluation de constantes), ce qui
+# faisait échouer la phase de script du Runner — builds 122 et 125
+# rouges, sans rapport apparent avec la cause. Un pin trop vieux casse
+# aussi sûrement qu'un `stable` flottant.
+FLUTTER_VERSION="3.47.3"
 
 echo "🦋 Xcode Cloud — Flutter setup start"
 
