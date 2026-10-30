@@ -11,12 +11,10 @@ un catalogue mi-plat mi-peint. On bascule quand la série est complète.
 
 | Lot | Fait | Reste |
 | --- | ---- | ----- |
-| Légumes (`assets/images/vegetables/`) | 15 | - |
+| Légumes (`assets/images/vegetables/`) | 15 | 115 |
 | Badges (`assets/images/badges/`) | 0 | 50 |
 
-Faits : ail, aubergine, betterave, brocoli, concombre, gombo, haricot,
-laitue, oignon, patate douce, poireau, poivron, pomme de terre,
-potiron, radis.
+Faits : ail, aubergine, betterave, brocoli, concombre, gombo, haricot, laitue, oignon, patate douce, poireau, poivron, pomme de terre, potiron, radis.
 
 ## Style
 
