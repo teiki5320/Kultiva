@@ -33,7 +33,7 @@ class PdfService {
                 children: [
                   pw.Text(
                     '${vegetable.emoji}  ${vegetable.name}',
-                    style: pw.TextStyle(
+                    style: const pw.TextStyle(
                       fontSize: 28,
                       fontWeight: pw.FontWeight.bold,
                     ),
@@ -56,7 +56,7 @@ class PdfService {
               if (vegetable.note != null)
                 pw.Text(
                   vegetable.note!,
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     fontSize: 11,
                     fontStyle: pw.FontStyle.italic,
                     color: PdfColors.grey700,
@@ -70,7 +70,7 @@ class PdfService {
               if (regionData != null) ...[
                 pw.Text(
                   'Calendrier — ${region.label}',
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     fontSize: 16,
                     fontWeight: pw.FontWeight.bold,
                   ),
@@ -103,7 +103,7 @@ class PdfService {
               // Techniques
               pw.Text(
                 'Techniques de culture',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -129,7 +129,7 @@ class PdfService {
                 pw.SizedBox(height: 8),
                 pw.Text(
                   'Compagnonnage',
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     fontSize: 16,
                     fontWeight: pw.FontWeight.bold,
                   ),
@@ -223,7 +223,7 @@ class PdfService {
             children: <pw.Widget>[
               pw.Text(
                 'Récap saison $year',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 28,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -250,7 +250,7 @@ class PdfService {
               pw.SizedBox(height: 24),
               pw.Text(
                 'Top 5 légumes',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -278,7 +278,7 @@ class PdfService {
                       ),
                       pw.Text(
                         '${entry.value} ×',
-                        style: pw.TextStyle(
+                        style: const pw.TextStyle(
                           fontSize: 13,
                           fontWeight: pw.FontWeight.bold,
                         ),
@@ -289,7 +289,7 @@ class PdfService {
               pw.SizedBox(height: 22),
               pw.Text(
                 'Répartition par famille',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -308,7 +308,7 @@ class PdfService {
               pw.SizedBox(height: 22),
               pw.Text(
                 'Détail des cultures',
-                style: pw.TextStyle(
+                style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
                 ),
@@ -390,7 +390,7 @@ class PdfService {
           width: 60,
           child: pw.Text(label,
               style:
-                  pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                  const pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
         ),
         ...List.generate(12, (i) {
           final m = i + 1;
@@ -431,7 +431,7 @@ class PdfService {
             pw.Padding(
               padding: const pw.EdgeInsets.symmetric(vertical: 2),
               child: pw.Text(r[0]!,
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                       fontSize: 10,
                       fontWeight: pw.FontWeight.bold,
                       color: PdfColors.grey700)),
@@ -495,7 +495,7 @@ class _Stat extends pw.StatelessWidget {
             pw.SizedBox(height: 4),
             pw.Text(
               value,
-              style: pw.TextStyle(
+              style: const pw.TextStyle(
                 fontSize: 22,
                 fontWeight: pw.FontWeight.bold,
               ),

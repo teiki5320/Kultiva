@@ -117,7 +117,7 @@ void main() {
       // L'information n'était portée que par la couleur grisée, qu'un
       // lecteur d'écran ne voit pas.
       await tester.pumpWidget(_host(
-        PoussidexBadgesGrid(unlocked: const <String>{}),
+        const PoussidexBadgesGrid(unlocked: <String>{}),
       ));
       await tester.pump();
       expect(
