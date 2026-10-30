@@ -79,16 +79,20 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                     top: 8,
                     left: 8,
                     child: SafeArea(
-                      child: GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.25),
-                            shape: BoxShape.circle,
+                      child: Semantics(
+                        label: 'Fermer le calendrier',
+                        button: true,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.25),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.arrow_back,
+                                color: Colors.white, size: 20),
                           ),
-                          child: const Icon(Icons.arrow_back,
-                              color: Colors.white, size: 20),
                         ),
                       ),
                     ),
@@ -98,16 +102,20 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                       top: 8,
                       right: 8,
                       child: SafeArea(
-                        child: GestureDetector(
-                          onTap: () => setState(() => _filterMonth = null),
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.25),
-                              shape: BoxShape.circle,
+                        child: Semantics(
+                          label: 'Afficher tous les mois',
+                          button: true,
+                          child: GestureDetector(
+                            onTap: () => setState(() => _filterMonth = null),
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.25),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.filter_alt_off,
+                                  color: Colors.white, size: 20),
                             ),
-                            child: const Icon(Icons.filter_alt_off,
-                                color: Colors.white, size: 20),
                           ),
                         ),
                       ),
@@ -216,20 +224,25 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                         return DataRow(
                           cells: [
                             DataCell(
-                              GestureDetector(
-                                onTap: () => _openVegetable(veg),
-                                child: SizedBox(
-                                  width: 120,
-                                  child: Text(
-                                    '${veg.emoji} ${veg.name}',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: KultivaColors.primaryGreen,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: KultivaColors
-                                          .primaryGreen
-                                          .withValues(alpha: 0.3),
+                              Semantics(
+                                label: veg.name,
+                                hint: 'Ouvre sa fiche',
+                                button: true,
+                                child: GestureDetector(
+                                  onTap: () => _openVegetable(veg),
+                                  child: SizedBox(
+                                    width: 120,
+                                    child: Text(
+                                      '${veg.emoji} ${veg.name}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: KultivaColors.primaryGreen,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: KultivaColors
+                                            .primaryGreen
+                                            .withValues(alpha: 0.3),
+                                      ),
                                     ),
                                   ),
                                 ),

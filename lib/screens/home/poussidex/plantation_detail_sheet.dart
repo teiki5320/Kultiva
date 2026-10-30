@@ -468,36 +468,40 @@ class _PhotoGallery extends StatelessWidget {
                   path: path,
                   onRemove: () => onRemove(path),
                 ),
-              GestureDetector(
-                onTap: onAdd,
-                child: Container(
-                  width: 96,
-                  height: 96,
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                      width: 2,
-                      style: BorderStyle.solid,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Icon(Icons.add_a_photo_outlined,
-                          color: KultivaColors.primaryGreen, size: 28),
-                      const SizedBox(height: 4),
-                      Text(
-                        photos.isEmpty ? 'Ajouter' : '+',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: KultivaColors.primaryGreen,
-                        ),
+              Semantics(
+                label: 'Ajouter une photo de ce plant',
+                button: true,
+                child: GestureDetector(
+                  onTap: onAdd,
+                  child: Container(
+                    width: 96,
+                    height: 96,
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: Colors.grey.shade300,
+                        width: 2,
+                        style: BorderStyle.solid,
                       ),
-                    ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Icon(Icons.add_a_photo_outlined,
+                            color: KultivaColors.primaryGreen, size: 28),
+                        const SizedBox(height: 4),
+                        Text(
+                          photos.isEmpty ? 'Ajouter' : '+',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: KultivaColors.primaryGreen,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

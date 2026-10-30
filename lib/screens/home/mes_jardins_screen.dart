@@ -5,6 +5,7 @@ import '../../services/audio_service.dart';
 import '../../services/garden_plan_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/text_scale.dart';
 import '../../widgets/jardins_intro_sheet.dart';
 import 'garden_planner_screen.dart';
 import 'garden_plan_config_sheet.dart';
@@ -180,8 +181,8 @@ class _SoilGardenCard extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Container(
-                width: 56,
-                height: 56,
+                width: scaledHeight(context, 56),
+                height: scaledHeight(context, 56),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.8),

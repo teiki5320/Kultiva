@@ -107,16 +107,20 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                     top: 8,
                     left: 8,
                     child: SafeArea(
-                      child: GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withValues(alpha: 0.25),
-                            shape: BoxShape.circle,
+                      child: Semantics(
+                        label: 'Fermer le calendrier du mois',
+                        button: true,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.25),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.arrow_back,
+                                color: Colors.white, size: 20),
                           ),
-                          child: const Icon(Icons.arrow_back,
-                              color: Colors.white, size: 20),
                         ),
                       ),
                     ),

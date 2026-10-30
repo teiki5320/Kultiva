@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/text_scale.dart';
+
 import '../theme/app_theme.dart';
 import 'petal_animation.dart';
 
@@ -45,7 +47,9 @@ class SeasonHeader extends StatelessWidget {
         bottomRight: Radius.circular(28),
       ),
       child: SizedBox(
-        height: height,
+        // Le bandeau porte deux lignes de texte : sa hauteur doit suivre
+        // le réglage de police du téléphone, sinon elles débordent.
+        height: scaledHeight(context, height),
         width: double.infinity,
         child: Stack(
           fit: StackFit.expand,
