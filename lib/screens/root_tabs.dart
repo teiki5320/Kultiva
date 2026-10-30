@@ -4,7 +4,7 @@ import '../models/plantation.dart';
 import '../services/audio_service.dart';
 import '../services/notification_service.dart';
 import '../services/prefs_service.dart';
-import 'home/my_garden_screen.dart';
+import 'home/mes_jardins_screen.dart';
 import 'home/sow_screen.dart';
 import 'home/tutos_screen.dart';
 import 'home/vegetables_screen.dart';
@@ -14,9 +14,13 @@ import 'home/vegetables_screen.dart';
 class RootTabs extends StatefulWidget {
   const RootTabs({super.key});
 
-  /// Onglet actif (0=Home, 1=Étal, 2=Poussidex, 3=Tutos). Permet aux
-  /// deep-links des tutos HTML (`kultiva://poussidex`, etc.) de basculer
+  /// Onglet actif (0=Home, 1=Cahier, 2=Étal, 3=Tutos). Permet aux
+  /// deep-links des tutos HTML (`kultiva://cahier`, etc.) de basculer
   /// sur l'onglet cible.
+  ///
+  /// Ordre changé le 30/10/2026 : le cahier de culture passe en
+  /// deuxième position, devant l'Étal. C'est l'écran qu'on ouvre tous
+  /// les jours ; le catalogue, on le consulte.
   static final ValueNotifier<int> tabIndex = ValueNotifier<int>(0);
 
   /// Sous-onglet Poussidex demandé par un deep-link ('tamassi',
@@ -30,8 +34,6 @@ class RootTabs extends StatefulWidget {
 
 class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   int _index = 0;
-  final GlobalKey<MyGardenScreenState> _poussidexKey =
-      GlobalKey<MyGardenScreenState>();
 
   @override
   void initState() {
@@ -56,9 +58,6 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     final target = RootTabs.tabIndex.value;
     if (target == _index || !mounted) return;
     setState(() => _index = target);
-    if (target == 2) {
-      _poussidexKey.currentState?.onBecameVisible();
-    }
   }
 
   @override
@@ -93,8 +92,8 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final pages = <Widget>[
       const SowScreen(),
+      const MesJardinsScreen(),
       const VegetablesScreen(),
-      MyGardenScreen(key: _poussidexKey),
       const TutosScreen(),
     ];
     return Scaffold(
@@ -105,9 +104,6 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
           AudioService.instance.play(Sfx.tap);
           setState(() => _index = i);
           RootTabs.tabIndex.value = i;
-          if (i == 2) {
-            _poussidexKey.currentState?.onBecameVisible();
-          }
         },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -116,14 +112,14 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_outlined),
+            activeIcon: Icon(Icons.menu_book),
+            label: 'Cahier',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.storefront_outlined),
             activeIcon: Icon(Icons.storefront),
             label: 'Étal',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.collections_bookmark_outlined),
-            activeIcon: Icon(Icons.collections_bookmark),
-            label: 'Poussidex',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school_outlined),

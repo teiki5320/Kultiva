@@ -63,6 +63,13 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _bootstrap();
     tamassiResetNotifier.addListener(_onTamassiResetExternal);
     RootTabs.poussidexFilter.addListener(_onPoussidexFilterExternal);
+    // Ouvert par un deep-link, l'écran naît après que la section a été
+    // demandée : l'écouteur ne verrait rien. On lit la valeur en cours.
+    if (RootTabs.poussidexFilter.value != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _onPoussidexFilterExternal();
+      });
+    }
     // La collection peut changer depuis une autre page (bouton « Je
     // l'ai planté » sur une fiche légume) : on se recale sur le service
     // plutôt que de garder une copie qui dériverait.

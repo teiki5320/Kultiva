@@ -6,6 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../theme/app_theme.dart';
 import '../root_tabs.dart';
+import 'my_garden_screen.dart';
 
 /// Affiche une fiche tuto HTML (stockée dans assets/tutos/) dans un
 /// WebView plein écran. Intercepte les liens `kultiva://` pour
@@ -105,8 +106,9 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   /// Intercepte les liens `kultiva://<route>` cliqués dans une fiche HTML
   /// et bascule l'app sur l'écran cible. Routes supportées :
   ///   kultiva://home                → onglet Home (semis)
+  ///   kultiva://cahier              → onglet Cahier de culture
   ///   kultiva://vegetables          → onglet Étal
-  ///   kultiva://poussidex           → onglet Poussidex (section Tamassi)
+  ///   kultiva://poussidex           → le Poussidex, ouvert par-dessus
   ///   kultiva://poussidex/badges    → Poussidex section Badges
   ///   kultiva://poussidex/challenges→ Poussidex section Défis
   ///   kultiva://tutos               → onglet Tutos
@@ -119,17 +121,25 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
         Navigator.of(context).pop();
         RootTabs.tabIndex.value = 0;
         return;
-      case 'vegetables':
-      case 'etal':
+      case 'cahier':
+      case 'jardins':
         Navigator.of(context).pop();
         RootTabs.tabIndex.value = 1;
         return;
-      case 'poussidex':
+      case 'vegetables':
+      case 'etal':
         Navigator.of(context).pop();
         RootTabs.tabIndex.value = 2;
+        return;
+      case 'poussidex':
+        // Le Poussidex n'a plus d'onglet depuis le 30/10/2026 : on
+        // l'ouvre par-dessus, comme un écran ordinaire.
         if (segments.isNotEmpty) {
           RootTabs.poussidexFilter.value = segments.first;
         }
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute<void>(builder: (_) => const MyGardenScreen()),
+        );
         return;
       case 'tutos':
         Navigator.of(context).pop();
