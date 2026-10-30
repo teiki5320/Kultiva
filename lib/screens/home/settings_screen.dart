@@ -6,6 +6,7 @@ import '../../models/country.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
 import '../../services/geolocation_service.dart';
+import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../home/tuto_fiche_screen.dart';
@@ -456,6 +457,30 @@ class SettingsScreen extends StatelessWidget {
                             );
                           },
                         ),
+                        const Divider(height: 0, indent: 16),
+                        // Sans compte ni synchronisation, c'est le seul
+                        // moyen de repartir de zéro sans désinstaller
+                        // l'app. D'où la double confirmation : ce que ce
+                        // bouton efface est irrécupérable.
+                        ListTile(
+                          leading: const Icon(
+                            Icons.delete_forever,
+                            color: KultivaColors.terracotta,
+                          ),
+                          title: const Text(
+                            'Effacer mon jardin',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: KultivaColors.terracotta,
+                            ),
+                          ),
+                          subtitle: const Text(
+                            'Plants, badges, défis, jardins et Tamassi — '
+                            'définitif',
+                            style: TextStyle(fontSize: 11),
+                          ),
+                          onTap: () => _confirmErase(context),
+                        ),
                       ],
                     ),
                   ),
@@ -498,10 +523,77 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  /// Suppression de compte (exigence Apple) : confirmation explicite,
-  /// barrière de progression pendant l'appel réseau, puis retour à
-  /// l'écran de connexion. En cas d'échec (edge function non déployée,
-  /// réseau…), un message est affiché et le compte reste intact.
+  /// Efface toutes les données du jardin, après deux confirmations.
+  ///
+  /// Le jardin ne vit que sur l'appareil : il n'y a ni compte ni
+  /// sauvegarde pour le récupérer. La seconde étape demande donc de
+  /// relire ce qui va disparaître, plutôt qu'un simple « OK » réflexe.
+  Future<void> _confirmErase(BuildContext context) async {
+    final first = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Effacer ton jardin ?'),
+        content: const Text(
+          'Tes plants, tes photos, tes badges, tes défis, tes jardins '
+          'et ton Tamassi seront effacés de ce téléphone.\n\n'
+          'Tes réglages (son, thème, région) sont conservés.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Continuer'),
+          ),
+        ],
+      ),
+    );
+    if (first != true || !context.mounted) return;
+
+    final second = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('C\'est définitif'),
+        content: const Text(
+          'Kultiva n\'a pas de compte : rien n\'est sauvegardé ailleurs. '
+          'Une fois effacé, ton jardin ne peut pas être récupéré.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Garder mon jardin'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(
+              foregroundColor: KultivaColors.terracotta,
+            ),
+            child: const Text('Tout effacer'),
+          ),
+        ],
+      ),
+    );
+    if (second != true || !context.mounted) return;
+
+    await PrefsService.instance.clearUserScopedData();
+    // Les photos des plants effacés n'ont plus de référence : la purge
+    // les retire du disque.
+    await PhotoService.purgeOrphans();
+    // Tamassi repart de la sélection du starter, et le tuto du jardin
+    // se rejoue comme à la première ouverture.
+    await PrefsService.instance.setGardenTutorialDone(false);
+    tamassiResetNotifier.value++;
+    if (!context.mounted) return;
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('🧹 Ton jardin a été effacé. À toi de rejouer !'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
 }
 
 class _SectionTitle extends StatelessWidget {
