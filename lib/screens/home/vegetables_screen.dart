@@ -133,8 +133,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               }
             }
             final filtered = _filter(region, favs);
-            final regionData =
-                regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
+            final regionData = regionalCalendar(region,
+                zone: PrefsService.instance.effectiveZone);
             return SafeArea(
               bottom: false,
               child: Column(

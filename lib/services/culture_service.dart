@@ -251,8 +251,7 @@ class CultureService {
     final i = list.indexWhere((c) => c.id == cultureId);
     if (i == -1) return null;
     final existing = list[i].linkedPlantationId;
-    if (existing != null &&
-        PlantationService.instance.byId(existing) != null) {
+    if (existing != null && PlantationService.instance.byId(existing) != null) {
       return existing;
     }
     final plantation = await PlantationService.instance.add(

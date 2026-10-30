@@ -32,7 +32,8 @@ class WateringService {
 
     for (final p in plantations) {
       if (p.vegetableId.isEmpty) continue;
-      final veg = vegetablesBase.where((v) => v.id == p.vegetableId).firstOrNull;
+      final veg =
+          vegetablesBase.where((v) => v.id == p.vegetableId).firstOrNull;
       if (veg == null) continue;
 
       final last = p.wateredAt.isEmpty ? null : p.wateredAt.last;
@@ -41,8 +42,7 @@ class WateringService {
         dryDays: dryDays,
         threshold: veg.effectiveWateringDays,
         rainForecast: rain3d,
-        daysSinceWatering:
-            last == null ? null : now.difference(last).inDays,
+        daysSinceWatering: last == null ? null : now.difference(last).inDays,
       );
 
       final kept = bySpecies[veg.id];

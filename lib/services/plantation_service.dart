@@ -74,8 +74,7 @@ class PlantationService extends ChangeNotifier {
       return;
     }
     _corrupted = false;
-    _plantations = decoded
-      ..sort((a, b) => b.plantedAt.compareTo(a.plantedAt));
+    _plantations = decoded..sort((a, b) => b.plantedAt.compareTo(a.plantedAt));
     notifyListeners();
   }
 
@@ -120,8 +119,9 @@ class PlantationService extends ChangeNotifier {
 
   /// Enregistre un arrosage. C'est le geste le plus fréquent de l'app :
   /// il doit laisser une trace, sinon l'historique du plant est faux.
-  Future<void> water(String id, {DateTime? at}) =>
-      _update(id, (p) => p.copyWith(
+  Future<void> water(String id, {DateTime? at}) => _update(
+      id,
+      (p) => p.copyWith(
             wateredAt: <DateTime>[...p.wateredAt, at ?? DateTime.now()],
           ));
 
@@ -165,8 +165,9 @@ class PlantationService extends ChangeNotifier {
     );
   }
 
-  Future<void> addPhoto(String id, String path) =>
-      _update(id, (p) => p.copyWith(
+  Future<void> addPhoto(String id, String path) => _update(
+      id,
+      (p) => p.copyWith(
             photoPaths: <String>[...p.photoPaths, path],
           ));
 
@@ -176,9 +177,11 @@ class PlantationService extends ChangeNotifier {
   /// du temps où les photos étaient aussi montées dans le cloud : on le
   /// retire de la liste, il n'y a plus de fichier local à effacer.
   Future<void> removePhoto(String id, String path) async {
-    await _update(id, (p) => p.copyWith(
-          photoPaths: p.photoPaths.where((s) => s != path).toList(),
-        ));
+    await _update(
+        id,
+        (p) => p.copyWith(
+              photoPaths: p.photoPaths.where((s) => s != path).toList(),
+            ));
     if (!path.startsWith('http')) {
       await PhotoService.deleteFile(path);
     }

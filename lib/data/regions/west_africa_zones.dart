@@ -78,35 +78,20 @@ const Map<String, ZoneMonths> sahelCalendar = <String, ZoneMonths>{
   ),
 
   // ── Cucurbitacées d'hivernage ───────────────────────────────────────
-  'courge_butternut': (
-    sowingMonths: <int>[6, 7],
-    harvestMonths: <int>[10, 11]
-  ),
+  'courge_butternut': (sowingMonths: <int>[6, 7], harvestMonths: <int>[10, 11]),
   'potiron': (sowingMonths: <int>[6, 7], harvestMonths: <int>[10, 11]),
   'potimarron': (sowingMonths: <int>[6, 7], harvestMonths: <int>[10, 11]),
 
   // ── Légumes-feuilles et cultures ouest-africaines ───────────────────
   'gombo': (sowingMonths: <int>[6, 7], harvestMonths: <int>[8, 9, 10, 11]),
-  'amarante': (
-    sowingMonths: <int>[6, 7, 8],
-    harvestMonths: <int>[7, 8, 9, 10]
-  ),
+  'amarante': (sowingMonths: <int>[6, 7, 8], harvestMonths: <int>[7, 8, 9, 10]),
   'celosie': (sowingMonths: <int>[6, 7, 8], harvestMonths: <int>[7, 8, 9, 10]),
   'corete': (sowingMonths: <int>[6, 7, 8], harvestMonths: <int>[7, 8, 9, 10]),
   // Baselle : chaleur humide indispensable — fenêtre limitée à l'hivernage.
   'baselle': (sowingMonths: <int>[6, 7], harvestMonths: <int>[8, 9, 10]),
-  'oseille': (
-    sowingMonths: <int>[6, 7, 8],
-    harvestMonths: <int>[8, 9, 10, 11]
-  ),
-  'pourpier': (
-    sowingMonths: <int>[6, 7, 8],
-    harvestMonths: <int>[7, 8, 9, 10]
-  ),
-  'basilic': (
-    sowingMonths: <int>[6, 7, 8],
-    harvestMonths: <int>[8, 9, 10, 11]
-  ),
+  'oseille': (sowingMonths: <int>[6, 7, 8], harvestMonths: <int>[8, 9, 10, 11]),
+  'pourpier': (sowingMonths: <int>[6, 7, 8], harvestMonths: <int>[7, 8, 9, 10]),
+  'basilic': (sowingMonths: <int>[6, 7, 8], harvestMonths: <int>[8, 9, 10, 11]),
   'bissap': (sowingMonths: <int>[6, 7], harvestMonths: <int>[10, 11]),
   'aubergine_africaine': (
     sowingMonths: <int>[6, 7, 10, 11],
@@ -145,10 +130,7 @@ const Map<String, ZoneMonths> sahelCalendar = <String, ZoneMonths>{
 /// réduites au cœur de la grande saison sèche déc-fév.
 const Map<String, ZoneMonths> guineanCalendar = <String, ZoneMonths>{
   // ── Cultures pluviales bimodales ────────────────────────────────────
-  'mais': (
-    sowingMonths: <int>[3, 4, 8, 9],
-    harvestMonths: <int>[6, 7, 11, 12]
-  ),
+  'mais': (sowingMonths: <int>[3, 4, 8, 9], harvestMonths: <int>[6, 7, 11, 12]),
   'arachide': (
     sowingMonths: <int>[3, 4, 8, 9],
     harvestMonths: <int>[6, 7, 11, 12]
@@ -220,10 +202,7 @@ const Map<String, ZoneMonths> guineanCalendar = <String, ZoneMonths>{
   // ── Solanacées ──────────────────────────────────────────────────────
   // Tomate : fructification calée sur la grande saison sèche pour
   // limiter les maladies fongiques.
-  'tomate': (
-    sowingMonths: <int>[9, 10, 11],
-    harvestMonths: <int>[12, 1, 2, 3]
-  ),
+  'tomate': (sowingMonths: <int>[9, 10, 11], harvestMonths: <int>[12, 1, 2, 3]),
   'piment': (
     sowingMonths: <int>[3, 4, 5, 9, 10],
     harvestMonths: <int>[6, 7, 8, 9, 12, 1, 2, 3]
@@ -285,10 +264,7 @@ const Map<String, ZoneMonths> guineanCalendar = <String, ZoneMonths>{
   'petit_pois': (sowingMonths: <int>[11], harvestMonths: <int>[1, 2]),
   'pois_mange_tout': (sowingMonths: <int>[11], harvestMonths: <int>[1, 2]),
   'carotte': (sowingMonths: <int>[11, 12], harvestMonths: <int>[2, 3]),
-  'laitue': (
-    sowingMonths: <int>[11, 12, 1],
-    harvestMonths: <int>[12, 1, 2, 3]
-  ),
+  'laitue': (sowingMonths: <int>[11, 12, 1], harvestMonths: <int>[12, 1, 2, 3]),
   // Oignon et ail : la bulbaison exige un air sec absent de la côte.
   'oignon': (sowingMonths: <int>[10, 11], harvestMonths: <int>[2, 3]),
   'ail': (sowingMonths: <int>[11], harvestMonths: <int>[2, 3]),
@@ -303,10 +279,7 @@ const Map<String, ZoneMonths> guineanCalendar = <String, ZoneMonths>{
   'betterave': (sowingMonths: <int>[11, 12], harvestMonths: <int>[2, 3]),
   'coriandre': (sowingMonths: <int>[11, 12], harvestMonths: <int>[1, 2]),
   'melon': (sowingMonths: <int>[11, 12], harvestMonths: <int>[2, 3]),
-  'pasteque': (
-    sowingMonths: <int>[11, 12, 1],
-    harvestMonths: <int>[2, 3, 4]
-  ),
+  'pasteque': (sowingMonths: <int>[11, 12, 1], harvestMonths: <int>[2, 3, 4]),
 };
 
 /// Retourne la surcharge de zone pour une culture, ou null si la base

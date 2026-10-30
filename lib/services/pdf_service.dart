@@ -189,8 +189,7 @@ class PdfService {
       for (final c in soilCultures)
         c.id: CultureService.instance.wateringsFor(c).length,
     };
-    final waterings =
-        wateringCounts.values.fold<int>(0, (sum, n) => sum + n);
+    final waterings = wateringCounts.values.fold<int>(0, (sum, n) => sum + n);
     final categories = <VegetableCategory, int>{};
     final byVeg = <String, int>{};
     var totalDuration = 0;
@@ -389,8 +388,8 @@ class PdfService {
         pw.SizedBox(
           width: 60,
           child: pw.Text(label,
-              style:
-                  const pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
+              style: const pw.TextStyle(
+                  fontSize: 10, fontWeight: pw.FontWeight.bold)),
         ),
         ...List.generate(12, (i) {
           final m = i + 1;
