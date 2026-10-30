@@ -62,8 +62,13 @@ dependencies:
   # compileSdk 35+ (Flutter en fournit 36).
   geocoding: ^5.0.0
 
-  # Gestion des permissions (caméra, etc.) avec accès direct aux réglages OS
-  permission_handler: ^11.3.1
+  # Gestion des permissions (caméra, etc.) avec accès direct aux réglages OS.
+  # Sert à une seule chose dans l'app : `openAppSettings()`, pour
+  # emmener l'utilisateur dans les réglages système quand il a refusé
+  # la caméra (voir photo_service.dart). Les permissions de
+  # localisation passent, elles, par geolocator.
+  # La 13 exige le SDK Android 37 : la CI l'installe explicitement.
+  permission_handler: ^13.0.2
 
   # HTTP (météo Open-Meteo)
   http: ^1.2.0

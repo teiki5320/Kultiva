@@ -12,12 +12,14 @@ on:
   pull_request:
     branches: [main]
 
-# Version de Flutter épinglée : le code ne compile pas sous < 3.38
-# (RadioGroup, activeThumbColor, scaleByDouble…). Un `channel: stable`
-# flottant masquait ce problème. Bump volontaire quand on teste une
-# nouvelle version en local.
+# Version de Flutter épinglée, et alignée sur celle installée sur le Mac
+# de Jean. Le code ne compile pas sous 3.38 (RadioGroup, activeThumbColor,
+# scaleByDouble…), et un `channel: stable` flottant masquait ce problème.
+# Dans l'autre sens, une CI restée en arrière ne voit pas ce qui casse en
+# local : la 3.47 exige Kotlin ≥ 2.2.20, et le build Android a cassé sans
+# que la CI s'en aperçoive. Bump volontaire, les deux ensemble.
 env:
-  FLUTTER_VERSION: "3.41.6"
+  FLUTTER_VERSION: "3.47.3"
 
 jobs:
   analyze-and-test:
@@ -58,6 +60,14 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
+
+      - name: SDK Android 37
+        # permission_handler 13 compile contre le SDK 37, que l'image
+        # GitHub n'embarque pas forcément. Sans cette étape, le build
+        # échoue sur « Failed to find target with hash string android-37 ».
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-37.0" > /dev/null
 
       - name: Install dependencies
         run: flutter pub get

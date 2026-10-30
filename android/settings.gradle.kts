@@ -20,12 +20,12 @@ pluginManagement {
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
     id("com.android.application") version "8.11.1" apply false
-    // Kotlin épinglé en 2.1.x : la 2.2 a supprimé le support du langage 1.6,
-    // que le plugin Android de sentry_flutter 8.x impose encore
-    // (`languageVersion = "1.6"` dans son build.gradle) → le build release
-    // échouait sur `:sentry_flutter:compileReleaseKotlin`.
-    // À lever le jour où l'on montera sentry_flutter en 9.x.
-    id("org.jetbrains.kotlin.android") version "2.1.20" apply false
+    // Le pin en 2.1.x existait pour sentry_flutter 8.x, dont le plugin
+    // Android imposait encore le langage 1.6, supprimé par Kotlin 2.2.
+    // Sentry est passé en 9.30 et n'impose plus rien : le pin est levé.
+    // Flutter 3.47 exige par ailleurs Kotlin ≥ 2.2.20 — sous ce seuil,
+    // `flutter build apk` refuse de démarrer.
+    id("org.jetbrains.kotlin.android") version "2.2.20" apply false
 }
 
 include(":app")
