@@ -550,6 +550,52 @@ Règles spécifiques au projet pour être efficace dès la première action :
    pointent vers `href="#"`. À remplacer par les vrais liens App Store /
    Play Store une fois l'app publiée.
 
+8. 🔴 **BLOQUANT — le Poussidex « collection de plants » n'existe pas
+   dans l'app (trouvé le 30/10/2026).** Même nature que le feed (alerte
+   5), mais bien plus grave : c'est un paragraphe en titre de la
+   description App Store.
+
+   **Code écrit mais injoignable — 2 168 lignes, aucun `import` :**
+   `plantation_detail_sheet.dart` (686 LoC, boutons « Arroser » et
+   « Récolter »), `poussidex_card.dart` (`PlantationCard`),
+   `poussidex_journal.dart`, `poussidex_podium.dart`,
+   `poussidex_stats.dart`. `share_card.dart` n'est importée que par la
+   fiche détail morte, donc inatteignable aussi.
+   `poussidex_card.dart:16` cite pourtant `[PlantationDetailSheet]` dans
+   sa doc.
+
+   **Ce qui est réellement branché** : `enum AlbumFilter { tamassi,
+   challenges, badges }` (`my_garden/garden_header.dart:7`). Trois
+   onglets, pas de vue collection.
+
+   **Conséquences vérifiées :**
+   - Aucune interface ne crée une `Plantation`. Le seul producteur est
+     `migrateGridToPlantations`, une migration unique depuis l'ancienne
+     grille (`my_garden_screen.dart:142`). **Un utilisateur qui installe
+     aujourd'hui aura 0 plant, définitivement** — et `GardenHeader`
+     affiche ce 0 (`plantationsCount`).
+   - `_onWater()` (`my_garden_screen.dart:249`) joue un son et anime
+     Tamassi : **il n'enregistre rien**, ni dans `Plantation.wateredAt`
+     ni dans `CultureEntry.wateredAt`.
+   - Les médailles bronze/argent/or sont branchées
+     (`vegetables_screen.dart:435`) mais calculées sur `plantations` :
+     elles restent donc **éternellement `MedalTier.none`**.
+   - Risque de rejet **guideline 2.3.1** (la fiche décrit des
+     fonctionnalités absentes) : « 📖 LE POUSSIDEX, TA COLLECTION DE
+     PLANTS — Photographie tes plants et retrouve toute leur histoire :
+     notes, arrosages, récoltes. Gagne des médailles… »
+
+   **Trois modèles se recouvrent** pour « un légume planté à une date,
+   arrosé ces jours-ci » : `Plantation` (Poussidex), `GardenPlanCell`
+   (Mes jardins), `CultureEntry` (cahier de culture). Deux clés
+   étrangères les recousent — et `CultureEntry.linkedPlantationId` est
+   **écrite par `culture_service.dart:47` et lue nulle part**.
+
+   **Deux issues** : (a) brancher le Poussidex — les écrans existent, ce
+   n'est que de la plomberie plus une action « ajouter un plant » ; ou
+   (b) le retirer de l'app **et de la fiche**, comme pour le feed. Ne pas
+   soumettre avant d'avoir tranché.
+
 7. **Projet Supabase en pause** (statut INACTIVE, pas supprimé ; vérifié
    le 21/10/2026) — tant qu'il n'est pas relancé depuis le dashboard
    Supabase, ni connexion ni synchronisation (le mode invité marche), et
