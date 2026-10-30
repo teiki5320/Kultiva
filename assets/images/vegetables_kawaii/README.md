@@ -25,6 +25,24 @@ génération — c'est elle qui tient le style d'une image à l'autre.
 `CLAUDE.md`, qui interdisait justement le mot « kawaii ». Les deux ne
 se mélangent pas.
 
+## ⚠️ Générer par PLANCHES, pas une par une
+
+Une génération coûte **le même prix quel que soit le nombre de sujets
+dedans**. Les 30 premières icônes ont été faites une par une, à 42
+crédits pièce : **1 260 crédits**. Les mêmes en planches de six
+auraient coûté **200**.
+
+| Méthode | Prix l'unité | 130 légumes + 50 badges |
+| ------- | ------------ | ----------------------- |
+| Une image par sujet | 42 crédits | ≈ 7 560 |
+| Planche de 6 à découper | 6,7 crédits | **≈ 1 200** |
+
+Une planche garantit en prime que les six sujets partagent exactement
+le même rendu.
+
+Découpe : `sips --cropToHeightWidth` (ni PIL ni ImageMagick sur cette
+machine ; `sips` et `cwebp` sont là).
+
 ## Recette
 
 Modèle **GPT Image 2** sur OpenArt, en image-to-image, avec
