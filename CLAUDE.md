@@ -24,14 +24,12 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
   restent privées — le feed communautaire a été retiré de la v1) ;
 - de la gamification : badges, défis, médailles bronze/argent/or par légume ;
-- une synchronisation **cloud facultative** via Supabase (auth + Postgres +
-  Storage) ;
+- **aucun compte et aucun serveur** : tout vit sur l'appareil ;
 - des tutoriels HTML embarqués (33 fiches), un lexique, un guide de maladies et
   de compagnonnage ;
 - un **cahier de culture** pleine terre avec étapes phénologiques auto-suggérées,
   avertissement de rotation et conseils canicule personnalisés ;
-- une synchronisation **cloud facultative** du jardin (Supabase), l'app
-  restant entièrement utilisable sans compte.
+- des **« visiteurs » de Tamassi générés localement**, sans réseau.
 
 **Statut** : bi-marché **France + Afrique de l'Ouest** (v1.0.0+5), en polish
 pré-publication — détection du pays et sous-zone climatique, calendriers et
@@ -70,21 +68,21 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 **Backend / services**
 
-- **Supabase** (`supabase_flutter` ^2.5) — auth, Postgres, Storage
-  (`plant-photos`, `news-images`) ; une edge function `delete-account`
-  (suppression de compte in-app, exigée par Apple, à déployer
-  manuellement)
+- **Aucun backend.** Les comptes ont été retirés le 30/10/2026 : plus de
+  Supabase, plus de synchronisation, plus de suppression de compte à
+  implémenter (l'exigence Apple ne s'applique qu'aux apps qui créent des
+  comptes). Le projet Supabase existe toujours, en pause, et ses
+  migrations restent dans `supabase/migrations/` à titre d'historique —
+  **plus aucune ligne de Dart ne les utilise**
 - **Open-Meteo** — météo 7 jours, aucune clé d'API requise
-- **Google Sign-In** (`google_sign_in` ^6.2) — OAuth natif
-- **Apple Sign-In** (`sign_in_with_apple` ^6.1) avec nonce SHA-256 (`crypto`)
 
 **Outillage / plateformes**
 
 - Android : Gradle 8.14, Kotlin + Java 17, signing release via
   `android/key.properties`, core library desugaring activé (desugar_jdk_libs
   2.1.4), app ID `com.toa.kultiva`, min SDK 24 / target SDK 36
-- iOS : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), Apple Sign-In
-  entitlement, URL scheme Google, permissions caméra / photos / localisation
+- iOS : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), permissions
+  caméra / photos / localisation
   déclarées dans `Info.plist` (en français)
 - CI : GitHub Actions (`ci.yml` : `flutter analyze` + `flutter test` sur push
   main et PR ; `site.yml` : publication du dossier `landing/`)
@@ -100,15 +98,14 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 ```
 Kultiva/
 ├── lib/                    # Code Dart principal (~31 480 LoC sur 93 fichiers)
-│   ├── main.dart           # Bootstrap : splash → onboarding → auth → tabs
+│   ├── main.dart           # Bootstrap : splash → onboarding → tabs
 │   ├── config/
-│   │   └── supabase_config.dart    # URL, anon key, Google OAuth client IDs
+│   │   └── app_info.dart           # version affichée (à synchroniser avec pubspec)
 │   ├── screens/            # 31 fichiers (dont my_garden/ découpé en 3)
 │   │   ├── splash_screen.dart
 │   │   ├── onboarding_screen.dart
 │   │   ├── root_tabs.dart          # Conteneur 4 onglets (Bottom nav)
 │   │   ├── vegetable_detail_screen.dart
-│   │   ├── auth/                   # login_screen, register_screen
 │   │   └── home/                   # sow, vegetables, my_garden, tutos,
 │   │                               # settings, weather, calendrier mensuel,
 │   │                               # tuto_fiche (WebView),
@@ -126,7 +123,8 @@ Kultiva/
 │   │                       # photo_pick_result, watering_alert,
 │   │                       # watering_advice
 │   ├── services/           # 16 fichiers
-│   │                       # auth, prefs, cloud_sync, weather, geolocation,
+│   │                       # prefs, plantation, error_reporter, weather,
+│   │                       # geolocation,
 │   │                       # notification, photo, audio, watering,
 │   │                       # watering_advisor, pdf, tamassi_stats,
 │   │                       # plantation_migration, culture, garden_plan,
@@ -156,7 +154,8 @@ Kultiva/
 │                           # rotation_advisor
 ├── supabase/
 │   ├── migrations/         # 001_initial_schema → 016_preferences_climate_zone
-│   └── functions/          # delete-account (suppression de compte)
+│   ├── migrations/         # historique du schéma, plus utilisé par l'app
+│   └── functions/          # delete-account, déployée puis abandonnée
 ├── assets/
 │   ├── images/             # créatures (3 variantes, 35 images), badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
@@ -184,11 +183,17 @@ Kultiva/
 └── README.md
 ```
 
-**Flux d'état** : `main.dart` orchestre un bootstrap asynchrone qui initialise
-Supabase, les services, charge les préférences, puis affiche selon l'état
-(Splash → Onboarding si première ouverture → Auth si non connecté → RootTabs).
+**Flux d'état** : `main.dart` initialise Sentry **puis** lance le
+bootstrap dans son `appRunner` (services, préférences, notifications),
+et affiche selon l'état (Splash → Onboarding si première ouverture →
+RootTabs). Il n'y a plus d'étape d'authentification.
 
-**Schéma Supabase** (voir `supabase/migrations/`) :
+**Schéma Supabase** — ⚠️ **historique seulement.** Plus aucune ligne de
+Dart ne touche ces tables depuis le retrait des comptes (30/10/2026). Le
+tableau est conservé parce que le projet existe encore, en pause, et
+qu'il servirait de point de départ si un backend revenait un jour
+(décision alors à prendre : Cloudflare D1 + R2 plutôt que Supabase, voir
+`_plans/`).
 
 | Table              | Clé primaire        | Accès                                           |
 | ------------------ | ------------------- | ----------------------------------------------- |
@@ -215,10 +220,11 @@ Tables supprimées (migration 008) : `culture_readings`, `hydro_builds`,
 - **State management** : pas de Provider / Riverpod / Bloc. On utilise
   `ValueNotifier` + `ValueListenableBuilder`, singletons de services et
   `SharedPreferences`. Ne pas introduire de framework externe sans discussion.
-- **Local-first** : toute mutation passe d'abord par les services locaux
-  (`PrefsService`, fichiers) ; `CloudSyncService` synchronise en arrière-plan
-  de manière non bloquante. Si Supabase est indisponible, l'app doit continuer
-  à fonctionner.
+- **Local-only** : toute donnée passe par les services locaux
+  (`PrefsService`, `PlantationService`, fichiers). Il n'y a plus de
+  synchronisation. **Ne pas réintroduire d'appel réseau bloquant** : les
+  deux seuls appels sortants sont Open-Meteo (météo) et Sentry (crashs),
+  tous deux non bloquants.
 - **Services** = logique métier ; **widgets** = présentation. Éviter de mélanger.
 - **Navigation** : `Navigator.push` et `showModalBottomSheet`. Pas de package
   de routing.
@@ -233,8 +239,6 @@ Tables supprimées (migration 008) : `culture_readings`, `hydro_builds`,
 - **Assets** : après ajout dans `assets/`, déclarer le chemin dans la section
   `assets:` de `pubspec.yaml`. Des fichiers `.gitkeep` peuvent être nécessaires
   pour tracker des dossiers vides (cf commit `cba299c`).
-- **Migrations Supabase** : **toujours** créer un nouveau fichier numéroté
-  (`009_*.sql`, etc.). Ne jamais modifier une migration existante.
 - **Dépendances** : toute nouvelle dépendance mérite un commentaire inline dans
   `pubspec.yaml` expliquant son usage (pattern observé).
 
@@ -287,9 +291,7 @@ cd ios && pod install --repo-update && cd ..
 # Nécessite un fichier android/key.properties (non commité) :
 #   storeFile=...  storePassword=...  keyAlias=...  keyPassword=...
 
-# Supabase
-# Les migrations se trouvent dans supabase/migrations/ et sont appliquées
-# manuellement via le dashboard Supabase (pas de supabase/config.toml).
+# Aucun backend : rien à lancer ni à configurer côté serveur.
 ```
 
 ## 🎨 Design / UX
@@ -351,14 +353,15 @@ Destination : `assets/images/vegetables/<id>.png`.
 
 ## 🚫 Pièges à éviter
 
-- **Ne pas casser le mode offline** — toute nouvelle feature doit continuer à
-  fonctionner sans session Supabase.
+- **Ne pas casser le mode hors ligne** — l'app entière doit fonctionner
+  sans réseau, à l'exception de la météo.
 - **Ne pas monter en version majeure** de `flutter_local_notifications`
   (17 → 21), `geolocator` (11 → 14), `share_plus` (7 → 13),
   `google_fonts` (6 → 8) ou `printing` (5 → latest) sans plan de
   migration. Ces pins sont intentionnels et documentés dans `pubspec.yaml`.
-- **Ne jamais committer** `android/key.properties`, `*.jks`, ou la `service_role`
-  key Supabase. L'`anonKey` actuellement en source est publique (c'est normal).
+- **Ne jamais committer** `android/key.properties` ni `*.jks`. Les seules
+  valeurs publiques par design encore en source sont le DSN Sentry
+  (`lib/main.dart`).
 - **Synchroniser `assets/` ⇄ `pubspec.yaml`** — les incidents récents sur les
   dossiers `accessories/` et `badges/` l'ont rappelé.
 - **Ne jamais modifier une migration SQL existante** — créer toujours un nouveau
@@ -481,10 +484,9 @@ Décisions et évolutions significatives :
 
 Règles spécifiques au projet pour être efficace dès la première action :
 
-1. **Respecter le contrat local-first** : ne jamais introduire d'appel réseau
-   bloquant dans un flux UI. Synchro cloud = arrière-plan uniquement.
-2. **Migrations** : toujours créer un nouveau fichier `supabase/migrations/012_*.sql`,
-   jamais éditer les existants.
+1. **Respecter le contrat local-only** : ne jamais introduire d'appel
+   réseau bloquant dans un flux UI, et ne pas réintroduire de backend
+   sans en discuter (décision du 30/10/2026).
 3. **Assets** : après `cp` d'un asset, penser à déclarer le chemin dans
    `pubspec.yaml`.
 4. **Français** : rédiger en français les strings visibles utilisateur, les
@@ -516,9 +518,9 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `PrefsService` et `text_normalize` sont couverts (187 blocs `test` /
    `testWidgets` comptés le 21/10/2026). Pas encore
    de test de widget.
-2. **L'`anonKey` Supabase est committée dans `lib/config/supabase_config.dart`** —
-   c'est correct pour une anon key JWT publique, mais à documenter pour éviter
-   tout doute.
+2. ~~**L'`anonKey` Supabase est committée**~~ — sans objet depuis le
+   retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
+   est supprimé.
 3. **Fichiers volumineux restants** — `tamassi_view.dart` (1 740 LoC),
    `garden_planner_screen.dart` (1 777 LoC). Candidats à un découpage futur.
 4. ~~**Connexion obligatoire au premier lancement**~~ — ✅ **RÉSOLU
@@ -587,11 +589,36 @@ Règles spécifiques au projet pour être efficace dès la première action :
    saisi depuis « Mes jardins » (cahier de culture) et un arrosage saisi
    depuis le Poussidex vivent encore dans deux registres séparés.
 
-7. **Projet Supabase en pause** (statut INACTIVE, pas supprimé ; vérifié
-   le 21/10/2026) — tant qu'il n'est pas relancé depuis le dashboard
-   Supabase, ni connexion ni synchronisation (le mode invité marche), et
-   le workflow `sync-catalog.yml` échoue à chaque modification du
-   catalogue (comme le 20/10/2026) : c'est attendu, pas un bug.
+7. ~~**Projet Supabase en pause**~~ — ✅ **SANS OBJET (30/10/2026)** :
+   les comptes ont été retirés de la v1, l'app ne contacte plus aucun
+   backend. Le projet reste en pause chez Supabase, ses données et ses
+   migrations conservées un an ; **ne pas le supprimer**, mais il ne
+   bloque plus rien.
+
+8. **Décision du 30/10/2026 : pas de comptes en v1.** Le jardin vit sur
+   l'appareil. Raison : l'app n'avait aucun utilisateur, et le backend
+   gratuit de Supabase se met en pause après une semaine sans trafic —
+   une app non publiée ne peut donc pas le garder éveillé. Supprimés :
+   `lib/screens/auth/`, `auth_service.dart`, `cloud_sync_service.dart`,
+   `supabase_config.dart`, les dépendances `supabase_flutter`,
+   `google_sign_in`, `sign_in_with_apple`, `crypto` (−36 paquets, −70
+   lignes de `Podfile.lock`), l'entitlement Apple Sign-In et le schéma
+   d'URL Google.
+
+   **Conséquences voulues** : plus d'obligation Apple de suppression de
+   compte, questionnaire de confidentialité réduit à 2 types
+   (localisation, plantages), guideline 4.8 sans objet, et les deux
+   politiques de confidentialité réécrites — rien ne quitte plus
+   l'appareil hors Open-Meteo et Sentry.
+
+   **Conséquence à assumer** : changer de téléphone fait perdre le
+   jardin. Un export/import de fichier reste à faire.
+
+   **Pour rétablir la synchro** : ne pas reprendre Supabase. La piste
+   retenue est **Cloudflare** (Worker + D1 + R2, gratuit, ne s'endort
+   jamais, juridiction EU disponible), avec Google + Apple **seulement**
+   — le Worker n'a alors qu'à vérifier le jeton d'identité, sans jamais
+   manipuler de mot de passe.
 
 ## Fiches à jour à chaque changement (règle de Jean, 22 octobre 2026)
 

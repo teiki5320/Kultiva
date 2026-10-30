@@ -6,8 +6,6 @@ import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../services/audio_service.dart';
-import '../../../services/auth_service.dart';
-import '../../../services/cloud_sync_service.dart';
 import '../../../models/photo_pick_result.dart';
 import '../../../services/photo_service.dart';
 import '../../../services/prefs_service.dart';
@@ -69,30 +67,10 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
     setState(() => _completed[challenge.id] = path);
     await _saveCompleted();
     widget.onPhotoTaken?.call(challenge.id, path);
-    String? syncError;
-    // Sans compte, le défi est validé en local : ni sauvegarde cloud ni
-    // message d'erreur — le mode invité doit rester une expérience
-    // complète, pas une version dégradée.
-    //
-    // La photo est sauvegardée dans le cloud de l'utilisateur, pour lui
-    // seul. Elle n'est PAS publiée : le feed communautaire est retiré de
-    // la v1 (voir CLAUDE.md § Alertes), donc aucune photo de défi ne
-    // part vers `challenge_posts`.
-    if (AuthService.instance.isSignedIn) {
-      final url = await CloudSyncService.instance.uploadPhoto(
-        localPath: path,
-        plantationId: 'challenge_${challenge.id}',
-      );
-      if (url != null) {
-        setState(() => _completed[challenge.id] = url);
-        await _saveCompleted();
-      } else {
-        syncError = 'Sauvegarde de la photo dans le cloud échouée';
-      }
-    }
+    // La photo du défi reste sur l'appareil. Les comptes ont été retirés
+    // de la v1 : plus de sauvegarde cloud, et donc plus de message
+    // d'échec de synchronisation à afficher.
     if (!mounted) return;
-    // Montrer l'animation d'abord, PUIS le message d'erreur (sinon
-    // le snackbar est masqué par l'overlay de l'animation).
     final badge = PoussidexBadge(
       id: challenge.id,
       emoji: challenge.emoji,
@@ -108,17 +86,6 @@ class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
       challenge: challenge,
       photoPath: finalPath,
     );
-    // Snackbar d'erreur APRÈS les animations.
-    if (syncError != null && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('⚠️ $syncError — le défi reste validé sur ton appareil'),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 5),
-        ),
-      );
-    }
   }
 
   @override

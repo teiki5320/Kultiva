@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import '../models/plantation.dart';
-import 'cloud_sync_service.dart';
-import 'error_reporter.dart';
 import 'photo_service.dart';
 import 'prefs_service.dart';
 
@@ -16,11 +14,9 @@ import 'prefs_service.dart';
 /// l'app, d'ajouter un plant, de l'arroser ou de le récolter** — alors
 /// que la fiche App Store le promet en titre.
 ///
-/// Tout passe maintenant par ici : on lit l'état, on le modifie, on le
-/// persiste en local, puis on pousse vers le cloud **en arrière-plan**.
-/// Conformément au contrat local-first, l'échec du cloud ne remonte
-/// jamais jusqu'à l'interface : la plante est déjà enregistrée sur
-/// l'appareil.
+/// Tout passe par ici : on lit l'état, on le modifie, on le persiste. Les
+/// comptes ayant été retirés de la v1, il n'y a plus de cloud : les
+/// plantations et leurs photos vivent uniquement sur l'appareil.
 class PlantationService extends ChangeNotifier {
   PlantationService._();
   static final PlantationService instance = PlantationService._();
@@ -133,17 +129,14 @@ class PlantationService extends ChangeNotifier {
 
   /// Retire une photo du plant et supprime le fichier local.
   ///
-  /// Les photos déjà montées dans le cloud sont des URL : on les retire
-  /// aussi côté Storage, sinon elles resteraient facturées et
-  /// resynchronisées.
+  /// Un chemin en `http` ne peut venir que d'une ancienne installation,
+  /// du temps où les photos étaient aussi montées dans le cloud : on le
+  /// retire de la liste, il n'y a plus de fichier local à effacer.
   Future<void> removePhoto(String id, String path) async {
     await _update(id, (p) => p.copyWith(
           photoPaths: p.photoPaths.where((s) => s != path).toList(),
         ));
-    if (path.startsWith('http')) {
-      _fireAndForget('photo_cloud_delete',
-          () => CloudSyncService.instance.deletePhoto(path));
-    } else {
+    if (!path.startsWith('http')) {
       await PhotoService.deleteFile(path);
     }
   }
@@ -155,15 +148,10 @@ class PlantationService extends ChangeNotifier {
     await _persist();
     if (plantation == null) return;
     for (final path in plantation.photoPaths) {
-      if (path.startsWith('http')) {
-        _fireAndForget('photo_cloud_delete',
-            () => CloudSyncService.instance.deletePhoto(path));
-      } else {
+      if (!path.startsWith('http')) {
         await PhotoService.deleteFile(path);
       }
     }
-    _fireAndForget(
-        'plantation_delete', () => CloudSyncService.instance.deletePlantation(id));
   }
 
   // ───────────────────────────────────────────────────────────────────────
@@ -184,9 +172,6 @@ class PlantationService extends ChangeNotifier {
     await _persist();
   }
 
-  /// Écrit en local **puis** pousse vers le cloud sans attendre. L'ordre
-  /// compte : le local est la source de vérité, le cloud n'en est qu'une
-  /// copie.
   Future<void> _persist() async {
     // On maintient l'invariant « du plus récent au plus ancien » ici, et
     // pas seulement à la lecture : `add` accepte une date de mise en
@@ -196,15 +181,5 @@ class PlantationService extends ChangeNotifier {
     await PrefsService.instance
         .setPlantationsJson(Plantation.encodeAll(_plantations));
     notifyListeners();
-    _fireAndForget('plantations_upload',
-        () => CloudSyncService.instance.uploadAllPlantations(_plantations));
-  }
-
-  /// Lance une tâche cloud sans bloquer l'interface, en signalant un échec
-  /// durable plutôt qu'en l'avalant en silence.
-  void _fireAndForget(String operation, Future<void> Function() task) {
-    task().catchError((Object e, StackTrace s) {
-      ErrorReporter.report(operation, e, s);
-    });
   }
 }

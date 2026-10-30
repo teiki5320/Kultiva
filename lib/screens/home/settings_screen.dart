@@ -5,8 +5,6 @@ import '../../config/app_info.dart';
 import '../../models/country.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
-import '../../services/auth_service.dart';
-import '../../services/cloud_sync_service.dart';
 import '../../services/geolocation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
@@ -14,8 +12,7 @@ import '../home/tuto_fiche_screen.dart';
 import 'my_garden_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
-  final VoidCallback onSignOut;
-  const SettingsScreen({super.key, required this.onSignOut});
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -287,275 +284,179 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const _SectionTitle(title: '👤  Compte'),
+                  const _SectionTitle(title: '🌱  Mon jardin'),
                   Card(
-                    child: AnimatedBuilder(
-                      animation: AuthService.instance,
-                      builder: (context, _) {
-                        final auth = AuthService.instance;
-                        return Column(
-                          children: <Widget>[
-                            ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: KultivaColors.lightGreen
-                                    .withValues(alpha: 0.4),
-                                child: const Text('🌱'),
-                              ),
-                              title: Text(
-                                auth.name ?? 'Invité',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: const Icon(
+                            Icons.replay,
+                            color: KultivaColors.primaryGreen,
+                          ),
+                          title: const Text(
+                            'Revoir la présentation',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          subtitle:
+                              const Text('Réafficher les écrans de bienvenue'),
+                          onTap: () async {
+                            await PrefsService.instance
+                                .setOnboardingDone(false);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Redémarre l\'app pour revoir l\'onboarding'),
                                 ),
-                              ),
-                              subtitle: Text(auth.email ?? 'Non connecté'),
-                            ),
-                            const Divider(height: 0, indent: 16),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.replay,
-                                color: KultivaColors.primaryGreen,
-                              ),
-                              title: const Text(
-                                'Revoir la présentation',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              ),
-                              subtitle: const Text(
-                                  'Réafficher les écrans de bienvenue'),
-                              onTap: () async {
-                                await PrefsService.instance
-                                    .setOnboardingDone(false);
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Redémarre l\'app pour revoir l\'onboarding'),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                            if (kDebugMode) ...<Widget>[
-                              const Divider(height: 0, indent: 16),
-                              ValueListenableBuilder<int?>(
-                                valueListenable: debugHourOverride,
-                                builder: (context, override, _) {
-                                  final isAuto = override == null;
-                                  final displayHour =
-                                      override ?? DateTime.now().hour;
-                                  final period = isAuto
-                                      ? 'auto'
-                                      : '${displayHour.toString().padLeft(2, '0')}h';
-                                  return ExpansionTile(
-                                    leading: const Icon(
-                                      Icons.wb_sunny_outlined,
-                                      color: KultivaColors.primaryGreen,
-                                    ),
-                                    title: const Text(
-                                      'Heure de test (debug)',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    subtitle: Text(
-                                      'Force l\'heure du fond Tamassi · $period',
-                                      style: const TextStyle(fontSize: 11),
-                                    ),
-                                    children: <Widget>[
-                                      SwitchListTile(
-                                        dense: true,
-                                        title: const Text('Mode automatique'),
-                                        subtitle: const Text(
-                                          'Utilise l\'heure réelle du téléphone',
-                                          style: TextStyle(fontSize: 11),
-                                        ),
-                                        value: isAuto,
-                                        onChanged: (v) =>
-                                            debugHourOverride.value =
-                                                v ? null : DateTime.now().hour,
-                                      ),
-                                      if (!isAuto)
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 8),
-                                          child: Row(
-                                            children: <Widget>[
-                                              const Text('0h',
-                                                  style:
-                                                      TextStyle(fontSize: 12)),
-                                              Expanded(
-                                                child: Slider(
-                                                  value: displayHour.toDouble(),
-                                                  min: 0,
-                                                  max: 23,
-                                                  divisions: 23,
-                                                  label: '${displayHour}h',
-                                                  activeColor: KultivaColors
-                                                      .primaryGreen,
-                                                  onChanged: (v) =>
-                                                      debugHourOverride.value =
-                                                          v.round(),
-                                                ),
-                                              ),
-                                              const Text('23h',
-                                                  style:
-                                                      TextStyle(fontSize: 12)),
-                                            ],
-                                          ),
-                                        ),
-                                      if (!isAuto)
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              16, 0, 16, 12),
-                                          child: Wrap(
-                                            spacing: 8,
-                                            children: <int>[7, 14, 19, 23]
-                                                .map((h) => ActionChip(
-                                                      label: Text(
-                                                          '${h.toString().padLeft(2, '0')}h'),
-                                                      onPressed: () =>
-                                                          debugHourOverride
-                                                              .value = h,
-                                                    ))
-                                                .toList(),
-                                          ),
-                                        ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                            const Divider(height: 0, indent: 16),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.restart_alt,
-                                color: KultivaColors.primaryGreen,
-                              ),
-                              title: const Text(
-                                'Recommencer le Tamassi',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              subtitle: const Text(
-                                'Rechoisir ton starter et renommer ton Tamassi',
-                                style: TextStyle(fontSize: 11),
-                              ),
-                              onTap: () async {
-                                final confirm = await showDialog<bool>(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    title: const Text('Tout recommencer ?'),
-                                    content: const Text(
-                                      'Tu vas revenir à l\'écran de sélection '
-                                      'du starter. Ton niveau actuel sera '
-                                      'conservé.',
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(ctx, false),
-                                        child: const Text('Annuler'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () =>
-                                            Navigator.pop(ctx, true),
-                                        child: const Text('Recommencer'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                if (confirm != true || !context.mounted) return;
-                                await PrefsService.instance
-                                    .setString('kultiva.creature.starter', '');
-                                await PrefsService.instance
-                                    .setString('kultiva.creature.name', '');
-                                // Relance le tuto Poussidex.
-                                await PrefsService.instance
-                                    .setGardenTutorialDone(false);
-                                tamassiResetNotifier.value++;
-                                if (!context.mounted) return;
-                                Navigator.of(context).pop();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        '🌱 Ouvre l\'onglet Poussidex pour '
-                                        'choisir ton nouveau compagnon !'),
-                                    duration: Duration(seconds: 3),
-                                  ),
-                                );
-                              },
-                            ),
-                            const Divider(height: 0, indent: 16),
-                            // En mode invité il n'y a ni session à fermer ni
-                            // compte à supprimer : on propose d'en créer un.
-                            if (!auth.isSignedIn)
-                              ListTile(
+                              );
+                            }
+                          },
+                        ),
+                        if (kDebugMode) ...<Widget>[
+                          const Divider(height: 0, indent: 16),
+                          ValueListenableBuilder<int?>(
+                            valueListenable: debugHourOverride,
+                            builder: (context, override, _) {
+                              final isAuto = override == null;
+                              final displayHour =
+                                  override ?? DateTime.now().hour;
+                              final period = isAuto
+                                  ? 'auto'
+                                  : '${displayHour.toString().padLeft(2, '0')}h';
+                              return ExpansionTile(
                                 leading: const Icon(
-                                  Icons.login,
+                                  Icons.wb_sunny_outlined,
                                   color: KultivaColors.primaryGreen,
                                 ),
                                 title: const Text(
-                                  'Se connecter ou créer un compte',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
+                                  'Heure de test (debug)',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                                subtitle: Text(
+                                  'Force l\'heure du fond Tamassi · $period',
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                                children: <Widget>[
+                                  SwitchListTile(
+                                    dense: true,
+                                    title: const Text('Mode automatique'),
+                                    subtitle: const Text(
+                                      'Utilise l\'heure réelle du téléphone',
+                                      style: TextStyle(fontSize: 11),
+                                    ),
+                                    value: isAuto,
+                                    onChanged: (v) => debugHourOverride.value =
+                                        v ? null : DateTime.now().hour,
                                   ),
+                                  if (!isAuto)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 8),
+                                      child: Row(
+                                        children: <Widget>[
+                                          const Text('0h',
+                                              style: TextStyle(fontSize: 12)),
+                                          Expanded(
+                                            child: Slider(
+                                              value: displayHour.toDouble(),
+                                              min: 0,
+                                              max: 23,
+                                              divisions: 23,
+                                              label: '${displayHour}h',
+                                              activeColor:
+                                                  KultivaColors.primaryGreen,
+                                              onChanged: (v) =>
+                                                  debugHourOverride.value =
+                                                      v.round(),
+                                            ),
+                                          ),
+                                          const Text('23h',
+                                              style: TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                    ),
+                                  if (!isAuto)
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16, 0, 16, 12),
+                                      child: Wrap(
+                                        spacing: 8,
+                                        children: <int>[7, 14, 19, 23]
+                                            .map((h) => ActionChip(
+                                                  label: Text(
+                                                      '${h.toString().padLeft(2, '0')}h'),
+                                                  onPressed: () =>
+                                                      debugHourOverride.value =
+                                                          h,
+                                                ))
+                                            .toList(),
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                        const Divider(height: 0, indent: 16),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.restart_alt,
+                            color: KultivaColors.primaryGreen,
+                          ),
+                          title: const Text(
+                            'Recommencer le Tamassi',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          subtitle: const Text(
+                            'Rechoisir ton starter et renommer ton Tamassi',
+                            style: TextStyle(fontSize: 11),
+                          ),
+                          onTap: () async {
+                            final confirm = await showDialog<bool>(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text('Tout recommencer ?'),
+                                content: const Text(
+                                  'Tu vas revenir à l\'écran de sélection '
+                                  'du starter. Ton niveau actuel sera '
+                                  'conservé.',
                                 ),
-                                subtitle: const Text(
-                                  'Pour sauvegarder ton jardin dans le cloud '
-                                  'et le retrouver sur tes autres appareils',
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                                onTap: () async {
-                                  // On quitte le mode invité SANS effacer
-                                  // quoi que ce soit : le jardin local sera
-                                  // poussé vers le cloud à la connexion.
-                                  await PrefsService.instance
-                                      .setGuestMode(false);
-                                  onSignOut();
-                                },
-                              )
-                            else ...<Widget>[
-                              ListTile(
-                                leading: const Icon(
-                                  Icons.logout,
-                                  color: KultivaColors.terracotta,
-                                ),
-                                title: const Text(
-                                  'Se déconnecter',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(ctx, false),
+                                    child: const Text('Annuler'),
                                   ),
-                                ),
-                                onTap: () async {
-                                  await AuthService.instance.signOut();
-                                  await CloudSyncService.instance
-                                      .clearLocalData();
-                                  onSignOut();
-                                },
+                                  ElevatedButton(
+                                    onPressed: () => Navigator.pop(ctx, true),
+                                    child: const Text('Recommencer'),
+                                  ),
+                                ],
                               ),
-                              const Divider(height: 0, indent: 16),
-                              ListTile(
-                                leading: const Icon(
-                                  Icons.delete_forever,
-                                  color: KultivaColors.terracotta,
-                                ),
-                                title: const Text(
-                                  'Supprimer mon compte',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: KultivaColors.terracotta,
-                                  ),
-                                ),
-                                subtitle: const Text(
-                                  'Efface définitivement ton compte et toutes '
-                                  'tes données',
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                                onTap: () => _confirmAndDeleteAccount(context),
+                            );
+                            if (confirm != true || !context.mounted) return;
+                            await PrefsService.instance
+                                .setString('kultiva.creature.starter', '');
+                            await PrefsService.instance
+                                .setString('kultiva.creature.name', '');
+                            // Relance le tuto Poussidex.
+                            await PrefsService.instance
+                                .setGardenTutorialDone(false);
+                            tamassiResetNotifier.value++;
+                            if (!context.mounted) return;
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('🌱 Ouvre l\'onglet Poussidex pour '
+                                        'choisir ton nouveau compagnon !'),
+                                duration: Duration(seconds: 3),
                               ),
-                            ],
-                          ],
-                        );
-                      },
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -601,55 +502,6 @@ class SettingsScreen extends StatelessWidget {
   /// barrière de progression pendant l'appel réseau, puis retour à
   /// l'écran de connexion. En cas d'échec (edge function non déployée,
   /// réseau…), un message est affiché et le compte reste intact.
-  Future<void> _confirmAndDeleteAccount(BuildContext context) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final confirm = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Supprimer ton compte ?'),
-        content: const Text(
-          'Cette action est définitive. Ton compte et toutes tes données '
-          '(Poussidex, badges, Tamassi, jardins, photos) seront supprimés '
-          'et ne pourront pas être récupérés.',
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: KultivaColors.terracotta,
-            ),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Supprimer définitivement'),
-          ),
-        ],
-      ),
-    );
-    if (confirm != true || !context.mounted) return;
-    // Barrière non annulable pendant la suppression.
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const Center(child: CircularProgressIndicator()),
-    );
-    try {
-      await AuthService.instance.deleteAccount();
-      await CloudSyncService.instance.clearLocalData();
-      if (!context.mounted) return;
-      Navigator.of(context).pop(); // ferme la barrière
-      onSignOut(); // ferme les Paramètres + retour connexion
-    } catch (e) {
-      if (!context.mounted) return;
-      Navigator.of(context).pop(); // ferme la barrière
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(e is AuthException ? e.message : '$e'),
-        ),
-      );
-    }
-  }
 }
 
 class _SectionTitle extends StatelessWidget {

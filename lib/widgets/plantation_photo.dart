@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 /// Affiche une photo de plant.
 ///
 /// Accepte indifféremment un **chemin local** (`/var/mobile/.../plant_123.jpg`)
-/// ou une **URL Supabase Storage** (`https://...supabase.co/.../plant_123.jpg`).
+/// ou une **URL distante** (`https://.../plant_123.jpg`). Ce second cas ne
+/// peut plus venir que d'une installation antérieure au 30/10/2026, du
+/// temps où les photos étaient aussi montées dans le cloud : on continue
+/// de les afficher pour ne pas faire disparaître l'historique de ces
+/// utilisateurs.
 /// Choisit `Image.file` ou `Image.network` selon la forme du path.
 ///
 /// Un `errorBuilder` optionnel est utilisé si la photo est introuvable

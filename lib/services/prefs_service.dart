@@ -20,7 +20,6 @@ class PrefsService {
   static const _kDarkMode = 'kultiva.darkMode';
   static const _kNotifications = 'kultiva.notifications';
   static const _kOnboardingDone = 'kultiva.onboardingDone';
-  static const _kGuestMode = 'kultiva.guestMode';
   static const _kFavorites = 'kultiva.favorites';
   static const _kAuthEmail = 'kultiva.auth.email';
   static const _kAuthName = 'kultiva.auth.name';
@@ -79,11 +78,6 @@ class PrefsService {
   /// (séparé du Poussidex).
   final ValueNotifier<int> culturesVersion = ValueNotifier<int>(0);
 
-  /// Callback appelé après chaque changement de préférence. Permet
-  /// à CloudSyncService de re-uploader les prefs sans créer de
-  /// dépendance circulaire. Réglé une fois dans main().
-  VoidCallback? onPreferencesChanged;
-
   /// Quand true, l'application de préférences venues du cloud est en
   /// cours : on ne bump pas le timestamp local et on ne re-uploade pas
   /// (sinon chaque champ appliqué déclencherait un upload concurrent et
@@ -114,9 +108,6 @@ class PrefsService {
     if (_applyingRemote) return;
     _prefs?.setString(
         _kPrefsUpdatedAt, DateTime.now().toUtc().toIso8601String());
-    try {
-      onPreferencesChanged?.call();
-    } catch (_) {}
   }
 
   bool _loaded = false;
@@ -244,19 +235,6 @@ class PrefsService {
 
   Future<void> setOnboardingDone(bool value) async {
     await _prefs?.setBool(_kOnboardingDone, value);
-  }
-
-  /// Mode invité : l'utilisateur a choisi « Continuer sans compte ».
-  ///
-  /// Tout le cœur de l'app (calendrier, catalogue, Poussidex, jardins,
-  /// Tamassi, tutos) fonctionne alors en local pur — contrat local-first.
-  /// Seule la synchronisation cloud demande un compte. Le drapeau est
-  /// remis à `false` dès qu'une session
-  /// Supabase existe (voir [setGuestMode]).
-  bool get guestMode => _prefs?.getBool(_kGuestMode) ?? false;
-
-  Future<void> setGuestMode(bool value) async {
-    await _prefs?.setBool(_kGuestMode, value);
   }
 
   bool get gardenTutorialDone => _prefs?.getBool(_kGardenTutorialDone) ?? false;
@@ -399,8 +377,7 @@ class PrefsService {
   /// les données du précédent sur le même appareil.
   ///
   /// Les préférences de l'appareil (son, thème, région, notifications)
-  /// sont conservées : elles sont re-synchronisées depuis le cloud à la
-  /// prochaine connexion.
+  /// sont conservées : seules les données du jardin sont effacées.
   Future<void> clearUserScopedData() async {
     final p = _prefs;
     if (p == null) return;

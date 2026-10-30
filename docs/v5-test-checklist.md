@@ -5,7 +5,6 @@
 ## 🌐 Préparation
 
 - [ ] App lancée en mode release (`flutter run --release`) sur iPhone connecté
-- [ ] Compte Supabase connecté (email ou Google ou Apple) pour tester la sync et le feed
 - [ ] Localisation autorisée (ou tester explicitement le fallback Paris)
 - [ ] Au moins un jardin pleine terre créé avec quelques plants placés
 
@@ -72,17 +71,18 @@
 - [ ] Phase par défaut = « Semis / plantule »
 
 ### Mode offline
+> L'app n'a ni compte ni serveur depuis le 30/10/2026 : **tout** doit
+> fonctionner hors ligne, sauf la météo. Ce n'est plus un cas limite,
+> c'est le fonctionnement normal.
+
 - [ ] Couper le wifi + données mobiles
 - [ ] Killer + relancer l'app
 - [ ] Mes jardins, plantations, photos lisibles
 - [ ] Création d'un nouveau jardin, ajout d'un plant, marquage arrosé → fonctionnent
-- [ ] Pas de crash sur météo / feed / Tamassi visiteurs (juste loading vide ou message clair)
-- [ ] Réactiver le réseau → la sync cloud reprend en arrière-plan
-
-### Sync Supabase
-- [ ] Plantations Poussidex syncées entre devices
-- [ ] Likes feed comptés correctement (côté serveur via trigger)
-- [ ] Photos uploadées dans le bucket `plant-photos`
+- [ ] Ajout d'un plant depuis une fiche légume (« Je l'ai planté »), arrosage, récolte → fonctionnent
+- [ ] Météo : message clair ou dernières valeurs en cache, pas de crash
+- [ ] Visiteurs Tamassi : ils apparaissent quand même (ils sont générés localement)
+- [ ] Aucun écran de connexion, aucune mention de compte nulle part
 
 ## 🐛 Bugs à signaler si rencontrés
 

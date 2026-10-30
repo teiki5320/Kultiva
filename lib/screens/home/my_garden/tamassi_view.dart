@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../data/visitor_names.dart';
 import '../../../models/tamassi_visitor.dart';
 import '../../../models/weather_data.dart';
 import '../../../services/audio_service.dart';
-import '../../../services/cloud_sync_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../services/tamassi_stats.dart';
 import '../../../services/weather_service.dart';
@@ -120,9 +120,7 @@ class TamassiViewState extends State<TamassiView>
     final firstDelay = Duration(seconds: 30 + Random().nextInt(60));
     _visitTimer = Timer(firstDelay, () async {
       if (!mounted) return;
-      final visitors = await CloudSyncService.instance.fetchTamassiVisitors(
-        count: 1,
-      );
+      final visitors = randomVisitors(playerXp: _xp, count: 1);
       if (!mounted) return;
       if (visitors.isNotEmpty) {
         setState(() {
@@ -143,8 +141,7 @@ class TamassiViewState extends State<TamassiView>
 
   void _scheduleVisitLoop() async {
     if (!mounted) return;
-    final visitors =
-        await CloudSyncService.instance.fetchTamassiVisitors(count: 1);
+    final visitors = randomVisitors(playerXp: _xp, count: 1);
     if (!mounted) return;
     if (visitors.isNotEmpty) {
       setState(() {
@@ -203,12 +200,6 @@ class TamassiViewState extends State<TamassiView>
       _level = _xp.toDouble();
     });
     await PrefsService.instance.setString(_kXp, _xp.toString());
-    // Cloud sync (fire-and-forget).
-    unawaited(CloudSyncService.instance.uploadXp(
-      xp: _xp,
-      starter: _starter?.name,
-      creatureName: _creatureName,
-    ));
     _checkLevelUp();
     // Toast "+X XP" en haut de l'écran.
     if (mounted) {

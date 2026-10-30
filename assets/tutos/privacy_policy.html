@@ -24,109 +24,110 @@
 <body>
 
 <h1>🌱 Politique de confidentialité</h1>
-<p class="date">Dernière mise à jour : 24 août 2026</p>
+<p class="date">Dernière mise à jour : 30 octobre 2026</p>
 
 <p>Kultiva est une application de jardinage développée par Jean Perraudeau
-(ci-après « nous »). Cette politique explique quelles données nous
-collectons, pourquoi, et comment nous les protégeons.</p>
+(ci-après « nous »). Cette politique explique quelles données
+l'application utilise, pourquoi, et où elles restent.</p>
 
-<h2>1. Données collectées</h2>
+<p><strong>En une phrase : Kultiva n'a pas de compte, pas de serveur, et
+ton jardin ne quitte jamais ton téléphone.</strong></p>
+
+<h2>1. Données utilisées</h2>
 <ul>
-  <li><strong>Compte utilisateur</strong> — adresse e-mail, nom affiché,
-  identifiant OAuth (Google ou Apple). Collectées lors de l'inscription
-  pour permettre la synchronisation cloud.</li>
   <li><strong>Données de jardinage</strong> — plantations, arrosages,
-  récoltes, badges débloqués, préférences (région, thème, notifications).
-  Stockées localement sur l'appareil et synchronisées sur nos serveurs
-  si tu actives la synchronisation cloud.</li>
-  <li><strong>Photos</strong> — photos de plants prises avec la caméra ou
-  importées depuis la galerie. Stockées localement et uploadées dans le
-  cloud si la synchronisation est active.</li>
-  <li><strong>Localisation</strong> — position GPS utilisée uniquement pour
-  afficher la météo locale et détecter ta région (France / Afrique de
-  l'Ouest). Jamais stockée sur nos serveurs. Si tu refuses l'accès, Paris
-  est utilisé par défaut.</li>
-  <li><strong>Données de la créature Tamassi</strong> — XP, niveau, nom,
-  variante choisie. Synchronisées si le compte cloud est actif.</li>
-  <li><strong>Photos de tes plants et de tes défis</strong> — stockées
-  sur ton appareil. Si le compte cloud est actif, elles sont sauvegardées
-  dans ton espace privé, accessible à toi seul. Elles ne sont jamais
-  publiées ni montrées à d'autres utilisateurs.</li>
+  récoltes, badges, défis, préférences (région, thème, notifications).
+  Stockées <strong>uniquement sur ton appareil</strong>, dans le stockage
+  privé de l'application. Elles ne sont envoyées nulle part.</li>
+  <li><strong>Photos</strong> — photos de plants et de défis prises avec
+  la caméra ou importées depuis la galerie. Stockées
+  <strong>uniquement sur ton appareil</strong>, dans le dossier privé de
+  l'application. Elles ne sont ni envoyées, ni publiées, ni montrées à
+  personne.</li>
+  <li><strong>Créature Tamassi</strong> — XP, niveau, nom, variante.
+  Stockés sur ton appareil. Les « visiteurs » que tu croises sont générés
+  par l'application elle-même : ce ne sont pas d'autres utilisateurs.</li>
+  <li><strong>Localisation</strong> — ta position est utilisée pour
+  afficher la météo de ton jardin et proposer le bon calendrier
+  régional. Elle n'est <strong>jamais enregistrée</strong> : à chaque
+  consultation, les coordonnées servent à interroger le service météo
+  puis sont oubliées. Si tu refuses l'accès, l'app utilise Paris (ou la
+  capitale du pays que tu as choisi).</li>
 </ul>
 
-<h2>2. Pourquoi nous collectons ces données</h2>
+<p>Nous ne collectons <strong>aucune</strong> donnée d'identité : ni
+adresse e-mail, ni nom, ni numéro de téléphone, ni identifiant de
+compte. L'application ne propose pas de création de compte.</p>
+
+<h2>2. À quoi servent ces données</h2>
 <ul>
-  <li>Faire fonctionner l'application (calendrier, météo, arrosage).</li>
-  <li>Synchroniser tes données entre tes appareils (facultatif).</li>
-  <li>Afficher le classement Tamassi (XP publique).</li>
+  <li>Faire fonctionner l'application : calendrier, météo, rappels
+  d'arrosage, suivi de tes plants.</li>
+  <li>Rien d'autre. Nous ne vendons jamais de données, nous n'en faisons
+  aucun usage publicitaire, et nous ne construisons aucun profil.</li>
 </ul>
-<p>Nous ne vendons jamais tes données. Nous n'utilisons pas tes données
-à des fins publicitaires.</p>
 
 <h2>3. Stockage et sécurité</h2>
-<p>Les données cloud sont hébergées sur <strong>Supabase</strong>
-(infrastructure AWS, région Europe — Francfort). L'accès aux données
-est protégé par :</p>
-<ul>
-  <li>Authentification OAuth2 (Google / Apple) ou e-mail + mot de passe.</li>
-  <li>Row Level Security (RLS) : chaque utilisateur ne peut accéder
-  qu'à ses propres données.</li>
-  <li>Chiffrement en transit (HTTPS/TLS).</li>
-</ul>
-<p>Les données locales sont stockées sur ton appareil dans le stockage
-privé de l'application (SharedPreferences et dossier documents).</p>
+<p>Toutes tes données vivent dans le <strong>stockage privé de
+l'application</strong> sur ton appareil, protégé par le système
+d'exploitation (iOS ou Android). Nous n'avons aucun serveur qui stocke
+tes données, donc rien à sécuriser à distance, et rien qui puisse fuiter
+de notre côté.</p>
+<p>La contrepartie est à connaître : <strong>si tu désinstalles
+l'application ou changes de téléphone, ton jardin ne te suit pas.</strong>
+Il n'existe aucune sauvegarde en ligne.</p>
 
-<h2>4. Partage des données</h2>
-<p>Nous ne partageons tes données avec aucun tiers, sauf :</p>
+<h2>4. Services tiers</h2>
+<p>Deux services extérieurs seulement sont contactés :</p>
 <ul>
-  <li><strong>Supabase</strong> — hébergeur cloud (sous-traitant technique).</li>
-  <li><strong>Open-Meteo</strong> — service météo gratuit. Seules les
-  coordonnées GPS sont transmises pour obtenir les prévisions. Aucun
-  compte utilisateur n'est partagé.</li>
-  <li><strong>Google / Apple</strong> — uniquement pour l'authentification
-  OAuth. Nous recevons ton e-mail et ton nom, rien d'autre.</li>
-  <li><strong>Sentry</strong> — rapport d'erreurs technique (crash de
-  l'application). Reçoit des informations techniques anonymisées sur
-  l'appareil et l'erreur, jamais tes données de jardinage ni tes photos.</li>
+  <li><strong>Open-Meteo</strong> — service météo gratuit. Reçoit des
+  coordonnées GPS approximatives pour renvoyer les prévisions. Aucune
+  autre donnée, aucun identifiant. Ce service ne demande pas de clé et ne
+  nous identifie pas.</li>
+  <li><strong>Sentry</strong> — rapport d'erreurs technique, pour que
+  nous puissions corriger les plantages. Reçoit des informations
+  techniques sur l'appareil et sur l'erreur. <strong>Jamais tes données
+  de jardinage, jamais tes photos, jamais ta position.</strong></li>
 </ul>
 
 <h2>5. Durée de conservation</h2>
-<ul>
-  <li>Données locales : tant que l'application est installée.</li>
-  <li>Données cloud : tant que ton compte existe. Si tu supprimes ton
-  compte, toutes tes données sont effacées sous 30 jours.</li>
-</ul>
+<p>Tes données restent sur ton appareil tant que l'application est
+installée. <strong>Désinstaller l'application les efface
+définitivement.</strong></p>
 
 <h2>6. Tes droits (RGPD)</h2>
-<p>Tu as le droit de :</p>
+<p>Comme nous ne détenons aucune donnée te concernant, tu les exerces
+directement depuis ton téléphone :</p>
 <ul>
   <li><strong>Accéder</strong> à tes données — elles sont toutes visibles
-  dans l'application.</li>
-  <li><strong>Rectifier</strong> tes données — modifie ton profil ou tes
-  plantations directement dans l'app.</li>
-  <li><strong>Supprimer</strong> ton compte et toutes tes données — dans
-  Paramètres → Supprimer mon compte.</li>
-  <li><strong>Exporter</strong> tes données — contacte-nous par e-mail.</li>
-  <li><strong>T'opposer</strong> au traitement — désactive la
-  synchronisation cloud dans les paramètres pour utiliser l'app en
-  mode 100 % local.</li>
+  dans l'application ; il n'en existe pas d'autres.</li>
+  <li><strong>Rectifier</strong> tes données — modifie tes plants, tes
+  notes et tes préférences directement dans l'app.</li>
+  <li><strong>Supprimer</strong> tes données — retire un plant dans
+  l'app, ou désinstalle l'application pour tout effacer. Nous n'avons
+  rien à supprimer de notre côté.</li>
+  <li><strong>T'opposer</strong> au traitement — refuse la localisation
+  dans les réglages de ton téléphone ; l'application continue de
+  fonctionner.</li>
 </ul>
+<p>Pour toute question, écris-nous : <strong>kultiva@toakeur.com</strong></p>
 
 <h2>7. Mineurs</h2>
-<p>Kultiva est conçue pour être utilisée en famille. Les enfants de moins
-de 16 ans doivent obtenir le consentement d'un parent ou tuteur avant
-de créer un compte. Les données de jardinage restent stockées sur
-l'appareil ; la synchronisation cloud peut être désactivée à tout moment
-dans les paramètres.</p>
+<p>Kultiva est conçue pour être utilisée en famille et ne demande aucune
+information personnelle : il n'y a pas de compte à créer, pas de nom à
+donner, et aucun moyen pour un enfant de communiquer avec qui que ce
+soit à travers l'application. Les photos restent sur l'appareil de la
+famille.</p>
 
 <h2>8. Cookies et trackers</h2>
-<p>L'application mobile n'utilise aucun cookie, aucun tracker publicitaire,
-aucun outil d'analytics. Aucune donnée de navigation n'est collectée.</p>
+<p>L'application n'utilise aucun cookie, aucun tracker publicitaire,
+aucun outil de mesure d'audience. Aucune donnée de navigation n'est
+collectée.</p>
 
 <h2>9. Modifications</h2>
-<p>Cette politique peut être mise à jour. En cas de changement significatif,
-une notification sera affichée dans l'application. La date de mise à jour
-en haut de cette page fait référence.</p>
+<p>Cette politique peut être mise à jour. En cas de changement
+significatif, une notification sera affichée dans l'application. La date
+de mise à jour en haut de cette page fait référence.</p>
 
 <h2>10. Contact</h2>
 <p>Pour toute question relative à tes données personnelles :</p>

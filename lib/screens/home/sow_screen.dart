@@ -17,7 +17,6 @@ import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
-import '../root_tabs.dart';
 import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
@@ -144,8 +143,8 @@ class _SowScreenState extends State<SowScreen> {
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
-        final season = Season.of(month, region,
-            zone: PrefsService.instance.effectiveZone);
+        final season =
+            Season.of(month, region, zone: PrefsService.instance.effectiveZone);
         final data = _dataFor(region);
 
         final toSow = <Vegetable>[];
@@ -940,18 +939,9 @@ class _SlideTip extends StatelessWidget {
 }
 
 /// Slide 4 — En saison (résumé semis/récoltes).
-/// Proxy pour ouvrir les paramètres sans connaître onSignOut.
 class _SettingsProxy extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    // À la déconnexion / suppression de compte : on ferme les Paramètres
-    // PUIS on demande à RootTabs de repartir vers l'écran de connexion
-    // (sinon l'utilisateur reste bloqué dans les onglets, déconnecté).
-    return SettingsScreen(onSignOut: () {
-      Navigator.of(context).pop();
-      RootTabs.requestSignOut();
-    });
-  }
+  Widget build(BuildContext context) => const SettingsScreen();
 }
 
 class _SlideSeason extends StatelessWidget {

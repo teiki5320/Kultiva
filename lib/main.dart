@@ -3,16 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'config/supabase_config.dart';
-import 'screens/auth/login_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
 import 'screens/splash_screen.dart';
 import 'services/audio_service.dart';
-import 'services/auth_service.dart';
-import 'services/cloud_sync_service.dart';
 import 'services/notification_service.dart';
 import 'services/photo_service.dart';
 import 'services/prefs_service.dart';
@@ -21,8 +16,8 @@ import 'theme/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Sentry est initialisé AVANT le bootstrap, pas après : tout ce que
-  // fait `_bootstrapAndRun` (Supabase, préférences, notifications,
-  // fuseau horaire) tourne ainsi dans la zone surveillée. Sinon un
+  // fait `_bootstrapAndRun` (préférences, notifications, fuseau
+  // horaire) tourne ainsi dans la zone surveillée. Sinon un
   // plantage au démarrage — la phase la plus fragile — ne remonterait
   // jamais, et l'utilisateur ne verrait qu'un écran vide.
   await SentryFlutter.init(
@@ -64,26 +59,8 @@ Future<void> _bootstrapAndRun() async {
   // téléchargement de police au runtime (important sur les forfaits
   // data limités, notamment en Afrique de l'Ouest).
   GoogleFonts.config.allowRuntimeFetching = false;
-  // Initialise Supabase (auth + sync cloud). Doit être fait avant
-  // AuthService.load() qui pioche la session courante dans Supabase.
-  await Supabase.initialize(
-    url: SupabaseConfig.url,
-    anonKey: SupabaseConfig.anonKey,
-  );
   await PrefsService.instance.load();
-  // Dès qu'une préférence change, on la pousse vers le cloud (si
-  // l'utilisateur est connecté). Fire-and-forget — l'UI ne bloque pas.
-  PrefsService.instance.onPreferencesChanged = () {
-    CloudSyncService.instance.uploadPreferences();
-  };
-  await AuthService.instance.load();
   await _guard('notifications_init', NotificationService.init);
-  // Si l'utilisateur a déjà une session (il avait ouvert l'app avant),
-  // on synchronise plants + badges + prefs avec le cloud en arrière-
-  // plan. Pas de await : l'UI démarre tout de suite.
-  if (AuthService.instance.isSignedIn) {
-    CloudSyncService.instance.syncAllOnLogin();
-  }
   // Purge best-effort des photos locales orphelines (non bloquant).
   PhotoService.purgeOrphans();
   // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
@@ -157,7 +134,11 @@ class KultivaApp extends StatelessWidget {
   }
 }
 
-/// Orchestre le flow splash → onboarding → auth → main.
+/// Orchestre le flow splash → onboarding → main.
+///
+/// Il n'y a plus d'étape d'authentification : les comptes ont été
+/// retirés de la v1 (le jardin vit sur l'appareil), donc l'app entre
+/// directement dans son contenu.
 class _KultivaBootstrap extends StatefulWidget {
   const _KultivaBootstrap();
 
@@ -165,7 +146,7 @@ class _KultivaBootstrap extends StatefulWidget {
   State<_KultivaBootstrap> createState() => _KultivaBootstrapState();
 }
 
-enum _BootStep { splash, onboarding, auth, main }
+enum _BootStep { splash, onboarding, main }
 
 class _KultivaBootstrapState extends State<_KultivaBootstrap> {
   late _BootStep _step;
@@ -173,47 +154,20 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
   @override
   void initState() {
     super.initState();
-    // Skip splash: go directly to onboarding/auth/main.
-    if (!PrefsService.instance.onboardingDone) {
-      _step = _BootStep.onboarding;
-    } else if (!_hasAccess) {
-      _step = _BootStep.auth;
-    } else {
-      _step = _BootStep.main;
-    }
+    // On saute le splash : onboarding au premier lancement, sinon
+    // directement le contenu.
+    _step = PrefsService.instance.onboardingDone
+        ? _BootStep.main
+        : _BootStep.onboarding;
   }
 
-  void _afterSplash() {
-    setState(() {
-      if (!PrefsService.instance.onboardingDone) {
-        _step = _BootStep.onboarding;
-      } else if (!_hasAccess) {
-        _step = _BootStep.auth;
-      } else {
-        _step = _BootStep.main;
-      }
-    });
-  }
+  void _afterSplash() => setState(() {
+        _step = PrefsService.instance.onboardingDone
+            ? _BootStep.main
+            : _BootStep.onboarding;
+      });
 
-  void _afterOnboarding() {
-    setState(() {
-      _step = _hasAccess ? _BootStep.main : _BootStep.auth;
-    });
-  }
-
-  /// L'app est accessible soit avec une session Supabase, soit en mode
-  /// invité — le cœur de Kultiva est local-first et n'exige aucun compte.
-  bool get _hasAccess =>
-      AuthService.instance.isSignedIn || PrefsService.instance.guestMode;
-
-  void _afterSignIn() => setState(() => _step = _BootStep.main);
-
-  /// Choix « Continuer sans compte » depuis l'écran de connexion.
-  void _afterGuest() => setState(() => _step = _BootStep.main);
-
-  /// Déconnexion, ou sortie volontaire du mode invité pour se connecter :
-  /// dans les deux cas on repasse par l'écran d'authentification.
-  void _afterSignOut() => setState(() => _step = _BootStep.auth);
+  void _afterOnboarding() => setState(() => _step = _BootStep.main);
 
   @override
   Widget build(BuildContext context) {
@@ -222,13 +176,8 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
         return SplashScreen(onDone: _afterSplash);
       case _BootStep.onboarding:
         return OnboardingScreen(onDone: _afterOnboarding);
-      case _BootStep.auth:
-        return LoginScreen(
-          onSignedIn: _afterSignIn,
-          onContinueAsGuest: _afterGuest,
-        );
       case _BootStep.main:
-        return RootTabs(onSignOut: _afterSignOut);
+        return const RootTabs();
     }
   }
 }

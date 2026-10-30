@@ -72,7 +72,7 @@ Photographie tes plants et retrouve toute leur histoire : notes, arrosages, réc
 🎓 POUR APPRENDRE EN S'AMUSANT
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
 
-Et surtout : Kultiva fonctionne sans connexion. Tes données restent sur ton téléphone ; la synchronisation cloud est facultative et gratuite.
+Et surtout : Kultiva fonctionne sans connexion et sans compte. Tes données restent sur ton téléphone, et nulle part ailleurs.
 
 Télécharge Kultiva et fais pousser ton premier bonheur. 🌸
 ```
@@ -141,7 +141,7 @@ Ta collection de plants en photos, avec médailles bronze, argent et or, et 50 d
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (le niébé entre les poquets de mil, ça marche aussi dans l'app).
 
 📶 PENSÉ POUR TON RÉSEAU
-Kultiva fonctionne 100 % hors connexion : tes données restent sur ton téléphone, et l'app reste légère. La synchronisation cloud est facultative et gratuite.
+Kultiva fonctionne 100 % hors connexion et sans compte : tes données restent sur ton téléphone, et l'app reste légère.
 
 Télécharge Kultiva et fais de chaque hivernage ta plus belle saison. 🌱
 ```
