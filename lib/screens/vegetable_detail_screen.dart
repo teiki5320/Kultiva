@@ -16,11 +16,13 @@ import '../models/region_data.dart';
 import '../models/vegetable.dart';
 import '../models/vegetable_medal.dart';
 import '../services/pdf_service.dart';
+import '../services/plantation_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 import '../utils/months.dart';
 import '../widgets/lexicon_text.dart';
 import '../widgets/medal_badge.dart';
+import 'root_tabs.dart';
 
 /// Fiche détail d'un légume — s'adapte à la région active pour les mois
 /// de semis / récolte. Supporte le swipe gauche/droite pour naviguer entre
@@ -61,6 +63,30 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
   }
 
   Vegetable get _currentVegetable => _list[_currentIndex];
+
+  /// Entrée unique de la collection : c'est d'ici qu'un plant naît.
+  /// Sans ce bouton, le Poussidex restait vide à vie — aucun écran ne
+  /// créait de `Plantation`, alors que la fiche App Store promet une
+  /// collection de plants.
+  Future<void> _recordPlanting() async {
+    final v = _currentVegetable;
+    AudioService.instance.play(Sfx.plant);
+    await PlantationService.instance.add(v.id);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${v.emoji} ${v.name} rejoint ta collection'),
+        action: SnackBarAction(
+          label: 'Voir',
+          onPressed: () {
+            RootTabs.poussidexFilter.value = 'collection';
+            RootTabs.tabIndex.value = 2;
+            Navigator.of(context).popUntil((r) => r.isFirst);
+          },
+        ),
+      ),
+    );
+  }
 
   List<RegionData> _dataFor(Region region) {
     switch (region) {
@@ -124,6 +150,29 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ],
           ),
+          // Les accessoires (outils, jardinières) ne se plantent pas :
+          // pas de bouton sur leurs fiches.
+          floatingActionButton: _currentVegetable.category ==
+                  VegetableCategory.accessories
+              ? null
+              : ListenableBuilder(
+                  listenable: PlantationService.instance,
+                  builder: (context, _) {
+                    final count = PlantationService.instance
+                        .countFor(_currentVegetable.id);
+                    return FloatingActionButton.extended(
+                      onPressed: _recordPlanting,
+                      backgroundColor: KultivaColors.primaryGreen,
+                      foregroundColor: Colors.white,
+                      icon: const Text('🌱', style: TextStyle(fontSize: 18)),
+                      label: Text(
+                        count == 0
+                            ? 'Je l\'ai planté'
+                            : 'Je l\'ai planté ($count)',
+                      ),
+                    );
+                  },
+                ),
           body: _list.length == 1
               ? _buildPage(_list[0], region)
               : PageView.builder(

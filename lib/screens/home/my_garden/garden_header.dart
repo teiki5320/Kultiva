@@ -4,7 +4,7 @@ import '../../../services/audio_service.dart';
 import '../../../theme/app_theme.dart';
 
 /// Filtre actif dans le Poussidex.
-enum AlbumFilter { tamassi, challenges, badges }
+enum AlbumFilter { tamassi, collection, challenges, badges }
 
 class GardenHeader extends StatelessWidget {
   final int plantationsCount;
@@ -105,6 +105,7 @@ class GardenHeader extends StatelessWidget {
 
 class GardenFilterBar extends StatelessWidget {
   final AlbumFilter filter;
+  final int plantsCount;
   final int challengesCount;
   final int badgesCount;
   final int totalBadges;
@@ -113,6 +114,7 @@ class GardenFilterBar extends StatelessWidget {
   const GardenFilterBar({
     super.key,
     required this.filter,
+    required this.plantsCount,
     required this.challengesCount,
     required this.badgesCount,
     required this.totalBadges,
@@ -121,45 +123,68 @@ class GardenFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Quatre onglets ne tiennent plus sur la largeur d'un téléphone :
+    // la barre défile horizontalement, tout en restant centrée quand il
+    // y a la place (tablette, ou libellés courts).
     return SizedBox(
       height: 56,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          GardenFilterChip(
-            label: '🌱 Tamassi',
-            count: 0,
-            hideCount: true,
-            selected: filter == AlbumFilter.tamassi,
-            color: KultivaColors.primaryGreen,
-            onTap: () {
-              AudioService.instance.play(Sfx.tap);
-              onChanged(AlbumFilter.tamassi);
-            },
-          ),
-          GardenFilterChip(
-            label: '📸 Défis',
-            count: 0,
-            hideCount: true,
-            selected: filter == AlbumFilter.challenges,
-            color: KultivaColors.challengePink,
-            onTap: () {
-              AudioService.instance.play(Sfx.tap);
-              onChanged(AlbumFilter.challenges);
-            },
-          ),
-          GardenFilterChip(
-            label: '🏆 Badges',
-            count: badgesCount,
-            total: totalBadges,
-            selected: filter == AlbumFilter.badges,
-            color: KultivaColors.badgeGold,
-            onTap: () {
-              AudioService.instance.play(Sfx.tap);
-              onChanged(AlbumFilter.badges);
-            },
-          ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GardenFilterChip(
+                    label: '🌱 Tamassi',
+                    count: 0,
+                    hideCount: true,
+                    selected: filter == AlbumFilter.tamassi,
+                    color: KultivaColors.primaryGreen,
+                    onTap: () {
+                      AudioService.instance.play(Sfx.tap);
+                      onChanged(AlbumFilter.tamassi);
+                    },
+                  ),
+                  GardenFilterChip(
+                    label: '🪴 Mes plants',
+                    count: plantsCount,
+                    selected: filter == AlbumFilter.collection,
+                    color: KultivaColors.terracotta,
+                    onTap: () {
+                      AudioService.instance.play(Sfx.tap);
+                      onChanged(AlbumFilter.collection);
+                    },
+                  ),
+                  GardenFilterChip(
+                    label: '📸 Défis',
+                    count: 0,
+                    hideCount: true,
+                    selected: filter == AlbumFilter.challenges,
+                    color: KultivaColors.challengePink,
+                    onTap: () {
+                      AudioService.instance.play(Sfx.tap);
+                      onChanged(AlbumFilter.challenges);
+                    },
+                  ),
+                  GardenFilterChip(
+                    label: '🏆 Badges',
+                    count: badgesCount,
+                    total: totalBadges,
+                    selected: filter == AlbumFilter.badges,
+                    color: KultivaColors.badgeGold,
+                    onTap: () {
+                      AudioService.instance.play(Sfx.tap);
+                      onChanged(AlbumFilter.badges);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

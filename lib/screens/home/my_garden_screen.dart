@@ -10,6 +10,7 @@ import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/audio_service.dart';
 import '../../services/plantation_migration.dart';
+import '../../services/plantation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/review_service.dart';
 import '../../theme/app_theme.dart';
@@ -18,6 +19,7 @@ import 'my_garden/garden_header.dart';
 import 'my_garden/tamassi_view.dart';
 import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_challenges.dart';
+import 'poussidex/poussidex_collection.dart';
 
 /// Incrémenté à chaque reset du starter depuis les paramètres.
 /// Le [TamassiView] l'écoute pour recharger l'état du starter.
@@ -62,6 +64,10 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     _bootstrap();
     tamassiResetNotifier.addListener(_onTamassiResetExternal);
     RootTabs.poussidexFilter.addListener(_onPoussidexFilterExternal);
+    // La collection peut changer depuis une autre page (bouton « Je
+    // l'ai planté » sur une fiche légume) : on se recale sur le service
+    // plutôt que de garder une copie qui dériverait.
+    PlantationService.instance.addListener(_onPlantationsChanged);
   }
 
   void _onTamassiResetExternal() {
@@ -82,6 +88,10 @@ class MyGardenScreenState extends State<MyGardenScreen> {
       case 'challenges':
       case 'feed':
         next = AlbumFilter.challenges;
+        break;
+      case 'collection':
+      case 'plants':
+        next = AlbumFilter.collection;
         break;
       case 'badges':
         next = AlbumFilter.badges;
@@ -104,12 +114,14 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   void dispose() {
     tamassiResetNotifier.removeListener(_onTamassiResetExternal);
     RootTabs.poussidexFilter.removeListener(_onPoussidexFilterExternal);
+    PlantationService.instance.removeListener(_onPlantationsChanged);
     super.dispose();
   }
 
   Future<void> _bootstrap() async {
     await _maybeMigrate();
-    _plantations = Plantation.decodeAll(PrefsService.instance.plantationsJson);
+    PlantationService.instance.load();
+    _plantations = PlantationService.instance.all;
     // UNION avec les badges déjà débloqués (restaurés du cloud ou gagnés
     // par des actions dont les stats sont purement locales) : on ne
     // recalcule QUE pour AJOUTER d'éventuels badges de niveau, jamais pour
@@ -130,6 +142,19 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   /// Poussidex pour la première fois.
   void onBecameVisible() {
     _showTutorialIfNeeded();
+  }
+
+  /// La collection a bougé : on relit le service et on recalcule les
+  /// médailles, qui se déduisent du nombre de plants par espèce.
+  void _onPlantationsChanged() {
+    if (!mounted) return;
+    setState(() {
+      _plantations = PlantationService.instance.all;
+      _medals = computeAllMedals(
+        _plantations,
+        region: PrefsService.instance.region.value,
+      );
+    });
   }
 
   final GlobalKey<TamassiViewState> _tamassiKey = GlobalKey<TamassiViewState>();
@@ -205,6 +230,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
             ),
             GardenFilterBar(
               filter: _filter,
+              plantsCount: _plantations.length,
               challengesCount: 0,
               badgesCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
@@ -260,6 +286,14 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     switch (_filter) {
       case AlbumFilter.tamassi:
         return TamassiView(key: _tamassiKey);
+      case AlbumFilter.collection:
+        return PoussidexCollectionView(
+          plantations: _plantations,
+          medals: _medals,
+          // Un plant s'ajoute depuis une fiche légume : on y emmène
+          // l'utilisateur plutôt que de dupliquer un sélecteur ici.
+          onBrowseCatalogue: () => RootTabs.tabIndex.value = 1,
+        );
       case AlbumFilter.challenges:
         return PoussidexChallengesGrid(
           onPhotoTaken: _onChallengePhotoTaken,

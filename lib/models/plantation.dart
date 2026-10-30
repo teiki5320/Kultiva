@@ -47,6 +47,7 @@ class Plantation {
     String? note,
     List<String>? photoPaths,
     bool clearHarvestedAt = false,
+    bool clearNote = false,
   }) {
     return Plantation(
       id: id,
@@ -55,7 +56,10 @@ class Plantation {
       harvestedAt: clearHarvestedAt ? null : (harvestedAt ?? this.harvestedAt),
       harvestCount: harvestCount ?? this.harvestCount,
       wateredAt: wateredAt ?? this.wateredAt,
-      note: note ?? this.note,
+      // `clearNote` est nécessaire parce que `note ?? this.note` ne peut
+      // pas exprimer « efface la note » : passer null veut dire « ne
+      // change rien ». Même logique que `clearHarvestedAt`.
+      note: clearNote ? null : (note ?? this.note),
       photoPaths: photoPaths ?? this.photoPaths,
     );
   }
