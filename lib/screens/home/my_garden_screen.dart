@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../services/tamassi_stats.dart';
 import '../root_tabs.dart';
 
 import '../../data/badges.dart';
@@ -8,29 +7,14 @@ import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
-import '../../services/audio_service.dart';
 import '../../services/plantation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/review_service.dart';
-import '../../theme/app_theme.dart';
 import '../../widgets/garden_tutorial_sheet.dart';
 import 'my_garden/garden_header.dart';
-import 'my_garden/tamassi_view.dart';
 import 'poussidex/poussidex_badges.dart';
 import 'poussidex/poussidex_challenges.dart';
 import 'poussidex/poussidex_collection.dart';
-
-/// Incrémenté à chaque reset du starter depuis les paramètres.
-/// Le [TamassiView] l'écoute pour recharger l'état du starter.
-final ValueNotifier<int> tamassiResetNotifier = ValueNotifier<int>(0);
-
-/// Heure forcée pour le debug (0-23) ou null = heure réelle.
-/// Utilisée par le fond kawaii + la bulle de greeting pour pouvoir
-/// vérifier les 4 ambiances sans attendre.
-final ValueNotifier<int?> debugHourOverride = ValueNotifier<int?>(null);
-
-/// Heure effective : override si set, sinon heure système.
-int effectiveHour() => debugHourOverride.value ?? DateTime.now().hour;
 
 /// Poussidex — album de collection des légumes plantés.
 ///
@@ -49,7 +33,7 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   List<Plantation> _plantations = <Plantation>[];
   Set<String> _unlockedBadges = <String>{};
   Map<String, MedalTier> _medals = <String, MedalTier>{};
-  AlbumFilter _filter = AlbumFilter.tamassi;
+  AlbumFilter _filter = AlbumFilter.collection;
   bool _loaded = false;
 
   /// Total d'espèces collectionnables (tous les légumes sauf accessoires).
@@ -61,7 +45,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   void initState() {
     super.initState();
     _bootstrap();
-    tamassiResetNotifier.addListener(_onTamassiResetExternal);
     RootTabs.poussidexFilter.addListener(_onPoussidexFilterExternal);
     // Ouvert par un deep-link, l'écran naît après que la section a été
     // demandée : l'écouteur ne verrait rien. On lit la valeur en cours.
@@ -76,11 +59,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     PlantationService.instance.addListener(_onPlantationsChanged);
   }
 
-  void _onTamassiResetExternal() {
-    // Après un reset depuis les paramètres : relance le tuto.
-    _showTutorialIfNeeded();
-  }
-
   /// Un deep-link `kultiva://poussidex/<section>` a demandé à basculer
   /// sur une section précise (tamassi / challenges / badges).
   void _onPoussidexFilterExternal() {
@@ -88,16 +66,16 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     if (name == null || !mounted) return;
     AlbumFilter? next;
     switch (name) {
+      // 'tamassi' survit dans d'anciens tutos HTML : on retombe sur la
+      // collection plutôt que d'ignorer le lien.
       case 'tamassi':
-        next = AlbumFilter.tamassi;
+      case 'collection':
+      case 'plants':
+        next = AlbumFilter.collection;
         break;
       case 'challenges':
       case 'feed':
         next = AlbumFilter.challenges;
-        break;
-      case 'collection':
-      case 'plants':
-        next = AlbumFilter.collection;
         break;
       case 'badges':
         next = AlbumFilter.badges;
@@ -110,15 +88,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     RootTabs.poussidexFilter.value = null;
   }
 
-  /// Lit l'XP courant depuis les prefs (partagé avec TamassiViewState).
-  int _currentXp() {
-    final raw = PrefsService.instance.getString('kultiva.creature.xp') ?? '';
-    return int.tryParse(raw) ?? 1;
-  }
-
   @override
   void dispose() {
-    tamassiResetNotifier.removeListener(_onTamassiResetExternal);
     RootTabs.poussidexFilter.removeListener(_onPoussidexFilterExternal);
     PlantationService.instance.removeListener(_onPlantationsChanged);
     super.dispose();
@@ -135,8 +106,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     // remplacer le set — sinon un boot après réinstallation révoquait les
     // badges d'action jusqu'au prochain merge cloud.
     final storedBadges = PrefsService.instance.unlockedBadges;
-    final levelBadges = computeUnlockedBadges(level: _currentXp());
-    _unlockedBadges = <String>{...storedBadges, ...levelBadges};
+    final gagnes = computeUnlockedBadges();
+    _unlockedBadges = <String>{...storedBadges, ...gagnes};
     _medals = computeAllMedals(_plantations,
         region: PrefsService.instance.region.value);
     await PrefsService.instance.setUnlockedBadges(_unlockedBadges);
@@ -164,11 +135,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     });
   }
 
-  final GlobalKey<TamassiViewState> _tamassiKey = GlobalKey<TamassiViewState>();
-
-  /// Convertit l'ancienne grille 2D en plantations une seule fois,
-  /// puis marque la migration comme faite pour ne plus la rejouer.
-
   void _showTutorialIfNeeded() {
     if (PrefsService.instance.gardenTutorialDone) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -189,9 +155,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   /// Appelé quand l'user soumet une photo pour un défi.
   void _onChallengePhotoTaken(String challengeId, String photoPath) {
     if (mounted) setState(() {});
-    // La créature célèbre le défi complété et gagne +20 XP.
-    _tamassiKey.currentState?.triggerCelebration();
-    _tamassiKey.currentState?.awardChallengeXp(challengeId);
     // Moment positif : on peut solliciter (au plus une fois) une note store.
     ReviewService.instance
         .maybeRequestReview(unlockedBadgeCount: _unlockedBadges.length);
@@ -202,7 +165,6 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     if (!_loaded) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-    final showActions = _filter == AlbumFilter.tamassi;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -221,35 +183,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
               challengesCount: 0,
               badgesCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
-              onChanged: (f) {
-                setState(() => _filter = f);
-                TamassiStats.recordTab(f.name);
-              },
+              onChanged: (f) => setState(() => _filter = f),
             ),
-            // Boutons Arroser + Engrais centrés sous les onglets (Tamassi
-            // uniquement).
-            if (showActions)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    TamassiActionButton(
-                      label: 'Arroser',
-                      icon: Icons.water_drop,
-                      color: KultivaColors.waterBlue,
-                      onTap: _onWater,
-                    ),
-                    const SizedBox(width: 12),
-                    TamassiActionButton(
-                      label: 'Engrais',
-                      icon: Icons.eco,
-                      color: KultivaColors.terracotta,
-                      onTap: _onFertilize,
-                    ),
-                  ],
-                ),
-              ),
             Expanded(
               child: _buildBody(),
             ),
@@ -259,36 +194,24 @@ class MyGardenScreenState extends State<MyGardenScreen> {
     );
   }
 
-  void _onWater() {
-    AudioService.instance.play(Sfx.water);
-    _tamassiKey.currentState?.triggerEffect(TamassiEffect.water);
-  }
-
-  void _onFertilize() {
-    AudioService.instance.play(Sfx.fertilize);
-    _tamassiKey.currentState?.triggerEffect(TamassiEffect.fertilize);
-  }
-
   Widget _buildBody() {
     switch (_filter) {
-      case AlbumFilter.tamassi:
-        return TamassiView(key: _tamassiKey);
       case AlbumFilter.collection:
         return PoussidexCollectionView(
           plantations: _plantations,
           medals: _medals,
           // Un plant s'ajoute depuis une fiche légume : on y emmène
           // l'utilisateur plutôt que de dupliquer un sélecteur ici.
-          onBrowseCatalogue: () => RootTabs.tabIndex.value = 1,
+          onBrowseCatalogue: () => RootTabs.tabIndex.value = 2,
         );
       case AlbumFilter.challenges:
         return PoussidexChallengesGrid(
           onPhotoTaken: _onChallengePhotoTaken,
         );
       case AlbumFilter.badges:
-        // Recalcul live à chaque ouverture de l'onglet pour refléter
-        // les dernières stats (water, pet, challenges, etc.).
-        final live = computeUnlockedBadges(level: _currentXp());
+        // Recalcul à chaque ouverture : arrosages, récoltes et défis
+        // ont pu bouger depuis le dernier passage.
+        final live = computeUnlockedBadges();
         return PoussidexBadgesGrid(unlocked: live);
     }
   }

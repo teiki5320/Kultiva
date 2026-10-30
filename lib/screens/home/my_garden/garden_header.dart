@@ -5,7 +5,7 @@ import '../../../theme/app_theme.dart';
 import '../../../utils/text_scale.dart';
 
 /// Filtre actif dans le Poussidex.
-enum AlbumFilter { tamassi, collection, challenges, badges }
+enum AlbumFilter { collection, challenges, badges }
 
 class GardenHeader extends StatelessWidget {
   final int plantationsCount;
@@ -139,17 +139,6 @@ class GardenFilterBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  GardenFilterChip(
-                    label: '🌱 Tamassi',
-                    count: 0,
-                    hideCount: true,
-                    selected: filter == AlbumFilter.tamassi,
-                    color: KultivaColors.primaryGreen,
-                    onTap: () {
-                      AudioService.instance.play(Sfx.tap);
-                      onChanged(AlbumFilter.tamassi);
-                    },
-                  ),
                   GardenFilterChip(
                     label: '🪴 Mes plants',
                     count: plantsCount,

@@ -1,5 +1,6 @@
 import '../models/vegetable_medal.dart';
-import '../services/tamassi_stats.dart';
+import '../models/vegetable.dart';
+import '../services/garden_stats.dart';
 
 /// Un badge débloquable dans le Poussidex.
 class PoussidexBadge {
@@ -17,93 +18,103 @@ class PoussidexBadge {
   });
 }
 
-/// Les 50 badges du Poussidex Tamassi : 15 bronze + 15 silver + 12 gold
-/// + 8 shiny.
+/// Les 50 badges du Poussidex.
+///
+/// Réécrits le 31/10/2026, quand Tamassi a été supprimé. Ils
+/// récompensaient jusque-là des gestes envers la créature — la
+/// caresser, la nourrir, se connecter le matin, croiser une abeille à
+/// l'écran — et 35 des 50 seraient devenus impossibles à obtenir.
+/// Ils comptent désormais des plants, des arrosages, des récoltes et
+/// des cases de potager.
+///
+/// ⚠️ Les identifiants sont inchangés : les 50 médaillons sont des
+/// fichiers nommés d'après eux (`assets/images/badges/<id>.webp`). Les
+/// renommer, c'est perdre les images.
 const List<PoussidexBadge> allBadges = <PoussidexBadge>[
-  // ─── BRONZE (15) — premiers pas ──────────────────────────────────────
+  // ─── BRONZE (15) — premiers pas ───
   PoussidexBadge(
       id: 'first_step',
       emoji: '🌱',
       name: 'Premier pas',
-      description: 'Choisir un starter.',
+      description: 'Planter ton premier légume.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'named',
-      emoji: '🎭',
-      name: 'Baptisé',
-      description: 'Donner un nom à ton Tamassi.',
+      emoji: '📝',
+      name: 'Carnet ouvert',
+      description: 'Écrire une note sur un de tes plants.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'first_water',
       emoji: '💧',
       name: 'Baptême d\'eau',
-      description: 'Premier arrosage.',
+      description: 'Arroser un plant pour la première fois.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'first_fertilize',
-      emoji: '🌿',
-      name: 'Premier engrais',
-      description: 'Première fertilisation.',
+      emoji: '🟫',
+      name: 'Première case',
+      description: 'Placer un légume dans un potager carré.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'first_pet',
-      emoji: '👋',
-      name: 'Ami',
-      description: 'Premier bonjour à ton Tamassi.',
+      emoji: '⭐',
+      name: 'Coup de cœur',
+      description: 'Mettre un légume en favori.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'first_challenge',
       emoji: '📸',
       name: '1er cliché',
-      description: 'Compléter ton tout premier défi.',
+      description: 'Compléter ton tout premier défi photo.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'streak_3',
       emoji: '🔥',
       name: 'Régulier',
-      description: '3 jours de connexion d\'affilée.',
+      description: 'Arroser 3 jours d\'affilée.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'morning',
       emoji: '☀️',
       name: 'Matinal',
-      description: 'Une connexion entre 6h et 9h.',
+      description: 'Arroser avant 9 h du matin.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'night',
       emoji: '🌙',
       name: 'Nocturne',
-      description: 'Une connexion entre 22h et 2h.',
+      description: 'Arroser après 21 h.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'explorer',
-      emoji: '📱',
-      name: 'Explorateur',
-      description: 'Visiter les 3 onglets Tamassi / Défis / Badges.',
+      emoji: '🧺',
+      name: 'Panier varié',
+      description: 'Planter dans 3 familles différentes.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'level_15',
       emoji: '🌿',
       name: 'Germe',
-      description: 'Atteindre le niveau 15.',
+      description: '5 plants à ton actif.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'see_bee',
       emoji: '🐝',
       name: 'Butineur',
-      description: 'Voir une abeille traverser l\'écran.',
+      description: 'Planter une fleur.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'see_butterfly',
-      emoji: '🦋',
-      name: 'Léger',
-      description: 'Voir un papillon traverser l\'écran.',
+      emoji: '🌸',
+      name: 'Parfumé',
+      description: 'Planter un aromate.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'first_visit',
-      emoji: '🤝',
-      name: 'Invité',
-      description: 'Recevoir la visite d\'un autre Tamassi.',
+      emoji: '🏡',
+      name: 'Premier jardin',
+      description: 'Créer ton premier jardin.',
       tier: MedalTier.bronze),
   PoussidexBadge(
       id: 'water_5',
@@ -111,213 +122,210 @@ const List<PoussidexBadge> allBadges = <PoussidexBadge>[
       name: 'Arroseur',
       description: '5 arrosages au total.',
       tier: MedalTier.bronze),
-
-  // ─── SILVER (15) — progression ───────────────────────────────────────
+  // ─── SILVER (15) — progression ───
   PoussidexBadge(
       id: 'level_20',
       emoji: '🌱',
       name: 'Pousse',
-      description: 'Atteindre le niveau 20.',
+      description: '10 plants à ton actif.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'level_30',
-      emoji: '🌺',
+      emoji: '🌾',
       name: 'Bourgeon',
-      description: 'Atteindre le niveau 30.',
+      description: '20 plants à ton actif.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'water_20',
-      emoji: '💦',
+      emoji: '🚿',
       name: 'Arrosoir d\'argent',
-      description: '20 arrosages cumulés.',
+      description: '20 arrosages au total.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'fertilize_20',
-      emoji: '🌾',
-      name: 'Engrais argent',
-      description: '20 fertilisations cumulées.',
+      emoji: '🧱',
+      name: 'Dix cases',
+      description: 'Remplir 10 cases de potager carré.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'pet_20',
-      emoji: '💕',
-      name: 'BFF',
-      description: '20 bonjours cumulés.',
+      emoji: '📷',
+      name: 'Album',
+      description: '10 photos de plants.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'challenges_5',
-      emoji: '📸',
+      emoji: '🖼',
       name: 'Photographe',
-      description: '5 défis complétés.',
+      description: 'Compléter 5 défis photo.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'streak_7',
       emoji: '🔥',
-      name: 'Streak 7',
-      description: '7 jours de connexion d\'affilée.',
+      name: 'Semaine entière',
+      description: 'Arroser 7 jours d\'affilée.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'mix_tiers',
-      emoji: '🎨',
+      emoji: '🎖',
       name: 'Polyvalent',
-      description: 'Défis de 3 tiers différents complétés.',
+      description: 'Des défis de 3 paliers différents.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'night_5',
-      emoji: '🦉',
+      emoji: '🌙',
       name: 'Noctambule',
-      description: '5 connexions entre 22h et 2h.',
+      description: '5 arrosages après 21 h.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'morning_5',
-      emoji: '☕',
+      emoji: '🌅',
       name: 'Lève-tôt',
-      description: '5 connexions entre 6h et 9h.',
+      description: '5 arrosages avant 9 h.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'rain_login',
-      emoji: '🌧️',
-      name: 'Pluie',
-      description: 'Se connecter sous la pluie (météo).',
+      emoji: '⏳',
+      name: 'Patience',
+      description: 'Suivre un même plant pendant 30 jours.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'snow_login',
       emoji: '❄️',
-      name: 'Neige',
-      description: 'Se connecter sous la neige (météo).',
+      name: 'Jardinier d\'hiver',
+      description: 'Planter en hiver.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'sunny_login',
-      emoji: '☀️',
-      name: 'Grand soleil',
-      description: 'Se connecter sous un grand soleil (météo).',
+      emoji: '🌞',
+      name: 'Plein été',
+      description: 'Planter en été.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'visits_5',
-      emoji: '🦔',
-      name: 'Collectionneur d\'amis',
-      description: 'Recevoir 5 visites d\'amis.',
+      emoji: '🌈',
+      name: 'Cinq espèces',
+      description: 'Planter 5 espèces différentes.',
       tier: MedalTier.silver),
   PoussidexBadge(
       id: 'trio_15',
-      emoji: '🌟',
+      emoji: '🤹',
       name: 'Trio',
-      description: '15 arrosages + 15 engrais + 15 bonjours.',
+      description: '15 arrosages, 5 récoltes et 5 photos.',
       tier: MedalTier.silver),
-
-  // ─── GOLD (12) — maîtrise ────────────────────────────────────────────
+  // ─── GOLD (12) — le jardin tourne ───
   PoussidexBadge(
       id: 'level_40',
-      emoji: '🌸',
+      emoji: '🌻',
       name: 'Fleur',
-      description: 'Atteindre le niveau 40.',
+      description: '30 plants à ton actif.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'level_50',
-      emoji: '🪴',
+      emoji: '🌳',
       name: 'Plante',
-      description: 'Atteindre le niveau 50.',
+      description: '50 plants à ton actif.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'level_60',
-      emoji: '🌲',
-      name: 'Arbrisseau',
-      description: 'Atteindre le niveau 60.',
+      emoji: '📚',
+      name: 'Quinze espèces',
+      description: 'Planter 15 espèces différentes.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'level_75',
-      emoji: '🌳',
-      name: 'Arbre',
-      description: 'Atteindre le niveau 75.',
+      emoji: '🧑‍🌾',
+      name: 'Vingt-cinq espèces',
+      description: 'Planter 25 espèces différentes.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'water_100',
-      emoji: '💧',
+      emoji: '🌊',
       name: 'Océan',
-      description: '100 arrosages cumulés.',
+      description: '100 arrosages au total.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'fertilize_100',
-      emoji: '🌿',
-      name: 'Engrais or',
-      description: '100 fertilisations cumulées.',
+      emoji: '🧩',
+      name: 'Carré complet',
+      description: 'Remplir toutes les cases d\'un jardin.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'challenges_15',
-      emoji: '📸',
+      emoji: '🎨',
       name: 'Artiste',
-      description: '15 défis complétés.',
+      description: 'Compléter 15 défis photo.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'streak_30',
       emoji: '🔥',
-      name: 'Streak 30',
-      description: '30 jours de connexion d\'affilée.',
+      name: 'Trente jours',
+      description: 'Arroser 30 jours d\'affilée.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'visits_10',
-      emoji: '🦋',
-      name: 'Sociable',
-      description: 'Recevoir 10 visites d\'amis.',
+      emoji: '🏘',
+      name: 'Trois jardins',
+      description: 'Créer 3 jardins.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'all_bronze_challenges',
-      emoji: '🏆',
+      emoji: '🥉',
       name: 'Bronze complet',
-      description: 'Tous les défis bronze (15).',
+      description: 'Compléter tous les défis bronze.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'all_silver_challenges',
       emoji: '🥈',
       name: 'Argent complet',
-      description: 'Tous les défis argent (15).',
+      description: 'Compléter tous les défis argent.',
       tier: MedalTier.gold),
   PoussidexBadge(
       id: 'four_seasons',
-      emoji: '🌍',
-      name: 'Globe-trotter',
-      description: 'Se connecter pendant chacune des 4 saisons.',
+      emoji: '🗓',
+      name: 'Quatre saisons',
+      description: 'Planter aux quatre saisons.',
       tier: MedalTier.gold),
-
-  // ─── SHINY (8) — légendaire ──────────────────────────────────────────
+  // ─── SHINY (8) — pour les acharnés ───
   PoussidexBadge(
       id: 'level_100',
-      emoji: '✨',
-      name: 'Arbre légendaire',
-      description: 'Atteindre le niveau 100.',
+      emoji: '🏆',
+      name: 'Centenaire',
+      description: '100 plants à ton actif.',
       tier: MedalTier.shiny),
   PoussidexBadge(
       id: 'all_challenges',
       emoji: '🌟',
       name: 'Complétionniste',
-      description: 'Tous les 50 défis complétés.',
+      description: 'Compléter les 50 défis photo.',
       tier: MedalTier.shiny),
   PoussidexBadge(
       id: 'streak_100',
       emoji: '🔥',
-      name: 'Streak 100',
-      description: '100 jours de connexion d\'affilée.',
+      name: 'Cent jours',
+      description: 'Arroser 100 jours d\'affilée.',
       tier: MedalTier.shiny),
   PoussidexBadge(
       id: 'all_gold_challenges',
-      emoji: '👑',
+      emoji: '🥇',
       name: 'Or complet',
-      description: 'Tous les défis or (13).',
+      description: 'Compléter tous les défis or.',
       tier: MedalTier.shiny),
   PoussidexBadge(
       id: 'all_shiny_challenges',
-      emoji: '💎',
+      emoji: '✨',
       name: 'Shiny complet',
-      description: 'Tous les défis shiny (7).',
+      description: 'Compléter tous les défis shiny.',
       tier: MedalTier.shiny),
   PoussidexBadge(
       id: 'veteran_50',
-      emoji: '🎖️',
+      emoji: '🧺',
       name: 'Vétéran',
-      description: '50 arrosages + 50 engrais + 50 bonjours.',
+      description: '50 récoltes au total.',
       tier: MedalTier.shiny),
   PoussidexBadge(
       id: 'rare_40',
-      emoji: '🦄',
+      emoji: '💎',
       name: 'Rare',
       description: 'Débloquer 40 badges.',
       tier: MedalTier.shiny),
@@ -325,97 +333,92 @@ const List<PoussidexBadge> allBadges = <PoussidexBadge>[
       id: 'ultimate',
       emoji: '🏅',
       name: 'Ultime',
-      description: 'Débloquer tous les 49 autres badges.',
+      description: 'Débloquer les 49 autres badges.',
       tier: MedalTier.shiny),
 ];
 
-/// Calcule la liste des badges débloqués à partir des stats Tamassi.
-/// Appelle [TamassiStats.load()] si [stats] n'est pas fourni.
-Set<String> computeUnlockedBadges({
-  required int level,
-  TamassiStats? stats,
-}) {
-  stats ??= TamassiStats.load();
+/// Calcule les badges débloqués à partir de ce qui a été fait au jardin.
+Set<String> computeUnlockedBadges({GardenStats? stats}) {
+  stats ??= GardenStats.load();
   final unlocked = <String>{};
+  final defis = stats.completedChallengeIds.length;
 
   // ─── Bronze ────────────────────────────────────────────────────────
-  // first_step : choisir un starter (on considère qu'on est débloqué si
-  // on a un level ≥ 1, ce qui est automatique après sélection).
-  unlocked.add('first_step');
-  if (stats.named) unlocked.add('named');
-  if (stats.waterCount >= 1) unlocked.add('first_water');
-  if (stats.fertilizeCount >= 1) unlocked.add('first_fertilize');
-  if (stats.petCount >= 1) unlocked.add('first_pet');
-  if (stats.challengesCompletedCount >= 1) unlocked.add('first_challenge');
-  if (stats.maxStreak >= 3) unlocked.add('streak_3');
-  if (stats.morningLogins >= 1) unlocked.add('morning');
-  if (stats.nightLogins >= 1) unlocked.add('night');
-  if (stats.tabsVisited.length >= 3) unlocked.add('explorer');
-  if (level >= 15) unlocked.add('level_15');
-  if (stats.animalsSeen.contains('bee')) unlocked.add('see_bee');
-  if (stats.animalsSeen.contains('butterfly')) unlocked.add('see_butterfly');
-  if (stats.visitsSeen >= 1) unlocked.add('first_visit');
-  if (stats.waterCount >= 5) unlocked.add('water_5');
+  if (stats.plantCount >= 1) unlocked.add('first_step');
+  if (stats.noteCount >= 1) unlocked.add('named');
+  if (stats.wateringCount >= 1) unlocked.add('first_water');
+  if (stats.filledCells >= 1) unlocked.add('first_fertilize');
+  if (stats.favoriteCount >= 1) unlocked.add('first_pet');
+  if (defis >= 1) unlocked.add('first_challenge');
+  if (stats.maxWateringStreak >= 3) unlocked.add('streak_3');
+  if (stats.morningWaterings >= 1) unlocked.add('morning');
+  if (stats.nightWaterings >= 1) unlocked.add('night');
+  if (stats.categoriesPlanted.length >= 3) unlocked.add('explorer');
+  if (stats.plantCount >= 5) unlocked.add('level_15');
+  if (stats.categoriesPlanted.contains(VegetableCategory.flowers)) {
+    unlocked.add('see_bee');
+  }
+  if (stats.categoriesPlanted.contains(VegetableCategory.aromatics)) {
+    unlocked.add('see_butterfly');
+  }
+  if (stats.gardenCount >= 1) unlocked.add('first_visit');
+  if (stats.wateringCount >= 5) unlocked.add('water_5');
 
   // ─── Silver ───────────────────────────────────────────────────────
-  if (level >= 20) unlocked.add('level_20');
-  if (level >= 30) unlocked.add('level_30');
-  if (stats.waterCount >= 20) unlocked.add('water_20');
-  if (stats.fertilizeCount >= 20) unlocked.add('fertilize_20');
-  if (stats.petCount >= 20) unlocked.add('pet_20');
-  if (stats.challengesCompletedCount >= 5) unlocked.add('challenges_5');
-  if (stats.maxStreak >= 7) unlocked.add('streak_7');
+  if (stats.plantCount >= 10) unlocked.add('level_20');
+  if (stats.plantCount >= 20) unlocked.add('level_30');
+  if (stats.wateringCount >= 20) unlocked.add('water_20');
+  if (stats.filledCells >= 10) unlocked.add('fertilize_20');
+  if (stats.photoCount >= 10) unlocked.add('pet_20');
+  if (defis >= 5) unlocked.add('challenges_5');
+  if (stats.maxWateringStreak >= 7) unlocked.add('streak_7');
   if (_tiersInSet(stats.completedChallengeIds).length >= 3) {
     unlocked.add('mix_tiers');
   }
-  if (stats.nightLogins >= 5) unlocked.add('night_5');
-  if (stats.morningLogins >= 5) unlocked.add('morning_5');
-  if (stats.rainLogins >= 1) unlocked.add('rain_login');
-  if (stats.snowLogins >= 1) unlocked.add('snow_login');
-  if (stats.sunnyLogins >= 1) unlocked.add('sunny_login');
-  if (stats.visitsSeen >= 5) unlocked.add('visits_5');
-  if (stats.waterCount >= 15 &&
-      stats.fertilizeCount >= 15 &&
-      stats.petCount >= 15) {
+  if (stats.nightWaterings >= 5) unlocked.add('night_5');
+  if (stats.morningWaterings >= 5) unlocked.add('morning_5');
+  if (stats.longestPlantDays >= 30) unlocked.add('rain_login');
+  if (stats.seasonsPlanted.contains('hiver')) unlocked.add('snow_login');
+  if (stats.seasonsPlanted.contains('ete')) unlocked.add('sunny_login');
+  if (stats.speciesCount >= 5) unlocked.add('visits_5');
+  if (stats.wateringCount >= 15 &&
+      stats.harvestCount >= 5 &&
+      stats.photoCount >= 5) {
     unlocked.add('trio_15');
   }
 
   // ─── Gold ─────────────────────────────────────────────────────────
-  if (level >= 40) unlocked.add('level_40');
-  if (level >= 50) unlocked.add('level_50');
-  if (level >= 60) unlocked.add('level_60');
-  if (level >= 75) unlocked.add('level_75');
-  if (stats.waterCount >= 100) unlocked.add('water_100');
-  if (stats.fertilizeCount >= 100) unlocked.add('fertilize_100');
-  if (stats.challengesCompletedCount >= 15) unlocked.add('challenges_15');
-  if (stats.maxStreak >= 30) unlocked.add('streak_30');
-  if (stats.visitsSeen >= 10) unlocked.add('visits_10');
+  if (stats.plantCount >= 30) unlocked.add('level_40');
+  if (stats.plantCount >= 50) unlocked.add('level_50');
+  if (stats.speciesCount >= 15) unlocked.add('level_60');
+  if (stats.speciesCount >= 25) unlocked.add('level_75');
+  if (stats.wateringCount >= 100) unlocked.add('water_100');
+  if (stats.hasFullGarden) unlocked.add('fertilize_100');
+  if (defis >= 15) unlocked.add('challenges_15');
+  if (stats.maxWateringStreak >= 30) unlocked.add('streak_30');
+  if (stats.gardenCount >= 3) unlocked.add('visits_10');
   if (_allChallengesOfTier(stats.completedChallengeIds, MedalTier.bronze)) {
     unlocked.add('all_bronze_challenges');
   }
   if (_allChallengesOfTier(stats.completedChallengeIds, MedalTier.silver)) {
     unlocked.add('all_silver_challenges');
   }
-  if (stats.seasonsLoggedIn.length >= 4) unlocked.add('four_seasons');
+  if (stats.seasonsPlanted.length >= 4) unlocked.add('four_seasons');
 
   // ─── Shiny ────────────────────────────────────────────────────────
-  if (level >= 100) unlocked.add('level_100');
-  if (stats.challengesCompletedCount >= 50) unlocked.add('all_challenges');
-  if (stats.maxStreak >= 100) unlocked.add('streak_100');
+  if (stats.plantCount >= 100) unlocked.add('level_100');
+  if (defis >= 50) unlocked.add('all_challenges');
+  if (stats.maxWateringStreak >= 100) unlocked.add('streak_100');
   if (_allChallengesOfTier(stats.completedChallengeIds, MedalTier.gold)) {
     unlocked.add('all_gold_challenges');
   }
   if (_allChallengesOfTier(stats.completedChallengeIds, MedalTier.shiny)) {
     unlocked.add('all_shiny_challenges');
   }
-  if (stats.waterCount >= 50 &&
-      stats.fertilizeCount >= 50 &&
-      stats.petCount >= 50) {
-    unlocked.add('veteran_50');
-  }
-  // rare_40 et ultimate sont auto-référentiels, calculés après coup.
+  if (stats.harvestCount >= 50) unlocked.add('veteran_50');
+
+  // rare_40 et ultimate se calculent sur les autres, après coup.
   if (unlocked.length >= 40) unlocked.add('rare_40');
-  // ultimate : tous les 49 autres.
   final others = allBadges.where((b) => b.id != 'ultimate').map((b) => b.id);
   if (others.every(unlocked.contains)) unlocked.add('ultimate');
 

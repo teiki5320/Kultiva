@@ -35,7 +35,6 @@ class PrefsService {
   static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
   static const _kLastHeatwaveCheck = 'kultiva.lastHeatwaveNotificationCheck';
   static const _kLastFirstRainsCheck = 'kultiva.lastFirstRainsNotification';
-  static const _kTamassiDailyReminder = 'kultiva.tamassiDailyReminder';
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kJardinsTutorialDone = 'kultiva.jardinsTutorialDone';
   static const _kPrefsUpdatedAt = 'kultiva.prefs.updatedAt';
@@ -66,7 +65,6 @@ class PrefsService {
   final ValueNotifier<bool> soundEnabled = ValueNotifier<bool>(true);
   final ValueNotifier<bool> musicEnabled = ValueNotifier<bool>(false);
   final ValueNotifier<double> soundVolume = ValueNotifier<double>(0.7);
-  final ValueNotifier<bool> tamassiDailyReminder = ValueNotifier<bool>(true);
 
   /// Notifier incrémenté à chaque écriture de la collection de
   /// plantations. Les écrans qui dépendent des médailles (Étal) s'y
@@ -127,20 +125,7 @@ class PrefsService {
     soundEnabled.value = _prefs!.getBool(_kSoundEnabled) ?? true;
     musicEnabled.value = _prefs!.getBool(_kMusicEnabled) ?? false;
     soundVolume.value = _prefs!.getDouble(_kSoundVolume) ?? 0.7;
-    tamassiDailyReminder.value =
-        _prefs!.getBool(_kTamassiDailyReminder) ?? true;
     _loaded = true;
-  }
-
-  Future<void> setTamassiDailyReminder(bool value) async {
-    tamassiDailyReminder.value = value;
-    await _prefs?.setBool(_kTamassiDailyReminder, value);
-    if (value) {
-      await NotificationService.scheduleDailyTamassiReminder();
-    } else {
-      await NotificationService.cancelDailyTamassiReminder();
-    }
-    _notifyPrefsChanged();
   }
 
   /// Lecture/écriture générique pour stocker des données arbitraires

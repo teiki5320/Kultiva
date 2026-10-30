@@ -86,13 +86,6 @@ Future<void> _bootstrapAndRun() async {
       NotificationService.scheduleMonthlyReminder,
     );
   }
-  // Re-programme le rappel quotidien Tamassi si activé.
-  if (PrefsService.instance.tamassiDailyReminder.value) {
-    await _guard(
-      'daily_reminder',
-      NotificationService.scheduleDailyTamassiReminder,
-    );
-  }
   if (PrefsService.instance.musicEnabled.value) {
     await _guard(
       'start_music',

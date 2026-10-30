@@ -333,20 +333,12 @@ const List<LexiconEntry> lexicon = <LexiconEntry>[
 
   // ─── Spécifique app Kultiva ──────────────────────────────────────
   LexiconEntry(
-    'tamassi',
-    "Ta créature virtuelle liée à ton potager dans Kultiva. Arrose-la, dis-lui bonjour, relève des défis : elle gagne de l'XP, monte de niveau et finit par évoluer en nouvelle forme !",
-  ),
-  LexiconEntry(
     'poussidex',
     "Ton \"Pokédex\" de jardinier dans Kultiva : collection de badges, défis photo et statistiques qui retracent tout ton parcours au potager.",
   ),
   LexiconEntry(
-    'starter',
-    "La toute première espèce de Tamassi que tu choisis au démarrage de l'app. Elle reste ton compagnon principal à cultiver au fil des jours.",
-  ),
-  LexiconEntry(
     'shiny',
-    "Médaille et version \"légendaire\" d'un badge ou d'un Tamassi : la plus rare, la plus brillante. Obtenue après de longues séries d'actions parfaites !",
+    "Médaille et version \"légendaire\" d'un badge : la plus rare, la plus brillante. Obtenue après de longues séries d'actions parfaites !",
   ),
   LexiconEntry(
     'défi',

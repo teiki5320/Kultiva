@@ -44,10 +44,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_poussidex.png',
       fallbackEmoji: '🐣',
-      title: 'Tamassi, ton compagnon',
-      subtitle: "Adopte une créature kawaii qui évolue avec toi. Parfait "
-          "pour faire jardiner les enfants — défis photo, badges, "
-          "11 stades à débloquer ensemble.",
+      title: 'Ton cahier de culture',
+      subtitle: "Dessine tes carrés, places-y tes plants et suis-les "
+          "jour après jour : arrosages, photos, récoltes. Avec des défis "
+          "photo et 50 badges à décrocher en chemin.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_tutos.png',
