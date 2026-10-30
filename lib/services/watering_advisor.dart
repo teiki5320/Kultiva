@@ -40,8 +40,13 @@ WateringAdvice? suggestWatering(
   final daysSinceWater =
       lastWater == null ? 999 : DateTime.now().difference(lastWater).inDays;
 
-  final tmax =
+  // 20 °C = valeur neutre, déjà utilisée quand la série est trop
+  // courte. Un NaN (température non fournie par Open-Meteo) prend le
+  // même chemin : sans ça, tous les tests de chaleur seraient faux et
+  // l'urgence serait sous-évaluée en silence.
+  final rawTmax =
       today < weather.dailyTempMax.length ? weather.dailyTempMax[today] : 20.0;
+  final tmax = rawTmax.isNaN ? 20.0 : rawTmax;
 
   if (rainNext48h >= 5) {
     return WateringAdvice(

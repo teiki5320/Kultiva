@@ -196,6 +196,39 @@ void main() {
     });
   });
 
+  group('température non fournie par Open-Meteo', () {
+    test('un NaN se comporte comme un jour neutre, pas comme une canicule',
+        () {
+      // Open-Meteo peut renvoyer `null` pour un jour : on le marque NaN à
+      // la lecture pour garder les index alignés. Mais toutes les
+      // comparaisons avec NaN sont fausses, donc la chaleur serait
+      // ignorée en silence — d'où le repli sur 20 °C, la même valeur
+      // neutre que pour une série trop courte.
+      final culture = _culture(
+        wateredAt: <DateTime>[
+          DateTime.now().subtract(const Duration(days: 5)),
+        ],
+      );
+      final inconnu = suggestWatering(
+        culture,
+        _weather(tempMax: List<double>.filled(15, double.nan)),
+      );
+      final neutre = suggestWatering(
+        culture,
+        _weather(tempMax: List<double>.filled(15, 20)),
+      );
+      final chaud = suggestWatering(
+        culture,
+        _weather(tempMax: List<double>.filled(15, 35)),
+      );
+
+      expect(inconnu?.urgency, equals(neutre?.urgency));
+      expect(inconnu?.urgency, isNot(equals(WateringUrgency.heatwave)));
+      // Et la canicule reste détectée quand la donnée existe.
+      expect(chaud?.urgency, equals(WateringUrgency.heatwave));
+    });
+  });
+
   group('WateringAdvice construction', () {
     test('les champs sont correctement assignés', () {
       const advice = WateringAdvice(

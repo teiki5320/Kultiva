@@ -157,9 +157,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return '🌤️';
   }
 
+  /// Formate une température, ou « — » si Open-Meteo n'a pas fourni la
+  /// valeur du jour (marquée NaN à la lecture).
+  String _temp(double t) => t.isNaN ? '—' : '${t.toStringAsFixed(0)}°';
+
   String _adviceForDay(double rain, double tmax, double tmin) {
     if (rain > 5) return '🌧️ Pluie prévue — pas besoin d\'arroser !';
     if (rain > 1) return '💧 Légère pluie — arrosage léger suffit';
+    // Sans température, on ne se prononce pas sur la chaleur, le gel
+    // ni l'amplitude : les tests ci-dessous seraient tous faux avec
+    // NaN et l'app annoncerait « belle journée » sans rien en savoir.
+    if (tmax.isNaN || tmin.isNaN) {
+      return '🌱 Température du jour indisponible';
+    }
     if (tmax > 28) return '☀️ Très chaud — arrose tôt le matin ou le soir';
     if (tmin < 2) return '❄️ Risque de gel — protège tes plants sensibles';
     if (tmax - tmin > 15) return '🌡️ Grosse amplitude — surveille tes semis';
@@ -333,7 +343,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     final String daySemanticLabel = offset == 0
         ? '${_dayLabel(offset)}, ${w.currentTemp.toStringAsFixed(0)} degrés, ${w.weatherLabel}'
-        : '${_dayLabel(offset)}, max ${tmax.toStringAsFixed(0)} degrés';
+        : '${_dayLabel(offset)}, max ${_temp(tmax)}';
 
     return Semantics(
       label: daySemanticLabel,
@@ -364,8 +374,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       fontSize: 14, color: KultivaColors.textSecondary)),
             ] else
               Semantics(
-                label: '${tmax.toStringAsFixed(0)} degrés',
-                child: Text('${tmax.toStringAsFixed(0)}°C',
+                label: tmax.isNaN
+                    ? 'température indisponible'
+                    : '${tmax.toStringAsFixed(0)} degrés',
+                child: Text(_temp(tmax),
                     style: const TextStyle(
                         fontSize: 48, fontWeight: FontWeight.w800)),
               ),
@@ -387,10 +399,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     const ExcludeSemantics(
                         child: Text('🌡', style: TextStyle(fontSize: 18))),
                     const SizedBox(width: 8),
-                    Text('Min ${tmin.toStringAsFixed(0)}°',
+                    Text('Min ${_temp(tmin)}',
                         style: const TextStyle(fontWeight: FontWeight.w700)),
                     const SizedBox(width: 16),
-                    Text('Max ${tmax.toStringAsFixed(0)}°',
+                    Text('Max ${_temp(tmax)}',
                         style: const TextStyle(fontWeight: FontWeight.w700)),
                   ],
                 ),

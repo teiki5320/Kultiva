@@ -79,11 +79,19 @@ class WeatherService {
             .map((e) => (e as num?)?.toDouble() ?? 0.0)
             .toList(),
         dailyDates: (daily['time'] as List).cast<String>(),
+        // Open-Meteo peut renvoyer `null` pour un jour dont la
+        // température est indisponible. Avant, le cast levait et tout le
+        // parsing échouait : une seule valeur manquante supprimait la
+        // météo entière. On garde donc l'index aligné sur les dates et on
+        // marque le trou avec `NaN` — « pas de donnée » — plutôt qu'avec
+        // 0.0, qui est une vraie température et aurait déclenché des
+        // conseils de gel. Toutes les comparaisons avec NaN sont fausses,
+        // donc aucune alerte ne part sur un trou.
         dailyTempMax: (daily['temperature_2m_max'] as List)
-            .map((e) => (e as num).toDouble())
+            .map((e) => (e as num?)?.toDouble() ?? double.nan)
             .toList(),
         dailyTempMin: (daily['temperature_2m_min'] as List)
-            .map((e) => (e as num).toDouble())
+            .map((e) => (e as num?)?.toDouble() ?? double.nan)
             .toList(),
         isFallbackLocation: isFallback,
         locationName: name,
