@@ -30,7 +30,8 @@ Le choix se fait au premier lancement et peut être modifié à tout moment dans
 
 ## 🛠️ Stack technique
 
-- **Flutter ≥ 3.38** / **Dart ^3.5** (canal stable)
+- **Flutter ≥ 3.47** / **Dart ^3.5** (canal stable) — borne relevée le
+  30 octobre 2026 ; sous 3.41.6 le service PDF ne compile plus
 - **Supabase** (auth + Postgres + Storage) pour la sync cloud optionnelle
 - **Open-Meteo** pour la météo (gratuit, sans clé)
 - Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`

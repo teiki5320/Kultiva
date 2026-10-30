@@ -24,7 +24,7 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 ## Vue d'ensemble
 
 - **État du projet** : en pause (choix de Jean) — rien n'est soumis aux boutiques.
-- **Plateforme** : iOS + Android (Flutter ≥ 3.38), portrait, iPhone + iPad — app `com.toa.kultiva`, v1.0.0+5
+- **Plateforme** : iOS + Android (Flutter ≥ 3.47), iPhone en portrait, iPad dans les quatre sens depuis le 30 octobre 2026 — app `com.toa.kultiva`, v1.0.0+5
 - **Stack** : Flutter/Dart Material 3, local-first (SharedPreferences + services singletons, `ValueNotifier`, sans framework d'état)
 - **Backend** : **aucun depuis le 30 octobre 2026.** Les comptes ont été retirés de la v1 : le jardin, les photos, les badges et la créature vivent uniquement sur l'appareil. Les deux seuls appels sortants sont Open-Meteo (météo) et Sentry (plantages).
 - **Distribution** : App Store via Xcode Cloud + Play Store (AAB signé) — jamais soumise (un script local `update-testflight.command` construit aussi l'IPA à envoyer par Transporter), textes des fiches prêts (`docs/store-listings.md`)
@@ -87,8 +87,8 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 
 ### 7. Xcode Cloud
 
-- **Rôle** : CI iOS — build automatique via `ios/ci_scripts/ci_post_clone.sh` (Flutter épinglé 3.41.6, SPM désactivé, `--config-only` avant `pod install`). Cible minimale iOS 15.0 pour l'appli et tous les pods (`ios/Podfile`) depuis le 25 octobre 2026 ; avant : 13.0.
-- **État** : les builds 95 et 96 ont réussi le 25 octobre 2026 et le build 97 le 27 octobre 2026, chacun avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026). À chaque envoi, Apple signale l'avertissement ITMS-90683 : la clé `NSLocationAlwaysAndWhenInUseUsageDescription` manque dans `ios/Runner/Info.plist` (envoi accepté quand même). Le build 94 avait échoué le 24 octobre 2026 (Sentry et d'autres pods visaient une version d'iOS trop basse), corrigé le 25 octobre.
+- **Rôle** : CI iOS — build automatique via `ios/ci_scripts/ci_post_clone.sh` (Flutter épinglé 3.47.3 depuis le 30 octobre 2026, auparavant 3.41.6 ; SPM désactivé, `flutter analyze` puis `--config-only` avant `pod install`). Cible minimale iOS 15.0 pour l'appli et tous les pods (`ios/Podfile`) depuis le 25 octobre 2026 ; avant : 13.0.
+- **État** : le **build 127 a réussi le 30 octobre 2026** et part en TestFlight interne. Les builds 122 et 125 avaient échoué le même soir sur « Command PhaseScriptExecution failed », sans que le rapport dise pourquoi : le script de post-clone installait encore Flutter 3.41.6, où `pdf_service.dart` ne compile plus. Pin relevé à 3.47.3, et `flutter analyze` ajouté au post-clone pour que ce genre d'échec s'affiche en clair. Avant cela, les builds 95 et 96 avaient réussi le 25 octobre 2026 et le build 97 le 27 octobre 2026, chacun avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026). À chaque envoi, Apple signale l'avertissement ITMS-90683 : la clé `NSLocationAlwaysAndWhenInUseUsageDescription` manque dans `ios/Runner/Info.plist` (envoi accepté quand même). Le build 94 avait échoué le 24 octobre 2026 (Sentry et d'autres pods visaient une version d'iOS trop basse), corrigé le 25 octobre.
 - **Console** : App Store Connect → onglet Xcode Cloud.
 - **Identifiants publics** : —
 - **Secrets** : aucun secret dans le dépôt (signature gérée par Apple).
@@ -155,4 +155,4 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 
 - Valeur **publique par design** (sa présence dans le code est normale) : le DSN Sentry (`lib/main.dart`). Depuis le 30 octobre 2026, il n'y a plus ni URL Supabase, ni `anonKey`, ni client ID Google dans le code ; et plus aucun tag Amazon depuis le 20 octobre.
 - E-mail de support public : `kultiva@toakeur.com` (site, politique de confidentialité en ligne et dans l'app).
-- Reprise sur machine neuve : cloner le dépôt, Flutter ≥ 3.38, `flutter pub get` puis `flutter run` — aucun secret requis côté client ; release Android = keystore + `key.properties` depuis le coffre-fort ; release iOS = accès au compte Apple.
+- Reprise sur machine neuve : cloner le dépôt, Flutter ≥ 3.47, `flutter pub get` puis `flutter run` — aucun secret requis côté client ; release Android = keystore + `key.properties` depuis le coffre-fort ; release iOS = accès au compte Apple.

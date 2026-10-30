@@ -27,7 +27,7 @@
 | | 🍎 App Store | 🤖 Google Play |
 |---|---|---|
 | État | [pas encore] jamais soumise ; fiche App Store Connect créée (Apple ID `6762550020`), builds 95 à 97 reçus | [pas encore] jamais envoyée ; fiche à vérifier dans la console |
-| Construction | [ok] Xcode Cloud (`ci_post_clone.sh`, Flutter 3.41.6) : builds 95 et 96 réussis le 25 octobre 2026, build 97 le 27 octobre, avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026) ; le build 94 avait échoué le 24 octobre | [ok] App Bundle construit par la CI GitHub Actions |
+| Construction | [ok] Xcode Cloud (`ci_post_clone.sh`, Flutter 3.47.3) : **build 127 réussi le 30 octobre 2026**, après deux échecs le même soir (122 et 125, pin Flutter devenu plus ancien que le code). Auparavant : builds 95 et 96 réussis le 25 octobre 2026, build 97 le 27 octobre, avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026) ; le build 94 avait échoué le 24 octobre | [ok] App Bundle construit par la CI GitHub Actions |
 | Signature | [ok] gérée par Xcode Cloud, équipe `K597U7X3FZ` | [ok] keystore local, valable jusqu'en 2053 |
 | Classification | [à faire] 4+ attendu, questionnaire prêt à reporter | [à faire] questionnaire de contenu à remplir |
 | Cible | [ok] iOS 15.0 et plus (depuis le 25 octobre 2026 : Xcode et les pods, dont Sentry, l’exigent ; avant : 13.0), iPhone et iPad, portrait | [ok] valeurs par défaut de Flutter, rien de figé dans le dépôt |
@@ -37,7 +37,7 @@
 ## Vue d'ensemble
 
 - **État du projet** : en pause (choix de Jean) — rien n'est soumis aux boutiques
-- **iOS** : jamais soumise — la fiche App Store Connect existe (Apple ID `6762550020`), ses textes sont rédigés et l'URL de confidentialité existe ; le build Xcode Cloud 94 a échoué le 24 octobre 2026 (cible iOS trop basse), corrigé le 25 octobre ; les builds 95 et 96 ont réussi le 25 octobre 2026 et le build 97 le 27 octobre 2026, avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026) . La clé de localisation que réclamait Apple (ITMS-90683) a été ajoutée le 30 octobre 2026
+- **iOS** : jamais soumise — la fiche App Store Connect existe (Apple ID `6762550020`), ses textes sont rédigés et l'URL de confidentialité existe ; le build Xcode Cloud 94 a échoué le 24 octobre 2026 (cible iOS trop basse), corrigé le 25 octobre ; les builds 95 et 96 ont réussi le 25 octobre 2026, le build 97 le 27 octobre 2026, et le **build 127 le 30 octobre 2026**, avec l'étape « TestFlight internes - iOS ». La clé de localisation que réclamait Apple (ITMS-90683) a été ajoutée le 30 octobre 2026
 - **Android** : jamais envoyée à Play — le bundle release est signé et vérifié localement ; l'existence d'une fiche Play reste à vérifier dans la console
 - **Web** : site de présentation en ligne sur <https://kultiva.toakeur.com> depuis le 7 octobre 2026
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste en pause, inutilisé, et ne bloque plus rien
@@ -61,8 +61,8 @@ pause et des champs de formulaire.
 | État | **Jamais soumise — bloquée par le backend en pause** |
 | Console | <https://appstoreconnect.apple.com> |
 | Version publiée | aucune — l'app n'est jamais sortie |
-| Version en cours | `1.0.0` — fiche App Store Connect créée (Apple ID `6762550020`), builds Xcode Cloud 95, 96 et 97 reçus (vérifié le 28 octobre 2026 dans les mails d'Apple) ; aucune soumission |
-| Distribution | Xcode Cloud, script `ios/ci_scripts/ci_post_clone.sh` — équipe `K597U7X3FZ` ; build 94 en échec le 24 octobre 2026, cible iOS relevée à 15.0 le 25 octobre ; builds 95 et 96 réussis le 25 octobre 2026 et build 97 le 27 octobre, avec l'étape « TestFlight internes - iOS » |
+| Version en cours | `1.0.0` — fiche App Store Connect créée (Apple ID `6762550020`), builds Xcode Cloud 95, 96, 97 puis **127 (30 octobre 2026)** reçus ; aucune soumission |
+| Distribution | Xcode Cloud, script `ios/ci_scripts/ci_post_clone.sh` — équipe `K597U7X3FZ` ; build 94 en échec le 24 octobre 2026, cible iOS relevée à 15.0 le 25 octobre ; builds 95 et 96 réussis le 25 octobre 2026, build 97 le 27 octobre, builds 122 et 125 en échec le 30 octobre (pin Flutter périmé) et **build 127 réussi le 30 octobre 2026**, avec l'étape « TestFlight internes - iOS » |
 | Familles d'appareils | `TARGETED_DEVICE_FAMILY = "1,2"` → iPhone **et** iPad |
 | Orientation | portrait seul, `UIRequiresFullScreen = true` (renonce au multitâche iPad) |
 

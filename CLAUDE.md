@@ -42,9 +42,10 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 **Frontend / mobile**
 
-- Flutter **≥3.38** / Dart **^3.5** (canal `stable`) — le code ne compile
-  pas sous 3.32 (RadioGroup, activeThumbColor, scaleByDouble). CI épinglée
-  sur `3.41.6`.
+- Flutter **≥3.47** / Dart **^3.5** (canal `stable`). Borne relevée le
+  30/10/2026 : sous 3.41.6, `pdf_service.dart` ne compile plus. Les trois
+  environnements disent la même version — Mac, GitHub Actions
+  (`ci.yml`) et Xcode Cloud (`ci_post_clone.sh`) : **3.47.3**.
 - Material3, thèmes clair et sombre
 - `google_fonts` ^6.1 — typographie **Nunito**
 - `shared_preferences` ^2.2 — persistance locale

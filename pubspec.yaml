@@ -5,10 +5,15 @@ version: 1.0.0+5
 
 environment:
   sdk: ^3.5.0
-  # Borne réelle : le code utilise des APIs (RadioGroup, activeThumbColor,
-  # scaleByDouble/translateByDouble) apparues vers Flutter 3.35+. Sous 3.32
-  # le projet ne compile pas — la contrainte ">=3.24" d'origine était fausse.
-  flutter: ">=3.38.0"
+  # Borne relevée le 30/10/2026 : sous Flutter 3.41.6, `pdf_service.dart`
+  # ne compile plus (13 erreurs d'évaluation de constantes sur
+  # `pw.TextStyle`). Ça a coûté deux builds Xcode Cloud rouges dont le
+  # rapport ne disait rien — mieux vaut échouer ici, à `pub get`, avec un
+  # message clair. 3.47.0 est la borne vérifiée : 3.47.3 compile, 3.41.6
+  # non ; l'entre-deux n'a pas été testé.
+  # Avant cette borne, le code exigeait déjà ≥ 3.38 (RadioGroup,
+  # activeThumbColor, scaleByDouble/translateByDouble).
+  flutter: ">=3.47.0"
 
 dependencies:
   flutter:
