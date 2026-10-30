@@ -45,10 +45,12 @@ class GeolocationService {
     if (position == null) return null;
 
     try {
-      final placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      ).timeout(const Duration(seconds: 8));
+      final placemarks = await Geocoding()
+          .placemarkFromCoordinates(
+            position.latitude,
+            position.longitude,
+          )
+          .timeout(const Duration(seconds: 8));
       if (placemarks.isNotEmpty) {
         final iso = placemarks.first.isoCountryCode;
         final country = Country.fromIso(iso);

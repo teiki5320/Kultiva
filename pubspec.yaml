@@ -52,8 +52,15 @@ dependencies:
   # Géolocalisation
   geolocator: ^11.0.0
 
-  # Reverse geocoding (coords → nom de ville) pour la météo
-  geocoding: ^3.0.0
+  # Reverse geocoding (coords → nom de ville) pour la météo.
+  #
+  # Monté 3 → 5 le 30/10/2026. La 5 déplace les fonctions globales dans
+  # une classe : `placemarkFromCoordinates(...)` devient
+  # `Geocoding().placemarkFromCoordinates(...)` — trois appels à
+  # changer. Côté iOS, `geocoding_ios` laisse la place à
+  # `geocoding_darwin`. Exige iOS 12+ (le projet est en 15) et
+  # compileSdk 35+ (Flutter en fournit 36).
+  geocoding: ^5.0.0
 
   # Gestion des permissions (caméra, etc.) avec accès direct aux réglages OS
   permission_handler: ^11.3.1
@@ -72,7 +79,9 @@ dependencies:
   share_plus: ^7.2.1
 
   # Capteurs (inclinaison + secouer pour les animations de la créature)
-  sensors_plus: ^6.0.0
+  # Monté 6 → 7 le 30/10/2026 : `accelerometerEventStream` et
+  # `AccelerometerEvent`, seuls usages de l'app, sont inchangés.
+  sensors_plus: ^7.1.0
 
   # WebView pour les fiches tuto HTML
   webview_flutter: ^4.10.0

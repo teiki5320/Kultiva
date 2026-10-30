@@ -157,7 +157,8 @@ class WeatherService {
   /// échoue ; l'écran météo affichera alors simplement "Ma position".
   static Future<String?> _reverseGeocode(double lat, double lon) async {
     try {
-      final placemarks = await placemarkFromCoordinates(lat, lon)
+      final placemarks = await Geocoding()
+          .placemarkFromCoordinates(lat, lon)
           .timeout(const Duration(seconds: 5));
       if (placemarks.isEmpty) return null;
       final p = placemarks.first;

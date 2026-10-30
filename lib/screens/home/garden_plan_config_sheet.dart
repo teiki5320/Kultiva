@@ -266,8 +266,8 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
         desiredAccuracy: LocationAccuracy.low,
       );
       // Reverse-geocode pour avoir la ville.
-      final placemarks =
-          await placemarkFromCoordinates(pos.latitude, pos.longitude);
+      final placemarks = await Geocoding()
+          .placemarkFromCoordinates(pos.latitude, pos.longitude);
       if (placemarks.isNotEmpty) {
         final p = placemarks.first;
         final city = p.locality ?? p.subAdministrativeArea ?? '';
