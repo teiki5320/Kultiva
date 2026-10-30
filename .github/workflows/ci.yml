@@ -43,6 +43,22 @@ jobs:
       - name: Test
         run: flutter test
 
+      - name: Le snapshot du catalogue est-il à jour ?
+        # kultiva-catalog.json est généré par tool/export_catalog.dart,
+        # mais il est commité exprès : docs/kultivaprix-handoff.md en fait
+        # le snapshot de secours que Kultivaprix télécharge quand Supabase
+        # est indisponible. Il doit donc rester fidèle au catalogue.
+        # Il avait dérivé de 4 332 lignes (97 entrées au lieu de 169, tous
+        # les image_asset à null) parce qu'il avait été édité à la main.
+        # Ce garde-fou rend la dérive impossible : si tu touches au
+        # catalogue, régénère-le et commite-le.
+        run: |
+          dart run tool/export_catalog.dart
+          if ! git diff --exit-code --stat kultiva-catalog.json; then
+            echo "::error::kultiva-catalog.json a dérivé du catalogue. Lance 'dart run tool/export_catalog.dart' et commite le résultat."
+            exit 1
+          fi
+
   build-android:
     runs-on: ubuntu-latest
     steps:

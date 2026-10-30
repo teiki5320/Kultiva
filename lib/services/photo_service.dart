@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -101,7 +102,7 @@ class PhotoService {
       final docsDir = await getApplicationDocumentsDirectory();
       final photosDir = Directory('${docsDir.path}/plant_photos');
       if (!await photosDir.exists()) return;
-      final keep = _referencedLocalPaths();
+      final keep = referencedLocalPaths();
       // Garde-fou : `null` signifie que l'inventaire des photos encore
       // référencées n'a pas pu être reconstitué entièrement. On ne
       // supprime alors RIEN. Sans ce test, des préférences corrompues
@@ -132,7 +133,8 @@ class PhotoService {
   /// d'échec : cette tolérance est la bonne pour l'affichage, mais ici
   /// « rien à garder » et « je ne sais pas quoi garder » ne doivent
   /// surtout pas se confondre.
-  static Set<String>? _referencedLocalPaths() {
+  @visibleForTesting
+  static Set<String>? referencedLocalPaths() {
     final keep = <String>{};
     final plantationsRaw = PrefsService.instance.plantationsJson;
     if (plantationsRaw != null && plantationsRaw.isNotEmpty) {

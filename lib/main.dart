@@ -132,6 +132,24 @@ class KultivaApp extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+          // L'app suit la taille de texte choisie dans les réglages du
+          // système, mais plafonnée : beaucoup de cards ont encore une
+          // hauteur fixe et débordaient aux très grandes valeurs. C'est
+          // une mesure de sauvegarde, pas une mise en conformité — le
+          // vrai correctif est de rendre ces cards extensibles, écran par
+          // écran (voir _plans/audit-2026-10-30.md).
+          builder: (context, child) {
+            final media = MediaQuery.of(context);
+            return MediaQuery(
+              data: media.copyWith(
+                textScaler: media.textScaler.clamp(
+                  minScaleFactor: 1.0,
+                  maxScaleFactor: 1.3,
+                ),
+              ),
+              child: child ?? const SizedBox.shrink(),
+            );
+          },
           home: const _KultivaBootstrap(),
         );
       },

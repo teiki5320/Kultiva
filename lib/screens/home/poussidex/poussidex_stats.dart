@@ -75,6 +75,13 @@ class PoussidexStatsView extends StatelessWidget {
     final maxBucket =
         buckets.isEmpty ? 0 : buckets.reduce((a, b) => a > b ? a : b);
 
+    // Les 4 tuiles de compteurs tiennent sur deux colonnes au téléphone,
+    // mais sur un iPad de 13 pouces cela donnait deux cartes démesurées
+    // par ligne. Même seuil que la grille du catalogue
+    // (`vegetables_screen.dart`) : au-delà de 600 points, on passe les
+    // quatre tuiles sur une seule ligne.
+    final tileCols = MediaQuery.sizeOf(context).width > 600 ? 4 : 2;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
       child: Column(
@@ -82,7 +89,7 @@ class PoussidexStatsView extends StatelessWidget {
         children: <Widget>[
           // 4 tuiles de compteurs.
           GridView.count(
-            crossAxisCount: 2,
+            crossAxisCount: tileCols,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: 10,

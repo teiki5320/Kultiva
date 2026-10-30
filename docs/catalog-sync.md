@@ -12,7 +12,7 @@ GitHub Actions sync-catalog.yml
         │
         │  dart run tool/export_catalog.dart
         ▼
-kultiva-catalog.json (98 entrées, 112 KB indenté)
+kultiva-catalog.json (169 entrées, 225 KB indenté)
         │
         │  POST + x-seed-secret
         ▼

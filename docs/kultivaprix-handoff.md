@@ -56,9 +56,9 @@ create policy "public_read_species" on public.species
 
 | `kind` | Count |
 |---|---|
-| `species` | **59** (vraies espèces végétales) |
+| `species` | **130** (vraies espèces végétales) |
 | `accessory` | **39** (outils, accessoires de jardinage) |
-| Total | 98 |
+| Total | 169 |
 
 ### Format `regions` (jsonb)
 
@@ -184,7 +184,7 @@ Seul le service role (utilisé par l'edge function `seed-species` côté CI Kult
 
 Si une espèce attendue n'apparaît pas / la sync semble cassée :
 
-1. Vérifier que la table existe : `select count(*) from public.species;` (devrait être 98)
+1. Vérifier que la table existe : `select count(*) from public.species;` (devrait être 169)
 2. Vérifier la dernière sync : `select max(updated_at) from public.species;`
 3. Côté Kultiva, regarder le dernier run du workflow `sync-catalog.yml` sur GitHub Actions
 4. Si le run a échoué, voir `docs/catalog-sync.md` (section debug) pour les codes d'erreur courants
