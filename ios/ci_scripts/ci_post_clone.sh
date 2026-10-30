@@ -88,6 +88,16 @@ flutter precache --ios
 echo "📦 flutter pub get"
 flutter pub get
 
+# Garde-fou : la phase de script du Runner compile le Dart, et quand
+# elle échoue Xcode Cloud ne dit rien de plus que « Command
+# PhaseScriptExecution failed with a nonzero exit code » — aucune trace
+# de la vraie erreur dans le rapport. C'est ce qui a coûté les builds
+# 122 et 125 du 30/10/2026. `flutter analyze` ici coûte ~35 s et fait
+# échouer le build AVANT Xcode, avec le message lisible dans le log de
+# post-clone.
+echo "🔍 flutter analyze (pour que l'erreur soit lisible si ça casse)"
+flutter analyze --no-fatal-infos
+
 echo "📦 flutter build ios --config-only"
 flutter build ios --config-only --no-codesign
 
