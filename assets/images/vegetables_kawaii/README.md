@@ -11,10 +11,10 @@ un catalogue mi-plat mi-peint. On bascule quand la série est complète.
 
 | Lot | Fait | Reste |
 | --- | ---- | ----- |
-| Légumes (`assets/images/vegetables/`) | 30 | 100 |
+| Légumes (`assets/images/vegetables/`) | 50 | 81 |
 | Badges (`assets/images/badges/`) | 0 | 50 |
 
-Faits : ail, aubergine, basilic, betterave, blette, brocoli, carotte, chou-fleur, chou pommé, concombre, courge butternut, courgette, echalote, epinard, gombo, haricot, laitue, melon, navet, oignon, pasteque, patate douce, petit pois, piment, poireau, poivron, pomme de terre, potiron, radis, tomate.
+Faits : ail, arachide, artichaut, aubergine, basilic, betterave, bissap, blette, brocoli, carotte, celeri, chou-fleur, chou kale, chou pommé, ciboulette, concombre, coriandre, courge butternut, courgette, echalote, epinard, feve, fraise, gingembre, gombo, haricot, igname, laitue, mache, mais, manioc, melon, menthe, navet, niebe, oignon, pasteque, patate douce, persil, petit pois, piment, poireau, poivron, pomme de terre, potiron, radis, roquette, sesame, thym, tomate.
 
 ## Style
 
@@ -32,16 +32,37 @@ dedans**. Les 30 premières icônes ont été faites une par une, à 42
 crédits pièce : **1 260 crédits**. Les mêmes en planches de six
 auraient coûté **200**.
 
-| Méthode | Prix l'unité | 130 légumes + 50 badges |
+| Méthode | Prix l'unité | 131 légumes + 50 badges |
 | ------- | ------------ | ----------------------- |
-| Une image par sujet | 42 crédits | ≈ 7 560 |
-| Planche de 6 à découper | 6,7 crédits | **≈ 1 200** |
+| Une image par sujet | 42 crédits | ≈ 7 600 |
+| Planche de 6 | 6,7 crédits | ≈ 1 200 |
+| **Planche de 20** | **2,1 crédits** | **≈ 380** |
+
+La planche de 20 est la bonne : grille 5×4 en `aspectRatio: "5:4"` et
+`resolutionTier: "4k"`, ce qui donne 2560×2048 — des cellules de
+512×512 pile, la taille finale des icônes. Elle met deux à trois
+minutes à se générer, bien plus qu'une image seule, mais c'est vingt
+sujets d'un coup et d'un style rigoureusement identique.
 
 Une planche garantit en prime que les six sujets partagent exactement
 le même rendu.
 
-Découpe : `sips --cropToHeightWidth` (ni PIL ni ImageMagick sur cette
-machine ; `sips` et `cwebp` sont là).
+Découpe : `_split.py`, à lancer avec Pillow (absent du système, à
+installer dans un venv jetable : `python3 -m venv venv &&
+venv/bin/pip install Pillow`).
+
+```
+venv/bin/python _split.py planche.png 5 4 id1 id2 ... id20
+```
+
+Il ne découpe **pas** sur la grille théorique : le modèle ne centre pas
+exactement ses sujets dans les cellules, et couper au carré rogne les
+dessins décalés. Il part du centre de chaque cellule, trouve le dessin
+le plus proche et le suit de proche en proche — avec un rayon de
+connexion assez large pour garder ensemble les morceaux d'un même sujet
+(trois haricots, un tas de graines de sésame) mais trop court pour
+sauter sur la cellule voisine. Chaque sujet est ensuite recentré dans
+un carré avec 8 % de marge, ramené à 512 px et converti en WebP.
 
 ## Recette
 
