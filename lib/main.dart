@@ -6,7 +6,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
-import 'screens/splash_screen.dart';
 import 'services/audio_service.dart';
 import 'services/culture_service.dart';
 import 'services/notification_service.dart';
@@ -149,11 +148,13 @@ class KultivaApp extends StatelessWidget {
   }
 }
 
-/// Orchestre le flow splash → onboarding → main.
+/// Orchestre le flow onboarding → main.
 ///
 /// Il n'y a plus d'étape d'authentification : les comptes ont été
 /// retirés de la v1 (le jardin vit sur l'appareil), donc l'app entre
-/// directement dans son contenu.
+/// directement dans son contenu. Et plus d'écran de démarrage Dart :
+/// `flutter_native_splash` affiche le splash natif pendant le
+/// chargement, donc l'app n'a plus qu'à entrer dans son contenu.
 class _KultivaBootstrap extends StatefulWidget {
   const _KultivaBootstrap();
 
@@ -161,7 +162,7 @@ class _KultivaBootstrap extends StatefulWidget {
   State<_KultivaBootstrap> createState() => _KultivaBootstrapState();
 }
 
-enum _BootStep { splash, onboarding, main }
+enum _BootStep { onboarding, main }
 
 class _KultivaBootstrapState extends State<_KultivaBootstrap> {
   late _BootStep _step;
@@ -169,26 +170,16 @@ class _KultivaBootstrapState extends State<_KultivaBootstrap> {
   @override
   void initState() {
     super.initState();
-    // On saute le splash : onboarding au premier lancement, sinon
-    // directement le contenu.
     _step = PrefsService.instance.onboardingDone
         ? _BootStep.main
         : _BootStep.onboarding;
   }
-
-  void _afterSplash() => setState(() {
-        _step = PrefsService.instance.onboardingDone
-            ? _BootStep.main
-            : _BootStep.onboarding;
-      });
 
   void _afterOnboarding() => setState(() => _step = _BootStep.main);
 
   @override
   Widget build(BuildContext context) {
     switch (_step) {
-      case _BootStep.splash:
-        return SplashScreen(onDone: _afterSplash);
       case _BootStep.onboarding:
         return OnboardingScreen(onDone: _afterOnboarding);
       case _BootStep.main:

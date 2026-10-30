@@ -70,28 +70,23 @@ void main() {
   });
 
   group('CultureEntry — helpers', () {
-    test('lastWatering = null si jamais arrosé', () {
-      final entry = CultureEntry(
-        id: 'cul_a',
-        vegetableId: 'carotte',
-        startedAt: DateTime(2026, 4, 1),
-      );
-      expect(entry.lastWatering, isNull);
-    });
-
-    test('lastWatering = dernier élément de wateredAt', () {
-      final last = DateTime(2026, 4, 20);
-      final entry = CultureEntry(
-        id: 'cul_a',
-        vegetableId: 'carotte',
-        startedAt: DateTime(2026, 4, 1),
-        wateredAt: <DateTime>[
-          DateTime(2026, 4, 5),
-          DateTime(2026, 4, 12),
-          last,
-        ],
-      );
-      expect(entry.lastWatering, last);
+    test('les arrosages des anciennes sauvegardes restent relus', () {
+      // `wateredAt` n'est plus écrit depuis le rattachement au dossier
+      // du plant (30/10/2026), mais une sauvegarde antérieure en porte
+      // encore : le décodage doit les conserver, sinon l'historique
+      // disparaîtrait à la mise à jour. La lecture applicative passe
+      // par `CultureService.wateringsFor` (voir culture_link_test).
+      final raw = CultureEntry.encodeAll(<CultureEntry>[
+        CultureEntry(
+          id: 'cul_a',
+          vegetableId: 'carotte',
+          startedAt: DateTime(2026, 4, 1),
+          wateredAt: <DateTime>[DateTime(2026, 4, 5), DateTime(2026, 4, 12)],
+        ),
+      ]);
+      final decoded = CultureEntry.decodeAll(raw);
+      expect(decoded.single.wateredAt, hasLength(2));
+      expect(decoded.single.wateredAt.last, DateTime(2026, 4, 12));
     });
 
     test('isActive vrai si endedAt null', () {
@@ -106,23 +101,6 @@ void main() {
       expect(ended.isActive, isFalse);
     });
 
-    test('wateringHistory marque les jours arrosés sur 14 jours', () {
-      final today = DateTime.now();
-      final yesterday = today.subtract(const Duration(days: 1));
-      final entry = CultureEntry(
-        id: 'cul_a',
-        vegetableId: 'carotte',
-        startedAt: today.subtract(const Duration(days: 30)),
-        wateredAt: <DateTime>[yesterday],
-      );
-
-      final history = entry.wateringHistory(days: 14);
-      expect(history.length, 14);
-      // Index 12 = hier (le plus récent est en dernier).
-      expect(history[12], isTrue);
-      // Aujourd'hui : pas marqué.
-      expect(history[13], isFalse);
-    });
   });
 
   group('GrowthPhase', () {

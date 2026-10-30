@@ -339,45 +339,19 @@ class PrefsService {
     await _prefs?.setString(_kLastFirstRainsCheck, t.toIso8601String());
   }
 
-  // --- Watering history ---
-  /// Retourne la liste des dates d'arrosage (ISO 8601).
-  List<String> get wateringHistory =>
-      _prefs?.getStringList(_kWateringHistory) ?? [];
-
-  /// Enregistre un arrosage maintenant.
-  Future<void> recordWatering() async {
-    final history = wateringHistory;
-    history.insert(0, DateTime.now().toIso8601String());
-    // Garder max 60 jours d'historique.
-    if (history.length > 60) history.removeRange(60, history.length);
-    await _prefs?.setStringList(_kWateringHistory, history);
-  }
-
-  /// Dernier arrosage enregistré, ou null.
-  DateTime? get lastWatering {
-    final h = wateringHistory;
-    if (h.isEmpty) return null;
-    return DateTime.tryParse(h.first);
-  }
-
-  /// Nombre de jours depuis le dernier arrosage.
-  int? get daysSinceLastWatering {
-    final last = lastWatering;
-    if (last == null) return null;
-    return DateTime.now().difference(last).inDays;
-  }
-
-  String? get authEmail => _prefs?.getString(_kAuthEmail);
-  String? get authName => _prefs?.getString(_kAuthName);
-
-  /// Purge toutes les données rattachées à un compte : Poussidex, badges,
-  /// cultures, jardins, Tamassi (XP/starter/nom/streak), défis, favoris,
-  /// historique d'arrosage et statistiques. Appelé à la déconnexion et à
-  /// la suppression de compte, pour qu'un autre compte ne récupère jamais
-  /// les données du précédent sur le même appareil.
+  /// Efface toutes les données du jardin : Poussidex, badges, cultures,
+  /// jardins, Tamassi (XP/starter/nom/streak), défis, favoris, et les
+  /// clés héritées du temps des comptes (historique d'arrosage global,
+  /// identité du compte).
   ///
   /// Les préférences de l'appareil (son, thème, région, notifications)
   /// sont conservées : seules les données du jardin sont effacées.
+  ///
+  /// ⚠️ **Plus appelée par l'app** depuis le retrait des comptes
+  /// (30/10/2026) : elle servait à la déconnexion et à la suppression de
+  /// compte. Conservée telle quelle, testée, parce qu'elle est le seul
+  /// moyen de repartir de zéro sans réinstaller — reste à décider si on
+  /// l'expose dans les réglages.
   Future<void> clearUserScopedData() async {
     final p = _prefs;
     if (p == null) return;
@@ -404,6 +378,11 @@ class PrefsService {
     for (final k in exactKeys) {
       await p.remove(k);
     }
+    // Clés héritées du temps des comptes : plus écrites, mais une
+    // installation ancienne peut encore les porter.
+    for (final k in <String>[_kAuthEmail, _kAuthName]) {
+      await p.remove(k);
+    }
     // Statistiques Tamassi : clés dynamiques `tamassi.stats.*`.
     final statKeys =
         p.getKeys().where((k) => k.startsWith('tamassi.stats.')).toList();
@@ -414,18 +393,5 @@ class PrefsService {
     favorites.value = <String>{};
     plantationsVersion.value = plantationsVersion.value + 1;
     culturesVersion.value = culturesVersion.value + 1;
-  }
-
-  Future<void> setAuth({String? email, String? name}) async {
-    if (email == null) {
-      await _prefs?.remove(_kAuthEmail);
-    } else {
-      await _prefs?.setString(_kAuthEmail, email);
-    }
-    if (name == null) {
-      await _prefs?.remove(_kAuthName);
-    } else {
-      await _prefs?.setString(_kAuthName, name);
-    }
   }
 }

@@ -56,6 +56,12 @@ class CultureEntry {
   final String? note;
   final String? linkedPlantationId;
   final GrowthPhase phase;
+
+  /// ⚠️ **Historique seulement.** Les arrosages vivent dans la
+  /// [Plantation] liée depuis le 30/10/2026 ; ce champ n'est plus écrit
+  /// et ne sert qu'à relire les sauvegardes antérieures. Pour lire les
+  /// arrosages d'une culture, passer par `CultureService.wateringsFor`,
+  /// qui connaît les deux emplacements.
   final List<DateTime> wateredAt;
 
   const CultureEntry({
@@ -68,24 +74,6 @@ class CultureEntry {
     this.phase = GrowthPhase.seedling,
     this.wateredAt = const <DateTime>[],
   });
-
-  DateTime? get lastWatering => wateredAt.isEmpty ? null : wateredAt.last;
-
-  /// Renvoie un tableau de [days] booléens (le plus ancien en
-  /// premier) indiquant si la culture a été arrosée ce jour-là.
-  List<bool> wateringHistory({int days = 14}) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final result = List<bool>.filled(days, false);
-    for (final w in wateredAt) {
-      final wDay = DateTime(w.year, w.month, w.day);
-      final delta = today.difference(wDay).inDays;
-      if (delta >= 0 && delta < days) {
-        result[days - 1 - delta] = true;
-      }
-    }
-    return result;
-  }
 
   bool get isActive => endedAt == null;
 
