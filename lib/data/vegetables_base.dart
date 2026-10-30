@@ -11,6 +11,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'tomate',
+    amazonQuery: 'graines tomate',
     name: 'Tomate',
     emoji: '🍅',
     category: VegetableCategory.fruits,
@@ -40,6 +41,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'carotte',
+    amazonQuery: 'graines carotte',
     name: 'Carotte',
     emoji: '🥕',
     category: VegetableCategory.roots,
@@ -69,6 +71,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'courgette',
+    amazonQuery: 'graines courgette',
     name: 'Courgette',
     emoji: '🥒',
     category: VegetableCategory.fruits,
@@ -97,6 +100,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'laitue',
+    amazonQuery: 'graines laitue',
     name: 'Laitue',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -128,6 +132,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'haricot',
+    amazonQuery: 'graines haricot vert',
     name: 'Haricot vert',
     emoji: '🫘',
     category: VegetableCategory.seeds,
@@ -156,6 +161,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'aubergine',
+    amazonQuery: 'graines aubergine',
     name: 'Aubergine',
     emoji: '🍆',
     category: VegetableCategory.fruits,
@@ -184,6 +190,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'poivron',
+    amazonQuery: 'graines poivron',
     name: 'Poivron',
     emoji: '🫑',
     category: VegetableCategory.fruits,
@@ -212,6 +219,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'epinard',
+    amazonQuery: 'graines epinard',
     name: 'Épinard',
     emoji: '🌿',
     category: VegetableCategory.leaves,
@@ -241,6 +249,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'oignon',
+    amazonQuery: 'graines oignon',
     name: 'Oignon',
     emoji: '🧅',
     category: VegetableCategory.bulbs,
@@ -270,6 +279,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'basilic',
+    amazonQuery: 'graines basilic',
     name: 'Basilic',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -302,6 +312,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'concombre',
+    amazonQuery: 'graines concombre',
     name: 'Concombre',
     emoji: '🥒',
     category: VegetableCategory.fruits,
@@ -330,6 +341,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'piment',
+    amazonQuery: 'graines piment',
     name: 'Piment',
     emoji: '🌶️',
     category: VegetableCategory.fruits,
@@ -358,6 +370,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'ail',
+    amazonQuery: 'ail a planter',
     name: 'Ail',
     emoji: '🧄',
     category: VegetableCategory.bulbs,
@@ -387,6 +400,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pomme_de_terre',
+    amazonQuery: 'pomme de terre a planter',
     name: 'Pomme de terre',
     emoji: '🥔',
     category: VegetableCategory.tubers,
@@ -415,6 +429,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'radis',
+    amazonQuery: 'graines radis',
     name: 'Radis',
     emoji: '🔴',
     category: VegetableCategory.roots,
@@ -444,6 +459,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'chou_pomme',
+    amazonQuery: 'graines chou pomme',
     name: 'Chou pommé',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -473,6 +489,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'petit_pois',
+    amazonQuery: 'graines petit pois',
     name: 'Petit pois',
     emoji: '🟢',
     category: VegetableCategory.seeds,
@@ -501,6 +518,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'poireau',
+    amazonQuery: 'graines poireau',
     name: 'Poireau',
     emoji: '🥬',
     category: VegetableCategory.bulbs,
@@ -530,6 +548,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'patate_douce',
+    amazonQuery: 'patate douce a planter',
     name: 'Patate douce',
     emoji: '🍠',
     category: VegetableCategory.tubers,
@@ -558,6 +577,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'gombo',
+    amazonQuery: 'graines gombo',
     name: 'Gombo',
     emoji: '🟢',
     category: VegetableCategory.fruits,
@@ -589,6 +609,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'echalote',
+    amazonQuery: 'echalote a planter',
     name: 'Échalote',
     emoji: '🧅',
     category: VegetableCategory.bulbs,
@@ -617,6 +638,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'chou_fleur',
+    amazonQuery: 'graines chou fleur',
     name: 'Chou-fleur',
     emoji: '🥦',
     category: VegetableCategory.leaves,
@@ -646,6 +668,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'brocoli',
+    amazonQuery: 'graines brocoli',
     name: 'Brocoli',
     emoji: '🥦',
     category: VegetableCategory.leaves,
@@ -675,6 +698,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'courge_butternut',
+    amazonQuery: 'graines courge butternut',
     name: 'Courge butternut',
     emoji: '🎃',
     category: VegetableCategory.fruits,
@@ -703,6 +727,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'potiron',
+    amazonQuery: 'graines potiron',
     name: 'Potiron',
     emoji: '🎃',
     category: VegetableCategory.fruits,
@@ -731,6 +756,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'melon',
+    amazonQuery: 'graines melon',
     name: 'Melon',
     emoji: '🍈',
     category: VegetableCategory.fruits,
@@ -759,6 +785,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pasteque',
+    amazonQuery: 'graines pasteque',
     name: 'Pastèque',
     emoji: '🍉',
     category: VegetableCategory.fruits,
@@ -787,6 +814,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'fraise',
+    amazonQuery: 'plants fraisier',
     name: 'Fraise',
     emoji: '🍓',
     category: VegetableCategory.fruits,
@@ -816,6 +844,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'navet',
+    amazonQuery: 'graines navet',
     name: 'Navet',
     emoji: '🟣',
     category: VegetableCategory.roots,
@@ -845,6 +874,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'betterave',
+    amazonQuery: 'graines betterave',
     name: 'Betterave',
     emoji: '🟤',
     category: VegetableCategory.roots,
@@ -874,6 +904,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'mais',
+    amazonQuery: 'graines mais doux',
     name: 'Maïs',
     emoji: '🌽',
     category: VegetableCategory.seeds,
@@ -902,6 +933,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'persil',
+    amazonQuery: 'graines persil',
     name: 'Persil',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -931,6 +963,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'coriandre',
+    amazonQuery: 'graines coriandre',
     name: 'Coriandre',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -960,6 +993,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'ciboulette',
+    amazonQuery: 'graines ciboulette',
     name: 'Ciboulette',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -988,6 +1022,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'menthe',
+    amazonQuery: 'graines menthe',
     name: 'Menthe',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -1016,6 +1051,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'thym',
+    amazonQuery: 'graines thym',
     name: 'Thym',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -1044,6 +1080,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'feve',
+    amazonQuery: 'graines feve',
     name: 'Fève',
     emoji: '🫛',
     category: VegetableCategory.seeds,
@@ -1072,6 +1109,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'igname',
+    amazonQuery: 'igname a planter',
     name: 'Igname',
     emoji: '🟤',
     category: VegetableCategory.tubers,
@@ -1100,6 +1138,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'manioc',
+    amazonQuery: 'manioc bouture',
     name: 'Manioc',
     emoji: '🟤',
     category: VegetableCategory.tubers,
@@ -1127,6 +1166,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'niebe',
+    amazonQuery: 'graines niebe',
     name: 'Niébé',
     emoji: '🫘',
     category: VegetableCategory.seeds,
@@ -1156,6 +1196,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'artichaut',
+    amazonQuery: 'graines artichaut',
     name: 'Artichaut',
     emoji: '🌿',
     category: VegetableCategory.flowers,
@@ -1182,6 +1223,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'blette',
+    amazonQuery: 'graines blette',
     name: 'Blette',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1208,6 +1250,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'celeri',
+    amazonQuery: 'graines celeri',
     name: 'Céleri',
     emoji: '🌿',
     category: VegetableCategory.stems,
@@ -1233,6 +1276,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'mache',
+    amazonQuery: 'graines mache',
     name: 'Mâche',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1259,6 +1303,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'roquette',
+    amazonQuery: 'graines roquette',
     name: 'Roquette',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1284,6 +1329,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'chou_kale',
+    amazonQuery: 'graines chou kale',
     name: 'Chou kale',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1310,6 +1356,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'arachide',
+    amazonQuery: 'graines arachide',
     name: 'Arachide',
     emoji: '🥜',
     category: VegetableCategory.seeds,
@@ -1335,6 +1382,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'bissap',
+    amazonQuery: 'graines bissap hibiscus',
     name: 'Bissap (Oseille de Guinée)',
     emoji: '🌺',
     category: VegetableCategory.flowers,
@@ -1360,6 +1408,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'sesame',
+    amazonQuery: 'graines sesame a semer',
     name: 'Sésame',
     emoji: '🌾',
     category: VegetableCategory.seeds,
@@ -1386,6 +1435,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'gingembre',
+    amazonQuery: 'gingembre a planter',
     name: 'Gingembre',
     emoji: '🫚',
     category: VegetableCategory.aromatics,
@@ -1410,6 +1460,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'asperge',
+    amazonQuery: 'griffes asperge',
     name: 'Asperge',
     emoji: '🌿',
     category: VegetableCategory.stems,
@@ -1436,6 +1487,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'fenouil',
+    amazonQuery: 'graines fenouil',
     name: 'Fenouil',
     emoji: '🌿',
     category: VegetableCategory.bulbs,
@@ -1462,6 +1514,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'endive',
+    amazonQuery: 'graines endive chicoree',
     name: 'Endive (Chicon)',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1487,6 +1540,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'chou_bruxelles',
+    amazonQuery: 'graines chou bruxelles',
     name: 'Chou de Bruxelles',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1512,6 +1566,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'potimarron',
+    amazonQuery: 'graines potimarron',
     name: 'Potimarron',
     emoji: '🎃',
     category: VegetableCategory.fruits,
@@ -1537,6 +1592,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'oseille',
+    amazonQuery: 'graines oseille',
     name: 'Oseille',
     emoji: '🌿',
     category: VegetableCategory.leaves,
@@ -1563,6 +1619,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'taro',
+    amazonQuery: 'taro bulbe a planter',
     name: 'Taro',
     emoji: '🟤',
     category: VegetableCategory.tubers,
@@ -1588,6 +1645,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'amarante',
+    amazonQuery: 'graines amarante',
     name: 'Amarante',
     emoji: '🌾',
     category: VegetableCategory.leaves,
@@ -1613,6 +1671,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
 
   Vegetable(
     id: 'sorgho',
+    amazonQuery: 'graines sorgho',
     name: 'Sorgho',
     emoji: '🌾',
     category: VegetableCategory.seeds,
@@ -1641,6 +1700,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'cornichon',
+    amazonQuery: 'graines cornichon',
     name: 'Cornichon',
     emoji: '🥒',
     category: VegetableCategory.fruits,
@@ -1670,6 +1730,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'panais',
+    amazonQuery: 'graines panais',
     name: 'Panais',
     emoji: '🥕',
     category: VegetableCategory.roots,
@@ -1698,6 +1759,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'rutabaga',
+    amazonQuery: 'graines rutabaga',
     name: 'Rutabaga',
     emoji: '🥔',
     category: VegetableCategory.roots,
@@ -1726,6 +1788,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'topinambour',
+    amazonQuery: 'tubercules topinambour',
     name: 'Topinambour',
     emoji: '🥔',
     category: VegetableCategory.tubers,
@@ -1754,6 +1817,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'salsifis',
+    amazonQuery: 'graines salsifis',
     name: 'Salsifis',
     emoji: '🌱',
     category: VegetableCategory.roots,
@@ -1782,6 +1846,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'radis_noir',
+    amazonQuery: 'graines radis noir',
     name: 'Radis noir',
     emoji: '🌑',
     category: VegetableCategory.roots,
@@ -1810,6 +1875,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'chou_rave',
+    amazonQuery: 'graines chou rave',
     name: 'Chou-rave',
     emoji: '🥬',
     category: VegetableCategory.stems,
@@ -1839,6 +1905,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'cresson',
+    amazonQuery: 'graines cresson fontaine',
     name: 'Cresson de fontaine',
     emoji: '🌿',
     category: VegetableCategory.leaves,
@@ -1867,6 +1934,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pak_choi',
+    amazonQuery: 'graines pak choi',
     name: 'Pak choï',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1895,6 +1963,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pourpier',
+    amazonQuery: 'graines pourpier',
     name: 'Pourpier',
     emoji: '🌿',
     category: VegetableCategory.leaves,
@@ -1922,6 +1991,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'chou_chinois',
+    amazonQuery: 'graines chou chinois napa',
     name: 'Chou chinois (Napa)',
     emoji: '🥬',
     category: VegetableCategory.leaves,
@@ -1950,6 +2020,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'romarin',
+    amazonQuery: 'plant romarin',
     name: 'Romarin',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -1981,6 +2052,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'sauge',
+    amazonQuery: 'plant sauge officinale',
     name: 'Sauge officinale',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2010,6 +2082,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'origan',
+    amazonQuery: 'graines origan',
     name: 'Origan',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2039,6 +2112,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'estragon',
+    amazonQuery: 'plant estragon francais',
     name: 'Estragon',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2069,6 +2143,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'sarriette',
+    amazonQuery: 'graines sarriette',
     name: 'Sarriette',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2097,6 +2172,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'aneth',
+    amazonQuery: 'graines aneth',
     name: 'Aneth',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2125,6 +2201,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'cerfeuil',
+    amazonQuery: 'graines cerfeuil',
     name: 'Cerfeuil',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2153,6 +2230,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'melisse',
+    amazonQuery: 'plant melisse citronnelle',
     name: 'Mélisse citronnelle',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2182,6 +2260,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'verveine',
+    amazonQuery: 'plant verveine citronnee',
     name: 'Verveine citronnée',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2210,6 +2289,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'laurier_sauce',
+    amazonQuery: 'plant laurier sauce',
     name: 'Laurier-sauce',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2239,6 +2319,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'camomille',
+    amazonQuery: 'graines camomille romaine',
     name: 'Camomille romaine',
     emoji: '🌼',
     category: VegetableCategory.aromatics,
@@ -2266,6 +2347,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'marjolaine',
+    amazonQuery: 'graines marjolaine',
     name: 'Marjolaine',
     emoji: '🌿',
     category: VegetableCategory.aromatics,
@@ -2294,6 +2376,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'lentille',
+    amazonQuery: 'graines lentille verte puy',
     name: 'Lentille verte',
     emoji: '🫘',
     category: VegetableCategory.seeds,
@@ -2321,6 +2404,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pois_chiche',
+    amazonQuery: 'graines pois chiche',
     name: 'Pois chiche',
     emoji: '🫘',
     category: VegetableCategory.seeds,
@@ -2348,6 +2432,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pois_mange_tout',
+    amazonQuery: 'graines pois mange tout',
     name: 'Pois mange-tout',
     emoji: '🫛',
     category: VegetableCategory.seeds,
@@ -2376,6 +2461,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'haricot_beurre',
+    amazonQuery: 'graines haricot beurre',
     name: 'Haricot beurre',
     emoji: '🫛',
     category: VegetableCategory.seeds,
@@ -2404,6 +2490,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'framboisier',
+    amazonQuery: 'plant framboisier',
     name: 'Framboisier',
     emoji: '🫐',
     category: VegetableCategory.fruits,
@@ -2432,6 +2519,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'cassissier',
+    amazonQuery: 'plant cassissier',
     name: 'Cassissier',
     emoji: '🫐',
     category: VegetableCategory.fruits,
@@ -2458,6 +2546,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'groseillier',
+    amazonQuery: 'plant groseillier',
     name: 'Groseillier',
     emoji: '🫐',
     category: VegetableCategory.fruits,
@@ -2484,6 +2573,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'murier',
+    amazonQuery: 'murier sans epines plant',
     name: 'Mûrier sans épines',
     emoji: '🫐',
     category: VegetableCategory.fruits,
@@ -2510,6 +2600,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'myrtillier',
+    amazonQuery: 'plant myrtillier',
     name: 'Myrtillier',
     emoji: '🫐',
     category: VegetableCategory.fruits,
@@ -2536,6 +2627,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'rhubarbe',
+    amazonQuery: 'griffe rhubarbe',
     name: 'Rhubarbe',
     emoji: '🌿',
     category: VegetableCategory.stems,
@@ -2564,6 +2656,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pleurote',
+    amazonQuery: 'kit culture pleurote',
     name: 'Pleurote (kit)',
     emoji: '🍄',
     category: VegetableCategory.flowers,
@@ -2591,6 +2684,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'shiitake',
+    amazonQuery: 'kit shiitake buche',
     name: 'Shiitaké (kit)',
     emoji: '🍄',
     category: VegetableCategory.flowers,
@@ -2618,6 +2712,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'champignon_paris',
+    amazonQuery: 'kit culture champignon paris',
     name: 'Champignon de Paris (kit)',
     emoji: '🍄',
     category: VegetableCategory.flowers,
@@ -2646,6 +2741,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pommier',
+    amazonQuery: 'plant pommier arbre fruitier',
     name: 'Pommier',
     emoji: '🍎',
     category: VegetableCategory.fruits,
@@ -2674,6 +2770,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'poirier',
+    amazonQuery: 'plant poirier arbre fruitier',
     name: 'Poirier',
     emoji: '🍐',
     category: VegetableCategory.fruits,
@@ -2701,6 +2798,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'prunier',
+    amazonQuery: 'plant prunier arbre fruitier',
     name: 'Prunier',
     emoji: '🍑',
     category: VegetableCategory.fruits,
@@ -2728,6 +2826,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'cerisier',
+    amazonQuery: 'plant cerisier arbre fruitier',
     name: 'Cerisier',
     emoji: '🍒',
     category: VegetableCategory.fruits,
@@ -2755,6 +2854,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'abricotier',
+    amazonQuery: 'plant abricotier arbre fruitier',
     name: 'Abricotier',
     emoji: '🍑',
     category: VegetableCategory.fruits,
@@ -2781,6 +2881,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pecher',
+    amazonQuery: 'plant pecher arbre fruitier',
     name: 'Pêcher',
     emoji: '🍑',
     category: VegetableCategory.fruits,
@@ -2807,6 +2908,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'figuier',
+    amazonQuery: 'plant figuier arbre fruitier',
     name: 'Figuier',
     emoji: '🍇',
     category: VegetableCategory.fruits,
@@ -2834,6 +2936,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'noisetier',
+    amazonQuery: 'plant noisetier',
     name: 'Noisetier',
     emoji: '🌰',
     category: VegetableCategory.fruits,
@@ -2861,6 +2964,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'vigne',
+    amazonQuery: 'plant vigne raisin table',
     name: 'Vigne (raisin de table)',
     emoji: '🍇',
     category: VegetableCategory.fruits,
@@ -2889,6 +2993,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'kiwi',
+    amazonQuery: 'plant kiwi actinidia',
     name: 'Kiwi (actinidia)',
     emoji: '🥝',
     category: VegetableCategory.fruits,
@@ -2915,6 +3020,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'capucine',
+    amazonQuery: 'graines capucine',
     name: 'Capucine',
     emoji: '🌸',
     category: VegetableCategory.flowers,
@@ -2943,6 +3049,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'souci',
+    amazonQuery: 'graines souci calendula',
     name: 'Souci (calendula)',
     emoji: '🌼',
     category: VegetableCategory.flowers,
@@ -2971,6 +3078,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'bourrache',
+    amazonQuery: 'graines bourrache',
     name: 'Bourrache',
     emoji: '💙',
     category: VegetableCategory.flowers,
@@ -2999,6 +3107,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'pensee',
+    amazonQuery: 'graines pensee fleur',
     name: 'Pensée',
     emoji: '🌸',
     category: VegetableCategory.flowers,
@@ -3028,6 +3137,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'oeillet_inde',
+    amazonQuery: 'graines oeillet inde tagete',
     name: "Œillet d'Inde",
     emoji: '🌼',
     category: VegetableCategory.flowers,
@@ -3056,6 +3166,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'tournesol',
+    amazonQuery: 'graines tournesol',
     name: 'Tournesol',
     emoji: '🌻',
     category: VegetableCategory.flowers,
@@ -3083,6 +3194,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'tagete',
+    amazonQuery: 'graines tagete nematicide',
     name: 'Tagète',
     emoji: '🌼',
     category: VegetableCategory.flowers,
@@ -3110,6 +3222,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'lavande',
+    amazonQuery: 'plant lavande vraie',
     name: 'Lavande vraie',
     emoji: '💜',
     category: VegetableCategory.flowers,
@@ -3137,6 +3250,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'cosmos',
+    amazonQuery: 'graines cosmos fleurs',
     name: 'Cosmos',
     emoji: '🌸',
     category: VegetableCategory.flowers,
@@ -3164,6 +3278,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'zinnia',
+    amazonQuery: 'graines zinnia fleurs',
     name: 'Zinnia',
     emoji: '🌺',
     category: VegetableCategory.flowers,
@@ -3191,6 +3306,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'bleuet',
+    amazonQuery: 'graines bleuet fleur',
     name: 'Bleuet',
     emoji: '💙',
     category: VegetableCategory.flowers,
@@ -3220,6 +3336,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'phacelie',
+    amazonQuery: 'graines phacelie engrais vert',
     name: 'Phacélie',
     emoji: '💜',
     category: VegetableCategory.flowers,
@@ -3249,6 +3366,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'moutarde_blanche',
+    amazonQuery: 'graines moutarde blanche engrais vert',
     name: 'Moutarde blanche',
     emoji: '🌼',
     category: VegetableCategory.flowers,
@@ -3279,6 +3397,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'trefle_incarnat',
+    amazonQuery: 'graines trefle incarnat engrais vert',
     name: 'Trèfle incarnat',
     emoji: '🌹',
     category: VegetableCategory.flowers,
@@ -3306,6 +3425,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ──────────────────────────────────────────────────────────────────────
   Vegetable(
     id: 'sarrasin',
+    amazonQuery: 'graines sarrasin engrais vert',
     name: 'Sarrasin',
     emoji: '🌾',
     category: VegetableCategory.flowers,
@@ -3620,6 +3740,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Accessoires jardinage ──
   Vegetable(
     id: 'acc_secateur',
+    amazonQuery: 'sécateur jardinage',
     name: 'Sécateur',
     emoji: '✂️',
     category: VegetableCategory.accessories,
@@ -3631,6 +3752,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_arrosoir',
+    amazonQuery: 'arrosoir jardinage',
     name: 'Arrosoir',
     emoji: '🚿',
     category: VegetableCategory.accessories,
@@ -3642,6 +3764,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_terreau',
+    amazonQuery: 'terreau bio potager',
     name: 'Terreau bio',
     emoji: '🪴',
     category: VegetableCategory.accessories,
@@ -3653,6 +3776,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_engrais',
+    amazonQuery: 'engrais bio potager',
     name: 'Engrais bio',
     emoji: '🧪',
     category: VegetableCategory.accessories,
@@ -3664,6 +3788,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_bac',
+    amazonQuery: 'bac potager surélevé',
     name: 'Bac potager',
     emoji: '📦',
     category: VegetableCategory.accessories,
@@ -3675,6 +3800,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_tuteur',
+    amazonQuery: 'tuteur potager bambou',
     name: 'Tuteurs',
     emoji: '🥢',
     category: VegetableCategory.accessories,
@@ -3686,6 +3812,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_graines',
+    amazonQuery: 'kit graines potager bio',
     name: 'Kit semences bio',
     emoji: '🌱',
     category: VegetableCategory.accessories,
@@ -3697,6 +3824,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_gants',
+    amazonQuery: 'gants jardinage',
     name: 'Gants de jardinage',
     emoji: '🧤',
     category: VegetableCategory.accessories,
@@ -3709,6 +3837,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Structures & Aménagement ──
   Vegetable(
     id: 'acc_serre_tunnel',
+    amazonQuery: 'serre jardin tunnel',
     name: 'Mini-serre tunnel',
     emoji: '⛺',
     category: VegetableCategory.accessories,
@@ -3720,6 +3849,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_chassis',
+    amazonQuery: 'chassis culture jardinage',
     name: 'Châssis de culture',
     emoji: '🪟',
     category: VegetableCategory.accessories,
@@ -3731,6 +3861,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_carre_potager',
+    amazonQuery: 'carre potager bois',
     name: 'Carré potager bois',
     emoji: '🟫',
     category: VegetableCategory.accessories,
@@ -3742,6 +3873,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_table_culture',
+    amazonQuery: 'table culture jardin',
     name: 'Table de culture',
     emoji: '🪑',
     category: VegetableCategory.accessories,
@@ -3753,6 +3885,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_cloche',
+    amazonQuery: 'cloche horticole jardin',
     name: 'Cloche horticole',
     emoji: '🔔',
     category: VegetableCategory.accessories,
@@ -3765,6 +3898,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Arrosage ──
   Vegetable(
     id: 'acc_goutte_a_goutte',
+    amazonQuery: 'kit goutte a goutte jardin',
     name: 'Kit goutte à goutte',
     emoji: '💧',
     category: VegetableCategory.accessories,
@@ -3776,6 +3910,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_programmateur',
+    amazonQuery: 'programmateur arrosage robinet',
     name: "Programmateur d'arrosage",
     emoji: '⏱️',
     category: VegetableCategory.accessories,
@@ -3787,6 +3922,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_recuperateur',
+    amazonQuery: 'recuperateur eau pluie 300L',
     name: "Récupérateur d'eau",
     emoji: '🛢️',
     category: VegetableCategory.accessories,
@@ -3798,6 +3934,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_oyas',
+    amazonQuery: 'oyas terre cuite arrosage',
     name: 'Oyas en terre cuite',
     emoji: '🏺',
     category: VegetableCategory.accessories,
@@ -3809,6 +3946,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_tuyau_microporeux',
+    amazonQuery: 'tuyau microporeux arrosage',
     name: 'Tuyau micro-poreux',
     emoji: '〰️',
     category: VegetableCategory.accessories,
@@ -3821,6 +3959,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Protection des cultures ──
   Vegetable(
     id: 'acc_filet_insectes',
+    amazonQuery: 'filet anti insectes potager',
     name: 'Filet anti-insectes',
     emoji: '🪤',
     category: VegetableCategory.accessories,
@@ -3832,6 +3971,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_voile_hivernage',
+    amazonQuery: 'voile hivernage jardin',
     name: "Voile d'hivernage",
     emoji: '❄️',
     category: VegetableCategory.accessories,
@@ -3843,6 +3983,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_voile_forcage',
+    amazonQuery: 'voile forcage printemps',
     name: 'Voile de forçage',
     emoji: '🌬️',
     category: VegetableCategory.accessories,
@@ -3854,6 +3995,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_filet_oiseaux',
+    amazonQuery: 'filet anti oiseaux potager',
     name: 'Filet anti-oiseaux',
     emoji: '🐦',
     category: VegetableCategory.accessories,
@@ -3865,6 +4007,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_anti_limaces',
+    amazonQuery: 'ferramol anti limaces bio',
     name: 'Anti-limaces bio (Ferramol)',
     emoji: '🐌',
     category: VegetableCategory.accessories,
@@ -3876,6 +4019,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_ombriere',
+    amazonQuery: 'filet ombrage jardin',
     name: "Filet d'ombrage 30-50 %",
     emoji: '⛱️',
     category: VegetableCategory.accessories,
@@ -3888,6 +4032,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Tuteurage & support (sous catégorie structures) ──
   Vegetable(
     id: 'acc_treillis_tomate',
+    amazonQuery: 'treillis tomates jardin',
     name: 'Treillis tomates',
     emoji: '▦',
     category: VegetableCategory.accessories,
@@ -3899,6 +4044,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_arche',
+    amazonQuery: 'arche jardin plantes grimpantes',
     name: 'Arche de jardin',
     emoji: '🌉',
     category: VegetableCategory.accessories,
@@ -3910,6 +4056,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_tuteurs_spirales',
+    amazonQuery: 'tuteurs spirale tomate',
     name: 'Tuteurs spirales',
     emoji: '🌀',
     category: VegetableCategory.accessories,
@@ -3921,6 +4068,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_rames_bambou',
+    amazonQuery: 'rames bambou haricot',
     name: 'Rames bambou',
     emoji: '🎋',
     category: VegetableCategory.accessories,
@@ -3933,6 +4081,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Sol & compost ──
   Vegetable(
     id: 'acc_composteur',
+    amazonQuery: 'composteur jardin 400L',
     name: 'Composteur de jardin',
     emoji: '♻️',
     category: VegetableCategory.accessories,
@@ -3944,6 +4093,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_lombricomposteur',
+    amazonQuery: 'lombricomposteur appartement',
     name: 'Lombricomposteur',
     emoji: '🪱',
     category: VegetableCategory.accessories,
@@ -3955,6 +4105,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_activateur_compost',
+    amazonQuery: 'activateur compost bio',
     name: 'Activateur de compost',
     emoji: '⚡',
     category: VegetableCategory.accessories,
@@ -3966,6 +4117,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_paillis_chanvre',
+    amazonQuery: 'paillis chanvre potager',
     name: 'Paillis de chanvre',
     emoji: '🌾',
     category: VegetableCategory.accessories,
@@ -3977,6 +4129,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_mulch_ecorces',
+    amazonQuery: 'mulch ecorces pin jardin',
     name: 'Écorces de pin',
     emoji: '🪵',
     category: VegetableCategory.accessories,
@@ -3988,6 +4141,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_grelinette',
+    amazonQuery: 'grelinette fourche beche',
     name: 'Grelinette',
     emoji: '🍴',
     category: VegetableCategory.accessories,
@@ -4000,6 +4154,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   // ── Petits outils ──
   Vegetable(
     id: 'acc_binette',
+    amazonQuery: 'binette serfouette jardin',
     name: 'Binette / serfouette',
     emoji: '🪓',
     category: VegetableCategory.accessories,
@@ -4011,6 +4166,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_plantoir',
+    amazonQuery: 'plantoir bulbes jardin',
     name: 'Plantoir à bulbes',
     emoji: '🥄',
     category: VegetableCategory.accessories,
@@ -4022,6 +4178,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_transplantoir',
+    amazonQuery: 'transplantoir jardin',
     name: 'Transplantoir',
     emoji: '🥄',
     category: VegetableCategory.accessories,
@@ -4033,6 +4190,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_etiquettes',
+    amazonQuery: 'etiquettes plantes ardoise',
     name: 'Étiquettes plantes',
     emoji: '🏷️',
     category: VegetableCategory.accessories,
@@ -4044,6 +4202,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
   ),
   Vegetable(
     id: 'acc_panier_recolte',
+    amazonQuery: 'panier recolte osier jardin',
     name: 'Panier de récolte',
     emoji: '🧺',
     category: VegetableCategory.accessories,
@@ -4076,4 +4235,47 @@ Vegetable vegetableById(String id) {
     if (v.id == id) return v;
   }
   return unknownVegetable;
+}
+
+/// Les cultures seules : le catalogue moins les 39 accessoires.
+///
+/// `vegetablesBase` mélange ce qui se plante et ce qui sert à planter —
+/// un arrosoir et une tomate y sont deux entrées de même rang. Tout
+/// écran qui dit « légume » doit donc piocher ici, pas dans le
+/// catalogue entier.
+final List<Vegetable> cultures = vegetablesBase
+    .where((v) => v.category != VegetableCategory.accessories)
+    .toList(growable: false);
+
+/// Le légume mis en avant ce jour-là.
+///
+/// Déterministe : le même jour donne le même légume à tout le monde,
+/// et la liste tourne sur l'année.
+///
+/// ⚠️ Tirait dans `vegetablesBase` jusqu'au 30/10/2026, accessoires
+/// compris : près d'un jour sur quatre, le « légume du jour » était un
+/// sac d'engrais ou un sécateur.
+Vegetable vegetableOfTheDay(DateTime day) {
+  final dayOfYear = day.difference(DateTime(day.year)).inDays;
+  return cultures[dayOfYear % cultures.length];
+}
+
+/// Identifiant d'affiliation Amazon Partenaires.
+///
+/// ⚠️ Un seul endroit, volontairement. Les 159 liens du catalogue
+/// portaient chacun leur tag en dur : quand le compte `kultiva-21` a
+/// été fermé le 18/10/2026, il a fallu supprimer 159 lignes, puis
+/// autant pour les remettre avec `kultiva1-21` le 30/10. Désormais un
+/// changement de compte, c'est cette ligne.
+const String kAmazonAffiliateTag = 'kultiva1-21';
+
+/// Le lien partenaire Amazon pour ce légume, ou `null` s'il n'en a pas.
+///
+/// Amazon ne livrant pas en Afrique de l'Ouest, l'appelant doit vérifier
+/// la région avant d'afficher quoi que ce soit.
+String? amazonUrlFor(Vegetable vegetable) {
+  final query = vegetable.amazonQuery;
+  if (query == null) return null;
+  final k = Uri.encodeQueryComponent(query);
+  return 'https://www.amazon.fr/s?k=$k&tag=$kAmazonAffiliateTag';
 }

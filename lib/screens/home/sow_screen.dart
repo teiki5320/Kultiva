@@ -94,11 +94,7 @@ class _SowScreenState extends State<SowScreen> {
     }
   }
 
-  Vegetable get _vegetableOfTheDay {
-    final dayOfYear =
-        DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
-    return vegetablesBase[dayOfYear % vegetablesBase.length];
-  }
+  Vegetable get _vegetableOfTheDay => vegetableOfTheDay(DateTime.now());
 
   String get _tipOfTheDay {
     final tips = <String>[];

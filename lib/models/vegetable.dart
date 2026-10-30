@@ -145,6 +145,15 @@ class Vegetable {
   // --- Rendement ---
   final String? yieldEstimate;
 
+  // --- Lien partenaire Amazon ---
+  /// Les mots cherchés sur Amazon pour ce légume, par exemple
+  /// « graines tomate ». L'URL complète et l'identifiant d'affiliation
+  /// sont construits par `amazonUrlFor` — les stocker ici reviendrait à
+  /// recopier le tag 159 fois, et un changement de compte coûterait
+  /// autant de lignes. C'est exactement ce qui s'est passé le
+  /// 20/10/2026.
+  final String? amazonQuery;
+
   // --- Accessoires : sous-catégorie (uniquement si category == accessories) ---
   final AccessorySubCategory? accessorySub;
 
@@ -182,6 +191,7 @@ class Vegetable {
     this.soil,
     this.wateringDaysMax,
     this.yieldEstimate,
+    this.amazonQuery,
     this.accessorySub,
     this.imageAsset,
     this.harvestTimeBySeason,

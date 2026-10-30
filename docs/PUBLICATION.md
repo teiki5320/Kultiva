@@ -17,7 +17,7 @@
 
 - **Version commune** : `1.0.0+5` (`pubspec.yaml`), jamais soumise
 - **Identifiant de bundle** : `com.toa.kultiva` (iOS et Android)
-- **Monétisation** : gratuite ; ni pub, ni achat, ni affiliation (liens Amazon retirés le 20 octobre)
+- **Monétisation** : gratuite ; ni pub ni achat intégré, mais affiliation Amazon en France (liens remis le 30 octobre 2026, tag `kultiva1-21`)
 - **Comptes** : **aucun** depuis le 30 octobre 2026 — ni connexion, ni serveur, ni synchronisation
 - **Confidentialité** : <https://kultiva.toakeur.com/privacy.html> en ligne
 - **Contact** : `kultiva@toakeur.com`
@@ -41,7 +41,7 @@
 - **Android** : jamais envoyée à Play — le bundle release est signé et vérifié localement ; l'existence d'une fiche Play reste à vérifier dans la console
 - **Web** : site de présentation en ligne sur <https://kultiva.toakeur.com> depuis le 7 octobre 2026
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste en pause, inutilisé, et ne bloque plus rien
-- **Monétisation** : aucune — les 159 liens d'affiliation Amazon (tag rattaché au compte fermé par Amazon le 18 octobre) ont été retirés le 20 octobre 2026. Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, est donc à revoir
+- **Monétisation** : affiliation Amazon en France. Les 159 liens, retirés le 20 octobre 2026 (compte fermé le 18), sont **revenus le 30 octobre 2026** sous le tag `kultiva1-21`. ⚠️ Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, redevient donc applicable : à déclarer dans App Store Connect et Play Console avant soumission
 - **Classification attendue** : **4+** depuis le retrait du feed communautaire — plus aucun contenu généré par les utilisateurs
 - **Chemin critique** : captures d'écran → trancher la déclaration DSA → compléter la fiche App Store → soumettre iOS
 
@@ -228,7 +228,7 @@ la synchro (Cloudflare, ci-dessous).
 4. **Compléter la fiche App Store** : fiche créée (Apple ID `6762550020`) ; restent les trois URL, l'adresse de contact, la déclaration DSA (statut de trader à revoir) et le téléphone de revue.
 5. **Garnir une installation pour les captures** : 2 ou 3 plants, une photo, un Tamassi entamé. Plus de compte de démonstration à créer.
 6. **Captures d'écran** : 8 en iPhone 6,9″ (1320 × 2868) et 8 en iPad 13″ (2064 × 2752).
-7. ✅ **Liens Amazon retirés** : les 159 liens au tag du compte fermé ont été ôtés du catalogue le 20 octobre 2026.
+7. ✅ **Liens Amazon remis** : ôtés le 20 octobre 2026 (compte fermé), les 159 liens sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`. ⚠️ Pense au statut trader (DSA) à la soumission.
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 — l'avertissement ITMS-90683 disparaît au prochain build.
 9. **Soumettre iOS** : depuis `docs/FICHE_APP_STORE.md`.
 10. **Créer la fiche Google Play** : puis lancer le test fermé sans attendre, ses quatorze jours courent en arrière-plan.

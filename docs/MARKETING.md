@@ -18,9 +18,9 @@ Pour l'actualiser : relancer le même prompt.
 
 ## Rémunération par phases
 
-- [fait] **Aujourd'hui** : app gratuite, sans aucune rémunération : les liens Amazon du catalogue ont été retirés le 20 octobre 2026 (leur tag dépendait du compte fermé par Amazon le 18 octobre).
+- [fait] **Aujourd'hui** : app gratuite, rémunérée par l'affiliation Amazon en France. Les liens avaient été retirés le 20 octobre 2026 (tag rattaché au compte fermé par Amazon le 18 octobre) ; ils sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`.
 - [en cours] **Relance et lancement** : décider si Kultiva repart (projet en pause, choix de Jean ; backend en pause aussi), publier, et trancher la vidéo récompensée AdMob liée au Tamassi (« une pub → un boost d'XP »).
-- **Affiliation, si on la remet** : un identifiant Amazon du nouveau compte, à renseigner dans le catalogue (France seulement).
+- **Affiliation** : en place depuis le 30 octobre 2026, France seulement (Amazon ne livre pas en Afrique de l'Ouest). Changer de compte = changer une constante.
 - **Rétention prouvée** : abonnement Kultiva Plus via RevenueCat (jardins illimités, export PDF, variantes du Tamassi), France d'abord.
 - **Afrique de l'Ouest** : sponsoring par des ONG et programmes agricoles qui financent la diffusion de conseils.
 
@@ -66,7 +66,7 @@ n'est branché (Sentry ne suit que les crashs).
 - **Rétention J1 / J7 / J30** : à instrumenter
 - **Note moyenne en boutique** : aucune — app pas publiée
 - **Crashs** : à vérifier dans la console Sentry
-- **Clics d'affiliation** : aucun — plus de lien Amazon depuis le 20 octobre 2026
+- **Clics d'affiliation** : à suivre dans le Club Partenaires sous le tag `kultiva1-21` (liens remis le 30 octobre 2026)
 - **Visites du site** : à vérifier dans la console Cloudflare (aucun script de mesure sur la page)
 
 ## Calendrier

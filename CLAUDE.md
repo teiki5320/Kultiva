@@ -50,7 +50,7 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `google_fonts` ^6.1 — typographie **Nunito**
 - `shared_preferences` ^2.2 — persistance locale
 - `url_launcher` ^6.2 — liens externes (Instagram ; boutons « Acheter »
-  Amazon retirés le 20/10/2026, plus aucune affiliation)
+  Amazon remis le 30/10/2026, tag `kultiva1-21`, France seulement)
 - `flutter_local_notifications` ^17.2.3 + `timezone` ^0.9 +
   `flutter_timezone` ^3.0.1 — rappels mensuels, quotidiens (Tamassi),
   arrosage et canicule, planifiés dans le **fuseau réel** du device
@@ -432,10 +432,16 @@ Décisions et évolutions significatives :
   gestion de la géolocalisation refusée avec fallback Paris.
 - **Météo** : nom de ville affiché dans le header, bouton rafraîchir ajouté,
   alertes canicule avec tips par légume.
-- **Amazon Associates** (abandonné) : mention « Lien partenaire » visible +
-  bouton agrandi pour conformité du programme d'affiliation. Les 159 liens
-  ont été retirés le 20/10/2026 (commit 0dbe0e4, compte fermé par Amazon le
-  18/10) : le bouton ne s'affiche plus, faute d'`amazonUrl`.
+- **Amazon Associates** (actif depuis le 30/10/2026) : mention « Lien
+  partenaire » visible sous le bouton, pour la conformité du programme.
+  Les 159 liens avaient été retirés le 20/10/2026 (commit 0dbe0e4) après
+  la fermeture du compte du tag `kultiva-21` le 18/10 ; ils sont revenus
+  le 30/10 sous `kultiva1-21`. **Le catalogue ne stocke plus d'URL** mais
+  les mots cherchés (`amazonQuery`) ; l'URL et le tag sont construits par
+  `amazonUrlFor`, et le tag vit dans la seule constante
+  `kAmazonAffiliateTag`. Changer de compte, c'est désormais une ligne,
+  pas 159. ⚠️ Conséquence à ne pas oublier : le statut **trader** au sens
+  du DSA redevient applicable.
 - **Gros ménage lint** : 308 substitutions `withOpacity` → `withValues` sur
   38 fichiers, >90 % des avertissements résorbés.
 - **Sync catalogue Kultivaprix** (retirée le 30/10/2026) : Kultivaprix

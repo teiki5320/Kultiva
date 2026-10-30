@@ -31,7 +31,7 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 - **Site** : <https://kultiva.toakeur.com> (présentation + confidentialité), en ligne depuis le 7 octobre 2026
 - **Marchés** : bi-marché France + 8 pays francophones d'Afrique de l'Ouest, détection du pays et de la sous-zone climatique
 - **Particularités** : météo Open-Meteo sans clé d'API, notifications locales uniquement, tutos et contenu 100 % hors ligne
-- **Monétisation** : aucune. Les liens Amazon du catalogue ont été retirés le 20 octobre 2026, et le reste du code qui les servait — champ `amazonUrl`, bouton « Acheter », pavé d'action — a été supprimé le 30 octobre 2026. La mention « Partenaire Amazon » a été ôtée de `landing/index.html` le 21 octobre 2026.
+- **Monétisation** : affiliation Amazon Partenaires, France uniquement. Les 159 liens du catalogue, retirés le 20 octobre 2026 quand Amazon a fermé le compte du tag `kultiva-21`, ont été **remis le 30 octobre 2026** sous le nouveau tag `kultiva1-21`. Le tag ne vit plus qu'à un seul endroit (`kAmazonAffiliateTag`, `lib/data/vegetables_base.dart`) : le catalogue ne stocke que les mots cherchés. La mention « Partenaire Amazon » reste absente de `landing/index.html` — le site ne porte aucun lien ; l'app, elle, affiche « Lien partenaire » sous chaque bouton.
 
 ## Services externes
 
@@ -153,6 +153,6 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 
 ## Notes
 
-- Valeur **publique par design** (sa présence dans le code est normale) : le DSN Sentry (`lib/main.dart`). Depuis le 30 octobre 2026, il n'y a plus ni URL Supabase, ni `anonKey`, ni client ID Google dans le code ; et plus aucun tag Amazon depuis le 20 octobre.
+- Valeur **publique par design** (sa présence dans le code est normale) : le DSN Sentry (`lib/main.dart`). Depuis le 30 octobre 2026, il n'y a plus ni URL Supabase, ni `anonKey`, ni client ID Google dans le code ; et le tag Amazon Partenaires (`kultiva1-21`, remis le 30 octobre) est public par nature — c'est un identifiant d'affiliation, pas un secret.
 - E-mail de support public : `kultiva@toakeur.com` (site, politique de confidentialité en ligne et dans l'app).
 - Reprise sur machine neuve : cloner le dépôt, Flutter ≥ 3.47, `flutter pub get` puis `flutter run` — aucun secret requis côté client ; release Android = keystore + `key.properties` depuis le coffre-fort ; release iOS = accès au compte Apple.

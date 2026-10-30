@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../services/audio_service.dart';
 import '../data/regions/regional_calendar.dart';
@@ -103,6 +104,19 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
       if (d.vegetableId == vegId) return d;
     }
     return null;
+  }
+
+  Future<void> _openUrl(BuildContext context, String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Impossible d'ouvrir le lien."),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -278,6 +292,43 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
                 ),
               ),
             ),
+          // Bouton Acheter en bas, sauf accessoires qui ont déjà le panier
+          // dans le bandeau. Amazon ne livrant pas en Afrique de l'Ouest,
+          // le lien partenaire n'est proposé qu'en France.
+          if (region == Region.france &&
+              vegetable.category != VegetableCategory.accessories &&
+              amazonUrlFor(vegetable) != null) ...<Widget>[
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => _openUrl(context, amazonUrlFor(vegetable)!),
+                icon: const Text('🛒', style: TextStyle(fontSize: 24)),
+                label: const Text('Acheter',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: KultivaColors.terracotta,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  elevation: 3,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Lien partenaire · Kultiva touche une petite commission si tu achètes.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 11,
+                color: Color(0xFF8a8c80),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
           const SizedBox(height: 24),
         ],
       ),
@@ -352,15 +403,56 @@ class _HeaderCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 16),
-            Center(
-              child: MedalBadge(
-                emoji: vegetable.emoji,
-                imageAsset: vegetable.imageAsset,
-                tier: tier,
-                familyColor: KultivaColors.primaryGreen,
-                size: 78,
-                showCornerMedal: tier != MedalTier.none,
-              ),
+            Builder(
+              builder: (context) {
+                final badge = MedalBadge(
+                  emoji: vegetable.emoji,
+                  imageAsset: vegetable.imageAsset,
+                  tier: tier,
+                  familyColor: KultivaColors.primaryGreen,
+                  size: 78,
+                  showCornerMedal: tier != MedalTier.none,
+                );
+                // Le panier du bandeau est réservé aux accessoires : les
+                // autres fiches ont le grand bouton en bas, et afficher
+                // les deux faisait doublon.
+                final url =
+                    vegetable.category == VegetableCategory.accessories &&
+                            PrefsService.instance.region.value == Region.france
+                        ? amazonUrlFor(vegetable)
+                        : null;
+                // Sans panier, la pastille est centrée. Un `Row` à deux
+                // extrémités dont un seul enfant la plaquait à gauche,
+                // avec le vide à sa droite — invisible sur téléphone,
+                // béant sur un iPad.
+                if (url == null) return Center(child: badge);
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    badge,
+                    _MiniActionBlock(
+                      emoji: '🛒',
+                      label: 'Acheter',
+                      sublabel: 'Lien partenaire',
+                      gradientColors: <Color>[
+                        KultivaColors.terracotta.withValues(alpha: 0.28),
+                        KultivaColors.summerA.withValues(alpha: 0.4),
+                      ],
+                      foreground: KultivaColors.terracotta,
+                      tooltip: 'Lien partenaire Amazon — Kultiva touche '
+                          'une petite commission si tu achètes.',
+                      onTap: () {
+                        AudioService.instance.play(Sfx.cart);
+                        launchUrl(
+                          Uri.parse(url),
+                          mode: LaunchMode.externalApplication,
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
             if (vegetable.description != null) ...<Widget>[
               const SizedBox(height: 16),
@@ -842,6 +934,84 @@ class _RegionalNoteCard extends StatelessWidget {
   }
 }
 
+class _MiniActionBlock extends StatelessWidget {
+  final String emoji;
+  final String label;
+  final String sublabel;
+  final List<Color> gradientColors;
+  final Color foreground;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  const _MiniActionBlock({
+    required this.emoji,
+    required this.label,
+    required this.sublabel,
+    required this.gradientColors,
+    required this.foreground,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: Semantics(
+        label: '$label, $sublabel',
+        hint: tooltip,
+        button: true,
+        excludeSemantics: true,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 78,
+            height: 78,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: gradientColors),
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: foreground.withValues(alpha: 0.22),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(emoji, style: const TextStyle(fontSize: 28)),
+                const SizedBox(height: 2),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: foreground,
+                  ),
+                ),
+                Text(
+                  sublabel,
+                  style: TextStyle(
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.w500,
+                    color: foreground.withValues(alpha: 0.7),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Noms locaux de la culture (wolof, bambara, haoussa…), affichés en
+/// Afrique de l'Ouest pour que le jardinier reconnaisse son légume.
 class _LocalNamesCard extends StatelessWidget {
   final List<LocalName> names;
   const _LocalNamesCard({required this.names});
