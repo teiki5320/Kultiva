@@ -3627,7 +3627,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.',
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_secateur.png',
+    imageAsset: 'assets/images/accessories/acc_secateur.webp',
   ),
   Vegetable(
     id: 'acc_arrosoir',
@@ -3638,7 +3638,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.',
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_arrosoir.png',
+    imageAsset: 'assets/images/accessories/acc_arrosoir.webp',
   ),
   Vegetable(
     id: 'acc_terreau',
@@ -3649,7 +3649,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.',
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_terreau.png',
+    imageAsset: 'assets/images/accessories/acc_terreau.webp',
   ),
   Vegetable(
     id: 'acc_engrais',
@@ -3660,7 +3660,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.',
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_engrais.png',
+    imageAsset: 'assets/images/accessories/acc_engrais.webp',
   ),
   Vegetable(
     id: 'acc_bac',
@@ -3671,7 +3671,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.',
     accessorySub: AccessorySubCategory.pots,
-    imageAsset: 'assets/images/accessories/acc_bac.png',
+    imageAsset: 'assets/images/accessories/acc_bac.webp',
   ),
   Vegetable(
     id: 'acc_tuteur',
@@ -3682,7 +3682,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.',
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_tuteur.png',
+    imageAsset: 'assets/images/accessories/acc_tuteur.webp',
   ),
   Vegetable(
     id: 'acc_graines',
@@ -3693,7 +3693,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.',
     accessorySub: AccessorySubCategory.seeds,
-    imageAsset: 'assets/images/accessories/acc_graines.png',
+    imageAsset: 'assets/images/accessories/acc_graines.webp',
   ),
   Vegetable(
     id: 'acc_gants',
@@ -3704,7 +3704,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.',
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_gants.png',
+    imageAsset: 'assets/images/accessories/acc_gants.webp',
   ),
   // ── Structures & Aménagement ──
   Vegetable(
@@ -3716,7 +3716,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Petit tunnel en plastique avec armature métallique : protège les jeunes plants du froid au printemps et permet de cultiver tomates, poivrons même dans le nord.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_serre_tunnel.png',
+    imageAsset: 'assets/images/accessories/acc_serre_tunnel.webp',
   ),
   Vegetable(
     id: 'acc_chassis',
@@ -3727,7 +3727,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Couche froide vitrée, idéale pour les semis précoces de février à avril. Permet de gagner 4-6 semaines sur le calendrier.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_chassis.png',
+    imageAsset: 'assets/images/accessories/acc_chassis.webp',
   ),
   Vegetable(
     id: 'acc_carre_potager',
@@ -3738,7 +3738,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Cadre en bois posé au sol, divisé en cases de 30×30 cm. Méthode simple, esthétique et productive — parfait pour un petit jardin.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_carre_potager.png',
+    imageAsset: 'assets/images/accessories/acc_carre_potager.webp',
   ),
   Vegetable(
     id: 'acc_table_culture',
@@ -3749,7 +3749,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Bac surélevé sur pieds (60-90 cm de haut). Idéal balcon, terrasse ou personnes à mobilité réduite. Profondeur min 30 cm pour les légumes.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_table_culture.png',
+    imageAsset: 'assets/images/accessories/acc_table_culture.webp',
   ),
   Vegetable(
     id: 'acc_cloche',
@@ -3760,7 +3760,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Cloche transparente à poser sur un plant fragile : forçage de printemps, protection contre le gel ou les limaces. Réutilisable saison après saison.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_cloche.png',
+    imageAsset: 'assets/images/accessories/acc_cloche.webp',
   ),
   // ── Arrosage ──
   Vegetable(
@@ -3772,7 +3772,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Système d'arrosage automatique avec tuyaux et goutteurs. Délivre l'eau directement au pied des plants, idéal en été et pour partir en vacances.",
     accessorySub: AccessorySubCategory.watering,
-    imageAsset: 'assets/images/accessories/acc_goutte_a_goutte.png',
+    imageAsset: 'assets/images/accessories/acc_goutte_a_goutte.webp',
   ),
   Vegetable(
     id: 'acc_programmateur',
@@ -3783,7 +3783,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Se branche sur le robinet et programme l'arrosage automatiquement (durée + créneau). À combiner avec un kit goutte à goutte ou un tuyau perforé.",
     accessorySub: AccessorySubCategory.watering,
-    imageAsset: 'assets/images/accessories/acc_programmateur.png',
+    imageAsset: 'assets/images/accessories/acc_programmateur.webp',
   ),
   Vegetable(
     id: 'acc_recuperateur',
@@ -3794,7 +3794,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Cuve 200-500 L à raccorder sur une descente de gouttière. L'eau de pluie est sans calcaire, à température ambiante : parfaite pour le potager.",
     accessorySub: AccessorySubCategory.watering,
-    imageAsset: 'assets/images/accessories/acc_recuperateur.png',
+    imageAsset: 'assets/images/accessories/acc_recuperateur.webp',
   ),
   Vegetable(
     id: 'acc_oyas',
@@ -3805,7 +3805,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Pot en terre cuite poreuse à enterrer entre les plants : se remplit d'eau et la diffuse lentement. Réduit l'arrosage à 1 fois par semaine.",
     accessorySub: AccessorySubCategory.watering,
-    imageAsset: 'assets/images/accessories/acc_oyas.png',
+    imageAsset: 'assets/images/accessories/acc_oyas.webp',
   ),
   Vegetable(
     id: 'acc_tuyau_microporeux',
@@ -3816,7 +3816,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Tuyau qui suinte sur toute sa longueur et arrose les plants en ligne. Facile à installer, idéal pour les rangs de salades, carottes, fraisiers.",
     accessorySub: AccessorySubCategory.watering,
-    imageAsset: 'assets/images/accessories/acc_tuyau_microporeux.png',
+    imageAsset: 'assets/images/accessories/acc_tuyau_microporeux.webp',
   ),
   // ── Protection des cultures ──
   Vegetable(
@@ -3828,7 +3828,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Voile à fines mailles à poser sur les cultures. Empêche piéride du chou, mouche de la carotte, altises et pucerons sans aucun traitement.",
     accessorySub: AccessorySubCategory.protection,
-    imageAsset: 'assets/images/accessories/acc_filet_insectes.png',
+    imageAsset: 'assets/images/accessories/acc_filet_insectes.webp',
   ),
   Vegetable(
     id: 'acc_voile_hivernage',
@@ -3839,7 +3839,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Voile blanc épais (P30) à poser sur les plants sensibles en hiver. Protège artichauts, poireaux, choux, oliviers, agrumes en pots.",
     accessorySub: AccessorySubCategory.protection,
-    imageAsset: 'assets/images/accessories/acc_voile_hivernage.png',
+    imageAsset: 'assets/images/accessories/acc_voile_hivernage.webp',
   ),
   Vegetable(
     id: 'acc_voile_forcage',
@@ -3850,7 +3850,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Voile léger (P17) à poser au printemps pour réchauffer le sol et démarrer plus tôt salades, radis, carottes. Laisse passer pluie et lumière.",
     accessorySub: AccessorySubCategory.protection,
-    imageAsset: 'assets/images/accessories/acc_voile_forcage.png',
+    imageAsset: 'assets/images/accessories/acc_voile_forcage.webp',
   ),
   Vegetable(
     id: 'acc_filet_oiseaux',
@@ -3861,7 +3861,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Filet à mailles larges à tendre au-dessus des fraisiers, des arbres fruitiers ou des semis. Empêche merles et étourneaux de tout picorer.",
     accessorySub: AccessorySubCategory.protection,
-    imageAsset: 'assets/images/accessories/acc_filet_oiseaux.png',
+    imageAsset: 'assets/images/accessories/acc_filet_oiseaux.webp',
   ),
   Vegetable(
     id: 'acc_anti_limaces',
@@ -3872,7 +3872,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Granulés à base de phosphate de fer, autorisés en agriculture biologique. Non toxiques pour hérissons, oiseaux et animaux domestiques.",
     accessorySub: AccessorySubCategory.protection,
-    imageAsset: 'assets/images/accessories/acc_anti_limaces.png',
+    imageAsset: 'assets/images/accessories/acc_anti_limaces.webp',
   ),
   Vegetable(
     id: 'acc_ombriere',
@@ -3883,7 +3883,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Toile tissée à tendre au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable sous climat tropical et en canicule : semis, salades et jeunes plants ne grillent plus aux heures chaudes.",
     accessorySub: AccessorySubCategory.protection,
-    imageAsset: 'assets/images/accessories/acc_ombriere.png',
+    imageAsset: 'assets/images/accessories/acc_ombriere.webp',
   ),
   // ── Tuteurage & support (sous catégorie structures) ──
   Vegetable(
@@ -3895,7 +3895,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Grille rigide à planter derrière les tomates. Permet de palisser les branches au fur et à mesure, plus solide que les tuteurs simples.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_treillis_tomate.png',
+    imageAsset: 'assets/images/accessories/acc_treillis_tomate.webp',
   ),
   Vegetable(
     id: 'acc_arche',
@@ -3906,7 +3906,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Arche métallique 2 m de haut : parfaite pour faire grimper haricots à rames, courges, concombres, kiwis. Décoratif et productif.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_arche.png',
+    imageAsset: 'assets/images/accessories/acc_arche.webp',
   ),
   Vegetable(
     id: 'acc_tuteurs_spirales',
@@ -3917,7 +3917,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Tuteur en métal en forme de spirale : la tige de tomate s'enroule naturellement dedans. Pas besoin de ficelle ni d'attaches, gain de temps énorme.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_tuteurs_spirales.png',
+    imageAsset: 'assets/images/accessories/acc_tuteurs_spirales.webp',
   ),
   Vegetable(
     id: 'acc_rames_bambou',
@@ -3928,7 +3928,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Bambous longs (1,80 à 2,40 m) à planter en tipi ou en ligne. Naturels, robustes et réutilisables plusieurs années.",
     accessorySub: AccessorySubCategory.structures,
-    imageAsset: 'assets/images/accessories/acc_rames_bambou.png',
+    imageAsset: 'assets/images/accessories/acc_rames_bambou.webp',
   ),
   // ── Sol & compost ──
   Vegetable(
@@ -3940,7 +3940,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Bac de 300-600 L pour transformer épluchures et déchets verts en compost. Volume conseillé : 1 m³ pour un jardin moyen.",
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_composteur.png',
+    imageAsset: 'assets/images/accessories/acc_composteur.webp',
   ),
   Vegetable(
     id: 'acc_lombricomposteur',
@@ -3951,7 +3951,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Bac compact pour appartement : les vers décomposent les déchets de cuisine et produisent un engrais liquide ultra-puissant. Sans odeur.",
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_lombricomposteur.png',
+    imageAsset: 'assets/images/accessories/acc_lombricomposteur.webp',
   ),
   Vegetable(
     id: 'acc_activateur_compost',
@@ -3962,7 +3962,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Mélange de micro-organismes à saupoudrer sur le compost. Réduit le temps de maturation de 12 à 6 mois et limite les odeurs.",
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_activateur_compost.png',
+    imageAsset: 'assets/images/accessories/acc_activateur_compost.webp',
   ),
   Vegetable(
     id: 'acc_paillis_chanvre',
@@ -3973,7 +3973,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Paillis 100% végétal à étaler en couche de 5-7 cm autour des plants. Garde le sol humide, freine les mauvaises herbes, se décompose en humus.",
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_paillis_chanvre.png',
+    imageAsset: 'assets/images/accessories/acc_paillis_chanvre.webp',
   ),
   Vegetable(
     id: 'acc_mulch_ecorces',
@@ -3984,7 +3984,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Écorces de pin maritime, idéales pour les massifs et arbres fruitiers. Décoratif, dure 2-3 ans, acidifie légèrement le sol (parfait pour fraisiers).",
     accessorySub: AccessorySubCategory.soil,
-    imageAsset: 'assets/images/accessories/acc_mulch_ecorces.png',
+    imageAsset: 'assets/images/accessories/acc_mulch_ecorces.webp',
   ),
   Vegetable(
     id: 'acc_grelinette',
@@ -3995,7 +3995,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Fourche à 4-5 dents : ameublit la terre en profondeur sans détruire la vie du sol. Indispensable pour qui pratique le \"sol vivant\".",
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_grelinette.png',
+    imageAsset: 'assets/images/accessories/acc_grelinette.webp',
   ),
   // ── Petits outils ──
   Vegetable(
@@ -4007,7 +4007,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Petit outil à main pour gratter la surface du sol et casser la croûte. Permet d'aérer la terre et d'arracher les jeunes herbes.",
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_binette.png',
+    imageAsset: 'assets/images/accessories/acc_binette.webp',
   ),
   Vegetable(
     id: 'acc_plantoir',
@@ -4018,7 +4018,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Outil cylindrique qui creuse un trou parfait à la bonne profondeur. Idéal pour planter ail, échalotes, tulipes, jacinthes en quantité.",
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_plantoir.png',
+    imageAsset: 'assets/images/accessories/acc_plantoir.webp',
   ),
   Vegetable(
     id: 'acc_transplantoir',
@@ -4029,7 +4029,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Petite pelle étroite pour repiquer les semis sans abîmer les racines. Indispensable au printemps pour la mise en place du potager.",
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_transplantoir.png',
+    imageAsset: 'assets/images/accessories/acc_transplantoir.webp',
   ),
   Vegetable(
     id: 'acc_etiquettes',
@@ -4040,7 +4040,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Lot d'étiquettes en ardoise ou plastique avec marqueur. Indispensable pour ne pas oublier ce que tu as semé et où.",
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_etiquettes.png',
+    imageAsset: 'assets/images/accessories/acc_etiquettes.webp',
   ),
   Vegetable(
     id: 'acc_panier_recolte',
@@ -4051,7 +4051,7 @@ const List<Vegetable> vegetablesBase = <Vegetable>[
     description:
         "Panier en osier ou plastique aéré pour récolter et transporter tes légumes du jardin à la cuisine sans les abîmer.",
     accessorySub: AccessorySubCategory.tools,
-    imageAsset: 'assets/images/accessories/acc_panier_recolte.png',
+    imageAsset: 'assets/images/accessories/acc_panier_recolte.webp',
   ),
 ];
 
