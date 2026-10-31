@@ -19,7 +19,7 @@ Pour l'actualiser : relancer le même prompt.
 ## Rémunération par phases
 
 - [fait] **Aujourd'hui** : app gratuite, rémunérée par l'affiliation Amazon en France. Les liens avaient été retirés le 20 octobre 2026 (tag rattaché au compte fermé par Amazon le 18 octobre) ; ils sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`.
-- [en cours] **Relance et lancement** : décider si Kultiva repart (projet en pause, choix de Jean ; backend en pause aussi) et publier. La piste de vidéo récompensée AdMob est sans objet : elle reposait sur l'XP du Tamassi, supprimé le 31 octobre 2026.
+- [en cours] **Relance et lancement** : Jean a décidé le 30 octobre 2026 que Kultiva repart (le projet était en pause) ; reste à publier — d'abord garnir une installation pour les captures. Le backend, en pause, n'est plus utilisé et ne bloque rien. La piste de vidéo récompensée AdMob est sans objet : elle reposait sur l'XP du Tamassi, supprimé le 31 octobre 2026.
 - **Affiliation** : en place depuis le 30 octobre 2026, France seulement (Amazon ne livre pas en Afrique de l'Ouest). Changer de compte = changer une constante.
 - **Rétention prouvée** : abonnement Kultiva Plus via RevenueCat (jardins illimités, export PDF), France d'abord.
 - **Afrique de l'Ouest** : sponsoring par des ONG et programmes agricoles qui financent la diffusion de conseils.

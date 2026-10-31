@@ -23,7 +23,7 @@ Mis à jour le 30 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 
 ## Vue d'ensemble
 
-- **État du projet** : en pause (choix de Jean) — rien n'est soumis aux boutiques.
+- **État du projet** : **relancé** — Jean a décidé le 30 octobre 2026 que Kultiva repart (il était en pause jusque-là) ; rien n'est encore soumis aux boutiques.
 - **Plateforme** : iOS + Android (Flutter ≥ 3.47), iPhone en portrait, iPad dans les quatre sens depuis le 30 octobre 2026 — app `com.toa.kultiva`, v1.0.0+5
 - **Stack** : Flutter/Dart Material 3, local-first (SharedPreferences + services singletons, `ValueNotifier`, sans framework d'état)
 - **Backend** : **aucun depuis le 30 octobre 2026.** Les comptes ont été retirés de la v1 : le jardin, les photos, les badges et la créature vivent uniquement sur l'appareil. Les deux seuls appels sortants sont Open-Meteo (météo) et Sentry (plantages).

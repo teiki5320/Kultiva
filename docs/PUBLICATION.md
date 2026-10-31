@@ -36,7 +36,7 @@
 
 ## Vue d'ensemble
 
-- **État du projet** : en pause (choix de Jean) — rien n'est soumis aux boutiques
+- **État du projet** : **relancé** — Jean a décidé le 30 octobre 2026 que Kultiva repart (il était en pause jusque-là) ; rien n'est encore soumis aux boutiques
 - **iOS** : jamais soumise — la fiche App Store Connect existe (Apple ID `6762550020`), ses textes sont rédigés et l'URL de confidentialité existe ; le build Xcode Cloud 94 a échoué le 24 octobre 2026 (cible iOS trop basse), corrigé le 25 octobre ; les builds 95 et 96 ont réussi le 25 octobre 2026, le build 97 le 27 octobre 2026, et le **build 127 le 30 octobre 2026**, avec l'étape « TestFlight internes - iOS ». La clé de localisation que réclamait Apple (ITMS-90683) a été ajoutée le 30 octobre 2026
 - **Android** : jamais envoyée à Play — le bundle release est signé et vérifié localement ; l'existence d'une fiche Play reste à vérifier dans la console
 - **Web** : site de présentation en ligne sur <https://kultiva.toakeur.com> depuis le 7 octobre 2026
@@ -49,8 +49,8 @@ Aucune boutique n'a reçu de soumission : côté Apple, seuls des builds
 TestFlight internes sont arrivés dans la fiche ; côté Google, rien n'a
 été téléversé. Ce n'est pas le code qui retient la soumission — l'app compile,
 passe l'analyse et ses tests sont verts. L'URL de confidentialité qui
-bloquait tout existe depuis le 7 octobre 2026 ; restent le backend en
-pause et des champs de formulaire.
+bloquait tout existe depuis le 7 octobre 2026 ; restent les captures
+et des champs de formulaire (le backend ne bloque plus rien depuis le 30 octobre 2026).
 
 ---
 
@@ -58,7 +58,7 @@ pause et des champs de formulaire.
 
 | | |
 |---|---|
-| État | **Jamais soumise — bloquée par le backend en pause** |
+| État | **Jamais soumise** — restent l'installation à garnir, les captures et les champs de la fiche (le backend en pause ne bloque plus rien depuis le retrait des comptes le 30 octobre 2026) |
 | Console | <https://appstoreconnect.apple.com> |
 | Version publiée | aucune — l'app n'est jamais sortie |
 | Version en cours | `1.0.0` — fiche App Store Connect créée (Apple ID `6762550020`), builds Xcode Cloud 95, 96, 97 puis **127 (30 octobre 2026)** reçus ; aucune soumission |
