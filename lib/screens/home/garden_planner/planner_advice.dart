@@ -10,6 +10,8 @@ import '../../../data/companions.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/vegetable.dart';
+import '../../../services/culture_service.dart';
+import '../../../utils/rotation_advisor.dart';
 import '../../../theme/app_theme.dart';
 
 class PlannerPhaseAdviceTile extends StatelessWidget {
@@ -194,3 +196,89 @@ class PlannerCompanionInfo extends StatelessWidget {
 /// - chips horizontales Favoris / Toutes / [catégories],
 /// - filtre saisonnier sur la droite,
 /// - cards de plantes draggables (long-press pour démarrer le drag).
+
+/// Avertissement de rotation des cultures.
+///
+/// `lib/utils/rotation_advisor.dart` existait depuis le chantier v5 et
+/// n'était importé par aucun fichier : la fiche App Store, la landing
+/// et CLAUDE.md promettaient tous les trois un « avertissement de
+/// rotation » que l'app ne donnait nulle part. La fiche légume montre
+/// bien une section « 🔄 Rotation des cultures », mais c'est le
+/// conseil générique du livre, pas un avertissement sur ce que
+/// l'utilisateur a réellement cultivé.
+///
+/// N'affiche rien quand il n'y a rien à dire — c'est le cas courant.
+class PlannerRotationWarning extends StatelessWidget {
+  final String vegetableId;
+
+  /// La culture de la case elle-même, à ne pas confondre avec son
+  /// propre passé.
+  final String? currentCultureId;
+
+  const PlannerRotationWarning({
+    super.key,
+    required this.vegetableId,
+    this.currentCultureId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Seules les cultures closes comptent : la rotation parle de ce
+    // qui a occupé la terre avant, pas de ce qui y pousse aujourd'hui.
+    final passees = CultureService.instance
+        .ended()
+        .where((c) => c.id != currentCultureId)
+        .toList();
+    final avertissement = checkRotation(
+      vegetableId: vegetableId,
+      previousCultures: passees,
+    );
+    if (avertissement == null) return const SizedBox.shrink();
+
+    return Padding(
+      // L'espacement vit ici plutôt qu'entre les deux blocs : sinon
+      // le cas courant, où rien ne s'affiche, laisse un trou.
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Semantics(
+        label: 'Attention à la rotation. ${avertissement.message}',
+        excludeSemantics: true,
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: KultivaColors.terracotta.withValues(alpha: 0.14),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: KultivaColors.terracotta.withValues(alpha: 0.55),
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('🔄', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      'Attention à la rotation',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      avertissement.message,
+                      style: const TextStyle(fontSize: 12, height: 1.35),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

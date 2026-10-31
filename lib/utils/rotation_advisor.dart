@@ -1,4 +1,5 @@
 import '../data/rotation.dart';
+import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
 
 /// Type d'avertissement de rotation détecté.
@@ -33,14 +34,26 @@ class RotationWarning {
       return "Tu as déjà cultivé ce légume $yearsAgoText. La rotation "
           "recommande $waitYears an${waitYears > 1 ? 's' : ''} d'attente.";
     }
-    return "Tu as déjà cultivé un $family ($previousVegetableId) "
-        "$yearsAgoText. Évite la même famille avant $waitYears "
+    final nom = vegetablesBase
+            .where((v) => v.id == previousVegetableId)
+            .firstOrNull
+            ?.name
+            .toLowerCase() ??
+        previousVegetableId;
+    return "Tu as déjà cultivé un $family ici ($nom) $yearsAgoText. "
+        "Évite la même famille avant $waitYears "
         "an${waitYears > 1 ? 's' : ''}.";
   }
 }
 
 /// Cherche un avertissement de rotation pour un légume donné, basé
 /// sur les cultures pleine terre passées de l'utilisateur.
+///
+/// ⚠️ [previousCultures] doit ne contenir que des cultures **closes**.
+/// La rotation parle de ce qui a occupé la terre avant, pas de ce qui
+/// y pousse en ce moment : sur la liste complète, un plant se serait
+/// signalé lui-même, et trois pieds de tomate plantés le même jour
+/// auraient déclenché l'alerte les uns pour les autres.
 RotationWarning? checkRotation({
   required String vegetableId,
   required List<CultureEntry> previousCultures,

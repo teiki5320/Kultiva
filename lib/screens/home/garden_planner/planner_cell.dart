@@ -496,6 +496,10 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
             // ─── Conseils selon phase ─────────────────────────────
             PlannerPhaseAdviceTile(veg: veg, phase: phase),
             const SizedBox(height: 12),
+            PlannerRotationWarning(
+              vegetableId: widget.cell.vegetableId,
+              currentCultureId: widget.cell.cultureId,
+            ),
 
             // ─── Densité plants par case ──────────────────────────
             const Text(

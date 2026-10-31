@@ -123,6 +123,10 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.0
   # Splash natif (logo Kultiva sur fond crème pendant le chargement Flutter)
   flutter_native_splash: ^2.4.0
+  # Manipulation de chemins dans test/code_branche_test.dart, qui suit
+  # le graphe d'imports de lib/. Transitive via flutter_test, déclarée
+  # ici parce qu'on s'en sert directement.
+  path: ^1.9.0
 
 flutter:
   uses-material-design: true
