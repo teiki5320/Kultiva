@@ -128,7 +128,8 @@ sans défilement**, elles font la décision :
 
 1. **Le calendrier du mois** — la promesse de l'app (« que semer en ce
    moment ») avec le bandeau de saison
-2. **Mes jardins avec Tamassi visible** — le hook kawaii qui différencie
+2. **Le cahier de culture** — « à faire aujourd'hui » et l'aperçu des
+   jardins : ce que l'app fait pour toi chaque matin
 3. Le Poussidex (collection de plants + médailles)
 4. Une fiche culture détaillée (tomate)
 5. Le planner du potager en carrés (glisser-déposer en cours)
@@ -137,18 +138,19 @@ sans défilement**, elles font la décision :
 8. (facultatif) Le calendrier en mode Afrique de l'Ouest (hivernage) —
    montre le bi-marché
 
-Prends-les sur une installation garnie à la main (plants, photos, Tamassi
-niveau > 1) : des écrans vides ne vendent rien.
+Prends-les sur une installation garnie à la main (deux ou trois
+jardins remplis, des plants plantés il y a plusieurs semaines, des
+photos, quelques badges débloqués) : des écrans vides ne vendent rien.
 
-### 2.2 Texte promotionnel — 150/170 caractères
+### 2.2 Texte promotionnel — 125/170 caractères
 
 Modifiable à tout moment sans nouvelle version :
 
 ```
-Semis, récoltes, météo de ton jardin et Tamassi, ta créature kawaii : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
+Semis, récoltes, météo et cahier de culture : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
 ```
 
-### 2.3 Description — 2 341/4 000 caractères
+### 2.3 Description — 2 360/4 000 caractères
 
 Texte brut, sans HTML. Les trois premières lignes accrochent avant le
 « plus » :
@@ -167,11 +169,11 @@ Tomate, courgette, radis, fraisier, basilic… mais aussi gombo, niébé, mil ou
 📓 MES JARDINS, TON POTAGER EN CARRÉS
 Dessine tes carrés, place tes plants par glisser-déposer et suis chacun d'eux : arrosages, phases de croissance auto-suggérées, photos, avertissement de rotation des cultures et conseils selon la météo du jour.
 
-🐣 TAMASSI, TA CRÉATURE DE JARDIN
-Chaque semis, chaque arrosage, chaque récolte fait grandir Tamassi, ton compagnon kawaii. XP, niveaux, émotions, visiteurs surprise : le jardinage devient un jeu.
+📔 CHAQUE MATIN, CE QU'IL Y A À FAIRE
+Ton cahier de culture répond à la seule question qui compte au réveil : qui a soif, qui est mûr, et s'il va faire trop chaud aujourd'hui. Un geste pour noter l'arrosage de tout le jardin.
 
 👨‍👩‍👧 POUR JARDINER EN FAMILLE
-Tutoriels pas à pas, défis photo et compagnon kawaii : Kultiva est pensée pour donner la main verte aux enfants — et transformer le potager en aventure du dimanche.
+Tutoriels pas à pas, défis photo et badges à collectionner : Kultiva est pensée pour donner la main verte aux enfants — et transformer le potager en aventure du dimanche.
 
 🌦️ MÉTÉO ET ALERTES MALINES
 Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes canicule avec conseils légume par légume. Ton jardin te prévient avant d'avoir soif.
@@ -233,7 +235,7 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 | Champ | Valeur |
 | --- | --- |
 | Build | Sélectionner le dernier build Xcode Cloud uploadé |
-| Game Center | **Non** — Tamassi est un système de jeu interne, pas Game Center |
+| Game Center | **Non** — badges et médailles sont internes à l'app, aucun classement en ligne |
 
 ### 2.8 Informations pour la revue
 
@@ -244,7 +246,7 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 | Téléphone | → **voir « À préparer »** |
 | Compte de démonstration | **Sans objet** — l'app ne propose pas de compte. Laisse la case « Connexion requise » décochée. |
 
-**Notes au testeur** — 1 271/4 000 caractères, à coller telles quelles :
+**Notes au testeur** — 1 156/4 000 caractères, à coller telles quelles :
 
 ```
 Kultiva est une application de jardinage 100 % en français, destinée à la France et à 8 pays francophones d'Afrique de l'Ouest.
@@ -253,9 +255,8 @@ Kultiva est une application de jardinage 100 % en français, destinée à la Fra
 • Localisation : facultative. En cas de refus, l'app bascule automatiquement sur la météo de Paris (ou de la capitale du pays choisi) — ce n'est pas un bug.
 • Premier lancement : l'app propose de choisir son pays ; la liste s'adapte à la langue de l'appareil et, si la permission existe déjà, à sa position.
 • Défis photo : les photos restent sur l'appareil, dans le stockage privé de l'app. Elles ne sont jamais envoyées, publiées ni montrées à d'autres utilisateurs — l'app ne contient aucun feed ni contenu généré par les utilisateurs.
-• Notifications : locales uniquement (rappels de semis, d'arrosage, Tamassi) — aucun push serveur.
-• La créature Tamassi réagit aux mouvements du téléphone (accéléromètre) : comportement volontaire, pas un bug.
-• Les « visiteurs » de la créature Tamassi sont générés localement par l'app : ce ne sont pas d'autres utilisateurs, et aucune communication entre utilisateurs n'est possible.
+• Notifications : locales uniquement (rappels de semis, d'arrosage, alertes canicule) — aucun push serveur.
+• Badges et médailles sont calculés sur l'appareil à partir des gestes de jardinage enregistrés : aucun classement en ligne, aucune comparaison entre utilisateurs.
 ```
 
 ### 2.9 Publication
@@ -309,10 +310,12 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 
 1. **Ton numéro de téléphone** — champ obligatoire des informations
    pour la revue.
-2. **Une installation garnie pour les captures** : ajoute 2-3 plants
-   depuis le catalogue (« Je l'ai planté »), une photo, fais grandir un
-   peu le Tamassi. Il n'y a pas de compte de démonstration à créer, mais
-   des captures sur une app vide ne vendent rien.
+2. **Une installation garnie pour les captures** : crée deux jardins et
+   remplis-en un, ajoute 2-3 plants depuis le catalogue (« Je l'ai
+   planté ») avec une date de plantation ancienne pour que le cahier ait
+   quelque chose à dire, et une photo. Il n'y a pas de compte de
+   démonstration à créer, mais des captures sur une app vide ne vendent
+   rien.
 3. **Tes coordonnées de trader**, seulement si tu restes trader (§1.5,
    à revoir depuis le retrait de l'affiliation) — adresse postale (**une BP suffit**), téléphone et
    e-mail, qui seront **publics dans l'UE**.

@@ -29,13 +29,13 @@
 Ton potager kawaii de poche
 ```
 
-### Texte promotionnel App Store — 150/170
+### Texte promotionnel App Store — 125/170
 
 ```
-Semis, récoltes, météo de ton jardin et Tamassi, ta créature kawaii : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
+Semis, récoltes, météo et cahier de culture : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
 ```
 
-### Description complète — App Store & description longue Play — 2 324/4 000
+### Description complète — App Store & description longue Play — 2 305/4 000
 
 > Un seul texte, à coller tel quel dans les deux consoles (champ
 > « Description » côté App Store, « Description longue » côté Play).
@@ -54,11 +54,11 @@ Tomate, courgette, radis, fraisier, basilic… mais aussi gombo, niébé, mil ou
 📓 MES JARDINS, TON POTAGER EN CARRÉS
 Dessine tes carrés, place tes plants par glisser-déposer et suis chacun d'eux : arrosages, phases de croissance auto-suggérées, photos, avertissement de rotation des cultures et conseils selon la météo du jour.
 
-🐣 TAMASSI, TA CRÉATURE DE JARDIN
-Chaque semis, chaque arrosage, chaque récolte fait grandir Tamassi, ton compagnon kawaii. XP, niveaux, émotions, visiteurs surprise : le jardinage devient un jeu.
+📔 CHAQUE MATIN, CE QU'IL Y A À FAIRE
+Ton cahier de culture répond à la seule question qui compte au réveil : qui a soif, qui est mûr, et s'il va faire trop chaud aujourd'hui. Un geste pour noter l'arrosage de tout le jardin.
 
 👨‍👩‍👧 POUR JARDINER EN FAMILLE
-Tutoriels pas à pas, défis photo et compagnon kawaii : Kultiva est pensée pour donner la main verte aux enfants — et transformer le potager en aventure du dimanche.
+Tutoriels pas à pas, défis photo et badges à collectionner : Kultiva est pensée pour donner la main verte aux enfants — et transformer le potager en aventure du dimanche.
 
 🌦️ MÉTÉO ET ALERTES MALINES
 Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes canicule avec conseils légume par légume. Ton jardin te prévient avant d'avoir soif.
@@ -83,10 +83,10 @@ Télécharge Kultiva et fais pousser ton premier bonheur. 🌸
 potager,jardinage,semis,jardin,légumes,calendrier,récolte,plantes,graines,balcon,météo,kawaii
 ```
 
-### Description courte Play — 78/80
+### Description courte Play — 75/80
 
 ```
-Ton potager kawaii : semis, récoltes, météo et Tamassi, ta créature de jardin.
+Ton potager kawaii : semis, récoltes, météo et cahier de culture au jardin.
 ```
 
 ---
@@ -106,13 +106,13 @@ si l'on crée une fiche Play personnalisée par pays (voir section 3).
 Jardine au rythme des pluies
 ```
 
-#### Texte promotionnel App Store — 164/170
+#### Texte promotionnel App Store — 165/170
 
 ```
-Gombo, niébé, mil, bissap… Kultiva connaît tes cultures et ta saison : sème aux premières pluies, suis la météo de ta ville et laisse Tamassi fêter tes récoltes. 🌱
+Gombo, niébé, mil, bissap… Kultiva connaît tes cultures et ta saison : sème aux premières pluies, suis la météo de ta ville et note chaque récolte dans ton cahier. 🌱
 ```
 
-#### Description complète — App Store & description longue Play — 2 259/4 000
+#### Description complète — App Store & description longue Play — 2 204/4 000
 
 ```
 Le potager kawaii dans ta poche — pensé pour l'Afrique de l'Ouest 🌍
@@ -131,8 +131,8 @@ Dessine tes planches, place tes cultures par glisser-déposer, suis les arrosage
 🌦️ MÉTÉO ET CONSEILS FORTE CHALEUR
 Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents et conseils culture par culture pour protéger tes plants pendant la saison sèche et l'harmattan.
 
-🐣 TAMASSI, TA CRÉATURE DE JARDIN
-Chaque semis, chaque arrosage, chaque récolte fait grandir Tamassi, ton compagnon kawaii. XP, niveaux, émotions : le jardin devient un jeu, pour toi comme pour les enfants.
+📔 CHAQUE MATIN, CE QU'IL Y A À FAIRE
+Ton cahier de culture dit qui a soif, qui est mûr et s'il va faire trop chaud. Badges et médailles récompensent chaque geste : le jardin devient un jeu, pour toi comme pour les enfants.
 
 📖 LE POUSSIDEX + DÉFIS PHOTO
 Ta collection de plants en photos, avec médailles bronze, argent et or, et 50 défis photo pour suivre tes plus beaux gombos.
@@ -167,10 +167,10 @@ Le reste de la fiche = bloc commun 2.1.
 
 #### 🇸🇳 Sénégal — niébé, bissap
 
-Texte promotionnel — 166/170 :
+Texte promotionnel — 159/170 :
 
 ```
-Niébé semé aux premières pluies, bissap pour le jus de l'hivernage : de Dakar aux Niayes, Kultiva connaît ton calendrier — et Tamassi fête chacune de tes récoltes. 🌱
+Niébé semé aux premières pluies, bissap pour le jus de l'hivernage : de Dakar aux Niayes, Kultiva connaît ton calendrier — et ton cahier note chaque récolte. 🌱
 ```
 
 Description courte Play — 73/80 :
@@ -188,7 +188,7 @@ du thiéboudienne. »
 Texte promotionnel — 157/170 :
 
 ```
-Igname en buttes, plantain pour l'alloco : Kultiva connaît tes cultures et tes saisons des pluies, te dit quand semer, et Tamassi grandit avec ton jardin. 🌱
+Igname en buttes, plantain pour l'alloco : Kultiva connaît tes cultures et tes saisons des pluies, te dit quand semer et ce qu'il y a à faire chaque matin. 🌱
 ```
 
 Description courte Play — 74/80 :
@@ -203,10 +203,10 @@ plantain de l'alloco. »
 
 #### 🇲🇱 Mali — mil, sorgho
 
-Texte promotionnel — 157/170 :
+Texte promotionnel — 152/170 :
 
 ```
-Mil et sorgho semés en poquets dès les premières pluies : Kultiva connaît l'hivernage, ta météo et tes cultures — et Tamassi fête chacune de tes récoltes. 🌱
+Mil et sorgho semés en poquets dès les premières pluies : Kultiva connaît l'hivernage, ta météo et tes cultures — et garde la trace de chaque récolte. 🌱
 ```
 
 Description courte Play — 71/80 :
@@ -221,10 +221,10 @@ premières pluies utiles. »
 
 #### 🇧🇫 Burkina Faso — zaï, sorgho
 
-Texte promotionnel — 156/170 :
+Texte promotionnel — 152/170 :
 
 ```
-Sorgho semé en zaï, gombo d'hivernage : Kultiva connaît tes techniques, ta saison et ta météo — et Tamassi, ta créature kawaii, grandit à chaque récolte. 🌱
+Sorgho semé en zaï, gombo d'hivernage : Kultiva connaît tes techniques, ta saison et ta météo — et te dit chaque matin ce qu'il y a à faire au jardin. 🌱
 ```
 
 Description courte Play — 75/80 :
@@ -239,10 +239,10 @@ tous les jours. »
 
 #### 🇧🇯 Bénin — igname, crincrin (corète)
 
-Texte promotionnel — 147/170 :
+Texte promotionnel — 153/170 :
 
 ```
-Igname pour la pilée, crincrin pour la sauce : Kultiva connaît tes cultures, ton hivernage et ta météo. Et Tamassi fête chaque récolte avec toi. 🌱
+Igname pour la pilée, crincrin pour la sauce : Kultiva connaît tes cultures, ton hivernage et ta météo. Et ton cahier garde la trace de chaque récolte. 🌱
 ```
 
 Description courte Play — 65/80 :
@@ -257,10 +257,10 @@ l'hivernage. »
 
 #### 🇹🇬 Togo — adémè, gboma
 
-Texte promotionnel — 159/170 :
+Texte promotionnel — 156/170 :
 
 ```
-Adémè et gboma pour tes sauces : Kultiva connaît tes cultures, tes saisons des pluies et ta météo — et Tamassi, ta créature kawaii, grandit avec ton jardin. 🌱
+Adémè et gboma pour tes sauces : Kultiva connaît tes cultures, tes saisons des pluies et ta météo — et te dit chaque matin ce qu'il y a à faire au jardin. 🌱
 ```
 
 Description courte Play — 70/80 :
@@ -275,10 +275,10 @@ des pluies. »
 
 #### 🇳🇪 Niger — mil, moringa
 
-Texte promotionnel — 151/170 :
+Texte promotionnel — 153/170 :
 
 ```
-Mil semé aux premières pluies, moringa qui repousse toute l'année : Kultiva connaît le Sahel, ta météo et l'harmattan. Et Tamassi fête tes récoltes. 🌱
+Mil semé aux premières pluies, moringa qui repousse toute l'année : Kultiva connaît le Sahel, ta météo et l'harmattan. Et note chacune de tes récoltes. 🌱
 ```
 
 Description courte Play — 67/80 :
@@ -293,10 +293,10 @@ chaque coupe, et l'harmattan. »
 
 #### 🇬🇳 Guinée — fonio, taro
 
-Texte promotionnel — 141/170 :
+Texte promotionnel — 140/170 :
 
 ```
-Fonio du Fouta-Djalon, taro des bas-fonds : Kultiva connaît tes cultures, ton hivernage et ta météo — et Tamassi grandit à chaque récolte. 🌱
+Fonio du Fouta-Djalon, taro des bas-fonds : Kultiva connaît tes cultures, ton hivernage et ta météo — et garde la trace de chaque récolte. 🌱
 ```
 
 Description courte Play — 60/80 :
@@ -390,7 +390,7 @@ Ordre = ordre d'affichage ; les 3 premières font la conversion.
 
 1. Calendrier mensuel de semis (mois de printemps, légumes classiques)
 2. Mes jardins : potager en carrés avec glisser-déposer
-3. Tamassi en gros plan (niveau, émotions) — la signature kawaii
+3. Le cahier de culture — « à faire aujourd'hui » et l'aperçu des jardins
 4. Fiche légume détaillée (tomate ou fraisier)
 5. Poussidex avec médailles bronze/argent/or
 6. Météo + alerte d'arrosage géolocalisée
@@ -403,12 +403,12 @@ page App Store) :**
 3. Fiche gombo, ou aubergine africaine montrant les noms locaux
    (djakhatou, gboma)
 4. Météo d'une ville de la région + alerte premières pluies
-5. Tamassi en gros plan
+5. Le cahier de culture (« à faire aujourd'hui »)
 6. Mes jardins avec cultures locales associées (mil + niébé entre les poquets)
 7. Défis photo et badges
 
 **Jeu unique App Store `fr-FR` (organique, partagé monde)** : panacher —
-1. Tamassi + slogan, 2. calendrier, 3. Mes jardins, 4. fiche gombo (AO),
+1. Cahier de culture + slogan, 2. calendrier, 3. Mes jardins, 4. fiche gombo (AO),
 5. fiche tomate (FR), 6. météo/alertes. Les captures 100 % AO vivent sur
 la custom product page et l'In-App Event hivernage.
 

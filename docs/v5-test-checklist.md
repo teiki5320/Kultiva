@@ -51,16 +51,39 @@
 - [ ] PDF contient stats cultures, arrosages, top légumes, détail chronologique
 - [ ] Export possible (partager, imprimer, sauvegarder)
 
-## 🐣 Poussidex + Tamassi
+## 🪴 Poussidex
 
-- [ ] Onboarding du Poussidex propose les 3 starters
-- [ ] Photo d'un plant → entrée créée
-- [ ] Tamassi gagne de l'XP au fil des actions
-- [ ] Alertes canicule push reçues si météo annonce 30°C+ sur 2j d'affilée
+> Tamassi, la créature virtuelle, a été supprimée le 31/10/2026 avec
+> ses trois starters, son XP et ses visiteurs. Les 50 badges ont été
+> réécrits sur ce qu'on fait au jardin.
+
+- [ ] Fiche légume → bouton « Je l'ai planté » → le plant apparaît
+      dans 🪴 Mes plants
+- [ ] Photo d'un plant → elle s'affiche dans son dossier
+- [ ] Arroser, récolter, clore un plant → chaque geste laisse une trace
+      datée dans l'historique
+- [ ] Les badges se débloquent sur des gestes de jardin (premier plant,
+      trois jours d'arrosage d'affilée, jardin complet)
+- [ ] Aucune mention de créature, de starter ni de niveau nulle part
+- [ ] Alertes canicule push reçues si météo annonce 30°C+ sur 2j
+      d'affilée (40°C en Afrique de l'Ouest)
+
+## 📔 Cahier de culture
+
+- [ ] L'onglet s'ouvre sur le bandeau de saison, pas sur une AppBar grise
+- [ ] « À faire aujourd'hui » : arrosages dus, récoltes mûres, canicule
+- [ ] Bouton « Arroser » → tous les plants concernés sont notés arrosés
+- [ ] Chaque carte de jardin montre l'aperçu de **sa** grille
+- [ ] « Au jardin en ce moment » liste les plants des jardins **et**
+      ceux ajoutés depuis une fiche légume
+- [ ] Tap sur un plant → son dossier (le même que depuis le Poussidex)
 
 ## 📅 Calendrier + 🛒 Étal
 
 - [ ] Calendrier mensuel adapté à la région choisie
+- [ ] Calendrier annuel : les douze mois tiennent dans la largeur, aucun
+      défilement latéral, une ligne par légume
+- [ ] Tap sur une initiale de mois → filtre ; tap sur une ligne → fiche
 - [ ] Aucun bouton « Acheter » ni mention « Lien partenaire » sur la fiche légume (liens Amazon retirés le 20/10/2026)
 
 ## 🔄 Cross-fonctionnalités
@@ -81,7 +104,6 @@
 - [ ] Création d'un nouveau jardin, ajout d'un plant, marquage arrosé → fonctionnent
 - [ ] Ajout d'un plant depuis une fiche légume (« Je l'ai planté »), arrosage, récolte → fonctionnent
 - [ ] Météo : message clair ou dernières valeurs en cache, pas de crash
-- [ ] Visiteurs Tamassi : ils apparaissent quand même (ils sont générés localement)
 - [ ] Aucun écran de connexion, aucune mention de compte nulle part
 
 ## 🐛 Bugs à signaler si rencontrés
