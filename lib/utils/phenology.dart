@@ -7,10 +7,17 @@ class PhenologyHint {
   final String label;
   final String detail;
 
+  /// Vrai quand le plant est entré dans sa fenêtre de récolte.
+  ///
+  /// Le cahier s'en sert pour dire « à récolter » sans comparer le
+  /// libellé affiché, qui est du texte d'interface et peut changer.
+  final bool harvestReady;
+
   const PhenologyHint({
     required this.emoji,
     required this.label,
     required this.detail,
+    this.harvestReady = false,
   });
 }
 
@@ -75,6 +82,7 @@ PhenologyHint? expectedStage(Vegetable veg, int daysSinceStart) {
       label: 'Récolte attendue',
       detail: 'Tu peux commencer à récolter. Goûte régulièrement '
           'pour repérer le pic de saveur.',
+      harvestReady: true,
     );
   }
   return const PhenologyHint(
