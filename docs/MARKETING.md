@@ -32,7 +32,8 @@ physiques, dons.
 
 ## Points forts
 
-- 📔 **Cahier de culture** : potager carré multi-jardins, placement par glisser-déposer, suivi par plant et conseils selon la météo. Depuis le 31 octobre 2026, c'est le deuxième onglet de l'app, devant le catalogue.
+- 📔 **Cahier de culture** : au réveil, « à faire aujourd'hui » dit qui a soif, qui est mûr et s'il va faire trop chaud, et un bouton note l'arrosage de tout le jardin. En dessous, les jardins pleine terre avec placement par glisser-déposer, suivi par plant et avertissement de rotation. Depuis le 31 octobre 2026, c'est le deuxième onglet de l'app, devant le catalogue.
+- 📅 **Le calendrier de ta région** : quoi semer et récolter chaque mois, et une vue annuelle d'une ligne par légume — douze segments colorés, sans défilement latéral (refondue le 31 octobre 2026).
 - 🌍 **France et Afrique de l'Ouest** : calendriers par pays et sous-zone climatique, noms locaux, marchés et prix en FCFA.
 - 📴 **Tout hors ligne, sans compte** : 169 fiches, 33 tutoriels, potager et Poussidex. Aucune inscription, aucun serveur, aucune donnée qui sort du téléphone.
 
