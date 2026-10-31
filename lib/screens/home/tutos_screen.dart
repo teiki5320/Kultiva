@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/app_theme.dart';
+import '../../widgets/season_header.dart' show kPageHeaderHeight;
 import '../../utils/text_scale.dart';
 import 'tuto_fiche_screen.dart';
 
@@ -255,7 +256,7 @@ class TutosScreen extends StatelessWidget {
               bottomRight: Radius.circular(28),
             ),
             child: SizedBox(
-              height: 170,
+              height: kPageHeaderHeight,
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,

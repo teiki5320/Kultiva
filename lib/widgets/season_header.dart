@@ -5,6 +5,15 @@ import '../utils/text_scale.dart';
 import '../theme/app_theme.dart';
 import 'petal_animation.dart';
 
+/// Hauteur des bandeaux illustrés en haut de page.
+///
+/// Les cinq écrans qui en portent un avaient chacun la sienne — 170
+/// pour Home et Tutos, 160 pour la météo, 150 pour le calendrier
+/// annuel, 140 pour le cahier de culture. D'un onglet à l'autre
+/// l'image changeait de taille, et celle du cahier était si basse que
+/// son titre touchait la barre d'état.
+const double kPageHeaderHeight = 170;
+
 /// En-tête illustré d'une saison — dégradé + illustration (si fournie)
 /// + rideau de particules animées + libellé mois/saison.
 class SeasonHeader extends StatelessWidget {

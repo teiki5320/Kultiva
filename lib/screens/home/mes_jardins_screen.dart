@@ -64,7 +64,12 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ValueListenableBuilder<List<GardenPlan>>(
+      // `SafeArea` en haut : sans elle, le bandeau passait sous l'heure
+      // et l'opérateur, et le titre se retrouvait collé à la barre
+      // d'état. Les onglets Home et Tutos l'ont toujours eue.
+      body: SafeArea(
+        bottom: false,
+        child: ValueListenableBuilder<List<GardenPlan>>(
         valueListenable: GardenPlanService.instance.plans,
         builder: (context, plans, _) {
           return ListView(
@@ -94,6 +99,7 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
             ],
           );
         },
+        ),
       ),
       bottomNavigationBar: _BottomActions(
         onCreateSoil: () => _createSoil(context),
@@ -139,7 +145,7 @@ class _CahierHeader extends StatelessWidget {
           season:
               Season.of(mois, region, zone: PrefsService.instance.effectiveZone),
           month: mois,
-          height: 140,
+          height: kPageHeaderHeight,
           hideLabel: true,
         ),
         Positioned.fill(

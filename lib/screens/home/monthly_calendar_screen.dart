@@ -101,7 +101,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                     season: Season.of(_selectedMonth, region,
                         zone: PrefsService.instance.effectiveZone),
                     month: _selectedMonth,
-                    height: 170,
+                    height: kPageHeaderHeight,
                   ),
                   Positioned(
                     top: 8,

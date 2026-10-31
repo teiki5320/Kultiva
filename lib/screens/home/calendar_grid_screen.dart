@@ -95,7 +95,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                     season: Season.of(_filterMonth ?? now, region,
                         zone: PrefsService.instance.effectiveZone),
                     month: _filterMonth ?? now,
-                    height: 150,
+                    height: kPageHeaderHeight,
                   ),
                   Positioned(
                     top: 8,
@@ -191,15 +191,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                                 ),
                               ),
                             )
-                          : const Text(
-                              '💡 Tap mois = filtre',
-                              textAlign: TextAlign.right,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: KultivaColors.textSecondary,
-                              ),
-                            ),
+                          : const SizedBox.shrink(),
                     ),
                   ],
                 ),

@@ -190,7 +190,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     DateTime.now().month, PrefsService.instance.region.value,
                     zone: PrefsService.instance.effectiveZone),
                 month: DateTime.now().month,
-                height: 160,
+                height: kPageHeaderHeight,
                 hideLabel: true,
               ),
               Positioned(

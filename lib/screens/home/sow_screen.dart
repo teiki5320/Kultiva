@@ -179,7 +179,8 @@ class _SowScreenState extends State<SowScreen> {
               // ── Hero saisonnier + engrenage paramètres ──
               Stack(
                 children: [
-                  SeasonHeader(season: season, month: month, height: 170),
+                  SeasonHeader(
+                      season: season, month: month, height: kPageHeaderHeight),
                   Positioned(
                     top: 8,
                     right: 12,
