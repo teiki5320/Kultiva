@@ -6,7 +6,7 @@ import '../../../services/plantation_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/phenology.dart';
-import '../poussidex/plantation_sheet.dart';
+import '../plants/plantation_sheet.dart';
 
 /// Les plants en terre, avec leur âge, leur étape et leur soif.
 ///

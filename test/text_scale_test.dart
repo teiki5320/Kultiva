@@ -4,11 +4,8 @@ import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/models/plantation.dart';
 import 'package:kultiva/screens/home/garden_planner/planner_plants.dart';
-import 'package:kultiva/screens/home/my_garden/garden_header.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_badges.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_journal.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_podium.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_stats.dart';
+import 'package:kultiva/screens/home/defis/badges_grid.dart';
+import 'package:kultiva/screens/home/cahier/journal_view.dart';
 import 'package:kultiva/theme/app_theme.dart';
 import 'package:kultiva/widgets/petal_animation.dart';
 import 'package:kultiva/widgets/season_header.dart';
@@ -76,29 +73,16 @@ void main() {
   }
 
   final cas = <String, Widget>{
-    'en-tête du Poussidex': const GardenHeader(
-      plantationsCount: 2,
-      speciesCount: 2,
-      totalSpecies: 130,
-      unlockedCount: 7,
-      totalBadges: 50,
+    'journal': GardenJournalView(plantations: plants),
+    'journal en aperçu': GardenJournalView(
+      plantations: plants,
+      maxDays: 3,
+      shrinkWrap: true,
     ),
-    'barre de filtres': GardenFilterBar(
-      filter: AlbumFilter.collection,
-      plantsCount: 2,
-      challengesCount: 5,
-      totalChallenges: 50,
-      badgesCount: 7,
-      totalBadges: 50,
-      onChanged: (_) {},
-    ),
-    'statistiques': PoussidexStatsView(plantations: plants),
-    'statistiques sans plant': const PoussidexStatsView(
+    'journal sans plant': const GardenJournalView(
       plantations: <Plantation>[],
     ),
-    'podium': PoussidexPodiumView(plantations: plants),
-    'journal': PoussidexJournalView(plantations: plants),
-    'grille des badges': PoussidexBadgesGrid(
+    'grille des badges': BadgesGrid(
       unlocked: <String>{allBadges.first.id},
     ),
     // Le planificateur pose cette carte dans une boîte de 78 au

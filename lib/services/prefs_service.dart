@@ -28,6 +28,9 @@ class PrefsService {
   static const _kSoundEnabled = 'kultiva.soundEnabled';
   static const _kMusicEnabled = 'kultiva.musicEnabled';
   static const _kSoundVolume = 'kultiva.soundVolume';
+  /// Clé du carrousel d'accueil du Poussidex, supprimé avec lui le
+  /// 31/10/2026. Plus personne ne l'écrit ; elle n'est gardée que
+  /// pour être purgée sur les installations mises à jour.
   static const _kGardenTutorialDone = 'kultiva.gardenTutorialDone';
   static const _kPlantations = 'kultiva.plantations.v1';
   static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
@@ -220,12 +223,6 @@ class PrefsService {
 
   Future<void> setOnboardingDone(bool value) async {
     await _prefs?.setBool(_kOnboardingDone, value);
-  }
-
-  bool get gardenTutorialDone => _prefs?.getBool(_kGardenTutorialDone) ?? false;
-
-  Future<void> setGardenTutorialDone(bool value) async {
-    await _prefs?.setBool(_kGardenTutorialDone, value);
   }
 
   bool isFavorite(String vegetableId) => favorites.value.contains(vegetableId);

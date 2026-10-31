@@ -21,7 +21,7 @@ import '../vegetable_detail_screen.dart';
 import '../../services/audio_service.dart';
 import 'calendar_grid_screen.dart';
 import 'monthly_calendar_screen.dart';
-import 'my_garden_screen.dart';
+import 'defis/defis_badges_screen.dart';
 import 'settings_screen.dart';
 import 'weather_screen.dart';
 
@@ -344,10 +344,10 @@ class _SowScreenState extends State<SowScreen> {
                       children: [
                         Expanded(
                           child: _KawaiiCard(
-                            emoji: '📖',
+                            emoji: '📸',
                             imagePath: null,
-                            label: 'Poussidex',
-                            subtitle: 'Plants, défis et badges',
+                            label: 'Défis & badges',
+                            subtitle: '50 défis photo, 50 badges',
                             gradientColors: const [
                               KultivaColors.springA,
                               KultivaColors.springB,
@@ -355,7 +355,7 @@ class _SowScreenState extends State<SowScreen> {
                             bubbleColor: KultivaColors.primaryGreen,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute<void>(
-                                builder: (_) => const MyGardenScreen(),
+                                builder: (_) => const DefisBadgesScreen(),
                               ),
                             ),
                           ),

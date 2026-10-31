@@ -8,7 +8,7 @@ import '../../../utils/months.dart';
 import '../../../utils/text_scale.dart';
 import '../../../widgets/plantation_photo.dart';
 import '../../../widgets/share_card.dart';
-import 'poussidex_card.dart' show expectedHarvestDays;
+import '../../../utils/phenology.dart' show expectedHarvestDays;
 
 /// Bottom sheet détaillant une plantation du Poussidex :
 /// grande carte + stats + timeline + photos + note + actions (arroser,

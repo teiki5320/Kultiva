@@ -8,9 +8,9 @@ import '../../../widgets/badge_card.dart';
 
 /// Grille des 25 badges Poussidex. Un tap sur un badge ouvre la carte
 /// "Pokémon" correspondante (via showBadgeCard).
-class PoussidexBadgesGrid extends StatelessWidget {
+class BadgesGrid extends StatelessWidget {
   final Set<String> unlocked;
-  const PoussidexBadgesGrid({super.key, required this.unlocked});
+  const BadgesGrid({super.key, required this.unlocked});
 
   @override
   Widget build(BuildContext context) {

@@ -205,3 +205,51 @@ GrowthPhase deducedPhase(Vegetable veg, int daysSinceStarted) {
       return (label: '', detail: '');
   }
 }
+
+/// Estimation du nombre de jours jusqu'à récolte (borne haute). Lit
+/// [Vegetable.harvestTimeBySeason] si rempli, sinon défaut par famille.
+///
+/// Vivait dans `poussidex_card.dart`, dont le reste — la carte de la
+/// grille de collection — est parti avec le Poussidex le 31/10/2026.
+int expectedHarvestDays(Vegetable v, DateTime plantedAt) {
+  final times = v.harvestTimeBySeason;
+  if (times != null) {
+    final m = plantedAt.month;
+    final seasonKey = m >= 3 && m <= 5
+        ? 'spring'
+        : m >= 6 && m <= 8
+            ? 'summer'
+            : m >= 9 && m <= 11
+                ? 'autumn'
+                : 'winter';
+    final raw = times[seasonKey] ?? times.values.firstOrNull;
+    if (raw != null) {
+      final matches = RegExp(r'\d+').allMatches(raw).toList();
+      if (matches.isNotEmpty) {
+        return int.tryParse(matches.last.group(0)!) ?? 70;
+      }
+    }
+  }
+  switch (v.category) {
+    case VegetableCategory.leaves:
+      return 55;
+    case VegetableCategory.roots:
+      return 70;
+    case VegetableCategory.fruits:
+      return 80;
+    case VegetableCategory.bulbs:
+      return 90;
+    case VegetableCategory.tubers:
+      return 100;
+    case VegetableCategory.aromatics:
+      return 45;
+    case VegetableCategory.flowers:
+      return 60;
+    case VegetableCategory.seeds:
+      return 90;
+    case VegetableCategory.stems:
+      return 70;
+    case VegetableCategory.accessories:
+      return 1;
+  }
+}

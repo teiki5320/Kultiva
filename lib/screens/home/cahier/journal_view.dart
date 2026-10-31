@@ -6,11 +6,32 @@ import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/months.dart';
 
-/// Vue "Journal" : toutes les actions (plantation, arrosage, récolte,
-/// photo) regroupées par jour, en ordre anti-chronologique.
-class PoussidexJournalView extends StatelessWidget {
+/// Le journal du jardin : plantations, arrosages, récoltes et photos
+/// regroupés par jour, du plus récent au plus ancien.
+///
+/// Il existait déjà, enterré sous un sélecteur de quatre vues dans le
+/// Poussidex — là où personne n'allait. Remonté dans le cahier de
+/// culture le 31/10/2026, c'est devenu la forme principale : les
+/// dates de tous ces gestes étaient déjà enregistrées, elles
+/// n'étaient visibles que plant par plant.
+class GardenJournalView extends StatelessWidget {
   final List<Plantation> plantations;
-  const PoussidexJournalView({super.key, required this.plantations});
+
+  /// Nombre de journées montrées. `null` = tout.
+  ///
+  /// Le cahier n'en affiche que quelques-unes et renvoie vers
+  /// l'écran complet ; sinon le journal noie tout le reste.
+  final int? maxDays;
+
+  /// Vrai quand la liste est posée dans un autre défilement.
+  final bool shrinkWrap;
+
+  const GardenJournalView({
+    super.key,
+    required this.plantations,
+    this.maxDays,
+    this.shrinkWrap = false,
+  });
 
   String _dayLabel(DateTime d) {
     final now = DateTime.now();
@@ -95,10 +116,16 @@ class PoussidexJournalView extends StatelessWidget {
       final key = '${e.date.year}-${e.date.month}-${e.date.day}';
       groups.putIfAbsent(key, () => <_JournalEvent>[]).add(e);
     }
-    final keys = groups.keys.toList();
+    var keys = groups.keys.toList();
+    if (maxDays != null && keys.length > maxDays!) {
+      keys = keys.sublist(0, maxDays!);
+    }
 
     return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+      padding: EdgeInsets.fromLTRB(12, 8, 12, shrinkWrap ? 0 : 24),
+      shrinkWrap: shrinkWrap,
+      physics:
+          shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: keys.length,
       itemBuilder: (context, i) {
         final key = keys[i];

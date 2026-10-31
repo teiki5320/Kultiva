@@ -12,6 +12,7 @@ import '../../utils/text_scale.dart';
 import '../../widgets/jardins_intro_sheet.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
+import 'cahier/cahier_journal_section.dart';
 import 'cahier/cahier_plants_section.dart';
 import 'cahier/cahier_season_recap.dart';
 import 'cahier/cahier_today_card.dart';
@@ -95,6 +96,7 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
                   ),
               ],
               const CahierPlantsSection(),
+              const CahierJournalSection(),
               const CahierSeasonRecap(),
             ],
           );

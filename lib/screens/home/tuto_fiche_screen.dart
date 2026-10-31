@@ -6,7 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../theme/app_theme.dart';
 import '../root_tabs.dart';
-import 'my_garden_screen.dart';
+import 'defis/defis_badges_screen.dart';
 
 /// Affiche une fiche tuto HTML (stockée dans assets/tutos/) dans un
 /// WebView plein écran. Intercepte les liens `kultiva://` pour
@@ -108,9 +108,9 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   ///   kultiva://home                → onglet Home (semis)
   ///   kultiva://cahier              → onglet Cahier de culture
   ///   kultiva://vegetables          → onglet Étal
-  ///   kultiva://poussidex           → le Poussidex, ouvert par-dessus
-  ///   kultiva://poussidex/badges    → Poussidex section Badges
-  ///   kultiva://poussidex/challenges→ Poussidex section Défis
+  ///   kultiva://poussidex           → Défis & badges, ouvert par-dessus
+  ///   kultiva://poussidex/badges    → section Badges
+  ///   kultiva://poussidex/challenges→ section Défis
   ///   kultiva://tutos               → onglet Tutos
   ///   kultiva://tuto/`<nom>`          → remplace la fiche par une autre
   void _handleDeepLink(Uri uri) {
@@ -132,13 +132,17 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
         RootTabs.tabIndex.value = 2;
         return;
       case 'poussidex':
-        // Le Poussidex n'a plus d'onglet depuis le 30/10/2026 : on
-        // l'ouvre par-dessus, comme un écran ordinaire.
-        if (segments.isNotEmpty) {
-          RootTabs.poussidexFilter.value = segments.first;
-        }
+      case 'defis':
+        // Le Poussidex a été supprimé le 31/10/2026 : sa collection
+        // faisait doublon avec le cahier de culture, et son journal y
+        // est remonté. La route survit pour les anciens liens et mène
+        // à ce qui lui restait en propre, les défis et les badges.
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute<void>(builder: (_) => const MyGardenScreen()),
+          MaterialPageRoute<void>(
+            builder: (_) => DefisBadgesScreen(
+              section: segments.isNotEmpty ? segments.first : null,
+            ),
+          ),
         );
         return;
       case 'tutos':

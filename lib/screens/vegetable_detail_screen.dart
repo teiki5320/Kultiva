@@ -76,12 +76,14 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${v.emoji} ${v.name} rejoint ta collection'),
+        content: Text('${v.emoji} ${v.name} est noté dans ton cahier'),
         action: SnackBarAction(
           label: 'Voir',
           onPressed: () {
-            RootTabs.poussidexFilter.value = 'collection';
-            RootTabs.tabIndex.value = 2;
+            // Onglet 1 = Cahier. Il pointait sur 2, c'est-à-dire
+            // l'Étal : le bouton « Voir » renvoyait au catalogue
+            // d'où l'on venait.
+            RootTabs.tabIndex.value = 1;
             Navigator.of(context).popUntil((r) => r.isFirst);
           },
         ),

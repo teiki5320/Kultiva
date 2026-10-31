@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/data/vegetables_base.dart';
-import 'package:kultiva/models/plantation.dart';
-import 'package:kultiva/models/vegetable_medal.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_badges.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_card.dart';
+import 'package:kultiva/screens/home/defis/badges_grid.dart';
 import 'package:kultiva/theme/app_theme.dart';
 import 'package:kultiva/widgets/petal_animation.dart';
 import 'package:kultiva/widgets/season_header.dart';
@@ -73,7 +70,7 @@ void main() {
       testWidgets('la grille des badges tient en $nom', (tester) async {
         await monte(
           tester,
-          PoussidexBadgesGrid(unlocked: <String>{allBadges.first.id}),
+          BadgesGrid(unlocked: <String>{allBadges.first.id}),
           taille: taille,
         );
         expect(tester.takeException(), isNull);
@@ -93,30 +90,6 @@ void main() {
         expect(tester.takeException(), isNull);
       });
 
-      testWidgets('une carte de plant tient en $nom, police à 1,3',
-          (tester) async {
-        await monte(
-          tester,
-          Center(
-            child: SizedBox(
-              width: 200,
-              child: PlantationCard(
-                plantation: Plantation(
-                  id: 'p1',
-                  vegetableId: 'tomate',
-                  plantedAt: DateTime.now().subtract(const Duration(days: 20)),
-                  wateredAt: <DateTime>[DateTime.now()],
-                ),
-                vegetable: tomate,
-                tier: MedalTier.bronze,
-              ),
-            ),
-          ),
-          taille: taille,
-          police: 1.3,
-        );
-        expect(tester.takeException(), isNull);
-      });
     }
   });
 }

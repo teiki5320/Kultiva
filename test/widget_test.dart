@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/data/vegetables_base.dart';
-import 'package:kultiva/models/plantation.dart';
-import 'package:kultiva/models/vegetable_medal.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_badges.dart';
-import 'package:kultiva/screens/home/poussidex/poussidex_card.dart';
+import 'package:kultiva/screens/home/defis/badges_grid.dart';
 import 'package:kultiva/theme/app_theme.dart';
 import 'package:kultiva/utils/text_scale.dart';
 import 'package:kultiva/widgets/vegetable_card.dart';
@@ -77,41 +74,6 @@ void main() {
     });
   });
 
-  group('PlantationCard', () {
-    Plantation plant({int waterings = 0, int harvests = 0}) => Plantation(
-          id: 'p1',
-          vegetableId: 'tomate',
-          plantedAt: DateTime.now().subtract(const Duration(days: 10)),
-          wateredAt: List<DateTime>.generate(
-            waterings,
-            (i) => DateTime.now().subtract(Duration(days: i + 1)),
-          ),
-          harvestCount: harvests,
-        );
-
-    testWidgets('affiche le nombre d\'arrosages du plant', (tester) async {
-      // C'est le compteur qui prouve que l'arrosage saisi dans « Mes
-      // jardins » arrive bien jusqu'au Poussidex.
-      await tester.pumpWidget(_host(PlantationCard(
-        plantation: plant(waterings: 3),
-        vegetable: tomate,
-        tier: MedalTier.none,
-      )));
-      expect(find.textContaining('3'), findsWidgets);
-    });
-
-    testWidgets('se monte sans erreur pour un plant tout neuf',
-        (tester) async {
-      await tester.pumpWidget(_host(PlantationCard(
-        plantation: plant(),
-        vegetable: tomate,
-        tier: MedalTier.none,
-      )));
-      expect(tester.takeException(), isNull);
-      expect(find.text(tomate.name), findsOneWidget);
-    });
-  });
-
   group('Taille de texte agrandie', () {
     // Beaucoup de boîtes de l'app ont une hauteur fixe. Quand
     // l'utilisateur agrandit la police dans les réglages de son
@@ -155,7 +117,7 @@ void main() {
       // L'information n'était portée que par la couleur grisée, qu'un
       // lecteur d'écran ne voit pas.
       await tester.pumpWidget(_host(
-        const PoussidexBadgesGrid(unlocked: <String>{}),
+        const BadgesGrid(unlocked: <String>{}),
       ));
       await tester.pump();
       expect(
@@ -167,7 +129,7 @@ void main() {
     testWidgets('un badge débloqué le dit aussi', (tester) async {
       final premier = allBadges.first;
       await tester.pumpWidget(_host(
-        PoussidexBadgesGrid(unlocked: <String>{premier.id}),
+        BadgesGrid(unlocked: <String>{premier.id}),
       ));
       await tester.pump();
       expect(

@@ -396,8 +396,7 @@ class SettingsScreen extends StatelessWidget {
     // Les photos des plants effacés n'ont plus de référence : la purge
     // les retire du disque.
     await PhotoService.purgeOrphans();
-    // Le tuto du jardin se rejoue comme à la première ouverture.
-    await PrefsService.instance.setGardenTutorialDone(false);
+
     if (!context.mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(

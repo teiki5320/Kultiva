@@ -18,17 +18,17 @@ import '../../../widgets/plantation_photo.dart';
 /// Grille des 30 défis photo du Poussidex. Chaque défi est un tile
 /// avec son emoji + nom. Les défis complétés montrent la photo de
 /// l'utilisateur ; les défis non complétés un bouton "Participer".
-class PoussidexChallengesGrid extends StatefulWidget {
+class ChallengesGrid extends StatefulWidget {
   final void Function(String challengeId, String photoPath)? onPhotoTaken;
 
-  const PoussidexChallengesGrid({super.key, this.onPhotoTaken});
+  const ChallengesGrid({super.key, this.onPhotoTaken});
 
   @override
-  State<PoussidexChallengesGrid> createState() =>
-      _PoussidexChallengesGridState();
+  State<ChallengesGrid> createState() =>
+      _ChallengesGridState();
 }
 
-class _PoussidexChallengesGridState extends State<PoussidexChallengesGrid> {
+class _ChallengesGridState extends State<ChallengesGrid> {
   /// Map {challengeId → photoPath (local ou URL cloud)}.
   Map<String, String> _completed = <String, String>{};
 
