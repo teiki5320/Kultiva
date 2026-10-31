@@ -818,21 +818,28 @@ Règles spécifiques au projet pour être efficace dès la première action :
     Jean avant de dépenser (règle permanente). Garder les noms de
     fichiers : `assets/images/badges/<id>.webp`.
 
-14. **Le tuto animé du dashboard est périmé** — ⚠️ **prompt prêt
-    (31/10/2026)** : `docs/prompt-tuto-dashboard.md`, à coller dans
-    une session design. Il demande un tuto **redessiné en HTML/CSS,
-    sans aucune capture d'écran** — ce qui supprime la dépendance au
-    simulateur et empêche le tuto de redevenir périmé en silence.
-    Description d'origine du problème :
-    `assets/tutos/decouvrir_dashboard.html` est une timeline GSAP de
-    dix scènes posée sur dix captures d'écran réelles
-    (`assets/tutos/screens/dashboard/`, prises le 22/08/2026). Les
-    captures montrent l'ancienne barre d'onglets, et trois scènes
-    visent un onglet Poussidex qui n'est plus dans la barre — dont une
-    « Poussidex Tamassi ». **Bloqué sur les captures** : il faut un
-    simulateur ou un appareil, et les rendus golden ne conviennent pas
-    (ni emoji ni icônes Material). À refaire dès que le runtime iOS
-    est installé.
+14. ~~**Le tuto animé du dashboard est périmé**~~ — ✅ **FAIT
+    (31/10/2026).** Refait par une session design à partir de
+    `docs/prompt-tuto-dashboard.md`, puis mis en conformité ici.
+
+    **Le changement qui compte** : il ne contient plus **aucune
+    capture d'écran**. L'interface est redessinée en HTML/CSS, donc
+    le tuto ne dépend plus d'un simulateur et ne peut plus devenir
+    faux parce qu'un écran a bougé d'un pixel. Les dix captures de
+    `assets/tutos/screens/` (1,3 Mo) sont supprimées avec leurs deux
+    entrées de `pubspec.yaml` ; le fichier passe de 1,4 Mo à 110 Ko.
+
+    **Deux corrections apportées à la livraison** : elle chargeait
+    GSAP depuis cdnjs et Nunito depuis Google Fonts. Les 33 autres
+    tutos n'ont **aucun** appel réseau, et l'ancien dashboard
+    embarquait déjà GSAP en dur. GSAP est donc inliné et la police
+    est la pile système (`-apple-system, SF Pro Rounded…`), comme
+    partout ailleurs. ⚠️ **Ne pas réintroduire de CDN ni de Google
+    Fonts dans un tuto** : ils doivent tourner hors ligne.
+
+    Vérifié dans le navigateur à 375 × 812 : les dix scènes
+    s'enchaînent, le halo désigne le bon élément, la barre d'onglets
+    suit, et le bouton pause répond.
 
 ## Fiches à jour à chaque changement (règle de Jean, 22 octobre 2026)
 
