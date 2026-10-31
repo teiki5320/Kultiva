@@ -12,13 +12,13 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - un calendrier mensuel de semis et de récolte adapté à la région ;
 - un **catalogue** de 169 légumes, aromates, tubercules et accessoires
   (dont 130 cultures + 10 cultures d'Afrique de l'Ouest) ;
-- le **Poussidex** : collection chronologique des plants de l'utilisateur, avec
-  photos, notes, historique d'arrosage et compteur de récoltes ;
+- un **journal du jardin** : plantations, arrosages, récoltes et photos
+  inscrits à leur date, dans le cahier de culture ;
 - **Mes jardins** : potager carré multi-jardins avec placement par
   glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos),
   conseils contextuels selon la météo ;
-- **Poussidex** : collection de plants, 50 défis photo et 50 badges, joignable
-  depuis le dashboard (ce n'est plus un onglet depuis le 30/10/2026) ;
+- **Défis & badges** : 50 défis photo et 50 badges, sur leur écran,
+  joignable depuis le dashboard ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
   l'API Open-Meteo (gratuite, sans clé) ;
 - des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
@@ -117,14 +117,17 @@ Kultiva/
 │   │                               # tuto_fiche (WebView),
 │   │                               # garden_planner, mes_jardins,
 │   │                               # garden_plan_config_sheet,
-│   │                               # my_garden/ (garden_header),
-│   │                               # cahier/ (today_card, plants_section),
+│   │                               # cahier/ (today_card,
+│   │                               # plants_section, journal_section,
+│   │                               # journal_view, season_recap),
+│   │                               # defis/ (defis_badges_screen,
+│   │                               # badges_grid, challenges_grid),
+│   │                               # plants/ (plantation_sheet = le
+│   │                               # seul point d'entrée du dossier
+│   │                               # d'un plant, + detail_sheet),
 │   │                               # garden_planner/ (screen +
 │   │                               # planner_cell / _advice / _plants,
-│   │                               # planner_widgets = point d'entrée),
-│   │                               # poussidex/* (9 fichiers, dont
-│   │                               # plantation_sheet = le seul point
-│   │                               # d'entrée du dossier d'un plant)
+│   │                               # planner_widgets = point d'entrée)
 │   ├── models/             # 11 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
 │   │                       # country (pays + zone climatique),
@@ -550,6 +553,17 @@ Décisions et évolutions significatives :
   identifiants sont inchangés** : les médaillons sont des fichiers
   nommés d'après eux. Le Poussidex garde Mes plants / Défis / Badges
   et se joint depuis le dashboard.
+- **Suppression du Poussidex (31/10/2026)** : l'album de collection
+  faisait doublon avec le cahier de culture — « Mes plants » et « Au
+  jardin en ce moment » listaient les mêmes plants, lus dans le même
+  service. Son meilleur écran, le journal daté, était enterré sous un
+  sélecteur de quatre vues. Partis : l'écran album, sa barre de
+  filtres, la grille de collection, le podium, les statistiques, la
+  carte de plant, le carrousel d'accueil (1 900 lignes). Le
+  **journal** remonte dans le cahier (trois derniers jours + « Tout le
+  journal ») ; les 50 défis et les 50 badges ont leur écran
+  **Défis & badges**. Les fichiers quittent `poussidex/` pour
+  `plants/`, `defis/` et `cahier/`.
 - **Nouvel ordre des onglets (30/10/2026)** : Home, **Cahier**, Étal,
   Tutos. Le cahier de culture passe devant le catalogue ; le Poussidex
   quitte la barre. ⚠️ Les tutos HTML naviguent par index
@@ -662,7 +676,8 @@ Règles spécifiques au projet pour être efficace dès la première action :
    recalé sur `plantationsVersion` pour reprendre une fusion cloud.
    Nouvel onglet **🪴 Mes plants** (`AlbumFilter.collection`) qui relie
    les quatre écrans existants derrière un sélecteur
-   Grille / Journal / Podium / Stats. Entrée unique : le bouton flottant
+   Grille / Journal / Podium / Stats — **supprimé le 31/10/2026**, voir
+   l'historique. Entrée unique : le bouton flottant
    **« Je l'ai planté »** sur une fiche légume (masqué pour les
    accessoires). 13 tests (`test/plantation_service_test.dart`).
 

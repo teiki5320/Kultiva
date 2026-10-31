@@ -91,8 +91,7 @@ est acceptée).
 produit des captures au format exact attendu par Apple. Les mises en page
 s'adaptent — le catalogue passe à 8 colonnes au-delà de 900 points, les
 grilles de badges et de défis se dimensionnent seules, et les tuiles de
-statistiques du Poussidex passent de deux à quatre colonnes au-delà de
-600 points. L'allure générale des écrans en 13 pouces n'a toujours pas
+grilles de défis et de badges se dimensionnent seules. L'allure générale des écrans en 13 pouces n'a toujours pas
 été jugée à l'œil : aucun simulateur iOS n'est installé sur le Mac, et
 les tests ne voient qu'une chose, qu'une boîte ne déborde pas.
 

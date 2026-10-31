@@ -11,7 +11,7 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
 - 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
-- 📖 **Poussidex** : ta collection chronologique des plants en photos, avec notes, historique d'arrosage et compteur de récoltes
+- 📖 **Journal du jardin** : plantations, arrosages, récoltes et photos inscrits à leur date, jour par jour, dans le cahier de culture
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
 - 🏅 **Défis photo** : 50 défis, 50 badges et médailles bronze / argent / or (les photos restent privées)
 - 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et badges adaptés à un usage en famille

@@ -63,8 +63,8 @@ Tutoriels pas à pas, défis photo et badges à collectionner : Kultiva est pens
 🌦️ MÉTÉO ET ALERTES MALINES
 Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes canicule avec conseils légume par légume. Ton jardin te prévient avant d'avoir soif.
 
-📖 LE POUSSIDEX, TA COLLECTION DE PLANTS
-Photographie tes plants et retrouve toute leur histoire : notes, arrosages, récoltes. Gagne des médailles bronze, argent et or pour chaque légume.
+📖 LE JOURNAL DE TON JARDIN
+Chaque plantation, chaque arrosage, chaque récolte et chaque photo s'inscrit à sa date. Relis ta saison jour par jour, et gagne des médailles bronze, argent et or pour chaque légume cultivé.
 
 📸 DÉFIS PHOTO ET COLLECTION
 50 défis photo et 50 badges à débloquer, avec médailles bronze, argent et or.
@@ -134,8 +134,8 @@ Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents et conseils c
 📔 CHAQUE MATIN, CE QU'IL Y A À FAIRE
 Ton cahier de culture dit qui a soif, qui est mûr et s'il va faire trop chaud. Badges et médailles récompensent chaque geste : le jardin devient un jeu, pour toi comme pour les enfants.
 
-📖 LE POUSSIDEX + DÉFIS PHOTO
-Ta collection de plants en photos, avec médailles bronze, argent et or, et 50 défis photo pour suivre tes plus beaux gombos.
+📖 LE JOURNAL + LES DÉFIS PHOTO
+Ta saison inscrite jour par jour — semis, arrosages, récoltes, photos — avec médailles bronze, argent et or, et 50 défis photo pour suivre tes plus beaux gombos.
 
 🎓 POUR PROGRESSER
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (le niébé entre les poquets de mil, ça marche aussi dans l'app).
@@ -392,7 +392,7 @@ Ordre = ordre d'affichage ; les 3 premières font la conversion.
 2. Mes jardins : potager en carrés avec glisser-déposer
 3. Le cahier de culture — « à faire aujourd'hui » et l'aperçu des jardins
 4. Fiche légume détaillée (tomate ou fraisier)
-5. Poussidex avec médailles bronze/argent/or
+5. Le journal du jardin, jour par jour
 6. Météo + alerte d'arrosage géolocalisée
 
 **Jeu Afrique de l'Ouest 🌍 (fiche Play personnalisée + custom product

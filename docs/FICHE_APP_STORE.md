@@ -130,7 +130,7 @@ sans défilement**, elles font la décision :
    moment ») avec le bandeau de saison
 2. **Le cahier de culture** — « à faire aujourd'hui » et l'aperçu des
    jardins : ce que l'app fait pour toi chaque matin
-3. Le Poussidex (collection de plants + médailles)
+3. Le journal du jardin (la saison jour par jour)
 4. Une fiche culture détaillée (tomate)
 5. Le planner du potager en carrés (glisser-déposer en cours)
 6. Météo 7 jours avec une alerte arrosage ou canicule
@@ -178,11 +178,11 @@ Tutoriels pas à pas, défis photo et badges à collectionner : Kultiva est pens
 🌦️ MÉTÉO ET ALERTES MALINES
 Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents, alertes canicule avec conseils légume par légume. Ton jardin te prévient avant d'avoir soif.
 
-📖 LE POUSSIDEX, TA COLLECTION DE PLANTS
-Photographie tes plants et retrouve toute leur histoire : notes, arrosages, récoltes. Gagne des médailles bronze, argent et or pour chaque légume.
+📖 LE JOURNAL DE TON JARDIN
+Chaque plantation, chaque arrosage, chaque récolte et chaque photo s'inscrit à sa date. Relis ta saison jour par jour, et gagne des médailles bronze, argent et or pour chaque légume cultivé.
 
-📸 DÉFIS PHOTO ET COLLECTION
-50 défis photo et 50 badges à débloquer, avec médailles bronze, argent et or. Ta progression au jardin, comme un Pokédex du potager.
+📸 DÉFIS PHOTO ET BADGES
+50 défis photo et 50 badges à débloquer. Les badges récompensent ce que tu fais vraiment : ton premier plant, trois jours d'arrosage d'affilée, un carré entièrement rempli.
 
 🎓 POUR APPRENDRE EN S'AMUSANT
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).

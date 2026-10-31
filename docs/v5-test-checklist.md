@@ -55,20 +55,23 @@
 - [ ] PDF contient stats cultures, arrosages, top légumes, détail chronologique
 - [ ] Export possible (partager, imprimer, sauvegarder)
 
-## 🪴 Poussidex
+## 📸 Défis & badges
 
-> Tamassi, la créature virtuelle, a été supprimée le 31/10/2026 avec
-> ses trois starters, son XP et ses visiteurs. Les 50 badges ont été
-> réécrits sur ce qu'on fait au jardin.
+> Le Poussidex a été supprimé le 31/10/2026 : son album faisait
+> doublon avec le cahier, son journal y est remonté. Ne restent que
+> les défis et les badges, sur leur propre écran, atteignable depuis
+> la carte du dashboard.
 
 - [ ] Fiche légume → bouton « Je l'ai planté » → le plant apparaît
-      dans 🪴 Mes plants
+      dans « Au jardin en ce moment », et le bouton « Voir » du
+      message mène bien au **Cahier**, pas à l'Étal
 - [ ] Photo d'un plant → elle s'affiche dans son dossier
 - [ ] Arroser, récolter, clore un plant → chaque geste laisse une trace
-      datée dans l'historique
+      datée, visible dans le journal
 - [ ] Les badges se débloquent sur des gestes de jardin (premier plant,
       trois jours d'arrosage d'affilée, jardin complet)
-- [ ] Aucune mention de créature, de starter ni de niveau nulle part
+- [ ] Aucune mention de Poussidex, de créature, de starter ni de
+      niveau nulle part
 - [ ] Alertes canicule push reçues si météo annonce 30°C+ sur 2j
       d'affilée (40°C en Afrique de l'Ouest)
 
@@ -80,7 +83,9 @@
 - [ ] Chaque carte de jardin montre l'aperçu de **sa** grille
 - [ ] « Au jardin en ce moment » liste les plants des jardins **et**
       ceux ajoutés depuis une fiche légume
-- [ ] Tap sur un plant → son dossier (le même que depuis le Poussidex)
+- [ ] Tap sur un plant → son dossier
+- [ ] « Journal » montre les trois derniers jours, et « Tout le
+      journal » ouvre la suite
 
 ## 📅 Calendrier + 🛒 Étal
 
