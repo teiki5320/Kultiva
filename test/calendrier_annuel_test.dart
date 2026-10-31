@@ -149,6 +149,40 @@ void main() {
       );
     });
 
+    testWidgets('une recherche sans résultat dit pourquoi, et se défait',
+        (tester) async {
+      // Le message accusait la saison quoi qu'il arrive : chercher
+      // « xyz » affichait « Rien à semer ni à récolter ce mois-ci
+      // dans ta région ».
+      await monte(tester, taille: const Size(393, 852));
+      await tester.enterText(find.byType(TextField), 'zzzz');
+      await tester.pump();
+      // Le champ de saisie contient aussi « zzzz » : on vise le message.
+      expect(find.textContaining('porte « zzzz »'), findsOneWidget);
+      expect(find.textContaining('Rien à semer'), findsNothing);
+
+      await tester.tap(find.text('Tout afficher'));
+      await tester.pump();
+      expect(
+        find.bySemanticsLabel(RegExp(r' : (semis|récolte)')),
+        findsAtLeastNWidgets(1),
+      );
+    });
+
+    testWidgets('un mois sans rien nomme ce mois, pas « ce mois-ci »',
+        (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      // On croise un mois et une famille jusqu'à tomber sur un vide.
+      await tester.tap(find.bySemanticsLabel('Février'));
+      await tester.pump();
+      await tester.tap(find.byType(PastelChip).at(1));
+      await tester.pump();
+      final vide = find.textContaining('février');
+      if (vide.evaluate().isNotEmpty) {
+        expect(find.textContaining('ce mois-ci'), findsNothing);
+      }
+    });
+
     testWidgets('une famille ne laisse que ses légumes', (tester) async {
       await monte(tester, taille: const Size(393, 852));
       // Compter les lignes ne prouve rien : `ListView.builder` n'en

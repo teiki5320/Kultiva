@@ -71,6 +71,40 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
     );
   }
 
+  /// Pourquoi la liste est vide, en nommant le filtre fautif.
+  ///
+  /// Le message disait « Rien à semer ni à récolter ce mois-ci dans
+  /// ta région » quoi qu'il arrive : chercher « xyz » accusait donc
+  /// la saison, et filtrer sur novembre parlait du mois en cours.
+  String _emptyMessage() {
+    if (_query.isNotEmpty) {
+      return 'Aucun légume ne porte « $_query » dans son nom.';
+    }
+    final mois =
+        _filterMonth == null ? null : monthNamesLong[_filterMonth! - 1];
+    if (_category != null && mois != null) {
+      return 'Aucun ${_category!.label.toLowerCase()} à semer ni à '
+          'récolter en $mois chez toi.';
+    }
+    if (_category != null) {
+      return 'Aucun ${_category!.label.toLowerCase()} au calendrier de '
+          'ta région.';
+    }
+    if (mois != null) {
+      return 'Rien à semer ni à récolter en $mois dans ta région.';
+    }
+    return 'Le calendrier de ta région est vide.';
+  }
+
+  void _clearFilters() {
+    _searchCtrl.clear();
+    setState(() {
+      _query = '';
+      _category = null;
+      _filterMonth = null;
+    });
+  }
+
   void _toggleMonth(int month) {
     setState(() => _filterMonth = _filterMonth == month ? null : month);
   }
@@ -291,18 +325,9 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
               ),
               Expanded(
                 child: entries.isEmpty
-                    ? const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(32),
-                          child: Text(
-                            "Rien à semer ni à récolter ce mois-ci dans ta "
-                            'région.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: KultivaColors.textSecondary,
-                                fontSize: 13),
-                          ),
-                        ),
+                    ? _EmptyResult(
+                        message: _emptyMessage(),
+                        onClear: _clearFilters,
                       )
                     : Stack(
                         children: [
@@ -593,6 +618,47 @@ class _LegendItem extends StatelessWidget {
                   const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
         ),
       ],
+    );
+  }
+}
+
+/// Ce qui s'affiche quand aucun légume ne passe les filtres.
+class _EmptyResult extends StatelessWidget {
+  final String message;
+  final VoidCallback onClear;
+
+  const _EmptyResult({required this.message, required this.onClear});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Text('🌱', style: TextStyle(fontSize: 44)),
+            const SizedBox(height: 14),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: KultivaColors.textSecondary,
+                fontSize: 13,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: onClear,
+              style: TextButton.styleFrom(
+                foregroundColor: KultivaColors.primaryGreen,
+              ),
+              child: const Text('Tout afficher'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
