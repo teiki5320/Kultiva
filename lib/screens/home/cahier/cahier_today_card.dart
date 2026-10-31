@@ -138,7 +138,10 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
         emoji: '💧',
         text: 'Arroser : ${_listeEspeces(_alerts.map((a) => a.vegetable))}',
         urgent: _alerts.any((a) => a.urgency >= 2),
-        action: _watering ? null : 'Arroser',
+        // Le bouton reste en place pendant l'écriture, seulement
+        // désactivé : le faire disparaître déplaçait la ligne sous le
+        // doigt au moment du tap.
+        action: 'Arroser',
         onAction: _watering ? null : _waterAll,
       ));
     }
