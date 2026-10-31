@@ -818,7 +818,12 @@ Règles spécifiques au projet pour être efficace dès la première action :
     Jean avant de dépenser (règle permanente). Garder les noms de
     fichiers : `assets/images/badges/<id>.webp`.
 
-14. **Le tuto animé du dashboard est périmé** —
+14. **Le tuto animé du dashboard est périmé** — ⚠️ **prompt prêt
+    (31/10/2026)** : `docs/prompt-tuto-dashboard.md`, à coller dans
+    une session design. Il demande un tuto **redessiné en HTML/CSS,
+    sans aucune capture d'écran** — ce qui supprime la dépendance au
+    simulateur et empêche le tuto de redevenir périmé en silence.
+    Description d'origine du problème :
     `assets/tutos/decouvrir_dashboard.html` est une timeline GSAP de
     dix scènes posée sur dix captures d'écran réelles
     (`assets/tutos/screens/dashboard/`, prises le 22/08/2026). Les
