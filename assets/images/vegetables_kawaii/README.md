@@ -14,6 +14,22 @@ un catalogue mi-plat mi-peint. On bascule quand la série est complète.
 | Légumes (`assets/images/vegetables/`) | 130 | 1 |
 | Badges (`assets/images/badges/`) | 0 | 50 |
 
+⚠️ Quatre médaillons (`first_visit`, `visits_5`, `visits_10`,
+`pet_20`) ont été refaits le 31/10/2026 — mais **dans le style actuel
+des badges**, pas dans le kawaii peint de ce chantier. Ils montraient
+la créature supprimée la veille ; il fallait les remplacer tout de
+suite, et un médaillon au nouveau style au milieu de 46 anciens aurait
+sauté aux yeux. Ils repasseront dans le lot des 50 le moment venu.
+
+La recette employée, si elle doit resservir pour un cas pareil :
+planche 2×2 des médaillons **existants** composée avec Pillow, passée
+en référence à GPT Image 2 en image-to-image (1:1, 1k, qualité
+medium, 42 crédits), avec pour consigne de garder le cadre à
+l'identique et de ne remplacer que le motif du disque crème. Le
+résultat sort sur fond blanc : il faut le rendre transparent par
+remplissage depuis les bords, les badges existants ayant un fond
+transparent.
+
 Faits : les 130 cultures du catalogue. Seul `_inconnu`, la sentinelle « Légume inconnu », garde son emoji ❓.
 
 ## Style

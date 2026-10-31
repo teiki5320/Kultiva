@@ -765,22 +765,26 @@ Règles spécifiques au projet pour être efficace dès la première action :
     réécrites, et les décomptes de caractères recalculés sur le texte
     réel (sept étaient déjà faux avant).
 
-13. **Quatre médaillons de badge contredisent leur badge** — les 50
-    identifiants ont été conservés lors de la réécriture du
-    31/10/2026, et donc les 50 images, nommées d'après eux. La
-    plupart tombent juste par chance (une pousse pour « 5 plants »,
-    une licorne pour « rare »), mais quatre montrent explicitement la
-    créature supprimée ou un objet sans rapport. Vérifié image par
-    image le 31/10 :
+13. ~~**Quatre médaillons de badge contredisent leur badge**~~ — ✅
+    **FAIT (31/10/2026, 42 crédits OpenArt, accord de Jean).** Refaits
+    dans le style actuel des badges : parterre surélevé pour « Premier
+    jardin », cinq légumes pour « Cinq espèces », trois parterres pour
+    « Trois jardins », appareil photo pour « Album ». Recette et mise
+    en garde dans `assets/images/vegetables_kawaii/README.md`.
 
-    | id | ce que montre l'image | ce que dit le badge |
-    | --- | --- | --- |
-    | `first_visit` | deux créatures qui se saluent | « Créer ton premier jardin » |
-    | `visits_5` | cinq créatures en rang | « Planter 5 espèces différentes » |
-    | `visits_10` | une foule de créatures | « Créer 3 jardins » |
-    | `pet_20` | un cœur rose | « 10 photos de plants » |
+    **Comment le problème était né** : la réécriture des badges a gardé
+    les 50 identifiants, donc les 50 images, qui sont nommées d'après
+    eux. La plupart tombaient juste par chance (une pousse pour
+    « 5 plants », une licorne pour « rare »), mais quatre montraient
+    la créature supprimée ou un objet sans rapport — deux créatures qui
+    se saluent pour « Créer ton premier jardin », une foule pour
+    « Créer 3 jardins », cinq créatures pour « Planter 5 espèces », un
+    cœur rose pour « 10 photos ». **Vérifier les images quand le sens
+    d'un badge change** : `flutter analyze` ne voit rien, et
+    `assets_exist_test.dart` non plus — le fichier existe, il raconte
+    simplement autre chose.
 
-    Quatre autres sont discutables sans être faux : `first_pet`
+    **Restent discutables, sans être faux** : `first_pet`
     (main + cœur → « mettre en favori », le cœur sauve la mise),
     `first_fertilize`, `fertilize_20` et `fertilize_100` (sacs
     d'engrais → cases de potager carré).
