@@ -3,7 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/screens/home/calendar_grid_screen.dart';
 import 'package:kultiva/services/prefs_service.dart';
 import 'package:kultiva/theme/app_theme.dart';
+import 'package:kultiva/data/vegetables_base.dart';
+import 'package:kultiva/models/vegetable.dart';
 import 'package:kultiva/utils/months.dart';
+import 'package:kultiva/widgets/pastel_chip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Le calendrier annuel a été refondu le 31/10/2026.
@@ -101,14 +104,74 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('ne défile plus latéralement', (tester) async {
+    testWidgets('aucune ligne de légume n\'est dans un défilement '
+        'latéral', (tester) async {
       await monte(tester, taille: const Size(393, 852));
-      final horizontaux = tester
-          .widgetList<Scrollable>(find.byType(Scrollable))
-          .where((s) => s.axisDirection == AxisDirection.right)
+      // La barre de familles défile de côté, comme à l'Étal, et c'est
+      // voulu. Ce qui ne doit plus défiler, c'est la grille : avant,
+      // le nom du légume sortait de l'écran à gauche quand on allait
+      // voir juin. On vérifie donc l'ancêtre d'une ligne, pas l'écran.
+      final ligne = find
+          .bySemanticsLabel(RegExp(r' : (semis|récolte)'))
+          .first;
+      final ancetres = tester.widgetList<Scrollable>(
+        find.ancestor(of: ligne, matching: find.byType(Scrollable)),
+      );
+      expect(ancetres, isNotEmpty, reason: 'la liste défile verticalement');
+      expect(
+        ancetres.where((s) => s.axisDirection == AxisDirection.right),
+        isEmpty,
+        reason: 'les douze mois doivent tenir dans la largeur',
+      );
+    });
+
+    testWidgets('la recherche réduit la liste', (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      final avant = tester
+          .widgetList(find.bySemanticsLabel(RegExp(r' : (semis|récolte)')))
+          .length;
+      await tester.enterText(find.byType(TextField), 'tomate');
+      await tester.pump();
+      final apres = tester
+          .widgetList(find.bySemanticsLabel(RegExp(r' : (semis|récolte)')))
+          .length;
+      expect(apres, lessThan(avant));
+      expect(apres, greaterThan(0));
+    });
+
+    testWidgets('la recherche ignore les accents', (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      await tester.enterText(find.byType(TextField), 'epinard');
+      await tester.pump();
+      expect(
+        find.bySemanticsLabel(RegExp('Épinard')),
+        findsAtLeastNWidgets(1),
+      );
+    });
+
+    testWidgets('une famille ne laisse que ses légumes', (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      // Compter les lignes ne prouve rien : `ListView.builder` n'en
+      // construit qu'une dizaine à la fois, filtre ou pas. On vérifie
+      // donc que tout ce qui s'affiche appartient bien à la famille.
+      final famille = VegetableCategory.values
+          .where((c) => c != VegetableCategory.accessories)
+          .first;
+      await tester.tap(find.byType(PastelChip).at(1));
+      await tester.pump();
+
+      final lignes = tester
+          .widgetList<Semantics>(find.byType(Semantics))
+          .map((w) => w.properties.label)
+          .whereType<String>()
+          .where((l) => l.contains(' : semis') || l.contains(' : récolte'))
           .toList();
-      expect(horizontaux, isEmpty,
-          reason: 'les douze mois doivent tenir dans la largeur');
+      expect(lignes, isNotEmpty, reason: 'la famille doit avoir des légumes');
+      for (final l in lignes) {
+        final nom = l.split(' : ').first;
+        final v = vegetablesBase.where((x) => x.name == nom).firstOrNull;
+        expect(v?.category, famille, reason: '$nom ne devrait pas être là');
+      }
     });
 
     testWidgets('les douze mois sont tous atteignables', (tester) async {

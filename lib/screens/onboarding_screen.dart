@@ -41,13 +41,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       subtitle: "L'app suit la météo de ton jardin et te prévient quand "
           "il faut arroser, protéger d'une canicule ou rentrer un plant.",
     ),
+    // Cette page présentait le Poussidex, puis a été renommée « Ton
+    // cahier de culture » sans que son texte change : l'onboarding
+    // annonçait donc deux fois le même écran, avec les mêmes carrés et
+    // le même glisser-déposer. Elle parle maintenant de ce qui s'ajoute
+    // au cahier — le journal, les défis, les médailles.
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_poussidex.png',
-      fallbackEmoji: '🐣',
-      title: 'Ton cahier de culture',
-      subtitle: "Dessine tes carrés, places-y tes plants et suis-les "
-          "jour après jour : arrosages, photos, récoltes. Avec des défis "
-          "photo et 50 badges à décrocher en chemin.",
+      fallbackEmoji: '📖',
+      title: 'Le journal de ton jardin',
+      subtitle: "Chaque semis, chaque arrosage, chaque récolte s'inscrit "
+          "à sa date. Relis ta saison jour par jour, décroche des "
+          "médailles par légume et 50 défis photo.",
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_tutos.png',

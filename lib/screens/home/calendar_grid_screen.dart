@@ -6,9 +6,12 @@ import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
 import '../../services/prefs_service.dart';
 import '../../utils/months.dart';
+import '../../utils/category_colors.dart';
 import '../../utils/text_normalize.dart';
+import '../../utils/text_scale.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
+import '../../widgets/pastel_chip.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
 
@@ -31,6 +34,19 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
   /// Filtre actif — null = tout afficher, sinon ne montre que les légumes
   /// avec une activité (semis ou récolte) durant ce mois.
   int? _filterMonth;
+
+  /// Recherche et famille, comme à l'Étal : cent trente lignes, c'est
+  /// trop pour chercher à l'œil, et le filtre par mois ne répond pas à
+  /// « où est le poireau ».
+  final TextEditingController _searchCtrl = TextEditingController();
+  String _query = '';
+  VegetableCategory? _category;
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
 
   /// L'année d'un légume en une phrase, pour les lecteurs d'écran.
   ///
@@ -83,6 +99,20 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                   rd.sowingMonths.contains(_filterMonth) ||
                   rd.harvestMonths.contains(_filterMonth))
               .toList();
+        }
+
+        // Recherche et famille.
+        if (_query.isNotEmpty || _category != null) {
+          final cherche = foldAccents(_query.toLowerCase());
+          entries = entries.where((rd) {
+            final v = vegetablesBase
+                .where((x) => x.id == rd.vegetableId)
+                .firstOrNull;
+            if (v == null) return false;
+            if (_category != null && v.category != _category) return false;
+            if (cherche.isEmpty) return true;
+            return foldAccents(v.name.toLowerCase()).contains(cherche);
+          }).toList();
         }
 
         return Scaffold(
@@ -193,6 +223,64 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                             )
                           : const SizedBox.shrink(),
                     ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Semantics(
+                  label: 'Rechercher un légume',
+                  textField: true,
+                  child: TextField(
+                    controller: _searchCtrl,
+                    onChanged: (v) => setState(() => _query = v.trim()),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintText: 'Rechercher un légume…',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _query.isEmpty
+                          ? null
+                          : Semantics(
+                              label: 'Effacer la recherche',
+                              button: true,
+                              child: IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: () {
+                                  _searchCtrl.clear();
+                                  setState(() => _query = '');
+                                },
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: scaledHeight(context, 44),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  children: <Widget>[
+                    PastelChip(
+                      label: 'Toutes',
+                      emoji: '✨',
+                      color: KultivaColors.primaryGreen,
+                      selected: _category == null,
+                      onTap: () => setState(() => _category = null),
+                    ),
+                    // Pas d'accessoires : un sécateur n'a pas de mois
+                    // de semis, il n'a jamais eu de ligne ici.
+                    for (final cat in VegetableCategory.values
+                        .where((c) => c != VegetableCategory.accessories))
+                      PastelChip(
+                        label: cat.label,
+                        emoji: cat.emoji,
+                        color: cat.familyColor,
+                        selected: _category == cat,
+                        onTap: () => setState(
+                            () => _category = _category == cat ? null : cat),
+                      ),
                   ],
                 ),
               ),

@@ -8,6 +8,7 @@ import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/pastel_chip.dart';
 import '../../utils/text_scale.dart';
 import '../../utils/category_colors.dart';
 import '../../utils/text_normalize.dart';
@@ -294,7 +295,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: _PastelChip(
+                            child: PastelChip(
                               label: 'Favoris',
                               emoji: '❤️',
                               color: KultivaColors.terracotta,
@@ -309,7 +310,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             ),
                           ),
                           Expanded(
-                            child: _PastelChip(
+                            child: PastelChip(
                               label: 'Toutes',
                               emoji: '✨',
                               color: KultivaColors.primaryGreen,
@@ -322,7 +323,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             ),
                           ),
                           Expanded(
-                            child: _PastelChip(
+                            child: PastelChip(
                               label: VegetableCategory.accessories.label,
                               emoji: VegetableCategory.accessories.emoji,
                               color:
@@ -354,7 +355,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             children: [
                               for (final sub in AccessorySubCategory.values)
-                                _PastelChip(
+                                PastelChip(
                                   label: sub.label,
                                   emoji: sub.emoji,
                                   color: _categoryColor(
@@ -373,7 +374,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             children: [
                               for (final cat in VegetableCategory.values.where(
                                   (c) => c != VegetableCategory.accessories))
-                                _PastelChip(
+                                PastelChip(
                                   label: cat.label,
                                   emoji: cat.emoji,
                                   color: _categoryColor(cat),
@@ -586,59 +587,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
   }
 
   Color _categoryColor(VegetableCategory cat) => cat.familyColor;
-}
-
-// Chip pastel coloré par catégorie.
-class _PastelChip extends StatelessWidget {
-  final String label;
-  final String emoji;
-  final Color color;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const _PastelChip({
-    required this.label,
-    required this.emoji,
-    required this.color,
-    required this.selected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 3),
-      child: Semantics(
-        label: '$label${selected ? ', sélectionné' : ''}',
-        button: true,
-        child: GestureDetector(
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              // Sélectionné : fond coloré. Non sélectionné : fond blanc +
-              // bordure couleur famille pour se repérer visuellement.
-              color: selected ? color.withValues(alpha: 0.2) : Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: color,
-                width: selected ? 2.5 : 2,
-              ),
-            ),
-            child: Text(
-              '$emoji $label',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: selected ? FontWeight.w800 : FontWeight.w700,
-                color: color,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 /// Animation de petits légumes flottants pour l'onglet Légumes.
