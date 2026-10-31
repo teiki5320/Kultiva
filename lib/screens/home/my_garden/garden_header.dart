@@ -109,6 +109,7 @@ class GardenFilterBar extends StatelessWidget {
   final AlbumFilter filter;
   final int plantsCount;
   final int challengesCount;
+  final int totalChallenges;
   final int badgesCount;
   final int totalBadges;
   final ValueChanged<AlbumFilter> onChanged;
@@ -118,6 +119,7 @@ class GardenFilterBar extends StatelessWidget {
     required this.filter,
     required this.plantsCount,
     required this.challengesCount,
+    required this.totalChallenges,
     required this.badgesCount,
     required this.totalBadges,
     required this.onChanged,
@@ -125,9 +127,9 @@ class GardenFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Quatre onglets ne tiennent plus sur la largeur d'un téléphone :
-    // la barre défile horizontalement, tout en restant centrée quand il
-    // y a la place (tablette, ou libellés courts).
+    // Les trois onglets ne tiennent pas toujours sur la largeur d'un
+    // téléphone : la barre défile horizontalement, tout en restant
+    // centrée quand il y a la place (tablette, ou grand écran).
     return SizedBox(
       height: scaledHeight(context, 56),
       child: LayoutBuilder(
@@ -151,8 +153,8 @@ class GardenFilterBar extends StatelessWidget {
                   ),
                   GardenFilterChip(
                     label: '📸 Défis',
-                    count: 0,
-                    hideCount: true,
+                    count: challengesCount,
+                    total: totalChallenges,
                     selected: filter == AlbumFilter.challenges,
                     color: KultivaColors.challengePink,
                     onTap: () {
@@ -185,7 +187,6 @@ class GardenFilterChip extends StatelessWidget {
   final String label;
   final int count;
   final int? total;
-  final bool hideCount;
   final bool selected;
   final Color color;
   final VoidCallback onTap;
@@ -195,7 +196,6 @@ class GardenFilterChip extends StatelessWidget {
     required this.label,
     required this.count,
     this.total,
-    this.hideCount = false,
     required this.selected,
     required this.color,
     required this.onTap,
@@ -203,8 +203,7 @@ class GardenFilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final suffix =
-        hideCount ? '' : (total != null ? ' $count/$total' : ' ($count)');
+    final suffix = total != null ? ' $count/$total' : ' ($count)';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Semantics(

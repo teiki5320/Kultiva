@@ -89,11 +89,12 @@ est acceptée).
 
 **Sur l'iPad.** L'app se lance en plein écran portrait sur iPadOS 26.5 et
 produit des captures au format exact attendu par Apple. Les mises en page
-s'adaptent pour l'essentiel — le catalogue passe à 8 colonnes au-delà de
-900 points, les grilles de badges et de défis se dimensionnent seules. Une
-grille reste figée à 2 colonnes (`lib/screens/home/poussidex/poussidex_stats.dart:85`),
-ce qui donne deux cartes très larges sur 13 pouces. L'allure générale des
-écrans en 13 pouces n'a pas encore été jugée.
+s'adaptent — le catalogue passe à 8 colonnes au-delà de 900 points, les
+grilles de badges et de défis se dimensionnent seules, et les tuiles de
+statistiques du Poussidex passent de deux à quatre colonnes au-delà de
+600 points. L'allure générale des écrans en 13 pouces n'a toujours pas
+été jugée à l'œil : aucun simulateur iOS n'est installé sur le Mac, et
+les tests ne voient qu'une chose, qu'une boîte ne déborde pas.
 
 **Compte de démonstration.** Sans objet depuis le retrait des comptes :
 laisse la case « Connexion requise » décochée dans App Store Connect. Il

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import '../root_tabs.dart';
 
 import '../../data/badges.dart';
+import '../../data/challenges.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/vegetable.dart';
 import '../../models/vegetable_medal.dart';
+import '../../services/garden_stats.dart';
 import '../../services/plantation_service.dart';
 import '../../services/prefs_service.dart';
 import '../../services/review_service.dart';
@@ -35,6 +37,12 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   Map<String, MedalTier> _medals = <String, MedalTier>{};
   AlbumFilter _filter = AlbumFilter.collection;
   bool _loaded = false;
+
+  /// Défis photo déjà réalisés. La pastille affichait « 0 » en dur,
+  /// masqué par un `hideCount` : l'onglet Badges annonçait sa
+  /// progression, l'onglet Défis faisait semblant.
+  int get _completedChallenges =>
+      GardenStats.loadCompletedChallenges().length;
 
   /// Total d'espèces collectionnables (tous les légumes sauf accessoires).
   static final int _totalSpecies = vegetablesBase
@@ -180,7 +188,8 @@ class MyGardenScreenState extends State<MyGardenScreen> {
             GardenFilterBar(
               filter: _filter,
               plantsCount: _plantations.length,
-              challengesCount: 0,
+              challengesCount: _completedChallenges,
+              totalChallenges: allChallenges.length,
               badgesCount: _unlockedBadges.length,
               totalBadges: allBadges.length,
               onChanged: (f) => setState(() => _filter = f),

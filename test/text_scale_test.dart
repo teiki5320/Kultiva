@@ -87,6 +87,7 @@ void main() {
       filter: AlbumFilter.collection,
       plantsCount: 2,
       challengesCount: 5,
+      totalChallenges: 50,
       badgesCount: 7,
       totalBadges: 50,
       onChanged: (_) {},
