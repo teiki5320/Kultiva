@@ -38,7 +38,7 @@ class PlannerPhaseAdviceTile extends StatelessWidget {
               'arrose au pied le matin.';
         }
         return 'Le plant prend du volume — arrose régulièrement et '
-            'binesle pied pour aérer le sol.';
+            'bine le pied pour aérer le sol.';
       case GrowthPhase.flowering:
         return 'Floraison en cours : maintenir l\'arrosage régulier, '
             'apporter de la potasse (cendres bois).';

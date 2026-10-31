@@ -23,11 +23,11 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
 
   static const List<_IntroSlide> _slides = <_IntroSlide>[
     _IntroSlide(
-      emoji: '🌿',
-      title: 'Mes jardins',
-      subtitle: "Crée autant de jardins pleine terre que tu veux, "
-          "chacun avec sa grille de cases. L'app suit tes plants "
-          "et te conseille tout au long de la saison.",
+      emoji: '📔',
+      title: 'Ton cahier de culture',
+      subtitle: "Crée autant de jardins pleine terre que tu veux, chacun "
+          "avec sa grille de cases. En haut, « à faire aujourd'hui » te "
+          "dit qui a soif, qui est mûr et s'il va faire trop chaud.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _IntroSlide(

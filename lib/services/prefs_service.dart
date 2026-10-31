@@ -325,7 +325,9 @@ class PrefsService {
   }
 
   /// Efface toutes les données du jardin : Poussidex, badges, cultures,
-  /// jardins, Tamassi (XP/starter/nom/streak), défis, favoris, et les
+  /// jardins, défis, favoris, les reliquats de Tamassi (supprimée le
+  /// 31/10/2026, mais ses clés traînent sur les installations mises à
+  /// jour depuis une version antérieure), et les
   /// clés héritées du temps des comptes (historique d'arrosage global,
   /// identité du compte).
   ///

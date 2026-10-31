@@ -342,7 +342,7 @@ const List<LexiconEntry> lexicon = <LexiconEntry>[
   ),
   LexiconEntry(
     'défi',
-    "Mini-quête photo à réaliser dans Kultiva (photographier un semis, une récolte, une fleur…). Chaque défi réussi rapporte de l'XP et fait progresser vers un badge.",
+    "Mini-quête photo à réaliser dans Kultiva (photographier un semis, une récolte, une fleur…). Chaque défi réussi débloque un badge, et la photo reste sur ton téléphone.",
   ),
   LexiconEntry(
     'streak',

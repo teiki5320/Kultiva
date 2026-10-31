@@ -40,7 +40,7 @@ dependencies:
   flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4
   # Fuseau horaire réel du device : sans lui, tz.local reste UTC et les
-  # notifications planifiées (rappel mensuel 9h, Tamassi 19h) sonnaient
+  # notifications planifiées (rappel mensuel 9h, arrosage, canicule) sonnaient
   # 1 à 2h trop tard en France. ^3.x requis : les 1.x utilisent l'API
   # Android v1 (Registrar) supprimée des Flutter récents (build cassé),
   # et les 4.x changent le type de retour (TimezoneInfo au lieu de

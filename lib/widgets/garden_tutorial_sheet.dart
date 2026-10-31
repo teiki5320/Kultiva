@@ -5,10 +5,13 @@ import '../utils/text_scale.dart';
 
 /// Overlay bottom-sheet de présentation du Poussidex.
 ///
-/// Refonte avril 2026 : axe « jardiner avec ses enfants ». Le Poussidex
-/// est positionné comme l'outil familial de Kultiva — l'enfant a un
-/// compagnon qui évolue avec ses gestes au jardin, ce qui transforme
-/// l'arrosage et l'observation des plants en jeu.
+/// Réécrit le 31/10/2026 : les quatre diapositives présentaient
+/// Tamassi, promettaient de choisir entre Spira, Soleia et Poussia et
+/// annonçaient onze stades d'évolution à débloquer. La créature a été
+/// supprimée la veille — c'était donc la toute première chose que
+/// voyait un nouvel utilisateur en ouvrant le Poussidex, et elle était
+/// fausse. Elles décrivent maintenant ce que le Poussidex est : la
+/// collection de plants, leur dossier, les médailles et les défis.
 ///
 /// Affiché une seule fois (flag gardenTutorialDone) à la première
 /// ouverture de l'onglet Poussidex.
@@ -25,35 +28,34 @@ class _GardenTutorialSheetState extends State<GardenTutorialSheet> {
 
   static const List<_TutoSlide> _slides = <_TutoSlide>[
     _TutoSlide(
-      emoji: '👨‍👩‍👧',
-      title: 'Le potager, en famille',
-      subtitle: "Le Poussidex est pensé pour faire jardiner les enfants. "
-          "Ton enfant choisit un compagnon kawaii — Spira, Soleia ou "
-          "Poussia — qui grandit chaque fois qu'il s'occupe du jardin.",
+      emoji: '🪴',
+      title: 'Ta collection de plants',
+      subtitle: "Sur la fiche d'un légume, « Je l'ai planté » ajoute le "
+          "plant à ta collection. Il y reste, même après la récolte.",
       gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _TutoSlide(
-      emoji: '🌱',
-      title: 'Un compagnon qui évolue',
-      subtitle: "À chaque arrosage, chaque photo, chaque défi relevé, le "
-          "Tamassi gagne de l'XP et change d'apparence. 11 stades à "
-          "débloquer ensemble — de la petite graine à l'arbre légendaire.",
+      emoji: '📖',
+      title: "Chaque plant a son dossier",
+      subtitle: "Arrosages, récoltes, photos, notes : tout ce que tu fais "
+          "à un plant s'y inscrit, à sa date. C'est le journal de ton "
+          "jardin, et il tient tout seul.",
       gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
     ),
     _TutoSlide(
       emoji: '📸',
-      title: 'Des défis photo qui les motivent',
-      subtitle: "« Le légume le plus grand », « La fleur la plus jolie »... "
-          "Une trentaine de défis qui transforment les enfants en "
-          "petits explorateurs du jardin. Une photo = une badge.",
+      title: '50 défis photo',
+      subtitle: "« Le légume le plus grand », « La fleur la plus jolie »… "
+          "De quoi transformer les enfants en petits explorateurs du "
+          "jardin. Tes photos restent sur ton téléphone.",
       gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
     ),
     _TutoSlide(
       emoji: '🏆',
-      title: 'Une collection à compléter',
-      subtitle: "Les badges débloqués s'ajoutent à un album façon collection "
-          "Pokémon : bronze, argent, or et shiny. Idéal pour donner "
-          "envie aux enfants de revenir au jardin.",
+      title: '50 badges et des médailles',
+      subtitle: "Les badges récompensent tes gestes au jardin : premier "
+          "plant, trois jours d'arrosage d'affilée, jardin complet. "
+          "Et chaque légume cultivé vaut bronze, argent puis or.",
       gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
     ),
   ];
