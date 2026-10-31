@@ -4,6 +4,7 @@ import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/models/garden_plan.dart';
 import 'package:kultiva/models/vegetable.dart';
 import 'package:kultiva/screens/home/mes_jardins_screen.dart';
+import 'package:kultiva/services/culture_service.dart';
 import 'package:kultiva/services/garden_plan_service.dart';
 import 'package:kultiva/services/plantation_service.dart';
 import 'package:kultiva/services/prefs_service.dart';
@@ -155,6 +156,32 @@ void main() {
         (tester) async {
       await monte(tester, taille: const Size(393, 852));
       expect(find.text('À faire aujourd\'hui'), findsOneWidget);
+    });
+
+    testWidgets('pas de récap de saison sans culture cette année',
+        (tester) async {
+      // `PdfService.printSeasonRecap` faisait 170 lignes et n'était
+      // appelée de nulle part. Branchée le 31/10/2026, mais un récap
+      // de saison vide n'apprend rien.
+      await monte(tester, taille: const Size(393, 852));
+      final annee = DateTime.now().year;
+      expect(find.text('Récap de la saison $annee'), findsNothing);
+    });
+
+    testWidgets('propose le récap dès qu\'une culture a démarré',
+        (tester) async {
+      final annee = DateTime.now().year;
+      await CultureService.instance.add(
+        vegetableId: 'tomate',
+        startedAt: DateTime.now().subtract(const Duration(days: 30)),
+      );
+      await monte(tester, taille: const Size(393, 852));
+      await tester.scrollUntilVisible(
+        find.text('Récap de la saison $annee'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text('Récap de la saison $annee'), findsOneWidget);
     });
   });
 

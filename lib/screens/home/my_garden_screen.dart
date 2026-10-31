@@ -68,14 +68,17 @@ class MyGardenScreenState extends State<MyGardenScreen> {
   }
 
   /// Un deep-link `kultiva://poussidex/<section>` a demandé à basculer
-  /// sur une section précise (tamassi / challenges / badges).
+  /// sur une section précise (plants / challenges / badges).
   void _onPoussidexFilterExternal() {
     final name = RootTabs.poussidexFilter.value;
     if (name == null || !mounted) return;
     AlbumFilter? next;
     switch (name) {
-      // 'tamassi' survit dans d'anciens tutos HTML : on retombe sur la
-      // collection plutôt que d'ignorer le lien.
+      // 'tamassi' a pu être écrit dans un signet ou un tuto d'une
+      // version antérieure : on retombe sur la collection plutôt que
+      // d'ignorer le lien. Vérifié le 31/10/2026 : aucun des 34 tutos
+      // embarqués n'utilise cette route — ils ne contiennent en tout
+      // que deux liens `kultiva://`, tous deux vers `home`.
       case 'tamassi':
       case 'collection':
       case 'plants':

@@ -23,7 +23,7 @@ class RootTabs extends StatefulWidget {
   /// les jours ; le catalogue, on le consulte.
   static final ValueNotifier<int> tabIndex = ValueNotifier<int>(0);
 
-  /// Sous-onglet Poussidex demandé par un deep-link ('tamassi',
+  /// Sous-onglet Poussidex demandé par un deep-link ('plants',
   /// 'challenges' ou 'badges'). `null` = pas de changement.
   static final ValueNotifier<String?> poussidexFilter =
       ValueNotifier<String?>(null);

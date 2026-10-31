@@ -13,6 +13,7 @@ import '../../widgets/jardins_intro_sheet.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import 'cahier/cahier_plants_section.dart';
+import 'cahier/cahier_season_recap.dart';
 import 'cahier/cahier_today_card.dart';
 import 'garden_planner_screen.dart';
 import 'garden_plan_config_sheet.dart';
@@ -89,6 +90,7 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
                   ),
               ],
               const CahierPlantsSection(),
+              const CahierSeasonRecap(),
             ],
           );
         },
