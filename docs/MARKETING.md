@@ -1,6 +1,6 @@
 # MARKETING — plan marketing & rémunération
 
-Mis à jour le 28 octobre 2026. Compagnon de `INFRA.md` : là où INFRA répertorie
+Mis à jour le 31 octobre 2026. Compagnon de `INFRA.md` : là où INFRA répertorie
 la technique, ce fichier suit la stratégie marketing et de rémunération.
 Pour l'actualiser : relancer le même prompt.
 
@@ -19,14 +19,15 @@ Pour l'actualiser : relancer le même prompt.
 ## Rémunération par phases
 
 - [fait] **Aujourd'hui** : app gratuite, rémunérée par l'affiliation Amazon en France. Les liens avaient été retirés le 20 octobre 2026 (tag rattaché au compte fermé par Amazon le 18 octobre) ; ils sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`.
-- [en cours] **Relance et lancement** : Jean a décidé le 30 octobre 2026 que Kultiva repart (le projet était en pause) ; reste à publier — d'abord garnir une installation pour les captures. Le backend, en pause, n'est plus utilisé et ne bloque rien. La piste de vidéo récompensée AdMob est sans objet : elle reposait sur l'XP du Tamassi, supprimé le 31 octobre 2026.
+- [en cours] **Relance et lancement** : le projet est en pause (choix de Jean) ; décider s'il repart, puis publier — d'abord garnir une installation pour les captures. L'app n'a plus de backend depuis le 30 octobre 2026, rien de ce côté ne bloque. La piste de vidéo récompensée AdMob est sans objet : elle reposait sur l'XP du Tamassi, supprimé le 31 octobre 2026.
 - **Affiliation** : en place depuis le 30 octobre 2026, France seulement (Amazon ne livre pas en Afrique de l'Ouest). Changer de compte = changer une constante.
 - **Rétention prouvée** : abonnement Kultiva Plus via RevenueCat (jardins illimités, export PDF), France d'abord.
 - **Afrique de l'Ouest** : sponsoring par des ONG et programmes agricoles qui financent la diffusion de conseils.
 
 Statut DSA : « trader » dans l'UE, décidé le 24 août 2026 à cause des
-liens d'affiliation ; ces liens ont été retirés le 20 octobre 2026, la
-décision est donc à revoir avant la soumission. Écarté pour l'instant : bannières et interstitiels, vente de biens
+liens d'affiliation ; retirés le 20 octobre 2026, ces liens sont revenus
+le 30 octobre 2026 : le statut de trader s'applique de nouveau, à déclarer
+à la soumission. Écarté pour l'instant : bannières et interstitiels, vente de biens
 physiques, dons.
 
 ## Points forts
@@ -78,5 +79,5 @@ n'est branché (Sentry ne suit que les crashs).
 ## Les 3 priorités
 
 - Garnir une installation pour les captures (2-3 plants, une photo, un jardin dessiné) : il n'y a plus de compte de démonstration à créer.
-- Compléter la fiche App Store déjà créée (adresses de `kultiva.toakeur.com` et `kultiva@toakeur.com`, captures, statut de trader DSA à trancher), puis soumettre. La clé de localisation réclamée par Apple a été ajoutée le 30 octobre 2026.
+- Compléter la fiche App Store déjà créée (adresses de `kultiva.toakeur.com` et `kultiva@toakeur.com`, captures, déclaration de trader DSA), puis soumettre le build 134 déjà en TestFlight.
 - Créer la fiche Google Play et lancer tout de suite le test fermé (douze testeurs pendant quatorze jours si le compte est personnel).

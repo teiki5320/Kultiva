@@ -17,9 +17,9 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 - 🏅 **Défis photo** : 50 défis, 50 badges et médailles bronze / argent / or (les photos restent privées)
 - 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et compagnon kawaii adaptés à un usage en famille
 - 🎓 **33 tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
-- ☁️ **Synchronisation Supabase facultative** (auth Google/Apple, sync plantations, badges, photos)
+- 📴 **Aucun compte, aucun serveur** : tout reste sur l'appareil (comptes et synchronisation Supabase retirés le 30 octobre 2026)
 
-L'app est **local-first** : tout fonctionne sans connexion. La synchro cloud est en arrière-plan, jamais bloquante.
+L'app est **local-first** : tout fonctionne sans connexion.
 
 ## 🌍 Régions supportées
 
@@ -32,11 +32,11 @@ Le choix se fait au premier lancement et peut être modifié à tout moment dans
 
 - **Flutter ≥ 3.47** / **Dart ^3.5** (canal stable) — borne relevée le
   30 octobre 2026 ; sous 3.41.6 le service PDF ne compile plus
-- **Supabase** (auth + Postgres + Storage) pour la sync cloud optionnelle
+- **Aucun backend** depuis le 30 octobre 2026 (Supabase n'est plus utilisé)
 - **Open-Meteo** pour la météo (gratuit, sans clé)
 - Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`
-- **Auth** : email/password, Google Sign-In, Apple Sign-In
-- **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), Apple Sign-In, URL scheme Google
+- **Auth** : aucune (comptes retirés le 30 octobre 2026)
+- **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`)
 - **Android** : Gradle 8.14, signing release via `key.properties`, core library desugaring activé
 
 ## 🚀 Démarrage rapide
