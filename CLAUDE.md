@@ -765,7 +765,31 @@ Règles spécifiques au projet pour être efficace dès la première action :
     réécrites, et les décomptes de caractères recalculés sur le texte
     réel (sept étaient déjà faux avant).
 
-13. **Le tuto animé du dashboard est périmé** —
+13. **Quatre médaillons de badge contredisent leur badge** — les 50
+    identifiants ont été conservés lors de la réécriture du
+    31/10/2026, et donc les 50 images, nommées d'après eux. La
+    plupart tombent juste par chance (une pousse pour « 5 plants »,
+    une licorne pour « rare »), mais quatre montrent explicitement la
+    créature supprimée ou un objet sans rapport. Vérifié image par
+    image le 31/10 :
+
+    | id | ce que montre l'image | ce que dit le badge |
+    | --- | --- | --- |
+    | `first_visit` | deux créatures qui se saluent | « Créer ton premier jardin » |
+    | `visits_5` | cinq créatures en rang | « Planter 5 espèces différentes » |
+    | `visits_10` | une foule de créatures | « Créer 3 jardins » |
+    | `pet_20` | un cœur rose | « 10 photos de plants » |
+
+    Quatre autres sont discutables sans être faux : `first_pet`
+    (main + cœur → « mettre en favori », le cœur sauve la mise),
+    `first_fertilize`, `fertilize_20` et `fertilize_100` (sacs
+    d'engrais → cases de potager carré).
+
+    Régénérables en une planche OpenArt, **42 crédits** — à demander à
+    Jean avant de dépenser (règle permanente). Garder les noms de
+    fichiers : `assets/images/badges/<id>.webp`.
+
+14. **Le tuto animé du dashboard est périmé** —
     `assets/tutos/decouvrir_dashboard.html` est une timeline GSAP de
     dix scènes posée sur dix captures d'écran réelles
     (`assets/tutos/screens/dashboard/`, prises le 22/08/2026). Les
