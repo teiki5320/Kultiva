@@ -54,3 +54,9 @@ android/key.properties
 
 # Cache local de la CLI Supabase (project-ref, sessions)
 supabase/.temp/
+
+# Aperçus golden jetables : ils servent à regarder un écran faute de
+# simulateur, mais leur comparaison échoue en CI (rendu différent).
+test/_apercu/
+test/_apercu_temp_test.dart
+test/failures/

@@ -190,8 +190,8 @@ des boutiques une fois l'app publiée.
 ## Backend · aucun (décision du 30 octobre 2026)
 
 **L'app ne contacte plus aucun serveur.** Les comptes ont été retirés de
-la v1 : le jardin, les photos, les badges et la créature vivent
-uniquement sur l'appareil. Les deux seuls appels sortants sont Open-Meteo
+la v1 : le jardin, les photos et les badges vivent uniquement sur
+l'appareil. Les deux seuls appels sortants sont Open-Meteo
 (météo, sans clé) et Sentry (plantages).
 
 Le motif est factuel : le plan Supabase gratuit met en pause tout projet

@@ -8,18 +8,17 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 
 ## ✨ Ce qu'on y trouve
 
-- 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région
+- 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
-- 📓 **Mes jardins** : potager carré multi-jardins, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), conseils contextuels selon la météo
+- 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
 - 📖 **Poussidex** : ta collection chronologique des plants en photos, avec notes, historique d'arrosage et compteur de récoltes
-- 📔 **Cahier de culture** : potager carré multi-jardins, placement par glisser-déposer, suivi par plant (arrosage, phase de croissance, photos)
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
 - 🏅 **Défis photo** : 50 défis, 50 badges et médailles bronze / argent / or (les photos restent privées)
-- 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et compagnon kawaii adaptés à un usage en famille
+- 👨‍👩‍👧 **Pensé parent-enfant** : tutoriels, défis et badges adaptés à un usage en famille
 - 🎓 **33 tutoriels HTML embarqués**, lexique technique, guide des maladies et compagnonnage
 - 📴 **Aucun compte, aucun serveur** : tout reste sur l'appareil (comptes et synchronisation Supabase retirés le 30 octobre 2026)
 
-L'app est **local-first** : tout fonctionne sans connexion.
+L'app est **locale** : aucun compte, aucun serveur, rien ne quitte le téléphone. Les deux seuls appels sortants sont Open-Meteo (météo) et Sentry (plantages), tous deux non bloquants.
 
 ## 🌍 Régions supportées
 
@@ -32,8 +31,10 @@ Le choix se fait au premier lancement et peut être modifié à tout moment dans
 
 - **Flutter ≥ 3.47** / **Dart ^3.5** (canal stable) — borne relevée le
   30 octobre 2026 ; sous 3.41.6 le service PDF ne compile plus
-- **Aucun backend** depuis le 30 octobre 2026 (Supabase n'est plus utilisé)
+- **Aucun backend** depuis le 30 octobre 2026 : les comptes ont été
+  retirés de la v1, avec Supabase, Google Sign-In et Apple Sign-In
 - **Open-Meteo** pour la météo (gratuit, sans clé)
+- **Sentry** pour les plantages — le seul autre appel sortant
 - Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`
 - **Auth** : aucune (comptes retirés le 30 octobre 2026)
 - **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`)
@@ -88,8 +89,8 @@ Voir **`CLAUDE.md`** à la racine pour le détail :
 
 - arborescence complète de `lib/`
 - conventions de code (state via `ValueNotifier`, pas de Provider/Riverpod)
-- contrat local-first
-- migrations Supabase
+- contrat local-only (aucun réseau bloquant)
+- migrations Supabase, conservées à titre d'historique seulement
 - pièges à éviter (versions pinées, assets à déclarer dans `pubspec.yaml`…)
 
 Le **catalogue d'espèces** vit entièrement dans l'app. Source de vérité : `lib/data/vegetables_base.dart` (169 entrées : 130 cultures + 39 accessoires).

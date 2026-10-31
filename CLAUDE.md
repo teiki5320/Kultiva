@@ -103,11 +103,12 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 ```
 Kultiva/
-├── lib/                    # Code Dart principal (~31 480 LoC sur 93 fichiers)
+├── lib/                    # Code Dart principal (32 093 LoC sur 100 fichiers,
+│                           # mesuré le 31/10/2026)
 │   ├── main.dart           # Bootstrap : onboarding → tabs
 │   ├── config/
 │   │   └── app_info.dart           # version affichée (à synchroniser avec pubspec)
-│   ├── screens/            # 28 fichiers (dont my_garden/ découpé en 3)
+│   ├── screens/            # 33 fichiers
 │   │   ├── onboarding_screen.dart
 │   │   ├── root_tabs.dart          # Conteneur 4 onglets (Bottom nav)
 │   │   ├── vegetable_detail_screen.dart
@@ -117,11 +118,14 @@ Kultiva/
 │   │                               # garden_planner, mes_jardins,
 │   │                               # garden_plan_config_sheet,
 │   │                               # my_garden/ (garden_header),
+│   │                               # cahier/ (today_card, plants_section),
 │   │                               # garden_planner/ (screen +
 │   │                               # planner_cell / _advice / _plants,
 │   │                               # planner_widgets = point d'entrée),
-│   │                               # poussidex/* (7 fichiers)
-│   ├── models/             # 12 fichiers
+│   │                               # poussidex/* (9 fichiers, dont
+│   │                               # plantation_sheet = le seul point
+│   │                               # d'entrée du dossier d'un plant)
+│   ├── models/             # 11 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
 │   │                       # country (pays + zone climatique),
 │   │                       # region_data, culture_entry, garden_plan,
@@ -135,7 +139,7 @@ Kultiva/
 │   │                       # watering_advisor, pdf, garden_stats,
 │   │                       # plantation_migration, culture, garden_plan,
 │   │                       # review
-│   ├── data/               # 9 fichiers — 6 320 LoC
+│   ├── data/               # 11 fichiers
 │   │   ├── vegetables_base.dart    # 169 entrées (130 cultures + 39 accessoires)
 │   │   ├── badges.dart (50) / challenges.dart (50) / diseases.dart
 │   │   ├── companions.dart / rotation.dart / lexicon.dart
@@ -146,27 +150,28 @@ Kultiva/
 │   │                         # regional_calendar.dart (sélecteur zone-aware)
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
-│   ├── widgets/            # 14 fichiers
-│   │                       # plant_creature (55 Ko), badge_card (34 Ko),
+│   ├── widgets/            # 13 fichiers
+│   │                       # badge_card (1 090 lignes), readable_width,
 │   │                       # petal_animation, season_header, share_card,
 │   │                       # challenge_story_card, garden_tutorial_sheet,
 │   │                       # jardins_intro_sheet, lexicon_text, medal_badge,
 │   │                       # plantation_photo,
 │   │                       # vegetable_card, camera_permission_dialog
-│   └── utils/              # 7 fichiers
-│                           # category_colors, months, phenology,
+│   └── utils/              # 9 fichiers
+│                           # category_colors, months (dont
+│                           # monthRangesLabel), phenology, climate,
 │                           # text_scale (hauteurs qui suivent la police),
-│                           # companion_status, heatwave_tips,
-│                           # rotation_advisor
+│                           # text_normalize, companion_status,
+│                           # heatwave_tips, rotation_advisor
 ├── supabase/
 │   └── migrations/         # 001 → 016 : historique du schéma, plus
 │                           # utilisé par l'app (aucun backend)
 ├── assets/
-│   ├── images/             # créatures (3 variantes, 35 images), badges (50),
+│   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
 │   │                       # app_icon
-│   ├── sounds/             # 8 fichiers (1 musique + 7 SFX)
+│   ├── sounds/             # 7 fichiers (1 musique + 6 SFX)
 │   └── tutos/              # 34 fichiers HTML (33 tutos + privacy) + screens/
 ├── .github/workflows/      # ci.yml, site.yml
 ├── docs/                   # INFRA (fiche technique), MARKETING (plan),
@@ -178,7 +183,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 26 fichiers — 280 tests
+├── test/                   # 31 fichiers — 4 062 LoC — 325 tests
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -409,6 +414,24 @@ pour l'Afrique de l'Ouest.
 
 Décisions et évolutions significatives :
 
+- **Suppression de Tamassi (31/10/2026)** : la créature virtuelle, ses
+  trois variantes, son XP, ses visiteurs et son rappel de 19 h sont
+  partis — 10 fichiers, 3,7 Mo d'images, −4 141 lignes. Les 50 badges
+  ont été réécrits sur des gestes de jardin (plants, arrosages,
+  récoltes, cases remplies) en **gardant leurs identifiants**, les
+  médaillons étant nommés d'après eux. `TamassiStats` est remplacé par
+  `GardenStats`, qui ne stocke rien et recalcule tout depuis les
+  services propriétaires de la donnée.
+- **Refonte du calendrier annuel (31/10/2026)** : le `DataTable` de
+  130 lignes sur 13 colonnes, qu'on faisait défiler latéralement,
+  devient une ligne pleine largeur par légume avec douze segments.
+  `monthRangesLabel()` (`lib/utils/months.dart`) compresse une liste de
+  mois en plages lisibles, séries à cheval sur le nouvel an comprises.
+- **Le cahier de culture répond au matin (31/10/2026)** : carte « à
+  faire aujourd'hui » (arrosages dus, récoltes mûres, canicule), aperçu
+  de la grille sur chaque carte de jardin, liste « au jardin en ce
+  moment ». `showPlantationSheet()` devient le point d'entrée unique du
+  dossier d'un plant, partagé avec le Poussidex.
 - **CI GitHub Actions** : `ci.yml` (analyze + test + builds Android sur
   push main et PR) et `site.yml` (publication de `landing/`).
 - **Cahier de culture pleine terre** (v5) : multi-jardins avec placement par
@@ -582,10 +605,11 @@ Règles spécifiques au projet pour être efficace dès la première action :
 2. ~~**L'`anonKey` Supabase est committée**~~ — sans objet depuis le
    retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
    est supprimé.
-3. **Fichiers volumineux restants** — mesurés le 30/10/2026 :
-   `plant_creature.dart` (1 838), `vegetable_detail_screen.dart`
-   (1 258). `vegetables_base.dart` (4 079)
-   est un fichier de données, il n'est pas concerné.
+3. **Fichiers volumineux restants** — mesurés le 31/10/2026 :
+   `vegetable_detail_screen.dart` (1 283), `badge_card.dart` (1 090),
+   `sow_screen.dart` (1 033). `vegetables_base.dart` (4 281) et
+   `west_africa.dart` (945) sont des fichiers de données, ils ne sont
+   pas concernés.
    `planner_widgets.dart` a été découpé le 30/10 en `planner_cell`,
    `planner_advice` et `planner_plants`, le fichier d'origine servant de
    point d'entrée. ⚠️ Les chiffres précédents (1 740 / 1 777) étaient
@@ -650,12 +674,20 @@ Règles spécifiques au projet pour être efficace dès la première action :
    avec l'arrosage d'un *plant*, qui lui n'avait aucun moyen d'être
    enregistré.
 
-   **Reste ouvert** : les trois modèles qui se recouvrent (`Plantation`,
-   `GardenPlanCell`, `CultureEntry`) pour « un légume planté à une date,
-   arrosé ces jours-ci ». `CultureEntry.linkedPlantationId` est toujours
-   écrite par `culture_service.dart` et lue nulle part. Un arrosage
-   saisi depuis « Mes jardins » (cahier de culture) et un arrosage saisi
-   depuis le Poussidex vivent encore dans deux registres séparés.
+   ⚠️ **Ce paragraphe disait faux (corrigé le 31/10/2026).** Il
+   annonçait que `CultureEntry.linkedPlantationId` était « écrite et
+   lue nulle part » et que les deux arrosages vivaient dans des
+   registres séparés. C'était vrai avant le 30/10 et plus après : le
+   même chantier a branché `CultureService.wateringsFor`, qui lit la
+   plantation liée, et `CultureService.water*`, qui délègue à
+   `PlantationService`. Un arrosage saisi depuis le potager carré et
+   un arrosage saisi depuis le Poussidex atterrissent au même endroit.
+   **Mesurer avant de citer**, ici comme pour les tailles de fichiers.
+
+   **Reste ouvert** : les trois modèles se recouvrent toujours
+   (`Plantation`, `PlannedCell`, `CultureEntry`) pour « un légume
+   planté à une date ». Ils ne divergent plus, mais trois classes pour
+   un concept, ça reste trois endroits où se tromper.
 
 7. ~~**Projet Supabase en pause**~~ — ✅ **SANS OBJET (30/10/2026)** :
    les comptes ont été retirés de la v1, l'app ne contacte plus aucun
@@ -701,8 +733,20 @@ Règles spécifiques au projet pour être efficace dès la première action :
    xcodebuild -downloadPlatform iOS
    ```
 
-   ⚠️ Environ 8 Go, et le disque n'avait que 13 Go libres le
-   30/10/2026 (94 % plein). À faire une fois de la place gagnée.
+   ⚠️ Environ 8 Go. Le disque n'avait que 13 Go libres le 30/10/2026
+   (94 % plein) ; il en avait 15 le 31/10 (45 %), et le
+   téléchargement a été lancé ce jour-là.
+
+   **En attendant, pour voir un écran sans appareil** : un test golden
+   rend n'importe quel widget en PNG, qu'on peut ensuite regarder.
+   Charger Nunito depuis `assets/google_fonts/` avec un `FontLoader`,
+   sinon tout le texte sort en rectangles ; les emoji et les icônes
+   Material sortent en rectangles de toute façon. Ne **pas** committer
+   un tel test : en CI, le rendu diffère et la comparaison échoue.
+   C'est comme ça qu'ont été trouvés le débordement de 15 px de la
+   légende du calendrier et l'aperçu de grille resté blanc (un
+   `DecoratedBox` sans enfant s'écrase à zéro sous une contrainte de
+   hauteur lâche).
 
 10. **Le build Android ne marche qu'avec le JDK d'Android Studio** —
     le `java` du PATH est un OpenJDK 25 (Homebrew) que Gradle 8.14 ne
@@ -716,17 +760,21 @@ Règles spécifiques au projet pour être efficace dès la première action :
     dépôt, dans `~/Dev/apps/kultiva-planches-sources/`. Le découpeur,
     lui, est versionné : `assets/images/vegetables_kawaii/_split.py`.
 
-9. **La fiche App Store et les fiches par pays parlent encore de
-   Tamassi** — 53 mentions au 31/10/2026 dans
-   `docs/FICHE_APP_STORE.md`, `docs/store-listings.md` et
-   `docs/v5-test-checklist.md`, dont une section entière de la fiche
-   ASC et les mots-clés. À réécrire avant toute soumission : l'app ne
-   contient plus la créature.
+12. ~~**La fiche App Store et les fiches par pays parlent encore de
+    Tamassi**~~ — ✅ **FAIT (31/10/2026)** : les 53 mentions sont
+    réécrites, et les décomptes de caractères recalculés sur le texte
+    réel (sept étaient déjà faux avant).
 
-10. **Le tuto animé du dashboard est périmé** —
-    `assets/tutos/decouvrir_dashboard.html` montre l'ancienne barre
-    d'onglets et une scène « Poussidex Tamassi » avec sa capture
-    d'écran. Il faut le refaire, captures comprises.
+13. **Le tuto animé du dashboard est périmé** —
+    `assets/tutos/decouvrir_dashboard.html` est une timeline GSAP de
+    dix scènes posée sur dix captures d'écran réelles
+    (`assets/tutos/screens/dashboard/`, prises le 22/08/2026). Les
+    captures montrent l'ancienne barre d'onglets, et trois scènes
+    visent un onglet Poussidex qui n'est plus dans la barre — dont une
+    « Poussidex Tamassi ». **Bloqué sur les captures** : il faut un
+    simulateur ou un appareil, et les rendus golden ne conviennent pas
+    (ni emoji ni icônes Material). À refaire dès que le runtime iOS
+    est installé.
 
 ## Fiches à jour à chaque changement (règle de Jean, 22 octobre 2026)
 
