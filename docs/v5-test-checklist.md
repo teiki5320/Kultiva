@@ -46,7 +46,11 @@
 - [ ] Replanter une autre Solanacée (aubergine) après tomate → même alerte (famille)
 
 ### Récap saison PDF
-- [ ] CTA « Récap saison 2026 » accessible (visible si au moins une culture terminée)
+> Le bouton n'a été branché que le 31/10/2026 : `printSeasonRecap`
+> existait depuis six mois sans être appelée nulle part.
+
+- [ ] CTA « Récap de la saison 2026 » en bas du cahier de culture
+      (visible dès qu'une culture a démarré cette année, absent sinon)
 - [ ] Tap → ouverture du viewer PDF natif
 - [ ] PDF contient stats cultures, arrosages, top légumes, détail chronologique
 - [ ] Export possible (partager, imprimer, sauvegarder)
