@@ -91,11 +91,7 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
   }
 
   /// Température max prévue aujourd'hui, si la météo a répondu.
-  double? get _todayMax {
-    final w = _weather;
-    if (w == null || w.dailyTempMax.isEmpty) return null;
-    return w.dailyTempMax.first;
-  }
+  double? get _todayMax => _weather?.tempMaxToday;
 
   bool get _heatwave {
     final max = _todayMax;
@@ -124,7 +120,9 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
         duration: const Duration(seconds: 2),
       ),
     );
-    await _refresh();
+    // Pas de `_refresh()` ici : `waterMany` notifie le service, et
+    // l'écouteur posé dans `initState` s'en charge. L'appeler aussi
+    // relançait une deuxième requête météo pour rien.
   }
 
   @override

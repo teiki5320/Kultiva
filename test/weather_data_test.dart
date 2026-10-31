@@ -25,6 +25,45 @@ void main() {
         dailyTempMin: List<double>.filled(precipitation.length, 14),
       );
 
+  WeatherData avecTemperatures(List<double> tmax) => WeatherData(
+        latitude: 48.8566,
+        longitude: 2.3522,
+        currentTemp: 20,
+        currentWeatherCode: 0,
+        dailyPrecipitation: List<double>.filled(tmax.length, 0),
+        dailyDates: List<String>.generate(
+          tmax.length,
+          (i) => '2026-06-${(i + 1).toString().padLeft(2, '0')}',
+        ),
+        dailyTempMax: tmax,
+        dailyTempMin: List<double>.filled(tmax.length, 14),
+      );
+
+  group('todayIndex', () {
+    test('aujourd\'hui est le huitième jour de la série', () {
+      // 7 jours passés, aujourd'hui, 7 à venir.
+      expect(avecTemperatures(List<double>.filled(15, 20)).todayIndex, 7);
+    });
+
+    test('une série courte retombe sur son dernier jour', () {
+      expect(avecTemperatures(List<double>.filled(3, 20)).todayIndex, 2);
+    });
+
+    test('tempMaxToday lit aujourd\'hui, pas la semaine dernière', () {
+      // La carte « à faire aujourd'hui » lisait `dailyTempMax.first`,
+      // c'est-à-dire la température d'il y a sept jours : l'alerte
+      // canicule se déclenchait sur la météo de la semaine passée.
+      final tmax = List<double>.filled(15, 18.0);
+      tmax[0] = 41.0; // il y a une semaine
+      tmax[7] = 24.0; // aujourd'hui
+      expect(avecTemperatures(tmax).tempMaxToday, 24.0);
+    });
+
+    test('tempMaxToday vaut null sur une série vide', () {
+      expect(avecTemperatures(<double>[]).tempMaxToday, isNull);
+    });
+  });
+
   group('consecutiveDryDays', () {
     test('série entièrement sèche : compte aujourd\'hui et les 7 passés', () {
       // 8 jours secs jusqu'à aujourd'hui inclus (index 0 à 7).

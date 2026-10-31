@@ -254,15 +254,18 @@ class NotificationService {
 
       final tmaxList = weather.dailyTempMax;
       if (tmaxList.length < 9) return;
-      // Index 7 = aujourd'hui ; on regarde aujourd'hui + 3 jours.
+      // On regarde aujourd'hui + 3 jours.
       // Seuil régional : 30 °C en France, 40 °C en Afrique de l'Ouest
       // (sinon l'alerte sonnerait tous les jours de saison sèche).
       final threshold =
           heatwaveThresholdFor(PrefsService.instance.region.value);
+      final aujourdhui = weather.todayIndex;
       var hotStreak = 0;
       var maxStreak = 0;
       var peak = 0.0;
-      for (var i = 7; i <= 10 && i < tmaxList.length; i++) {
+      for (var i = aujourdhui;
+          i <= aujourdhui + 3 && i < tmaxList.length;
+          i++) {
         final t = tmaxList[i];
         if (t > peak) peak = t;
         if (t >= threshold) {

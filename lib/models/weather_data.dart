@@ -44,12 +44,28 @@ class WeatherData {
     this.locationName,
   });
 
+  /// Position d'aujourd'hui dans les listes journalières.
+  ///
+  /// Open-Meteo renvoie 15 jours : 7 passés, aujourd'hui, 7 à venir.
+  /// **Index 0 est donc la semaine dernière, pas aujourd'hui** — un
+  /// `.first` sur `dailyTempMax` donne la température d'il y a sept
+  /// jours. Le calcul était recopié à deux endroits et un troisième
+  /// appelant s'y est trompé ; il vit ici désormais.
+  int get todayIndex =>
+      dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
+
+  /// Température maximale prévue aujourd'hui, ou null si la série est
+  /// trop courte.
+  double? get tempMaxToday {
+    final i = todayIndex;
+    if (i < 0 || i >= dailyTempMax.length) return null;
+    return dailyTempMax[i];
+  }
+
   /// Nombre de jours consécutifs sans pluie significative (< 1 mm)
   /// en comptant depuis aujourd'hui vers le passé.
   int get consecutiveDryDays {
-    // Index 7 = aujourd'hui dans la liste de 15 jours (7 passés + aujourd'hui + 7 futurs)
-    final todayIndex =
-        dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
+    final todayIndex = this.todayIndex;
     int count = 0;
     for (int i = todayIndex; i >= 0; i--) {
       if (dailyPrecipitation[i] < 1.0) {
@@ -63,8 +79,7 @@ class WeatherData {
 
   /// Pluie prévue dans les 3 prochains jours (mm cumulés).
   double get rainNext3Days {
-    final todayIndex =
-        dailyPrecipitation.length > 7 ? 7 : dailyPrecipitation.length - 1;
+    final todayIndex = this.todayIndex;
     double sum = 0;
     for (int i = todayIndex + 1;
         i <= todayIndex + 3 && i < dailyPrecipitation.length;
