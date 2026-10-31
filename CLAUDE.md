@@ -723,19 +723,29 @@ Règles spécifiques au projet pour être efficace dès la première action :
    — le Worker n'a alors qu'à vérifier le jeton d'identité, sans jamais
    manipuler de mot de passe.
 
-9. **Le runtime iOS n'est pas installé sur ce Mac** — `xcrun simctl
-   list runtimes` ne renvoie rien, donc aucun simulateur ne démarre et
-   personne n'a encore **vu l'iPad tourner** depuis que la rotation a
-   été rendue aux tablettes (30/10/2026). Le SDK est là, le runtime
-   non. Pour l'installer :
+9. **On peut lancer l'app sur simulateur, mais pas la voir** —
+   ⚠️ mis à jour le 31/10/2026. Le runtime **iOS 27.1 est désormais
+   installé** (`xcodebuild -downloadPlatform iOS`, ~8 Go, environ une
+   heure). Le device `iPhone Duo` démarre, `flutter build ios
+   --simulator --debug` passe en 68 s, l'app s'installe, se lance et
+   tourne sans la moindre exception Flutter dans `log stream`.
 
-   ```bash
-   xcodebuild -downloadPlatform iOS
-   ```
+   **Mais toutes les captures sortent noires.** Ce n'est pas un bug de
+   l'app : l'écran d'accueil du simulateur est noir lui aussi, d'une
+   seule couleur. La cause est que **`Simulator.app` est absent de
+   cette installation de Xcode** — `/Applications/Xcode.app/Contents/
+   Developer/Applications/` n'existe pas, et Xcode.app ne pèse que
+   3,9 Go au lieu d'une quinzaine. Sans l'interface, le framebuffer
+   n'est piloté par personne et `simctl io screenshot` ne rend rien.
 
-   ⚠️ Environ 8 Go. Le disque n'avait que 13 Go libres le 30/10/2026
-   (94 % plein) ; il en avait 15 le 31/10 (45 %), et le
-   téléchargement a été lancé ce jour-là.
+   Donc : personne n'a toujours **vu l'iPad tourner**, et les captures
+   d'écran (tuto du dashboard, fiches stores) restent bloquées. Pour
+   débloquer, réinstaller Xcode complet depuis l'App Store.
+
+   ⚠️ **Le disque.** Un build iOS debug laisse 4,3 Go dans `build/` et
+   1,5 Go dans `~/Library/Developer/Xcode/DerivedData`. Le 31/10, il
+   est descendu à 3,9 Go libres ; `flutter clean` l'a remonté à 9 Go.
+   Penser à nettoyer après un build iOS, puis `flutter pub get`.
 
    **En attendant, pour voir un écran sans appareil** : un test golden
    rend n'importe quel widget en PNG, qu'on peut ensuite regarder.
