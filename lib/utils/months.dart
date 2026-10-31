@@ -65,3 +65,35 @@ const List<String> monthNamesLongCap = <String>[
   'Novembre',
   'Décembre',
 ];
+
+/// Transforme une liste de mois en phrase lisible.
+///
+/// `[3, 4, 5]` → « de mars à mai », `[3, 5]` → « mars et mai »,
+/// `[11, 12, 1]` → « de novembre à janvier » : les séries qui
+/// enjambent le nouvel an comptent pour une, ce qui arrive tout le
+/// temps en Afrique de l'Ouest où la saison sèche traverse décembre.
+///
+/// Sert aux lecteurs d'écran, qui ne voient pas les segments colorés
+/// du calendrier annuel, et aux fiches qui résument un cycle.
+String monthRangesLabel(Iterable<int> months) {
+  final set = months.where((m) => m >= 1 && m <= 12).toSet();
+  if (set.isEmpty) return '';
+  if (set.length == 12) return "toute l'année";
+  int precedent(int m) => m == 1 ? 12 : m - 1;
+  int suivant(int m) => m == 12 ? 1 : m + 1;
+  // Un début de série est un mois dont le précédent manque.
+  final debuts = set.where((m) => !set.contains(precedent(m))).toList()..sort();
+  final morceaux = <String>[];
+  for (final debut in debuts) {
+    var fin = debut;
+    while (set.contains(suivant(fin))) {
+      fin = suivant(fin);
+    }
+    morceaux.add(debut == fin
+        ? monthNamesLong[debut - 1]
+        : 'de ${monthNamesLong[debut - 1]} à ${monthNamesLong[fin - 1]}');
+  }
+  if (morceaux.length == 1) return morceaux.first;
+  final tete = morceaux.sublist(0, morceaux.length - 1).join(', ');
+  return '$tete et ${morceaux.last}';
+}

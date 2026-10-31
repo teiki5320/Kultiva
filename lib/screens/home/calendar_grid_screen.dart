@@ -12,8 +12,14 @@ import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
 
-/// Vue calendrier annuel — grille 12 mois × tous les légumes de la région.
-/// Vert = mois de semis, orange = mois de récolte.
+/// Vue calendrier annuel — une ligne par légume, douze segments.
+///
+/// C'était un tableau de 130 lignes sur 12 colonnes qu'on faisait
+/// défiler latéralement : sur un téléphone on voyait quatre mois, et
+/// il fallait garder en tête le nom du légume parti hors écran à
+/// gauche. Depuis le 31/10/2026, chaque légume occupe une ligne
+/// pleine largeur — son nom au-dessus, son année en dessous sous
+/// forme de barre de douze segments. Plus rien ne défile de côté.
 class CalendarGridScreen extends StatefulWidget {
   const CalendarGridScreen({super.key});
 
@@ -22,25 +28,23 @@ class CalendarGridScreen extends StatefulWidget {
 }
 
 class _CalendarGridScreenState extends State<CalendarGridScreen> {
-  static const List<String> _shortMonths = monthNamesShortCap;
-  static const List<String> _fullMonths = monthNamesLongCap;
-
   /// Filtre actif — null = tout afficher, sinon ne montre que les légumes
   /// avec une activité (semis ou récolte) durant ce mois.
   int? _filterMonth;
 
-  /// Ce qui se passe pour ce légume à ce mois-là, en mots.
+  /// L'année d'un légume en une phrase, pour les lecteurs d'écran.
   ///
-  /// Une case de la grille est un carré de couleur : vert pour un
-  /// semis, orange pour une récolte, les deux en dégradé. Rien de
-  /// cela n'existe pour un lecteur d'écran, d'où cette phrase.
-  static String _cellActivity(RegionData rd, int month) {
-    final sow = rd.sowingMonths.contains(month);
-    final harvest = rd.harvestMonths.contains(month);
-    if (sow && harvest) return 'semis et récolte';
-    if (sow) return 'semis';
-    if (harvest) return 'récolte';
-    return 'rien à faire';
+  /// Une barre de douze segments colorés n'existe pas pour VoiceOver.
+  /// L'ancienne grille donnait douze cases dont la plupart disaient
+  /// « rien à faire » : on résume la ligne entière à la place.
+  static String _rowSummary(Vegetable veg, RegionData rd) {
+    final parts = <String>[];
+    final semis = monthRangesLabel(rd.sowingMonths);
+    final recolte = monthRangesLabel(rd.harvestMonths);
+    if (semis.isNotEmpty) parts.add('semis $semis');
+    if (recolte.isNotEmpty) parts.add('récolte $recolte');
+    if (parts.isEmpty) return '${veg.name} : aucune période connue';
+    return '${veg.name} : ${parts.join(', ')}';
   }
 
   void _openVegetable(Vegetable v) {
@@ -49,6 +53,10 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
         builder: (_) => VegetableDetailScreen(vegetable: v),
       ),
     );
+  }
+
+  void _toggleMonth(int month) {
+    setState(() => _filterMonth = _filterMonth == month ? null : month);
   }
 
   @override
@@ -148,153 +156,103 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                     const SizedBox(width: 16),
                     const _LegendItem(
                         color: KultivaColors.terracotta, label: 'Récolte'),
-                    const Spacer(),
-                    if (_filterMonth != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: KultivaColors.primaryGreen
-                              .withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '${_fullMonths[_filterMonth! - 1]} (${entries.length})',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            color: KultivaColors.primaryGreen,
-                          ),
-                        ),
-                      )
-                    else
-                      const Text(
-                        '💡 Tap mois = filtre · Tap case = fiche',
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: KultivaColors.textSecondary,
-                        ),
-                      ),
+                    const SizedBox(width: 12),
+                    const _LegendItem(
+                      color: KultivaColors.primaryGreen,
+                      secondColor: KultivaColors.terracotta,
+                      label: 'Les deux',
+                    ),
+                    const SizedBox(width: 12),
+                    // `Expanded` et pas `Spacer` : sur un iPhone SE à
+                    // grosse police, la légende et l'astuce ne tiennent
+                    // pas sur 320 pt, et un `Row` qui déborde est une
+                    // barre jaune en travers de l'écran.
+                    Expanded(
+                      child: _filterMonth != null
+                          ? Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: KultivaColors.primaryGreen
+                                      .withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '${monthNamesLongCap[_filterMonth! - 1]} '
+                                  '(${entries.length})',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                    color: KultivaColors.primaryGreen,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const Text(
+                              '💡 Tap mois = filtre',
+                              textAlign: TextAlign.right,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: KultivaColors.textSecondary,
+                              ),
+                            ),
+                    ),
                   ],
                 ),
               ),
-              // Grille.
+              _MonthHeader(
+                currentMonth: now,
+                filterMonth: _filterMonth,
+                onTapMonth: _toggleMonth,
+              ),
               Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: SingleChildScrollView(
-                    child: DataTable(
-                      headingRowHeight: 44,
-                      dataRowMinHeight: 36,
-                      dataRowMaxHeight: 36,
-                      columnSpacing: 0,
-                      horizontalMargin: 8,
-                      columns: [
-                        const DataColumn(
-                          label: SizedBox(
-                            width: 120,
-                            child: Text('Légume',
-                                style: TextStyle(fontWeight: FontWeight.w800)),
+                child: entries.isEmpty
+                    ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(32),
+                          child: Text(
+                            "Rien à semer ni à récolter ce mois-ci dans ta "
+                            'région.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: KultivaColors.textSecondary,
+                                fontSize: 13),
                           ),
                         ),
-                        for (int m = 0; m < 12; m++)
-                          DataColumn(
-                            label: Semantics(
-                              label: _fullMonths[m],
-                              hint: 'Filtre la grille sur ce mois',
-                              button: true,
-                              selected: _filterMonth == m + 1,
-                              excludeSemantics: true,
-                              child: GestureDetector(
-                                onTap: () => setState(() {
-                                  _filterMonth =
-                                      _filterMonth == m + 1 ? null : m + 1;
-                                }),
-                                child: Container(
-                                  width: 42,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 4, horizontal: 4),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: _filterMonth == m + 1
-                                        ? KultivaColors.primaryGreen
-                                            .withValues(alpha: 0.2)
-                                        : null,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    _shortMonths[m],
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w800,
-                                      color: m + 1 == now
-                                          ? KultivaColors.primaryGreen
-                                          : null,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                      )
+                    : Stack(
+                        children: [
+                          // Colonne du mois en cours, derrière la liste :
+                          // elle apparaît entre les lignes et sous les
+                          // noms, et situe l'instant présent dans l'année.
+                          Positioned.fill(
+                            child: IgnorePointer(
+                              child: _CurrentMonthColumn(month: now),
                             ),
                           ),
-                      ],
-                      rows: entries.map((rd) {
-                        final veg = vegetablesBase
-                            .where((v) => v.id == rd.vegetableId)
-                            .firstOrNull;
-                        if (veg == null) return const DataRow(cells: []);
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              Semantics(
-                                label: veg.name,
-                                hint: 'Ouvre sa fiche',
-                                button: true,
-                                child: GestureDetector(
-                                  onTap: () => _openVegetable(veg),
-                                  child: SizedBox(
-                                    width: 120,
-                                    child: Text(
-                                      '${veg.emoji} ${veg.name}',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: KultivaColors.primaryGreen,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: KultivaColors
-                                            .primaryGreen
-                                            .withValues(alpha: 0.3),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            for (int m = 1; m <= 12; m++)
-                              DataCell(
-                                Center(
-                                  child: Semantics(
-                                    label:
-                                        '${veg.name}, ${_fullMonths[m - 1]} : '
-                                        '${_cellActivity(rd, m)}',
-                                    button: true,
-                                    excludeSemantics: true,
-                                    child: GestureDetector(
-                                      onTap: () => _openVegetable(veg),
-                                      child: _MonthCell(
-                                        isSow: rd.sowingMonths.contains(m),
-                                        isHarvest: rd.harvestMonths.contains(m),
-                                        isCurrentMonth: m == now,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
+                          ListView.builder(
+                            padding: const EdgeInsets.only(top: 4, bottom: 24),
+                            itemCount: entries.length,
+                            itemBuilder: (context, i) {
+                              final rd = entries[i];
+                              final veg = vegetablesBase
+                                  .where((v) => v.id == rd.vegetableId)
+                                  .firstOrNull;
+                              if (veg == null) return const SizedBox.shrink();
+                              return _VegetableYearRow(
+                                vegetable: veg,
+                                data: rd,
+                                summary: _rowSummary(veg, rd),
+                                onTap: () => _openVegetable(veg),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
               ),
             ],
           ),
@@ -304,10 +262,227 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
   }
 }
 
+/// Les douze initiales de mois, alignées sur les barres en dessous.
+///
+/// Reste en haut quand la liste défile : c'est la seule chose qui dit
+/// à quel mois correspond un segment.
+class _MonthHeader extends StatelessWidget {
+  final int currentMonth;
+  final int? filterMonth;
+  final ValueChanged<int> onTapMonth;
+
+  const _MonthHeader({
+    required this.currentMonth,
+    required this.filterMonth,
+    required this.onTapMonth,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Row(
+        children: <Widget>[
+          for (int m = 1; m <= 12; m++)
+            Expanded(
+              child: Semantics(
+                label: monthNamesLongCap[m - 1],
+                hint: 'Filtre le calendrier sur ce mois',
+                button: true,
+                selected: filterMonth == m,
+                excludeSemantics: true,
+                child: GestureDetector(
+                  onTap: () => onTapMonth(m),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 1),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: filterMonth == m
+                          ? KultivaColors.primaryGreen.withValues(alpha: 0.2)
+                          : null,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      monthNamesShortCap[m - 1].substring(0, 1),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: m == currentMonth
+                            ? KultivaColors.primaryGreen
+                            : KultivaColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Bande verticale translucide sur la colonne du mois en cours.
+class _CurrentMonthColumn extends StatelessWidget {
+  final int month;
+  const _CurrentMonthColumn({required this.month});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: <Widget>[
+          for (int m = 1; m <= 12; m++)
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 1),
+                color: m == month
+                    ? KultivaColors.primaryGreen.withValues(alpha: 0.08)
+                    : null,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Un légume et son année : le nom, puis douze segments.
+class _VegetableYearRow extends StatelessWidget {
+  final Vegetable vegetable;
+  final RegionData data;
+  final String summary;
+  final VoidCallback onTap;
+
+  const _VegetableYearRow({
+    required this.vegetable,
+    required this.data,
+    required this.summary,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: summary,
+      hint: 'Ouvre sa fiche',
+      button: true,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(vegetable.emoji, style: const TextStyle(fontSize: 14)),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      vegetable.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  if (data.regionalNote != null)
+                    const Icon(Icons.info_outline,
+                        size: 13, color: KultivaColors.textSecondary),
+                ],
+              ),
+              const SizedBox(height: 4),
+              _YearBar(data: data),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Douze segments côte à côte : vert pour un semis, terracotta pour
+/// une récolte, dégradé des deux quand les deux tombent le même mois.
+///
+/// Les segments se touchent, sans écart : une période de semis de mars
+/// à juin doit se lire comme une seule bande, pas comme quatre carrés.
+class _YearBar extends StatelessWidget {
+  final RegionData data;
+  const _YearBar({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final sombre = Theme.of(context).brightness == Brightness.dark;
+    final vide = sombre
+        ? KultivaColors.darkCard
+        : KultivaColors.lightGreen.withValues(alpha: 0.22);
+    return Row(
+      children: <Widget>[
+        for (int m = 1; m <= 12; m++)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 1),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(3),
+                child: _segment(m, vide),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _segment(int month, Color vide) {
+    final sow = data.sowingMonths.contains(month);
+    final harvest = data.harvestMonths.contains(month);
+    if (sow && harvest) {
+      // Deux arrêts au même point : une coupe nette, pas un dégradé.
+      // Le fondu donnait une bouillie brune qu'on ne reconnaissait ni
+      // comme du vert ni comme du terracotta.
+      return Container(
+        height: 20,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: <double>[0.5, 0.5],
+            colors: <Color>[
+              KultivaColors.primaryGreen,
+              KultivaColors.terracotta,
+            ],
+          ),
+        ),
+      );
+    }
+    return Container(
+      height: 20,
+      color: sow
+          ? KultivaColors.primaryGreen
+          : harvest
+              ? KultivaColors.terracotta
+              : vide,
+    );
+  }
+}
+
 class _LegendItem extends StatelessWidget {
   final Color color;
+
+  /// Rempli, la pastille est coupée en deux : c'est le cas « semis et
+  /// récolte le même mois », qui concerne une trentaine de cultures.
+  final Color? secondColor;
   final String label;
-  const _LegendItem({required this.color, required this.label});
+  const _LegendItem({
+    required this.color,
+    required this.label,
+    this.secondColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -318,71 +493,26 @@ class _LegendItem extends StatelessWidget {
           width: 14,
           height: 14,
           decoration: BoxDecoration(
-            color: color,
+            color: secondColor == null ? color : null,
+            gradient: secondColor == null
+                ? null
+                : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const <double>[0.5, 0.5],
+                    colors: <Color>[color, secondColor!],
+                  ),
             borderRadius: BorderRadius.circular(4),
           ),
         ),
         const SizedBox(width: 6),
-        Text(label,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+        Flexible(
+          child: Text(label,
+              overflow: TextOverflow.ellipsis,
+              style:
+                  const TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
+        ),
       ],
-    );
-  }
-}
-
-class _MonthCell extends StatelessWidget {
-  final bool isSow;
-  final bool isHarvest;
-  final bool isCurrentMonth;
-  const _MonthCell({
-    required this.isSow,
-    required this.isHarvest,
-    required this.isCurrentMonth,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (!isSow && !isHarvest) {
-      return Container(
-        width: 28,
-        height: 28,
-        decoration: BoxDecoration(
-          color: isCurrentMonth
-              ? KultivaColors.lightGreen.withValues(alpha: 0.1)
-              : null,
-          borderRadius: BorderRadius.circular(4),
-        ),
-      );
-    }
-    if (isSow && isHarvest) {
-      return Container(
-        width: 28,
-        height: 28,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          border: isCurrentMonth
-              ? Border.all(color: KultivaColors.primaryGreen, width: 2)
-              : null,
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              KultivaColors.primaryGreen,
-              KultivaColors.terracotta,
-            ],
-          ),
-        ),
-      );
-    }
-    return Container(
-      width: 28,
-      height: 28,
-      decoration: BoxDecoration(
-        color: isSow ? KultivaColors.primaryGreen : KultivaColors.terracotta,
-        borderRadius: BorderRadius.circular(4),
-        border:
-            isCurrentMonth ? Border.all(color: Colors.white, width: 2) : null,
-      ),
     );
   }
 }
