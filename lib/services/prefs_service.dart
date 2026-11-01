@@ -18,6 +18,7 @@ class PrefsService {
   static const _kCountry = 'kultiva.country';
   static const _kClimateZone = 'kultiva.climateZone';
   static const _kDarkMode = 'kultiva.darkMode';
+  static const _kLanguage = 'kultiva.language';
   static const _kNotifications = 'kultiva.notifications';
   static const _kOnboardingDone = 'kultiva.onboardingDone';
   static const _kFavorites = 'kultiva.favorites';
@@ -62,6 +63,16 @@ class PrefsService {
   /// calendriers et saisons régionalisés.
   ClimateZone? get effectiveZone => climateZone.value ?? country.value?.zone;
   final ValueNotifier<bool> darkMode = ValueNotifier<bool>(false);
+
+  /// Code de langue choisi à la main ('fr', 'en'…), ou null pour
+  /// suivre le téléphone.
+  ///
+  /// Jusqu'au 01/11/2026 l'app était figée en fr-FR. Elle couvre
+  /// maintenant 73 pays : forcer le français à un Australien n'avait
+  /// plus de sens, et suivre aveuglément le téléphone lui aurait
+  /// donné une interface à moitié traduite sans qu'il puisse revenir
+  /// en arrière.
+  final ValueNotifier<String?> language = ValueNotifier<String?>(null);
   final ValueNotifier<bool> notifications = ValueNotifier<bool>(true);
   final ValueNotifier<Set<String>> favorites =
       ValueNotifier<Set<String>>(<String>{});
@@ -122,6 +133,7 @@ class PrefsService {
     if (country.value != null) region.value = country.value!.region;
     climateZone.value = ClimateZone.fromName(_prefs!.getString(_kClimateZone));
     darkMode.value = _prefs!.getBool(_kDarkMode) ?? false;
+    language.value = _prefs!.getString(_kLanguage);
     notifications.value = _prefs!.getBool(_kNotifications) ?? true;
     favorites.value =
         (_prefs!.getStringList(_kFavorites) ?? const <String>[]).toSet();
@@ -187,6 +199,32 @@ class PrefsService {
   Future<void> setDarkMode(bool value) async {
     darkMode.value = value;
     await _prefs?.setBool(_kDarkMode, value);
+    _notifyPrefsChanged();
+  }
+
+  /// Les langues dans lesquelles l'interface existe. Le français est
+  /// la source : tout ce qui n'est pas traduit y retombe.
+  static const List<String> supportedLanguages = <String>['fr', 'en'];
+
+  /// La langue réellement affichée : celle choisie à la main, sinon
+  /// celle du téléphone si on la parle, sinon le français.
+  String get effectiveLanguage {
+    final choisie = language.value;
+    if (choisie != null && supportedLanguages.contains(choisie)) {
+      return choisie;
+    }
+    final systeme = PlatformDispatcher.instance.locale.languageCode;
+    return supportedLanguages.contains(systeme) ? systeme : 'fr';
+  }
+
+  /// Change la langue de l'interface. `null` = celle du téléphone.
+  Future<void> setLanguage(String? code) async {
+    language.value = code;
+    if (code == null) {
+      await _prefs?.remove(_kLanguage);
+    } else {
+      await _prefs?.setString(_kLanguage, code);
+    }
     _notifyPrefsChanged();
   }
 

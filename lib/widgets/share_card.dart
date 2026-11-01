@@ -1,3 +1,4 @@
+import '../data/names_en.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -59,7 +60,7 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
         text:
-            "Regarde mon ${widget.vegetable.name.toLowerCase()} dans mon Poussidex Kultiva ! 🌱",
+            "Regarde mon ${widget.vegetable.displayName.toLowerCase()} dans mon Poussidex Kultiva ! 🌱",
       );
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
@@ -223,7 +224,7 @@ class _ShareCardContent extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            vegetable.name,
+            vegetable.displayName,
             textAlign: TextAlign.center,
             style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 28),
           ),

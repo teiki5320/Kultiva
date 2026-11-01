@@ -48,7 +48,6 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
     super.dispose();
   }
 
-
   RegionData? _findRegionData(List<RegionData> list, String vegetableId) {
     for (final d in list) {
       if (d.vegetableId == vegetableId) return d;

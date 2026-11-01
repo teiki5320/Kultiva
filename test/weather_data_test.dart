@@ -100,8 +100,7 @@ void main() {
       expect(withRain(rain).consecutiveDryDays, 8);
     });
 
-    test('série tronquée (moins de 8 jours) : part du dernier jour connu',
-        () {
+    test('série tronquée (moins de 8 jours) : part du dernier jour connu', () {
       // L'API peut renvoyer moins de jours que demandé ; le calcul
       // retombe alors sur le dernier index disponible.
       expect(withRain(<double>[0, 0, 0]).consecutiveDryDays, 3);

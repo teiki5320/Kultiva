@@ -1,3 +1,4 @@
+import '../../data/names_en.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -84,7 +85,6 @@ class _SowScreenState extends State<SowScreen> {
     if (mounted) setState(() => _loadingWeather = false);
   }
 
-
   Vegetable get _vegetableOfTheDay => vegetableOfTheDay(DateTime.now());
 
   String get _tipOfTheDay {
@@ -97,7 +97,7 @@ class _SowScreenState extends State<SowScreen> {
           : null;
       if (veg != null && comp != null) {
         tips.add(
-            '${veg.emoji} ${veg.name} adore pousser à côté de ${comp.emoji} ${comp.name} !');
+            '${veg.emoji} ${veg.displayName} adore pousser à côté de ${comp.emoji} ${comp.name} !');
       }
     }
 
@@ -105,7 +105,7 @@ class _SowScreenState extends State<SowScreen> {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       if (veg != null) {
         tips.add(
-            '${veg.emoji} ${veg.name} : attendre ${entry.value.waitYears} ans avant de replanter au même endroit.');
+            '${veg.emoji} ${veg.displayName} : attendre ${entry.value.waitYears} ans avant de replanter au même endroit.');
       }
     }
 
@@ -114,7 +114,7 @@ class _SowScreenState extends State<SowScreen> {
       if (veg != null && entry.value.isNotEmpty) {
         final d = entry.value.first;
         tips.add(
-            '${veg.emoji} ${veg.name} : attention au ${d.name}. ${d.remedy}.');
+            '${veg.emoji} ${veg.displayName} : attention au ${d.name}. ${d.remedy}.');
       }
     }
 
@@ -131,8 +131,7 @@ class _SowScreenState extends State<SowScreen> {
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
-        final season =
-            Season.current(month);
+        final season = Season.current(month);
         final data = currentCalendar();
 
         final toSow = <Vegetable>[];
@@ -733,7 +732,7 @@ class _SlideVegOfDay extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  vegetable.name,
+                  vegetable.displayName,
                   style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 18,

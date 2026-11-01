@@ -1,3 +1,4 @@
+import 'package:kultiva/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
@@ -39,6 +40,8 @@ void main() {
     tester.view.physicalSize = taille;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: L.localizationsDelegates,
+      supportedLocales: L.supportedLocales,
       theme: AppTheme.light,
       home: MediaQuery(
         data: MediaQueryData(
@@ -89,7 +92,6 @@ void main() {
         );
         expect(tester.takeException(), isNull);
       });
-
     }
   });
 }

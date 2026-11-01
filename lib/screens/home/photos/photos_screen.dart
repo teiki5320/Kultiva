@@ -1,3 +1,4 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
@@ -165,13 +166,14 @@ class _PhotosScreenState extends State<PhotosScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: SegmentedButton<bool>(
                 segments: const <ButtonSegment<bool>>[
-                  ButtonSegment<bool>(value: false, label: Text('🎞  Pellicule')),
-                  ButtonSegment<bool>(value: true, label: Text('🌱  Évolution')),
+                  ButtonSegment<bool>(
+                      value: false, label: Text('🎞  Pellicule')),
+                  ButtonSegment<bool>(
+                      value: true, label: Text('🌱  Évolution')),
                 ],
                 selected: <bool>{_evolution},
                 showSelectedIcon: false,
-                onSelectionChanged: (s) =>
-                    setState(() => _evolution = s.first),
+                onSelectionChanged: (s) => setState(() => _evolution = s.first),
                 style: SegmentedButton.styleFrom(
                   selectedBackgroundColor:
                       KultivaColors.primaryGreen.withValues(alpha: 0.18),
@@ -236,12 +238,14 @@ class _ChoixDuPlant extends StatelessWidget {
                     leading:
                         Text(veg.emoji, style: const TextStyle(fontSize: 22)),
                     title: Text(
-                      veg.name,
+                      veg.displayName,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                     subtitle: Text(
-                      jours <= 0 ? 'Planté aujourd\'hui' : 'En terre depuis '
-                          '$jours jour${jours > 1 ? 's' : ''}',
+                      jours <= 0
+                          ? 'Planté aujourd\'hui'
+                          : 'En terre depuis '
+                              '$jours jour${jours > 1 ? 's' : ''}',
                     ),
                     onTap: () => Navigator.of(context).pop(p),
                   );

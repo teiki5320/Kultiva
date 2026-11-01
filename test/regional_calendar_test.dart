@@ -26,9 +26,9 @@ void main() {
 
     test('méditerranéen → un mois plus tôt, continental → un mois plus tard',
         () {
-      RegionData tomate(ClimateZone z) => regionalCalendar(Region.france,
-              zone: z)
-          .firstWhere((r) => r.vegetableId == 'tomate');
+      RegionData tomate(ClimateZone z) =>
+          regionalCalendar(Region.france, zone: z)
+              .firstWhere((r) => r.vegetableId == 'tomate');
 
       final base = franceData.firstWhere((r) => r.vegetableId == 'tomate');
       final med = tomate(ClimateZone.mediterranean);
@@ -42,8 +42,8 @@ void main() {
     });
 
     test('le continental ne sème pas dehors en plein hiver', () {
-      final cal = regionalCalendar(Region.france,
-          zone: ClimateZone.continental);
+      final cal =
+          regionalCalendar(Region.france, zone: ClimateZone.continental);
       for (final r in cal) {
         // Sauf quand il ne resterait plus rien : mieux vaut une date
         // discutable qu'un légume disparu du calendrier.
@@ -60,8 +60,7 @@ void main() {
     test('hémisphère sud : tout décalé de six mois', () {
       // Le levier de l'ouverture mondiale. Une erreur ici fait semer
       // les tomates australiennes en plein hiver.
-      final nord = regionalCalendar(Region.france,
-              zone: ClimateZone.temperate)
+      final nord = regionalCalendar(Region.france, zone: ClimateZone.temperate)
           .firstWhere((r) => r.vegetableId == 'tomate');
       final sud = regionalCalendar(Region.france,
               zone: ClimateZone.temperate, hemisphere: Hemisphere.south)
@@ -94,10 +93,8 @@ void main() {
     test('tous les mois dérivés restent entre 1 et 12', () {
       for (final zone in ClimateZone.values) {
         for (final h in Hemisphere.values) {
-          final region =
-              zone.isTropical ? Region.tropical : Region.france;
-          for (final r in regionalCalendar(region, zone: zone,
-              hemisphere: h)) {
+          final region = zone.isTropical ? Region.tropical : Region.france;
+          for (final r in regionalCalendar(region, zone: zone, hemisphere: h)) {
             for (final m in <int>[...r.sowingMonths, ...r.harvestMonths]) {
               expect(m, inInclusiveRange(1, 12),
                   reason: '${zone.name}/${h.name}/${r.vegetableId}');
@@ -169,7 +166,8 @@ void main() {
     });
     test('recettes', () {
       for (final entry in recipesByVegetable.entries) {
-        expect(catalogIds, contains(entry.key), reason: '${entry.key} (recipes)');
+        expect(catalogIds, contains(entry.key),
+            reason: '${entry.key} (recipes)');
         expect(entry.value, isNotEmpty);
       }
     });

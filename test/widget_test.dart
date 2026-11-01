@@ -1,3 +1,5 @@
+import 'package:kultiva/services/prefs_service.dart';
+import 'package:kultiva/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
@@ -18,6 +20,8 @@ import 'package:kultiva/widgets/vegetable_card.dart';
 /// bonne donnée, et que ce qu'elle dit au lecteur d'écran correspond à
 /// ce qu'elle montre à l'œil.
 Widget _host(Widget child) => MaterialApp(
+      localizationsDelegates: L.localizationsDelegates,
+      supportedLocales: L.supportedLocales,
       theme: AppTheme.light,
       home: Scaffold(body: Center(child: SizedBox(width: 200, child: child))),
     );
@@ -31,6 +35,10 @@ List<String> _semanticLabels(WidgetTester tester) => tester
     .toList();
 
 void main() {
+  // Les noms de légumes sont traduits depuis le 01/11/2026, et
+  // l'environnement de test tourne en en-US : sans ce réglage, ces
+  // tests liraient « Tomato » et personne ne saurait pourquoi.
+  setUpAll(() => PrefsService.instance.language.value = 'fr');
   final tomate = vegetablesBase.firstWhere((v) => v.id == 'tomate');
 
   group('VegetableCard', () {

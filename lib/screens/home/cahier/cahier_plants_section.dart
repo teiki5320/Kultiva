@@ -1,3 +1,4 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
@@ -95,9 +96,8 @@ class _PlantRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final veg = vegetablesBase
-        .where((v) => v.id == plantation.vegetableId)
-        .firstOrNull;
+    final veg =
+        vegetablesBase.where((v) => v.id == plantation.vegetableId).firstOrNull;
     // Un plant dont l'espèce a disparu du catalogue : on ne montre pas
     // une tomate à sa place.
     if (veg == null) return const SizedBox.shrink();
@@ -117,7 +117,7 @@ class _PlantRow extends StatelessWidget {
     ].join('  ·  ');
 
     return Semantics(
-      label: '${veg.name}, $details',
+      label: '${veg.displayName}, $details',
       hint: 'Ouvre le dossier de ce plant',
       button: true,
       excludeSemantics: true,
@@ -145,7 +145,7 @@ class _PlantRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      veg.name,
+                      veg.displayName,
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w700),
                     ),

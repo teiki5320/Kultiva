@@ -1,3 +1,4 @@
+import '../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../models/vegetable.dart';
@@ -31,7 +32,7 @@ class VegetableCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cc = vegetable.category.familyColor;
     return Semantics(
-      label: '${vegetable.name}, ${vegetable.category.label}'
+      label: '${vegetable.displayName}, ${vegetable.category.label}'
           '${canSowNow ? ', à semer ce mois' : ''}'
           '${isFavorite ? ', favori' : ''}',
       button: onTap != null,
@@ -69,7 +70,7 @@ class VegetableCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              vegetable.name,
+                              vegetable.displayName,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 15,
@@ -132,8 +133,8 @@ class VegetableCard extends StatelessWidget {
                 if (onFavoriteToggle != null)
                   Semantics(
                     label: isFavorite
-                        ? 'Retirer ${vegetable.name} des favoris'
-                        : 'Ajouter ${vegetable.name} aux favoris',
+                        ? 'Retirer ${vegetable.displayName} des favoris'
+                        : 'Ajouter ${vegetable.displayName} aux favoris',
                     button: true,
                     child: GestureDetector(
                       onTap: () {

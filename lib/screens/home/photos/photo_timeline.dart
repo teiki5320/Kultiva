@@ -1,3 +1,4 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
@@ -68,7 +69,7 @@ class _PlantCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  veg.name,
+                  veg.displayName,
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,

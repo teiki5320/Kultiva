@@ -4,6 +4,7 @@
 /// Extrait de `planner_widgets.dart`, qui faisait 1 339 lignes.
 library;
 
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/regions/regional_calendar.dart';
@@ -464,7 +465,7 @@ class PlannerPlantCard extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                plant.name,
+                plant.displayName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(

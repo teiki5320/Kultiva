@@ -24,8 +24,7 @@ class ChallengesGrid extends StatefulWidget {
   const ChallengesGrid({super.key, this.onPhotoTaken});
 
   @override
-  State<ChallengesGrid> createState() =>
-      _ChallengesGridState();
+  State<ChallengesGrid> createState() => _ChallengesGridState();
 }
 
 class _ChallengesGridState extends State<ChallengesGrid> {

@@ -4,6 +4,7 @@
 /// Extrait de `planner_widgets.dart`, qui faisait 1 339 lignes.
 library;
 
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/vegetables_base.dart';
@@ -331,7 +332,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    veg.name,
+                    veg.displayName,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,

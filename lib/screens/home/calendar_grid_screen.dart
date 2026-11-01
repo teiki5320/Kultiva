@@ -1,3 +1,4 @@
+import '../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/regions/regional_calendar.dart';
@@ -59,8 +60,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
     final recolte = monthRangesLabel(rd.harvestMonths);
     if (semis.isNotEmpty) parts.add('semis $semis');
     if (recolte.isNotEmpty) parts.add('récolte $recolte');
-    if (parts.isEmpty) return '${veg.name} : aucune période connue';
-    return '${veg.name} : ${parts.join(', ')}';
+    if (parts.isEmpty) return '${veg.displayName} : aucune période connue';
+    return '${veg.displayName} : ${parts.join(', ')}';
   }
 
   void _openVegetable(Vegetable v) {
@@ -139,9 +140,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
         if (_query.isNotEmpty || _category != null) {
           final cherche = foldAccents(_query.toLowerCase());
           entries = entries.where((rd) {
-            final v = vegetablesBase
-                .where((x) => x.id == rd.vegetableId)
-                .firstOrNull;
+            final v =
+                vegetablesBase.where((x) => x.id == rd.vegetableId).firstOrNull;
             if (v == null) return false;
             if (_category != null && v.category != _category) return false;
             if (cherche.isEmpty) return true;
@@ -478,8 +478,7 @@ class _VegetableYearRow extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -489,7 +488,7 @@ class _VegetableYearRow extends StatelessWidget {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      vegetable.name,
+                      vegetable.displayName,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 13,

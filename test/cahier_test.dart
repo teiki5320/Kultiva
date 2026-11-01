@@ -1,3 +1,4 @@
+import 'package:kultiva/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/vegetables_base.dart';
@@ -35,6 +36,8 @@ void main() {
     tester.view.physicalSize = taille;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: L.localizationsDelegates,
+      supportedLocales: L.supportedLocales,
       theme: AppTheme.light,
       home: MediaQuery(
         data: MediaQueryData(
@@ -50,6 +53,10 @@ void main() {
   setUp(() async {
     SharedPreferences.setMockInitialValues(<String, Object>{});
     await PrefsService.instance.load();
+    // `load()` relit les préférences et remet la langue à null ;
+    // on la repose après, sinon l'environnement de test (en-US)
+    // fait lire « Tomato » là où le test attend « Tomate ».
+    PrefsService.instance.language.value = 'fr';
     // Sinon le sheet de bienvenue s'ouvre par-dessus l'écran testé.
     await PrefsService.instance.setJardinsTutorialDone(true);
     await GardenPlanService.instance.resetForTesting();
@@ -79,8 +86,7 @@ void main() {
       expect(find.text('+ Nouveau jardin'), findsOneWidget);
     });
 
-    testWidgets('ne montre pas « à faire » sans un seul plant',
-        (tester) async {
+    testWidgets('ne montre pas « à faire » sans un seul plant', (tester) async {
       // Une carte de tâches vide sur un jardin inexistant, c'est du
       // bruit : l'écran doit d'abord dire comment commencer.
       await monte(tester, taille: const Size(393, 852));

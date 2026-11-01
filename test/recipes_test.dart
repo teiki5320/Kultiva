@@ -38,7 +38,8 @@ void main() {
     for (final entry in recipesByVegetable.entries) {
       for (final r in entry.value) {
         expect(r.name.trim(), isNotEmpty, reason: entry.key);
-        expect(r.description.trim(), isNotEmpty, reason: '${entry.key}/${r.name}');
+        expect(r.description.trim(), isNotEmpty,
+            reason: '${entry.key}/${r.name}');
         expect(r.emoji.trim(), isNotEmpty, reason: '${entry.key}/${r.name}');
       }
     }

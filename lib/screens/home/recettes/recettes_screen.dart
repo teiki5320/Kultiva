@@ -1,3 +1,4 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/recipes.dart';
@@ -55,9 +56,8 @@ class _RecettesScreenState extends State<RecettesScreen> {
   }
 
   List<_Entree> get _entrees {
-    final auJardin = PlantationService.instance.active
-        .map((p) => p.vegetableId)
-        .toSet();
+    final auJardin =
+        PlantationService.instance.active.map((p) => p.vegetableId).toSet();
     final q = foldAccents(_query);
 
     final out = <_Entree>[];
@@ -66,9 +66,9 @@ class _RecettesScreenState extends State<RecettesScreen> {
       if (veg == null) return;
       if (_categorie != null && veg.category != _categorie) return;
       if (q.isNotEmpty) {
-        final dansLeNom = foldAccents(veg.name).contains(q);
-        final dansUneRecette = recettes
-            .any((r) => foldAccents(r.name).contains(q));
+        final dansLeNom = foldAccents(veg.displayName).contains(q);
+        final dansUneRecette =
+            recettes.any((r) => foldAccents(r.name).contains(q));
         if (!dansLeNom && !dansUneRecette) return;
       }
       out.add(_Entree(veg, recettes, auJardin.contains(id)));
@@ -77,7 +77,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
     out.sort((a, b) {
       // Ce qui pousse chez toi d'abord, puis l'ordre alphabétique.
       if (a.auJardin != b.auJardin) return a.auJardin ? -1 : 1;
-      return a.vegetable.name.compareTo(b.vegetable.name);
+      return a.vegetable.displayName.compareTo(b.vegetable.displayName);
     });
     return out;
   }
@@ -86,8 +86,8 @@ class _RecettesScreenState extends State<RecettesScreen> {
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
     final entrees = _entrees;
-    final total = recipesByVegetable.values
-        .fold<int>(0, (n, l) => n + l.length);
+    final total =
+        recipesByVegetable.values.fold<int>(0, (n, l) => n + l.length);
 
     return Scaffold(
       body: SafeArea(
@@ -258,7 +258,7 @@ class _CarteLegume extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    veg.name,
+                    veg.displayName,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
@@ -267,11 +267,10 @@ class _CarteLegume extends StatelessWidget {
                 ),
                 if (entree.auJardin)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color:
-                          KultivaColors.primaryGreen.withValues(alpha: 0.16),
+                      color: KultivaColors.primaryGreen.withValues(alpha: 0.16),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Text(

@@ -50,8 +50,7 @@ void main() {
       expect(stored.first.vegetableId, 'basilic');
     });
 
-    test('du plus récent au plus ancien, même avec une date passée',
-        () async {
+    test('du plus récent au plus ancien, même avec une date passée', () async {
       await service.add('tomate');
       await service.add(
         'radis',

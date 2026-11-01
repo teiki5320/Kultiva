@@ -125,8 +125,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
           : Stack(
               children: <Widget>[
                 if (c != null) WebViewWidget(controller: c),
-                if (_loading)
-                  const Center(child: CircularProgressIndicator()),
+                if (_loading) const Center(child: CircularProgressIndicator()),
               ],
             ),
     );

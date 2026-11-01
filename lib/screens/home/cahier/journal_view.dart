@@ -124,8 +124,7 @@ class GardenJournalView extends StatelessWidget {
     return ListView.builder(
       padding: EdgeInsets.fromLTRB(12, 8, 12, shrinkWrap ? 0 : 24),
       shrinkWrap: shrinkWrap,
-      physics:
-          shrinkWrap ? const NeverScrollableScrollPhysics() : null,
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
       itemCount: keys.length,
       itemBuilder: (context, i) {
         final key = keys[i];

@@ -71,36 +71,36 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
       body: SafeArea(
         bottom: false,
         child: ValueListenableBuilder<List<GardenPlan>>(
-        valueListenable: GardenPlanService.instance.plans,
-        builder: (context, plans, _) {
-          return ListView(
-            padding: const EdgeInsets.only(bottom: 24),
-            children: <Widget>[
-              _CahierHeader(plans: plans),
-              const CahierTodayCard(),
-              if (plans.isEmpty)
-                const _EmptyState()
-              else ...<Widget>[
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 18, 16, 8),
-                  child: Text(
-                    'Mes jardins',
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+          valueListenable: GardenPlanService.instance.plans,
+          builder: (context, plans, _) {
+            return ListView(
+              padding: const EdgeInsets.only(bottom: 24),
+              children: <Widget>[
+                _CahierHeader(plans: plans),
+                const CahierTodayCard(),
+                if (plans.isEmpty)
+                  const _EmptyState()
+                else ...<Widget>[
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(16, 18, 16, 8),
+                    child: Text(
+                      'Mes jardins',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                    ),
                   ),
-                ),
-                for (final p in plans)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _SoilGardenCard(plan: p),
-                  ),
+                  for (final p in plans)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: _SoilGardenCard(plan: p),
+                    ),
+                ],
+                const CahierPlantsSection(),
+                const CahierJournalSection(),
+                const CahierSeasonRecap(),
               ],
-              const CahierPlantsSection(),
-              const CahierJournalSection(),
-              const CahierSeasonRecap(),
-            ],
-          );
-        },
+            );
+          },
         ),
       ),
       bottomNavigationBar: _BottomActions(
@@ -143,8 +143,7 @@ class _CahierHeader extends StatelessWidget {
     return Stack(
       children: <Widget>[
         SeasonHeader(
-          season:
-              Season.current(mois),
+          season: Season.current(mois),
           month: mois,
           height: kPageHeaderHeight,
           hideLabel: true,

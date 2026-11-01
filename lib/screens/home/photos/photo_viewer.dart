@@ -1,3 +1,4 @@
+import '../../../data/names_en.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -31,15 +32,14 @@ class _PhotoViewer extends StatelessWidget {
 
   String get _titre {
     if (photo.source == PhotoSource.challenge) {
-      final defi = allChallenges
-          .where((c) => c.id == photo.challengeId)
-          .firstOrNull;
+      final defi =
+          allChallenges.where((c) => c.id == photo.challengeId).firstOrNull;
       return defi == null ? 'Défi photo' : '${defi.emoji}  ${defi.name}';
     }
     final id = photo.vegetableId;
     if (id == null) return 'Photo du jardin';
     final veg = vegetableById(id);
-    return '${veg.emoji}  ${veg.name}';
+    return '${veg.emoji}  ${veg.displayName}';
   }
 
   String get _sousTitre {

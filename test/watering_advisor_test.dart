@@ -191,8 +191,7 @@ void main() {
   });
 
   group('température non fournie par Open-Meteo', () {
-    test('un NaN se comporte comme un jour neutre, pas comme une canicule',
-        () {
+    test('un NaN se comporte comme un jour neutre, pas comme une canicule', () {
       // Open-Meteo peut renvoyer `null` pour un jour : on le marque NaN à
       // la lecture pour garder les index alignés. Mais toutes les
       // comparaisons avec NaN sont fausses, donc la chaleur serait

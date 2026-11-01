@@ -130,6 +130,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Génère les traductions depuis lib/l10n/*.arb (voir l10n.yaml).
+  generate: true
 
   assets:
     - assets/images/

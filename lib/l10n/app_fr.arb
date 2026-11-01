@@ -1,0 +1,67 @@
+{
+  "@@locale": "fr",
+
+  "tabHome": "Home",
+  "tabCahier": "Cahier",
+  "tabEtal": "Étal",
+  "tabTutos": "Tutos",
+  "tabPhoto": "Photo",
+  "tabRecettes": "Recettes",
+
+  "commonAll": "Tout",
+  "commonCancel": "Annuler",
+  "commonDelete": "Supprimer",
+  "commonClose": "Fermer",
+  "commonBack": "Retour",
+  "commonNext": "Suivant",
+  "commonDone": "Terminé",
+  "commonSearch": "Rechercher",
+
+  "photosTitle": "Photos",
+  "photosFilm": "Pellicule",
+  "photosEvolution": "Évolution",
+  "photosTake": "Photographier",
+  "photosNoMemories": "Le jardin n'a pas encore de souvenirs",
+  "photosCount": "{count, plural, =1{1 photo du jardin} other{{count} photos du jardin}}",
+  "@photosCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "photosEmptyTitle": "Aucune photo pour l'instant",
+  "photosEmptyBody": "Photographie un plant aujourd'hui, puis le même dans une semaine : c'est en les voyant côte à côte qu'on se rend compte que ça pousse.",
+  "photosEmptyPlantsTitle": "Aucun plant photographié",
+  "photosEmptyPlantsBody": "Dès qu'un plant a deux photos, Kultiva les met côte à côte et compte les jours entre les deux.",
+  "photosWhichPlant": "Quel plant photographies-tu ?",
+  "photosPlantFirst": "Plante d'abord quelque chose : une photo s'accroche à un plant.",
+  "photosDeleteTitle": "Supprimer cette photo ?",
+  "photosDeleteBody": "Elle sera effacée de l'appareil. Kultiva ne garde aucune copie ailleurs, donc c'est définitif.",
+  "photosGone": "Cette photo n'est plus sur l'appareil.",
+  "photosAgeDay": "J+{days}",
+  "@photosAgeDay": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+
+  "recipesTitle": "Recettes",
+  "recipesSubtitle": "{recipes} recettes pour {crops} récoltes",
+  "@recipesSubtitle": {
+    "placeholders": {
+      "recipes": { "type": "int" },
+      "crops": { "type": "int" }
+    }
+  },
+  "recipesSearchHint": "Un légume, ou un plat…",
+  "recipesInYourGarden": "Dans ton jardin",
+  "recipesNoStepsYet": "Le pas-à-pas animé de cette recette n'est pas encore écrit — il arrive.",
+  "recipesIngredients": "Ce qu'il te faut",
+  "recipesStep": "Étape {current} sur {total}",
+  "@recipesStep": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "recipesBonAppetit": "Bon appétit !",
+
+  "settingsLanguage": "Langue",
+  "settingsLanguageSystem": "Celle du téléphone",
+  "settingsLanguagePartial": "L'interface est traduite. Le catalogue, les tutos et les recettes restent en français pour l'instant."
+}

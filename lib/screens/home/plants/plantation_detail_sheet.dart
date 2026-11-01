@@ -1,3 +1,4 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/plantation.dart';
@@ -282,7 +283,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
       builder: (_) => AlertDialog(
         title: const Text('Retirer ce plant ?'),
         content: Text(
-            'Cette action supprime définitivement ${widget.vegetable.name} de ton Poussidex. Tes arrosages et récoltes liés seront perdus.'),
+            'Cette action supprime définitivement ${widget.vegetable.displayName} de ton Poussidex. Tes arrosages et récoltes liés seront perdus.'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

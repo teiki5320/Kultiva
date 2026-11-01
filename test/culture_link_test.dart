@@ -46,8 +46,7 @@ void main() {
   });
 
   group('arrosage', () {
-    test('arroser depuis le cahier écrit dans le dossier du plant',
-        () async {
+    test('arroser depuis le cahier écrit dans le dossier du plant', () async {
       final c = await cultures.add(
         vegetableId: 'tomate',
         startedAt: DateTime.now(),
@@ -61,8 +60,7 @@ void main() {
           DateTime(2026, 6, 10));
     });
 
-    test('arroser depuis le Poussidex est visible depuis le cahier',
-        () async {
+    test('arroser depuis le Poussidex est visible depuis le cahier', () async {
       // Le sens inverse : c'est ce qui prouve qu'il n'y a plus qu'un
       // seul registre.
       final c = await cultures.add(
@@ -144,8 +142,8 @@ void main() {
         startedAt: DateTime(2026, 4, 2),
         wateredAt: <DateTime>[DateTime(2026, 4, 5), DateTime(2026, 4, 9)],
       );
-      await prefs.setCulturesJson(
-          CultureEntry.encodeAll(<CultureEntry>[legacy]));
+      await prefs
+          .setCulturesJson(CultureEntry.encodeAll(<CultureEntry>[legacy]));
       plants.load();
 
       await cultures.linkLegacyEntries();
@@ -165,13 +163,12 @@ void main() {
         startedAt: DateTime(2026, 3, 1),
         endedAt: DateTime(2026, 5, 1),
       );
-      await prefs.setCulturesJson(
-          CultureEntry.encodeAll(<CultureEntry>[legacy]));
+      await prefs
+          .setCulturesJson(CultureEntry.encodeAll(<CultureEntry>[legacy]));
       plants.load();
 
       await cultures.linkLegacyEntries();
-      final p =
-          plants.byId(cultures.byId('cul_fini')!.linkedPlantationId!)!;
+      final p = plants.byId(cultures.byId('cul_fini')!.linkedPlantationId!)!;
       expect(p.isActive, isFalse);
       expect(p.harvestedAt, DateTime(2026, 5, 1));
     });
@@ -184,8 +181,7 @@ void main() {
       expect(plants.all, hasLength(1));
     });
 
-    test('les arrosages restent lisibles si le plant a été supprimé',
-        () async {
+    test('les arrosages restent lisibles si le plant a été supprimé', () async {
       // L'utilisateur peut retirer un plant depuis le Poussidex : son
       // historique dans le cahier ne doit pas disparaître de l'écran.
       final c = await cultures.add(

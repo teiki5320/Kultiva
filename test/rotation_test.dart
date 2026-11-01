@@ -1,3 +1,4 @@
+import 'package:kultiva/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/models/culture_entry.dart';
@@ -80,6 +81,8 @@ void main() {
 
     Future<void> monte(WidgetTester tester, Widget child) async {
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: L.localizationsDelegates,
+        supportedLocales: L.supportedLocales,
         theme: AppTheme.light,
         home: Scaffold(body: child),
       ));
@@ -94,8 +97,8 @@ void main() {
     testWidgets('alerte sur une culture close de la même famille',
         (tester) async {
       await PrefsService.instance.setCulturesJson(
-        CultureEntry.encodeAll(<CultureEntry>[_culture('aubergine',
-            ansAvant: 1)]),
+        CultureEntry.encodeAll(
+            <CultureEntry>[_culture('aubergine', ansAvant: 1)]),
       );
       await monte(tester, const PlannerRotationWarning(vegetableId: 'tomate'));
       expect(find.text('Attention à la rotation'), findsOneWidget);
@@ -118,8 +121,7 @@ void main() {
       expect(find.text('Attention à la rotation'), findsNothing);
     });
 
-    testWidgets('une case n\'alerte pas sur sa propre culture',
-        (tester) async {
+    testWidgets('une case n\'alerte pas sur sa propre culture', (tester) async {
       await PrefsService.instance.setCulturesJson(
         CultureEntry.encodeAll(<CultureEntry>[_culture('tomate', ansAvant: 1)]),
       );

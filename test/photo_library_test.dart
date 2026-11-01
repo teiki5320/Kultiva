@@ -116,7 +116,8 @@ void main() {
     test('un magasin de défis illisible ne vide pas la pellicule', () async {
       final p = await service.add('carotte');
       await service.addPhoto(p.id, chemin(DateTime(2026, 4, 2)));
-      await prefs.setString('kultiva.challenges.v1', '{ceci n\'est pas du json');
+      await prefs.setString(
+          'kultiva.challenges.v1', '{ceci n\'est pas du json');
 
       expect(PhotoLibraryService.all(), hasLength(1));
     });

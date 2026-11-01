@@ -57,8 +57,7 @@ class PhotoGallery extends StatelessWidget {
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 6,
                 crossAxisSpacing: 6,
@@ -148,8 +147,7 @@ class PhotoThumbnail extends StatelessWidget {
                     color: Colors.black.withValues(alpha: 0.35),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(_marque,
-                      style: const TextStyle(fontSize: 11)),
+                  child: Text(_marque, style: const TextStyle(fontSize: 11)),
                 ),
               ),
               if (showAge && age != null)
@@ -158,8 +156,8 @@ class PhotoThumbnail extends StatelessWidget {
                   right: 0,
                   bottom: 0,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.bottomCenter,

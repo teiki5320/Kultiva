@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/plantation.dart';
 import '../services/audio_service.dart';
 import '../services/notification_service.dart';
@@ -103,6 +104,9 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
       const PhotosScreen(),
       const RecettesScreen(),
     ];
+    // Les libellés de la barre sont la première chose traduite : ils
+    // sont visibles sur tous les écrans.
+    final t = L.of(context);
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
       bottomNavigationBar: BottomNavigationBar(
@@ -124,36 +128,36 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
           setState(() => _index = i);
           RootTabs.tabIndex.value = i;
         },
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: t.tabHome,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_outlined),
-            activeIcon: Icon(Icons.menu_book),
-            label: 'Cahier',
+            icon: const Icon(Icons.menu_book_outlined),
+            activeIcon: const Icon(Icons.menu_book),
+            label: t.tabCahier,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.storefront_outlined),
-            activeIcon: Icon(Icons.storefront),
-            label: 'Étal',
+            icon: const Icon(Icons.storefront_outlined),
+            activeIcon: const Icon(Icons.storefront),
+            label: t.tabEtal,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school_outlined),
-            activeIcon: Icon(Icons.school),
-            label: 'Tutos',
+            icon: const Icon(Icons.school_outlined),
+            activeIcon: const Icon(Icons.school),
+            label: t.tabTutos,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.photo_camera_outlined),
-            activeIcon: Icon(Icons.photo_camera),
-            label: 'Photo',
+            icon: const Icon(Icons.photo_camera_outlined),
+            activeIcon: const Icon(Icons.photo_camera),
+            label: t.tabPhoto,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu_outlined),
-            activeIcon: Icon(Icons.restaurant_menu),
-            label: 'Recettes',
+            icon: const Icon(Icons.restaurant_menu_outlined),
+            activeIcon: const Icon(Icons.restaurant_menu),
+            label: t.tabRecettes,
           ),
         ],
       ),

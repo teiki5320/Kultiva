@@ -47,8 +47,7 @@ void main() {
       plants.load();
     });
 
-    test('ajouter un plant ne réécrit pas une sauvegarde illisible',
-        () async {
+    test('ajouter un plant ne réécrit pas une sauvegarde illisible', () async {
       await plants.add('tomate');
       // Le magasin est laissé intact : l'utilisateur garde une chance de
       // récupérer ses données, et on ne les remplace pas par ce seul
@@ -72,8 +71,7 @@ void main() {
       plants.load();
     });
 
-    test('démarrer une culture ne réécrit pas un cahier illisible',
-        () async {
+    test('démarrer une culture ne réécrit pas un cahier illisible', () async {
       await cultures.add(
         vegetableId: 'tomate',
         startedAt: DateTime(2026, 5, 1),

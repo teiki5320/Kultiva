@@ -226,6 +226,60 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  const _SectionTitle(title: '🗣️  Langue'),
+                  Card(
+                    child: ValueListenableBuilder<String?>(
+                      valueListenable: PrefsService.instance.language,
+                      builder: (context, choisie, _) {
+                        return RadioGroup<String?>(
+                          groupValue: choisie,
+                          onChanged: PrefsService.instance.setLanguage,
+                          child: Column(
+                            children: <Widget>[
+                              const RadioListTile<String?>(
+                                value: null,
+                                activeColor: KultivaColors.primaryGreen,
+                                title: Text(
+                                  'Celle du téléphone',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              for (final code
+                                  in PrefsService.supportedLanguages)
+                                RadioListTile<String?>(
+                                  value: code,
+                                  activeColor: KultivaColors.primaryGreen,
+                                  title: Text(
+                                    _langueLabel(code),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(16, 0, 16, 14),
+                                child: Text(
+                                  // On le dit plutôt que de le laisser
+                                  // découvrir : une interface anglaise
+                                  // sur des tutos français surprend
+                                  // moins quand on a été prévenu.
+                                  'L\'interface et les noms de légumes sont '
+                                  'traduits. Les tutos, les recettes et les '
+                                  'conseils restent en français pour '
+                                  'l\'instant.',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    height: 1.4,
+                                    color: KultivaColors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   const _SectionTitle(title: '🌙  Apparence'),
                   Card(
                     child: ValueListenableBuilder<bool>(
@@ -405,6 +459,18 @@ class SettingsScreen extends StatelessWidget {
         duration: Duration(seconds: 3),
       ),
     );
+  }
+}
+
+/// Chaque langue se nomme dans sa propre langue : un anglophone
+/// cherche « English », pas « Anglais ».
+String _langueLabel(String code) {
+  switch (code) {
+    case 'en':
+      return '🇬🇧  English';
+    case 'fr':
+    default:
+      return '🇫🇷  Français';
   }
 }
 

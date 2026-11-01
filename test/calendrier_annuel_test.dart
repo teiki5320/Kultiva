@@ -1,3 +1,4 @@
+import 'package:kultiva/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/screens/home/calendar_grid_screen.dart';
@@ -64,6 +65,10 @@ void main() {
     setUp(() async {
       SharedPreferences.setMockInitialValues(<String, Object>{});
       await PrefsService.instance.load();
+      // `load()` relit les préférences et remet la langue à null ;
+      // on la repose après, sinon l'environnement de test (en-US)
+      // fait lire « Tomato » là où le test attend « Tomate ».
+      PrefsService.instance.language.value = 'fr';
     });
 
     Future<void> monte(
@@ -75,6 +80,8 @@ void main() {
       tester.view.physicalSize = taille;
       addTearDown(tester.view.reset);
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: L.localizationsDelegates,
+        supportedLocales: L.supportedLocales,
         theme: AppTheme.light,
         home: MediaQuery(
           data: MediaQueryData(
@@ -104,16 +111,15 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('aucune ligne de légume n\'est dans un défilement '
+    testWidgets(
+        'aucune ligne de légume n\'est dans un défilement '
         'latéral', (tester) async {
       await monte(tester, taille: const Size(393, 852));
       // La barre de familles défile de côté, comme à l'Étal, et c'est
       // voulu. Ce qui ne doit plus défiler, c'est la grille : avant,
       // le nom du légume sortait de l'écran à gauche quand on allait
       // voir juin. On vérifie donc l'ancêtre d'une ligne, pas l'écran.
-      final ligne = find
-          .bySemanticsLabel(RegExp(r' : (semis|récolte)'))
-          .first;
+      final ligne = find.bySemanticsLabel(RegExp(r' : (semis|récolte)')).first;
       final ancetres = tester.widgetList<Scrollable>(
         find.ancestor(of: ligne, matching: find.byType(Scrollable)),
       );

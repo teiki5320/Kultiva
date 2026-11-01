@@ -1,3 +1,4 @@
+import '../data/names_en.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -90,7 +91,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
       ),
     );
   }
-
 
   RegionData? _findRegionData(List<RegionData> list, String vegId) {
     for (final d in list) {
@@ -359,7 +359,7 @@ class _HeaderCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(
-              vegetable.name,
+              vegetable.displayName,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme

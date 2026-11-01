@@ -5,7 +5,8 @@ import 'package:kultiva/models/region_data.dart';
 void main() {
   _zoneTests();
   group('Country', () {
-    test('les 8 pays d\'Afrique de l\'Ouest, et eux seuls, portent le '
+    test(
+        'les 8 pays d\'Afrique de l\'Ouest, et eux seuls, portent le '
         'contenu ouest-africain', () {
       // Ce test est le garde-fou de l'ouverture mondiale du
       // 01/11/2026 : `Region.westAfrica` ne désigne plus « climat
@@ -31,19 +32,16 @@ void main() {
       // Une erreur ici décale un calendrier de six mois sans rien
       // casser visiblement : on sèmerait les tomates en hiver.
       for (final iso in <String>['AU', 'NZ', 'AR', 'CL', 'ZA', 'BR', 'RE']) {
-        expect(Country.fromIso(iso)!.hemisphere, Hemisphere.south,
-            reason: iso);
+        expect(Country.fromIso(iso)!.hemisphere, Hemisphere.south, reason: iso);
       }
       for (final iso in <String>['FR', 'SN', 'JP', 'CA', 'IN', 'GP']) {
-        expect(Country.fromIso(iso)!.hemisphere, Hemisphere.north,
-            reason: iso);
+        expect(Country.fromIso(iso)!.hemisphere, Hemisphere.north, reason: iso);
       }
     });
 
     test('la latitude de la capitale s\'accorde avec l\'hémisphère', () {
       for (final c in Country.values) {
-        final attendu =
-            c.capitalLat < 0 ? Hemisphere.south : Hemisphere.north;
+        final attendu = c.capitalLat < 0 ? Hemisphere.south : Hemisphere.north;
         expect(c.hemisphere, attendu,
             reason: '${c.label} : capitale à ${c.capitalLat}°');
       }
@@ -130,7 +128,8 @@ void _zoneTests() {
 
     test('Mali : Bamako (12,6°N) est soudanien, le nord reste sahélien', () {
       expect(Country.mali.zoneAt(12.6), equals(ClimateZone.sudan));
-      expect(Country.mali.zoneAt(16.3), equals(ClimateZone.sahel)); // Tombouctou
+      expect(
+          Country.mali.zoneAt(16.3), equals(ClimateZone.sahel)); // Tombouctou
     });
 
     test('Côte d\'Ivoire : Abidjan guinéen, Korhogo soudanien', () {

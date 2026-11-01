@@ -100,7 +100,6 @@ void main() {
       final ended = active.copyWith(endedAt: DateTime(2026, 6, 1));
       expect(ended.isActive, isFalse);
     });
-
   });
 
   group('GrowthPhase', () {

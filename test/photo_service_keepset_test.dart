@@ -86,7 +86,7 @@ void main() {
       await withPrefs(<String, Object>{
         'kultiva.plantations.v1':
             '[{"id":"p1","vegetableId":"tomate","plantedAt":"2026-05-01T10:00:00.000Z"},'
-            '{"id":"p2","vegetableId":"radis"}]',
+                '{"id":"p2","vegetableId":"radis"}]',
       });
       expect(PhotoService.referencedLocalPaths(), isNull);
     });

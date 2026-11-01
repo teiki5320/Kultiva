@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'l10n/app_localizations.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/root_tabs.dart';
 import 'services/audio_service.dart';
@@ -103,40 +103,41 @@ class KultivaApp extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: PrefsService.instance.darkMode,
       builder: (context, darkMode, _) {
-        return MaterialApp(
-          title: 'Kultiva',
-          debugShowCheckedModeBanner: false,
-          // App 100 % francophone : locale fixée en fr-FR pour que les
-          // DatePicker et widgets Material soient en français.
-          locale: const Locale('fr', 'FR'),
-          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const <Locale>[Locale('fr', 'FR')],
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
-          // L'app suit la taille de texte choisie dans les réglages du
-          // système, mais plafonnée : beaucoup de cards ont encore une
-          // hauteur fixe et débordaient aux très grandes valeurs. C'est
-          // une mesure de sauvegarde, pas une mise en conformité — le
-          // vrai correctif est de rendre ces cards extensibles, écran par
-          // écran (voir _plans/audit-2026-10-30.md).
-          builder: (context, child) {
-            final media = MediaQuery.of(context);
-            return MediaQuery(
-              data: media.copyWith(
-                textScaler: media.textScaler.clamp(
-                  minScaleFactor: 1.0,
-                  maxScaleFactor: 1.3,
+        return ValueListenableBuilder<String?>(
+          valueListenable: PrefsService.instance.language,
+          builder: (context, langue, __) => MaterialApp(
+            title: 'Kultiva',
+            debugShowCheckedModeBanner: false,
+            // Jusqu'au 01/11/2026 la locale était figée en fr-FR. L'app
+            // couvre maintenant 73 pays : `null` laisse Flutter suivre
+            // le téléphone et retomber sur le français si la langue
+            // n'est pas traduite.
+            locale: langue == null ? null : Locale(langue),
+            localizationsDelegates: L.localizationsDelegates,
+            supportedLocales: L.supportedLocales,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+            // L'app suit la taille de texte choisie dans les réglages du
+            // système, mais plafonnée : beaucoup de cards ont encore une
+            // hauteur fixe et débordaient aux très grandes valeurs. C'est
+            // une mesure de sauvegarde, pas une mise en conformité — le
+            // vrai correctif est de rendre ces cards extensibles, écran par
+            // écran (voir _plans/audit-2026-10-30.md).
+            builder: (context, child) {
+              final media = MediaQuery.of(context);
+              return MediaQuery(
+                data: media.copyWith(
+                  textScaler: media.textScaler.clamp(
+                    minScaleFactor: 1.0,
+                    maxScaleFactor: 1.3,
+                  ),
                 ),
-              ),
-              child: child ?? const SizedBox.shrink(),
-            );
-          },
-          home: const _KultivaBootstrap(),
+                child: child ?? const SizedBox.shrink(),
+              );
+            },
+            home: const _KultivaBootstrap(),
+          ),
         );
       },
     );
