@@ -153,6 +153,9 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
     final bouts = <String>[
       if (r.minutes != null) '${r.minutes} min',
       '$_parts pers.',
+      // Pour une conservation, la durée de garde compte plus que le
+      // temps de préparation : c'est elle qu'on vient chercher.
+      if (r.keeps != null) r.keeps!,
     ];
     return bouts.join('  ·  ');
   }

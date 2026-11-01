@@ -98,6 +98,11 @@ class RecipeRow extends StatelessWidget {
                           ),
                         ),
                       ],
+                      if (recipe.keeps != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: _Garde(recipe: recipe),
+                        ),
                       if (recipe.subtitle != null || cuisineLe != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 3),
@@ -309,5 +314,39 @@ Future<void> partagerRecette(String vegetableName, Recipe recipe) async {
     await Share.share(lignes.join('\n'), subject: recipe.name);
   } catch (e, s) {
     await ErrorReporter.report('partage_recette', e, s);
+  }
+}
+
+/// « ❄️ Congélation · 8 mois au congélateur ».
+///
+/// Entre deux conservations, c'est **cette ligne** qui décide : un
+/// congélateur plein rend la stérilisation préférable, et inversement.
+/// Elle est donc visible dans la liste, sans avoir à ouvrir la recette.
+class _Garde extends StatelessWidget {
+  final Recipe recipe;
+
+  const _Garde({required this.recipe});
+
+  @override
+  Widget build(BuildContext context) {
+    final m = recipe.method;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: Text(
+        <String>[
+          if (m != null) '${m.emoji} ${m.label}',
+          recipe.keeps!,
+        ].join('  ·  '),
+        style: const TextStyle(
+          fontSize: 10.5,
+          fontWeight: FontWeight.w800,
+          color: KultivaColors.primaryGreen,
+        ),
+      ),
+    );
   }
 }

@@ -96,7 +96,7 @@ void main() {
     test('le compte total est bien celui des fiches', () {
       final total =
           recipesByVegetable.values.fold<int>(0, (n, l) => n + l.length);
-      expect(total, 370,
+      expect(total, 376,
           reason: 'Si tu ajoutes des recettes, mets à jour README.md, '
               'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
     });
@@ -106,7 +106,7 @@ void main() {
           .expand((l) => l)
           .where((r) => r.isAnimated)
           .length;
-      expect(animees, 82,
+      expect(animees, 88,
           reason: 'Si tu écris de nouveaux pas-à-pas, mets à jour README.md, '
               'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
     });
@@ -185,12 +185,24 @@ void main() {
     });
   });
 
-  group('tomate et fraise, construites en entier', () {
-    // Les deux légumes de référence (01/11/2026) : tout ce qu'on
-    // applique ensuite aux 121 autres doit déjà tenir ici.
-    for (final id in <String>['tomate', 'fraise']) {
-      test('$id : les trois du top ont leurs étapes et leurs ingrédients',
-          () {
+  group('les légumes de référence (tomate, fraise, mâche)', () {
+    // Décision de Jean (01/11/2026) : le top 3 est fait de
+    // **conservations**. Un jardinier n'a pas un légume, il en a quinze
+    // d'un coup, et c'est le seul problème qu'un livre de cuisine ne
+    // résout pas. Ces trois légumes servent de modèle aux 120 autres.
+    const reference = <String>['tomate', 'fraise', 'mache'];
+
+    for (final id in reference) {
+      test('$id : les trois du top sont des conservations', () {
+        for (final r in top3For(id)) {
+          expect(r.isPreservation, isTrue,
+              reason: '${r.name} n\'est pas une conservation');
+          expect(r.keeps, isNotNull,
+              reason: '${r.name} ne dit pas combien de temps ça se garde');
+        }
+      });
+
+      test('$id : chacune a ses étapes, ses ingrédients, son temps', () {
         for (final r in top3For(id)) {
           expect(r.isAnimated, isTrue, reason: '${r.name} sans étapes');
           expect(r.ingredients, isNotEmpty, reason: '${r.name} sans liste');
@@ -199,25 +211,55 @@ void main() {
         }
       });
 
-      test('$id : chaque étape du top est une phrase, pas un mot', () {
+      test('$id : chaque étape est une phrase, pas un mot', () {
         for (final r in top3For(id)) {
           for (final s in r.steps) {
-            expect(s.text.length, greaterThan(20), reason: '${r.name}: ${s.text}');
+            expect(s.text.length, greaterThan(20),
+                reason: '${r.name}: ${s.text}');
             expect(s.emoji, isNotEmpty);
           }
         }
       });
+
+      test('$id : au moins deux méthodes différentes dans le top 3', () {
+        // Trois fois la même méthode, c'est une seule réponse déguisée
+        // en trois. La mâche est le plancher : une feuille tendre ne
+        // survit que cuite puis congelée, d'où deux méthodes et pas
+        // trois — c'est la limite honnête, pas un oubli.
+        final methodes = top3For(id).map((r) => r.method).toSet();
+        expect(methodes.length, greaterThanOrEqualTo(2), reason: id);
+      });
+
+      test('$id : une conservation rapide existe dans le top 3', () {
+        // Sans elle, la seule réponse à un surplus demande deux heures,
+        // et la récolte pourrit pendant qu'on hésite.
+        final mini = top3For(id).map((r) => r.minutes!).reduce(
+            (a, b) => a < b ? a : b);
+        expect(mini, lessThanOrEqualTo(25), reason: id);
+      });
     }
 
-    test('le top 3 couvre trois situations différentes', () {
-      // Un surplus à conserver, un plat, et quelque chose de rapide.
-      // Trois recettes qui prennent toutes une heure ne servent à rien.
-      for (final id in <String>['tomate', 'fraise']) {
-        final temps = top3For(id).map((r) => r.minutes!).toList()..sort();
-        expect(temps.first, lessThanOrEqualTo(15),
-            reason: '$id : aucune recette rapide dans le top 3');
-        expect(temps.last, greaterThanOrEqualTo(55),
-            reason: '$id : aucune recette de fond dans le top 3');
+    test('la mâche prouve que les feuilles à salade sont couvertes', () {
+      // Je m'étais trompé en disant qu'une salade ne se conservait pas.
+      // Jean a eu raison : transformée, elle se congèle.
+      final top = top3For('mache');
+      expect(top.length, 3);
+      expect(
+        top.map((r) => r.method),
+        everyElement(isIn(<PreservationMethod>[
+          PreservationMethod.transformeCongele,
+          PreservationMethod.blanchiCongele,
+          PreservationMethod.congelation,
+        ])),
+      );
+    });
+
+    test('les recettes à manger le jour même restent joignables', () {
+      // Elles quittent le top 3 mais pas l'app : la tarte à la tomate
+      // et la salade de mâche doivent rester trouvables.
+      for (final id in reference) {
+        final autres = otherRecipesFor(id);
+        expect(autres.any((r) => !r.isPreservation), isTrue, reason: id);
       }
     });
   });

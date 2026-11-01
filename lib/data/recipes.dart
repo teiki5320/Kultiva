@@ -2,6 +2,39 @@
 /// d'abord, avec les classiques d'Afrique de l'Ouest conservés : ce
 /// sont les seules recettes tropicales du catalogue, et le chantier
 /// mondial en aura besoin.
+/// Les neuf façons de garder une récolte.
+///
+/// Décision de Jean (01/11/2026) : **le top 3 d'un légume est fait de
+/// conservations**. Le raisonnement tient en une phrase — un jardinier
+/// n'a pas « une courgette », il en a quinze d'un coup, et c'est le
+/// seul problème qu'un livre de cuisine ne résout pas.
+///
+/// Ces méthodes sont la raison pour laquelle le chantier est tenable :
+/// une conservation est une **méthode** appliquée à un légume, pas une
+/// recette inventée pour lui. Neuf procédés écrits une fois couvrent
+/// les 123 cultures comestibles du catalogue ; 123 recettes sur mesure
+/// auraient demandé quarante fois le travail.
+///
+/// ⚠️ [transformeCongele] est celle qu'on oublie, et Jean a eu raison
+/// de la réclamer : une laitue ne se congèle pas, ne se sèche pas et ne
+/// se met pas en bocal — mais son velouté, si. C'est ce qui permet de
+/// couvrir les feuilles à salade, que je croyais à tort impossibles.
+enum PreservationMethod {
+  congelation('Congélation', '❄️'),
+  blanchiCongele('Blanchi puis congelé', '❄️'),
+  transformeCongele('Transformé puis congelé', '🥣'),
+  bocalSterilise('Bocal stérilisé', '🫙'),
+  lactoFermentation('Lacto-fermentation', '🧫'),
+  sechage('Séchage', '☀️'),
+  confiture('Confiture', '🍯'),
+  dansHuile('Dans l\'huile', '🫒'),
+  auVinaigre('Au vinaigre', '🍶');
+
+  final String label;
+  final String emoji;
+  const PreservationMethod(this.label, this.emoji);
+}
+
 class Recipe {
   final String name;
   final String emoji;
@@ -31,6 +64,21 @@ class Recipe {
   /// Le légume sous lequel elle est rangée n'a pas à se répéter ici.
   final List<String> uses;
 
+  /// La méthode de conservation, quand c'en est une.
+  ///
+  /// Null pour les recettes qui se mangent le jour même (une tarte, une
+  /// salade). Les trois du top 3 en ont une : c'est la règle posée le
+  /// 01/11/2026.
+  final PreservationMethod? method;
+
+  /// Combien de temps ça se garde, et où. « 1 an au placard », « 6 mois
+  /// au congélateur ».
+  ///
+  /// C'est **l'information qui décide** : entre deux conservations, un
+  /// jardinier choisit selon la place qu'il a. Un congélateur plein
+  /// rend la stérilisation préférable, et inversement.
+  final String? keeps;
+
   const Recipe({
     required this.name,
     required this.emoji,
@@ -40,7 +88,12 @@ class Recipe {
     this.ingredients = const <String>[],
     this.steps = const <RecipeStep>[],
     this.uses = const <String>[],
+    this.method,
+    this.keeps,
   });
+
+  /// Vrai quand la recette sert à garder la récolte.
+  bool get isPreservation => method != null;
 
   /// Une recette complète se déroule en animation ; une simple idée de
   /// plat reste une carte. Les deux cohabitent volontairement : écrire
@@ -92,9 +145,11 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       name: 'Coulis de tomates en bocaux',
       emoji: '🫙',
       description:
-          'Cinq kilos d\'un coup au jardin : le coulis est la seule réponse qui tient l\'hiver.',
+          'Cinq kilos d\'un coup : le coulis stérilisé est la seule réponse qui tient l\'hiver sans congélateur.',
       minutes: 120,
       serves: 8,
+      method: PreservationMethod.bocalSterilise,
+      keeps: '1 an au placard',
       uses: <String>['oignon', 'ail', 'basilic'],
       ingredients: <String>[
         '5 kg de tomates bien mûres',
@@ -109,8 +164,8 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             'Lave les tomates, retire le pédoncule et les parties abîmées. '
             'Inutile de les peler : la passoire le fera.'),
         RecipeStep('🔪',
-            'Coupe-les en quartiers et jette-les dans la grande marmite, sans '
-            'eau — elles en rendront assez.'),
+            'Coupe-les en quartiers et jette-les dans la grande marmite, '
+            'sans eau — elles en rendront assez.'),
         RecipeStep('🔥',
             'Fais fondre oignons et ail à l\'huile, puis ajoute les tomates '
             'et le sel.'),
@@ -119,22 +174,96 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             'temps. Le jus doit baisser de moitié.',
             minutes: 45),
         RecipeStep('🥣',
-            'Passe au moulin à légumes : peaux et graines restent dedans. Un '
-            'mixeur ferait un coulis rose et mousseux.'),
+            'Passe au moulin à légumes : peaux et graines restent dedans. '
+            'Un mixeur ferait un coulis rose et mousseux.'),
         RecipeStep('🔥',
-            'Remets le coulis sur le feu avec le sucre et le basilic, et fais '
-            'réduire encore 20 minutes. Il doit napper la cuillère.',
+            'Remets sur le feu avec le sucre et le basilic, et fais réduire '
+            'encore 20 minutes. Il doit napper la cuillère.',
             minutes: 20),
         RecipeStep('🫙',
             'Remplis des bocaux propres à 2 cm du bord, ferme-les.'),
         RecipeStep('♨️',
-            'Stérilise 30 minutes dans l\'eau bouillante, bocaux couverts '
-            'd\'eau. C\'est l\'étape qui fait tenir un an.',
+            'Stérilise 30 minutes dans l\'eau bouillante, bocaux entièrement '
+            'couverts d\'eau. C\'est cette étape qui fait tenir un an.',
             minutes: 30),
         RecipeStep('🧊',
-            'Laisse refroidir dans l\'eau, vérifie que chaque couvercle est '
-            'creux. Un couvercle bombé : au réfrigérateur, et mange-le dans '
-            'la semaine.'),
+            'Laisse refroidir dans l\'eau, puis vérifie que chaque couvercle '
+            'est creux. Un couvercle bombé : au réfrigérateur, et mange-le '
+            'dans la semaine.'),
+      ],
+    ),
+    Recipe(
+      name: 'Tomates séchées à l\'huile',
+      emoji: '☀️',
+      description:
+          'Le four à basse température concentre tout le sucre. Ensuite l\'huile les garde.',
+      minutes: 420,
+      serves: 6,
+      method: PreservationMethod.sechage,
+      keeps: '6 mois au frais, dans l\'huile',
+      uses: <String>['ail', 'thym', 'basilic'],
+      ingredients: <String>[
+        '2 kg de tomates allongées (olivettes)',
+        'gros sel',
+        '3 gousses d\'ail',
+        'thym, origan, basilic',
+        '30 cl d\'huile d\'olive',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍅',
+            'Coupe les tomates en deux dans la longueur. Les allongées '
+            'sèchent mieux : moins d\'eau, plus de chair.'),
+        RecipeStep('🧂',
+            'Pose-les face coupée vers le haut sur une grille, sale '
+            'légèrement : le sel tire l\'eau.'),
+        RecipeStep('🔥',
+            'Four à 90 °C, chaleur tournante, **porte entrechoquée** par une '
+            'cuillère en bois pour laisser filer la vapeur.'),
+        RecipeStep('⏱',
+            'Compte 6 à 7 heures. Elles doivent être souples, pas cassantes : '
+            'trop sèches, elles ne se réhydratent plus.',
+            minutes: 400),
+        RecipeStep('🫙',
+            'Range-les en bocal avec l\'ail en lamelles et les herbes, en '
+            'tassant par couches.'),
+        RecipeStep('🫒',
+            'Couvre entièrement d\'huile — une tomate qui dépasse moisit. '
+            'Attends 48 h avant d\'y toucher.'),
+      ],
+    ),
+    Recipe(
+      name: 'Tomates congelées entières',
+      emoji: '❄️',
+      description:
+          'Dix minutes de travail. La tomate est le seul légume qu\'on congèle cru sans rien faire.',
+      minutes: 10,
+      serves: 8,
+      method: PreservationMethod.congelation,
+      keeps: '8 mois au congélateur',
+      ingredients: <String>[
+        'des tomates mûres, autant que tu veux',
+        'des sacs de congélation',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍅',
+            'Choisis des tomates saines. Une tomate fendue ou tachée ne se '
+            'garde pas mieux au froid.'),
+        RecipeStep('💧',
+            'Lave-les et **sèche-les bien** : l\'eau qui reste fait du givre '
+            'et les colle entre elles.'),
+        RecipeStep('🔪',
+            'Retire le pédoncule, laisse-les entières. Pas besoin de peler '
+            'ni de blanchir.'),
+        RecipeStep('❄️',
+            'Étale-les sur une plaque et mets-les 2 heures au congélateur, '
+            'séparées.',
+            minutes: 120),
+        RecipeStep('🧊',
+            'Une fois dures, verse-les en sac. Elles ne feront pas un bloc, '
+            'et tu en prendras trois à la fois.'),
+        RecipeStep('🔥',
+            'À l\'usage : passe-les sous l\'eau tiède, la peau glisse toute '
+            'seule. Pour les sauces et les soupes, pas pour une salade.'),
       ],
     ),
     Recipe(
@@ -184,15 +313,17 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       ],
       steps: <RecipeStep>[
         RecipeStep('🍅',
-            'Coupe les tomates en quartiers, pas en dés : elles rendent moins '
-            'd\'eau.'),
+            'Coupe les tomates en quartiers, pas en dés : elles rendent '
+            'moins d\'eau.'),
         RecipeStep('🧅',
             'Émince l\'oignon très fin. Si tu le trouves fort, rince-le à '
             'l\'eau froide.'),
-        RecipeStep('🍋', 'Presse le citron, mélange-le à l\'huile, sel, poivre.'),
+        RecipeStep('🍋',
+            'Presse le citron, mélange-le à l\'huile, sel, poivre.'),
         RecipeStep('🥗', 'Verse sur les tomates, mélange délicatement.'),
         RecipeStep('🌿',
-            'Déchire le basilic à la main par-dessus — au couteau il noircit.'),
+            'Déchire le basilic à la main par-dessus — au couteau il '
+            'noircit.'),
       ],
     ),
     Recipe(
@@ -216,7 +347,8 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             'Pile ail, persil, piment et sel : c\'est le nokoss. Farcis-en '
             'les poissons par une entaille.'),
         RecipeStep('🔥',
-            'Fais revenir les poissons dans l\'huile chaude, puis réserve-les.'),
+            'Fais revenir les poissons dans l\'huile chaude, puis '
+            'réserve-les.'),
         RecipeStep('🧅',
             'Dans la même huile, fais fondre les oignons, ajoute tomates et '
             'concentré. Laisse réduire 15 minutes à feu doux.',
@@ -230,8 +362,8 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             'garde-les au chaud.',
             minutes: 10),
         RecipeStep('🍚',
-            'Verse le riz dans la sauce restante — elle doit le couvrir d\'un '
-            'doigt. Couvre et cuis 20 minutes sans remuer.',
+            'Verse le riz dans la sauce restante — elle doit le couvrir '
+            'd\'un doigt. Couvre et cuis 20 minutes sans remuer.',
             minutes: 20),
         RecipeStep('🍽',
             'Dresse le riz, le poisson au centre, les légumes autour.'),
@@ -1932,11 +2064,13 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   'fraise': <Recipe>[
     Recipe(
       name: 'Confiture de fraises',
-      emoji: '🫙',
+      emoji: '🍯',
       description:
           'Poids pour poids avec le sucre, un citron, et la cuisine sent l\'été.',
       minutes: 60,
       serves: 8,
+      method: PreservationMethod.confiture,
+      keeps: '2 ans au placard',
       ingredients: <String>[
         '1 kg de fraises équeutées',
         '700 g de sucre',
@@ -1944,7 +2078,8 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       ],
       steps: <RecipeStep>[
         RecipeStep('🍓',
-            'Coupe les grosses fraises en deux, laisse les petites entières.'),
+            'Coupe les grosses fraises en deux, laisse les petites '
+            'entières.'),
         RecipeStep('🍬',
             'Mélange-les au sucre et au citron, laisse macérer au frais. Le '
             'jus sort tout seul.',
@@ -1953,9 +2088,82 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             minutes: 20),
         RecipeStep('🥄',
             'Teste sur une assiette froide : une goutte qui se fige est '
-            'prête.'),
+            'prête. Le citron apporte la pectine qui fait prendre.'),
         RecipeStep('🫙',
-            'Mets en pots chauds, ferme et retourne jusqu\'à refroidissement.'),
+            'Mets en pots chauds, ferme et retourne jusqu\'à '
+            'refroidissement.'),
+      ],
+    ),
+    Recipe(
+      name: 'Fraises congelées sur plaque',
+      emoji: '❄️',
+      description:
+          'Un quart d\'heure, et tu as des fraises qui ne forment pas un bloc.',
+      minutes: 15,
+      serves: 8,
+      method: PreservationMethod.congelation,
+      keeps: '10 mois au congélateur',
+      ingredients: <String>[
+        'des fraises bien mûres mais fermes',
+        'des sacs ou boîtes de congélation',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave les fraises **avant** de les équeuter : par la blessure, '
+            'elles se gorgent d\'eau.'),
+        RecipeStep('🫗',
+            'Sèche-les une par une sur un torchon. Toute goutte restée '
+            'devient du givre.'),
+        RecipeStep('🔪', 'Équeute-les, laisse-les entières.'),
+        RecipeStep('❄️',
+            'Étale-les sur une plaque **sans qu\'elles se touchent**, et '
+            'congèle 3 heures.',
+            minutes: 180),
+        RecipeStep('🧊',
+            'Verse-les en sac une fois dures. C\'est la congélation en deux '
+            'temps qui évite la motte de fraises soudées.'),
+        RecipeStep('🥣',
+            'À l\'usage : décongelées elles sont molles, donc pour les '
+            'smoothies, coulis et gâteaux — pas pour une tarte crue.'),
+      ],
+    ),
+    Recipe(
+      name: 'Sirop de fraises',
+      emoji: '🫙',
+      description:
+          'Le jus pressé, cuit au sucre et mis en bouteille : tout l\'été dans un verre d\'eau.',
+      minutes: 75,
+      serves: 12,
+      method: PreservationMethod.bocalSterilise,
+      keeps: '1 an au placard, 3 semaines ouvert',
+      uses: <String>['menthe'],
+      ingredients: <String>[
+        '1,5 kg de fraises',
+        '1 kg de sucre',
+        'le jus de 2 citrons',
+        'quelques feuilles de menthe',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍓',
+            'Équeute les fraises, écrase-les grossièrement à la fourchette.'),
+        RecipeStep('⏱',
+            'Laisse-les rendre leur jus 2 heures avec le citron, à '
+            'température ambiante.',
+            minutes: 120),
+        RecipeStep('🫗',
+            'Verse dans un torchon propre et presse. Ne filtre pas au '
+            'mixeur : le sirop deviendrait trouble.'),
+        RecipeStep('🔥',
+            'Pèse le jus, ajoute autant de sucre que de jus, et porte '
+            'doucement à ébullition.'),
+        RecipeStep('⏱',
+            'Cuis 10 minutes en écumant. Le sirop doit napper légèrement.',
+            minutes: 10),
+        RecipeStep('🌿', 'Jette la menthe dedans hors du feu, 5 minutes.',
+            minutes: 5),
+        RecipeStep('🫙',
+            'Mets en bouteilles ébouillantées, remplies à ras, et ferme '
+            'aussitôt. Debout, au frais et à l\'ombre.'),
       ],
     ),
     Recipe(
@@ -1975,13 +2183,13 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       ],
       steps: <RecipeStep>[
         RecipeStep('🥧',
-            'Étale la pâte, pique-la, couvre-la de papier et de légumes secs.'),
+            'Étale la pâte, pique-la, couvre-la de papier et de légumes '
+            'secs.'),
         RecipeStep('🔥',
             'Cuis-la **à blanc** 25 minutes à 180 °C : une pâte crue sous la '
             'crème détrempe en une heure.',
             minutes: 25),
-        RecipeStep('🥛',
-            'Fais chauffer le lait avec la vanille fendue.'),
+        RecipeStep('🥛', 'Fais chauffer le lait avec la vanille fendue.'),
         RecipeStep('🥚',
             'Fouette jaunes, sucre et maïzena, puis verse le lait chaud '
             'dessus en remuant.'),
@@ -1994,8 +2202,8 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             'refroidir complètement.',
             minutes: 60),
         RecipeStep('🍓',
-            'Garnis le fond de tarte de crème lissée, range les fraises '
-            'coupées en deux, pointe vers le haut.'),
+            'Garnis le fond de crème lissée, range les fraises coupées en '
+            'deux, pointe vers le haut.'),
         RecipeStep('✨',
             'Fais fondre la gelée avec une cuillère d\'eau et badigeonne les '
             'fraises : c\'est ce qui les fait briller.'),
@@ -2444,12 +2652,130 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   ],
   'mache': <Recipe>[
     Recipe(
+      name: 'Velouté de mâche à congeler',
+      emoji: '🥣',
+      description:
+          'Une salade ne se conserve pas — son velouté, si. C\'est la réponse pour toute feuille tendre.',
+      minutes: 35,
+      serves: 6,
+      method: PreservationMethod.transformeCongele,
+      keeps: '6 mois au congélateur',
+      uses: <String>['pomme_de_terre', 'echalote'],
+      ingredients: <String>[
+        '600 g de mâche',
+        '4 pommes de terre',
+        '2 échalotes',
+        '1,2 litre de bouillon',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave la mâche dans plusieurs eaux : le sable reste au coeur des '
+            'bouquets, et il ne part pas à la cuisson.'),
+        RecipeStep('🥔',
+            'Cuis pommes de terre et échalotes en dés dans le bouillon, '
+            '15 minutes.',
+            minutes: 15),
+        RecipeStep('🥬',
+            'Jette la mâche et compte **2 minutes**, pas plus. Au-delà, le '
+            'vert tourne au kaki et ne revient jamais.',
+            minutes: 2),
+        RecipeStep('🥣',
+            'Mixe aussitôt, hors du feu. **Sans crème** : elle tranche à la '
+            'décongélation. Tu l\'ajouteras dans l\'assiette.'),
+        RecipeStep('🧊',
+            'Refroidis vite — casserole dans l\'eau froide. Un velouté tiède '
+            'mis au congélateur fait de gros cristaux qui le rendent '
+            'granuleux.'),
+        RecipeStep('❄️',
+            'Répartis en portions d\'un repas, en laissant 2 cm de vide : ça '
+            'gonfle en gelant. Note la date.'),
+      ],
+    ),
+    Recipe(
+      name: 'Mâche blanchie congelée',
+      emoji: '❄️',
+      description:
+          'Blanchie vingt secondes, essorée, congelée en boulettes : prête pour une omelette ou un gratin.',
+      minutes: 25,
+      serves: 8,
+      method: PreservationMethod.blanchiCongele,
+      keeps: '8 mois au congélateur',
+      ingredients: <String>[
+        '1 kg de mâche',
+        'gros sel',
+        'un grand saladier d\'eau et de glaçons',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave la mâche à fond et équeute les racines encore attachées.'),
+        RecipeStep('🔥',
+            'Porte une grande eau salée à gros bouillons. Beaucoup d\'eau : '
+            'elle ne doit pas refroidir quand tu jettes les feuilles.'),
+        RecipeStep('⏱',
+            'Plonge la mâche **20 secondes**, pas plus. Le blanchiment tue '
+            'les enzymes qui jaunissent les feuilles au congélateur ; trop '
+            'long, et il n\'y a plus de feuille.'),
+        RecipeStep('🧊',
+            'Sors-la et plonge-la aussitôt dans l\'eau glacée. Ce choc fixe '
+            'le vert.'),
+        RecipeStep('🫗',
+            'Presse-la en boule entre tes mains pour chasser l\'eau — '
+            'vraiment fort. L\'eau qui reste devient du givre.'),
+        RecipeStep('❄️',
+            'Forme des boulettes de la taille d\'une portion, pose-les sur '
+            'une plaque, congèle 2 heures, puis mets-les en sac.',
+            minutes: 120),
+      ],
+    ),
+    Recipe(
+      name: 'Pesto de mâche en glaçons',
+      emoji: '🧊',
+      description:
+          'Un quart d\'heure, et des cubes verts à jeter dans des pâtes tout l\'hiver.',
+      minutes: 15,
+      serves: 10,
+      method: PreservationMethod.transformeCongele,
+      keeps: '1 an au congélateur',
+      uses: <String>['ail'],
+      ingredients: <String>[
+        '300 g de mâche',
+        '60 g de noisettes ou d\'amandes',
+        '80 g de parmesan',
+        '1 gousse d\'ail',
+        '15 cl d\'huile d\'olive, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌰',
+            'Fais torréfier les noisettes à sec 3 minutes : la mâche a un '
+            'goût de noisette, on l\'appuie.',
+            minutes: 3),
+        RecipeStep('💧',
+            'Lave la mâche et **sèche-la bien**. De l\'eau dans un pesto le '
+            'fait tourner.'),
+        RecipeStep('🥣',
+            'Mixe mâche, ail et noisettes par à-coups, pour ne pas chauffer '
+            'et noircir les feuilles.'),
+        RecipeStep('🫒',
+            'Verse l\'huile en filet. **Garde le parmesan de côté** : au '
+            'congélateur il devient farineux, tu l\'ajouteras au moment de '
+            'servir.'),
+        RecipeStep('🧊',
+            'Remplis un bac à glaçons, un cube par portion de pâtes, et '
+            'couvre d\'un filet d\'huile.'),
+        RecipeStep('❄️',
+            'Démoule les cubes une fois durs et garde-les en sac. Un cube '
+            'fond directement dans les pâtes chaudes.'),
+      ],
+    ),
+    Recipe(
       name: 'Mâche, betterave et noix',
       emoji: '🥗',
       description:
           'La salade d\'hiver par excellence, trois ingrédients et c\'est tout.',
       minutes: 10,
       serves: 4,
+      uses: <String>['betterave'],
       ingredients: <String>[
         '200 g de mâche',
         '2 betteraves cuites',
@@ -2461,44 +2787,17 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
         RecipeStep('💧',
             'Lave la mâche dans plusieurs eaux : le sable reste au coeur des '
             'bouquets.'),
-        RecipeStep('🫗',
-            'Sèche-la délicatement, elle s\'écrase vite.'),
-        RecipeStep('🥄',
-            'Vinaigrette à la moutarde et à l\'huile de noix.'),
+        RecipeStep('🫗', 'Sèche-la délicatement, elle s\'écrase vite.'),
+        RecipeStep('🥄', 'Vinaigrette à la moutarde et à l\'huile de noix.'),
         RecipeStep('🥗',
-            'Dés de betterave, noix concassées, et mélange au dernier moment.'),
-      ],
-    ),
-    Recipe(
-      name: 'Velouté de mâche',
-      emoji: '🍲',
-      description:
-          'Inattendu : un velouté très vert, au goût de noisette.',
-      minutes: 25,
-      serves: 4,
-      ingredients: <String>[
-        '300 g de mâche',
-        '2 pommes de terre',
-        '1 échalote',
-        '70 cl de bouillon',
-        '10 cl de crème, sel, poivre',
-      ],
-      steps: <RecipeStep>[
-        RecipeStep('🥔',
-            'Cuis les pommes de terre en dés avec l\'échalote dans le '
-            'bouillon, 15 minutes.',
-            minutes: 15),
-        RecipeStep('🥬',
-            'Jette la mâche et compte **2 minutes**, pas plus.', minutes: 2),
-        RecipeStep('🥣', 'Mixe aussitôt, hors du feu.'),
-        RecipeStep('🥛', 'Crème, sel, poivre. Sers vite, le vert passe.'),
+            'Dés de betterave, noix concassées, et mélange au dernier '
+            'moment.'),
       ],
     ),
     Recipe(
       name: 'Mâche aux lardons et œuf poché',
       emoji: '🍳',
-      description:
-          'Tiède, avec un jaune coulant qui fait la sauce.',
+      description: 'Tiède, avec un jaune coulant qui fait la sauce.',
       minutes: 20,
       serves: 2,
       ingredients: <String>[
@@ -2509,15 +2808,16 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
         'pain, huile, poivre',
       ],
       steps: <RecipeStep>[
-        RecipeStep('🥓', 'Fais dorer les lardons, réserve-les dans leur gras.'),
-        RecipeStep('🍞', 'Fais griller des dés de pain dans la même poêle.'),
+        RecipeStep('🥓',
+            'Fais dorer les lardons, réserve-les dans leur gras.'),
+        RecipeStep('🍞',
+            'Fais griller des dés de pain dans la même poêle.'),
         RecipeStep('💧',
             'Casse les oeufs dans une eau frémissante vinaigrée, 3 minutes.',
             minutes: 3),
         RecipeStep('🥗',
             'Mâche dans l\'assiette, lardons et croûtons tièdes dessus.'),
-        RecipeStep('🍳',
-            'Pose l\'oeuf, poivre, et perce-le à table.'),
+        RecipeStep('🍳', 'Pose l\'oeuf, poivre, et perce-le à table.'),
       ],
     ),
   ],

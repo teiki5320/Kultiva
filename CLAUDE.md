@@ -20,10 +20,12 @@ depuis le 01/11/2026 **73 pays sur six continents**. Elle propose :
   conseils contextuels selon la météo ;
 - **Défis & badges** : 50 défis photo et 50 badges, sur leur écran,
   joignable depuis le dashboard ;
-- un **onglet Recettes** : 370 recettes, **un top 3 par récolte**, dont 82
-  déroulées pas à pas dans un lecteur animé hors ligne — avec
-  ingrédients, minuteur et quantités qui suivent le nombre de
-  convives ; favoris et « déjà cuisiné » par recette ;
+- un **onglet « Garder ta récolte »** : trois **conservations** par
+  légume (bocal, congélation, séchage, lacto-fermentation, confiture,
+  huile, vinaigre), chacune avec sa durée de garde et son pas-à-pas
+  animé hors ligne. 376 recettes, 88 déroulées étape par étape ; les
+  plats à manger le jour même sont dessous. Favoris et « déjà
+  cuisiné » par recette ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
   l'API Open-Meteo (gratuite, sans clé) ;
 - des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
@@ -182,7 +184,7 @@ Kultiva/
 │                           # utilisé par l'app (aucun backend)
 ├── assets/
 │   ├── recipes/            # recipe_player.html — UN template pour les
-│   │                       # 370 recettes, nourri par du JSON injecté
+│   │                       # 376 recettes, nourri par du JSON injecté
 │   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
@@ -994,7 +996,56 @@ Le Studio de Jean affiche les fiches de ce dépôt (docs/INFRA.md, docs/MARKETIN
     `docs/prompt-tuto-dashboard.md`, qui dit lui aussi « quatre
     onglets ».
 
-## 🍽 La partie Recettes (structure arrêtée le 01/11/2026)
+## 🫙 « Garder ta récolte » (structure arrêtée le 01/11/2026)
+
+**Le top 3 d'un légume est fait de conservations.** Décision de Jean,
+et c'est le pivot de tout l'onglet : un jardinier n'a pas une
+courgette, il en a quinze d'un coup, et c'est le seul problème qu'un
+livre de cuisine ne résout pas.
+
+**Pourquoi c'est tenable.** Une conservation est une **méthode**
+appliquée à un légume, pas une recette inventée pour lui.
+`PreservationMethod` en compte neuf — congélation, blanchi puis
+congelé, transformé puis congelé, bocal stérilisé, lacto-fermentation,
+séchage, confiture, dans l'huile, au vinaigre. Neuf procédés écrits une
+fois couvrent les 123 cultures comestibles ; 123 recettes sur mesure
+auraient demandé quarante fois le travail.
+
+⚠️ **`transformeCongele` est celle qu'on oublie.** J'ai d'abord affirmé
+à Jean que les feuilles à salade étaient impossibles à conserver — « ni
+congeler, ni sécher, ni mettre en bocal ». Il a répondu qu'un velouté
+congelé **est** une conservation. Il avait raison, et c'est ce qui
+couvre laitue, mâche, roquette et cresson. **La mâche est dans les
+légumes de référence exprès**, pour que ce cas reste vérifié.
+
+**Deux champs portent l'information qui décide** :
+
+- `Recipe.method` — la méthode, ou `null` pour un plat du jour même.
+- `Recipe.keeps` — « 1 an au placard », « 8 mois au congélateur ».
+  Entre deux conservations, c'est **ça** qui tranche : un congélateur
+  plein rend la stérilisation préférable, et inversement. Affiché dans
+  la liste, pas seulement dans la fiche.
+
+**Les trois légumes de référence** sont **tomate, fraise et mâche**.
+Leurs neuf conservations sont écrites en entier. `recipes_test.dart`
+exige pour chacun : trois conservations, chacune avec étapes,
+ingrédients, temps, parts et durée de garde ; **au moins deux méthodes
+distinctes** (la mâche est le plancher — une feuille tendre ne survit
+que cuite puis congelée) ; et **une conservation rapide** (≤ 25 min),
+sans quoi la seule réponse à un surplus demanderait deux heures pendant
+que la récolte pourrit.
+
+**Les plats à manger le jour même** ne sont pas perdus : ils quittent
+le top 3 et vivent sous « N recettes à manger tout de suite », replié.
+Un test vérifie que chacun des trois légumes en garde au moins un.
+
+⚠️ **120 légumes attendent le même traitement.** C'est le chantier à
+reprendre, légume par légume, sur le modèle de la tomate : choisir
+trois méthodes parmi les neuf, puis écrire les étapes avec les
+paramètres propres à la culture (temps de blanchiment, taux de sel,
+ratio de sucre).
+
+### Le mécanisme du top 3 (inchangé)
 
 Contrainte de Jean, et c'est la seule : **un top 3 par légume**. Trois
 recettes mises en avant, jamais plus — vingt idées de plat ne se

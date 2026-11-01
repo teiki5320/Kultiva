@@ -156,7 +156,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         const Text(
-                          '🍽  Recettes',
+                          '🫙  Garder ta récolte',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
@@ -168,7 +168,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '$total recette${total > 1 ? 's' : ''} pour '
+                          '$total façon${total > 1 ? 's' : ''} de garder '
                           '${entrees.length} récolte'
                           '${entrees.length > 1 ? 's' : ''}',
                           style: const TextStyle(
@@ -192,7 +192,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
                 controller: _recherche,
                 onChanged: (v) => setState(() => _query = v),
                 decoration: InputDecoration(
-                  hintText: 'Un légume, ou un plat…',
+                  hintText: 'Un légume, ou une conserve…',
                   prefixIcon: const Icon(Icons.search, size: 20),
                   suffixIcon: _query.isEmpty
                       ? null

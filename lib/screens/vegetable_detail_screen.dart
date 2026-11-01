@@ -1186,14 +1186,32 @@ class _RecipesSection extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right: 14),
-                child: Text(
-                  '🍲  En cuisine',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '🫙  Garder ta récolte',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                    ),
+                    if (top.any((r) => r.isPreservation))
+                      const Padding(
+                        padding: EdgeInsets.only(top: 2),
+                        child: Text(
+                          'Trois façons de la faire durer. Un jardinier n\'a '
+                          'pas un légume, il en a quinze d\'un coup.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.35,
+                            color: KultivaColors.textSecondary,
+                          ),
+                        ),
                       ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               for (final r in top)
                 RecipeRow(vegetableId: vegetableId, recipe: r),
               if (autres.isNotEmpty)
@@ -1246,8 +1264,10 @@ class _AutresRecettesState extends State<_AutresRecettes> {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  '$n autre${n > 1 ? 's' : ''} recette'
-                  '${n > 1 ? 's' : ''} avec ce légume',
+                  // Le top 3 garde la récolte ; le reste se mange le jour
+                  // même. Dire lequel est lequel évite de chercher une
+                  // conserve dans la liste des plats.
+                  '$n recette${n > 1 ? 's' : ''} à manger tout de suite',
                   style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
