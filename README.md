@@ -10,7 +10,7 @@ Une app Flutter de jardinage au style pastel kawaii japonais, en **français et 
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
-- 🍽️ **Onglet Recettes** : 369 recettes, trois par récolte, dont **79 déroulées pas à pas** en animation (ingrédients, minuteur, quantités ajustables au nombre de convives). Les légumes de ton jardin passent en tête, un filtre « c'est la saison » ne garde que ce qui se récolte ce mois-ci, et chaque recette se met de côté ou se marque « déjà cuisinée »
+- 🍽️ **Onglet Recettes** : 370 recettes, **un top 3 par récolte**, dont **82 déroulées pas à pas** en animation (ingrédients, minuteur, quantités ajustables au nombre de convives). Les légumes de ton jardin passent en tête, un filtre « c'est la saison » ne garde que ce qui se récolte ce mois-ci, et chaque recette se met de côté ou se marque « déjà cuisinée »
 - 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
 - 📖 **Journal du jardin** : plantations, arrosages, récoltes et photos inscrits à leur date, jour par jour, dans le cahier de culture
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
@@ -51,7 +51,7 @@ Le pays se choisit au premier lancement (avec recherche) et se modifie
 - 🇫🇷 **Français** — la source, tout y est
 - 🇬🇧 **Anglais** — l'interface et les noms des 130 cultures
 
-Les 33 tutos, les 369 recettes, les conseils, les maladies, les badges
+Les 33 tutos, les 370 recettes, les conseils, les maladies, les badges
 et les défis restent en français. Le réglage **Langue** des paramètres
 le dit, et permet de revenir au français même sur un téléphone
 anglophone.

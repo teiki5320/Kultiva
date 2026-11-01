@@ -20,6 +20,17 @@ class Recipe {
   /// écrite en entier : elle s'affiche alors en carte, sans animation.
   final List<RecipeStep> steps;
 
+  /// Les autres légumes du catalogue que la recette utilise.
+  ///
+  /// Une recette n'appartient plus à un seul légume. La ratatouille en
+  /// emploie cinq ; rangée sous « aubergine » seule, elle restait
+  /// invisible pour qui a des courgettes et des poivrons mais pas
+  /// d'aubergine. Déclarer les légumes employés la rend trouvable
+  /// depuis chacun d'eux.
+  ///
+  /// Le légume sous lequel elle est rangée n'a pas à se répéter ici.
+  final List<String> uses;
+
   const Recipe({
     required this.name,
     required this.emoji,
@@ -28,6 +39,7 @@ class Recipe {
     this.serves,
     this.ingredients = const <String>[],
     this.steps = const <RecipeStep>[],
+    this.uses = const <String>[],
   });
 
   /// Une recette complète se déroule en animation ; une simple idée de
@@ -77,6 +89,55 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   ],
   'tomate': <Recipe>[
     Recipe(
+      name: 'Coulis de tomates en bocaux',
+      emoji: '🫙',
+      description:
+          'Cinq kilos d\'un coup au jardin : le coulis est la seule réponse qui tient l\'hiver.',
+      minutes: 120,
+      serves: 8,
+      uses: <String>['oignon', 'ail', 'basilic'],
+      ingredients: <String>[
+        '5 kg de tomates bien mûres',
+        '2 oignons',
+        '4 gousses d\'ail',
+        '1 bouquet de basilic',
+        '4 cuillères à soupe d\'huile d\'olive',
+        '2 cuillères à café de sel, 1 de sucre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍅',
+            'Lave les tomates, retire le pédoncule et les parties abîmées. '
+            'Inutile de les peler : la passoire le fera.'),
+        RecipeStep('🔪',
+            'Coupe-les en quartiers et jette-les dans la grande marmite, sans '
+            'eau — elles en rendront assez.'),
+        RecipeStep('🔥',
+            'Fais fondre oignons et ail à l\'huile, puis ajoute les tomates '
+            'et le sel.'),
+        RecipeStep('⏱',
+            'Laisse cuire 45 minutes à découvert, en remuant de temps en '
+            'temps. Le jus doit baisser de moitié.',
+            minutes: 45),
+        RecipeStep('🥣',
+            'Passe au moulin à légumes : peaux et graines restent dedans. Un '
+            'mixeur ferait un coulis rose et mousseux.'),
+        RecipeStep('🔥',
+            'Remets le coulis sur le feu avec le sucre et le basilic, et fais '
+            'réduire encore 20 minutes. Il doit napper la cuillère.',
+            minutes: 20),
+        RecipeStep('🫙',
+            'Remplis des bocaux propres à 2 cm du bord, ferme-les.'),
+        RecipeStep('♨️',
+            'Stérilise 30 minutes dans l\'eau bouillante, bocaux couverts '
+            'd\'eau. C\'est l\'étape qui fait tenir un an.',
+            minutes: 30),
+        RecipeStep('🧊',
+            'Laisse refroidir dans l\'eau, vérifie que chaque couvercle est '
+            'creux. Un couvercle bombé : au réfrigérateur, et mange-le dans '
+            'la semaine.'),
+      ],
+    ),
+    Recipe(
       name: 'Tarte à la tomate et moutarde',
       emoji: '🥧',
       description:
@@ -107,12 +168,41 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       ],
     ),
     Recipe(
+      name: 'Salade tomate-oignon',
+      emoji: '🥗',
+      description:
+          'Des tomates fraîches du jardin, un filet de citron, et le tour est joué.',
+      minutes: 10,
+      serves: 4,
+      uses: <String>['oignon', 'basilic'],
+      ingredients: <String>[
+        '4 tomates bien mûres',
+        '1 oignon rouge',
+        '1 citron',
+        '3 cuillères à soupe d\'huile d\'olive',
+        'sel, poivre, basilic',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍅',
+            'Coupe les tomates en quartiers, pas en dés : elles rendent moins '
+            'd\'eau.'),
+        RecipeStep('🧅',
+            'Émince l\'oignon très fin. Si tu le trouves fort, rince-le à '
+            'l\'eau froide.'),
+        RecipeStep('🍋', 'Presse le citron, mélange-le à l\'huile, sel, poivre.'),
+        RecipeStep('🥗', 'Verse sur les tomates, mélange délicatement.'),
+        RecipeStep('🌿',
+            'Déchire le basilic à la main par-dessus — au couteau il noircit.'),
+      ],
+    ),
+    Recipe(
       name: 'Thiéboudienne',
       emoji: '🍛',
       description:
           'Le riz au poisson sénégalais, roi des plats, avec sa sauce tomate bien réduite.',
       minutes: 90,
       serves: 6,
+      uses: <String>['carotte', 'aubergine', 'oignon', 'manioc', 'ail'],
       ingredients: <String>[
         '1 kg de poisson (thiof, mérou ou cabillaud)',
         '500 g de riz brisé',
@@ -145,33 +235,6 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
             minutes: 20),
         RecipeStep('🍽',
             'Dresse le riz, le poisson au centre, les légumes autour.'),
-      ],
-    ),
-    Recipe(
-      name: 'Salade tomate-oignon',
-      emoji: '🥗',
-      description:
-          'Des tomates fraîches du jardin, un filet de citron, et le tour est joué.',
-      minutes: 10,
-      serves: 4,
-      ingredients: <String>[
-        '4 tomates bien mûres',
-        '1 oignon rouge',
-        '1 citron',
-        '3 cuillères à soupe d\'huile d\'olive',
-        'sel, poivre, basilic',
-      ],
-      steps: <RecipeStep>[
-        RecipeStep('🍅',
-            'Coupe les tomates en quartiers, pas en dés : elles rendent moins '
-            'd\'eau.'),
-        RecipeStep('🧅',
-            'Émince l\'oignon très fin. Si tu le trouves fort, rince-le à '
-            'l\'eau froide.'),
-        RecipeStep('🍋', 'Presse le citron, mélange-le à l\'huile, sel, poivre.'),
-        RecipeStep('🥗', 'Verse sur les tomates, mélange délicatement.'),
-        RecipeStep('🌿',
-            'Déchire le basilic à la main par-dessus — au couteau il noircit.'),
       ],
     ),
   ],
@@ -1868,14 +1931,6 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   ],
   'fraise': <Recipe>[
     Recipe(
-      name: 'Fraises au sucre et menthe',
-      emoji: '🍓',
-      description:
-          'Coupées une heure avant, elles rendent un sirop qu\'on sauce au pain.',
-      minutes: 10,
-      serves: 4,
-    ),
-    Recipe(
       name: 'Confiture de fraises',
       emoji: '🫙',
       description:
@@ -1885,27 +1940,96 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       ingredients: <String>[
         '1 kg de fraises équeutées',
         '700 g de sucre',
-        'Le jus d\'un citron',
+        'le jus d\'un citron',
       ],
       steps: <RecipeStep>[
-        RecipeStep('🍓', 'Coupe les grosses fraises en deux, laisse les '
-            'petites entières.'),
-        RecipeStep('🍬', 'Mélange-les au sucre et au citron, laisse macérer '
-            'au frais. Le jus sort tout seul.', minutes: 120),
+        RecipeStep('🍓',
+            'Coupe les grosses fraises en deux, laisse les petites entières.'),
+        RecipeStep('🍬',
+            'Mélange-les au sucre et au citron, laisse macérer au frais. Le '
+            'jus sort tout seul.',
+            minutes: 120),
         RecipeStep('🔥', 'Porte à ébullition et cuis à feu vif en écumant.',
             minutes: 20),
-        RecipeStep('🥄', 'Teste sur une assiette froide : une goutte qui se '
-            'fige est prête.'),
-        RecipeStep('🫙', 'Mets en pots chauds, ferme et retourne jusqu\'à '
-            'refroidissement.'),
+        RecipeStep('🥄',
+            'Teste sur une assiette froide : une goutte qui se fige est '
+            'prête.'),
+        RecipeStep('🫙',
+            'Mets en pots chauds, ferme et retourne jusqu\'à refroidissement.'),
       ],
     ),
     Recipe(
       name: 'Tarte aux fraises',
       emoji: '🥧',
-      description: 'Pâte sablée, crème pâtissière, fraises crues rangées dessus.',
+      description:
+          'Pâte sablée, crème pâtissière, fraises crues rangées dessus.',
       minutes: 90,
       serves: 6,
+      ingredients: <String>[
+        '1 pâte sablée',
+        '600 g de fraises',
+        '50 cl de lait',
+        '4 jaunes d\'oeufs, 100 g de sucre',
+        '50 g de maïzena, 1 gousse de vanille',
+        '2 cuillères à soupe de gelée de groseille',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥧',
+            'Étale la pâte, pique-la, couvre-la de papier et de légumes secs.'),
+        RecipeStep('🔥',
+            'Cuis-la **à blanc** 25 minutes à 180 °C : une pâte crue sous la '
+            'crème détrempe en une heure.',
+            minutes: 25),
+        RecipeStep('🥛',
+            'Fais chauffer le lait avec la vanille fendue.'),
+        RecipeStep('🥚',
+            'Fouette jaunes, sucre et maïzena, puis verse le lait chaud '
+            'dessus en remuant.'),
+        RecipeStep('🔥',
+            'Remets sur le feu et fouette **sans arrêt** jusqu\'à ce que ça '
+            'épaississe. Dès les premiers bouillons, c\'est prêt.',
+            minutes: 5),
+        RecipeStep('❄️',
+            'Verse la crème sur une assiette, filme au contact, et laisse '
+            'refroidir complètement.',
+            minutes: 60),
+        RecipeStep('🍓',
+            'Garnis le fond de tarte de crème lissée, range les fraises '
+            'coupées en deux, pointe vers le haut.'),
+        RecipeStep('✨',
+            'Fais fondre la gelée avec une cuillère d\'eau et badigeonne les '
+            'fraises : c\'est ce qui les fait briller.'),
+      ],
+    ),
+    Recipe(
+      name: 'Fraises au sucre et menthe',
+      emoji: '🍓',
+      description:
+          'Coupées une heure avant, elles rendent un sirop qu\'on sauce au pain.',
+      minutes: 10,
+      serves: 4,
+      uses: <String>['menthe'],
+      ingredients: <String>[
+        '500 g de fraises',
+        '2 cuillères à soupe de sucre',
+        'une dizaine de feuilles de menthe',
+        '1/2 citron',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave les fraises **avant** de les équeuter, sinon elles se '
+            'gorgent d\'eau par la blessure.'),
+        RecipeStep('🔪', 'Équeute-les et coupe-les en deux ou en quatre.'),
+        RecipeStep('🍬',
+            'Sucre-les, ajoute un trait de citron, mélange une fois.'),
+        RecipeStep('⏱',
+            'Laisse-les une heure à température ambiante : le sucre tire le '
+            'jus et fait le sirop. Au réfrigérateur, ça ne marche qu\'à '
+            'moitié.',
+            minutes: 60),
+        RecipeStep('🌿',
+            'Déchire la menthe à la main juste avant de servir.'),
+      ],
     ),
   ],
   'ail': <Recipe>[
@@ -3123,3 +3247,50 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     Recipe(name: 'Pousses de tournesol en salade', emoji: '🌱', description: 'Germées une semaine, croquantes et douces.', minutes: 10, serves: 4),
   ],
 };
+
+/// Le **top 3** d'un légume : les trois recettes mises en avant.
+///
+/// Contrainte de Jean (01/11/2026) : trois par légume, toujours. C'est
+/// ce qui rend la liste lisible — vingt idées de plat ne se choisissent
+/// pas. L'ordre du catalogue **est** le classement : la première est
+/// celle qu'on propose d'abord.
+///
+/// Rendre trois recettes et pas plus est volontaire. Ce qui dépasse
+/// reste joignable par [otherRecipesFor], sous le top 3.
+List<Recipe> top3For(String vegetableId) {
+  final toutes = recipesByVegetable[vegetableId];
+  if (toutes == null) return const <Recipe>[];
+  return toutes.take(3).toList(growable: false);
+}
+
+/// Les recettes qui emploient ce légume **sans** être dans son top 3.
+///
+/// Deux sources : ce qui dépasse de sa propre liste, et les recettes
+/// d'autres légumes qui le déclarent dans `uses`. Sans ça, une recette
+/// hors du top 3 ne serait atteignable par aucun chemin de l'app —
+/// c'est-à-dire un bug, pas une réserve (règle 10).
+List<Recipe> otherRecipesFor(String vegetableId) {
+  final out = <Recipe>[
+    ...?recipesByVegetable[vegetableId]?.skip(3),
+  ];
+  recipesByVegetable.forEach((id, recettes) {
+    if (id == vegetableId) return;
+    for (final r in recettes) {
+      if (r.uses.contains(vegetableId)) out.add(r);
+    }
+  });
+  return out;
+}
+
+/// Le légume sous lequel une recette est rangée.
+///
+/// Nécessaire parce que la clé des favoris et du « déjà cuisiné » est
+/// `légume/nom` : une recette vue depuis un légume emprunteur doit
+/// garder la clé de son légume d'origine, sinon la même recette
+/// apparaîtrait deux fois dans les favoris.
+String? ownerOf(Recipe recipe) {
+  for (final entry in recipesByVegetable.entries) {
+    if (entry.value.contains(recipe)) return entry.key;
+  }
+  return null;
+}

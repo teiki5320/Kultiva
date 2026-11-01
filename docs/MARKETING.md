@@ -39,7 +39,7 @@ physiques, dons.
 - 📅 **Le calendrier de ta région** : quoi semer et récolter chaque mois, et une vue annuelle d'une ligne par légume — douze segments colorés, sans défilement latéral (refondue le 31 octobre 2026).
 - 🌍 **73 pays, six continents** (depuis le 1er novembre 2026) : calendriers par pays et zone climatique, hémisphère sud géré, outre-mer français couvert. L'Afrique de l'Ouest garde son contenu propre — noms locaux, maraîchage et prix en FCFA.
 - 🗣️ **Français et anglais** : interface et noms des 130 cultures traduits.
-- 🍽️ **Onglet Recettes** : 369 recettes, trois par récolte, dont **79 déroulées pas à pas** en animation, avec ingrédients, minuteur et quantités qui s'ajustent au nombre de convives. Un filtre « c'est la saison » ne montre que ce qui se récolte ce mois-ci ; les favoris et le « déjà cuisiné » se gardent sur l'appareil.
+- 🍽️ **Onglet Recettes** : 370 recettes, **un top 3 par récolte**, dont **82 déroulées pas à pas** en animation, avec ingrédients, minuteur et quantités qui s'ajustent au nombre de convives. Un filtre « c'est la saison » ne montre que ce qui se récolte ce mois-ci ; les favoris et le « déjà cuisiné » se gardent sur l'appareil.
 - 📴 **Tout hors ligne, sans compte** : 169 fiches, 33 tutoriels, potager, journal et défis photo. Aucune inscription, aucun serveur, aucune donnée qui sort du téléphone.
 
 ## Canaux

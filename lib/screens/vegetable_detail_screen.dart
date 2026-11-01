@@ -272,11 +272,9 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
             _BuyingTipsSection(tips: marketBuyingTips[vegetable.id]!),
           if (region == Region.westAfrica && marketData[vegetable.id] != null)
             _MarketSection(info: marketData[vegetable.id]!),
-          if (recipesByVegetable[vegetable.id] != null)
-            _RecipesSection(
-              vegetableId: vegetable.id,
-              recipes: recipesByVegetable[vegetable.id]!,
-            ),
+          if (top3For(vegetable.id).isNotEmpty ||
+              otherRecipesFor(vegetable.id).isNotEmpty)
+            _RecipesSection(vegetableId: vegetable.id),
           if (_list.length > 1)
             const Padding(
               padding: EdgeInsets.only(top: 12),
@@ -1159,14 +1157,25 @@ class _MarketRow extends StatelessWidget {
 /// que depuis l'onglet Recettes, alors que c'est ici qu'on se demande
 /// quoi faire de sa récolte. Elle délègue maintenant à [RecipeRow],
 /// comme l'onglet : une seule ligne de recette dans toute l'app.
+/// La section « En cuisine » d'une fiche légume.
+///
+/// Le **top 3** d'abord — contrainte de Jean : trois recettes mises en
+/// avant, jamais plus, parce que vingt idées de plat ne se choisissent
+/// pas. En dessous, ce qui emploie ce légume sans être dans son top 3,
+/// replié : une recette hors du top doit rester joignable.
+///
+/// ⚠️ Cette section affichait les recettes **sans pouvoir les ouvrir** :
+/// le lecteur animé n'était atteignable que depuis l'onglet, alors que
+/// c'est ici qu'on se demande quoi faire de sa récolte. Elle délègue
+/// maintenant à [RecipeRow], comme l'onglet.
 class _RecipesSection extends StatelessWidget {
   final String vegetableId;
-  final List<Recipe> recipes;
-  const _RecipesSection({required this.vegetableId, required this.recipes});
+  const _RecipesSection({required this.vegetableId});
 
   @override
   Widget build(BuildContext context) {
-    final animees = recipes.where((r) => r.isAnimated).length;
+    final top = top3For(vegetableId);
+    final autres = otherRecipesFor(vegetableId);
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: Card(
@@ -1177,36 +1186,85 @@ class _RecipesSection extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right: 14),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        '🍲  En cuisine',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w800,
-                                ),
+                child: Text(
+                  '🍲  En cuisine',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
                       ),
-                    ),
-                    if (animees > 0)
-                      Text(
-                        '$animees pas à pas',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: KultivaColors.primaryGreen,
-                        ),
-                      ),
-                  ],
                 ),
               ),
               const SizedBox(height: 4),
-              for (final r in recipes)
+              for (final r in top)
                 RecipeRow(vegetableId: vegetableId, recipe: r),
+              if (autres.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(right: 14, top: 4),
+                  child: _AutresRecettes(
+                      vegetableId: vegetableId, recipes: autres),
+                ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Les recettes hors du top 3, repliées derrière une ligne.
+///
+/// Repliées et pas absentes : le top 3 reste le propos, mais une
+/// recette que rien n'atteint est un bug.
+class _AutresRecettes extends StatefulWidget {
+  final String vegetableId;
+  final List<Recipe> recipes;
+
+  const _AutresRecettes({required this.vegetableId, required this.recipes});
+
+  @override
+  State<_AutresRecettes> createState() => _AutresRecettesState();
+}
+
+class _AutresRecettesState extends State<_AutresRecettes> {
+  bool _ouvert = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final n = widget.recipes.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        InkWell(
+          onTap: () => setState(() => _ouvert = !_ouvert),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  _ouvert ? Icons.expand_less : Icons.expand_more,
+                  size: 18,
+                  color: KultivaColors.primaryGreen,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  '$n autre${n > 1 ? 's' : ''} recette'
+                  '${n > 1 ? 's' : ''} avec ce légume',
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w700,
+                    color: KultivaColors.primaryGreen,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (_ouvert)
+          for (final r in widget.recipes)
+            RecipeRow(
+              vegetableId: ownerOf(r) ?? widget.vegetableId,
+              recipe: r,
+            ),
+      ],
     );
   }
 }

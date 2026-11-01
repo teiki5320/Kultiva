@@ -20,7 +20,7 @@ depuis le 01/11/2026 **73 pays sur six continents**. Elle propose :
   conseils contextuels selon la météo ;
 - **Défis & badges** : 50 défis photo et 50 badges, sur leur écran,
   joignable depuis le dashboard ;
-- un **onglet Recettes** : 369 recettes, trois par récolte, dont 79
+- un **onglet Recettes** : 370 recettes, **un top 3 par récolte**, dont 82
   déroulées pas à pas dans un lecteur animé hors ligne — avec
   ingrédients, minuteur et quantités qui suivent le nombre de
   convives ; favoris et « déjà cuisiné » par recette ;
@@ -182,7 +182,7 @@ Kultiva/
 │                           # utilisé par l'app (aucun backend)
 ├── assets/
 │   ├── recipes/            # recipe_player.html — UN template pour les
-│   │                       # 369 recettes, nourri par du JSON injecté
+│   │                       # 370 recettes, nourri par du JSON injecté
 │   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
@@ -993,3 +993,50 @@ Le Studio de Jean affiche les fiches de ce dépôt (docs/INFRA.md, docs/MARKETIN
     le tuto raconte simplement une app d'avant-hier. À reprendre avec
     `docs/prompt-tuto-dashboard.md`, qui dit lui aussi « quatre
     onglets ».
+
+## 🍽 La partie Recettes (structure arrêtée le 01/11/2026)
+
+Contrainte de Jean, et c'est la seule : **un top 3 par légume**. Trois
+recettes mises en avant, jamais plus — vingt idées de plat ne se
+choisissent pas. Et **une même recette peut servir plusieurs légumes**,
+ce qu'il a explicitement autorisé.
+
+**La donnée.** `recipesByVegetable` reste la source, mais une recette
+déclare désormais les autres légumes qu'elle emploie (`Recipe.uses`).
+Trois fonctions portent la structure, dans `lib/data/recipes.dart` :
+
+- `top3For(id)` — les **trois premières** de la liste du légume.
+  L'ordre du catalogue **est** le classement.
+- `otherRecipesFor(id)` — ce qui dépasse de sa propre liste, **plus**
+  les recettes d'autres légumes qui le citent dans `uses`. Sans ça, une
+  recette hors du top 3 ne serait atteignable par aucun chemin : un bug,
+  pas une réserve (règle 10). Un test le vérifie pour les 370.
+- `ownerOf(recipe)` — le légume sous lequel la recette est rangée. La
+  clé des favoris est `légume/nom` : une recette vue depuis un légume
+  emprunteur doit garder la clé de son propriétaire, sinon elle
+  apparaîtrait deux fois dans les favoris.
+
+**À l'écran.** La fiche légume et l'onglet affichent le top 3, puis
+« N autres recettes avec ce légume », replié. Chaque recette ouvre
+**une fiche avec l'animation de ses étapes** (`recipe_player.html`, un
+seul template nourri par du JSON) — minuteur par étape, ingrédients, et
+quantités qui suivent le nombre de convives.
+
+**Tomate et fraise sont les deux légumes de référence** : leurs trois
+recettes du top ont étapes, ingrédients, temps et parts. Un test
+l'exige, et exige aussi que le top 3 couvre **trois situations** — une
+recette rapide (≤ 15 min), une de fond (≥ 55 min), et le surplus à
+conserver. Trois recettes qui prennent toutes une heure ne servent à
+rien à quelqu'un qui rentre du travail.
+
+⚠️ **Les 121 autres légumes attendent le même traitement.** 288
+recettes n'ont pas encore d'étapes : elles s'ouvrent en fiche courte,
+qui dit la vérité au lieu d'afficher un lecteur vide. L'ordre de leur
+liste n'a pas encore été arbitré comme un vrai top 3 — c'est le travail
+à reprendre, légume par légume, sur le modèle de la tomate.
+
+⚠️ **Les chiffres sont verrouillés par deux tests** (`recipes_test.dart`) :
+ajouter une recette fait échouer la suite jusqu'à ce que README,
+`docs/MARKETING.md` et ce fichier soient corrigés. C'est volontaire :
+les fiches ont annoncé « 340 recettes, dont huit animées » pendant une
+journée alors qu'il y en avait 369 et 7.

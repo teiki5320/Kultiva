@@ -96,7 +96,7 @@ void main() {
     test('le compte total est bien celui des fiches', () {
       final total =
           recipesByVegetable.values.fold<int>(0, (n, l) => n + l.length);
-      expect(total, 369,
+      expect(total, 370,
           reason: 'Si tu ajoutes des recettes, mets à jour README.md, '
               'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
     });
@@ -106,9 +106,119 @@ void main() {
           .expand((l) => l)
           .where((r) => r.isAnimated)
           .length;
-      expect(animees, 79,
+      expect(animees, 82,
           reason: 'Si tu écris de nouveaux pas-à-pas, mets à jour README.md, '
               'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
+    });
+  });
+
+  group('top 3 par légume', () {
+    test('chaque légume en rend exactement trois', () {
+      // Contrainte de Jean : trois, jamais plus. Vingt idées de plat ne
+      // se choisissent pas.
+      for (final id in recipesByVegetable.keys) {
+        expect(top3For(id).length, 3, reason: id);
+      }
+    });
+
+    test('ce sont les trois premières du catalogue, dans l\'ordre', () {
+      final top = top3For('tomate');
+      expect(top.first.name, 'Coulis de tomates en bocaux');
+      expect(top.map((r) => r.name),
+          recipesByVegetable['tomate']!.take(3).map((r) => r.name));
+    });
+
+    test('un légume inconnu rend une liste vide, sans lever', () {
+      expect(top3For('nawak'), isEmpty);
+      expect(otherRecipesFor('nawak'), isEmpty);
+    });
+  });
+
+  group('recettes hors du top 3', () {
+    test('ce qui dépasse de sa propre liste y figure', () {
+      // La tomate a quatre recettes : la thiéboudienne sort du top 3.
+      final autres = otherRecipesFor('tomate');
+      expect(autres.map((r) => r.name), contains('Thiéboudienne'));
+    });
+
+    test('une recette qui emprunte un légume est trouvable depuis lui', () {
+      // Le coulis de tomates déclare `uses: oignon` : on doit le voir
+      // depuis l'oignon, sans qu'il quitte le top 3 de la tomate.
+      final depuisOignon = otherRecipesFor('oignon');
+      expect(depuisOignon.map((r) => r.name),
+          contains('Coulis de tomates en bocaux'));
+      expect(top3For('tomate').map((r) => r.name),
+          contains('Coulis de tomates en bocaux'));
+    });
+
+    test('aucune recette n\'est injoignable', () {
+      // Règle 10 : une recette qu'aucun chemin n'atteint est un bug.
+      final joignables = <String>{};
+      for (final id in recipesByVegetable.keys) {
+        joignables.addAll(top3For(id).map((r) => r.name));
+        joignables.addAll(otherRecipesFor(id).map((r) => r.name));
+      }
+      final toutes = recipesByVegetable.values
+          .expand((l) => l)
+          .map((r) => r.name)
+          .toSet();
+      expect(toutes.difference(joignables), isEmpty);
+    });
+
+    test('un légume ne se cite pas lui-même dans `uses`', () {
+      recipesByVegetable.forEach((id, recettes) {
+        for (final r in recettes) {
+          expect(r.uses, isNot(contains(id)), reason: '${r.name} / $id');
+        }
+      });
+    });
+
+    test('tout `uses` pointe un légume qui existe', () {
+      final ids = recipesByVegetable.keys.toSet();
+      final absents = <String>[];
+      for (final r in recipesByVegetable.values.expand((l) => l)) {
+        for (final u in r.uses) {
+          if (!ids.contains(u)) absents.add('${r.name} → $u');
+        }
+      }
+      expect(absents, isEmpty);
+    });
+  });
+
+  group('tomate et fraise, construites en entier', () {
+    // Les deux légumes de référence (01/11/2026) : tout ce qu'on
+    // applique ensuite aux 121 autres doit déjà tenir ici.
+    for (final id in <String>['tomate', 'fraise']) {
+      test('$id : les trois du top ont leurs étapes et leurs ingrédients',
+          () {
+        for (final r in top3For(id)) {
+          expect(r.isAnimated, isTrue, reason: '${r.name} sans étapes');
+          expect(r.ingredients, isNotEmpty, reason: '${r.name} sans liste');
+          expect(r.minutes, isNotNull, reason: '${r.name} sans temps');
+          expect(r.serves, isNotNull, reason: '${r.name} sans parts');
+        }
+      });
+
+      test('$id : chaque étape du top est une phrase, pas un mot', () {
+        for (final r in top3For(id)) {
+          for (final s in r.steps) {
+            expect(s.text.length, greaterThan(20), reason: '${r.name}: ${s.text}');
+            expect(s.emoji, isNotEmpty);
+          }
+        }
+      });
+    }
+
+    test('le top 3 couvre trois situations différentes', () {
+      // Un surplus à conserver, un plat, et quelque chose de rapide.
+      // Trois recettes qui prennent toutes une heure ne servent à rien.
+      for (final id in <String>['tomate', 'fraise']) {
+        final temps = top3For(id).map((r) => r.minutes!).toList()..sort();
+        expect(temps.first, lessThanOrEqualTo(15),
+            reason: '$id : aucune recette rapide dans le top 3');
+        expect(temps.last, greaterThanOrEqualTo(55),
+            reason: '$id : aucune recette de fond dans le top 3');
+      }
     });
   });
 }

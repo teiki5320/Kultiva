@@ -97,11 +97,14 @@ class _RecettesScreenState extends State<RecettesScreen> {
       // Les favoris filtrent les **recettes**, pas les légumes : on ne
       // montre pas les deux autres recettes d'un légume parce que la
       // troisième est en favori.
-      var recettes = toutes;
+      // Le top 3 est ce qu'on met en avant, sauf dans les favoris :
+      // une recette mise de côté doit se retrouver même hors du top.
+      var recettes = _favoris ? toutes : toutes.take(3).toList();
       if (_favoris) {
         recettes = toutes
             .where((r) => favoris.contains(RecipeService.keyFor(id, r)))
             .toList(growable: false);
+
         if (recettes.isEmpty) return;
       }
 
