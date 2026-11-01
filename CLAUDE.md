@@ -1,13 +1,14 @@
 # Kultiva
 
 > Documentation pour futures sessions Claude Code.
-> Dernière mise à jour : 2026-10-21.
+> Dernière mise à jour : 2026-11-01.
 
 ## 🎯 Contexte
 
-**Kultiva** est une application mobile Flutter de jardinage francophone, au style
-pastel kawaii japonais. Elle s'adresse aux jardiniers amateurs de **France
-métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
+**Kultiva** est une application mobile Flutter de jardinage au style
+pastel kawaii japonais, en **français et en anglais**. Elle s'adresse
+d'abord aux jardiniers amateurs de **France métropolitaine**, et couvre
+depuis le 01/11/2026 **73 pays sur six continents**. Elle propose :
 
 - un calendrier mensuel de semis et de récolte adapté à la région ;
 - un **catalogue** de 169 légumes, aromates, tubercules et accessoires
@@ -19,6 +20,11 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
   conseils contextuels selon la météo ;
 - **Défis & badges** : 50 défis photo et 50 badges, sur leur écran,
   joignable depuis le dashboard ;
+- un **onglet Photo** : toutes les photos du jardin par mois, et
+  l'évolution de chaque plant — première et dernière photo côte à côte,
+  avec les jours qui les séparent ;
+- un **onglet Recettes** : 340 recettes, trois par récolte, dont huit
+  déroulées pas à pas dans un lecteur animé hors ligne ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
   l'API Open-Meteo (gratuite, sans clé) ;
 - des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
@@ -30,7 +36,7 @@ métropolitaine** et d'**Afrique de l'Ouest**, et couvre :
 - un **cahier de culture** pleine terre avec étapes phénologiques auto-suggérées,
   avertissement de rotation et conseils canicule personnalisés ;
 
-**Statut** : bi-marché **France + Afrique de l'Ouest** (v1.0.0+5), en polish
+**Statut** : **mondial, France en priorité** (v1.0.0+5), en polish
 pré-publication — détection du pays et sous-zone climatique, calendriers et
 saisons tropicaux, contenu local (noms, maraîchage, recettes, achat au marché),
 CI iOS (Xcode Cloud) + GitHub Actions branchées, signing Android
@@ -122,27 +128,33 @@ Kultiva/
 │   │                               # journal_view, season_recap),
 │   │                               # defis/ (defis_badges_screen,
 │   │                               # badges_grid, challenges_grid),
+│   │                               # photos/ (photos_screen, gallery,
+│   │                               #   timeline, viewer),
+│   │                               # recettes/ (recettes_screen,
+│   │                               #   recipe_player_screen),
 │   │                               # plants/ (plantation_sheet = le
 │   │                               # seul point d'entrée du dossier
 │   │                               # d'un plant, + detail_sheet),
 │   │                               # garden_planner/ (screen +
 │   │                               # planner_cell / _advice / _plants,
 │   │                               # planner_widgets = point d'entrée)
-│   ├── models/             # 11 fichiers
+│   ├── l10n/               # app_fr.arb, app_en.arb + généré
+│   │                       # (flutter gen-l10n, voir l10n.yaml)
+│   ├── models/             # 13 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
 │   │                       # country (pays + zone climatique),
 │   │                       # region_data, culture_entry, garden_plan,
 │   │                       # weather_data,
 │   │                       # photo_pick_result, watering_alert,
-│   │                       # watering_advice
-│   ├── services/           # 16 fichiers
+│   │                       # watering_advice, garden_photo
+│   ├── services/           # 17 fichiers (+ photo_library)
 │   │                       # prefs, plantation, error_reporter, weather,
 │   │                       # geolocation,
 │   │                       # notification, photo, audio, watering,
 │   │                       # watering_advisor, pdf, garden_stats,
 │   │                       # plantation_migration, culture, garden_plan,
 │   │                       # review
-│   ├── data/               # 11 fichiers
+│   ├── data/               # 13 fichiers (+ names_en, zone_shift)
 │   │   ├── vegetables_base.dart    # 169 entrées (130 cultures + 39 accessoires)
 │   │   ├── badges.dart (50) / challenges.dart (50) / diseases.dart
 │   │   ├── companions.dart / rotation.dart / lexicon.dart
@@ -150,7 +162,9 @@ Kultiva/
 │   │   ├── recipes.dart      # noms locaux, maraîchage FCFA, achat, cuisine (AO)
 │   │   └── regions/          # france.dart, west_africa.dart,
 │   │                         # west_africa_zones.dart (sous-zones),
-│   │                         # regional_calendar.dart (sélecteur zone-aware)
+│   │                         # regional_calendar.dart (zone + hémisphère,
+│   │                         #   currentCalendar()),
+│   │                         # zone_shift.dart (dérive les zones tempérées)
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
 │   ├── widgets/            # 13 fichiers
@@ -170,6 +184,8 @@ Kultiva/
 │   └── migrations/         # 001 → 016 : historique du schéma, plus
 │                           # utilisé par l'app (aucun backend)
 ├── assets/
+│   ├── recipes/            # recipe_player.html — UN template pour les
+│   │                       # 340 recettes, nourri par du JSON injecté
 │   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
@@ -186,7 +202,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 31 fichiers — 4 062 LoC — 325 tests
+├── test/                   # 35 fichiers — 376 tests (01/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -329,7 +345,14 @@ cd ios && pod install --repo-update && cd ..
 - **Tone of voice** : chaleureux, ludique, enfantin. Exemples : « Kultiva
   utilise ta localisation pour afficher la météo de ton jardin », « Le potager
   kawaii dans ta poche 🌱 ».
-- **Localisation** : app **fr-FR** uniquement pour l'instant.
+- **Localisation** : **français (source) et anglais** depuis le
+  01/11/2026. Interface + noms des 130 cultures traduits ; tutos,
+  recettes, conseils, maladies, badges et défis restent en français,
+  et le réglage « Langue » le dit. Les chaînes passent par
+  `lib/l10n/*.arb` (`flutter gen-l10n`), les noms de légumes par
+  `lib/data/names_en.dart` et `v.displayName`. **`v.name` reste le nom
+  français** : c'est la source de vérité des clés, de la recherche
+  sans accent et des tests.
 
 ### 🎨 Génération d'images
 
@@ -407,6 +430,17 @@ pour l'Afrique de l'Ouest.
 - **Ne pas mettre de logique métier dans les widgets** — elle doit vivre dans
   `lib/services/`.
 - **Ne pas utiliser `print`** — désactivé par le lint `avoid_print`.
+- **Ne pas tester `region == Region.westAfrica` pour une question
+  climatique** — utiliser `region.isTropicalBase`. Depuis l'ouverture
+  mondiale, la première expression veut dire « contenu ouest-africain ».
+- **Ne pas recopier un calendrier pour une nouvelle zone** — le dériver
+  dans `zone_shift.dart`. Quatre copies de 806 lignes, ce sont quatre
+  fichiers qui divergent à la première correction.
+- **Ne pas réintroduire de CDN ni de Google Fonts** dans un tuto *ni
+  dans le lecteur de recettes* : ils doivent tourner hors ligne.
+- **Un test de libellés doit dire sa langue** — l'environnement de test
+  tourne en `en-US`. `onglets_test` a validé des libellés anglais
+  pendant un moment en croyant lire du français.
 - **Attention aux permissions iOS** : les descriptions (caméra, photos,
   localisation) doivent rester en français et factuelles (pattern observé dans
   `Info.plist`).
@@ -564,11 +598,29 @@ Décisions et évolutions significatives :
   journal ») ; les 50 défis et les 50 badges ont leur écran
   **Défis & badges**. Les fichiers quittent `poussidex/` pour
   `plants/`, `defis/` et `cahier/`.
-- **Nouvel ordre des onglets (30/10/2026)** : Home, **Cahier**, Étal,
-  Tutos. Le cahier de culture passe devant le catalogue ; le Poussidex
-  quitte la barre. ⚠️ Les tutos HTML naviguent par index
+- **Six onglets (01/11/2026)** : Home, **Cahier**, Étal, Tutos,
+  **Photo**, **Recettes**. ⚠️ Les tutos HTML naviguent par index
   (`RootTabs.tabIndex`) : tout changement d'ordre doit passer par
   `tuto_fiche_screen.dart`, et `test/onglets_test.dart` le verrouille.
+  Photo et Recettes ont été **ajoutés en bout de barre** pour ne
+  décaler aucun index existant. La barre est en `fixed` avec des
+  libellés rétrécis : à six, « Recettes » était tronqué.
+- **Ouverture mondiale (01/11/2026)** : 73 pays. Deux bases de
+  calendrier seulement — tempérée (`franceData`) et tropicale
+  (`westAfricaData`) — qu'une `ClimateZone` affine et qu'un
+  `Hemisphere` retourne de six mois. Les zones méditerranéenne,
+  continentale et subtropicale **dérivent** de la base française par
+  décalage explicite (`lib/data/regions/zone_shift.dart`) et portent
+  une note qui le dit. ⚠️ Ce sont des approximations : les affiner
+  culture par culture reste à faire.
+  ⚠️ **`Region.westAfrica` ne veut plus dire « tropical ».** Il veut
+  dire « tropical **et** contenu ouest-africain » (noms locaux, FCFA,
+  achat au marché). Pour une question climatique, utiliser
+  `region.isTropicalBase`, jamais `== Region.westAfrica` — sinon un
+  Brésilien reçoit des prix en francs CFA.
+  ⚠️ Ne pas recomposer région + zone + hémisphère à la main :
+  `currentCalendar()` et `Season.current()` le font. Trois écrans
+  portaient chacun leur copie, et aucun n'aurait pensé à l'hémisphère.
 
 ## 💬 Instructions pour Claude Code
 

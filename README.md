@@ -2,7 +2,7 @@
 
 > Le potager kawaii dans ta poche.
 
-Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pensée pour les jardiniers amateurs de **France métropolitaine** et d'**Afrique de l'Ouest**, et pour faire jardiner les enfants. Du balcon au plein champ — des semis aux récoltes, du choix des graines à la fierté de la première tomate.
+Une app Flutter de jardinage au style pastel kawaii japonais, en **français et en anglais**. Pensée d'abord pour les jardiniers amateurs de **France métropolitaine**, et ouverte depuis le 1er novembre 2026 à **73 pays sur six continents**. Du balcon au plein champ — des semis aux récoltes, du choix des graines à la fierté de la première tomate.
 
 ![Aperçu Kultiva](assets/images/onboarding_1.png)
 
@@ -10,6 +10,8 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
+- 📷 **Onglet Photo** : toutes les photos du jardin par mois, et l'évolution de chaque plant — sa première photo et la dernière côte à côte, avec les jours qui les séparent
+- 🍽️ **Onglet Recettes** : 340 recettes, trois par récolte, dont huit déroulées pas à pas en animation ; les légumes de ton jardin passent en tête
 - 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
 - 📖 **Journal du jardin** : plantations, arrosages, récoltes et photos inscrits à leur date, jour par jour, dans le cahier de culture
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
@@ -20,12 +22,40 @@ Une app Flutter de jardinage francophone, au style pastel kawaii japonais. Pens�
 
 L'app est **locale** : aucun compte, aucun serveur, rien ne quitte le téléphone. Les deux seuls appels sortants sont Open-Meteo (météo) et Sentry (plantages), tous deux non bloquants.
 
-## 🌍 Régions supportées
+## 🌍 Pays supportés
 
-- 🇫🇷 **France métropolitaine** — calendrier classique, alertes adaptées au climat tempéré
-- 🌍 **Afrique de l'Ouest** — saisons sèches/pluies, légumes tropicaux (gombo, niébé, manioc, taro, igname, sorgho, bissap…)
+**73 pays, six continents** depuis le 1er novembre 2026. Deux bases de
+calendrier — tempérée et tropicale — qu'une **zone climatique** affine
+et qu'un **hémisphère** retourne :
 
-Le choix se fait au premier lancement et peut être modifié à tout moment dans les paramètres.
+- 🇫🇷 **France métropolitaine** — le calendrier de référence, climat tempéré
+- 🌍 **Afrique de l'Ouest** (8 pays) — saisons sèches et pluies, légumes
+  tropicaux (gombo, niébé, manioc, taro, igname, sorgho, bissap…), noms
+  locaux, maraîchage en FCFA, conseils d'achat au marché
+- 🇪🇺 **Europe, Maghreb, Proche-Orient** — zones méditerranéenne,
+  continentale et océanique
+- 🌎 **Amériques, Asie, Océanie** et l'**outre-mer français** (Réunion,
+  Antilles, Guyane, Mayotte, Nouvelle-Calédonie, Polynésie)
+
+Au sud de l'équateur, les calendriers sont décalés de six mois.
+
+⚠️ Les calendriers des zones ajoutées en novembre 2026 sont **dérivés**
+de la base tempérée par décalage, pas écrits un par un. L'app le dit
+sous chaque calendrier concerné et invite à ajuster sur les gelées
+locales. Les affiner culture par culture reste à faire.
+
+Le pays se choisit au premier lancement (avec recherche) et se modifie
+à tout moment dans les paramètres.
+
+## 🗣️ Langues
+
+- 🇫🇷 **Français** — la source, tout y est
+- 🇬🇧 **Anglais** — l'interface et les noms des 130 cultures
+
+Les 33 tutos, les 340 recettes, les conseils, les maladies, les badges
+et les défis restent en français. Le réglage **Langue** des paramètres
+le dit, et permet de revenir au français même sur un téléphone
+anglophone.
 
 ## 🛠️ Stack technique
 
