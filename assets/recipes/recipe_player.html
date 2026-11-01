@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recette</title>
+<!--
+  Lecteur de recette animé.
+
+  UN SEUL fichier pour toutes les recettes : Dart lit ce template, y
+  remplace le bloc __RECIPE__ par le JSON de la recette, et charge le
+  résultat dans la WebView. Écrire une animation par recette aurait
+  voulu dire quatre cents fichiers à maintenir.
+
+  ⚠️ Aucun appel réseau. Pas de CDN, pas de Google Fonts : les fiches
+  de Kultiva doivent tourner hors ligne, et un avion sans wifi est
+  exactement le moment où on lit une recette. Police système,
+  animations en CSS, logique en JS nu — pas de bibliothèque.
+-->
+<style>
+  :root {
+    --fond: #F5FAF8;
+    --carte: #FFFFFF;
+    --texte: #2A4A3A;
+    --doux: #6B8578;
+    --vert: #4A9B5A;
+    --vert-clair: #A8D5A2;
+    --terre: #E8A87C;
+    --ombre: rgba(74, 155, 90, .14);
+  }
+  [data-theme="dark"] {
+    --fond: #0F1F18;
+    --carte: #1A2E22;
+    --texte: #E8F2EC;
+    --doux: #9BB3A6;
+    --vert: #5ABD6A;
+    --vert-clair: #1F3528;
+    --terre: #E8A87C;
+    --ombre: rgba(0, 0, 0, .35);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--fond); color: var(--texte);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded",
+      "Segoe UI", Roboto, system-ui, sans-serif;
+    overflow: hidden;
+  }
+  #scene {
+    position: relative; height: 100%;
+    display: flex; flex-direction: column;
+    padding: 18px 18px calc(84px + env(safe-area-inset-bottom)) 18px;
+  }
+
+  /* ─── En-tête ─────────────────────────────────────────── */
+  header { flex: 0 0 auto; margin-bottom: 10px; }
+  .emoji-titre { font-size: 40px; line-height: 1; }
+  h1 { margin: 6px 0 2px; font-size: 21px; font-weight: 800; }
+  .meta { font-size: 13px; color: var(--doux); font-weight: 600; }
+
+  /* ─── Les pages ───────────────────────────────────────── */
+  /* `#pages` doit être un conteneur flex qui grandit, sinon le
+     `justify-content: center` de la page n'a rien à centrer : elle se
+     tasse en haut de l'écran et laisse un grand vide dessous. */
+  #pages {
+    flex: 1 1 auto; min-height: 0;
+    display: flex; flex-direction: column;
+  }
+  .page {
+    flex: 1 1 auto; position: relative;
+    display: none; flex-direction: column; justify-content: center;
+    min-height: 0;
+  }
+  .page.active { display: flex; animation: entre .4s ease both; }
+  @keyframes entre {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ─── Ingrédients ─────────────────────────────────────── */
+  .sous-titre {
+    font-size: 12px; font-weight: 800; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--vert); margin-bottom: 12px;
+  }
+  ul.ingredients { list-style: none; margin: 0; padding: 0; overflow-y: auto; }
+  ul.ingredients li {
+    background: var(--carte); border-radius: 14px;
+    padding: 11px 14px; margin-bottom: 8px; font-size: 14.5px;
+    box-shadow: 0 2px 10px var(--ombre);
+    opacity: 0; animation: glisse .4s ease forwards;
+  }
+  @keyframes glisse {
+    from { opacity: 0; transform: translateX(-18px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ─── Une étape ───────────────────────────────────────── */
+  .etape { text-align: center; }
+  .etape .rond {
+    width: 108px; height: 108px; margin: 0 auto 18px;
+    border-radius: 50%; background: var(--vert-clair);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 50px;
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+  }
+  .etape .numero {
+    font-size: 12px; font-weight: 800; color: var(--vert);
+    letter-spacing: .08em; text-transform: uppercase;
+  }
+  .etape p {
+    font-size: 17px; line-height: 1.5; font-weight: 600;
+    margin: 10px 18px 0;
+  }
+  .minuteur {
+    margin-top: 18px; font-size: 13px; font-weight: 700; color: var(--terre);
+  }
+  .jauge {
+    height: 5px; width: 160px; margin: 8px auto 0;
+    background: var(--vert-clair); border-radius: 3px; overflow: hidden;
+  }
+  .jauge > i { display: block; height: 100%; width: 0; background: var(--terre); }
+
+  /* ─── Fin ─────────────────────────────────────────────── */
+  .fin { text-align: center; }
+  .fin .gros { font-size: 64px; animation: pulse 2.6s ease-in-out infinite; }
+  .fin h2 { font-size: 22px; margin: 14px 0 6px; }
+  .fin p { color: var(--doux); font-size: 14px; margin: 0 24px; }
+
+  /* ─── Barre du bas ────────────────────────────────────── */
+  footer {
+    position: fixed; left: 0; right: 0;
+    bottom: env(safe-area-inset-bottom);
+    padding: 12px 18px 16px;
+    background: linear-gradient(to top, var(--fond) 70%, transparent);
+    display: flex; align-items: center; gap: 12px;
+  }
+  button {
+    border: 0; border-radius: 16px; font: inherit; font-weight: 800;
+    font-size: 14px; padding: 12px 18px; cursor: pointer;
+    background: var(--vert); color: #fff;
+  }
+  button.fantome {
+    background: var(--carte); color: var(--texte);
+    box-shadow: 0 2px 10px var(--ombre);
+  }
+  button:disabled { opacity: .35; }
+  .points { flex: 1; display: flex; gap: 5px; justify-content: center; }
+  .points i {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--vert-clair); transition: all .25s;
+  }
+  .points i.on { background: var(--vert); width: 18px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="scene">
+  <header>
+    <div class="emoji-titre" id="h-emoji"></div>
+    <h1 id="h-nom"></h1>
+    <div class="meta" id="h-meta"></div>
+  </header>
+  <div id="pages"></div>
+</div>
+<footer>
+  <button class="fantome" id="prec" aria-label="Étape précédente">←</button>
+  <div class="points" id="points"></div>
+  <button id="suiv">Suivant</button>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var R = __RECIPE__;
+
+  document.documentElement.setAttribute('data-theme', R.theme || 'light');
+  document.getElementById('h-emoji').textContent = R.emoji || '🍽';
+  document.getElementById('h-nom').textContent = R.name || '';
+  document.getElementById('h-meta').textContent = R.subtitle || '';
+
+  // ─── Construction des pages ───────────────────────────────
+  var pages = [];
+  var conteneur = document.getElementById('pages');
+
+  function page(html, cls) {
+    var d = document.createElement('div');
+    d.className = 'page' + (cls ? ' ' + cls : '');
+    d.innerHTML = html;
+    conteneur.appendChild(d);
+    pages.push(d);
+    return d;
+  }
+
+  function echappe(s) {
+    var d = document.createElement('div');
+    d.textContent = s == null ? '' : String(s);
+    return d.innerHTML;
+  }
+
+  if (R.ingredients && R.ingredients.length) {
+    var li = R.ingredients.map(function (ing, i) {
+      return '<li style="animation-delay:' + (i * 90) + 'ms">' +
+        echappe(ing) + '</li>';
+    }).join('');
+    page('<div class="sous-titre">Ce qu\'il te faut</div>' +
+      '<ul class="ingredients">' + li + '</ul>');
+  }
+
+  var etapes = R.steps || [];
+  etapes.forEach(function (s, i) {
+    var minuteur = s.minutes
+      ? '<div class="minuteur" data-min="' + s.minutes + '">⏱ ' +
+        s.minutes + ' min</div><div class="jauge"><i></i></div>'
+      : '';
+    page('<div class="etape">' +
+      '<div class="rond">' + echappe(s.emoji || '🥄') + '</div>' +
+      '<div class="numero">Étape ' + (i + 1) + ' sur ' + etapes.length +
+      '</div>' +
+      '<p>' + echappe(s.text) + '</p>' + minuteur +
+      '</div>');
+  });
+
+  page('<div class="fin"><div class="gros">🍽</div>' +
+    '<h2>Bon appétit !</h2>' +
+    '<p>Prends-la en photo : elle rejoindra ton onglet Photo.</p></div>');
+
+  // ─── Navigation ───────────────────────────────────────────
+  var pointsEl = document.getElementById('points');
+  pages.forEach(function () {
+    pointsEl.appendChild(document.createElement('i'));
+  });
+
+  var index = -1;
+  var minuterie = null;
+
+  function montre(n) {
+    if (n < 0 || n >= pages.length) return;
+    if (minuterie) { clearInterval(minuterie); minuterie = null; }
+    if (index >= 0) pages[index].classList.remove('active');
+    index = n;
+    pages[index].classList.add('active');
+
+    var pts = pointsEl.children;
+    for (var i = 0; i < pts.length; i++) {
+      pts[i].className = i === index ? 'on' : '';
+    }
+    document.getElementById('prec').disabled = index === 0;
+    document.getElementById('suiv').textContent =
+      index === pages.length - 1 ? 'Terminé' : 'Suivant';
+
+    lanceMinuteur(pages[index]);
+  }
+
+  /// Le minuteur n'est pas un vrai chronomètre de cuisson — il
+  /// montre la durée de l'étape en une quinzaine de secondes, pour
+  /// donner le rythme. Faire patienter quarante minutes devant un
+  /// écran n'aiderait personne.
+  function lanceMinuteur(p) {
+    var m = p.querySelector('.minuteur');
+    var barre = p.querySelector('.jauge > i');
+    if (!m || !barre) return;
+    var duree = 14000;
+    var debut = Date.now();
+    minuterie = setInterval(function () {
+      var t = Math.min(1, (Date.now() - debut) / duree);
+      barre.style.width = (t * 100) + '%';
+      if (t >= 1) { clearInterval(minuterie); minuterie = null; }
+    }, 60);
+  }
+
+  document.getElementById('prec').addEventListener('click', function () {
+    montre(index - 1);
+  });
+  document.getElementById('suiv').addEventListener('click', function () {
+    if (index === pages.length - 1) {
+      // Dernière page : on repart au début plutôt que de laisser un
+      // bouton mort.
+      montre(0);
+    } else {
+      montre(index + 1);
+    }
+  });
+
+  // Glisser horizontalement pour changer d'étape, comme une story.
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) {
+    x0 = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 55) montre(index + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, { passive: true });
+
+  montre(0);
+})();
+</script>
+</body>
+</html>

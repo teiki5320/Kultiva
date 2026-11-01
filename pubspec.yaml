@@ -138,6 +138,9 @@ flutter:
     - assets/images/vegetables/
     - assets/images/backgrounds/
     - assets/tutos/
+    # Un seul template HTML, nourri par les données : le lecteur
+    # de recette animé (voir recipe_player_screen.dart).
+    - assets/recipes/
     - assets/sounds/
     # Nunito bundlée localement : google_fonts la charge depuis les
     # assets au lieu de la télécharger (démarrage offline, zéro data).

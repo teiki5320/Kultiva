@@ -4,15 +4,15 @@ import 'package:kultiva/screens/root_tabs.dart';
 
 /// L'ordre des onglets a changé le 30/10/2026 : le cahier de culture
 /// passe en deuxième, devant l'Étal, et le Poussidex quitte la barre.
-/// Photo s'ajoute en cinquième le 01/11/2026 — en bout de barre, pour
-/// ne décaler aucun des index déjà pointés par les tutos.
+/// Photo puis Recettes s'ajoutent le 01/11/2026 — en bout de barre,
+/// pour ne décaler aucun des index déjà pointés par les tutos.
 ///
 /// Ces positions ne sont pas qu'une affaire de goût : les tutos HTML
 /// embarqués naviguent par `kultiva://` en posant un index dans
 /// `RootTabs.tabIndex`. Un décalage d'un cran et « Étal » ouvre le
 /// cahier, sans que rien n'échoue.
 void main() {
-  testWidgets('la barre affiche Home, Cahier, Étal, Tutos, Photo dans cet ordre',
+  testWidgets('la barre affiche les six onglets dans l\'ordre attendu',
       (tester) async {
     await tester.pumpWidget(const MaterialApp(home: RootTabs()));
     await tester.pump();
@@ -22,7 +22,7 @@ void main() {
     );
     expect(
       barre.items.map((i) => i.label).toList(),
-      <String>['Home', 'Cahier', 'Étal', 'Tutos', 'Photo'],
+      <String>['Home', 'Cahier', 'Étal', 'Tutos', 'Photo', 'Recettes'],
     );
   });
 

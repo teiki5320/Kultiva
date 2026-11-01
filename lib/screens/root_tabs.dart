@@ -6,16 +6,18 @@ import '../services/notification_service.dart';
 import '../services/prefs_service.dart';
 import 'home/mes_jardins_screen.dart';
 import 'home/photos/photos_screen.dart';
+import 'home/recettes/recettes_screen.dart';
 import 'home/sow_screen.dart';
 import 'home/tutos_screen.dart';
 import 'home/vegetables_screen.dart';
 
-/// Conteneur des 5 onglets principaux de Kultiva.
+/// Conteneur des 6 onglets principaux de Kultiva.
 /// Paramètres accessible via icône engrenage en haut à droite.
 class RootTabs extends StatefulWidget {
   const RootTabs({super.key});
 
-  /// Onglet actif (0=Home, 1=Cahier, 2=Étal, 3=Tutos, 4=Photo).
+  /// Onglet actif (0=Home, 1=Cahier, 2=Étal, 3=Tutos, 4=Photo,
+  /// 5=Recettes).
   /// Permet aux
   /// deep-links des tutos HTML (`kultiva://cahier`, etc.) de basculer
   /// sur l'onglet cible.
@@ -99,6 +101,7 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
       const VegetablesScreen(),
       const TutosScreen(),
       const PhotosScreen(),
+      const RecettesScreen(),
     ];
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
@@ -108,6 +111,13 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
         // garde tous : « Cahier » et « Étal » ne se devinent pas à
         // l'icône.
         type: BottomNavigationBarType.fixed,
+        // Six onglets tiennent sur 65 px chacun : à la taille par
+        // défaut, « Recettes » est tronqué. On rétrécit plutôt que de
+        // masquer les libellés — « Cahier » et « Étal » ne se devinent
+        // pas à l'icône.
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
+        iconSize: 22,
         currentIndex: _index,
         onTap: (i) {
           AudioService.instance.play(Sfx.tap);
@@ -139,6 +149,11 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
             icon: Icon(Icons.photo_camera_outlined),
             activeIcon: Icon(Icons.photo_camera),
             label: 'Photo',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant_menu_outlined),
+            activeIcon: Icon(Icons.restaurant_menu),
+            label: 'Recettes',
           ),
         ],
       ),

@@ -60,3 +60,5 @@ supabase/.temp/
 test/_apercu/
 test/_apercu_temp_test.dart
 test/failures/
+_recette_demo.html
+.claude/launch.json
