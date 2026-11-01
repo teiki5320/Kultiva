@@ -30,9 +30,9 @@
 | Construction | [ok] Xcode Cloud (`ci_post_clone.sh`, Flutter 3.47.3) : **build 152 réussi le 1er novembre 2026**, disponible en TestFlight (vérifié le 1er novembre 2026 dans les mails d'Apple), après les builds réussis depuis le 31 octobre (dont le 134), sans aucun mail d'échec ; build 127 réussi le 30 octobre 2026, après deux échecs le même soir (122 et 125, pin Flutter devenu plus ancien que le code). Auparavant : builds 95 et 96 réussis le 25 octobre 2026, build 97 le 27 octobre, avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026) ; le build 94 avait échoué le 24 octobre | [ok] App Bundle construit par la CI GitHub Actions |
 | Signature | [ok] gérée par Xcode Cloud, équipe `K597U7X3FZ` | [ok] keystore local, valable jusqu'en 2053 |
 | Classification | [à faire] 4+ attendu, questionnaire prêt à reporter | [à faire] questionnaire de contenu à remplir |
-| Cible | [ok] **iOS 15.5** et plus depuis le 1er novembre 2026 (exigée par ML Kit) ; 15.0 du 25 octobre au 1er novembre, 13.0 avant. Aucun appareil perdu : 15.5 est un point de version d'iOS 15. iPhone et iPad, portrait | [ok] valeurs par défaut de Flutter, rien de figé dans le dépôt |
+| Cible | [ok] iOS 15.0 et plus (depuis le 25 octobre 2026 : Xcode et les pods, dont Sentry, l’exigent ; avant : 13.0), iPhone et iPad, portrait | [ok] valeurs par défaut de Flutter, rien de figé dans le dépôt |
 | Permissions | [ok] caméra, photos, localisation en français ; clé `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (fin de l'avertissement ITMS-90683) | [ok] localisation, notifications, alarmes exactes |
-| Poids | [pas encore] à mesurer au premier envoi (35 Mo d'assets) | [ok] **mesuré le 1er novembre 2026** : 61,4 Mio téléchargés par un téléphone arm64, contre 48,6 Mio avant l'ajout de ML Kit (+12,8 Mio, +26 %) |
+| Poids | [pas encore] à mesurer au premier envoi (35 Mo d'assets) | [pas encore] à mesurer au premier envoi (35 Mo d'assets) |
 
 ## Vue d'ensemble
 
@@ -132,7 +132,7 @@ payant* si la distribution doit couvrir tous les pays.
 | Distribution | App Bundle signé localement via `android/key.properties` (non commité, ignoré par git) |
 | Signature | certificat RSA 2048 / SHA384 au nom de l'organisation `Kultiva`, créé le 21 avril 2026, valable jusqu'au **6 septembre 2053** |
 | Niveaux d'API | valeurs par défaut de Flutter (`flutter.minSdkVersion`, `flutter.targetSdkVersion`, `flutter.compileSdkVersion` dans `android/app/build.gradle.kts`) — aucun chiffre figé dans le dépôt |
-| Poids | **61,4 Mio téléchargés par un arm64** (mesuré le 1er novembre 2026 ; 48,6 Mio avant ML Kit), dont 35 Mo d'assets ; la CI produit aussi des APK `--split-per-abi`. ⚠️ L'APK « toutes architectures » pèse 81 Mio parce que la bibliothèque native de ML Kit y est en triple : c'est l'AAB qui compte, Play découpe par architecture |
+| Poids | 35 Mo d'assets ; la CI produit aussi des APK `--split-per-abi` |
 
 **Ce qui est prêt.** Le build release fonctionne : il était cassé et a été
 réparé le 23 août 2026 (Kotlin 2.1.20), puis vérifié par un
@@ -150,22 +150,9 @@ variantes d'accroche par pays pour les storefronts d'Afrique de l'Ouest.
 **Ce qui bloque.** Rien côté code. Tout le travail restant est dans la
 console : créer la fiche, remplir la classification du contenu, le
 questionnaire *Sécurité des données*, la déclaration d'identifiant
-publicitaire.
-
-**Vérifié dans l'APK le 1er novembre 2026** (`apkanalyzer manifest
-permissions`) : l'app ne contient aucun SDK publicitaire et **aucune
-permission `AD_ID`** ne figure au manifeste fusionné. En revanche,
-l'ajout de ML Kit en a fait apparaître **trois** :
-`ACCESS_NETWORK_STATE`, `WAKE_LOCK` et
-`com.google.android.c2dm.permission.RECEIVE` — celle de recevoir les
-notifications push de Google. Elles viennent de `linkfirebase`, que le
-plugin ML Kit tire côté Android ; le manifeste déclare aussi
-`FirebaseInitProvider`. **Rien ne part** : sans `google-services.json`,
-Firebase ne trouve aucune configuration au démarrage et s'arrête là.
-Mais ces permissions sont visibles par l'utilisateur et **doivent être
-déclarées** dans *Sécurité des données*. Si ML Kit est conservé, deux
-options : les retirer du manifeste fusionné avec `tools:node="remove"`,
-ou les assumer dans le formulaire (voir l'alerte 15 de `CLAUDE.md`).
+publicitaire — sur ce dernier point, l'app ne contient aucun SDK
+publicitaire, donc aucune permission `AD_ID` ne devrait figurer au
+manifeste fusionné.
 
 **Le délai à anticiper.** Si le compte Play est un compte **personnel**
 (à vérifier dans la console), Google impose **douze testeurs pendant
@@ -207,13 +194,6 @@ des boutiques une fois l'app publiée.
 la v1 : le jardin, les photos et les badges vivent uniquement sur
 l'appareil. Les deux seuls appels sortants sont Open-Meteo
 (météo, sans clé) et Sentry (plantages).
-
-La lecture du stade d'un plant sur sa photo, ajoutée le 1er novembre
-2026, ne change rien à cela : le modèle est **embarqué dans le
-binaire** et tourne sur l'appareil, la photo ne part pas. ⚠️ Le paquet
-fait toutefois entrer du code Firebase côté Android, inerte faute de
-configuration, mais **à déclarer aux boutiques** — détail dans la
-section Android ci-dessus.
 
 Le motif est factuel : le plan Supabase gratuit met en pause tout projet
 après **une semaine sans trafic**. Une app non publiée n'a aucun trafic,

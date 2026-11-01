@@ -10,7 +10,7 @@ Une app Flutter de jardinage au style pastel kawaii japonais, en **français et 
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
-- 📷 **Onglet Photo** : toutes les photos du jardin par mois, et l'évolution de chaque plant — sa première photo et la dernière côte à côte, avec les jours qui les séparent. Photographier un plant ouvre sa **fiche conseil** : où il en est, et quoi faire maintenant. Depuis le 1er novembre 2026 — **à l'essai** — un modèle embarqué y cherche une fleur, un fruit ou du feuillage pour *proposer* le stade ; il ne décide jamais à ta place, et la photo ne quitte pas le téléphone
+- 📷 **Onglet Photo** : toutes les photos du jardin par mois, et l'évolution de chaque plant — sa première photo et la dernière côte à côte, avec les jours qui les séparent
 - 🍽️ **Onglet Recettes** : 340 recettes, trois par récolte, dont huit déroulées pas à pas en animation ; les légumes de ton jardin passent en tête
 - 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
 - 📖 **Journal du jardin** : plantations, arrosages, récoltes et photos inscrits à leur date, jour par jour, dans le cahier de culture
@@ -65,14 +65,9 @@ anglophone.
   retirés de la v1, avec Supabase, Google Sign-In et Apple Sign-In
 - **Open-Meteo** pour la météo (gratuit, sans clé)
 - **Sentry** pour les plantages — le seul autre appel sortant
-- **ML Kit** (`google_mlkit_image_labeling`) pour lire le stade d'un
-  plant sur sa photo — modèle embarqué, sur l'appareil, hors ligne,
-  sans clé. ⚠️ **À l'essai** depuis le 1er novembre 2026 : +12,8 Mio au
-  téléchargement et iOS 15.5 exigé ; l'adopter n'est pas tranché
 - Material3 + thèmes clair/sombre, `google_fonts` (Nunito), `flutter_local_notifications`, `geolocator`, `image_picker`, `audioplayers`, `pdf` + `printing`, `webview_flutter`
 - **Auth** : aucune (comptes retirés le 30 octobre 2026)
-- **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), cible
-  minimale **iOS 15.5** depuis le 1er novembre 2026
+- **iOS** : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`)
 - **Android** : Gradle 8.14, signing release via `key.properties`, core library desugaring activé
 
 ## 🚀 Démarrage rapide

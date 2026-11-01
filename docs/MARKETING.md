@@ -39,7 +39,7 @@ physiques, dons.
 - 📅 **Le calendrier de ta région** : quoi semer et récolter chaque mois, et une vue annuelle d'une ligne par légume — douze segments colorés, sans défilement latéral (refondue le 31 octobre 2026).
 - 🌍 **73 pays, six continents** (depuis le 1er novembre 2026) : calendriers par pays et zone climatique, hémisphère sud géré, outre-mer français couvert. L'Afrique de l'Ouest garde son contenu propre — noms locaux, maraîchage et prix en FCFA.
 - 🗣️ **Français et anglais** : interface et noms des 130 cultures traduits.
-- 📷 **Onglet Photo** : l'évolution d'un plant, sa première photo et la dernière côte à côte. Depuis le 1er novembre 2026 — **à l'essai** —, la photo ouvre une fiche conseil qui cherche une fleur, un fruit ou du feuillage pour proposer où en est le plant. Elle propose, elle ne tranche pas ; tout se passe sur l'appareil. ⚠️ Ne pas en faire un argument de vente avant la décision de Jean : ça coûte +12,8 Mio au téléchargement (voir `INFRA.md`).
+- 📷 **Onglet Photo** : l'évolution d'un plant, sa première photo et la dernière côte à côte.
 - 🍽️ **Onglet Recettes** : 340 recettes, trois par récolte, huit déroulées pas à pas en animation.
 - 📴 **Tout hors ligne, sans compte** : 169 fiches, 33 tutoriels, potager, journal et défis photo. Aucune inscription, aucun serveur, aucune donnée qui sort du téléphone.
 

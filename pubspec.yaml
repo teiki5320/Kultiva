@@ -85,15 +85,6 @@ dependencies:
   image_picker: ^1.0.4
   path_provider: ^2.1.1
 
-  # Lecture du stade d'un plant sur sa photo (onglet Photo → fiche
-  # conseil). Modèle embarqué dans le binaire : aucune clé, aucun appel
-  # réseau, rien de la photo ne sort du téléphone — le contrat
-  # local-only tient. Il ne reconnaît que des concepts larges (fleur,
-  # fruit, plante) : la décision est dans `stage_vision.dart`, qui ne
-  # dépend pas de ce paquet et se teste sans lui.
-  # ⚠️ Impose iOS ≥ 15.5 (Podfile + projet Xcode relevés le 01/11/2026).
-  google_mlkit_image_labeling: ^0.15.0
-
   # Partage d'images (cartes Poussidex sur Instagram / Stories)
   share_plus: ^7.2.1
 
