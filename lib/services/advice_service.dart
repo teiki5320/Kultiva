@@ -38,7 +38,6 @@ class AdviceService {
   }) {
     final jours = plantation.daysSincePlanted;
     final phase = phaseOf(plantation, vegetable);
-    final observee = _observationValable(plantation);
     final hint = expectedStage(vegetable, jours);
     final region = PrefsService.instance.region.value;
 
@@ -129,30 +128,20 @@ class AdviceService {
     return PlantAdvice(
       vegetable: vegetable,
       phase: phase,
-      phaseObserved: observee,
       daysSincePlanted: jours,
       harvestReady: hint?.harvestReady ?? false,
       sections: sections,
     );
   }
 
-  /// Le stade retenu pour un plant : l'observation de l'utilisateur si
-  /// elle est encore fraîche, sinon la déduction par la date.
+  /// Le stade retenu pour un plant, déduit de sa date de plantation.
+  ///
+  /// L'app n'a plus de moyen pour l'utilisateur de corriger ce stade :
+  /// l'écran qui le permettait était la fiche conseil de l'onglet
+  /// Photo, retiré le 01/11/2026. Le champ `observedPhase` est parti
+  /// avec, plutôt que de rester un champ que rien n'écrit.
   static GrowthPhase phaseOf(Plantation p, Vegetable veg) {
-    if (_observationValable(p)) return p.observedPhase!;
     return deducedPhase(veg, p.daysSincePlanted);
-  }
-
-  /// Une observation se périme : un plant pousse. Au-delà de trois
-  /// semaines, la déduction du jour en sait plus qu'un « il fleurit »
-  /// saisi le mois dernier.
-  static const int observationValidDays = 21;
-
-  static bool _observationValable(Plantation p) {
-    final phase = p.observedPhase;
-    final quand = p.observedPhaseAt;
-    if (phase == null || quand == null) return false;
-    return DateTime.now().difference(quand).inDays <= observationValidDays;
   }
 
   /// Quoi faire d'un plant à ce stade.

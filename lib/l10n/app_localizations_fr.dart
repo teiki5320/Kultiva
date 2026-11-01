@@ -21,9 +21,6 @@ class LFr extends L {
   String get tabTutos => 'Tutos';
 
   @override
-  String get tabPhoto => 'Photo';
-
-  @override
   String get tabRecettes => 'Recettes';
 
   @override

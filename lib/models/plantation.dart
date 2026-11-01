@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'culture_entry.dart';
 
 /// Un plant dans le Poussidex : une carte de collection.
 ///
@@ -17,18 +16,6 @@ class Plantation {
   final List<String> photoPaths;
 
   /// Le stade de croissance **observé**, quand l'utilisateur l'a
-  /// corrigé lui-même sur la fiche conseil.
-  ///
-  /// Null tant qu'il ne l'a pas fait : le stade est alors déduit de la
-  /// date de plantation (`deducedPhase`). La distinction compte — une
-  /// déduction est une estimation qu'on peut remplacer sans rien
-  /// perdre, une observation est un fait qu'on doit garder.
-  final GrowthPhase? observedPhase;
-
-  /// Quand ce stade a été observé. Une observation vieille de deux
-  /// mois ne vaut plus la déduction du jour.
-  final DateTime? observedPhaseAt;
-
   const Plantation({
     required this.id,
     required this.vegetableId,
@@ -38,8 +25,6 @@ class Plantation {
     this.wateredAt = const <DateTime>[],
     this.note,
     this.photoPaths = const <String>[],
-    this.observedPhase,
-    this.observedPhaseAt,
   });
 
   /// Est encore en cours (non-récoltée définitivement).
@@ -63,8 +48,6 @@ class Plantation {
     List<DateTime>? wateredAt,
     String? note,
     List<String>? photoPaths,
-    GrowthPhase? observedPhase,
-    DateTime? observedPhaseAt,
     bool clearHarvestedAt = false,
     bool clearNote = false,
   }) {
@@ -80,8 +63,6 @@ class Plantation {
       // change rien ». Même logique que `clearHarvestedAt`.
       note: clearNote ? null : (note ?? this.note),
       photoPaths: photoPaths ?? this.photoPaths,
-      observedPhase: observedPhase ?? this.observedPhase,
-      observedPhaseAt: observedPhaseAt ?? this.observedPhaseAt,
     );
   }
 
@@ -94,8 +75,6 @@ class Plantation {
         'wateredAt': wateredAt.map((d) => d.toIso8601String()).toList(),
         'note': note,
         'photoPaths': photoPaths,
-        'observedPhase': observedPhase?.id,
-        'observedPhaseAt': observedPhaseAt?.toIso8601String(),
       };
 
   factory Plantation.fromJson(Map<String, dynamic> json) {
@@ -114,14 +93,6 @@ class Plantation {
       photoPaths: ((json['photoPaths'] as List?) ?? const <dynamic>[])
           .map((e) => e as String)
           .toList(),
-      // Absents des plantations d'avant le 01/11/2026 : null, donc
-      // stade déduit de la date, comme avant.
-      observedPhase: json['observedPhase'] == null
-          ? null
-          : GrowthPhase.fromId(json['observedPhase'] as String),
-      observedPhaseAt: json['observedPhaseAt'] == null
-          ? null
-          : DateTime.parse(json['observedPhaseAt'] as String),
     );
   }
 
@@ -168,11 +139,6 @@ class Plantation {
     }
     // Stade observé : le plus récent gagne. Un plant pousse, donc une
     // observation d'hier dit la vérité mieux que celle du mois dernier.
-    final Plantation? plusRecent = a.observedPhaseAt == null
-        ? (b.observedPhaseAt == null ? null : b)
-        : (b.observedPhaseAt == null
-            ? a
-            : (a.observedPhaseAt!.isAfter(b.observedPhaseAt!) ? a : b));
 
     return Plantation(
       id: a.id,
@@ -184,8 +150,6 @@ class Plantation {
       wateredAt: watered,
       note: note,
       photoPaths: photos,
-      observedPhase: plusRecent?.observedPhase,
-      observedPhaseAt: plusRecent?.observedPhaseAt,
     );
   }
 

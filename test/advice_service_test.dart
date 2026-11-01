@@ -33,39 +33,16 @@ void main() {
           GrowthPhase.seedling);
     });
 
-    test('une observation fraîche l\'emporte sur la déduction', () {
-      // Le point de toute la fiche : un plant semé il y a trois jours
-      // ne fleurit pas, mais si l'utilisateur dit qu'il fleurit, c'est
-      // lui qui a le plant sous les yeux.
-      final p = planteIlYA(3).copyWith(
-        observedPhase: GrowthPhase.flowering,
-        observedPhaseAt: DateTime.now(),
-      );
-      expect(AdviceService.phaseOf(p, vegetableById('tomate')),
-          GrowthPhase.flowering);
-    });
-
-    test('une observation périmée rend la main à la déduction', () {
-      // Un plant pousse. « Il fleurit », dit il y a deux mois, en sait
-      // moins que le calendrier d'aujourd'hui.
-      final p = planteIlYA(120).copyWith(
-        observedPhase: GrowthPhase.seedling,
-        observedPhaseAt: DateTime.now()
-            .subtract(const Duration(days: AdviceService.observationValidDays + 1)),
-      );
-      expect(AdviceService.phaseOf(p, vegetableById('tomate')),
-          isNot(GrowthPhase.seedling));
-    });
-
-    test('une observation du jour est marquée comme observée', () async {
-      final p = await service.add('tomate');
-      await service.setObservedPhase(p.id, GrowthPhase.fruiting);
-      final advice = AdviceService.build(
-        plantation: service.byId(p.id)!,
-        vegetable: vegetableById('tomate'),
-      );
-      expect(advice.phase, GrowthPhase.fruiting);
-      expect(advice.phaseObserved, isTrue);
+    test('un plant mûr est déduit plus avancé qu\'un semis du jour', () {
+      // Le stade ne vient plus que de la date : l'écran qui permettait
+      // de le corriger était la fiche conseil de l'onglet Photo,
+      // retiré le 01/11/2026. Ce test garde au moins la monotonie de
+      // la déduction, qui seule reste.
+      final tomate = vegetableById('tomate');
+      final jeune = AdviceService.phaseOf(planteIlYA(3), tomate);
+      final vieux = AdviceService.phaseOf(planteIlYA(120), tomate);
+      expect(jeune, GrowthPhase.seedling);
+      expect(vieux.index, greaterThan(jeune.index));
     });
   });
 
@@ -115,28 +92,4 @@ void main() {
     });
   });
 
-  test('le stade observé survit à la sérialisation', () {
-    final p = planteIlYA(10).copyWith(
-      observedPhase: GrowthPhase.flowering,
-      observedPhaseAt: DateTime(2026, 11, 1, 9),
-    );
-    final relu = Plantation.fromJson(p.toJson());
-    expect(relu.observedPhase, GrowthPhase.flowering);
-    expect(relu.observedPhaseAt, DateTime(2026, 11, 1, 9));
-  });
-
-  test('à la fusion, l\'observation la plus récente gagne', () {
-    final vieille = planteIlYA(30).copyWith(
-      observedPhase: GrowthPhase.seedling,
-      observedPhaseAt: DateTime(2026, 9, 1),
-    );
-    final recente = planteIlYA(30).copyWith(
-      observedPhase: GrowthPhase.fruiting,
-      observedPhaseAt: DateTime(2026, 10, 25),
-    );
-    expect(Plantation.merge(vieille, recente).observedPhase,
-        GrowthPhase.fruiting);
-    expect(Plantation.merge(recente, vieille).observedPhase,
-        GrowthPhase.fruiting);
-  });
 }

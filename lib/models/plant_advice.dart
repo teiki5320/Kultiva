@@ -29,13 +29,8 @@ class AdviceSection {
 class PlantAdvice {
   final Vegetable vegetable;
 
-  /// Le stade retenu : celui que l'utilisateur a observé s'il l'a dit,
-  /// sinon celui déduit de la date de plantation.
+  /// Le stade retenu, déduit de la date de plantation.
   final GrowthPhase phase;
-
-  /// Vrai quand le stade vient d'une observation et non d'un calcul.
-  /// La fiche le dit : « tu as indiqué » n'est pas « on estime ».
-  final bool phaseObserved;
 
   final int daysSincePlanted;
 
@@ -50,7 +45,6 @@ class PlantAdvice {
   const PlantAdvice({
     required this.vegetable,
     required this.phase,
-    required this.phaseObserved,
     required this.daysSincePlanted,
     required this.sections,
     this.harvestInDays,

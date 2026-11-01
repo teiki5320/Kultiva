@@ -112,7 +112,6 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   ///   kultiva://poussidex/badges    → section Badges
   ///   kultiva://poussidex/challenges→ section Défis
   ///   kultiva://tutos               → onglet Tutos
-  ///   kultiva://photos              → onglet Photo
   ///   kultiva://recettes            → onglet Recettes
   ///   kultiva://tuto/`<nom>`          → remplace la fiche par une autre
   void _handleDeepLink(Uri uri) {
@@ -147,19 +146,22 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
           ),
         );
         return;
-      case 'tutos':
-        Navigator.of(context).pop();
-        RootTabs.tabIndex.value = 3;
-        return;
-      case 'photos':
-      case 'photo':
-        Navigator.of(context).pop();
-        RootTabs.tabIndex.value = 4;
-        return;
       case 'recettes':
       case 'recipes':
         Navigator.of(context).pop();
-        RootTabs.tabIndex.value = 5;
+        RootTabs.tabIndex.value = 3;
+        return;
+      case 'tutos':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 4;
+        return;
+      case 'photos':
+      case 'photo':
+        // L'onglet Photo a été ajouté puis retiré le 01/11/2026. La
+        // route survit pour les anciens liens et mène au cahier de
+        // culture, où les photos d'un plant vivent désormais seules.
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 1;
         return;
       case 'tuto':
         if (segments.isNotEmpty) {

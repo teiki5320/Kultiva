@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
-import '../models/culture_entry.dart';
 import '../models/plantation.dart';
 import 'error_reporter.dart';
 import 'photo_service.dart';
@@ -171,14 +170,6 @@ class PlantationService extends ChangeNotifier {
   /// La date est posée en même temps : une observation se périme, et
   /// `AdviceService` repasse à la déduction par la date au-delà de
   /// trois semaines.
-  Future<void> setObservedPhase(String id, GrowthPhase phase) => _update(
-        id,
-        (p) => p.copyWith(
-          observedPhase: phase,
-          observedPhaseAt: DateTime.now(),
-        ),
-      );
-
   Future<void> addPhoto(String id, String path) => _update(
       id,
       (p) => p.copyWith(

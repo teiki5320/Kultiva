@@ -121,12 +121,6 @@ abstract class L {
   /// **'Tutos'**
   String get tabTutos;
 
-  /// No description provided for @tabPhoto.
-  ///
-  /// In fr, this message translates to:
-  /// **'Photo'**
-  String get tabPhoto;
-
   /// No description provided for @tabRecettes.
   ///
   /// In fr, this message translates to:

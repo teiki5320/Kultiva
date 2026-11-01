@@ -20,9 +20,6 @@ depuis le 01/11/2026 **73 pays sur six continents**. Elle propose :
   conseils contextuels selon la météo ;
 - **Défis & badges** : 50 défis photo et 50 badges, sur leur écran,
   joignable depuis le dashboard ;
-- un **onglet Photo** : toutes les photos du jardin par mois, et
-  l'évolution de chaque plant — première et dernière photo côte à côte,
-  avec les jours qui les séparent ;
 - un **onglet Recettes** : 340 recettes, trois par récolte, dont huit
   déroulées pas à pas dans un lecteur animé hors ligne ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
@@ -116,7 +113,7 @@ Kultiva/
 │   │   └── app_info.dart           # version affichée (à synchroniser avec pubspec)
 │   ├── screens/            # 33 fichiers
 │   │   ├── onboarding_screen.dart
-│   │   ├── root_tabs.dart          # Conteneur 4 onglets (Bottom nav)
+│   │   ├── root_tabs.dart          # Conteneur 5 onglets (Bottom nav)
 │   │   ├── vegetable_detail_screen.dart
 │   │   └── home/                   # sow, vegetables, my_garden, tutos,
 │   │                               # settings, weather, calendrier mensuel,
@@ -128,8 +125,6 @@ Kultiva/
 │   │                               # journal_view, season_recap),
 │   │                               # defis/ (defis_badges_screen,
 │   │                               # badges_grid, challenges_grid),
-│   │                               # photos/ (photos_screen, gallery,
-│   │                               #   timeline, viewer),
 │   │                               # recettes/ (recettes_screen,
 │   │                               #   recipe_player_screen),
 │   │                               # plants/ (plantation_sheet = le
@@ -140,14 +135,14 @@ Kultiva/
 │   │                               # planner_widgets = point d'entrée)
 │   ├── l10n/               # app_fr.arb, app_en.arb + généré
 │   │                       # (flutter gen-l10n, voir l10n.yaml)
-│   ├── models/             # 13 fichiers
+│   ├── models/             # 12 fichiers
 │   │                       # plantation, vegetable, vegetable_medal,
 │   │                       # country (pays + zone climatique),
 │   │                       # region_data, culture_entry, garden_plan,
 │   │                       # weather_data,
 │   │                       # photo_pick_result, watering_alert,
-│   │                       # watering_advice, garden_photo
-│   ├── services/           # 17 fichiers (+ photo_library)
+│   │                       # watering_advice
+│   ├── services/           # 16 fichiers
 │   │                       # prefs, plantation, error_reporter, weather,
 │   │                       # geolocation,
 │   │                       # notification, photo, audio, watering,
@@ -600,13 +595,17 @@ Décisions et évolutions significatives :
   journal ») ; les 50 défis et les 50 badges ont leur écran
   **Défis & badges**. Les fichiers quittent `poussidex/` pour
   `plants/`, `defis/` et `cahier/`.
-- **Six onglets (01/11/2026)** : Home, **Cahier**, Étal, Tutos,
-  **Photo**, **Recettes**. ⚠️ Les tutos HTML naviguent par index
+- **Cinq onglets (01/11/2026)** : Home, **Cahier**, Étal,
+  **Recettes**, **Tutos**. Tutos est passé en dernier le 01/11/2026
+  (demande de Jean) : Recettes prend l'index 3, Tutos le 4. ⚠️ Les tutos HTML naviguent par index
   (`RootTabs.tabIndex`) : tout changement d'ordre doit passer par
   `tuto_fiche_screen.dart`, et `test/onglets_test.dart` le verrouille.
-  Photo et Recettes ont été **ajoutés en bout de barre** pour ne
-  décaler aucun index existant. La barre est en `fixed` avec des
-  libellés rétrécis : à six, « Recettes » était tronqué.
+  Recettes a été **ajouté en bout de barre** pour ne décaler aucun
+  index existant. La barre est en `fixed` avec des libellés rétrécis :
+  à cinq, « Recettes » était tronqué.
+  Un **onglet Photo** a été ajouté puis retiré le même jour — voir
+  l'alerte 15. Son retrait a recalé Recettes de l'index 5 à 4 ; la
+  route `kultiva://photos` survit et mène au cahier.
 - **Ouverture mondiale (01/11/2026)** : 73 pays. Deux bases de
   calendrier seulement — tempérée (`franceData`) et tropicale
   (`westAfricaData`) — qu'une `ClimateZone` affine et qu'un
@@ -955,3 +954,40 @@ Le Studio de Jean affiche les fiches de ce dépôt (docs/INFRA.md, docs/MARKETIN
     Apache-2.0 (~16 ms sur un Pixel 8a) mais fait de l'**espèce**, ce
     dont on n'a pas besoin. Le prompt de discussion est dans
     `docs/prompt-modele-stade-plant.md`.
+
+16. **L'onglet Photo a été ajouté puis retiré le 01/11/2026** —
+    décision de Jean : « Non mais trop compliqué on retire le module
+    photo. » Il avait raison sur le fond : l'onglet **doublait** le
+    cahier de culture, qui portait déjà les photos d'un plant.
+
+    **Ce qui est parti** : `lib/screens/home/photos/` (5 fichiers,
+    dont la fiche conseil), `models/garden_photo.dart`,
+    `services/photo_library_service.dart`, le libellé `tabPhoto` des
+    deux ARB, et `Plantation.observedPhase` / `observedPhaseAt` avec
+    `setObservedPhase` — ce champ n'était écrit que par la fiche
+    conseil, il serait devenu un champ que rien ne remplit. Safe à
+    retirer : il datait du jour même et n'a jamais été publié.
+
+    **Ce qui reste, et qu'il ne faut pas confondre avec ce module** :
+    les photos d'un plant dans le **cahier de culture**
+    (`PlantationService.addPhoto`, `plantation_photo.dart`) et les
+    **50 défis photo**, dont dépendent des badges. Le module retiré
+    n'était qu'une **vue** par-dessus.
+
+    ⚠️ **Conséquence sur les index d'onglets** : Recettes est repassé
+    de 5 à 4. La route `kultiva://photos` survit pour les anciens liens
+    et mène au cahier (index 1).
+
+    **Une conséquence restée ouverte** : plus aucun écran ne permet à
+    l'utilisateur de corriger le stade d'un plant. `AdviceService`
+    le déduit de la date, et `planner_advice.dart` l'affiche dans le
+    potager carré. Si la correction doit revenir, sa place est le
+    dossier du plant (`showPlantationSheet`), pas un onglet.
+
+17. **Le tuto du dashboard montre quatre onglets, l'app en a cinq** —
+    repéré le 01/11/2026. `assets/tutos/decouvrir_dashboard.html`
+    redessine la barre en HTML (Home, Cahier, Étal, Tutos) : il a été
+    produit avant l'ajout de Recettes et n'a pas suivi. Rien n'échoue,
+    le tuto raconte simplement une app d'avant-hier. À reprendre avec
+    `docs/prompt-tuto-dashboard.md`, qui dit lui aussi « quatre
+    onglets ».
