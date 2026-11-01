@@ -87,4 +87,28 @@ void main() {
       }
     });
   });
+
+  group('les chiffres annoncés dans les fiches', () {
+    // Les fiches ont annoncé « 340 recettes, dont huit animées »
+    // pendant une journée alors qu'il y en avait 369 et 7. Ce test
+    // échoue si quelqu'un ajoute des recettes sans corriger README,
+    // MARKETING et CLAUDE.md.
+    test('le compte total est bien celui des fiches', () {
+      final total =
+          recipesByVegetable.values.fold<int>(0, (n, l) => n + l.length);
+      expect(total, 369,
+          reason: 'Si tu ajoutes des recettes, mets à jour README.md, '
+              'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
+    });
+
+    test('le compte des recettes animées est bien celui des fiches', () {
+      final animees = recipesByVegetable.values
+          .expand((l) => l)
+          .where((r) => r.isAnimated)
+          .length;
+      expect(animees, 79,
+          reason: 'Si tu écris de nouveaux pas-à-pas, mets à jour README.md, '
+              'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
+    });
+  });
 }

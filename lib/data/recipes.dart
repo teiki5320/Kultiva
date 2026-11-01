@@ -76,18 +76,103 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     ),
   ],
   'tomate': <Recipe>[
-    Recipe(name: 'Tarte à la tomate et moutarde', emoji: '🥧', description: 'Une couche de moutarde sous les tomates, du thym dessus.', minutes: 55, serves: 6),
+    Recipe(
+      name: 'Tarte à la tomate et moutarde',
+      emoji: '🥧',
+      description:
+          'Une couche de moutarde sous les tomates, du thym dessus.',
+      minutes: 55,
+      serves: 6,
+      ingredients: <String>[
+        '1 pâte brisée',
+        '6 tomates mûres',
+        '2 cuillères à soupe de moutarde',
+        '150 g de gruyère râpé',
+        'thym, sel, poivre, huile d\'olive',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔥', 'Préchauffe le four à 200 °C.'),
+        RecipeStep('🥧',
+            'Étale la pâte dans le moule et pique-la à la fourchette.'),
+        RecipeStep('🥄',
+            'Tartine le fond de moutarde, puis saupoudre le gruyère : il '
+            'empêchera la pâte de détremper.'),
+        RecipeStep('🍅',
+            'Coupe les tomates en rondelles, dispose-les en rosace, serrées.'),
+        RecipeStep('🌿', 'Sel, poivre, thym, un filet d\'huile d\'olive.'),
+        RecipeStep('⏱', 'Au four 35 minutes : les bords doivent dorer.',
+            minutes: 35),
+        RecipeStep('🍴',
+            'Laisse tiédir 10 minutes avant de couper, sinon elle s\'écroule.'),
+      ],
+    ),
     Recipe(
       name: 'Thiéboudienne',
       emoji: '🍛',
       description:
           'Le riz au poisson sénégalais, roi des plats, avec sa sauce tomate bien réduite.',
+      minutes: 90,
+      serves: 6,
+      ingredients: <String>[
+        '1 kg de poisson (thiof, mérou ou cabillaud)',
+        '500 g de riz brisé',
+        '6 tomates mûres + 2 cuillères de concentré',
+        '1 chou, 2 carottes, 1 aubergine, 1 manioc',
+        '2 oignons, 1 piment, persil, ail',
+        'huile, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌿',
+            'Pile ail, persil, piment et sel : c\'est le nokoss. Farcis-en '
+            'les poissons par une entaille.'),
+        RecipeStep('🔥',
+            'Fais revenir les poissons dans l\'huile chaude, puis réserve-les.'),
+        RecipeStep('🧅',
+            'Dans la même huile, fais fondre les oignons, ajoute tomates et '
+            'concentré. Laisse réduire 15 minutes à feu doux.',
+            minutes: 15),
+        RecipeStep('🥕',
+            'Couvre d\'eau, ajoute les légumes du plus dur au plus tendre. '
+            'Cuis 25 minutes.',
+            minutes: 25),
+        RecipeStep('🐟',
+            'Remets le poisson 10 minutes, puis sors poisson et légumes et '
+            'garde-les au chaud.',
+            minutes: 10),
+        RecipeStep('🍚',
+            'Verse le riz dans la sauce restante — elle doit le couvrir d\'un '
+            'doigt. Couvre et cuis 20 minutes sans remuer.',
+            minutes: 20),
+        RecipeStep('🍽',
+            'Dresse le riz, le poisson au centre, les légumes autour.'),
+      ],
     ),
     Recipe(
       name: 'Salade tomate-oignon',
       emoji: '🥗',
       description:
           'Des tomates fraîches du jardin, un filet de citron, et le tour est joué.',
+      minutes: 10,
+      serves: 4,
+      ingredients: <String>[
+        '4 tomates bien mûres',
+        '1 oignon rouge',
+        '1 citron',
+        '3 cuillères à soupe d\'huile d\'olive',
+        'sel, poivre, basilic',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍅',
+            'Coupe les tomates en quartiers, pas en dés : elles rendent moins '
+            'd\'eau.'),
+        RecipeStep('🧅',
+            'Émince l\'oignon très fin. Si tu le trouves fort, rince-le à '
+            'l\'eau froide.'),
+        RecipeStep('🍋', 'Presse le citron, mélange-le à l\'huile, sel, poivre.'),
+        RecipeStep('🥗', 'Verse sur les tomates, mélange délicatement.'),
+        RecipeStep('🌿',
+            'Déchire le basilic à la main par-dessus — au couteau il noircit.'),
+      ],
     ),
   ],
   'arachide': <Recipe>[
@@ -331,33 +416,165 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     ),
   ],
   'epinard': <Recipe>[
-    Recipe(name: 'Épinards à la crème', emoji: '🥣', description: 'Fondus au beurre, un peu de crème, beaucoup de muscade.', minutes: 25, serves: 4),
+    Recipe(
+      name: 'Épinards à la crème',
+      emoji: '🥛',
+      description:
+          'Fondus en deux minutes, liés à la crème : l\'accompagnement de base.',
+      minutes: 20,
+      serves: 4,
+      ingredients: <String>[
+        '1 kg d\'épinards frais',
+        '20 cl de crème',
+        '20 g de beurre',
+        '1 gousse d\'ail',
+        'sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave les épinards dans beaucoup d\'eau, deux fois, et équeute '
+            'les grosses tiges.'),
+        RecipeStep('🔥',
+            'Jette-les dans la sauteuse beurrée, par poignées : ils réduisent '
+            'des trois quarts.'),
+        RecipeStep('🫗',
+            'Quand ils sont tombés, presse-les pour en sortir l\'eau — sinon '
+            'la crème ne tient pas.'),
+        RecipeStep('🥛',
+            'Remets-les avec la crème, l\'ail écrasé, sel, poivre, muscade.'),
+        RecipeStep('⏱', 'Laisse épaissir 5 minutes à feu doux.', minutes: 5),
+      ],
+    ),
+    Recipe(
+      name: 'Tarte aux épinards et feta',
+      emoji: '🥧',
+      description:
+          'Le sel de la feta contre le vert des épinards, dans une pâte croustillante.',
+      minutes: 55,
+      serves: 6,
+      ingredients: <String>[
+        '1 pâte feuilletée',
+        '800 g d\'épinards',
+        '200 g de feta',
+        '2 oeufs, 15 cl de crème',
+        '1 oignon, sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬', 'Fais tomber les épinards à la poêle, puis presse-les.'),
+        RecipeStep('🧅', 'Fais blondir l\'oignon émincé et mélange-le dedans.'),
+        RecipeStep('🥣',
+            'Bats oeufs et crème, muscade, poivre. Pas de sel : la feta suffit.'),
+        RecipeStep('🧀',
+            'Garnis la pâte des épinards, émiette la feta, verse l\'appareil.'),
+        RecipeStep('⏱', 'Four à 190 °C, 30 minutes.', minutes: 30),
+      ],
+    ),
     Recipe(
       name: 'Épinards sautés à l\'ail',
       emoji: '🧄',
       description:
-          'Des feuilles fraîches juste tombées à la poêle avec de l\'ail doré.',
-    ),
-    Recipe(
-      name: 'Sauce épinard au poisson',
-      emoji: '🐟',
-      description:
-          'Une sauce verte généreuse au poisson fumé, à verser sur un bon riz blanc.',
+          'Trois minutes à feu vif : la cuisson qui garde la couleur.',
+      minutes: 10,
+      serves: 4,
+      ingredients: <String>[
+        '800 g d\'épinards',
+        '2 gousses d\'ail',
+        '2 cuillères à soupe d\'huile d\'olive',
+        'sel, piment, citron',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧄',
+            'Fais blondir l\'ail émincé dans l\'huile, sans le brûler.'),
+        RecipeStep('🔥',
+            'Monte le feu, jette les épinards essorés et remue sans arrêt.'),
+        RecipeStep('⏱',
+            '3 minutes, pas plus : dès qu\'ils sont tombés, c\'est cuit.',
+            minutes: 3),
+        RecipeStep('🍋', 'Sel, une pointe de piment, un trait de citron.'),
+      ],
     ),
   ],
   'oignon': <Recipe>[
-    Recipe(name: 'Oignons confits au vinaigre balsamique', emoji: '🍯', description: 'Deux heures à feu très doux : ils deviennent une confiture.', minutes: 130, serves: 8),
     Recipe(
-      name: 'Poulet yassa',
-      emoji: '🍗',
+      name: 'Soupe à l\'oignon gratinée',
+      emoji: '🧅',
       description:
-          'Le poulet mariné au citron et étouffé sous une montagne d\'oignons fondants.',
+          'Une heure de patience sur les oignons, et tout est joué.',
+      minutes: 75,
+      serves: 4,
+      ingredients: <String>[
+        '1 kg d\'oignons',
+        '40 g de beurre',
+        '1 cuillère à soupe de farine',
+        '1,5 litre de bouillon',
+        '4 tranches de pain, 150 g de gruyère',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Émince les oignons en fines lamelles.'),
+        RecipeStep('🧈',
+            'Fais-les blondir au beurre à feu doux **40 minutes** en remuant. '
+            'C\'est toute la recette : pressé, ça ne marche pas.',
+            minutes: 40),
+        RecipeStep('🥄',
+            'Saupoudre la farine, remue 2 minutes, puis verse le bouillon '
+            'chaud.'),
+        RecipeStep('⏱', 'Laisse mijoter 20 minutes.', minutes: 20),
+        RecipeStep('🧀',
+            'Verse en bols, pose le pain, couvre de gruyère.'),
+        RecipeStep('🔥', 'Sous le gril 5 minutes, jusqu\'à la croûte.',
+            minutes: 5),
+      ],
     ),
     Recipe(
-      name: 'Soupe à l\'oignon',
-      emoji: '🍜',
+      name: 'Oignons confits',
+      emoji: '🍯',
       description:
-          'Le grand classique français, gratiné et réconfortant les soirs frais.',
+          'Doux et sirupeux, ils se gardent au frais et relèvent tout.',
+      minutes: 60,
+      serves: 6,
+      ingredients: <String>[
+        '1 kg d\'oignons',
+        '3 cuillères à soupe de sucre',
+        '5 cl de vinaigre de vin',
+        '2 cuillères à soupe d\'huile',
+        'sel, thym',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Émince les oignons.'),
+        RecipeStep('🔥', 'Fais-les suer à l\'huile 15 minutes à couvert.',
+            minutes: 15),
+        RecipeStep('🍯',
+            'Ajoute sucre, vinaigre, sel, thym. Découvre et laisse réduire.'),
+        RecipeStep('⏱',
+            'Encore 30 minutes à feu doux : ils doivent brunir et devenir '
+            'sirupeux.',
+            minutes: 30),
+        RecipeStep('🫙',
+            'En bocal, ils tiennent une semaine au réfrigérateur.'),
+      ],
+    ),
+    Recipe(
+      name: 'Tarte à l\'oignon',
+      emoji: '🥧',
+      description:
+          'Des oignons fondus, des lardons, un appareil à la crème.',
+      minutes: 65,
+      serves: 6,
+      ingredients: <String>[
+        '1 pâte brisée',
+        '800 g d\'oignons',
+        '150 g de lardons',
+        '20 cl de crème, 2 oeufs',
+        'sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Émince les oignons, fais-les fondre 25 minutes.',
+            minutes: 25),
+        RecipeStep('🥓', 'Ajoute les lardons 5 minutes.', minutes: 5),
+        RecipeStep('🥣', 'Bats crème, oeufs, poivre, muscade. Sale peu.'),
+        RecipeStep('🥧', 'Garnis la pâte, verse l\'appareil.'),
+        RecipeStep('⏱', 'Four à 190 °C, 30 minutes.', minutes: 30),
+      ],
     ),
   ],
   'piment': <Recipe>[
@@ -386,28 +603,184 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     ),
   ],
   'aubergine': <Recipe>[
-    Recipe(name: 'Parmigiana d\'aubergines', emoji: '🧀', description: 'Grillées en couches avec tomate, mozzarella et basilic.', minutes: 90, serves: 6),
+    Recipe(
+      name: 'Parmigiana d\'aubergines',
+      emoji: '🍆',
+      description:
+          'Des couches d\'aubergine, de tomate et de parmesan, longuement gratinées.',
+      minutes: 95,
+      serves: 6,
+      ingredients: <String>[
+        '3 grosses aubergines',
+        '800 g de coulis de tomate',
+        '200 g de mozzarella',
+        '120 g de parmesan',
+        'basilic, huile d\'olive, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🍆', 'Coupe les aubergines en tranches de 1 cm.'),
+        RecipeStep('🧂',
+            'Sale-les et laisse-les dégorger 30 minutes : moins d\'amertume, '
+            'moins d\'huile absorbée.',
+            minutes: 30),
+        RecipeStep('🔥',
+            'Essuie-les et fais-les griller au four, 15 minutes à 220 °C, '
+            'plutôt qu\'à la poêle — elles boivent moins d\'huile.',
+            minutes: 15),
+        RecipeStep('🍅',
+            'Fais réduire le coulis 15 minutes avec du basilic et du sel.',
+            minutes: 15),
+        RecipeStep('🧀',
+            'Monte en couches : sauce, aubergines, mozzarella, parmesan, et '
+            'recommence.'),
+        RecipeStep('⏱', 'Four à 180 °C, 35 minutes.', minutes: 35),
+        RecipeStep('🍴',
+            'Attends 15 minutes avant de couper : elle se tient beaucoup '
+            'mieux.',
+            minutes: 15),
+      ],
+    ),
     Recipe(
       name: 'Ratatouille',
       emoji: '🥘',
       description:
-          'Le mijoté provençal où l\'aubergine s\'entend à merveille avec tout le jardin.',
+          'Chaque légume saisi à part, réunis à la fin : c\'est le secret.',
+      minutes: 80,
+      serves: 6,
+      ingredients: <String>[
+        '2 aubergines',
+        '3 courgettes',
+        '2 poivrons',
+        '4 tomates',
+        '2 oignons, 3 gousses d\'ail',
+        'thym, laurier, huile d\'olive, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪', 'Coupe tous les légumes en cubes de même taille.'),
+        RecipeStep('🍆',
+            'Fais revenir les aubergines seules, à feu vif, puis réserve.'),
+        RecipeStep('🥒',
+            'Pareil pour les courgettes, puis les poivrons, puis les oignons. '
+            'Chacun son tour, chacun son goût.'),
+        RecipeStep('🍅',
+            'Dans la cocotte, fais fondre tomates et ail avec thym et laurier, '
+            '15 minutes.',
+            minutes: 15),
+        RecipeStep('🥘',
+            'Réunis tout, sale, et laisse mijoter à découvert 30 minutes.',
+            minutes: 30),
+        RecipeStep('🌿',
+            'Meilleure réchauffée le lendemain — vraiment.'),
+      ],
     ),
     Recipe(
       name: 'Caviar d\'aubergine',
-      emoji: '🥙',
+      emoji: '🥣',
       description:
-          'Une purée d\'aubergine grillée à tartiner, fraîche et pleine de soleil.',
+          'Les aubergines brûlées au four, puis écrasées à l\'huile et au citron.',
+      minutes: 60,
+      serves: 4,
+      ingredients: <String>[
+        '3 aubergines',
+        '1 gousse d\'ail',
+        '1 citron',
+        '3 cuillères à soupe d\'huile d\'olive',
+        '1 cuillère à soupe de tahin (facultatif), sel, cumin',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔥',
+            'Pique les aubergines entières et enfourne-les à 220 °C, '
+            '45 minutes, jusqu\'à ce que la peau cloque et noircisse.',
+            minutes: 45),
+        RecipeStep('🥄',
+            'Coupe-les en deux et récupère la chair à la cuillère.'),
+        RecipeStep('🫗',
+            'Laisse-la égoutter 10 minutes dans une passoire.', minutes: 10),
+        RecipeStep('🥣',
+            'Écrase à la fourchette avec ail, citron, huile, cumin, sel. Pas '
+            'au mixeur : on veut de la texture.'),
+        RecipeStep('🫒', 'Un filet d\'huile dessus, avec du pain grillé.'),
+      ],
     ),
   ],
   'laitue': <Recipe>[
-    Recipe(name: 'Laitue braisée aux petits pois', emoji: '🥬', description: 'Oui, la laitue se cuit — et c\'est délicieux.', minutes: 25, serves: 4),
-    Recipe(name: 'Velouté de laitue', emoji: '🍲', description: 'Pour les laitues montées en graines qu\'on allait jeter.', minutes: 30, serves: 4),
     Recipe(
-      name: 'Salade fraîcheur',
+      name: 'Salade verte vinaigrette maison',
       emoji: '🥗',
       description:
-          'Ta laitue croquante tout juste cueillie, avec une vinaigrette bien citronnée.',
+          'Une laitue cueillie à l\'instant ne demande presque rien.',
+      minutes: 10,
+      serves: 4,
+      ingredients: <String>[
+        '1 belle laitue',
+        '1 cuillère à café de moutarde',
+        '1 cuillère à soupe de vinaigre',
+        '3 cuillères à soupe d\'huile',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave les feuilles à l\'eau froide, sèche-les bien : l\'eau '
+            'empêche la vinaigrette de tenir.'),
+        RecipeStep('🥄',
+            'Dans le fond du saladier, délaye moutarde, sel et vinaigre.'),
+        RecipeStep('🫒',
+            'Verse l\'huile en filet en fouettant : la sauce doit épaissir.'),
+        RecipeStep('🥗',
+            'Ajoute les feuilles et mélange **juste avant** de servir.'),
+      ],
+    ),
+    Recipe(
+      name: 'Laitue braisée aux petits pois',
+      emoji: '🫛',
+      description:
+          'Oui, la laitue se cuit — fondante, avec des petits pois et un peu de lard.',
+      minutes: 30,
+      serves: 4,
+      ingredients: <String>[
+        '2 laitues',
+        '300 g de petits pois écossés',
+        '100 g de lardons',
+        '1 oignon nouveau',
+        '20 g de beurre, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬',
+            'Coupe les laitues en quatre, garde-les attachées au trognon.'),
+        RecipeStep('🥓', 'Fais dorer les lardons avec l\'oignon émincé.'),
+        RecipeStep('🫛',
+            'Ajoute les petits pois, les quartiers de laitue, le beurre et un '
+            'fond d\'eau.'),
+        RecipeStep('⏱', 'Couvre et laisse fondre 20 minutes à feu doux.',
+            minutes: 20),
+        RecipeStep('🧂', 'Poivre généreusement, sale peu : les lardons salent.'),
+      ],
+    ),
+    Recipe(
+      name: 'Velouté de laitue',
+      emoji: '🍲',
+      description:
+          'La solution quand la laitue monte toute en même temps au potager.',
+      minutes: 30,
+      serves: 4,
+      ingredients: <String>[
+        '2 laitues (même un peu montées)',
+        '2 pommes de terre',
+        '1 oignon',
+        '80 cl de bouillon',
+        '10 cl de crème, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬',
+            'Lave les laitues et hache-les grossièrement, côtes comprises.'),
+        RecipeStep('🧅', 'Fais fondre l\'oignon, ajoute les pommes de terre.'),
+        RecipeStep('🍲', 'Mouille au bouillon et cuis 15 minutes.', minutes: 15),
+        RecipeStep('🥬',
+            'Ajoute la laitue seulement **5 minutes** à la fin : au-delà elle '
+            'perd sa couleur.',
+            minutes: 5),
+        RecipeStep('🥣', 'Mixe, ajoute la crème hors du feu, rectifie.'),
+      ],
     ),
   ],
   'chou_pomme': <Recipe>[
@@ -426,43 +799,260 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     ),
   ],
   'carotte': <Recipe>[
-    Recipe(name: 'Carottes Vichy', emoji: '🧈', description: 'Beurre, sucre, eau à hauteur : le glaçage se fait tout seul.', minutes: 30, serves: 4),
     Recipe(
-      name: 'Carottes râpées',
+      name: 'Carottes râpées au citron',
       emoji: '🥕',
       description:
-          'La salade toute simple qui croque, relevée d\'un jus de citron frais.',
+          'Deux minutes de râpe, un citron, et la plus franche des entrées.',
+      minutes: 10,
+      serves: 4,
+      ingredients: <String>[
+        '6 carottes',
+        '1 citron',
+        '3 cuillères à soupe d\'huile',
+        '1 cuillère à café de miel',
+        'sel, persil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥕',
+            'Râpe les carottes gros : trop fin, elles rendent leur eau.'),
+        RecipeStep('🍋', 'Presse le citron, mélange huile, miel et sel.'),
+        RecipeStep('🥗', 'Verse, mélange, laisse reposer 10 minutes.',
+            minutes: 10),
+        RecipeStep('🌿', 'Persil ciselé au dernier moment.'),
+      ],
     ),
     Recipe(
-      name: 'Soupe de légumes',
-      emoji: '🍜',
+      name: 'Carottes Vichy',
+      emoji: '🧈',
       description:
-          'Un velouté doux où tes carottes du jardin donnent toute leur couleur.',
+          'Cuites dans leur eau avec beurre et sucre, elles se glacent toutes seules.',
+      minutes: 30,
+      serves: 4,
+      ingredients: <String>[
+        '800 g de carottes',
+        '30 g de beurre',
+        '1 cuillère à café de sucre',
+        'sel, persil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥕', 'Coupe les carottes en rondelles épaisses.'),
+        RecipeStep('🍲',
+            'Mets-les dans une casserole large avec beurre, sucre, sel, et de '
+            'l\'eau à mi-hauteur seulement.'),
+        RecipeStep('⏱',
+            'Cuis à découvert 20 minutes : l\'eau doit s\'évaporer et laisser '
+            'un sirop.',
+            minutes: 20),
+        RecipeStep('🥄',
+            'Remue en fin de cuisson pour les enrober de ce glaçage.'),
+        RecipeStep('🌿', 'Persil, et à table.'),
+      ],
+    ),
+    Recipe(
+      name: 'Soupe de carottes au cumin',
+      emoji: '🍲',
+      description:
+          'Le cumin réveille le sucré de la carotte — une soupe qui ne lasse pas.',
+      minutes: 40,
+      serves: 4,
+      ingredients: <String>[
+        '1 kg de carottes',
+        '1 pomme de terre',
+        '1 oignon',
+        '1 cuillère à café de cumin',
+        '1 litre de bouillon, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Fais fondre l\'oignon émincé dans un peu d\'huile.'),
+        RecipeStep('🌶',
+            'Ajoute le cumin et laisse-le chauffer 30 secondes : il doit '
+            'sentir avant de mouiller.'),
+        RecipeStep('🥕',
+            'Ajoute carottes et pomme de terre en morceaux, puis le bouillon.'),
+        RecipeStep('⏱', 'Cuis 25 minutes, couvercle posé.', minutes: 25),
+        RecipeStep('🥣',
+            'Mixe. Trop épaisse ? un peu de bouillon. Trop claire ? laisse '
+            'réduire.'),
+      ],
     ),
   ],
   'concombre': <Recipe>[
-    Recipe(name: 'Tzatziki', emoji: '🥣', description: 'Râpé, dégorgé au sel, mélangé au yaourt et à la menthe.', minutes: 20, serves: 4),
-    Recipe(name: 'Soupe froide de concombre', emoji: '🍲', description: 'Mixé avec du yaourt et de l\'aneth, servi glacé.', minutes: 15, serves: 4),
+    Recipe(
+      name: 'Tzatziki',
+      emoji: '🥣',
+      description:
+          'Concombre râpé, yaourt grec, ail et menthe — frais et franc.',
+      minutes: 15,
+      serves: 4,
+      ingredients: <String>[
+        '1 concombre',
+        '400 g de yaourt grec',
+        '1 gousse d\'ail',
+        'menthe fraîche',
+        '1 cuillère à soupe d\'huile d\'olive, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥒', 'Râpe le concombre avec sa peau si elle est fine.'),
+        RecipeStep('🧂',
+            'Sale-le et laisse-le dégorger 15 minutes dans une passoire. '
+            'C\'est l\'étape qu\'on saute et qui donne un tzatziki liquide.',
+            minutes: 15),
+        RecipeStep('🫗', 'Presse-le fort entre tes mains.'),
+        RecipeStep('🥣',
+            'Mélange au yaourt avec l\'ail écrasé, l\'huile et la menthe '
+            'ciselée.'),
+        RecipeStep('❄️', 'Au frais une heure avant de servir.', minutes: 60),
+      ],
+    ),
+    Recipe(
+      name: 'Soupe froide de concombre',
+      emoji: '❄️',
+      description:
+          'Mixée crue, servie glacée : l\'entrée des jours de canicule.',
+      minutes: 15,
+      serves: 4,
+      ingredients: <String>[
+        '2 concombres',
+        '20 cl de fromage blanc',
+        '1 gousse d\'ail',
+        'ciboulette, menthe',
+        'sel, poivre, 1 trait de vinaigre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥒', 'Pèle les concombres et retire les graines du centre.'),
+        RecipeStep('🥣',
+            'Mixe avec le fromage blanc, l\'ail, le vinaigre, sel et poivre.'),
+        RecipeStep('❄️',
+            'Au réfrigérateur **2 heures** : tiède, cette soupe ne vaut rien.',
+            minutes: 120),
+        RecipeStep('🌿', 'Herbes ciselées au moment de servir.'),
+      ],
+    ),
     Recipe(
       name: 'Salade de concombre au yaourt',
-      emoji: '🥒',
+      emoji: '🥗',
       description:
-          'Des rondelles bien fraîches dans un yaourt à la menthe, idéal par forte chaleur.',
+          'En rondelles fines, à peine habillées — on garde le croquant.',
+      minutes: 10,
+      serves: 4,
+      ingredients: <String>[
+        '1 concombre',
+        '3 cuillères à soupe de yaourt',
+        '1 échalote',
+        'aneth ou ciboulette',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥒',
+            'Coupe le concombre en rondelles très fines, à l\'économe si tu '
+            'veux.'),
+        RecipeStep('🧂',
+            'Sale légèrement et laisse 10 minutes, puis égoutte sans presser : '
+            'on veut qu\'il reste croquant.',
+            minutes: 10),
+        RecipeStep('🥣', 'Mélange yaourt, échalote hachée, herbes, poivre.'),
+        RecipeStep('🥗', 'Assemble juste avant de passer à table.'),
+      ],
     ),
   ],
   'courgette': <Recipe>[
-    Recipe(name: 'Beignets de fleurs de courgette', emoji: '🌼', description: 'Les fleurs mâles, en pâte légère, deux minutes dans l\'huile.', minutes: 35, serves: 4),
+    Recipe(
+      name: 'Beignets de fleurs de courgette',
+      emoji: '🌼',
+      description:
+          'Les fleurs mâles, en pâte légère, deux minutes dans l\'huile.',
+      minutes: 35,
+      serves: 4,
+      ingredients: <String>[
+        '12 fleurs de courgette mâles',
+        '150 g de farine',
+        '20 cl d\'eau glacée ou de bière',
+        '1 pincée de sel',
+        'huile de friture',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌼',
+            'Cueille les fleurs mâles le matin, celles au bout d\'une tige '
+            'fine — les femelles portent la courgette.'),
+        RecipeStep('💧',
+            'Ouvre-les, retire le pistil, secoue-les sans les laver si elles '
+            'sont propres.'),
+        RecipeStep('🥣',
+            'Mélange farine, eau glacée et sel. La pâte doit napper, pas '
+            'coller.'),
+        RecipeStep('🔥', 'Chauffe l\'huile à 180 °C.'),
+        RecipeStep('🍤',
+            'Trempe chaque fleur, plonge-la 2 minutes, retourne à mi-cuisson.',
+            minutes: 2),
+        RecipeStep('🧂',
+            'Égoutte sur du papier, sale tout de suite, mange tout de suite.'),
+      ],
+    ),
     Recipe(
       name: 'Courgettes farcies',
       emoji: '🥘',
       description:
           'Tes courgettes garnies de riz et de viande hachée, gratinées au four.',
+      minutes: 70,
+      serves: 4,
+      ingredients: <String>[
+        '4 courgettes rondes ou moyennes',
+        '300 g de viande hachée',
+        '100 g de riz',
+        '1 oignon, 1 gousse d\'ail',
+        '1 oeuf, 50 g de parmesan',
+        'sel, poivre, herbes',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔥', 'Préchauffe le four à 190 °C.'),
+        RecipeStep('🥒',
+            'Coupe les courgettes en deux, évide-les à la cuillère. Garde la '
+            'chair.'),
+        RecipeStep('🍚', 'Cuis le riz 10 minutes, il finira au four.',
+            minutes: 10),
+        RecipeStep('🧅',
+            'Fais revenir oignon, ail et la chair hachée, puis la viande.'),
+        RecipeStep('🥣',
+            'Hors du feu, mélange avec le riz, l\'oeuf, le parmesan, sel et '
+            'poivre.'),
+        RecipeStep('🥘', 'Garnis les demi-courgettes, tasse bien.'),
+        RecipeStep('⏱', 'Au four 40 minutes, à couvert les 20 premières.',
+            minutes: 40),
+      ],
     ),
     Recipe(
       name: 'Gratin de courgettes',
       emoji: '🧀',
       description:
           'Des tranches fondantes sous une croûte dorée, le plat familial par excellence.',
+      minutes: 60,
+      serves: 4,
+      ingredients: <String>[
+        '1 kg de courgettes',
+        '20 cl de crème',
+        '2 oeufs',
+        '100 g de gruyère râpé',
+        '1 gousse d\'ail, sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥒',
+            'Coupe les courgettes en rondelles de 5 mm, sans les peler.'),
+        RecipeStep('🧂',
+            'Sale-les et laisse-les dégorger 20 minutes : c\'est ce qui évite '
+            'le gratin à l\'eau.',
+            minutes: 20),
+        RecipeStep('🔥',
+            'Presse-les dans un torchon, puis fais-les suer 10 minutes à la '
+            'poêle.',
+            minutes: 10),
+        RecipeStep('🥣',
+            'Bats crème, oeufs, muscade, l\'ail écrasé, sel et poivre.'),
+        RecipeStep('🧀',
+            'Dans le plat : courgettes, appareil, fromage par-dessus.'),
+        RecipeStep('⏱', 'Four à 180 °C, 30 minutes jusqu\'à la croûte dorée.',
+            minutes: 30),
+      ],
     ),
   ],
   'pasteque': <Recipe>[
@@ -536,53 +1126,398 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     ),
   ],
   'persil': <Recipe>[
-    Recipe(name: 'Persillade', emoji: '🌿', description: 'Persil et ail hachés, jetés en fin de cuisson.', minutes: 10, serves: 4),
-    Recipe(name: 'Salsa verde', emoji: '🥣', description: 'Persil, câpres, anchois, huile — sur une viande ou un poisson.', minutes: 15, serves: 4),
+    Recipe(
+      name: 'Persillade',
+      emoji: '🌿',
+      description:
+          'Ail et persil hachés ensemble, jetés à la fin sur tout et n\'importe quoi.',
+      minutes: 5,
+      serves: 4,
+      ingredients: <String>[
+        '1 bouquet de persil plat',
+        '2 gousses d\'ail',
+        'sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌿', 'Effeuille le persil, garde-le bien sec.'),
+        RecipeStep('🔪',
+            'Hache l\'ail et le persil **ensemble** : les deux parfums se '
+            'mêlent au couteau.'),
+        RecipeStep('🔥',
+            'Jette-la dans la poêle **hors du feu** ou juste avant de servir. '
+            'Cuite, elle brunit et amère.'),
+      ],
+    ),
+    Recipe(
+      name: 'Salsa verde',
+      emoji: '🥣',
+      description:
+          'Persil, câpres, anchois, citron : la sauce qui réveille un poisson.',
+      minutes: 15,
+      serves: 4,
+      ingredients: <String>[
+        '1 gros bouquet de persil plat',
+        '2 cuillères à soupe de câpres',
+        '4 filets d\'anchois',
+        '1 citron',
+        '10 cl d\'huile d\'olive, 1 gousse d\'ail',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Hache persil, câpres, anchois et ail au couteau, assez gros.'),
+        RecipeStep('🍋', 'Ajoute le zeste et le jus du citron.'),
+        RecipeStep('🫒',
+            'Détends à l\'huile : elle doit napper, pas couler.'),
+        RecipeStep('🧂',
+            'Goûte avant de saler — anchois et câpres salent beaucoup.'),
+      ],
+    ),
     Recipe(
       name: 'Poisson braisé au persil',
       emoji: '🐟',
       description:
-          'Un poisson mariné au persil et à l\'ail, braisé comme sur les grills de Dakar.',
+          'Un poisson entier farci d\'herbes, braisé avec des tomates.',
+      minutes: 45,
+      serves: 4,
+      ingredients: <String>[
+        '1 poisson entier de 1 kg',
+        '1 bouquet de persil',
+        '3 tomates, 1 oignon',
+        '2 gousses d\'ail, 1 citron',
+        'huile, sel, poivre, piment',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌿',
+            'Hache persil, ail, sel, piment. Entaille le poisson et farcis '
+            'les entailles.'),
+        RecipeStep('❄️',
+            'Laisse-le prendre le goût 20 minutes au frais.', minutes: 20),
+        RecipeStep('🔥', 'Saisis-le 3 minutes de chaque côté dans l\'huile.'),
+        RecipeStep('🍅',
+            'Ajoute oignon et tomates en morceaux, un verre d\'eau, couvre.'),
+        RecipeStep('⏱', 'Braise 15 minutes à feu moyen.', minutes: 15),
+        RecipeStep('🍋', 'Citron pressé dessus au moment de servir.'),
+      ],
     ),
   ],
   'basilic': <Recipe>[
-    Recipe(name: 'Pistou', emoji: '🌿', description: 'Basilic, ail, huile d\'olive. Sans pignons, c\'est le pistou.', minutes: 15, serves: 4),
-    Recipe(name: 'Soupe au pistou', emoji: '🍲', description: 'Les légumes d\'été, les haricots, et la cuillère de pistou à la fin.', minutes: 90, serves: 6),
     Recipe(
-      name: 'Pesto maison',
+      name: 'Pistou',
       emoji: '🌿',
       description:
-          'Ton basilic pilé avec ail et huile d\'olive, pour des pâtes qui sentent l\'été.',
+          'Basilic, ail et huile, sans pignons : la version provençale.',
+      minutes: 10,
+      serves: 6,
+      ingredients: <String>[
+        '2 gros bouquets de basilic',
+        '4 gousses d\'ail',
+        '15 cl d\'huile d\'olive',
+        '60 g de parmesan (facultatif)',
+        'gros sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌿',
+            'Effeuille le basilic. Les tiges amères ne vont pas au mortier.'),
+        RecipeStep('🧄', 'Pile l\'ail au gros sel, puis ajoute les feuilles.'),
+        RecipeStep('💪',
+            'Écrase en tournant, par petites poignées : au mortier le basilic '
+            'rend son parfum, au mixeur il chauffe et noircit.'),
+        RecipeStep('🫒', 'Monte à l\'huile en filet jusqu\'à une pommade.'),
+      ],
+    ),
+    Recipe(
+      name: 'Soupe au pistou',
+      emoji: '🍲',
+      description:
+          'Tous les légumes d\'été, et une cuillère de pistou au dernier moment.',
+      minutes: 60,
+      serves: 6,
+      ingredients: <String>[
+        '300 g de haricots blancs frais',
+        '2 courgettes, 2 carottes, 2 pommes de terre',
+        '200 g de haricots verts',
+        '3 tomates',
+        '100 g de pâtes courtes, pistou, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🫘',
+            'Fais cuire les haricots blancs 30 minutes dans de l\'eau non '
+            'salée.',
+            minutes: 30),
+        RecipeStep('🥕',
+            'Ajoute les légumes en dés, du plus dur au plus tendre, et sale.'),
+        RecipeStep('⏱', 'Cuis 20 minutes.', minutes: 20),
+        RecipeStep('🍝', 'Ajoute les pâtes les 10 dernières minutes.',
+            minutes: 10),
+        RecipeStep('🌿',
+            'Le pistou se met **hors du feu**, dans la soupière ou dans '
+            'l\'assiette. Cuit, il perd tout.'),
+      ],
+    ),
+    Recipe(
+      name: 'Pesto maison',
+      emoji: '🥣',
+      description:
+          'Avec pignons et parmesan, la version génoise, pour les pâtes.',
+      minutes: 15,
+      serves: 4,
+      ingredients: <String>[
+        '80 g de feuilles de basilic',
+        '40 g de pignons',
+        '60 g de parmesan',
+        '1 gousse d\'ail',
+        '12 cl d\'huile d\'olive, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔥', 'Torréfie les pignons 2 minutes à sec.', minutes: 2),
+        RecipeStep('🌿',
+            'Mixe basilic, ail, pignons par à-coups pour ne pas chauffer.'),
+        RecipeStep('🧀', 'Ajoute le parmesan, puis l\'huile en filet.'),
+        RecipeStep('🍝',
+            'Pour les pâtes : détends-le avec une cuillère d\'eau de cuisson, '
+            'jamais sur le feu.'),
+      ],
     ),
   ],
   'haricot': <Recipe>[
-    Recipe(name: 'Haricots verts à la tomate', emoji: '🍅', description: 'Mijotés une heure, à la grecque : ils fondent.', minutes: 70, serves: 4),
-    Recipe(name: 'Salade de haricots verts aux amandes', emoji: '🥗', description: 'Croquants, amandes torréfiées, vinaigrette au citron.', minutes: 25, serves: 4),
+    Recipe(
+      name: 'Haricots verts à la tomate',
+      emoji: '🍅',
+      description:
+          'Mijotés dans une sauce tomate à l\'ail, à l\'huile d\'olive.',
+      minutes: 45,
+      serves: 4,
+      ingredients: <String>[
+        '800 g de haricots verts',
+        '4 tomates',
+        '1 oignon, 2 gousses d\'ail',
+        '3 cuillères à soupe d\'huile d\'olive',
+        'sel, poivre, thym',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🫛', 'Équeute les haricots, garde-les entiers.'),
+        RecipeStep('🧅',
+            'Fais fondre oignon et ail à l\'huile, ajoute les tomates '
+            'concassées.'),
+        RecipeStep('⏱', 'Laisse réduire 10 minutes.', minutes: 10),
+        RecipeStep('🫛',
+            'Ajoute les haricots, sale, couvre, et laisse 25 minutes à feu '
+            'doux.',
+            minutes: 25),
+        RecipeStep('🌿',
+            'Encore meilleurs tièdes, ou le lendemain.'),
+      ],
+    ),
+    Recipe(
+      name: 'Salade de haricots verts aux amandes',
+      emoji: '🥗',
+      description:
+          'Cuits croquants, refroidis net, avec des amandes grillées.',
+      minutes: 25,
+      serves: 4,
+      ingredients: <String>[
+        '600 g de haricots verts',
+        '60 g d\'amandes effilées',
+        '1 échalote',
+        'moutarde, vinaigre, huile',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Plonge les haricots dans une grande eau bouillante très salée.'),
+        RecipeStep('⏱',
+            '8 minutes : ils doivent plier sans casser.', minutes: 8),
+        RecipeStep('❄️',
+            'Égoutte et plonge-les aussitôt dans l\'eau glacée. C\'est ce qui '
+            'fixe le vert.'),
+        RecipeStep('🔥', 'Fais dorer les amandes à sec, 2 minutes.', minutes: 2),
+        RecipeStep('🥗',
+            'Vinaigrette à l\'échalote, amandes par-dessus au dernier moment.'),
+      ],
+    ),
     Recipe(
       name: 'Haricots verts sautés',
-      emoji: '🫘',
+      emoji: '🧄',
       description:
-          'Des haricots croquants sautés à l\'ail, l\'accompagnement qui va avec tout.',
+          'Blanchis puis jetés à la poêle avec de l\'ail et du beurre.',
+      minutes: 20,
+      serves: 4,
+      ingredients: <String>[
+        '600 g de haricots verts',
+        '2 gousses d\'ail',
+        '30 g de beurre',
+        'sel, poivre, persil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧', 'Blanchis les haricots 7 minutes à l\'eau salée.',
+            minutes: 7),
+        RecipeStep('🫗', 'Égoutte-les et sèche-les bien.'),
+        RecipeStep('🧄',
+            'Beurre dans la poêle, l\'ail émincé, puis les haricots.'),
+        RecipeStep('🔥',
+            '5 minutes à feu vif en remuant : quelques marques dorées, c\'est '
+            'parfait.',
+            minutes: 5),
+        RecipeStep('🌿', 'Persil, poivre.'),
+      ],
     ),
   ],
   'betterave': <Recipe>[
-    Recipe(name: 'Betteraves rôties au balsamique', emoji: '🔥', description: 'En papillote, puis pelées chaudes — la peau glisse.', minutes: 70, serves: 4),
-    Recipe(name: 'Houmous de betterave', emoji: '🥣', description: 'Rose vif, avec des pois chiches et du tahini.', minutes: 25, serves: 4),
     Recipe(
-      name: 'Salade de betterave',
-      emoji: '🥗',
+      name: 'Betteraves rôties au four',
+      emoji: '🔥',
       description:
-          'Des dés de betterave bien rouges en vinaigrette, un classique des salades de Dakar.',
+          'Cuites en robe, elles concentrent leur sucre au lieu de le perdre dans l\'eau.',
+      minutes: 75,
+      serves: 4,
+      ingredients: <String>[
+        '6 betteraves moyennes',
+        '2 cuillères à soupe d\'huile d\'olive',
+        'gros sel, thym',
+        '1 cuillère à soupe de vinaigre balsamique',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧼',
+            'Brosse les betteraves sans les peler, coupe les fanes à 2 cm.'),
+        RecipeStep('🫒',
+            'Enrobe d\'huile, roule dans le gros sel, pose sur une plaque.'),
+        RecipeStep('⏱',
+            'Four à 200 °C, 60 minutes. Un couteau doit entrer sans '
+            'résistance.',
+            minutes: 60),
+        RecipeStep('🧤',
+            'Tiédies, la peau se retire au doigt — et ne tache pas les mains '
+            'comme à cru.'),
+        RecipeStep('🍯', 'Coupe en quartiers, un trait de balsamique.'),
+      ],
+    ),
+    Recipe(
+      name: 'Betterave chèvre et noix',
+      emoji: '🧀',
+      description:
+          'Le trio qui ne rate jamais : le sucré, l\'acide et le croquant.',
+      minutes: 15,
+      serves: 4,
+      ingredients: <String>[
+        '4 betteraves cuites',
+        '150 g de fromage de chèvre frais',
+        '60 g de cerneaux de noix',
+        '1 cuillère à soupe de miel',
+        'huile, vinaigre, sel, poivre, ciboulette',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔴', 'Coupe les betteraves en dés réguliers.'),
+        RecipeStep('🥄', 'Mélange huile, vinaigre, miel, sel, poivre.'),
+        RecipeStep('🧀',
+            'Dresse les dés, émiette le chèvre dessus, parsème les noix.'),
+        RecipeStep('🌿',
+            'Verse la sauce au dernier moment, ciboulette, et sers frais.'),
+      ],
+    ),
+    Recipe(
+      name: 'Soupe de betterave à l\'aneth',
+      emoji: '🍲',
+      description:
+          'Une couleur impossible, et un goût de terre douce que l\'aneth éclaire.',
+      minutes: 45,
+      serves: 4,
+      ingredients: <String>[
+        '600 g de betteraves',
+        '1 pomme de terre',
+        '1 oignon',
+        '80 cl de bouillon',
+        '10 cl de crème, aneth, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Fais fondre l\'oignon émincé.'),
+        RecipeStep('🔴',
+            'Ajoute betteraves et pomme de terre en dés, puis le bouillon.'),
+        RecipeStep('⏱', 'Cuis 30 minutes à couvert.', minutes: 30),
+        RecipeStep('🥣', 'Mixe longuement : la betterave demande à être lisse.'),
+        RecipeStep('🌿',
+            'Crème hors du feu, beaucoup d\'aneth ciselé. Bon chaud comme '
+            'glacé.'),
+      ],
     ),
   ],
   'potiron': <Recipe>[
-    Recipe(name: 'Soupe de potiron au lait de coco', emoji: '🍲', description: 'Gingembre et coriandre, un plat complet.', minutes: 40, serves: 4),
-    Recipe(name: 'Gratin de potiron', emoji: '🧀', description: 'Égoutté avant de gratiner, sinon il rend trop d\'eau.', minutes: 60, serves: 4),
+    Recipe(
+      name: 'Soupe de potiron au lait de coco',
+      emoji: '🥥',
+      description:
+          'Le lait de coco adoucit le potiron et lui donne du corps.',
+      minutes: 40,
+      serves: 4,
+      ingredients: <String>[
+        '1 kg de potiron',
+        '40 cl de lait de coco',
+        '1 oignon, 1 gousse d\'ail',
+        '1 cuillère à café de gingembre râpé',
+        '50 cl de bouillon, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🎃',
+            'Épluche le potiron et coupe-le en gros cubes. Garde les graines : '
+            'grillées au four, elles font un en-cas.'),
+        RecipeStep('🧅',
+            'Fais fondre oignon, ail et gingembre dans un peu d\'huile.'),
+        RecipeStep('🍲', 'Ajoute le potiron et le bouillon, à hauteur.'),
+        RecipeStep('⏱', 'Cuis 25 minutes à couvert.', minutes: 25),
+        RecipeStep('🥥',
+            'Verse le lait de coco, mixe, rectifie. Ne fais plus bouillir '
+            'après : le coco se sépare.'),
+      ],
+    ),
+    Recipe(
+      name: 'Gratin de potiron',
+      emoji: '🧀',
+      description:
+          'Fondant dessous, gratiné dessus, avec une pointe de muscade.',
+      minutes: 70,
+      serves: 6,
+      ingredients: <String>[
+        '1,2 kg de potiron',
+        '20 cl de crème',
+        '2 oeufs',
+        '120 g de comté râpé',
+        '2 cuillères à soupe de chapelure, sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🎃', 'Coupe le potiron en cubes et cuis-le 15 minutes.',
+            minutes: 15),
+        RecipeStep('🫗',
+            'Égoutte-le très soigneusement et écrase-le à la fourchette : le '
+            'potiron est gorgé d\'eau.'),
+        RecipeStep('🥣',
+            'Mélange avec crème, oeufs, la moitié du fromage, muscade, sel, '
+            'poivre.'),
+        RecipeStep('🧀',
+            'Verse dans le plat, reste de fromage et chapelure par-dessus.'),
+        RecipeStep('⏱', 'Four à 180 °C, 40 minutes.', minutes: 40),
+      ],
+    ),
     Recipe(
       name: 'Soupe au potiron',
-      emoji: '🎃',
+      emoji: '🍲',
       description:
-          'Le velouté orange et réconfortant, avec une pointe de crème si tu veux.',
+          'La version sans détour : potiron, pomme de terre, un peu de beurre.',
+      minutes: 35,
+      serves: 4,
+      ingredients: <String>[
+        '800 g de potiron',
+        '2 pommes de terre',
+        '1 oignon',
+        '80 cl d\'eau ou de bouillon',
+        '30 g de beurre, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🎃', 'Coupe potiron, pommes de terre et oignon en cubes.'),
+        RecipeStep('🍲',
+            'Mets tout dans la casserole, mouille à hauteur, sale.'),
+        RecipeStep('⏱', 'Cuis 25 minutes, jusqu\'à ce que tout s\'écrase.',
+            minutes: 25),
+        RecipeStep('🧈', 'Mixe avec le beurre : c\'est lui qui fait le velouté.'),
+      ],
     ),
   ],
   'courge_butternut': <Recipe>[
@@ -684,27 +1619,87 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   'poireau': <Recipe>[
     Recipe(
       name: 'Poireaux vinaigrette',
-      emoji: '🥬',
+      emoji: '🥗',
       description:
-          'Tièdes, bien égouttés, avec une vinaigrette moutardée et un œuf dur.',
+          'Tièdes, bien égouttés, avec une vinaigrette à l\'échalote.',
       minutes: 30,
       serves: 4,
+      ingredients: <String>[
+        '8 poireaux moyens',
+        '1 échalote',
+        '1 cuillère à café de moutarde',
+        '1 cuillère à soupe de vinaigre',
+        '3 cuillères à soupe d\'huile, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧼',
+            'Fends le blanc en deux dans la longueur et rince : la terre se '
+            'cache entre les feuilles.'),
+        RecipeStep('💧',
+            'Cuis 15 minutes à l\'eau bouillante salée, jusqu\'à ce qu\'un '
+            'couteau traverse sans effort.',
+            minutes: 15),
+        RecipeStep('🫗',
+            'Égoutte-les **debout** dans une passoire, 10 minutes : c\'est ce '
+            'qui évite l\'assiette noyée.',
+            minutes: 10),
+        RecipeStep('🥄',
+            'Vinaigrette : échalote hachée, moutarde, vinaigre, puis l\'huile '
+            'en filet.'),
+        RecipeStep('🍽', 'Nappe les poireaux encore tièdes.'),
+      ],
     ),
     Recipe(
-      name: 'Tarte aux poireaux',
+      name: 'Flamiche aux poireaux',
       emoji: '🥧',
       description:
-          'Une fondue de poireaux au beurre sur une pâte brisée, crème et muscade.',
+          'La tarte du Nord : des poireaux fondus à la crème, sous une pâte.',
       minutes: 70,
       serves: 6,
+      ingredients: <String>[
+        '1 pâte brisée',
+        '1 kg de poireaux',
+        '20 cl de crème',
+        '2 oeufs',
+        '40 g de beurre, sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬', 'Émince les blancs de poireaux en fines rondelles.'),
+        RecipeStep('🧈',
+            'Fais-les fondre au beurre à couvert, 25 minutes, sans les '
+            'colorer.',
+            minutes: 25),
+        RecipeStep('🫗',
+            'Laisse-les tiédir et égoutte l\'eau rendue, sinon la tarte sera '
+            'molle.'),
+        RecipeStep('🥣', 'Mélange crème, oeufs, sel, poivre, muscade.'),
+        RecipeStep('🥧', 'Garnis la pâte des poireaux, verse l\'appareil.'),
+        RecipeStep('⏱', 'Four à 190 °C, 35 minutes.', minutes: 35),
+      ],
     ),
     Recipe(
-      name: 'Flamiche',
-      emoji: '🧀',
+      name: 'Fondue de poireaux',
+      emoji: '🧈',
       description:
-          'La tourte du Nord : poireaux fondus, crème épaisse, deux pâtes.',
-      minutes: 80,
-      serves: 6,
+          'La base qui accompagne un poisson, garnit une quiche ou se mange seule.',
+      minutes: 35,
+      serves: 4,
+      ingredients: <String>[
+        '6 poireaux',
+        '30 g de beurre',
+        '10 cl de crème',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬', 'Émince les blancs finement, rince, égoutte.'),
+        RecipeStep('🧈',
+            'Beurre dans la sauteuse, les poireaux, une pincée de sel, '
+            'couvercle.'),
+        RecipeStep('⏱',
+            'Feu très doux 25 minutes. Ils doivent fondre, jamais roussir.',
+            minutes: 25),
+        RecipeStep('🥛', 'Crème hors du feu, poivre, et c\'est prêt.'),
+      ],
     ),
   ],
   'radis': <Recipe>[
@@ -755,24 +1750,78 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   'navet': <Recipe>[
     Recipe(
       name: 'Navets glacés',
-      emoji: '✨',
-      description: 'Beurre, sucre, un fond d\'eau : ils brillent et caramélisent.',
-      minutes: 25,
+      emoji: '🧈',
+      description:
+          'Beurre, sucre, un fond d\'eau : ils sortent brillants.',
+      minutes: 30,
       serves: 4,
+      ingredients: <String>[
+        '800 g de navets',
+        '30 g de beurre',
+        '1 cuillère à café de sucre',
+        'sel, persil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Pèle les navets et coupe-les en quartiers réguliers.'),
+        RecipeStep('🍲',
+            'Casserole large : beurre, sucre, sel, eau à mi-hauteur.'),
+        RecipeStep('⏱',
+            'Cuis à découvert 20 minutes, l\'eau doit s\'évaporer en sirop.',
+            minutes: 20),
+        RecipeStep('🥄', 'Remue pour les enrober, persil, et sers chaud.'),
+      ],
     ),
     Recipe(
       name: 'Purée de navets',
       emoji: '🥣',
-      description: 'Moitié navets moitié pommes de terre, pour la douceur.',
+      description:
+          'Moitié navet, moitié pomme de terre : plus légère qu\'une purée classique.',
       minutes: 35,
       serves: 4,
+      ingredients: <String>[
+        '500 g de navets',
+        '500 g de pommes de terre',
+        '20 cl de lait',
+        '40 g de beurre',
+        'sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Pèle et coupe navets et pommes de terre en morceaux égaux.'),
+        RecipeStep('💧', 'Cuis-les à l\'eau salée 20 minutes.', minutes: 20),
+        RecipeStep('🫗',
+            'Égoutte et laisse-les sécher 2 minutes sur le feu éteint : une '
+            'purée de navets tourne vite à la soupe.'),
+        RecipeStep('🥣',
+            'Écrase au presse-purée, pas au mixeur, avec le lait chaud et le '
+            'beurre.'),
+        RecipeStep('🧂', 'Sel, poivre, muscade.'),
+      ],
     ),
     Recipe(
       name: 'Navets au miel et thym',
       emoji: '🍯',
-      description: 'Rôtis en quartiers, avec le thym du jardin.',
-      minutes: 40,
+      description:
+          'Le miel prend le dessus sur l\'amertume des gros navets d\'hiver.',
+      minutes: 35,
       serves: 4,
+      ingredients: <String>[
+        '800 g de navets',
+        '2 cuillères à soupe de miel',
+        '20 g de beurre',
+        'thym, sel, poivre, 1 trait de vinaigre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪', 'Coupe les navets en gros dés.'),
+        RecipeStep('🔥', 'Fais-les colorer au beurre à feu vif, 5 minutes.',
+            minutes: 5),
+        RecipeStep('🍯',
+            'Ajoute miel, thym, sel, un trait de vinaigre, un fond d\'eau.'),
+        RecipeStep('⏱', 'Couvre et laisse 20 minutes à feu doux.', minutes: 20),
+        RecipeStep('🔥',
+            'Découvre à la fin pour faire réduire et caraméliser.'),
+      ],
     ),
   ],
   'poivron': <Recipe>[
@@ -866,6 +1915,27 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       description: 'Douce et réconfortante — l\'ail cuit perd toute sa morsure.',
       minutes: 35,
       serves: 4,
+      ingredients: <String>[
+        '2 têtes d\'ail',
+        '1 litre de bouillon',
+        '2 jaunes d\'oeufs',
+        '4 tranches de pain',
+        'huile d\'olive, thym, laurier, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧄',
+            'Pèle les gousses et écrase-les à peine sous la lame.'),
+        RecipeStep('🍲',
+            'Fais-les blondir doucement à l\'huile, sans les brunir : brûlé, '
+            'l\'ail devient amer.'),
+        RecipeStep('💧',
+            'Ajoute le bouillon, thym, laurier, et laisse frémir 20 minutes.',
+            minutes: 20),
+        RecipeStep('🥚',
+            'Hors du feu, délaye les jaunes avec une louche de bouillon, puis '
+            'reverse en fouettant.'),
+        RecipeStep('🍞', 'Sers sur du pain grillé frotté d\'ail.'),
+      ],
     ),
     Recipe(
       name: 'Aïoli',
@@ -873,6 +1943,26 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       description: 'Ail pilé, jaune d\'œuf, huile d\'olive en filet. Du muscle.',
       minutes: 15,
       serves: 4,
+      ingredients: <String>[
+        '4 gousses d\'ail',
+        '1 jaune d\'oeuf',
+        '20 cl d\'huile d\'olive',
+        '1/2 citron, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧄',
+            'Pile l\'ail avec du gros sel au mortier, jusqu\'à une crème.'),
+        RecipeStep('🥚',
+            'Ajoute le jaune, à température ambiante — froid, l\'émulsion '
+            'rate.'),
+        RecipeStep('🫒',
+            'Verse l\'huile **goutte à goutte** en tournant toujours dans le '
+            'même sens.'),
+        RecipeStep('💪',
+            'Quand ça monte, tu peux accélérer. Si ça tranche : repars d\'un '
+            'jaune neuf et reverse l\'aïoli raté dessus.'),
+        RecipeStep('🍋', 'Citron et sel pour finir.'),
+      ],
     ),
     Recipe(
       name: 'Ail confit à l\'huile',
@@ -881,144 +1971,506 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
           'Des gousses entières fondues à feu très doux, à tartiner.',
       minutes: 50,
       serves: 8,
+      ingredients: <String>[
+        '4 têtes d\'ail',
+        '25 cl d\'huile d\'olive',
+        'thym, laurier',
+        'sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧄', 'Sépare les gousses, pèle-les sans les abîmer.'),
+        RecipeStep('🫒',
+            'Couvre-les d\'huile dans une petite casserole, avec les herbes.'),
+        RecipeStep('⏱',
+            'Feu **très** doux 40 minutes : l\'huile doit à peine frémir. '
+            'Si elle bout, l\'ail frit au lieu de confire.',
+            minutes: 40),
+        RecipeStep('🫙',
+            'En bocal avec son huile, au frais, deux semaines. L\'huile '
+            'parfumée se garde pour les salades.'),
+      ],
     ),
   ],
   'echalote': <Recipe>[
     Recipe(
       name: 'Sauce échalote au vin rouge',
       emoji: '🍷',
-      description: 'Réduite au beurre, elle transforme une viande grillée.',
+      description:
+          'La sauce des steaks : des échalotes fondues dans le vin réduit.',
       minutes: 25,
       serves: 4,
+      ingredients: <String>[
+        '6 échalotes',
+        '25 cl de vin rouge',
+        '40 g de beurre froid',
+        '1 cuillère à café de sucre',
+        'thym, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Hache les échalotes très finement.'),
+        RecipeStep('🧈',
+            'Fais-les fondre dans un peu de beurre, 8 minutes, sans colorer.',
+            minutes: 8),
+        RecipeStep('🍷',
+            'Verse le vin, le sucre, le thym, et laisse réduire des deux '
+            'tiers.',
+            minutes: 12),
+        RecipeStep('🧈',
+            'Hors du feu, incorpore le beurre **froid** en morceaux, en '
+            'tournant : c\'est ce qui lie et fait briller.'),
+        RecipeStep('🧂', 'Sel, poivre, et sers aussitôt.'),
+      ],
     ),
     Recipe(
       name: 'Échalotes confites',
       emoji: '🍯',
-      description: 'Entières, au four, avec un filet de miel et de vinaigre.',
-      minutes: 50,
+      description:
+          'Entières, au four, avec du vinaigre balsamique et du thym.',
+      minutes: 55,
       serves: 4,
+      ingredients: <String>[
+        '500 g d\'échalotes',
+        '2 cuillères à soupe de miel',
+        '3 cuillères à soupe de vinaigre balsamique',
+        '2 cuillères à soupe d\'huile',
+        'thym, gros sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅',
+            'Pèle les échalotes en les gardant entières, racine coupée court.'),
+        RecipeStep('🥣', 'Mélange-les à l\'huile, au miel, au vinaigre.'),
+        RecipeStep('⏱',
+            'Four à 180 °C, 45 minutes, en remuant deux fois.', minutes: 45),
+        RecipeStep('🍯',
+            'Elles doivent être tendres au couteau et luisantes. Bon chaud ou '
+            'froid, avec une viande ou un fromage.'),
+      ],
     ),
     Recipe(
       name: 'Vinaigrette à l\'échalote',
       emoji: '🥗',
-      description: 'Ciselée fin et laissée dix minutes dans le vinaigre.',
+      description:
+          'L\'échalote hachée adoucie par le vinaigre : la base de tout.',
       minutes: 10,
-      serves: 4,
+      serves: 6,
+      ingredients: <String>[
+        '2 échalotes',
+        '3 cuillères à soupe de vinaigre de vin',
+        '1 cuillère à café de moutarde',
+        '8 cuillères à soupe d\'huile',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Hache les échalotes le plus fin possible.'),
+        RecipeStep('🍶',
+            'Laisse-les macérer 10 minutes dans le vinaigre salé : elles '
+            'perdent leur agressivité.',
+            minutes: 10),
+        RecipeStep('🥄', 'Ajoute la moutarde, mélange.'),
+        RecipeStep('🫒',
+            'Huile en filet en fouettant. Se garde une semaine au frais.'),
+      ],
     ),
   ],
   'celeri': <Recipe>[
     Recipe(
       name: 'Céleri rémoulade',
       emoji: '🥗',
-      description: 'Râpé cru, mayonnaise moutardée, un trait de citron.',
+      description:
+          'Râpé cru dans une mayonnaise moutardée — le classique des charcutiers.',
       minutes: 20,
       serves: 4,
+      ingredients: <String>[
+        '1 céleri-rave',
+        '1 jaune d\'oeuf',
+        '1 cuillère à soupe de moutarde',
+        '15 cl d\'huile',
+        '1 citron, sel, poivre, persil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬',
+            'Pèle le céleri et râpe-le en julienne, pas trop fin.'),
+        RecipeStep('🍋',
+            'Citronne-le aussitôt : il noircit en quelques minutes à l\'air.'),
+        RecipeStep('🥣',
+            'Monte une mayonnaise moutardée : jaune, moutarde, sel, puis '
+            'l\'huile en filet.'),
+        RecipeStep('🥗', 'Mélange, poivre, persil.'),
+        RecipeStep('❄️',
+            'Une heure au frais : le céleri s\'attendrit un peu.', minutes: 60),
+      ],
     ),
     Recipe(
       name: 'Purée de céleri-rave',
       emoji: '🥣',
-      description: 'Plus parfumée qu\'une purée de pommes de terre, et plus légère.',
+      description:
+          'Plus fine qu\'une purée de pommes de terre, et moins lourde.',
       minutes: 40,
       serves: 4,
+      ingredients: <String>[
+        '1 céleri-rave (800 g)',
+        '2 pommes de terre',
+        '20 cl de lait',
+        '40 g de beurre',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪', 'Coupe céleri et pommes de terre en cubes égaux.'),
+        RecipeStep('🥛',
+            'Cuis-les dans du lait coupé d\'eau, 25 minutes : le céleri y '
+            'perd son amertume.',
+            minutes: 25),
+        RecipeStep('🫗', 'Égoutte en gardant un peu du liquide.'),
+        RecipeStep('🥣',
+            'Écrase avec le beurre, détends au liquide réservé.'),
+        RecipeStep('🧂', 'Sel, poivre. Très bon avec du gibier.'),
+      ],
     ),
     Recipe(
       name: 'Velouté de céleri aux noisettes',
-      emoji: '🍲',
-      description: 'Les noisettes torréfiées par-dessus font tout le plat.',
-      minutes: 45,
+      emoji: '🌰',
+      description:
+          'La noisette torréfiée épouse le céleri comme personne.',
+      minutes: 40,
       serves: 4,
+      ingredients: <String>[
+        '1 céleri-rave',
+        '1 pomme de terre, 1 oignon',
+        '80 cl de bouillon',
+        '60 g de noisettes',
+        '10 cl de crème, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🌰',
+            'Torréfie les noisettes 8 minutes au four à 170 °C, puis frotte-les '
+            'pour ôter la peau.',
+            minutes: 8),
+        RecipeStep('🧅', 'Fais fondre l\'oignon, ajoute céleri et pomme de terre.'),
+        RecipeStep('🍲', 'Bouillon à hauteur, cuis 25 minutes.', minutes: 25),
+        RecipeStep('🥣', 'Mixe avec la moitié des noisettes et la crème.'),
+        RecipeStep('🌰',
+            'Reste de noisettes concassées sur le velouté, pour le croquant.'),
+      ],
     ),
   ],
   'fenouil': <Recipe>[
     Recipe(
       name: 'Fenouil braisé à l\'orange',
       emoji: '🍊',
-      description: 'L\'anis du fenouil et l\'acidité de l\'orange se répondent.',
-      minutes: 45,
+      description:
+          'L\'orange contre l\'anis du fenouil : un accord évident.',
+      minutes: 50,
       serves: 4,
+      ingredients: <String>[
+        '4 bulbes de fenouil',
+        '2 oranges',
+        '2 cuillères à soupe d\'huile d\'olive',
+        '1 cuillère à café de miel',
+        'sel, poivre, graines de fenouil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Coupe les bulbes en quartiers, garde un peu de coeur pour les '
+            'tenir.'),
+        RecipeStep('🔥', 'Fais-les colorer à l\'huile sur les deux faces.'),
+        RecipeStep('🍊',
+            'Verse le jus des oranges, le miel, les graines, sale.'),
+        RecipeStep('⏱',
+            'Couvre et braise 30 minutes à feu doux.', minutes: 30),
+        RecipeStep('🔥',
+            'Découvre 5 minutes pour faire réduire le jus en sirop.',
+            minutes: 5),
+      ],
     ),
     Recipe(
       name: 'Salade de fenouil cru',
       emoji: '🥗',
-      description: 'Tranché à la mandoline, citron, huile d\'olive, parmesan.',
-      minutes: 15,
+      description:
+          'Tranché à la mandoline, citron et huile : croquant et net.',
+      minutes: 10,
       serves: 4,
+      ingredients: <String>[
+        '2 bulbes de fenouil',
+        '1 citron',
+        '4 cuillères à soupe d\'huile d\'olive',
+        'parmesan en copeaux',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Tranche le fenouil le plus fin possible, en travers du bulbe.'),
+        RecipeStep('🍋',
+            'Arrose aussitôt de citron : il noircit sinon, comme une pomme.'),
+        RecipeStep('🫒', 'Huile, sel, poivre, mélange.'),
+        RecipeStep('🧀',
+            'Copeaux de parmesan dessus, et les petites plumes du fenouil.'),
+      ],
     ),
     Recipe(
       name: 'Fenouil gratiné',
       emoji: '🧀',
-      description: 'Blanchi puis passé au four avec de la crème et du comté.',
+      description:
+          'Précuit puis gratiné à la crème : il devient tout doux.',
       minutes: 55,
       serves: 4,
+      ingredients: <String>[
+        '4 bulbes de fenouil',
+        '20 cl de crème',
+        '80 g de parmesan',
+        '2 cuillères à soupe de chapelure',
+        'sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Cuis les bulbes coupés en deux 20 minutes à l\'eau salée.',
+            minutes: 20),
+        RecipeStep('🫗', 'Égoutte-les bien, pose-les dans le plat.'),
+        RecipeStep('🥛', 'Nappe de crème, sel, poivre.'),
+        RecipeStep('🧀', 'Parmesan et chapelure par-dessus.'),
+        RecipeStep('⏱', 'Four à 200 °C, 25 minutes.', minutes: 25),
+      ],
     ),
   ],
   'blette': <Recipe>[
     Recipe(
       name: 'Blettes à la crème',
-      emoji: '🥬',
-      description: 'Côtes et vert cuits séparément, réunis dans la crème.',
-      minutes: 35,
+      emoji: '🥛',
+      description:
+          'Vert et côtes cuits séparément, réunis dans une crème au citron.',
+      minutes: 40,
       serves: 4,
+      ingredients: <String>[
+        '1 botte de blettes',
+        '20 cl de crème',
+        '20 g de beurre',
+        '1/2 citron',
+        'sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Sépare le vert des côtes : ils ne cuisent pas en même temps.'),
+        RecipeStep('💧',
+            'Cuis les côtes 15 minutes à l\'eau citronnée — le citron les '
+            'empêche de noircir.',
+            minutes: 15),
+        RecipeStep('🥬', 'Fais tomber le vert 5 minutes à la poêle beurrée.',
+            minutes: 5),
+        RecipeStep('🫗', 'Égoutte tout soigneusement.'),
+        RecipeStep('🥛',
+            'Réunis avec la crème, laisse épaissir 5 minutes, muscade.',
+            minutes: 5),
+      ],
     ),
     Recipe(
       name: 'Tourte de blettes niçoise',
       emoji: '🥧',
-      description: 'Sucrée-salée, avec raisins secs et pignons. Déroutante et bonne.',
-      minutes: 90,
-      serves: 6,
+      description:
+          'La tourte sucrée du pays niçois : blettes, raisins secs, pignons.',
+      minutes: 80,
+      serves: 8,
+      ingredients: <String>[
+        '2 pâtes brisées',
+        'le vert d\'une botte de blettes',
+        '2 pommes',
+        '60 g de raisins secs, 40 g de pignons',
+        '80 g de sucre, 1 oeuf, 1 citron',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬',
+            'Hache finement le vert des blettes, cru — il ne se cuit pas '
+            'avant.'),
+        RecipeStep('🍎',
+            'Mélange-le aux pommes râpées, raisins, pignons, sucre, zeste de '
+            'citron.'),
+        RecipeStep('🥧', 'Garnis la première pâte, couvre de la seconde, '
+            'soude les bords.'),
+        RecipeStep('🥚', 'Dore à l\'oeuf battu et pique le dessus.'),
+        RecipeStep('⏱', 'Four à 180 °C, 45 minutes.', minutes: 45),
+        RecipeStep('🍬', 'Sucre glace à froid. Surprenant, et très bon.'),
+      ],
     ),
     Recipe(
       name: 'Gratin de côtes de blettes',
       emoji: '🧀',
-      description: 'Béchamel, gruyère, et les côtes qui gardent du croquant.',
+      description:
+          'Les côtes, qu\'on jette trop souvent, sous une béchamel légère.',
       minutes: 60,
       serves: 4,
+      ingredients: <String>[
+        'les côtes de 2 bottes de blettes',
+        '40 g de beurre, 40 g de farine',
+        '50 cl de lait',
+        '100 g de gruyère',
+        'sel, poivre, muscade, 1/2 citron',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔪',
+            'Pèle les fils des côtes à l\'économe et coupe-les en tronçons.'),
+        RecipeStep('💧', 'Cuis-les 20 minutes à l\'eau citronnée salée.',
+            minutes: 20),
+        RecipeStep('🥛',
+            'Béchamel : beurre fondu, farine 2 minutes, lait chaud en '
+            'fouettant.'),
+        RecipeStep('🧀',
+            'Mélange les côtes égouttées à la béchamel, verse dans le plat, '
+            'fromage dessus.'),
+        RecipeStep('⏱', 'Four à 190 °C, 25 minutes.', minutes: 25),
+      ],
     ),
   ],
   'mache': <Recipe>[
     Recipe(
       name: 'Mâche, betterave et noix',
       emoji: '🥗',
-      description: 'La salade d\'hiver par excellence, avec une vinaigrette à la noix.',
-      minutes: 15,
+      description:
+          'La salade d\'hiver par excellence, trois ingrédients et c\'est tout.',
+      minutes: 10,
       serves: 4,
+      ingredients: <String>[
+        '200 g de mâche',
+        '2 betteraves cuites',
+        '60 g de cerneaux de noix',
+        '1 cuillère à café de moutarde',
+        'vinaigre de cidre, huile de noix, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('💧',
+            'Lave la mâche dans plusieurs eaux : le sable reste au coeur des '
+            'bouquets.'),
+        RecipeStep('🫗',
+            'Sèche-la délicatement, elle s\'écrase vite.'),
+        RecipeStep('🥄',
+            'Vinaigrette à la moutarde et à l\'huile de noix.'),
+        RecipeStep('🥗',
+            'Dés de betterave, noix concassées, et mélange au dernier moment.'),
+      ],
     ),
     Recipe(
       name: 'Velouté de mâche',
       emoji: '🍲',
-      description: 'Mixée crue dans un bouillon chaud pour garder sa couleur.',
+      description:
+          'Inattendu : un velouté très vert, au goût de noisette.',
       minutes: 25,
       serves: 4,
+      ingredients: <String>[
+        '300 g de mâche',
+        '2 pommes de terre',
+        '1 échalote',
+        '70 cl de bouillon',
+        '10 cl de crème, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥔',
+            'Cuis les pommes de terre en dés avec l\'échalote dans le '
+            'bouillon, 15 minutes.',
+            minutes: 15),
+        RecipeStep('🥬',
+            'Jette la mâche et compte **2 minutes**, pas plus.', minutes: 2),
+        RecipeStep('🥣', 'Mixe aussitôt, hors du feu.'),
+        RecipeStep('🥛', 'Crème, sel, poivre. Sers vite, le vert passe.'),
+      ],
     ),
     Recipe(
       name: 'Mâche aux lardons et œuf poché',
       emoji: '🍳',
-      description: 'Tiède, le jaune qui coule fait la sauce.',
+      description:
+          'Tiède, avec un jaune coulant qui fait la sauce.',
       minutes: 20,
       serves: 2,
+      ingredients: <String>[
+        '150 g de mâche',
+        '100 g de lardons',
+        '2 oeufs très frais',
+        '1 cuillère à soupe de vinaigre',
+        'pain, huile, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥓', 'Fais dorer les lardons, réserve-les dans leur gras.'),
+        RecipeStep('🍞', 'Fais griller des dés de pain dans la même poêle.'),
+        RecipeStep('💧',
+            'Casse les oeufs dans une eau frémissante vinaigrée, 3 minutes.',
+            minutes: 3),
+        RecipeStep('🥗',
+            'Mâche dans l\'assiette, lardons et croûtons tièdes dessus.'),
+        RecipeStep('🍳',
+            'Pose l\'oeuf, poivre, et perce-le à table.'),
+      ],
     ),
   ],
   'roquette': <Recipe>[
     Recipe(
       name: 'Pesto de roquette',
       emoji: '🌿',
-      description: 'Plus poivré qu\'au basilic, parfait sur des pâtes chaudes.',
-      minutes: 15,
+      description:
+          'Plus poivré que le basilic, parfait quand la roquette monte.',
+      minutes: 10,
       serves: 4,
+      ingredients: <String>[
+        '100 g de roquette',
+        '50 g de parmesan',
+        '40 g de pignons ou d\'amandes',
+        '10 cl d\'huile d\'olive',
+        '1 gousse d\'ail, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🔥',
+            'Fais torréfier les pignons à sec 2 minutes : ça change tout.',
+            minutes: 2),
+        RecipeStep('🌿',
+            'Mixe roquette, ail, pignons et parmesan par à-coups.'),
+        RecipeStep('🫒',
+            'Verse l\'huile en filet, mixeur en marche, jusqu\'à une pâte '
+            'souple.'),
+        RecipeStep('🧂',
+            'Sale peu — le parmesan sale déjà. Un trait de citron si c\'est '
+            'trop amer.'),
+      ],
     ),
     Recipe(
       name: 'Roquette, parmesan, citron',
-      emoji: '🥗',
-      description: 'Trois ingrédients, rien de plus. Posée sur une pizza, c\'est mieux encore.',
+      emoji: '🧀',
+      description:
+          'Trois ingrédients, dix secondes : la salade des restaurants italiens.',
       minutes: 5,
-      serves: 2,
+      serves: 4,
+      ingredients: <String>[
+        '150 g de roquette',
+        '80 g de parmesan',
+        '1 citron',
+        '3 cuillères à soupe d\'huile d\'olive',
+        'poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥬', 'Dispose la roquette, à peine lavée et bien séchée.'),
+        RecipeStep('🍋',
+            'Jus de citron, huile, poivre — pas de sel, le parmesan y pourvoit.'),
+        RecipeStep('🧀',
+            'Copeaux de parmesan à l\'économe, généreusement.'),
+        RecipeStep('🍽', 'Mélange dans l\'assiette, sers tout de suite.'),
+      ],
     ),
     Recipe(
       name: 'Velouté de roquette et pomme de terre',
       emoji: '🍲',
-      description: 'La pomme de terre adoucit l\'amertume.',
-      minutes: 35,
+      description:
+          'La pomme de terre arrondit le poivré de la roquette.',
+      minutes: 30,
       serves: 4,
+      ingredients: <String>[
+        '200 g de roquette',
+        '3 pommes de terre',
+        '1 oignon',
+        '80 cl de bouillon',
+        'crème, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Fais fondre l\'oignon, ajoute les pommes de terre.'),
+        RecipeStep('🍲', 'Bouillon, et cuis 20 minutes.', minutes: 20),
+        RecipeStep('🥬',
+            'Ajoute la roquette 2 minutes avant la fin.', minutes: 2),
+        RecipeStep('🥣',
+            'Mixe. Goûte avant de saler : la roquette est déjà forte.'),
+      ],
     ),
   ],
   'endive': <Recipe>[
@@ -1093,24 +2545,78 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
   'petit_pois': <Recipe>[
     Recipe(
       name: 'Petits pois à la française',
-      emoji: '🥬',
-      description: 'Avec laitue, oignons nouveaux et un peu de beurre. Rien d\'autre.',
-      minutes: 30,
+      emoji: '🫛',
+      description:
+          'Avec laitue, oignons nouveaux et beurre — la recette qui ne change pas.',
+      minutes: 35,
       serves: 4,
+      ingredients: <String>[
+        '1 kg de petits pois écossés',
+        '1 coeur de laitue',
+        '8 oignons nouveaux',
+        '40 g de beurre',
+        '1 cuillère à café de sucre, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🫛', 'Écosse les pois : compte 1 kg en gousses pour 400 g.'),
+        RecipeStep('🥬',
+            'Coupe la laitue en lanières, les oignons en deux.'),
+        RecipeStep('🍲',
+            'Dans la cocotte : pois, laitue, oignons, beurre, sucre, sel et '
+            '10 cl d\'eau.'),
+        RecipeStep('⏱',
+            'Couvre et laisse 20 minutes à feu doux, sans remuer.', minutes: 20),
+        RecipeStep('🧈',
+            'Il ne doit presque plus rester d\'eau : juste un jus beurré.'),
+      ],
     ),
     Recipe(
       name: 'Velouté de petits pois à la menthe',
-      emoji: '🍲',
-      description: 'Vert vif si tu le mixes vite et le refroidis aussitôt.',
+      emoji: '🌿',
+      description:
+          'Un vert éclatant, à condition de ne pas trop cuire.',
       minutes: 25,
       serves: 4,
+      ingredients: <String>[
+        '800 g de petits pois',
+        '1 oignon',
+        '70 cl de bouillon',
+        'une dizaine de feuilles de menthe',
+        '10 cl de crème, sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🧅', 'Fais fondre l\'oignon émincé sans le colorer.'),
+        RecipeStep('🫛', 'Ajoute les pois et le bouillon chaud.'),
+        RecipeStep('⏱',
+            '8 minutes seulement : au-delà, le vert tourne au kaki.',
+            minutes: 8),
+        RecipeStep('🌿', 'Mixe avec la menthe, hors du feu.'),
+        RecipeStep('🥛', 'Crème, sel, poivre. Bon chaud ou glacé.'),
+      ],
     ),
     Recipe(
       name: 'Petits pois carottes',
       emoji: '🥕',
-      description: 'Le plat d\'accompagnement de l\'enfance, en bien meilleur.',
-      minutes: 35,
+      description:
+          'Le duo de l\'enfance, en frais ça n\'a rien à voir avec la conserve.',
+      minutes: 30,
       serves: 4,
+      ingredients: <String>[
+        '600 g de petits pois',
+        '4 carottes',
+        '1 oignon',
+        '30 g de beurre',
+        'sel, poivre, persil',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🥕', 'Coupe les carottes en rondelles fines.'),
+        RecipeStep('🧈',
+            'Fais-les suer au beurre avec l\'oignon, 10 minutes.', minutes: 10),
+        RecipeStep('🫛',
+            'Ajoute les pois et un fond d\'eau, sale.'),
+        RecipeStep('⏱', 'Couvre et cuis 15 minutes.', minutes: 15),
+        RecipeStep('🌿', 'Persil, poivre, une noisette de beurre à la fin.'),
+      ],
     ),
   ],
   'pois_mange_tout': <Recipe>[
@@ -1289,9 +2795,82 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
     Recipe(name: 'Soupe de pourpier à la turque', emoji: '🍲', description: 'Avec du yaourt et du riz, acidulée et nourrissante.', minutes: 35, serves: 4),
   ],
   'potimarron': <Recipe>[
-    Recipe(name: 'Velouté de potimarron', emoji: '🍲', description: 'Peau comprise — elle devient fondante et porte le goût.', minutes: 40, serves: 4),
-    Recipe(name: 'Potimarron rôti au four', emoji: '🔥', description: 'En quartiers, huile d\'olive, romarin, graines de courge.', minutes: 45, serves: 4),
-    Recipe(name: 'Tarte au potimarron', emoji: '🥧', description: 'Sucrée ou salée, la chair sèche s\'y prête bien.', minutes: 80, serves: 6),
+    Recipe(
+      name: 'Velouté de potimarron',
+      emoji: '🍲',
+      description:
+          'Sa peau se mange : pas d\'épluchage, et un goût de châtaigne.',
+      minutes: 35,
+      serves: 4,
+      ingredients: <String>[
+        '1 potimarron (1,2 kg)',
+        '1 oignon',
+        '70 cl de bouillon',
+        '10 cl de crème',
+        'sel, poivre, muscade',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🎃',
+            'Lave le potimarron, coupe-le en cubes **sans l\'éplucher** : la '
+            'peau fond à la cuisson.'),
+        RecipeStep('🧅', 'Fais fondre l\'oignon, ajoute les cubes.'),
+        RecipeStep('🍲', 'Mouille au bouillon, à hauteur.'),
+        RecipeStep('⏱', 'Cuis 25 minutes à couvert.', minutes: 25),
+        RecipeStep('🥣', 'Mixe, crème hors du feu, muscade.'),
+      ],
+    ),
+    Recipe(
+      name: 'Potimarron rôti au four',
+      emoji: '🔥',
+      description:
+          'En quartiers, à l\'huile et au romarin : le four fait tout le travail.',
+      minutes: 45,
+      serves: 4,
+      ingredients: <String>[
+        '1 potimarron',
+        '3 cuillères à soupe d\'huile d\'olive',
+        '2 gousses d\'ail',
+        'romarin, gros sel, poivre',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🎃',
+            'Coupe le potimarron en quartiers, retire les graines, garde la '
+            'peau.'),
+        RecipeStep('🫒',
+            'Enrobe d\'huile, ajoute l\'ail en chemise et le romarin.'),
+        RecipeStep('⏱',
+            'Four à 200 °C, 35 minutes. Retourne les quartiers à mi-cuisson.',
+            minutes: 35),
+        RecipeStep('🧂', 'Gros sel et poivre à la sortie.'),
+      ],
+    ),
+    Recipe(
+      name: 'Tarte au potimarron',
+      emoji: '🥧',
+      description:
+          'Entre la tarte et le flan, à peine sucrée, très réconfortante.',
+      minutes: 75,
+      serves: 6,
+      ingredients: <String>[
+        '1 pâte brisée',
+        '800 g de potimarron',
+        '2 oeufs, 20 cl de crème',
+        '60 g de sucre',
+        'cannelle, muscade, sel',
+      ],
+      steps: <RecipeStep>[
+        RecipeStep('🎃', 'Cuis le potimarron en cubes 20 minutes à la vapeur.',
+            minutes: 20),
+        RecipeStep('🥄', 'Écrase-le et laisse-le refroidir, bien égoutté.'),
+        RecipeStep('🥣',
+            'Mélange avec oeufs, crème, sucre, cannelle, muscade, une pincée '
+            'de sel.'),
+        RecipeStep('🥧', 'Verse sur la pâte étalée et piquée.'),
+        RecipeStep('⏱',
+            'Four à 180 °C, 40 minutes : le centre doit être juste pris.',
+            minutes: 40),
+      ],
+    ),
   ],
   'champignon_paris': <Recipe>[
     Recipe(name: 'Champignons à la persillade', emoji: '🌿', description: 'À feu vif pour qu\'ils dorent au lieu de rendre leur eau.', minutes: 20, serves: 4),

@@ -42,6 +42,8 @@ class PrefsService {
   static const _kCultures = 'kultiva.cultures.v1';
   static const _kJardinsTutorialDone = 'kultiva.jardinsTutorialDone';
   static const _kPrefsUpdatedAt = 'kultiva.prefs.updatedAt';
+  static const _kRecipeFavorites = 'kultiva.recipes.favorites.v1';
+  static const _kRecipeCooked = 'kultiva.recipes.cooked.v1';
 
   SharedPreferences? _prefs;
 
@@ -318,6 +320,26 @@ class PrefsService {
     await _prefs?.setStringList(_kUnlockedBadges, ids.toList());
   }
 
+  /// Recettes mises de côté. Clé = `vegetableId/nom`, construite par
+  /// `RecipeService.keyFor` — les favoris de légumes, eux, vivent dans
+  /// `favorites` et ne se mélangent pas.
+  Set<String> get recipeFavorites =>
+      (_prefs?.getStringList(_kRecipeFavorites) ?? const <String>[]).toSet();
+
+  Future<void> setRecipeFavorites(Set<String> keys) async {
+    await _prefs?.setStringList(_kRecipeFavorites, keys.toList());
+  }
+
+  /// Recettes déjà cuisinées, au format `clé|iso8601`. Brut exprès :
+  /// c'est [RecipeService] qui le décode, comme `PlantationService` est
+  /// seul à décoder ses plantations.
+  List<String> get recipeCookedRaw =>
+      _prefs?.getStringList(_kRecipeCooked) ?? const <String>[];
+
+  Future<void> setRecipeCookedRaw(List<String> entries) async {
+    await _prefs?.setStringList(_kRecipeCooked, entries);
+  }
+
   bool get gridMigrated => _prefs?.getBool(_kGridMigrated) ?? false;
 
   Future<void> setGridMigrated(bool value) async {
@@ -413,6 +435,8 @@ class PrefsService {
     }
     // Remet les notifiers réactifs à l'état vierge.
     favorites.value = <String>{};
+    await p.remove(_kRecipeFavorites);
+    await p.remove(_kRecipeCooked);
     plantationsVersion.value = plantationsVersion.value + 1;
     culturesVersion.value = culturesVersion.value + 1;
   }

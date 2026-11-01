@@ -10,6 +10,7 @@ import '../data/local_names.dart';
 import '../data/market_buying_tips.dart';
 import '../data/market_data.dart';
 import '../data/recipes.dart';
+import '../widgets/recipe_row.dart';
 import '../data/rotation.dart';
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
@@ -272,7 +273,10 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           if (region == Region.westAfrica && marketData[vegetable.id] != null)
             _MarketSection(info: marketData[vegetable.id]!),
           if (recipesByVegetable[vegetable.id] != null)
-            _RecipesSection(recipes: recipesByVegetable[vegetable.id]!),
+            _RecipesSection(
+              vegetableId: vegetable.id,
+              recipes: recipesByVegetable[vegetable.id]!,
+            ),
           if (_list.length > 1)
             const Padding(
               padding: EdgeInsets.only(top: 12),
@@ -1148,58 +1152,57 @@ class _MarketRow extends StatelessWidget {
 }
 
 /// Idées de plats liées à la récolte — boucle le jardin vers la cuisine.
+/// La section « En cuisine » d'une fiche légume.
+///
+/// ⚠️ Elle affichait les recettes **sans pouvoir les ouvrir** : ni
+/// lecteur animé, ni temps, ni favori. Le pas-à-pas n'était atteignable
+/// que depuis l'onglet Recettes, alors que c'est ici qu'on se demande
+/// quoi faire de sa récolte. Elle délègue maintenant à [RecipeRow],
+/// comme l'onglet : une seule ligne de recette dans toute l'app.
 class _RecipesSection extends StatelessWidget {
+  final String vegetableId;
   final List<Recipe> recipes;
-  const _RecipesSection({required this.recipes});
+  const _RecipesSection({required this.vegetableId, required this.recipes});
 
   @override
   Widget build(BuildContext context) {
+    final animees = recipes.where((r) => r.isAnimated).length;
     return Padding(
       padding: const EdgeInsets.only(top: 12),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 16, 2, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                '🍲  En cuisine',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
+              Padding(
+                padding: const EdgeInsets.only(right: 14),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '🍲  En cuisine',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                      ),
                     ),
-              ),
-              const SizedBox(height: 10),
-              for (final r in recipes)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(r.emoji, style: const TextStyle(fontSize: 22)),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              r.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            Text(
-                              r.description,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: KultivaColors.textSecondary,
-                              ),
-                            ),
-                          ],
+                    if (animees > 0)
+                      Text(
+                        '$animees pas à pas',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: KultivaColors.primaryGreen,
                         ),
                       ),
-                    ],
-                  ),
+                  ],
                 ),
+              ),
+              const SizedBox(height: 4),
+              for (final r in recipes)
+                RecipeRow(vegetableId: vegetableId, recipe: r),
             ],
           ),
         ),

@@ -4229,13 +4229,19 @@ const Vegetable unknownVegetable = Vegetable(
   note: "Ce légume n'est plus au catalogue.",
 );
 
+/// Index identifiant → légume, construit une fois.
+///
+/// [vegetableById] balayait les 169 entrées à chaque appel. Ça ne se
+/// voyait pas tant qu'on l'appelait une fois par écran ; l'onglet
+/// Recettes l'appelait pour 123 légumes **à chaque frappe** dans la
+/// recherche, soit une vingtaine de milliers de comparaisons par
+/// lettre tapée.
+final Map<String, Vegetable> _parId = <String, Vegetable>{
+  for (final v in vegetablesBase) v.id: v,
+};
+
 /// Cherche un légume par son identifiant, ou [unknownVegetable].
-Vegetable vegetableById(String id) {
-  for (final v in vegetablesBase) {
-    if (v.id == id) return v;
-  }
-  return unknownVegetable;
-}
+Vegetable vegetableById(String id) => _parId[id] ?? unknownVegetable;
 
 /// Les cultures seules : le catalogue moins les 39 accessoires.
 ///

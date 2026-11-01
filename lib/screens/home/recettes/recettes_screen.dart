@@ -2,6 +2,7 @@ import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/recipes.dart';
+import '../../../data/regions/regional_calendar.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
 import '../../../services/plantation_service.dart';
@@ -11,8 +12,9 @@ import '../../../utils/text_normalize.dart';
 import '../../../widgets/pastel_chip.dart';
 import '../../../widgets/petal_animation.dart';
 import '../../../widgets/season_header.dart';
+import '../../../services/recipe_service.dart';
+import '../../../widgets/recipe_row.dart';
 import '../../../widgets/vegetable_image.dart';
-import 'recipe_player_screen.dart';
 
 /// L'onglet Recettes : que faire de la récolte.
 ///
@@ -23,6 +25,16 @@ import 'recipe_player_screen.dart';
 ///
 /// Les légumes **présents dans ton jardin** passent devant : c'est la
 /// différence entre un livre de cuisine et la cuisine de ton potager.
+///
+/// Trois filtres s'ajoutent à la recherche, cumulables :
+///
+/// - **C'est la saison** lit le calendrier de récolte de la région et
+///   ne garde que ce qui se récolte ce mois-ci. Sans lui, un jardinier
+///   voyait la même liste en novembre et en juillet.
+/// - **Mes favoris** montre ce qui a été mis de côté, tous légumes
+///   confondus — c'est la seule vue où le nom du légume s'affiche sous
+///   la recette, puisqu'elle les mélange.
+/// - les **familles** (feuilles, fruits…), comme ailleurs dans l'app.
 class RecettesScreen extends StatefulWidget {
   const RecettesScreen({super.key});
 
@@ -34,6 +46,21 @@ class _RecettesScreenState extends State<RecettesScreen> {
   final TextEditingController _recherche = TextEditingController();
   String _query = '';
   VegetableCategory? _categorie;
+  bool _saison = false;
+  bool _favoris = false;
+
+  /// Les légumes récoltables ce mois-ci, d'après le calendrier de la
+  /// région et de la zone climatique de l'utilisateur. Calculé une
+  /// fois : le calendrier ne change pas pendant qu'on cherche.
+  late final Set<String> _recoltablesCeMois = _calculerSaison();
+
+  static Set<String> _calculerSaison() {
+    final mois = DateTime.now().month;
+    return currentCalendar()
+        .where((r) => r.harvestMonths.contains(mois))
+        .map((r) => r.vegetableId)
+        .toSet();
+  }
 
   @override
   void dispose() {
@@ -46,8 +73,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
   List<VegetableCategory> get _categories {
     final vues = <VegetableCategory>{};
     for (final id in recipesByVegetable.keys) {
-      final v = vegetablesBase.where((x) => x.id == id).firstOrNull;
-      if (v != null) vues.add(v.category);
+      vues.add(vegetableById(id).category);
     }
     final ordre = VegetableCategory.values
         .where((c) => c != VegetableCategory.accessories && vues.contains(c))
@@ -59,16 +85,34 @@ class _RecettesScreenState extends State<RecettesScreen> {
     final auJardin =
         PlantationService.instance.active.map((p) => p.vegetableId).toSet();
     final q = foldAccents(_query);
+    final favoris = RecipeService.instance.favorites;
 
     final out = <_Entree>[];
-    recipesByVegetable.forEach((id, recettes) {
-      final veg = vegetablesBase.where((v) => v.id == id).firstOrNull;
-      if (veg == null) return;
+    recipesByVegetable.forEach((id, toutes) {
+      final veg = vegetableById(id);
+      if (veg.id == unknownVegetable.id) return;
       if (_categorie != null && veg.category != _categorie) return;
+      if (_saison && !_recoltablesCeMois.contains(id)) return;
+
+      // Les favoris filtrent les **recettes**, pas les légumes : on ne
+      // montre pas les deux autres recettes d'un légume parce que la
+      // troisième est en favori.
+      var recettes = toutes;
+      if (_favoris) {
+        recettes = toutes
+            .where((r) => favoris.contains(RecipeService.keyFor(id, r)))
+            .toList(growable: false);
+        if (recettes.isEmpty) return;
+      }
+
       if (q.isNotEmpty) {
         final dansLeNom = foldAccents(veg.displayName).contains(q);
-        final dansUneRecette =
-            recettes.any((r) => foldAccents(r.name).contains(q));
+        // La recherche couvre le nom du plat, sa description et ses
+        // ingrédients : « gratin » trouvait, « crème » ne trouvait rien.
+        final dansUneRecette = recettes.any((r) =>
+            foldAccents(r.name).contains(q) ||
+            foldAccents(r.description).contains(q) ||
+            r.ingredients.any((i) => foldAccents(i).contains(q)));
         if (!dansLeNom && !dansUneRecette) return;
       }
       out.add(_Entree(veg, recettes, auJardin.contains(id)));
@@ -86,8 +130,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
     final entrees = _entrees;
-    final total =
-        recipesByVegetable.values.fold<int>(0, (n, l) => n + l.length);
+    final total = entrees.fold<int>(0, (n, e) => n + e.recettes.length);
 
     return Scaffold(
       body: SafeArea(
@@ -122,8 +165,9 @@ class _RecettesScreenState extends State<RecettesScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '$total recettes pour '
-                          '${recipesByVegetable.length} récoltes',
+                          '$total recette${total > 1 ? 's' : ''} pour '
+                          '${entrees.length} récolte'
+                          '${entrees.length > 1 ? 's' : ''}',
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -173,8 +217,26 @@ class _RecettesScreenState extends State<RecettesScreen> {
                     label: 'Tout',
                     emoji: '🍽',
                     color: KultivaColors.primaryGreen,
-                    selected: _categorie == null,
-                    onTap: () => setState(() => _categorie = null),
+                    selected: _categorie == null && !_saison && !_favoris,
+                    onTap: () => setState(() {
+                      _categorie = null;
+                      _saison = false;
+                      _favoris = false;
+                    }),
+                  ),
+                  PastelChip(
+                    label: 'C\'est la saison',
+                    emoji: '📅',
+                    color: KultivaColors.terracotta,
+                    selected: _saison,
+                    onTap: () => setState(() => _saison = !_saison),
+                  ),
+                  PastelChip(
+                    label: 'Mes favoris',
+                    emoji: '🔖',
+                    color: KultivaColors.primaryGreen,
+                    selected: _favoris,
+                    onTap: () => setState(() => _favoris = !_favoris),
                   ),
                   for (final c in _categories)
                     PastelChip(
@@ -191,11 +253,19 @@ class _RecettesScreenState extends State<RecettesScreen> {
             ),
             Expanded(
               child: entrees.isEmpty
-                  ? _RienTrouve(query: _query, categorie: _categorie)
+                  ? _RienTrouve(
+                      query: _query,
+                      categorie: _categorie,
+                      saison: _saison,
+                      favoris: _favoris,
+                    )
                   : ListView.builder(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                       itemCount: entrees.length,
-                      itemBuilder: (_, i) => _CarteLegume(entree: entrees[i]),
+                      itemBuilder: (_, i) => _CarteLegume(
+                        entree: entrees[i],
+                        montrerLeLegume: _favoris,
+                      ),
                     ),
             ),
           ],
@@ -214,8 +284,9 @@ class _Entree {
 
 class _CarteLegume extends StatelessWidget {
   final _Entree entree;
+  final bool montrerLeLegume;
 
-  const _CarteLegume({required this.entree});
+  const _CarteLegume({required this.entree, this.montrerLeLegume = false});
 
   @override
   Widget build(BuildContext context) {
@@ -285,135 +356,14 @@ class _CarteLegume extends StatelessWidget {
               ],
             ),
           ),
-          for (final r in entree.recettes) _LigneRecette(recipe: r),
+          for (final r in entree.recettes)
+            RecipeRow(
+              vegetableId: entree.vegetable.id,
+              recipe: r,
+              showVegetable: montrerLeLegume,
+            ),
           const SizedBox(height: 6),
         ],
-      ),
-    );
-  }
-}
-
-class _LigneRecette extends StatelessWidget {
-  final Recipe recipe;
-
-  const _LigneRecette({required this.recipe});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => _ouvrir(context),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(recipe.emoji, style: const TextStyle(fontSize: 17)),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          recipe.name,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      if (recipe.isAnimated) ...<Widget>[
-                        const SizedBox(width: 6),
-                        const Icon(Icons.play_circle_outline,
-                            size: 15, color: KultivaColors.primaryGreen),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    recipe.description,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      height: 1.35,
-                      color: KultivaColors.textSecondary,
-                    ),
-                  ),
-                  if (recipe.subtitle != null) ...<Widget>[
-                    const SizedBox(height: 3),
-                    Text(
-                      recipe.subtitle!,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: KultivaColors.terracotta,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _ouvrir(BuildContext context) {
-    if (recipe.isAnimated) {
-      showRecipePlayer(context, recipe: recipe);
-      return;
-    }
-    // Pas encore écrite pas à pas : on dit la vérité plutôt que
-    // d'ouvrir un lecteur vide.
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (_) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 22, 24, 28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(recipe.emoji, style: const TextStyle(fontSize: 34)),
-              const SizedBox(height: 8),
-              Text(
-                recipe.name,
-                style: const TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              if (recipe.subtitle != null) ...<Widget>[
-                const SizedBox(height: 4),
-                Text(
-                  recipe.subtitle!,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: KultivaColors.terracotta,
-                  ),
-                ),
-              ],
-              const SizedBox(height: 12),
-              Text(
-                recipe.description,
-                style: const TextStyle(fontSize: 14, height: 1.45),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Le pas-à-pas animé de cette recette n\'est pas encore '
-                'écrit — il arrive.',
-                style: TextStyle(
-                  fontSize: 12,
-                  height: 1.4,
-                  color: KultivaColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -422,18 +372,32 @@ class _LigneRecette extends StatelessWidget {
 class _RienTrouve extends StatelessWidget {
   final String query;
   final VegetableCategory? categorie;
+  final bool saison;
+  final bool favoris;
 
-  const _RienTrouve({required this.query, required this.categorie});
+  const _RienTrouve({
+    required this.query,
+    required this.categorie,
+    this.saison = false,
+    this.favoris = false,
+  });
 
+  /// Un écran vide doit dire **lequel** des filtres a tout mangé,
+  /// sinon on croit que l'app n'a pas de recettes.
   String get _message {
-    if (query.isNotEmpty) {
-      return 'Aucune recette ne parle de « $query ».';
+    if (favoris && query.isEmpty && !saison && categorie == null) {
+      return 'Tu n\'as encore mis aucune recette de côté.\n'
+          'Touche le marque-page sur celles qui te tentent.';
     }
-    if (categorie != null) {
-      return 'Aucune recette dans la famille '
-          '« ${categorie!.label.toLowerCase()} » pour l\'instant.';
-    }
-    return 'Aucune recette.';
+    final bouts = <String>[
+      if (query.isNotEmpty) 'qui parle de « $query »',
+      if (categorie != null)
+        'dans la famille « ${categorie!.label.toLowerCase()} »',
+      if (saison) 'à récolter ce mois-ci',
+      if (favoris) 'parmi tes favoris',
+    ];
+    if (bouts.isEmpty) return 'Aucune recette.';
+    return 'Aucune recette ${bouts.join(', ')}.';
   }
 
   @override

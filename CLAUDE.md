@@ -20,8 +20,10 @@ depuis le 01/11/2026 **73 pays sur six continents**. Elle propose :
   conseils contextuels selon la météo ;
 - **Défis & badges** : 50 défis photo et 50 badges, sur leur écran,
   joignable depuis le dashboard ;
-- un **onglet Recettes** : 340 recettes, trois par récolte, dont huit
-  déroulées pas à pas dans un lecteur animé hors ligne ;
+- un **onglet Recettes** : 369 recettes, trois par récolte, dont 79
+  déroulées pas à pas dans un lecteur animé hors ligne — avec
+  ingrédients, minuteur et quantités qui suivent le nombre de
+  convives ; favoris et « déjà cuisiné » par recette ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
   l'API Open-Meteo (gratuite, sans clé) ;
 - des **défis photo** avec 50 badges, 50 défis et des médailles (les photos
@@ -180,7 +182,7 @@ Kultiva/
 │                           # utilisé par l'app (aucun backend)
 ├── assets/
 │   ├── recipes/            # recipe_player.html — UN template pour les
-│   │                       # 340 recettes, nourri par du JSON injecté
+│   │                       # 369 recettes, nourri par du JSON injecté
 │   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
