@@ -1,6 +1,6 @@
 # MARKETING — plan marketing & rémunération
 
-Mis à jour le 31 octobre 2026. Compagnon de `INFRA.md` : là où INFRA répertorie
+Mis à jour le 1er novembre 2026. Compagnon de `INFRA.md` : là où INFRA répertorie
 la technique, ce fichier suit la stratégie marketing et de rémunération.
 Pour l'actualiser : relancer le même prompt.
 
@@ -86,5 +86,5 @@ n'est branché (Sentry ne suit que les crashs).
 ## Les 3 priorités
 
 - Garnir une installation pour les captures (2-3 plants, une photo, un jardin dessiné) : il n'y a plus de compte de démonstration à créer.
-- Compléter la fiche App Store déjà créée (adresses de `kultiva.toakeur.com` et `kultiva@toakeur.com`, captures, déclaration de trader DSA), puis soumettre le build 134 déjà en TestFlight.
+- Compléter la fiche App Store déjà créée (adresses de `kultiva.toakeur.com` et `kultiva@toakeur.com`, captures, déclaration de trader DSA), puis soumettre le build 152 déjà en TestFlight.
 - Créer la fiche Google Play et lancer tout de suite le test fermé (douze testeurs pendant quatorze jours si le compte est personnel).
