@@ -282,12 +282,14 @@ Tables supprimées (migration 008) : `culture_readings`, `hydro_builds`,
 
 ### 🚀 Lancer l'app sur le Mac de Jean (routine quotidienne)
 
-Le projet est sur **`~/Code/kultiva`** (Mac-mini-de-Jean). Branche de travail
+Le projet est sur **`~/Dev/apps/kultiva`**. ⚠️ Cette fiche a longtemps
+dit `~/Code/kultiva` : ce dossier n'existe plus depuis un rangement
+d'octobre 2026, et il n'y a qu'un seul Mac. Branche de travail
 courante : **`main`**. Commande à donner systématiquement après une modif
 poussée par Claude Code :
 
 ```bash
-cd ~/Code/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
+cd ~/Dev/apps/kultiva && git stash && git pull origin main && flutter pub get && flutter run --release
 ```
 
 - `git stash` est nécessaire car les lock files (`pubspec.lock`, `Podfile.lock`)
