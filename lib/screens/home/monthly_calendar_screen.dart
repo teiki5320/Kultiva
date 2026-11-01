@@ -48,15 +48,6 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
     super.dispose();
   }
 
-  List<RegionData> _dataFor(Region region) {
-    switch (region) {
-      case Region.france:
-        return regionalCalendar(region);
-      case Region.westAfrica:
-        return regionalCalendar(region,
-            zone: PrefsService.instance.effectiveZone);
-    }
-  }
 
   RegionData? _findRegionData(List<RegionData> list, String vegetableId) {
     for (final d in list) {
@@ -70,7 +61,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
     return ValueListenableBuilder<Region>(
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
-        final data = _dataFor(region);
+        final data = currentCalendar();
         final isHarvest = widget.mode == CalendarMode.harvest;
         final activeVegs = <Vegetable>[];
         final later = <Vegetable>[];
@@ -98,8 +89,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               Stack(
                 children: [
                   SeasonHeader(
-                    season: Season.of(_selectedMonth, region,
-                        zone: PrefsService.instance.effectiveZone),
+                    season: Season.current(_selectedMonth),
                     month: _selectedMonth,
                     height: kPageHeaderHeight,
                   ),

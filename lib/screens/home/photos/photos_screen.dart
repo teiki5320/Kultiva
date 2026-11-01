@@ -8,7 +8,6 @@ import '../../../services/audio_service.dart';
 import '../../../services/photo_library_service.dart';
 import '../../../services/photo_service.dart';
 import '../../../services/plantation_service.dart';
-import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/camera_permission_dialog.dart';
 import '../../../widgets/petal_animation.dart';
@@ -110,7 +109,6 @@ class _PhotosScreenState extends State<PhotosScreen> {
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
-    final region = PrefsService.instance.region.value;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -119,8 +117,7 @@ class _PhotosScreenState extends State<PhotosScreen> {
             Stack(
               children: <Widget>[
                 SeasonHeader(
-                  season: Season.of(mois, region,
-                      zone: PrefsService.instance.effectiveZone),
+                  season: Season.current(mois),
                   month: mois,
                   height: kPageHeaderHeight,
                   hideLabel: true,

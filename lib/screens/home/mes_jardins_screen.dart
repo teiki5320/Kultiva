@@ -138,14 +138,13 @@ class _CahierHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
-    final region = PrefsService.instance.region.value;
     final plants = PlantationService.instance.active.length;
     final cases = plans.fold<int>(0, (s, p) => s + p.cells.length);
     return Stack(
       children: <Widget>[
         SeasonHeader(
           season:
-              Season.of(mois, region, zone: PrefsService.instance.effectiveZone),
+              Season.current(mois),
           month: mois,
           height: kPageHeaderHeight,
           hideLabel: true,

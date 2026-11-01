@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../services/prefs_service.dart';
+
 import '../models/country.dart';
 import '../models/region_data.dart';
 
@@ -36,24 +38,46 @@ enum Season {
   /// - soudanienne (défaut AO) : pluies mai/juin-octobre ;
   /// - guinéenne côtière : deux saisons des pluies (avril-juillet et
   ///   septembre-novembre), petite saison sèche en août, harmattan bref.
-  static Season of(int month, Region region, {ClimateZone? zone}) {
-    if (region != Region.westAfrica) return fromMonth(month);
+  /// La saison d'aujourd'hui, là où l'utilisateur jardine.
+  ///
+  /// Dix écrans recomposaient région + zone à la main pour appeler
+  /// [of] ; aucun n'aurait pensé à l'hémisphère, et un Australien
+  /// aurait vu tomber des flocons en juillet.
+  static Season current([int? month]) {
+    final prefs = PrefsService.instance;
+    return of(
+      month ?? DateTime.now().month,
+      prefs.region.value,
+      zone: prefs.effectiveZone,
+      hemisphere: prefs.country.value?.hemisphere ?? Hemisphere.north,
+    );
+  }
+
+  static Season of(
+    int month,
+    Region region, {
+    ClimateZone? zone,
+    Hemisphere hemisphere = Hemisphere.north,
+  }) {
+    // Au sud de l'équateur, tout est décalé de six mois : les saisons
+    // thermiques comme la saison des pluies.
+    final m = hemisphere == Hemisphere.south ? ((month + 5) % 12) + 1 : month;
+    if (!region.isTropicalBase) return fromMonth(m);
     switch (zone) {
       case ClimateZone.sahel:
-        if (month >= 6 && month <= 9) return Season.rainySeason;
-        if (month >= 11 || month <= 2) return Season.harmattan;
+        if (m >= 6 && m <= 9) return Season.rainySeason;
+        if (m >= 11 || m <= 2) return Season.harmattan;
         return Season.drySeason;
       case ClimateZone.guinean:
-        if ((month >= 4 && month <= 7) || (month >= 9 && month <= 11)) {
+        if ((m >= 4 && m <= 7) || (m >= 9 && m <= 11)) {
           return Season.rainySeason;
         }
-        if (month == 12 || month == 1) return Season.harmattan;
+        if (m == 12 || m == 1) return Season.harmattan;
         return Season.drySeason;
-      case ClimateZone.sudan:
-      case ClimateZone.temperate:
-      case null:
-        if (month >= 6 && month <= 10) return Season.rainySeason;
-        if (month >= 3 && month <= 5) return Season.drySeason;
+      // Soudanien, altitude, et tout le reste : un seul hivernage.
+      default:
+        if (m >= 6 && m <= 10) return Season.rainySeason;
+        if (m >= 3 && m <= 5) return Season.drySeason;
         return Season.harmattan;
     }
   }

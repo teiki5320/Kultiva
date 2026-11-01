@@ -70,13 +70,16 @@ class GeolocationService {
     final country = await detectCountry();
     if (country != null) return country.region;
 
-    // Secours sans géocodage : boîte englobante Afrique de l'Ouest.
+    // Secours sans géocodage, par latitude. Grossier mais honnête :
+    // sous les tropiques, le calendrier suit les pluies ; ailleurs, il
+    // suit les saisons thermiques. Le contenu ouest-africain n'est
+    // jamais attribué ici — il faut avoir identifié le pays pour cela.
     final position = await _currentPosition(requestPermission: true);
     if (position == null) return null;
     if (Country.coordsInWestAfrica(position.latitude, position.longitude)) {
       return Region.westAfrica;
     }
-    return Region.france;
+    return position.latitude.abs() <= 23.5 ? Region.tropical : Region.france;
   }
 
   static Position? _lastPosition;

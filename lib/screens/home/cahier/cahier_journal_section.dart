@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/plantation_service.dart';
-import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/petal_animation.dart';
 import '../../../widgets/season_header.dart';
@@ -82,7 +81,6 @@ class JournalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
-    final region = PrefsService.instance.region.value;
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -91,8 +89,7 @@ class JournalScreen extends StatelessWidget {
             Stack(
               children: <Widget>[
                 SeasonHeader(
-                  season: Season.of(mois, region,
-                      zone: PrefsService.instance.effectiveZone),
+                  season: Season.current(mois),
                   month: mois,
                   height: kPageHeaderHeight,
                   hideLabel: true,

@@ -5,14 +5,60 @@ import 'package:kultiva/models/region_data.dart';
 void main() {
   _zoneTests();
   group('Country', () {
-    test('9 pays : France + 8 pays francophones AO', () {
-      expect(Country.values.length, equals(9));
+    test('les 8 pays d\'Afrique de l\'Ouest, et eux seuls, portent le '
+        'contenu ouest-africain', () {
+      // Ce test est le garde-fou de l'ouverture mondiale du
+      // 01/11/2026 : `Region.westAfrica` ne désigne plus « climat
+      // tropical » mais « tropical **et** contenu ouest-africain »
+      // (noms locaux, FCFA, achat au marché). Un pays tropical ajouté
+      // par erreur dans cette région hériterait de prix en FCFA.
       expect(Country.westAfricanCountries.length, equals(8));
-      for (final c in Country.westAfricanCountries) {
-        expect(c.region, equals(Region.westAfrica),
-            reason: '${c.label} doit être en région Afrique de l\'Ouest');
-      }
+      expect(
+        Country.westAfricanCountries.map((c) => c.isoCode).toSet(),
+        <String>{'SN', 'CI', 'ML', 'BF', 'BJ', 'TG', 'NE', 'GN'},
+      );
       expect(Country.france.region, equals(Region.france));
+    });
+
+    test('la couverture est mondiale et chaque continent est servi', () {
+      expect(Country.values.length, greaterThan(50));
+      for (final iso in <String>['BR', 'JP', 'AU', 'CA', 'MA', 'RE', 'IN']) {
+        expect(Country.fromIso(iso), isNotNull, reason: iso);
+      }
+    });
+
+    test('les pays du sud sont dans l\'hémisphère sud', () {
+      // Une erreur ici décale un calendrier de six mois sans rien
+      // casser visiblement : on sèmerait les tomates en hiver.
+      for (final iso in <String>['AU', 'NZ', 'AR', 'CL', 'ZA', 'BR', 'RE']) {
+        expect(Country.fromIso(iso)!.hemisphere, Hemisphere.south,
+            reason: iso);
+      }
+      for (final iso in <String>['FR', 'SN', 'JP', 'CA', 'IN', 'GP']) {
+        expect(Country.fromIso(iso)!.hemisphere, Hemisphere.north,
+            reason: iso);
+      }
+    });
+
+    test('la latitude de la capitale s\'accorde avec l\'hémisphère', () {
+      for (final c in Country.values) {
+        final attendu =
+            c.capitalLat < 0 ? Hemisphere.south : Hemisphere.north;
+        expect(c.hemisphere, attendu,
+            reason: '${c.label} : capitale à ${c.capitalLat}°');
+      }
+    });
+
+    test('aucun code ISO en double', () {
+      final codes = Country.values.map((c) => c.isoCode).toList();
+      expect(codes.toSet(), hasLength(codes.length));
+    });
+
+    test('une région tropicale va avec une zone tropicale', () {
+      for (final c in Country.values) {
+        expect(c.region.isTropicalBase, c.zone.isTropical,
+            reason: '${c.label} : région ${c.region.id}, zone ${c.zone.name}');
+      }
     });
 
     test('fromIso retrouve un pays, insensible à la casse', () {
@@ -20,7 +66,8 @@ void main() {
       expect(Country.fromIso('sn'), equals(Country.senegal));
       expect(Country.fromIso('CI'), equals(Country.coteDivoire));
       expect(Country.fromIso('FR'), equals(Country.france));
-      expect(Country.fromIso('US'), isNull);
+      expect(Country.fromIso('us'), equals(Country.etatsUnis));
+      expect(Country.fromIso('ZZ'), isNull);
       expect(Country.fromIso(null), isNull);
     });
 
@@ -57,18 +104,19 @@ void main() {
     });
 
     test('ordered : pays suggéré en premier, pas de privilège France', () {
-      // Sans suggestion : ordre alphabétique, Bénin d'abord — la France
-      // est dans le lot comme les autres.
+      // Sans suggestion : ordre alphabétique, la France dans le lot
+      // comme les autres.
       final neutral = Country.ordered();
-      expect(neutral.length, equals(9));
-      expect(neutral.first, equals(Country.benin));
+      expect(neutral.length, equals(Country.values.length));
       expect(neutral, containsAll(Country.values));
+      expect(neutral.first, equals(Country.afriqueDuSud));
+      expect(neutral.first, isNot(equals(Country.france)));
 
       // Avec suggestion : le pays détecté passe en tête, sans doublon.
       final sn = Country.ordered(first: Country.senegal);
       expect(sn.first, equals(Country.senegal));
-      expect(sn.length, equals(9));
-      expect(sn.toSet().length, equals(9));
+      expect(sn.length, equals(Country.values.length));
+      expect(sn.toSet().length, equals(Country.values.length));
     });
   });
 }

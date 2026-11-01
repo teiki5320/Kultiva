@@ -3,14 +3,34 @@
 /// Extensible — pour ajouter une nouvelle région, ajoute une valeur d'enum
 /// et crée le fichier correspondant dans `lib/data/regions/`.
 enum Region {
+  /// Base **tempérée** : le calendrier européen des quatre saisons.
+  /// Les zones méditerranéenne, continentale et subtropicale en
+  /// dérivent par décalage (voir `zone_shift.dart`).
   france('france', 'France', '🇫🇷'),
-  westAfrica('west_africa', "Afrique de l'Ouest", '🌍');
+
+  /// Base **tropicale** + contenu culturel ouest-africain : noms
+  /// locaux, maraîchage en FCFA, conseils d'achat au marché, recettes.
+  westAfrica('west_africa', "Afrique de l'Ouest", '🌍'),
+
+  /// Base tropicale **sans** le contenu ouest-africain.
+  ///
+  /// Ajoutée le 01/11/2026 avec la couverture mondiale. Sans elle, un
+  /// jardinier brésilien ou vietnamien aurait hérité des prix en FCFA
+  /// et des noms en wolof, parce que le calendrier tropical et le
+  /// contenu ouest-africain tenaient dans la même valeur d'enum.
+  tropical('tropical', 'Zone tropicale', '🌴');
 
   final String id;
   final String label;
   final String emoji;
 
   const Region(this.id, this.label, this.emoji);
+
+  /// Vrai si le calendrier suit les pluies plutôt que les saisons
+  /// thermiques. À préférer à `== Region.westAfrica` partout où la
+  /// question est climatique et non culturelle.
+  bool get isTropicalBase =>
+      this == Region.westAfrica || this == Region.tropical;
 
   static Region fromId(String? id) {
     if (id == null) return Region.france;

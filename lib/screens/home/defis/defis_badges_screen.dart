@@ -61,7 +61,6 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
-    final region = PrefsService.instance.region.value;
     final faits = GardenStats.loadCompletedChallenges().length;
     return Scaffold(
       body: SafeArea(
@@ -71,8 +70,7 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
             Stack(
               children: <Widget>[
                 SeasonHeader(
-                  season: Season.of(mois, region,
-                      zone: PrefsService.instance.effectiveZone),
+                  season: Season.current(mois),
                   month: mois,
                   height: kPageHeaderHeight,
                   hideLabel: true,

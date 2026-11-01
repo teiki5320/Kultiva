@@ -5,6 +5,7 @@ import '../models/region_data.dart';
 import '../services/geolocation_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
+import '../utils/text_normalize.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback onDone;
@@ -238,6 +239,18 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
   /// sur une appli sénégalaise, pas sur une appli française déclinée.
   Country? _suggested;
 
+  /// La liste est passée de 9 à 73 pays le 01/11/2026 : sans
+  /// recherche, trouver le sien demandait de dérouler une page et
+  /// demie.
+  final TextEditingController _recherche = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _recherche.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -295,7 +308,14 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
       valueListenable: PrefsService.instance.country,
       builder: (context, country, _) {
         final region = PrefsService.instance.region.value;
-        final countries = Country.ordered(first: _suggested);
+        final q = foldAccents(_query.trim());
+        final countries = Country.ordered(first: _suggested)
+            .where((c) =>
+                q.isEmpty ||
+                foldAccents(c.label).contains(q) ||
+                foldAccents(c.capitalName).contains(q) ||
+                c.isoCode.toLowerCase() == q)
+            .toList();
         bool isSelected(Country c) =>
             c == country ||
             (country == null &&
@@ -336,6 +356,45 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                     ),
               ),
               const SizedBox(height: 16),
+              TextField(
+                controller: _recherche,
+                onChanged: (v) => setState(() => _query = v),
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: 'Cherche ton pays ou ta capitale…',
+                  prefixIcon: const Icon(Icons.search, size: 20),
+                  suffixIcon: _query.isEmpty
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.close, size: 18),
+                          onPressed: () {
+                            _recherche.clear();
+                            setState(() => _query = '');
+                          },
+                        ),
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              if (countries.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Text(
+                    'Aucun pays ne porte « $_query ». Kultiva en couvre '
+                    '${Country.values.length} — dis-nous si le tien manque.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      height: 1.4,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ),
               for (final c in countries)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),

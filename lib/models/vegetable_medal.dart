@@ -112,9 +112,9 @@ MedalTier computeMedalTier(
 
   // Saisons distinctes où cette espèce a été plantée.
   // France : printemps=3-5, été=6-8, automne=9-11, hiver=12,1,2.
-  // Afrique de l'Ouest : saison sèche=11-5, hivernage (pluies)=6-10.
+  // Tropiques : saison sèche=11-5, hivernage (pluies)=6-10.
   int seasonOf(int month) {
-    if (region == Region.westAfrica) {
+    if (region.isTropicalBase) {
       return (month >= 6 && month <= 10) ? 0 : 1;
     }
     if (month >= 3 && month <= 5) return 0;

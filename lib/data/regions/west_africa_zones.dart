@@ -290,8 +290,9 @@ ZoneMonths? zoneOverride(ClimateZone zone, String vegetableId) {
       return sahelCalendar[vegetableId];
     case ClimateZone.guinean:
       return guineanCalendar[vegetableId];
-    case ClimateZone.sudan:
-    case ClimateZone.temperate:
+    // Les autres zones n'utilisent pas la base ouest-africaine, ou
+    // s'en servent telle quelle (soudanien, altitude).
+    default:
       return null;
   }
 }

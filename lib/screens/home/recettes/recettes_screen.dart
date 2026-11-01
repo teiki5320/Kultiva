@@ -4,7 +4,6 @@ import '../../../data/recipes.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
 import '../../../services/plantation_service.dart';
-import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
 import '../../../utils/text_normalize.dart';
@@ -86,7 +85,6 @@ class _RecettesScreenState extends State<RecettesScreen> {
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
-    final region = PrefsService.instance.region.value;
     final entrees = _entrees;
     final total = recipesByVegetable.values
         .fold<int>(0, (n, l) => n + l.length);
@@ -99,8 +97,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
             Stack(
               children: <Widget>[
                 SeasonHeader(
-                  season: Season.of(mois, region,
-                      zone: PrefsService.instance.effectiveZone),
+                  season: Season.current(mois),
                   month: mois,
                   height: kPageHeaderHeight,
                   hideLabel: true,

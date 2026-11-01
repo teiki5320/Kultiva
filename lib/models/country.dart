@@ -7,17 +7,54 @@ import 'region_data.dart';
 /// humide que Dakar). La zone se raffine par latitude quand le GPS est
 /// disponible ([Country.zoneAt]) ou par choix manuel de sous-zone.
 enum ClimateZone {
-  /// Climat tempéré à quatre saisons (France métropolitaine).
+  /// Climat océanique tempéré, quatre saisons douces (France
+  /// métropolitaine, Belgique, Royaume-Uni, Nouvelle-Zélande).
+  /// C'est la **base tempérée** dont les autres zones dérivent.
   temperate,
 
-  /// Sahel : saison des pluies courte (juin-septembre), harmattan marqué.
+  /// Sahel : saison des pluies courte (juin-septembre), harmattan
+  /// marqué. Couvre aussi les climats arides et semi-arides du reste du
+  /// monde.
   sahel,
 
-  /// Zone soudanienne : saison des pluies de mai à octobre.
+  /// Zone soudanienne : saison des pluies de mai à octobre. Couvre les
+  /// climats tropicaux à saison sèche marquée, partout.
   sudan,
 
-  /// Côte guinéenne : climat humide, deux pics de pluies.
-  guinean;
+  /// Côte guinéenne : climat humide, deux pics de pluies. Couvre les
+  /// climats tropicaux humides et équatoriaux.
+  guinean,
+
+  // ─── Ajoutées le 01/11/2026 pour la couverture mondiale ───
+  //
+  // Les quatre premières valeurs gardent leur nom ouest-africain : il
+  // est écrit dans les préférences des utilisateurs existants, et le
+  // renommer leur ferait perdre leur zone. Leur sens, lui, s'élargit —
+  // `sudan` veut dire « tropical à saison sèche », pas « Soudan ».
+
+  /// Climat méditerranéen : été chaud et sec, hiver doux et pluvieux.
+  /// Espagne, Italie, Grèce, Maghreb, Californie, Chili central, Cap.
+  mediterranean,
+
+  /// Climat continental : hiver froid, été chaud, saison de culture
+  /// courte. Europe centrale et de l'Est, Canada, nord des États-Unis.
+  continental,
+
+  /// Climat subtropical humide : saison longue, étés lourds. Sud-est
+  /// des États-Unis, Japon, sud du Brésil, nord de l'Argentine.
+  subtropical,
+
+  /// Tropical d'altitude : doux toute l'année, rythmé par les pluies.
+  /// Andes, hauts plateaux éthiopiens, Rwanda, Kenya, Mexique central.
+  highland;
+
+  /// Vrai pour les zones dont le calendrier suit les pluies plutôt que
+  /// les saisons thermiques.
+  bool get isTropical =>
+      this == ClimateZone.sahel ||
+      this == ClimateZone.sudan ||
+      this == ClimateZone.guinean ||
+      this == ClimateZone.highland;
 
   /// Libellé court de la sous-zone (sélecteur manuel).
   String get label {
@@ -30,6 +67,14 @@ enum ClimateZone {
         return 'Soudanien (centre)';
       case ClimateZone.guinean:
         return 'Guinéen (plus humide)';
+      case ClimateZone.mediterranean:
+        return 'Méditerranéen';
+      case ClimateZone.continental:
+        return 'Continental';
+      case ClimateZone.subtropical:
+        return 'Subtropical humide';
+      case ClimateZone.highland:
+        return 'Tropical d\'altitude';
     }
   }
 
@@ -44,6 +89,15 @@ enum ClimateZone {
         return 'Saison des pluies de mai/juin à octobre.';
       case ClimateZone.guinean:
         return 'Climat humide, deux saisons des pluies.';
+      case ClimateZone.mediterranean:
+        return 'Été chaud et sec, hiver doux : on sème tôt, et aussi à '
+            'l\'automne.';
+      case ClimateZone.continental:
+        return 'Hiver froid, saison de culture courte : on sème plus tard.';
+      case ClimateZone.subtropical:
+        return 'Saison longue et humide, étés lourds.';
+      case ClimateZone.highland:
+        return 'Doux toute l\'année, rythmé par les pluies.';
     }
   }
 
@@ -63,6 +117,21 @@ enum ClimateZone {
     }
     return null;
   }
+}
+
+/// De quel côté de l'équateur, donc dans quel sens tournent les
+/// saisons.
+///
+/// C'est le levier le plus rentable de la couverture mondiale : un
+/// calendrier tempéré décalé de six mois décrit correctement
+/// l'Australie, l'Afrique du Sud, l'Argentine, le Chili et la
+/// Nouvelle-Zélande, sans une ligne de données nouvelle.
+enum Hemisphere {
+  north,
+  south;
+
+  /// Décalage à appliquer aux mois d'un calendrier écrit pour le nord.
+  int get monthOffset => this == Hemisphere.south ? 6 : 0;
 }
 
 /// Pays couverts par Kultiva.
@@ -89,7 +158,162 @@ enum Country {
   niger('NE', 'Niger', '🇳🇪', Region.westAfrica, ClimateZone.sahel, 13.5137,
       2.1098, 'Niamey'),
   guinee('GN', 'Guinée', '🇬🇳', Region.westAfrica, ClimateZone.guinean, 9.6412,
-      -13.5784, 'Conakry');
+      -13.5784, 'Conakry'),
+  // ─────────────────────────────────────────────────────────────
+  //  Couverture mondiale — ajoutée le 01/11/2026.
+  //
+  //  `region` choisit la BASE de calendrier (tempérée ou tropicale),
+  //  `zone` l'affine, `hemisphere` la retourne pour le sud. Le contenu
+  //  ouest-africain (noms locaux, FCFA, achat au marché) reste réservé
+  //  à Region.westAfrica : aucun de ces pays ne le reçoit.
+  //
+  //  Les coordonnées sont celles de la capitale, utilisées comme
+  //  position météo de secours quand la géolocalisation est refusée.
+  // ─────────────────────────────────────────────────────────────
+
+  // ─── Europe francophone et voisine ───
+  belgique('BE', 'Belgique', '🇧🇪', Region.france, ClimateZone.temperate,
+      50.8503, 4.3517, 'Bruxelles'),
+  suisse('CH', 'Suisse', '🇨🇭', Region.france, ClimateZone.continental,
+      46.9480, 7.4474, 'Berne'),
+  luxembourg('LU', 'Luxembourg', '🇱🇺', Region.france, ClimateZone.temperate,
+      49.6116, 6.1319, 'Luxembourg'),
+  royaumeUni('GB', 'Royaume-Uni', '🇬🇧', Region.france, ClimateZone.temperate,
+      51.5072, -0.1276, 'Londres'),
+  irlande('IE', 'Irlande', '🇮🇪', Region.france, ClimateZone.temperate,
+      53.3498, -6.2603, 'Dublin'),
+  paysBas('NL', 'Pays-Bas', '🇳🇱', Region.france, ClimateZone.temperate,
+      52.3676, 4.9041, 'Amsterdam'),
+  allemagne('DE', 'Allemagne', '🇩🇪', Region.france, ClimateZone.continental,
+      52.5200, 13.4050, 'Berlin'),
+  autriche('AT', 'Autriche', '🇦🇹', Region.france, ClimateZone.continental,
+      48.2082, 16.3738, 'Vienne'),
+  pologne('PL', 'Pologne', '🇵🇱', Region.france, ClimateZone.continental,
+      52.2297, 21.0122, 'Varsovie'),
+  tchequie('CZ', 'Tchéquie', '🇨🇿', Region.france, ClimateZone.continental,
+      50.0755, 14.4378, 'Prague'),
+  roumanie('RO', 'Roumanie', '🇷🇴', Region.france, ClimateZone.continental,
+      44.4268, 26.1025, 'Bucarest'),
+  suede('SE', 'Suède', '🇸🇪', Region.france, ClimateZone.continental,
+      59.3293, 18.0686, 'Stockholm'),
+  norvege('NO', 'Norvège', '🇳🇴', Region.france, ClimateZone.continental,
+      59.9139, 10.7522, 'Oslo'),
+  danemark('DK', 'Danemark', '🇩🇰', Region.france, ClimateZone.temperate,
+      55.6761, 12.5683, 'Copenhague'),
+  espagne('ES', 'Espagne', '🇪🇸', Region.france, ClimateZone.mediterranean,
+      40.4168, -3.7038, 'Madrid'),
+  portugal('PT', 'Portugal', '🇵🇹', Region.france, ClimateZone.mediterranean,
+      38.7223, -9.1393, 'Lisbonne'),
+  italie('IT', 'Italie', '🇮🇹', Region.france, ClimateZone.mediterranean,
+      41.9028, 12.4964, 'Rome'),
+  grece('GR', 'Grèce', '🇬🇷', Region.france, ClimateZone.mediterranean,
+      37.9838, 23.7275, 'Athènes'),
+  croatie('HR', 'Croatie', '🇭🇷', Region.france, ClimateZone.mediterranean,
+      45.8150, 15.9819, 'Zagreb'),
+  turquie('TR', 'Turquie', '🇹🇷', Region.france, ClimateZone.mediterranean,
+      39.9334, 32.8597, 'Ankara'),
+
+  // ─── Maghreb et Proche-Orient ───
+  maroc('MA', 'Maroc', '🇲🇦', Region.france, ClimateZone.mediterranean,
+      34.0209, -6.8416, 'Rabat'),
+  algerie('DZ', 'Algérie', '🇩🇿', Region.france, ClimateZone.mediterranean,
+      36.7538, 3.0588, 'Alger'),
+  tunisie('TN', 'Tunisie', '🇹🇳', Region.france, ClimateZone.mediterranean,
+      36.8065, 10.1815, 'Tunis'),
+  egypte('EG', 'Égypte', '🇪🇬', Region.tropical, ClimateZone.sahel,
+      30.0444, 31.2357, 'Le Caire'),
+  liban('LB', 'Liban', '🇱🇧', Region.france, ClimateZone.mediterranean,
+      33.8938, 35.5018, 'Beyrouth'),
+
+  // ─── Afrique hors Afrique de l'Ouest ───
+  mauritanie('MR', 'Mauritanie', '🇲🇷', Region.tropical, ClimateZone.sahel,
+      18.0735, -15.9582, 'Nouakchott'),
+  tchad('TD', 'Tchad', '🇹🇩', Region.tropical, ClimateZone.sahel, 12.1348,
+      15.0557, "N'Djaména"),
+  ghana('GH', 'Ghana', '🇬🇭', Region.tropical, ClimateZone.guinean, 5.6037,
+      -0.1870, 'Accra'),
+  nigeria('NG', 'Nigéria', '🇳🇬', Region.tropical, ClimateZone.guinean,
+      9.0765, 7.3986, 'Abuja'),
+  cameroun('CM', 'Cameroun', '🇨🇲', Region.tropical, ClimateZone.guinean,
+      3.8480, 11.5021, 'Yaoundé'),
+  gabon('GA', 'Gabon', '🇬🇦', Region.tropical, ClimateZone.guinean, 0.4162,
+      9.4673, 'Libreville'),
+  congo('CG', 'Congo', '🇨🇬', Region.tropical, ClimateZone.guinean, -4.2634,
+      15.2429, 'Brazzaville', Hemisphere.south),
+  rdCongo('CD', 'République démocratique du Congo', '🇨🇩', Region.tropical,
+      ClimateZone.guinean, -4.4419, 15.2663, 'Kinshasa', Hemisphere.south),
+  rwanda('RW', 'Rwanda', '🇷🇼', Region.tropical, ClimateZone.highland,
+      -1.9441, 30.0619, 'Kigali', Hemisphere.south),
+  kenya('KE', 'Kenya', '🇰🇪', Region.tropical, ClimateZone.highland, -1.2921,
+      36.8219, 'Nairobi', Hemisphere.south),
+  ethiopie('ET', 'Éthiopie', '🇪🇹', Region.tropical, ClimateZone.highland,
+      9.0320, 38.7469, 'Addis-Abeba'),
+  madagascar('MG', 'Madagascar', '🇲🇬', Region.tropical, ClimateZone.sudan,
+      -18.8792, 47.5079, 'Antananarivo', Hemisphere.south),
+  afriqueDuSud('ZA', 'Afrique du Sud', '🇿🇦', Region.france,
+      ClimateZone.mediterranean, -25.7479, 28.2293, 'Pretoria',
+      Hemisphere.south),
+
+  // ─── Outre-mer français ───
+  reunion('RE', 'La Réunion', '🇷🇪', Region.tropical, ClimateZone.sudan,
+      -20.8789, 55.4481, 'Saint-Denis', Hemisphere.south),
+  guadeloupe('GP', 'Guadeloupe', '🇬🇵', Region.tropical, ClimateZone.guinean,
+      16.2650, -61.5510, 'Basse-Terre'),
+  martinique('MQ', 'Martinique', '🇲🇶', Region.tropical, ClimateZone.guinean,
+      14.6042, -61.0667, 'Fort-de-France'),
+  guyane('GF', 'Guyane', '🇬🇫', Region.tropical, ClimateZone.guinean, 4.9224,
+      -52.3135, 'Cayenne'),
+  mayotte('YT', 'Mayotte', '🇾🇹', Region.tropical, ClimateZone.sudan,
+      -12.7806, 45.2278, 'Mamoudzou', Hemisphere.south),
+  nouvelleCaledonie('NC', 'Nouvelle-Calédonie', '🇳🇨', Region.france,
+      ClimateZone.subtropical, -22.2758, 166.4580, 'Nouméa', Hemisphere.south),
+  polynesieFrancaise('PF', 'Polynésie française', '🇵🇫', Region.tropical,
+      ClimateZone.guinean, -17.5516, -149.5585, 'Papeete', Hemisphere.south),
+
+  // ─── Amériques ───
+  canada('CA', 'Canada', '🇨🇦', Region.france, ClimateZone.continental,
+      45.4215, -75.6972, 'Ottawa'),
+  etatsUnis('US', 'États-Unis', '🇺🇸', Region.france, ClimateZone.subtropical,
+      38.9072, -77.0369, 'Washington'),
+  mexique('MX', 'Mexique', '🇲🇽', Region.tropical, ClimateZone.highland,
+      19.4326, -99.1332, 'Mexico'),
+  bresil('BR', 'Brésil', '🇧🇷', Region.tropical, ClimateZone.sudan, -15.7939,
+      -47.8828, 'Brasilia', Hemisphere.south),
+  argentine('AR', 'Argentine', '🇦🇷', Region.france, ClimateZone.subtropical,
+      -34.6037, -58.3816, 'Buenos Aires', Hemisphere.south),
+  chili('CL', 'Chili', '🇨🇱', Region.france, ClimateZone.mediterranean,
+      -33.4489, -70.6693, 'Santiago', Hemisphere.south),
+  perou('PE', 'Pérou', '🇵🇪', Region.tropical, ClimateZone.highland, -12.0464,
+      -77.0428, 'Lima', Hemisphere.south),
+  colombie('CO', 'Colombie', '🇨🇴', Region.tropical, ClimateZone.highland,
+      4.7110, -74.0721, 'Bogota'),
+  uruguay('UY', 'Uruguay', '🇺🇾', Region.france, ClimateZone.subtropical,
+      -34.9011, -56.1645, 'Montevideo', Hemisphere.south),
+  haiti('HT', 'Haïti', '🇭🇹', Region.tropical, ClimateZone.guinean, 18.5944,
+      -72.3074, 'Port-au-Prince'),
+
+  // ─── Asie ───
+  japon('JP', 'Japon', '🇯🇵', Region.france, ClimateZone.subtropical,
+      35.6762, 139.6503, 'Tokyo'),
+  chine('CN', 'Chine', '🇨🇳', Region.france, ClimateZone.continental,
+      39.9042, 116.4074, 'Pékin'),
+  inde('IN', 'Inde', '🇮🇳', Region.tropical, ClimateZone.sudan, 28.6139,
+      77.2090, 'New Delhi'),
+  vietnam('VN', 'Viêt Nam', '🇻🇳', Region.tropical, ClimateZone.guinean,
+      21.0278, 105.8342, 'Hanoï'),
+  thailande('TH', 'Thaïlande', '🇹🇭', Region.tropical, ClimateZone.sudan,
+      13.7563, 100.5018, 'Bangkok'),
+  indonesie('ID', 'Indonésie', '🇮🇩', Region.tropical, ClimateZone.guinean,
+      -6.2088, 106.8456, 'Jakarta', Hemisphere.south),
+  philippines('PH', 'Philippines', '🇵🇭', Region.tropical,
+      ClimateZone.guinean, 14.5995, 120.9842, 'Manille'),
+
+  // ─── Océanie ───
+  australie('AU', 'Australie', '🇦🇺', Region.france, ClimateZone.mediterranean,
+      -35.2809, 149.1300, 'Canberra', Hemisphere.south),
+  nouvelleZelande('NZ', 'Nouvelle-Zélande', '🇳🇿', Region.france,
+      ClimateZone.temperate, -41.2866, 174.7756, 'Wellington',
+      Hemisphere.south);
 
   final String isoCode;
   final String label;
@@ -100,10 +324,23 @@ enum Country {
   final double capitalLon;
   final String capitalName;
 
-  const Country(this.isoCode, this.label, this.flag, this.region, this.zone,
-      this.capitalLat, this.capitalLon, this.capitalName);
+  /// Au nord par défaut : les neuf premiers pays y sont tous, et un
+  /// paramètre optionnel évite de réécrire leurs déclarations.
+  final Hemisphere hemisphere;
 
+  const Country(this.isoCode, this.label, this.flag, this.region, this.zone,
+      this.capitalLat, this.capitalLon, this.capitalName,
+      [this.hemisphere = Hemisphere.north]);
+
+  /// ⚠️ Les huit pays d'Afrique de l'Ouest, et eux seuls. Depuis
+  /// l'ouverture mondiale, `region == Region.westAfrica` ne suffit
+  /// plus : la base tropicale est partagée, le contenu ouest-africain
+  /// ne l'est pas.
   bool get isWestAfrica => region == Region.westAfrica;
+
+  /// Vrai quand le calendrier suit les pluies. À préférer à
+  /// [isWestAfrica] dès que la question est climatique.
+  bool get isTropical => region.isTropicalBase;
 
   /// Pays francophones d'Afrique de l'Ouest proposés dans les sélecteurs.
   static List<Country> get westAfricanCountries =>
@@ -148,7 +385,52 @@ enum Country {
   /// chaque pays (le gradient AO va du sahélien au nord au guinéen sur
   /// la côte).
   ClimateZone zoneAt(double? latitude) {
-    if (latitude == null || !isWestAfrica) return zone;
+    if (latitude == null) return zone;
+    // Les grands pays étalés sur plusieurs climats, ajoutés le
+    // 01/11/2026. Ailleurs, la zone du pays suffit : la Belgique n'a
+    // pas de gradient qui change un calendrier de semis.
+    switch (this) {
+      case Country.etatsUnis:
+        // Du Minnesota continental à la Floride subtropicale, en
+        // passant par la Californie méditerranéenne — qu'on ne peut
+        // pas distinguer par la seule latitude, d'où le choix du
+        // subtropical au sud.
+        if (latitude > 42.0) return ClimateZone.continental;
+        return ClimateZone.subtropical;
+      case Country.chine:
+        if (latitude > 34.0) return ClimateZone.continental;
+        return ClimateZone.subtropical;
+      case Country.australie:
+        // Le nord est tropical (Darwin), le sud méditerranéen. Au sud
+        // de l'équateur, « plus au nord » veut dire plus chaud.
+        if (latitude > -24.0) return ClimateZone.sudan;
+        return ClimateZone.mediterranean;
+      case Country.bresil:
+        // Amazonie humide au nord, savane au centre, sud subtropical.
+        if (latitude < -22.0) return ClimateZone.subtropical;
+        if (latitude > -5.0) return ClimateZone.guinean;
+        return ClimateZone.sudan;
+      case Country.argentine:
+        if (latitude < -38.0) return ClimateZone.temperate;
+        return ClimateZone.subtropical;
+      case Country.chili:
+        if (latitude < -38.0) return ClimateZone.temperate;
+        return ClimateZone.mediterranean;
+      case Country.inde:
+        if (latitude > 28.0) return ClimateZone.sudan;
+        return ClimateZone.guinean;
+      case Country.mexique:
+        if (latitude < 19.0) return ClimateZone.guinean;
+        return ClimateZone.highland;
+      case Country.maroc:
+      case Country.algerie:
+        // Au sud de l'Atlas, c'est le désert, pas la Méditerranée.
+        if (latitude < 31.0) return ClimateZone.sahel;
+        return ClimateZone.mediterranean;
+      default:
+        break;
+    }
+    if (!isWestAfrica) return zone;
     switch (this) {
       case Country.senegal:
         // Casamance (sud, < 13,3°N) nettement plus humide que Dakar.
@@ -174,8 +456,8 @@ enum Country {
       case Country.guinee:
         // Haute-Guinée (est/nord, > 10,5°N) soudanienne ; reste guinéen.
         return latitude > 10.5 ? ClimateZone.sudan : ClimateZone.guinean;
-      case Country.france:
-        return ClimateZone.temperate;
+      default:
+        return zone;
     }
   }
 }

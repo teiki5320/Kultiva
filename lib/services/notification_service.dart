@@ -6,7 +6,6 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
-import '../models/region_data.dart';
 import '../models/vegetable.dart';
 import '../utils/climate.dart';
 import '../utils/heatwave_tips.dart';
@@ -86,9 +85,14 @@ class NotificationService {
       final name = await FlutterTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(name));
     } catch (_) {
-      final fallback = PrefsService.instance.region.value == Region.westAfrica
-          ? 'Africa/Abidjan'
-          : 'Europe/Paris';
+      // Ne sert que si le téléphone refuse de dire son fuseau. Paris
+      // pour tout le monde décalait les rappels d'un Japonais de huit
+      // heures ; on déduit plutôt un fuseau grossier de la longitude
+      // de la capitale du pays choisi.
+      //
+      // ⚠️ Le signe des zones `Etc/GMT` est inversé dans la base
+      // IANA : `Etc/GMT-9` vaut UTC+9.
+      final fallback = _fuseauDeSecours();
       try {
         tz.setLocalLocation(tz.getLocation(fallback));
       } catch (_) {
@@ -342,13 +346,23 @@ class NotificationService {
   /// Alerte « premières pluies » — Afrique de l'Ouest uniquement.
   ///
   /// Après une longue période sèche, si un vrai épisode pluvieux
+  /// Fuseau approximatif déduit de la longitude de la capitale, pour
+  /// les cas où le téléphone ne sait pas dire le sien.
+  static String _fuseauDeSecours() {
+    final pays = PrefsService.instance.country.value;
+    if (pays == null) return 'Europe/Paris';
+    final heures = (pays.capitalLon / 15).round().clamp(-12, 14);
+    if (heures == 0) return 'Etc/GMT';
+    return heures > 0 ? 'Etc/GMT-$heures' : 'Etc/GMT+${-heures}';
+  }
+
   /// (>= 10 mm cumulés) est prévu dans les 3 prochains jours, on
   /// prévient : c'est LE signal de semis de l'hivernage (niébé, maïs,
   /// gombo, arachide…). Throttle : max 1 fois tous les 30 jours.
   static Future<void> checkAndNotifyFirstRains() async {
     if (kIsWeb || !_initialized) return;
     if (!PrefsService.instance.notifications.value) return;
-    if (PrefsService.instance.region.value != Region.westAfrica) return;
+    if (!PrefsService.instance.region.value.isTropicalBase) return;
 
     final last = PrefsService.instance.lastFirstRainsNotificationCheck;
     if (last != null && DateTime.now().difference(last).inDays < 30) {

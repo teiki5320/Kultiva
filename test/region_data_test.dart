@@ -5,13 +5,24 @@ import 'package:kultiva/models/region_data.dart';
 
 void main() {
   group('Region enum', () {
-    test('contient exactement 2 valeurs', () {
-      expect(Region.values.length, equals(2));
-    });
-
-    test('les valeurs sont france et westAfrica', () {
+    test('trois bases : tempérée, ouest-africaine, tropicale', () {
+      expect(Region.values.length, equals(3));
       expect(Region.values, contains(Region.france));
       expect(Region.values, contains(Region.westAfrica));
+      expect(Region.values, contains(Region.tropical));
+    });
+
+    test('les deux bases tropicales se reconnaissent comme telles', () {
+      expect(Region.westAfrica.isTropicalBase, isTrue);
+      expect(Region.tropical.isTropicalBase, isTrue);
+      expect(Region.france.isTropicalBase, isFalse);
+    });
+
+    test('les identifiants persistés ne changent pas', () {
+      // Ils sont écrits dans les préférences des installations
+      // existantes : les renommer ferait perdre sa région à chacun.
+      expect(Region.france.id, 'france');
+      expect(Region.westAfrica.id, 'west_africa');
     });
 
     test('chaque région a un label non vide', () {

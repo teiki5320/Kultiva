@@ -84,15 +84,6 @@ class _SowScreenState extends State<SowScreen> {
     if (mounted) setState(() => _loadingWeather = false);
   }
 
-  List<RegionData> _dataFor(Region region) {
-    switch (region) {
-      case Region.france:
-        return regionalCalendar(region);
-      case Region.westAfrica:
-        return regionalCalendar(region,
-            zone: PrefsService.instance.effectiveZone);
-    }
-  }
 
   Vegetable get _vegetableOfTheDay => vegetableOfTheDay(DateTime.now());
 
@@ -141,8 +132,8 @@ class _SowScreenState extends State<SowScreen> {
       valueListenable: PrefsService.instance.region,
       builder: (context, region, _) {
         final season =
-            Season.of(month, region, zone: PrefsService.instance.effectiveZone);
-        final data = _dataFor(region);
+            Season.current(month);
+        final data = currentCalendar();
 
         final toSow = <Vegetable>[];
         final toHarvest = <Vegetable>[];

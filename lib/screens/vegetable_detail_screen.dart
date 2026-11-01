@@ -91,15 +91,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     );
   }
 
-  List<RegionData> _dataFor(Region region) {
-    switch (region) {
-      case Region.france:
-        return regionalCalendar(region);
-      case Region.westAfrica:
-        return regionalCalendar(region,
-            zone: PrefsService.instance.effectiveZone);
-    }
-  }
 
   RegionData? _findRegionData(List<RegionData> list, String vegId) {
     for (final d in list) {
@@ -195,7 +186,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
   }
 
   Widget _buildPage(Vegetable vegetable, Region region) {
-    final data = _findRegionData(_dataFor(region), vegetable.id);
+    final data = _findRegionData(currentCalendar(), vegetable.id);
     return ReadableWidth(
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
