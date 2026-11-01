@@ -112,6 +112,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   ///   kultiva://poussidex/badges    → section Badges
   ///   kultiva://poussidex/challenges→ section Défis
   ///   kultiva://tutos               → onglet Tutos
+  ///   kultiva://photos              → onglet Photo
   ///   kultiva://tuto/`<nom>`          → remplace la fiche par une autre
   void _handleDeepLink(Uri uri) {
     final host = uri.host;
@@ -148,6 +149,11 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
       case 'tutos':
         Navigator.of(context).pop();
         RootTabs.tabIndex.value = 3;
+        return;
+      case 'photos':
+      case 'photo':
+        Navigator.of(context).pop();
+        RootTabs.tabIndex.value = 4;
         return;
       case 'tuto':
         if (segments.isNotEmpty) {

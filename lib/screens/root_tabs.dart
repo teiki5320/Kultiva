@@ -5,22 +5,30 @@ import '../services/audio_service.dart';
 import '../services/notification_service.dart';
 import '../services/prefs_service.dart';
 import 'home/mes_jardins_screen.dart';
+import 'home/photos/photos_screen.dart';
 import 'home/sow_screen.dart';
 import 'home/tutos_screen.dart';
 import 'home/vegetables_screen.dart';
 
-/// Conteneur des 4 onglets principaux de Kultiva.
+/// Conteneur des 5 onglets principaux de Kultiva.
 /// Paramètres accessible via icône engrenage en haut à droite.
 class RootTabs extends StatefulWidget {
   const RootTabs({super.key});
 
-  /// Onglet actif (0=Home, 1=Cahier, 2=Étal, 3=Tutos). Permet aux
+  /// Onglet actif (0=Home, 1=Cahier, 2=Étal, 3=Tutos, 4=Photo).
+  /// Permet aux
   /// deep-links des tutos HTML (`kultiva://cahier`, etc.) de basculer
   /// sur l'onglet cible.
   ///
   /// Ordre changé le 30/10/2026 : le cahier de culture passe en
   /// deuxième position, devant l'Étal. C'est l'écran qu'on ouvre tous
   /// les jours ; le catalogue, on le consulte.
+  ///
+  /// Photo est arrivé en dernier (01/11/2026) et pas au milieu,
+  /// volontairement : les tutos HTML naviguent en posant un index ici,
+  /// et insérer un onglet avant les autres les aurait tous décalés
+  /// d'un cran — « Étal » aurait ouvert le cahier, sans que rien
+  /// n'échoue visiblement.
   static final ValueNotifier<int> tabIndex = ValueNotifier<int>(0);
 
   @override
@@ -90,10 +98,16 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
       const MesJardinsScreen(),
       const VegetablesScreen(),
       const TutosScreen(),
+      const PhotosScreen(),
     ];
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
       bottomNavigationBar: BottomNavigationBar(
+        // Au-delà de trois onglets, Material bascule en mode
+        // « shifting » et masque les libellés non sélectionnés. On les
+        // garde tous : « Cahier » et « Étal » ne se devinent pas à
+        // l'icône.
+        type: BottomNavigationBarType.fixed,
         currentIndex: _index,
         onTap: (i) {
           AudioService.instance.play(Sfx.tap);
@@ -120,6 +134,11 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
             icon: Icon(Icons.school_outlined),
             activeIcon: Icon(Icons.school),
             label: 'Tutos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo_camera_outlined),
+            activeIcon: Icon(Icons.photo_camera),
+            label: 'Photo',
           ),
         ],
       ),
