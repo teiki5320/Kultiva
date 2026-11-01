@@ -2,7 +2,15 @@
 
 Refonte de tous les visuels du catalogue dans le style kawaii peint,
 décidée le 30 octobre 2026. **Ce dossier n'est pas déclaré dans
-`pubspec.yaml` : rien d'ici n'est embarqué dans l'app.**
+`pubspec.yaml` : rien d'ici n'est embarqué dans l'app** — sauf son
+sous-dossier `detoure/`.
+
+**`detoure/` est déclaré et embarqué (01/11/2026).** Ce sont les mêmes
+légumes, détourés sur fond transparent et réduits à 200 px : le lecteur
+de recettes les fait jouer dans ses scènes animées. Ils se refont avec
+`python3 tool/detoure_legumes.py [id…]` (rembg, modèle
+`isnet-general-use`). Un légume peint ici sans sa version détourée
+fait échouer `test/recipe_player_test.dart`.
 
 Pourquoi : mélanger ces icônes avec les 122 PNG plats actuels donnerait
 un catalogue mi-plat mi-peint. On bascule quand la série est complète.

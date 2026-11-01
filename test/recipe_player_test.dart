@@ -110,4 +110,27 @@ void main() {
       }
     });
   });
+
+  group('le légume dans les scènes', () {
+    test('le lecteur lit le champ vegetable du JSON', () {
+      expect(template, contains('R.vegetable'));
+    });
+
+    test('chaque légume peint a sa version détourée', () {
+      // recipe_player_screen.dart charge detoure/<id>.webp. Un légume
+      // peint sans version détourée jouerait en emoji sans prévenir.
+      final peints = Directory('assets/images/vegetables_kawaii')
+          .listSync()
+          .whereType<File>()
+          .map((f) => f.uri.pathSegments.last)
+          .where((n) => n.endsWith('.webp') && !n.startsWith('_'));
+      expect(peints, isNotEmpty);
+      for (final nom in peints) {
+        expect(
+            File('assets/images/vegetables_kawaii/detoure/$nom').existsSync(),
+            isTrue,
+            reason: '$nom n\'a pas de version détourée');
+      }
+    });
+  });
 }

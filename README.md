@@ -10,7 +10,7 @@ Une app Flutter de jardinage au style pastel kawaii japonais, en **français et 
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
 - 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
-- 🫙 **Onglet Garder ta récolte** : un jardinier n'a pas une courgette, il en a quinze d'un coup. Chaque légume a **trois conservations** — bocal, congélation, séchage, lacto-fermentation, confiture, huile, vinaigre — chacune avec sa durée de garde (« 1 an au placard », « 8 mois au congélateur ») et son pas-à-pas animé. 376 recettes en tout, dont 88 déroulées étape par étape ; les plats à manger le jour même sont dessous, et les légumes de ton jardin passent en tête
+- 🫙 **Onglet Garder ta récolte** : un jardinier n'a pas une courgette, il en a quinze d'un coup. Chaque légume a **trois conservations** — bocal, congélation, séchage, lacto-fermentation, confiture, huile, vinaigre — chacune avec sa durée de garde (« 1 an au placard », « 8 mois au congélateur ») et son pas-à-pas animé. 736 recettes en tout, dont 448 déroulées étape par étape ; les plats à manger le jour même sont dessous, et les légumes de ton jardin passent en tête
 - 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
 - 📖 **Journal du jardin** : plantations, arrosages, récoltes et photos inscrits à leur date, jour par jour, dans le cahier de culture
 - 🌦️ **Météo + alertes d'arrosage** géolocalisées (via Open-Meteo, sans clé d'API)
@@ -51,7 +51,7 @@ Le pays se choisit au premier lancement (avec recherche) et se modifie
 - 🇫🇷 **Français** — la source, tout y est
 - 🇬🇧 **Anglais** — l'interface et les noms des 130 cultures
 
-Les 33 tutos, les 376 recettes, les conseils, les maladies, les badges
+Les 33 tutos, les 736 recettes, les conseils, les maladies, les badges
 et les défis restent en français. Le réglage **Langue** des paramètres
 le dit, et permet de revenir au français même sur un téléphone
 anglophone.

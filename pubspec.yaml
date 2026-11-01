@@ -138,6 +138,10 @@ flutter:
     - assets/images/badges/
     - assets/images/accessories/
     - assets/images/vegetables/
+    # Légumes peints et détourés : le lecteur de recettes les fait jouer
+    # dans ses scènes animées (envoyés en data:URI, voir
+    # recipe_player_screen.dart). Seul ce sous-dossier est embarqué.
+    - assets/images/vegetables_kawaii/detoure/
     - assets/images/backgrounds/
     - assets/tutos/
     # Un seul template HTML, nourri par les données : le lecteur

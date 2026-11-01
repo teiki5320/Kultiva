@@ -88,6 +88,21 @@ void main() {
     });
   });
 
+  group('la durée affichée', () {
+    test('se lit en minutes, heures, jours ou semaines', () {
+      // Les séchages et fermentations comptent leur attente : un mois
+      // affiché « 30240 min » ne se lit pas.
+      expect(dureeLisible(45), '45 min');
+      expect(dureeLisible(60), '1 h');
+      expect(dureeLisible(90), '1 h 30');
+      expect(dureeLisible(605), '10 h 05');
+      expect(dureeLisible(4320), '3 jours');
+      expect(dureeLisible(20160), '2 semaines');
+      expect(dureeLisible(30240), '3 semaines');
+      expect(dureeLisible(129600), '3 mois');
+    });
+  });
+
   group('les chiffres annoncés dans les fiches', () {
     // Les fiches ont annoncé « 340 recettes, dont huit animées »
     // pendant une journée alors qu'il y en avait 369 et 7. Ce test
@@ -96,7 +111,7 @@ void main() {
     test('le compte total est bien celui des fiches', () {
       final total =
           recipesByVegetable.values.fold<int>(0, (n, l) => n + l.length);
-      expect(total, 376,
+      expect(total, 736,
           reason: 'Si tu ajoutes des recettes, mets à jour README.md, '
               'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
     });
@@ -106,7 +121,7 @@ void main() {
           .expand((l) => l)
           .where((r) => r.isAnimated)
           .length;
-      expect(animees, 88,
+      expect(animees, 448,
           reason: 'Si tu écris de nouveaux pas-à-pas, mets à jour README.md, '
               'docs/MARKETING.md et CLAUDE.md, puis ce chiffre.');
     });
@@ -185,14 +200,15 @@ void main() {
     });
   });
 
-  group('les légumes de référence (tomate, fraise, mâche)', () {
+  group('le top 3 de chaque légume est fait de conservations', () {
     // Décision de Jean (01/11/2026) : le top 3 est fait de
     // **conservations**. Un jardinier n'a pas un légume, il en a quinze
     // d'un coup, et c'est le seul problème qu'un livre de cuisine ne
-    // résout pas. Ces trois légumes servent de modèle aux 120 autres.
+    // résout pas. Tomate, fraise et mâche ont servi de modèle ; depuis
+    // le 01/11/2026 les 123 légumes suivent la même règle.
     const reference = <String>['tomate', 'fraise', 'mache'];
 
-    for (final id in reference) {
+    for (final id in recipesByVegetable.keys) {
       test('$id : les trois du top sont des conservations', () {
         for (final r in top3For(id)) {
           expect(r.isPreservation, isTrue,

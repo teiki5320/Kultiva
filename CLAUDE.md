@@ -23,7 +23,7 @@ depuis le 01/11/2026 **73 pays sur six continents**. Elle propose :
 - un **onglet « Garder ta récolte »** : trois **conservations** par
   légume (bocal, congélation, séchage, lacto-fermentation, confiture,
   huile, vinaigre), chacune avec sa durée de garde et son pas-à-pas
-  animé hors ligne. 376 recettes, 88 déroulées étape par étape ; les
+  animé hors ligne. 736 recettes, 448 déroulées étape par étape ; les
   plats à manger le jour même sont dessous. Favoris et « déjà
   cuisiné » par recette ;
 - des **alertes météo + arrosage + canicule** basées sur la géolocalisation et
@@ -184,7 +184,7 @@ Kultiva/
 │                           # utilisé par l'app (aucun backend)
 ├── assets/
 │   ├── recipes/            # recipe_player.html — UN template pour les
-│   │                       # 376 recettes, nourri par du JSON injecté
+│   │                       # 736 recettes, nourri par du JSON injecté
 │   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
 │   │                       # backgrounds (4 time-of-day), cards, onboarding,
@@ -1039,11 +1039,33 @@ que la récolte pourrit.
 le top 3 et vivent sous « N recettes à manger tout de suite », replié.
 Un test vérifie que chacun des trois légumes en garde au moins un.
 
-⚠️ **120 légumes attendent le même traitement.** C'est le chantier à
-reprendre, légume par légume, sur le modèle de la tomate : choisir
-trois méthodes parmi les neuf, puis écrire les étapes avec les
-paramètres propres à la culture (temps de blanchiment, taux de sel,
-ratio de sucre).
+✅ **Les 123 légumes ont leurs trois conservations (01/11/2026).** Les
+360 nouvelles ont été écrites sur le modèle de la tomate, de la fraise
+et de la mâche, et placées **en tête** de chaque liste : les anciennes
+recettes descendent sous « à manger tout de suite ». Le test du top 3
+(trois conservations, deux méthodes au moins, une rapide, des étapes
+complètes) s'applique désormais à **tous** les légumes, pas aux trois
+de référence.
+
+**Les règles de sécurité qu'elles suivent**, à garder pour toute
+conservation ajoutée :
+
+- **jamais de bocal stérilisé pour un légume peu acide** (haricot,
+  carotte, courge, champignon, oignon, ail…) : risque de botulisme
+  sans autoclave. Le bocal stérilisé est réservé aux fruits, à la
+  tomate, à la rhubarbe, aux sirops ;
+- vinaigre à 6 % minimum (8 % dans les recettes), **au moins autant de
+  vinaigre que d'eau** ; pickles gardés au réfrigérateur ;
+- saumure à **3 %** (30 g de sel par litre) ou 20 g par kg en sel sec ;
+- tout ce qui est **dans l'huile** se garde au réfrigérateur ;
+- manioc, taro et igname sont toujours **cuits** avant d'être mangés.
+
+**Le temps d'une conservation compte son attente à température
+ambiante** (fermentation, séchage, infusion), pas le temps passé au
+réfrigérateur ou au congélateur : des piments séchés en guirlande,
+c'est un mois ; des fraises congelées, un quart d'heure. `dureeLisible()` l'affiche en « 3
+semaines » plutôt qu'en « 30240 min ». Une étape n'a de minuteur que
+jusqu'à 12 h ; au-delà, son texte dit la durée.
 
 ### Le mécanisme du top 3 (inchangé)
 
@@ -1080,11 +1102,11 @@ recette rapide (≤ 15 min), une de fond (≥ 55 min), et le surplus à
 conserver. Trois recettes qui prennent toutes une heure ne servent à
 rien à quelqu'un qui rentre du travail.
 
-⚠️ **Les 121 autres légumes attendent le même traitement.** 288
-recettes n'ont pas encore d'étapes : elles s'ouvrent en fiche courte,
-qui dit la vérité au lieu d'afficher un lecteur vide. L'ordre de leur
-liste n'a pas encore été arbitré comme un vrai top 3 — c'est le travail
-à reprendre, légume par légume, sur le modèle de la tomate.
+**Les plats du jour même** : 288 recettes n'ont pas encore d'étapes.
+Elles s'ouvrent en fiche courte, qui dit la vérité au lieu d'afficher
+un lecteur vide. Elles ne sont plus dans le top 3 (fait de
+conservations) ; les écrire en pas-à-pas reste possible, légume par
+légume, sans urgence.
 
 ⚠️ **Les chiffres sont verrouillés par deux tests** (`recipes_test.dart`) :
 ajouter une recette fait échouer la suite jusqu'à ce que README,
@@ -1114,6 +1136,32 @@ journée alors qu'il y en avait 369 et 7.
     ⚠️ **Leçon générale** : un asset qu'on remplit par substitution doit
     avoir un test qui fait la substitution. Le même piège attend les 33
     tutos si l'un d'eux devient paramétrable.
+
+19. **Le lecteur de recettes a été refait le 01/11/2026 (« Polaroïd »)**
+    — choisi par Jean parmi seize maquettes. Toujours **un seul
+    fichier**, `assets/recipes/recipe_player.html`, sans réseau, Nunito
+    embarquée en base64, thème clair ou sombre lu dans le JSON.
+
+    - Chaque étape est une **carte Polaroïd** (ruban adhésif vert,
+      légende), avec au centre une **scène animée** en SVG/CSS : neuf
+      gestes (laver, couper, mixer, cuire, attendre, saler, verser,
+      mettre en bocal, congeler) choisis d'après l'emoji et le verbe de
+      l'étape.
+    - **Le légume joue dans la scène.** Dart envoie son image peinte et
+      détourée dans le champ `vegetable` du JSON (`{name, emoji,
+      image}` en data:URI, ~7 Ko) ; sans image, c'est son emoji.
+    - Minuteurs réels, qui continuent quand on change d'étape, avec bip
+      et vibration ; l'écran reste allumé.
+    - Les sources de construction (moteur, scènes, variantes) ne sont
+      pas dans le dépôt : le fichier livré **est** la source. Le
+      modifier à la main, puis relancer `test/recipe_player_test.dart`.
+
+    **Les légumes détourés** vivent dans
+    `assets/images/vegetables_kawaii/detoure/` (130 WebP, 200 px, fond
+    transparent, 1,5 Mo), produits par `tool/detoure_legumes.py`
+    (rembg, modèle `isnet-general-use`). Un test exige qu'à chaque
+    légume peint corresponde sa version détourée : **en ajoutant un
+    légume, relancer l'outil** avec son id.
 
 ### Voir un écran HTML sans le simulateur
 

@@ -115,6 +115,27 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
     await _charger(c, sombre: Theme.of(context).brightness == Brightness.dark);
   }
 
+  /// Images déjà lues, par légume : recharger la page pour changer le
+  /// nombre de convives ne relit pas l'asset.
+  static final Map<String, String?> _images = <String, String?>{};
+
+  /// Le légume peint et détouré, en data:URI. La WebView n'a pas accès
+  /// aux assets Flutter, et le lecteur doit rester un seul document
+  /// hors ligne : l'image voyage donc dans le JSON (7 Ko en moyenne).
+  Future<String?> _imageDuLegume(String id) async {
+    if (_images.containsKey(id)) return _images[id];
+    String? uri;
+    try {
+      final data = await rootBundle
+          .load('assets/images/vegetables_kawaii/detoure/$id.webp');
+      uri = 'data:image/webp;base64,'
+          '${base64Encode(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes))}';
+    } catch (_) {
+      uri = null;
+    }
+    return _images[id] = uri;
+  }
+
   Future<void> _charger(WebViewController c, {required bool sombre}) async {
     try {
       final template =
@@ -122,11 +143,20 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
       final r = widget.recipe;
       final ingredients =
           scaleIngredients(r.ingredients, _partsEcrites, _parts);
+      final legume = vegetableById(widget.vegetableId);
+      final image = await _imageDuLegume(widget.vegetableId);
       final json = jsonEncode(<String, dynamic>{
         'name': r.name,
         'emoji': r.emoji,
         'subtitle': _sousTitre(r),
         'theme': sombre ? 'dark' : 'light',
+        // Le légume joue dans les scènes animées du lecteur. Sans
+        // image (légume inconnu, fichier absent), c'est son emoji.
+        'vegetable': <String, dynamic>{
+          'name': legume.name,
+          'emoji': legume.emoji,
+          if (image != null) 'image': image,
+        },
         'ingredients': ingredients,
         'steps': r.steps
             .map((s) => <String, dynamic>{
@@ -151,7 +181,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
   /// contredirait les quantités affichées juste en dessous.
   String _sousTitre(Recipe r) {
     final bouts = <String>[
-      if (r.minutes != null) '${r.minutes} min',
+      if (r.minutes != null) dureeLisible(r.minutes!),
       '$_parts pers.',
       // Pour une conservation, la durée de garde compte plus que le
       // temps de préparation : c'est elle qu'on vient chercher.

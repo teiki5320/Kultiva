@@ -39,7 +39,7 @@ physiques, dons.
 - 📅 **Le calendrier de ta région** : quoi semer et récolter chaque mois, et une vue annuelle d'une ligne par légume — douze segments colorés, sans défilement latéral (refondue le 31 octobre 2026).
 - 🌍 **73 pays, six continents** (depuis le 1er novembre 2026) : calendriers par pays et zone climatique, hémisphère sud géré, outre-mer français couvert. L'Afrique de l'Ouest garde son contenu propre — noms locaux, maraîchage et prix en FCFA.
 - 🗣️ **Français et anglais** : interface et noms des 130 cultures traduits.
-- 🫙 **Onglet Garder ta récolte** : la vraie question du jardinier n'est pas « que cuisiner ce soir » mais « que faire de quinze courgettes ». Trois conservations par légume — bocal stérilisé, congélation, séchage, lacto-fermentation, confiture, huile, vinaigre — chacune avec sa durée de garde et son pas-à-pas animé. 376 recettes, 88 déroulées étape par étape. Un filtre « c'est la saison », des favoris, et un « déjà cuisiné » qui restent sur l'appareil.
+- 🫙 **Onglet Garder ta récolte** : la vraie question du jardinier n'est pas « que cuisiner ce soir » mais « que faire de quinze courgettes ». Trois conservations par légume — bocal stérilisé, congélation, séchage, lacto-fermentation, confiture, huile, vinaigre — chacune avec sa durée de garde et son pas-à-pas animé. 736 recettes, 448 déroulées étape par étape. Un filtre « c'est la saison », des favoris, et un « déjà cuisiné » qui restent sur l'appareil.
 - 📴 **Tout hors ligne, sans compte** : 169 fiches, 33 tutoriels, potager, journal et défis photo. Aucune inscription, aucun serveur, aucune donnée qui sort du téléphone.
 
 ## Canaux
