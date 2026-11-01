@@ -6,9 +6,12 @@ import '../../../data/names_en.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/plant_advice.dart';
 import '../../../models/plantation.dart';
+import '../../../models/stage_hypothesis.dart';
 import '../../../models/vegetable.dart';
 import '../../../services/advice_service.dart';
+import '../../../services/plant_vision_service.dart';
 import '../../../services/plantation_service.dart';
+import '../../../services/stage_vision.dart';
 import '../../../services/weather_service.dart';
 import '../../../theme/app_theme.dart';
 
@@ -17,11 +20,16 @@ import '../../../theme/app_theme.dart';
 /// Elle répond à la question qu'on se pose en photographiant son
 /// plant : « où il en est, et qu'est-ce que je fais maintenant ? »
 ///
-/// ⚠️ **L'app ne lit pas encore la photo.** Le stade est déduit de la
-/// date de plantation, et l'utilisateur peut le corriger d'un geste.
-/// La fiche le dit noir sur blanc plutôt que de laisser croire à une
-/// reconnaissance qui n'existe pas — et chaque correction construit le
-/// jeu d'exemples dont un futur modèle aura besoin.
+/// Le stade part de la date de plantation, et la photo peut le
+/// corriger : un étiqueteur embarqué ([PlantVisionService]) y cherche
+/// une fleur, un fruit, du feuillage, et [StageVision] croise ce qu'il
+/// a vu avec ce que la date annonçait.
+///
+/// ⚠️ **La lecture ne décide jamais à la place de l'utilisateur.** Elle
+/// propose, avec un bouton pour accepter ; le stade retenu ne change
+/// que si quelqu'un le touche. Le modèle est générique, il ne sait pas
+/// reconnaître une espèce ni une maladie, et un conseil de culture
+/// donné à tort est pire qu'un conseil absent.
 Future<void> showAdviceSheet(
   BuildContext context, {
   required Plantation plantation,
@@ -60,10 +68,45 @@ class _AdviceSheetState extends State<AdviceSheet> {
   PlantAdvice? _advice;
   bool _loading = true;
 
+  /// Ce que l'étiqueteur a lu sur la photo. Lu **une seule fois** : le
+  /// fichier ne change pas, et l'appel natif n'est pas gratuit.
+  StageHypothesis? _vu;
+  bool _lectureEnCours = false;
+
+  /// Le croisement photo ⇄ date, recalculé à chaque reconstruction.
+  ///
+  /// C'est une fonction pure et bon marché, donc on la rejoue plutôt
+  /// que de la stocker : après une correction, la phrase doit suivre le
+  /// nouveau stade au lieu de parler de l'ancien.
+  VisionReading? get _lecture {
+    final vu = _vu;
+    final a = _advice;
+    if (vu == null || a == null) return null;
+    return StageVision.reconcile(hypothesis: vu, attendu: a.phase);
+  }
+
   @override
   void initState() {
     super.initState();
     _build();
+    _lirePhoto();
+  }
+
+  /// Lit la photo en arrière-plan.
+  ///
+  /// La fiche s'affiche sans attendre : une lecture qui échoue ou qui
+  /// traîne ne doit jamais retenir les conseils, qui sont utiles sans
+  /// elle.
+  Future<void> _lirePhoto() async {
+    final path = widget.photoPath;
+    if (path == null) return;
+    setState(() => _lectureEnCours = true);
+    final vu = await PlantVisionService.instance.read(path);
+    if (!mounted) return;
+    setState(() {
+      _vu = vu;
+      _lectureEnCours = false;
+    });
   }
 
   Future<void> _build() async {
@@ -134,10 +177,19 @@ class _AdviceSheetState extends State<AdviceSheet> {
                     advice: a,
                     photoPath: widget.photoPath,
                   ),
+                  if (widget.photoPath != null) ...<Widget>[
+                    const SizedBox(height: 16),
+                    _LecturePhoto(
+                      lecture: _lecture,
+                      enCours: _lectureEnCours,
+                      onAccepter: _corriger,
+                    ),
+                  ],
                   const SizedBox(height: 18),
                   _ChoixDuStade(
                     courant: a.phase,
                     observe: a.phaseObserved,
+                    photoLue: _vu != null,
                     onChanged: _corriger,
                   ),
                   const SizedBox(height: 18),
@@ -233,13 +285,31 @@ class _Entete extends StatelessWidget {
 class _ChoixDuStade extends StatelessWidget {
   final GrowthPhase courant;
   final bool observe;
+
+  /// Vrai quand l'étiqueteur a rendu une lecture de la photo : le
+  /// sous-titre ne doit alors plus dire que l'app ne la lit pas.
+  final bool photoLue;
   final ValueChanged<GrowthPhase> onChanged;
 
   const _ChoixDuStade({
     required this.courant,
     required this.observe,
     required this.onChanged,
+    this.photoLue = false,
   });
+
+  String get _sousTitre {
+    if (observe) {
+      return 'C\'est toi qui l\'as indiqué. Touche un autre stade pour '
+          'corriger.';
+    }
+    if (photoLue) {
+      return 'Estimé d\'après la date de plantation. La photo ne sert '
+          'qu\'à proposer — c\'est toi qui tranches.';
+    }
+    return 'Estimé d\'après la date de plantation. Corrige si ce n\'est '
+        'pas ça.';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,11 +322,7 @@ class _ChoixDuStade extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          observe
-              ? 'C\'est toi qui l\'as indiqué. Touche un autre stade pour '
-                  'corriger.'
-              : 'Estimé d\'après la date de plantation — Kultiva ne lit '
-                  'pas encore la photo. Corrige si ce n\'est pas ça.',
+          _sousTitre,
           style: const TextStyle(
             fontSize: 12,
             height: 1.35,
@@ -378,6 +444,136 @@ class _Section extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Ce que l'étiqueteur a lu sur la photo, et le bouton pour l'accepter.
+///
+/// Trois comportements, selon ce que la lecture vaut :
+///
+/// - **accord** : une ligne discrète, sans bouton. Il n'y a rien à
+///   décider, le dire suffit.
+/// - **suggestion / désaccord** : la phrase et un bouton. Le stade ne
+///   bouge que si l'utilisateur appuie.
+/// - **rien vu / indécis** : la phrase, en gris, sans bouton. Un modèle
+///   qui hésite doit se taire, pas deviner.
+class _LecturePhoto extends StatelessWidget {
+  final VisionReading? lecture;
+  final bool enCours;
+  final ValueChanged<GrowthPhase> onAccepter;
+
+  const _LecturePhoto({
+    required this.lecture,
+    required this.enCours,
+    required this.onAccepter,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (enCours) {
+      return const Row(
+        children: <Widget>[
+          SizedBox(
+            width: 12,
+            height: 12,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          SizedBox(width: 9),
+          Text(
+            'Je regarde ta photo…',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: KultivaColors.textSecondary,
+            ),
+          ),
+        ],
+      );
+    }
+
+    final r = lecture;
+    if (r == null) return const SizedBox.shrink();
+
+    final muet = r.verdict == VisionVerdict.pasDePlante ||
+        r.verdict == VisionVerdict.indecis;
+    if (muet) {
+      return Text(
+        r.phrase,
+        style: const TextStyle(
+          fontSize: 12,
+          height: 1.35,
+          color: KultivaColors.textSecondary,
+        ),
+      );
+    }
+
+    final alerte = r.verdict == VisionVerdict.desaccord;
+    final sombre = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      decoration: BoxDecoration(
+        color: alerte
+            ? KultivaColors.terracotta.withValues(alpha: 0.12)
+            : (sombre
+                ? KultivaColors.darkCard
+                : KultivaColors.lightGreen.withValues(alpha: 0.22)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: alerte
+              ? KultivaColors.terracotta.withValues(alpha: 0.5)
+              : Colors.transparent,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(alerte ? '🤔' : '👀', style: const TextStyle(fontSize: 17)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  r.phrase,
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.4,
+                    fontWeight: FontWeight.w600,
+                    color: alerte ? KultivaColors.terracotta : null,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (r.actionnable) ...<Widget>[
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => onAccepter(r.suggere!),
+                style: TextButton.styleFrom(
+                  foregroundColor: KultivaColors.primaryGreen,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: Text(
+                  'Oui, c\'est « ${r.suggere!.label.toLowerCase()} »',
+                  style: const TextStyle(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
