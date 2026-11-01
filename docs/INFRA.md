@@ -13,7 +13,7 @@ Mis à jour le 31 octobre 2026 d'après le dépôt et le site en ligne. Pour met
 - **Distribution** : Xcode Cloud + App Bundle signé — jamais soumise
 - **Site** : kultiva.toakeur.com sur GitHub Pages, derrière Cloudflare
 - **IA et outils** : météo Open-Meteo, Sentry, aucune IA
-- **Affiliation** : Amazon Partenaires, tag `kultiva1-21`, France seulement
+- **Affiliation** : Amazon Partenaires, tag `kultiva1-21`, France seulement — liens dans l'appli seulement, le site n'en porte aucun (c'est normal)
 
 ## Parcours
 
