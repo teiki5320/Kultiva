@@ -12,7 +12,7 @@ Mis à jour le 1er novembre 2026 d'après le dépôt et le site en ligne. Pour m
 - **Backend** : **aucun** — l'app ne contacte plus aucun serveur
 - **Distribution** : Xcode Cloud + App Bundle signé — jamais soumise
 - **Site** : kultiva.toakeur.com sur GitHub Pages, derrière Cloudflare
-- **IA et outils** : météo Open-Meteo, Sentry, aucune IA
+- **IA et outils** : météo Open-Meteo, Sentry, et depuis le 1er novembre 2026 un **modèle de vision embarqué** (ML Kit) qui lit le stade d'un plant sur sa photo — sur l'appareil, hors ligne, sans clé ni serveur
 - **Affiliation** : Amazon Partenaires, tag `kultiva1-21`, France seulement — liens dans l'appli seulement, le site n'en porte aucun (c'est normal)
 
 ## Parcours
@@ -32,7 +32,7 @@ Mis à jour le 1er novembre 2026 d'après le dépôt et le site en ligne. Pour m
 - **Site** : <https://kultiva.toakeur.com> (présentation + confidentialité), en ligne depuis le 7 octobre 2026 (vérifié le 1er novembre 2026)
 - **Marchés** : **73 pays sur six continents** depuis le 1er novembre 2026, France en priorité. Deux bases de calendrier (tempérée, tropicale), huit zones climatiques, et un décalage de six mois pour l'hémisphère sud. Détection automatique du pays et de la sous-zone, recherche dans le sélecteur. Les 8 pays francophones d'Afrique de l'Ouest gardent seuls leur contenu propre (noms locaux, maraîchage en FCFA, achat au marché). ⚠️ Les calendriers des zones ajoutées le 1er novembre sont dérivés de la base tempérée par décalage ; l'app l'indique et invite à ajuster localement.
 - **Langues** : français (source) et anglais depuis le 1er novembre 2026 — interface et noms des 130 cultures. Tutos, recettes, conseils, maladies, badges et défis restent en français ; le réglage « Langue » le dit.
-- **Particularités** : météo Open-Meteo sans clé d'API, notifications locales uniquement, tutos, recettes animées et contenu 100 % hors ligne (aucun CDN, aucune police distante)
+- **Particularités** : météo Open-Meteo sans clé d'API, notifications locales uniquement, tutos, recettes animées et contenu 100 % hors ligne (aucun CDN, aucune police distante). Depuis le 1er novembre 2026, la lecture du stade d'un plant sur sa photo tourne **sur l'appareil** : la photo ne quitte pas le téléphone.
 - **Navigation** : six onglets depuis le 1er novembre 2026 — Home, Cahier, Étal, Tutos, Photo, Recettes. Les tutos HTML naviguent par index : tout changement d'ordre passe par `tuto_fiche_screen.dart` et `test/onglets_test.dart`.
 - **Monétisation** : affiliation Amazon Partenaires, France uniquement. Les 159 liens du catalogue, retirés le 20 octobre 2026 quand Amazon a fermé le compte du tag `kultiva-21`, ont été **remis le 30 octobre 2026** sous le nouveau tag `kultiva1-21`. Le tag ne vit plus qu'à un seul endroit (`kAmazonAffiliateTag`, `lib/data/vegetables_base.dart`) : le catalogue ne stocke que les mots cherchés. La mention « Partenaire Amazon » reste absente de `landing/index.html` — le site ne porte aucun lien ; l'app, elle, affiche « Lien partenaire » sous chaque bouton.
 
@@ -73,7 +73,7 @@ Mis à jour le 1er novembre 2026 d'après le dépôt et le site en ligne. Pour m
 
 ### 5. Xcode Cloud
 
-- **Rôle** : CI iOS — build automatique via `ios/ci_scripts/ci_post_clone.sh` (Flutter épinglé 3.47.3 depuis le 30 octobre 2026, auparavant 3.41.6 ; SPM désactivé, `flutter analyze` puis `--config-only` avant `pod install`). Cible minimale iOS 15.0 pour l'appli et tous les pods (`ios/Podfile`) depuis le 25 octobre 2026 ; avant : 13.0.
+- **Rôle** : CI iOS — build automatique via `ios/ci_scripts/ci_post_clone.sh` (Flutter épinglé 3.47.3 depuis le 30 octobre 2026, auparavant 3.41.6 ; SPM désactivé, `flutter analyze` puis `--config-only` avant `pod install`). Cible minimale **iOS 15.5** pour l'appli et tous les pods (`ios/Podfile`) depuis le 1er novembre 2026, exigée par ML Kit ; 15.0 du 25 octobre au 1er novembre 2026, 13.0 avant. Aucun appareil perdu : 15.5 est un point de version d'iOS 15.
 - **État** : le **build 152 a réussi le 1er novembre 2026** et est disponible en TestFlight (vérifié le 1er novembre 2026 dans les mails d'Apple), après les builds réussis depuis le 31 octobre 2026 (dont le 134), sans aucun mail d'échec depuis ; le build 127 avait réussi le 30 octobre 2026. Les builds 122 et 125 avaient échoué le même soir sur « Command PhaseScriptExecution failed », sans que le rapport dise pourquoi : le script de post-clone installait encore Flutter 3.41.6, où `pdf_service.dart` ne compile plus. Pin relevé à 3.47.3, et `flutter analyze` ajouté au post-clone pour que ce genre d'échec s'affiche en clair. Avant cela, les builds 95 et 96 avaient réussi le 25 octobre 2026 et le build 97 le 27 octobre 2026, chacun avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026). Jusqu'au 30 octobre 2026, Apple signalait à chaque envoi l'avertissement ITMS-90683 (clé `NSLocationAlwaysAndWhenInUseUsageDescription` absente de `ios/Runner/Info.plist`) ; la clé a été ajoutée le 30 octobre 2026. Le build 94 avait échoué le 24 octobre 2026 (Sentry et d'autres pods visaient une version d'iOS trop basse), corrigé le 25 octobre.
 - **Console** : App Store Connect → onglet Xcode Cloud.
 - **Identifiants publics** : —
@@ -145,6 +145,17 @@ Mis à jour le 1er novembre 2026 d'après le dépôt et le site en ligne. Pour m
 - **Identifiants publics** : tag `kultiva1-21`.
 - **Secrets** : aucun.
 - **Coût** : gratuit (commission sur les ventes).
+
+### 14. ML Kit — étiquetage d'images sur l'appareil
+
+- **Rôle** : lire le stade d'un plant sur sa photo (`lib/services/plant_vision_service.dart`), pour que la fiche conseil ne dépende plus de la seule date de plantation. Le modèle est **embarqué dans le binaire** : aucun appel réseau, aucune clé, rien de la photo ne sort du téléphone. La décision (quel stade, quelle phrase) est dans `lib/services/stage_vision.dart`, qui ne dépend pas du paquet.
+- **Console** : aucune — pas de compte, pas de projet à créer.
+- **Identifiants publics** : aucun.
+- **Secrets** : aucun.
+- **Coût** : **gratuit**, sans quota ni facturation à l'appel — les API ML Kit *sur l'appareil* ne sont pas facturées. (À ne pas confondre avec Google Cloud Vision, qui est l'offre payante, non utilisée ici.)
+- **Ce que ça coûte vraiment** : **+12,8 Mio au téléchargement** pour un téléphone arm64 (l'app passe de 48,6 à 61,4 Mio, soit +26 %), mesuré le 1er novembre 2026 sur deux builds du même commit. Et une cible minimale relevée à iOS 15.5.
+- ⚠️ **Firebase entre dans l'app côté Android.** Le plugin tire `com.google.mlkit:linkfirebase` : l'APK déclare `FirebaseInitProvider` et trois permissions nouvelles, dont `com.google.android.c2dm.permission.RECEIVE` (recevoir les push Google). **Rien ne part** — sans `google-services.json`, Firebase ne trouve aucune configuration et s'arrête au démarrage — mais c'est **à déclarer dans les formulaires des boutiques**. Côté iOS, Firebase est opt-in dans le Podfile : il n'y est pas. Vérifié : aucune permission `AD_ID`.
+- **État** : **à l'essai**, fusionné sur `main` le 1er novembre 2026 pour être testé sur téléphone. L'adopter ou le retirer n'est pas tranché (voir l'alerte 15 de `CLAUDE.md`).
 
 ## Notes
 

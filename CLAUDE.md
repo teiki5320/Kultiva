@@ -68,6 +68,10 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `http` ^1.2 — appels Open-Meteo
 - `audioplayers` ^6.1 — SFX et musique de fond
 - `image_picker` ^1.0 + `path_provider` ^2.1 — caméra / galerie et stockage local
+- `google_mlkit_image_labeling` ^0.15 — lecture du stade d'un plant sur
+  sa photo (fiche conseil). Modèle embarqué, hors ligne, sans clé.
+  ⚠️ **Impose iOS ≥ 15.5**, coûte **+12,8 Mio** au téléchargement arm64
+  et fait entrer Firebase dans l'app — voir l'alerte 15
 - `share_plus` ^7.2 — partage Instagram / social
 - `sensors_plus` ^6.0 — accéléromètre / gyroscope (animations de la créature)
 - `webview_flutter` ^4.10 — tutoriels HTML
@@ -93,7 +97,9 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
   2.1.4), app ID `com.toa.kultiva`, min SDK 24 / target SDK 36
 - iOS : Xcode Cloud (`ios/ci_scripts/ci_post_clone.sh`), permissions
   caméra / photos / localisation
-  déclarées dans `Info.plist` (en français)
+  déclarées dans `Info.plist` (en français). Cible minimale **iOS 15.5**
+  depuis le 01/11/2026 (exigée par ML Kit ; avant : 15.0). Relevée dans
+  `ios/Podfile` **et** aux trois entrées de `project.pbxproj`
 - CI : GitHub Actions (`ci.yml` : `flutter analyze` + `flutter test` +
   build appbundle et APK par ABI, sur push main et PR ; `site.yml` :
   publication du dossier `landing/`). Flutter épinglé en **3.47.3**,
@@ -453,6 +459,25 @@ pour l'Afrique de l'Ouest.
 
 Décisions et évolutions significatives :
 
+- **La photo propose un stade (01/11/2026, à l'essai)** : la fiche
+  conseil déduisait le stade de la seule date de plantation. Un
+  étiqueteur ML Kit embarqué y cherche une fleur, un fruit ou du
+  feuillage, et `StageVision` croise ce qu'il voit avec ce que la date
+  annonçait. Deux choix portent tout :
+  - **la lecture rend plusieurs stades compatibles.** Un modèle
+    générique qui voit « une feuille » ne distingue pas une plantule
+    d'un plant adulte ; rendre un seul stade inventerait une précision
+    qu'il n'a pas ;
+  - **elle ne décide jamais à la place de l'utilisateur.** Elle
+    propose, avec un bouton ; le stade ne bouge que si quelqu'un le
+    touche. Quand la photo contredit franchement la date — un fruit sur
+    un semis de trois jours — elle le dit au lieu de trancher.
+
+  `stage_vision.dart` **ne connaît pas ML Kit** : 19 tests le couvrent
+  sans téléphone, et un modèle entraîné se brancherait derrière sans
+  rien réécrire (ML Kit sait charger un `.tflite` maison).
+  ⚠️ **Fusionné pour être essayé, pas adopté** — le prix est dans
+  l'alerte 15, et la décision revient à Jean.
 - **Suppression de Tamassi (31/10/2026)** : la créature virtuelle, ses
   trois variantes, son XP, ses visiteurs et son rappel de 19 h sont
   partis — 10 fichiers, 3,7 Mo d'images, −4 141 lignes. Les 50 badges
@@ -903,3 +928,65 @@ Le Studio de Jean affiche les fiches de ce dépôt (docs/INFRA.md, docs/MARKETIN
 - Une ancienne valeur ne reste qu'au passé, datée (« la 1.0.4 a été mise en ligne le 15 octobre »).
 - Ne recopie jamais de secret ni de clé dans ces fichiers.
 - Chaque matin, la tâche « Fiches Mes Apps » du Studio vérifie derrière toi, compare les versions avec ce que servent réellement les boutiques et signale toute phrase fausse.
+
+15. **Ce que ML Kit coûte, mesuré le 01/11/2026** — chiffres pris sur
+    deux builds `--release` arm64 du même commit, avant et après le
+    paquet. **Décision en attente de Jean.**
+
+    **+12,8 Mio au téléchargement** pour un téléphone arm64 : l'app
+    passe de 48,6 à 61,4 Mio, soit **+26 %**. Détail : 10,5 Mio de
+    bibliothèque native (`libmlkitcommonpipeline.so`), 2,9 Mio de
+    modèle (`mlkit_label_default_model`), 1,2 Mio de dex.
+
+    ⚠️ **Ne pas citer le +31 Mio de l'APK complet.** `--target-platform
+    android-arm64` ne filtre que les libs **de Flutter** : celles des
+    dépendances Android sont embarquées pour les trois architectures,
+    soit 28,7 Mio à elles trois. Play découpe par ABI (AAB ou
+    `--split-per-abi`), donc un utilisateur n'en télécharge qu'une.
+    Pour mesurer juste, sommer les tailles **compressées** du zip en
+    excluant `lib/x86_64/` et `lib/armeabi-v7a/`.
+
+    **Firebase entre dans l'app, sans qu'on l'ait demandé.** Le plugin
+    déclare `implementation("com.google.mlkit:linkfirebase")` côté
+    Android (côté iOS c'est opt-in dans le Podfile, donc **iOS n'a pas
+    Firebase**). Conséquences vérifiées dans l'APK :
+    - `com.google.firebase.provider.FirebaseInitProvider` est déclaré
+      sous l'autorité `com.toa.kultiva.firebaseinitprovider`, avec
+      `firebase-installations` et `firebase-iid` ;
+    - **trois permissions apparaissent** : `ACCESS_NETWORK_STATE`,
+      `WAKE_LOCK` et `com.google.android.c2dm.permission.RECEIVE` —
+      celle de recevoir les notifications push de Google.
+
+    **Rien ne part pour autant** : sans `google-services.json`, Firebase
+    ne trouve aucune configuration au démarrage et s'arrête là. La
+    politique de confidentialité reste donc vraie. Mais c'est du code
+    dont le métier est d'enregistrer l'installation chez Google, et une
+    permission de push visible par l'utilisateur, dans une app dont la
+    fiche promet qu'aucune donnée ne quitte le téléphone — **à déclarer
+    aux boutiques**. Vérifié : **aucune permission `AD_ID`** n'est
+    ajoutée.
+
+    **Et ce que ça apporte est mince** : le modèle ne reconnaît ni
+    l'espèce (l'utilisateur l'a déjà choisie), ni les maladies, ni
+    l'âge, et ne distingue pas une plantule d'un plant adulte. Il
+    n'ajoute une information que la date n'avait pas que dans un cas :
+    voir un fruit avant l'heure.
+
+    **Trois suites** : retirer ML Kit en gardant `stage_vision.dart`
+    (gratuit, et prêt pour un vrai modèle) ; le garder en retirant le
+    provider et la permission du manifeste avec `tools:node="remove"`
+    (ne récupère pas les 12,8 Mio) ; ou le garder tel quel et l'assumer
+    dans les formulaires des boutiques.
+
+16. **Une correction de stade n'est pas reliée à sa photo** —
+    `Plantation.observedPhase` est un champ unique, écrasé à chaque
+    correction, et `photoPaths` une liste à plat. Rien ne dit **quelle
+    photo** a motivé quel stade. Or c'est précisément la paire
+    (photo, stade) qu'un modèle entraîné réclamerait, et le commentaire
+    de `advice_sheet.dart` a un temps laissé croire qu'on la
+    construisait déjà.
+
+    Un champ `observedPhasePhoto` suffirait pour la dernière
+    observation, sans créer de registre parallèle (règle 2). Un
+    **historique** complet est une autre décision — volume de stockage
+    et confidentialité — à poser à Jean avant d'écrire quoi que ce soit.
