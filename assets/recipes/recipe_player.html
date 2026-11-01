@@ -8,9 +8,15 @@
   Lecteur de recette animé.
 
   UN SEUL fichier pour toutes les recettes : Dart lit ce template, y
-  remplace le bloc __RECIPE__ par le JSON de la recette, et charge le
-  résultat dans la WebView. Écrire une animation par recette aurait
+  remplace le marqueur du script par le JSON de la recette, et charge
+  le résultat dans la WebView. Écrire une animation par recette aurait
   voulu dire quatre cents fichiers à maintenir.
+
+  ⚠️ Le marqueur ne doit apparaître qu'UNE FOIS dans ce fichier, et
+  c'est pour ça que ce commentaire ne l'écrit pas. Dart appelle
+  `replaceFirst` : tant qu'il figurait aussi ici, c'est ce commentaire
+  qui était remplacé, la ligne du script restait intacte, et la page
+  sortait **blanche**. `recipe_player_test.dart` le vérifie.
 
   ⚠️ Aucun appel réseau. Pas de CDN, pas de Google Fonts : les fiches
   de Kultiva doivent tourner hors ligne, et un avion sans wifi est

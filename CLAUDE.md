@@ -1091,3 +1091,52 @@ ajouter une recette fait échouer la suite jusqu'à ce que README,
 `docs/MARKETING.md` et ce fichier soient corrigés. C'est volontaire :
 les fiches ont annoncé « 340 recettes, dont huit animées » pendant une
 journée alors qu'il y en avait 369 et 7.
+
+18. **Le lecteur de recettes n'a jamais fonctionné jusqu'au
+    01/11/2026** — page blanche sur les 88 recettes « animées ».
+
+    **La cause** : `recipe_player.html` écrivait le marqueur
+    `__RECIPE__` **deux fois**, une fois dans son commentaire d'en-tête
+    et une fois dans son script. Dart appelle `replaceFirst`, donc
+    c'est le **commentaire** qui recevait le JSON ; la ligne
+    `var R = __RECIPE__;` restait intacte, le script mourait sur une
+    variable inconnue, et il ne restait que les boutons.
+
+    **Pourquoi rien ne l'a vu** : `flutter analyze` ne lit pas le HTML,
+    `assets_exist_test.dart` vérifie qu'un fichier existe et pas ce
+    qu'il contient, et aucun test ne remplissait le template. Découvert
+    en voulant simplement montrer l'animation à Jean.
+
+    `test/recipe_player_test.dart` verrouille maintenant : marqueur
+    unique, aucun marqueur résiduel après remplissage, JSON relisible,
+    et aucun appel réseau.
+
+    ⚠️ **Leçon générale** : un asset qu'on remplit par substitution doit
+    avoir un test qui fait la substitution. Le même piège attend les 33
+    tutos si l'un d'eux devient paramétrable.
+
+### Voir un écran HTML sans le simulateur
+
+Le simulateur rend des captures noires (alerte 9), mais tutos et
+recettes sont du HTML : Chrome headless suffit.
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=old --disable-gpu --hide-scrollbars \
+  --window-size=500,880 --force-device-scale-factor=2 \
+  --screenshot=sortie.png --virtual-time-budget=2500 "file://$PWD/page.html"
+```
+
+⚠️ **Trois pièges, tous rencontrés le 01/11/2026 :**
+
+- `--window-size` est **ignoré pour la mise en page** : Chrome rend en
+  **500 px** quoi qu'on demande, puis recadre la capture. Demander
+  390 px donne une image coupée à droite qu'on prend pour un bug de
+  l'app. Capturer en 500 de large.
+- **Ne pas forcer `width: 390px` sur `body`** pour compenser : le pied
+  de page du lecteur est en `position: fixed`, donc il suit la fenêtre
+  et pas le corps — le bouton « Suivant » part hors cadre, et on croit
+  qu'il manque.
+- Le panneau navigateur de Claude Code **fige** les fichiers hors du
+  projet (« static snapshots ») : le JavaScript ne tourne pas, la page
+  sort vide. Et il n'a pas réussi à joindre un `http.server` local.
