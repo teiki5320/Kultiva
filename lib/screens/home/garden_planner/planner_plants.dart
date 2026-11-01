@@ -17,6 +17,7 @@ import '../../../services/culture_service.dart';
 import '../../../services/prefs_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/text_scale.dart';
+import '../../../widgets/vegetable_image.dart';
 import 'garden_planner_screen.dart';
 
 class PlannerPlantPicker extends StatelessWidget {
@@ -448,13 +449,13 @@ class PlannerPlantCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: plant.imageAsset != null
-                    ? Image.asset(
-                        plant.imageAsset!,
-                        fit: BoxFit.contain,
-                        errorBuilder: (_, __, ___) => Center(
-                          child: Text(plant.emoji,
-                              style: const TextStyle(fontSize: 30)),
-                        ),
+                    // 6 = l'arrondi de la carte (12) moins son
+                    // padding (6).
+                    ? VegetableImage(
+                        asset: plant.imageAsset!,
+                        emoji: plant.emoji,
+                        radius: 6,
+                        emojiSize: 30,
                       )
                     : Center(
                         child: Text(plant.emoji,

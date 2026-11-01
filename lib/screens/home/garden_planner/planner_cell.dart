@@ -17,6 +17,7 @@ import '../../../services/watering_advisor.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/companion_status.dart';
 import '../../../utils/phenology.dart';
+import '../../../widgets/vegetable_image.dart';
 import 'planner_advice.dart';
 
 /// Une case de la grille. Accepte les drops du plant picker.
@@ -128,13 +129,12 @@ class PlannerGridCell extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4),
           child: veg.imageAsset != null
-              ? Image.asset(
-                  veg.imageAsset!,
-                  fit: BoxFit.contain,
-                  errorBuilder: (_, __, ___) => Center(
-                    child:
-                        Text(veg.emoji, style: const TextStyle(fontSize: 22)),
-                  ),
+              // 10 = l'arrondi de la case (14) moins son padding (4),
+              // pour que l'image et la case dessinent la même courbe.
+              ? VegetableImage(
+                  asset: veg.imageAsset!,
+                  emoji: veg.emoji,
+                  radius: 10,
                 )
               : Center(
                   child: Text(veg.emoji, style: const TextStyle(fontSize: 22)),
