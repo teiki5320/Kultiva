@@ -8,6 +8,7 @@ import '../../../data/vegetables_base.dart';
 import '../../../models/garden_photo.dart';
 import '../../../services/plantation_service.dart';
 import '../../../utils/months.dart';
+import 'advice_sheet.dart';
 
 /// Une photo en plein écran, avec ce qu'on sait d'elle.
 ///
@@ -46,6 +47,24 @@ class _PhotoViewer extends StatelessWidget {
     final quand = dayLabel(photo.takenAt);
     final age = photo.ageSentence;
     return age == null ? quand : '$quand  ·  $age';
+  }
+
+  /// La fiche conseil du plant, depuis n'importe quelle de ses photos.
+  ///
+  /// Pas seulement à la prise de vue : on rouvre souvent une photo
+  /// d'il y a trois jours en se demandant ce qu'il faut faire.
+  Future<void> _conseils(BuildContext context) async {
+    final id = photo.plantationId;
+    final vegId = photo.vegetableId;
+    if (id == null || vegId == null) return;
+    final plant = PlantationService.instance.byId(id);
+    if (plant == null) return;
+    await showAdviceSheet(
+      context,
+      plantation: plant,
+      vegetable: vegetableById(vegId),
+      photoPath: photo.path,
+    );
   }
 
   Future<void> _supprimer(BuildContext context) async {
@@ -106,6 +125,12 @@ class _PhotoViewer extends StatelessWidget {
           ],
         ),
         actions: <Widget>[
+          if (photo.plantationId != null)
+            IconButton(
+              tooltip: 'Fiche conseil',
+              icon: const Icon(Icons.tips_and_updates_outlined),
+              onPressed: () => _conseils(context),
+            ),
           if (supprimable)
             IconButton(
               tooltip: 'Supprimer',

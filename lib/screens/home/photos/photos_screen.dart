@@ -13,6 +13,7 @@ import '../../../theme/app_theme.dart';
 import '../../../widgets/camera_permission_dialog.dart';
 import '../../../widgets/petal_animation.dart';
 import '../../../widgets/season_header.dart';
+import 'advice_sheet.dart';
 import 'photo_gallery.dart';
 import 'photo_timeline.dart';
 
@@ -96,14 +97,14 @@ class _PhotosScreenState extends State<PhotosScreen> {
     await PlantationService.instance.addPhoto(plant.id, path);
     if (!mounted) return;
 
-    final combien = PhotoLibraryService.forPlantation(plant.id).length;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(combien >= 2
-            ? 'Photo ajoutée 📸 — regarde l\'évolution de ton plant.'
-            : 'Photo ajoutée 📸'),
-        duration: const Duration(seconds: 2),
-      ),
+    // Prendre une photo de son plant, c'est se demander où il en est.
+    // La fiche conseil répond tout de suite, plutôt que de laisser
+    // l'utilisateur devant une vignette de plus.
+    await showAdviceSheet(
+      context,
+      plantation: PlantationService.instance.byId(plant.id) ?? plant,
+      vegetable: vegetableById(plant.vegetableId),
+      photoPath: path,
     );
   }
 

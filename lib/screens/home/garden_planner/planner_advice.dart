@@ -10,6 +10,7 @@ import '../../../data/companions.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/vegetable.dart';
+import '../../../services/advice_service.dart';
 import '../../../services/culture_service.dart';
 import '../../../utils/rotation_advisor.dart';
 import '../../../theme/app_theme.dart';
@@ -24,31 +25,6 @@ class PlannerPhaseAdviceTile extends StatelessWidget {
     required this.phase,
   });
 
-  String _adviceFor(Vegetable veg, GrowthPhase phase) {
-    switch (phase) {
-      case GrowthPhase.seedling:
-        return 'Garde le sol humide, protège des limaces et du froid '
-            'avec un voile si besoin.';
-      case GrowthPhase.vegetative:
-        if (veg.category == VegetableCategory.fruits) {
-          return 'Tuteure le plant, pince les gourmands (tomates), '
-              'apporte du compost si feuilles claires.';
-        }
-        if (veg.category == VegetableCategory.leaves ||
-            veg.category == VegetableCategory.aromatics) {
-          return 'Récolte au fur et à mesure pour stimuler la repousse, '
-              'arrose au pied le matin.';
-        }
-        return 'Le plant prend du volume — arrose régulièrement et '
-            'bine le pied pour aérer le sol.';
-      case GrowthPhase.flowering:
-        return 'Floraison en cours : maintenir l\'arrosage régulier, '
-            'apporter de la potasse (cendres bois).';
-      case GrowthPhase.fruiting:
-        return 'Récolte régulière pour stimuler la production. '
-            'Surveille les nuisibles et l\'humidité.';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +57,7 @@ class PlannerPhaseAdviceTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _adviceFor(veg, phase),
+                  AdviceService.phaseAdvice(veg, phase),
                   style: const TextStyle(
                     fontSize: 12,
                     height: 1.4,
