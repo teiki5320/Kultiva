@@ -126,7 +126,7 @@ abstract class L {
   /// No description provided for @tabRecettes.
   ///
   /// In fr, this message translates to:
-  /// **'Recettes'**
+  /// **'Conservation'**
   String get tabRecettes;
 
   /// No description provided for @settingsLanguage.

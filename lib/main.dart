@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -27,6 +28,18 @@ Future<void> main() async {
       // Échantillonnage bas : limite le trafic réseau de télémétrie
       // (forfaits data limités) tout en gardant les crash reports.
       options.tracesSampleRate = 0.05;
+      // ⚠️ **Rien ne part depuis un build de développement.**
+      //
+      // Le 02/11/2026, un débordement de 6 px vu sur un simulateur
+      // pendant le développement a déclenché une alerte « New issue,
+      // level fatal » dans la boîte mail de Jean. Une erreur de mise
+      // en page qu'on est en train de corriger n'est pas un incident :
+      // elle se voit à l'écran, en rayures jaunes, et elle est
+      // bruyante par nature en debug.
+      //
+      // Noyer les vraies alertes sous les siennes, c'est apprendre à
+      // ne plus les lire. Sentry ne parle donc qu'en release.
+      options.beforeSend = (event, hint) => kReleaseMode ? event : null;
     },
     appRunner: _bootstrapAndRun,
   );

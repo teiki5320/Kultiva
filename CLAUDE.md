@@ -632,13 +632,16 @@ Décisions et évolutions significatives :
   **Défis & badges**. Les fichiers quittent `poussidex/` pour
   `plants/`, `defis/` et `cahier/`.
 - **Cinq onglets (01/11/2026)** : Home, **Cahier**, Étal,
-  **Recettes**, **Tutos**. Tutos est passé en dernier le 01/11/2026
-  (demande de Jean) : Recettes prend l'index 3, Tutos le 4. ⚠️ Les tutos HTML naviguent par index
+  **Conservation**, **Tutos**. Tutos est passé en dernier le
+  01/11/2026 (demande de Jean) : Conservation prend l'index 3, Tutos
+  le 4. L'onglet s'appelait « Recettes » jusqu'au 02/11/2026 —
+  renommé par Jean, parce que ce sont d'abord des **conservations**. ⚠️ Les tutos HTML naviguent par index
   (`RootTabs.tabIndex`) : tout changement d'ordre doit passer par
   `tuto_fiche_screen.dart`, et `test/onglets_test.dart` le verrouille.
-  Recettes a été **ajouté en bout de barre** pour ne décaler aucun
-  index existant. La barre est en `fixed` avec des libellés rétrécis :
-  à cinq, « Recettes » était tronqué.
+  Il a été **ajouté en bout de barre** pour ne décaler aucun index
+  existant. La barre est en `fixed` avec des libellés rétrécis : à
+  cinq, le libellé était tronqué. « Conservation » y tient, vérifié à
+  l'écran.
   Un **onglet Photo** a été ajouté puis retiré le même jour — voir
   l'alerte 15. Son retrait a recalé Recettes de l'index 5 à 4 ; la
   route `kultiva://photos` survit et mène au cahier.
@@ -980,6 +983,27 @@ Règles spécifiques au projet pour être efficace dès la première action :
     s'enchaînent, le halo désigne le bon élément, la barre d'onglets
     suit, et le bouton pause répond.
 
+## 🔭 Sentry ne parle qu'en release (02/11/2026)
+
+**Ce qui s'est passé** : un débordement de 6 px vu sur un simulateur
+pendant le développement a déclenché une alerte « New issue, level
+fatal » dans la boîte mail de Jean, avec `environment: debug`.
+
+**Pourquoi c'est un défaut de réglage et pas un incident** : une erreur
+de mise en page qu'on est en train de corriger se voit déjà à l'écran,
+en rayures jaunes. Elle est bruyante par nature en debug — chaque
+contrainte trop serrée pendant un remaniement en produit une. Noyer les
+vraies alertes sous les siennes, c'est apprendre à ne plus les lire.
+
+```dart
+options.beforeSend = (event, hint) => kReleaseMode ? event : null;
+```
+
+⚠️ **Conséquence à connaître** : un plantage survenu pendant un
+`flutter run` ne remonte plus à Sentry. C'est voulu — il est déjà dans
+la console, avec sa pile d'appels. Pour tester Sentry lui-même, il faut
+un build release.
+
 ## 🧹 Zéro installation : ce que ça autorise (02/11/2026)
 
 **Décision de Jean** : « personne n'a encore téléchargé Kultiva ».
@@ -1124,8 +1148,8 @@ Le Studio de Jean affiche les fiches de ce dépôt (docs/INFRA.md, docs/MARKETIN
     dossier du plant (`showPlantationSheet`), pas un onglet.
 
 17. ~~**Le tuto du dashboard montre quatre onglets**~~ — ✅ **FAIT le
-    02/11/2026.** Le cinquième onglet (🍴 Recettes) est dans la barre,
-    et « Recettes » est traduit dans les dictionnaires de tutos. Les
+    02/11/2026.** Le cinquième onglet (🫙 Conservation) est dans la
+    barre, et son libellé est traduit dans les dictionnaires de tutos. Les
     scènes n'utilisaient que les index 0 à 2, donc l'ordre n'a pas
     bougé.
 
@@ -1283,6 +1307,30 @@ journée alors qu'il y en avait 369 et 7.
     ⚠️ **Leçon générale** : un asset qu'on remplit par substitution doit
     avoir un test qui fait la substitution. Le même piège attend les 33
     tutos si l'un d'eux devient paramétrable.
+
+    ⚠️ **Et ça n'a pas suffi : le lecteur ne s'est ouvert dans l'app
+    que le 02/11/2026.** Signalé par Jean — « les animations mettent
+    beaucoup trop de temps à charger et d'ailleurs ne chargent même
+    pas ». La cause était ailleurs, dans le Dart :
+
+    ```dart
+    onNavigationRequest: (_) => NavigationDecision.prevent,
+    ```
+
+    Le garde-fou, posé dès le premier commit de l'onglet pour que la
+    recette reste un document fermé, refusait **toute** navigation. Or
+    `loadHtmlString` **est** une navigation : la WKWebView la présente
+    comme un passage vers `about:blank`. Le document était donc refusé
+    lui-même, `onPageFinished` ne partait jamais, et l'écran restait
+    sur son indicateur de chargement. On ne bloque plus que ce qui sort
+    vraiment — `http`, `https`, `mailto`, `tel`.
+
+    ⚠️ **Pourquoi personne ne l'avait vu** : la vérification du 01/11
+    s'était faite dans **Chrome headless**, où il n'y a pas de
+    `NavigationDelegate`. Le HTML était juste ; son hôte ne l'était
+    pas. **Un asset rendu dans une WebView se vérifie dans la
+    WebView**, pas dans un navigateur de bureau — et c'est maintenant
+    possible, le simulateur rend l'écran.
 
 19. **Le lecteur de recettes a été refait le 01/11/2026 (« Polaroïd »)**
     — choisi par Jean parmi seize maquettes. Toujours **un seul

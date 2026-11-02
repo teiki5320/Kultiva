@@ -2614,6 +2614,6 @@ const Map<String, String> tutoTextsEs = <String, String>{
   'ne traite que si nécessaire. Un jardin sain avec des auxiliaires se défend souvent seul.':
       'trata solo si es necesario. Un jardín sano con auxiliares suele defenderse solo.',
   // Le cinquième onglet, ajouté au tuto du dashboard le 02/11/2026.
-  'Recettes':
-      'Recetas',
+  'Conservation':
+      'Conservas',
 };

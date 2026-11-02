@@ -21,7 +21,7 @@ class LEs extends L {
   String get tabTutos => 'Guías';
 
   @override
-  String get tabRecettes => 'Recetas';
+  String get tabRecettes => 'Conservas';
 
   @override
   String get settingsLanguage => 'Idioma';

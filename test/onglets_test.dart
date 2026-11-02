@@ -5,12 +5,13 @@ import 'package:kultiva/screens/root_tabs.dart';
 
 /// L'ordre des onglets a changé le 30/10/2026 : le cahier de culture
 /// passe en deuxième, devant l'Étal, et le Poussidex quitte la barre.
-/// Recettes s'ajoute le 01/11/2026 en bout de barre. Photo y est
+/// Conservation (« Recettes » jusqu'au 02/11/2026) s'ajoute le
+/// 01/11/2026 en bout de barre. Photo y est
 /// arrivé le même jour puis a été retiré — « trop compliqué », et le
 /// module ne faisait que doubler les photos du cahier.
 ///
 /// Tutos passe **en dernier** le 01/11/2026, à la demande de Jean :
-/// Recettes prend l'index 3 et Tutos le 4. Ce test est ce qui garantit
+/// Conservation prend l'index 3 et Tutos le 4. Ce test est ce qui garantit
 /// que les deep-links des tutos ont suivi.
 ///
 /// Ces positions ne sont pas qu'une affaire de goût : les tutos HTML
@@ -33,7 +34,7 @@ void main() {
     );
     expect(
       barre.items.map((i) => i.label).toList(),
-      <String>['Home', 'Cahier', 'Étal', 'Recettes', 'Tutos'],
+      <String>['Home', 'Cahier', 'Étal', 'Conservation', 'Tutos'],
     );
   });
 
@@ -69,7 +70,7 @@ void main() {
     );
     expect(
       barre.items.map((i) => i.label).toList(),
-      <String>['Home', 'Journal', 'Catalog', 'Recipes', 'Guides'],
+      <String>['Home', 'Journal', 'Catalog', 'Preserving', 'Guides'],
     );
   });
 }

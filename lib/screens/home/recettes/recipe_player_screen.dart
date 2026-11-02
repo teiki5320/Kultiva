@@ -94,7 +94,24 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
           },
           // La recette est un document fermé : rien ne doit emmener
           // l'utilisateur ailleurs, et surtout pas sur le réseau.
-          onNavigationRequest: (_) => NavigationDecision.prevent,
+          //
+          // ⚠️ Mais `loadHtmlString` **est** une navigation : la
+          // WKWebView la présente comme un passage vers `about:blank`.
+          // Un `prevent` sans condition refusait donc le document
+          // lui-même, `onPageFinished` ne partait jamais, et le
+          // lecteur restait sur son indicateur de chargement — ce
+          // qu'il a fait depuis le premier jour. On ne bloque que ce
+          // qui sort vraiment.
+          onNavigationRequest: (requete) {
+            final url = requete.url;
+            final sortant = url.startsWith('http://') ||
+                url.startsWith('https://') ||
+                url.startsWith('mailto:') ||
+                url.startsWith('tel:');
+            return sortant
+                ? NavigationDecision.prevent
+                : NavigationDecision.navigate;
+          },
         ),
       );
     _charger(c, sombre: sombre);
