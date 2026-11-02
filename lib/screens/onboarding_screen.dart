@@ -25,10 +25,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           imagePath: 'assets/images/onboarding_1.png',
           fallbackEmoji: '🌱',
           title: trUi('Bienvenue sur Kultiva'),
+          // ⚠️ Disait « tout au même endroit, en français » jusqu'au
+          // 03/11/2026 — dans une app qui parle trois langues, et qui
+          // affichait donc cette phrase en anglais et en espagnol.
           subtitle: trUi(
               'Le potager kawaii dans ta poche. Calendrier de semis, suivi '
-              'de tes plants, météo, conseils — tout au même endroit, en '
-              'français.'),
+              'de tes plants, météo, conseils — tout au même endroit.'),
         ),
         _OnboardingContent(
           imagePath: 'assets/images/onboarding_2.png',

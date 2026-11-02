@@ -179,7 +179,7 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Variable',
   'Bienvenue sur Kultiva':
       'Te damos la bienvenida a Kultiva',
-  'Le potager kawaii dans ta poche. Calendrier de semis, suivi de tes plants, météo, conseils — tout au même endroit, en français.':
+  'Le potager kawaii dans ta poche. Calendrier de semis, suivi de tes plants, météo, conseils — tout au même endroit.':
       'Tu huerto kawaii en el bolsillo. Calendario de siembra, seguimiento de tus plantas, tiempo, consejos: todo en el mismo sitio, en español.',
   'Ton cahier de culture':
       'Tu diario del huerto',

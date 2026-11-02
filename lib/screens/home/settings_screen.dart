@@ -590,7 +590,11 @@ class _ListePaysState extends State<_ListePays> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: TextField(
-              autofocus: true,
+              // ⚠️ Pas d'ouverture automatique du clavier : vu à
+              // l'écran, il masquait la moitié de la liste et on ne
+              // voyait plus que quatre pays. Le clavier vient si on
+              // tape dans le champ ; sinon on fait défiler.
+              autofocus: false,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: trUi('Chercher un pays…'),

@@ -180,7 +180,7 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Changeable',
   'Bienvenue sur Kultiva':
       'Welcome to Kultiva',
-  'Le potager kawaii dans ta poche. Calendrier de semis, suivi de tes plants, météo, conseils — tout au même endroit, en français.':
+  'Le potager kawaii dans ta poche. Calendrier de semis, suivi de tes plants, météo, conseils — tout au même endroit.':
       'Your kawaii veggie patch, in your pocket. Sowing calendar, plant tracking, weather, tips — all in one place.',
   'Ton cahier de culture':
       'Your garden journal',
