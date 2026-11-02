@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/content_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
 import '../../../models/watering_alert.dart';
@@ -162,7 +163,7 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
         emoji: '🥵',
         urgent: true,
         text: '${_todayMax!.round()} °C aujourd\'hui. '
-            '${categorie == null ? "Pense à pailler et ombrer." : heatwaveTipFor(categorie)}',
+            '${categorie == null ? "Pense à pailler et ombrer." : tr(heatwaveTipFor(categorie))}',
       ));
     }
 

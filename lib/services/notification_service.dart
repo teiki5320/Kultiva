@@ -4,6 +4,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../data/content_i18n.dart';
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
 import '../models/vegetable.dart';
@@ -308,7 +309,7 @@ class NotificationService {
                   ..sort((a, b) => b.value.compareTo(a.value)))
                 .first
                 .key;
-        tip = heatwaveTipFor(top);
+        tip = tr(heatwaveTipFor(top));
       }
 
       const androidDetails = AndroidNotificationDetails(

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../data/content_i18n.dart';
 import '../data/lexicon.dart';
 import '../theme/app_theme.dart';
 
@@ -114,7 +115,7 @@ class LexiconText extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                entry.definition,
+                entry.displayDefinition,
                 style: const TextStyle(fontSize: 14, height: 1.45),
               ),
               const SizedBox(height: 16),

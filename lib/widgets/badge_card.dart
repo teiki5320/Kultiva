@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../data/content_i18n.dart';
 import '../data/badges.dart';
 import '../models/vegetable_medal.dart';
 import '../services/audio_service.dart';
@@ -179,8 +180,8 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
 
               return Semantics(
                 label: widget.unlocked
-                    ? 'Badge ${widget.badge.name}, débloqué'
-                    : 'Badge ${widget.badge.name}, verrouillé',
+                    ? 'Badge ${widget.badge.displayName}, débloqué'
+                    : 'Badge ${widget.badge.displayName}, verrouillé',
                 child: GestureDetector(
                   // Tap sur la carte = retournement (au lieu de rien).
                   onTap: _toggleFlip,
@@ -271,7 +272,7 @@ class _BadgeCardVisual extends StatelessWidget {
                   border: Border.all(color: frameColor.withValues(alpha: 0.5)),
                 ),
                 child: Text(
-                  badge.name,
+                  badge.displayName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
@@ -340,7 +341,7 @@ class _BadgeCardVisual extends StatelessWidget {
                   border: Border.all(color: frameColor.withValues(alpha: 0.25)),
                 ),
                 child: LexiconText(
-                  badge.description,
+                  badge.displayDescription,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 11.5,
@@ -969,7 +970,7 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        widget.badge.name,
+                        widget.badge.displayName,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w900,

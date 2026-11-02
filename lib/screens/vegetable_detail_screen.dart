@@ -1,3 +1,4 @@
+import '../data/content_i18n.dart';
 import '../data/names_en.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -711,7 +712,7 @@ class _DiseaseSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LexiconText(
-                        d.name,
+                        d.displayName,
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: KultivaColors.terracotta,
@@ -719,7 +720,7 @@ class _DiseaseSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       LexiconText(
-                        d.remedy,
+                        d.displayRemedy,
                         style: const TextStyle(fontSize: 13, height: 1.3),
                       ),
                     ],
@@ -771,7 +772,7 @@ class _RotationSection extends StatelessWidget {
                       color: KultivaColors.textSecondary,
                     ),
                   ),
-                  Text(data.family,
+                  Text(tr(data.family),
                       style: const TextStyle(fontWeight: FontWeight.w600)),
                 ],
               ),
@@ -1338,7 +1339,7 @@ class _BuyingTipsSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        t.advice,
+                        tr(t.advice),
                         style: const TextStyle(
                           fontSize: 13,
                           color: KultivaColors.textPrimary,

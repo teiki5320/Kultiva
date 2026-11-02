@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/content_i18n.dart';
 import '../../../data/badges.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../theme/app_theme.dart';
@@ -65,8 +66,8 @@ class _BadgeTile extends StatelessWidget {
       // L'état du badge est porté par la couleur seule : grisé = verrouillé.
       // Un lecteur d'écran ne voit pas une couleur, il faut le dire.
       label: unlocked
-          ? 'Badge ${badge.name}, débloqué'
-          : 'Badge ${badge.name}, verrouillé',
+          ? 'Badge ${badge.displayName}, débloqué'
+          : 'Badge ${badge.displayName}, verrouillé',
       hint: unlocked ? 'Ouvre la carte du badge' : null,
       button: unlocked,
       child: GestureDetector(
@@ -110,7 +111,7 @@ class _BadgeTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    badge.name,
+                    badge.displayName,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
@@ -123,7 +124,7 @@ class _BadgeTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Expanded(
                     child: Text(
-                      badge.description,
+                      badge.displayDescription,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 10,

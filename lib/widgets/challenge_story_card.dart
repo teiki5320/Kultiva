@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../data/content_i18n.dart';
 import '../data/challenges.dart';
 import '../models/vegetable_medal.dart';
 import '../theme/app_theme.dart';
@@ -67,7 +68,7 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
       final box = context.findRenderObject() as RenderBox?;
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
-        text: 'J\'ai complété le défi "${widget.challenge.name}" '
+        text: 'J\'ai complété le défi "${widget.challenge.displayName}" '
             'sur Kultiva ! ${widget.challenge.emoji} 🌱',
         sharePositionOrigin:
             box != null ? box.localToGlobal(Offset.zero) & box.size : null,
@@ -258,7 +259,7 @@ class _StoryCardVisual extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  challenge.name,
+                  challenge.displayName,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,

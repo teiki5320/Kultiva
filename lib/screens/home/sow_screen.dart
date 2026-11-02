@@ -1,3 +1,4 @@
+import '../../data/content_i18n.dart';
 import '../../data/names_en.dart';
 import 'dart:async';
 
@@ -114,7 +115,7 @@ class _SowScreenState extends State<SowScreen> {
       if (veg != null && entry.value.isNotEmpty) {
         final d = entry.value.first;
         tips.add(
-            '${veg.emoji} ${veg.displayName} : attention au ${d.name}. ${d.remedy}.');
+            '${veg.emoji} ${veg.displayName} : attention au ${d.displayName}. ${d.displayRemedy}.');
       }
     }
 

@@ -1,3 +1,4 @@
+import '../data/content_i18n.dart';
 import '../data/companions.dart';
 import '../data/diseases.dart';
 import '../models/culture_entry.dart';
@@ -71,7 +72,7 @@ class AdviceService {
       sections.add(AdviceSection(
         emoji: '🥵',
         title: '${max.round()} °C aujourd\'hui',
-        body: heatwaveTipFor(vegetable.category),
+        body: tr(heatwaveTipFor(vegetable.category)),
         urgent: true,
       ));
     }
@@ -86,7 +87,7 @@ class AdviceService {
         // de plant en bonne santé décourage plus qu'elle n'aide.
         body: maladies
             .take(3)
-            .map((d) => '${d.name} — ${d.remedy}')
+            .map((d) => '${d.displayName} — ${d.displayRemedy}')
             .join('\n\n'),
       ));
     }

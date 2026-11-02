@@ -1293,10 +1293,40 @@ légendes au fil de l'animation.
 **`conserver_legumes` est le modèle**, traduit en entier et vérifié en
 capture : mise en page intacte, 8-12 °C, 3 %, 100 °C préservés.
 
-⚠️ **Restent sans structure** : maladies, badges, défis, lexique,
-rotation, conseils canicule et achat au marché — environ 8 600 mots en
-tout. Le compagnonnage n'en a pas besoin : ce sont des identifiants de
-légumes, déjà traduits par `displayName`.
+### Le reste du contenu (02/11/2026)
+
+**784 phrases, 7 292 mots** : maladies et ravageurs (323), lexique
+(162), défis (110), badges (100), achat au marché (56), familles
+botaniques (26), conseils canicule (7).
+
+Même principe, dictionnaire unique keyé par la phrase française :
+
+- `lib/data/content_i18n.dart` — `tr()`, `trIn()` et les extensions
+  `displayName` / `displayRemedy` / `displayDefinition` sur `Disease`,
+  `LexiconEntry`, `PoussidexBadge` et `PhotoChallenge`.
+- `lib/data/content_en.dart` — l'anglais.
+- `tool/exporter_contenu.dart` — ⚠️ tourne sous **`flutter test`** et
+  non `dart run` : badges et défis passent par `vegetable_medal.dart`,
+  qui importe Flutter. Il écrit dans `build/traduction/contenu_en.dart`.
+- `test/content_i18n_test.dart` — 7 tests : aucune clé orpheline, les
+  nombres ne bougent pas, le français ressort inchangé.
+
+**Pourquoi un dictionnaire ici et une surcouche par champ pour les
+recettes** : une recette est un objet à cinq champs qu'on recouvre
+champ par champ ; ici ce sont des phrases isolées, chacune unique. La
+clé peut donc être la phrase elle-même, comme pour les tutos.
+
+⚠️ **`LexiconText` souligne les mots en cherchant les termes
+français.** Traduire un terme du lexique sans traduire le texte qui le
+contient ne soulignerait plus rien : les deux vont ensemble.
+
+⚠️ **Le compagnonnage n'a pas besoin de traduction** : `companions.dart`
+ne contient que des identifiants de légumes, déjà traduits par
+`Vegetable.displayName`.
+
+⚠️ **`rotation_advisor.dart` compose ses messages par interpolation**
+(« il y a 2 ans », « recommande 3 ans d'attente »). Ils ne passent pas
+par le dictionnaire et relèvent des ARB. Non fait.
 
 ### Voir un écran HTML sans le simulateur
 

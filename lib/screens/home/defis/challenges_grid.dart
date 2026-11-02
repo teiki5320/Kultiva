@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../../data/content_i18n.dart';
 import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
 import '../../../models/vegetable_medal.dart';
@@ -73,8 +74,8 @@ class _ChallengesGridState extends State<ChallengesGrid> {
     final badge = PoussidexBadge(
       id: challenge.id,
       emoji: challenge.emoji,
-      name: challenge.name,
-      description: challenge.description,
+      name: challenge.displayName,
+      description: challenge.displayDescription,
       tier: challenge.tier,
     );
     await showBadgeUnlockedAnimation(context, badge: badge);
@@ -202,8 +203,8 @@ class _ChallengeTile extends StatelessWidget {
 
     return Semantics(
       label: done
-          ? 'Défi ${challenge.name}, réussi'
-          : 'Défi ${challenge.name}, à faire',
+          ? 'Défi ${challenge.displayName}, réussi'
+          : 'Défi ${challenge.displayName}, à faire',
       hint: done ? 'Revoir ta photo' : 'Prendre la photo',
       button: true,
       child: GestureDetector(
@@ -313,7 +314,7 @@ class _ChallengeTile extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      challenge.name,
+                      challenge.displayName,
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
