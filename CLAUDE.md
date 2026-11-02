@@ -822,28 +822,43 @@ Règles spécifiques au projet pour être efficace dès la première action :
    et 27.1 « Unavailable ». On ne peut donc plus ni lancer l'app sur
    simulateur, ni la construire pour simulateur.
 
-   ⚠️ **Ce paragraphe disait le contraire jusqu'à aujourd'hui.** Il
-   annonçait depuis le 31/10 que « le runtime iOS 27.1 est désormais
-   installé » et que l'app s'y lançait en 68 s. C'était vrai ce
-   jour-là ; le runtime a disparu depuis, probablement emporté par un
-   nettoyage de disque (le 31/10, il ne restait que 3,9 Go libres ;
-   il y en a 38 aujourd'hui). **Mesurer avant de citer.**
+   **La cause, et c'est Jean qui l'a donnée : Xcode s'est mis à jour.**
+   Il est en **27.2 (27B52)** depuis le 1er novembre, alors que les
+   runtimes installés étaient les 27.0 et 27.1. Un runtime qui ne
+   correspond plus au Xcode courant est déclaré « Unavailable », et
+   `/Library/Developer/CoreSimulator/Profiles/Runtimes/` est vide. Le
+   SDK `iphonesimulator27.2` est bien là ; c'est le runtime qui manque.
 
-   **`Simulator.app` reste absent** de cette installation :
-   `/Applications/Xcode.app/Contents/Developer/Applications/` n'existe
-   pas, et Xcode.app pèse **4,0 Go** au lieu d'une quinzaine. C'était
-   déjà la cause des captures noires quand le runtime était là.
+   ⚠️ **J'avais écrit une mauvaise cause** — « probablement emporté par
+   un nettoyage de disque ». C'était une supposition, et elle était
+   fausse : il reste 38 Go libres. La mise à jour de Xcode explique
+   tout, et elle se vérifie en une commande (`xcodebuild -version`).
+   **Mesurer avant de citer** vaut aussi pour les causes, pas
+   seulement pour les chiffres.
 
-   Donc : personne n'a toujours **vu l'iPad tourner**, et les captures
-   d'écran (fiches stores) restent bloquées. **Un seul geste débloque
-   les deux** : réinstaller Xcode complet depuis l'App Store, ce qui
-   ramène `Simulator.app` et permet de retélécharger le runtime.
+   **Ce sont deux problèmes distincts, à ne pas confondre :**
+
+   1. **Le runtime manque** — conséquence de la mise à jour, et c'est
+      le seul des deux qui se répare simplement :
+      `xcodebuild -downloadPlatform iOS` (~8 Go). Après ça, on peut de
+      nouveau construire et lancer l'app sur simulateur.
+   2. **`Simulator.app` est absent**, et la mise à jour **n'y a rien
+      changé** : `/Applications/Xcode.app/Contents/Developer/
+      Applications/` n'existe toujours pas, `Simulator.app` est
+      introuvable sur tout le disque (seul `SimulatorKit.framework`
+      est présent), et Xcode.app pèse toujours **4,0 Go** au lieu
+      d'une quinzaine. C'est l'installation elle-même qui est
+      incomplète. Sans l'interface, le framebuffer n'est piloté par
+      personne et `simctl io screenshot` rend du noir.
+
+   Donc : même en retéléchargeant le runtime, **les captures
+   resteront noires**. Pour les débloquer — et donc pour les fiches
+   stores — il faut réinstaller **Xcode complet** depuis l'App Store.
 
    ⚠️ **Le disque.** Un build iOS debug laisse 4,3 Go dans `build/` et
-   1,5 Go dans `~/Library/Developer/Xcode/DerivedData`. Un runtime iOS
-   pèse ~8 Go de plus. Prévoir la place **avant** de réinstaller, et
-   ne pas nettoyer à l'aveugle ensuite : c'est probablement comme ça
-   que le runtime est parti.
+   1,5 Go dans `~/Library/Developer/Xcode/DerivedData` ; un runtime
+   iOS pèse ~8 Go, et un Xcode complet une quinzaine. Il y a 38 Go
+   libres au 02/11/2026 : c'est jouable, mais tout juste.
 
    **En attendant, pour voir un écran sans appareil** : un test golden
    rend n'importe quel widget en PNG, qu'on peut ensuite regarder.
