@@ -147,14 +147,45 @@ Garde ce qui rend une étape utile : la raison derrière le geste.
 | Recettes — les 736 | ✅ anglais, 123 légumes |
 | Tutos — les 33 | ✅ anglais, 1 266 phrases |
 | Maladies, badges, défis, lexique, conseils | ✅ anglais, 784 phrases |
-| Espagnol — interface et 130 cultures | ✅ `app_es.arb`, `names_es.dart` |
-| Espagnol — 120 recettes sur 736 | 🟡 lot 1 fait, 6 lots restent |
-| Espagnol — tutos et contenu | ⬜ à faire, même outillage |
+| Espagnol — 130 cultures | ✅ `names_es.dart` |
+| Espagnol — recettes, tutos, contenu | ✅ 736 + 1 266 + 784, comme l'anglais |
+| **Interface — les 541 chaînes en dur** | ⬜ **pas commencé**, voir plus bas |
 | Portugais | ⬜ à faire — `--langue=pt` |
 
 **Le prix réel d'un lot de recettes, mesuré** : 190 000 jetons sur
 Sonnet pour 20 légumes et 120 recettes — soit ≈ 1,3 million de jetons
-par langue. L'agent lit, vérifie et réfléchit en plus d'écrire.
+par langue. L'agent lit, vérifie et réfléchit en plus d'écrire. Les
+huit agents du 2 novembre (6 lots + tutos + contenu espagnols) ont
+coûté **1,67 million de jetons** en sept minutes de temps réel.
+
+## ⚠️ L'interface n'est pas traduite
+
+Mesuré le 02/11/2026, et c'est le trou du dispositif. Les trois
+surcouches couvrent le **contenu** — recettes, tutos, maladies,
+lexique, badges, défis. L'**interface**, non :
+
+- **541 chaînes françaises écrites en dur** dans 53 fichiers de
+  `lib/screens`, `lib/services`, `lib/utils` et `lib/models`. Les plus
+  chargés : `country.dart` (45), `onboarding_screen.dart` (27),
+  `tutos_screen.dart` (27), `phenology.dart` (26),
+  `weather_screen.dart` (26), `settings_screen.dart` (24),
+  `sow_screen.dart` (24).
+- **33 des 40 clés ARB ne sont appelées nulle part.** Les 17 `photos*`
+  sont orphelines depuis le retrait de l'onglet Photo (01/11) ; les 8
+  `recipes*` et les 8 `common*` n'ont jamais été branchées — l'écran
+  des recettes affiche « Garder ta récolte » et « Un légume, ou une
+  conserve… », qui ne sont pas les valeurs de l'ARB. Seuls les 5
+  `tab*`, `settingsLanguage` et `settingsLanguagePartial` servent.
+
+**Ce que ça donne à l'écran** : la barre d'onglets dit « Inicio /
+Diario / Catálogo / Recetas / Guías », et le tableau de bord juste
+au-dessus dit « Semer · 22 légumes ». Les recettes et les tutos, eux,
+sont bien en espagnol.
+
+Pour mesurer à nouveau, chercher les littérales contenant un caractère
+ou un mot-outil français hors `lib/data` et `lib/l10n`. Le chantier se
+découperait comme les recettes : par écran, avec un exportateur qui
+sort les littérales et un test qui refuse une clé orpheline.
 
 ## Traduire un tuto
 

@@ -152,11 +152,12 @@ void main() {
     // emoji suivi d'un nom propre (« 🥒 Courgette »), une unité. Mais
     // si la moitié du dictionnaire était identique, c'est qu'on
     // aurait recopié le français.
-    final en = tutoTextsByLanguage['en']!;
-    final identiques =
-        en.entries.where((e) => e.value == e.key).length;
-    expect(identiques / en.length, lessThan(0.1),
-        reason: '\$identiques phrases sur \${en.length} sont identiques '
-            'au français.');
+    tutoTextsByLanguage.forEach((langue, dico) {
+      final identiques = dico.entries.where((e) => e.value == e.key).length;
+      expect(identiques / dico.length, lessThan(0.1),
+          reason: '$langue · $identiques phrases sur ${dico.length} sont '
+              'identiques au français. Un dictionnaire recopié depuis le '
+              'français passerait tous les autres tests.');
+    });
   });
 }

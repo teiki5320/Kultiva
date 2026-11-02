@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'tutos_en.dart';
+import 'tutos_es.dart';
 
 /// Traduire les 34 tutos HTML sans les toucher.
 ///
@@ -32,6 +33,7 @@ import 'tutos_en.dart';
 const Map<String, Map<String, String>> tutoTextsByLanguage =
     <String, Map<String, String>>{
   'en': tutoTextsEn,
+  'es': tutoTextsEs,
 };
 
 /// Le JavaScript qui applique le dictionnaire, une fois la page lue.

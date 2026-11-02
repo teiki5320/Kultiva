@@ -354,11 +354,17 @@ dart run tool/exporter_recettes.dart --squelette --langue=en --lot=3
   utilise ta localisation pour afficher la météo de ton jardin », « Le potager
   kawaii dans ta poche 🌱 ».
 - **Localisation** : **français (source), anglais, espagnol**.
-  L'anglais est **complet** depuis le 02/11/2026 — interface, 130
-  cultures, 736 recettes, 33 tutos, maladies, lexique, badges, défis.
-  L'espagnol a commencé le même jour : interface (`app_es.arb`), 130
-  cultures (`names_es.dart`) et **120 recettes sur 736**
-  (`recipes_es.dart`, lot 1 sur 7) ; le reste retombe sur le français.
+  Depuis le 02/11/2026, le **contenu** est complet dans les trois
+  langues — 130 cultures, 736 recettes, 33 tutos (1 266 phrases),
+  maladies, lexique, badges, défis (784 phrases). Soit ≈ 2 900 chaînes
+  par langue, écrites par huit agents Sonnet et validées par les tests
+  de nombres.
+  ⚠️ **L'interface, elle, ne l'est pas** — voir l'alerte 20. Seuls les
+  cinq libellés d'onglets et le réglage « Langue » passent par les
+  ARB ; 541 chaînes restent en dur en français. Vérifié à l'écran le
+  02/11 : la barre dit « Inicio / Diario / Catálogo / Recetas /
+  Guías », le tableau de bord juste au-dessus dit « Semer ·
+  22 légumes ».
   Les neuf méthodes de conservation, les unités de durée et les
   libellés du lecteur sont traduits aussi — un test refuse une langue
   qui aurait les recettes sans eux. Voir
@@ -822,62 +828,76 @@ Règles spécifiques au projet pour être efficace dès la première action :
    — le Worker n'a alors qu'à vérifier le jeton d'identité, sans jamais
    manipuler de mot de passe.
 
-9. **Il n'y a plus de simulateur iOS du tout** — ⚠️ **mesuré le
-   02/11/2026, et c'est pire qu'avant.**
+9. ~~**Il n'y a plus de simulateur iOS du tout**~~ — ✅ **RÉSOLU le
+   02/11/2026, et deux diagnostics à corriger avec.**
 
-   `xcrun simctl list runtimes` ne renvoie **aucun runtime**, et
-   `simctl list devices available` déclare les deux runtimes iOS 27.0
-   et 27.1 « Unavailable ». On ne peut donc plus ni lancer l'app sur
-   simulateur, ni la construire pour simulateur.
+   `xcodebuild -downloadPlatform iOS` (~8,3 Go, lancé par Jean) a
+   réinstallé le runtime **iOS 27.2**. Depuis : `flutter build ios
+   --simulator --debug` passe en 129 s, l'app s'installe, se lance, et
+   **`simctl io screenshot` rend l'écran pour de vrai**. Tout ce qui
+   suit a été fait ce jour-là sur un iPhone 17 — démarrage, onboarding,
+   tableau de bord, recettes en espagnol, tuto en espagnol dans la
+   WebView.
 
-   **La cause, et c'est Jean qui l'a donnée : Xcode s'est mis à jour.**
-   Il est en **27.2 (27B52)** depuis le 1er novembre, alors que les
-   runtimes installés étaient les 27.0 et 27.1. Un runtime qui ne
-   correspond plus au Xcode courant est déclaré « Unavailable », et
-   `/Library/Developer/CoreSimulator/Profiles/Runtimes/` est vide. Le
-   SDK `iphonesimulator27.2` est bien là ; c'est le runtime qui manque.
+   ⚠️ **J'avais écrit deux fois une cause fausse.** La première était
+   « un nettoyage de disque » (c'était la mise à jour de Xcode, Jean
+   l'a corrigée). La seconde, plus coûteuse, était d'affirmer que
+   **`Simulator.app` manquant rendrait les captures noires de toute
+   façon** — j'avais conclu que seule une réinstallation complète de
+   Xcode débloquerait les fiches stores. C'est faux : `Simulator.app`
+   est **toujours** absent, Xcode.app pèse toujours 4,0 Go, et les
+   captures marchent. `simctl io screenshot` parle directement à
+   `CoreSimulator`, pas à l'interface graphique ; l'app Simulator ne
+   sert qu'à **regarder** avec ses yeux. Les captures étaient noires
+   parce qu'il n'y avait **pas de runtime**, point. Une seule cause,
+   pas deux. **Mesurer avant de citer**, y compris quand la mesure
+   coûte une commande de dix secondes.
 
-   ⚠️ **J'avais écrit une mauvaise cause** — « probablement emporté par
-   un nettoyage de disque ». C'était une supposition, et elle était
-   fausse : il reste 38 Go libres. La mise à jour de Xcode explique
-   tout, et elle se vérifie en une commande (`xcodebuild -version`).
-   **Mesurer avant de citer** vaut aussi pour les causes, pas
-   seulement pour les chiffres.
+   **La recette qui marche**, sans Simulator.app :
 
-   **Ce sont deux problèmes distincts, à ne pas confondre :**
+   ```bash
+   xcrun simctl boot "iPhone 17" && xcrun simctl bootstatus "iPhone 17"
+   flutter build ios --simulator --debug
+   xcrun simctl install booted build/ios/iphonesimulator/Runner.app
+   xcrun simctl launch booted com.toa.kultiva
+   xcrun simctl io booted screenshot ecran.png
+   ```
 
-   1. **Le runtime manque** — conséquence de la mise à jour, et c'est
-      le seul des deux qui se répare simplement :
-      `xcodebuild -downloadPlatform iOS` (~8 Go). Après ça, on peut de
-      nouveau construire et lancer l'app sur simulateur.
-   2. **`Simulator.app` est absent**, et la mise à jour **n'y a rien
-      changé** : `/Applications/Xcode.app/Contents/Developer/
-      Applications/` n'existe toujours pas, `Simulator.app` est
-      introuvable sur tout le disque (seul `SimulatorKit.framework`
-      est présent), et Xcode.app pèse toujours **4,0 Go** au lieu
-      d'une quinzaine. C'est l'installation elle-même qui est
-      incomplète. Sans l'interface, le framebuffer n'est piloté par
-      personne et `simctl io screenshot` rend du noir.
+   Le premier démarrage d'un device neuf prend ~90 s et montre le logo
+   Apple : ne pas conclure « écran noir » sur la première capture.
+   Pour piloter (taper, glisser), l'outil `Claude_Code_iOS_Simulator`
+   prend des **points** (ici 402 × 874 pour 1206 × 2622 pixels, donc
+   diviser par 3).
 
-   Donc : même en retéléchargeant le runtime, **les captures
-   resteront noires**. Pour les débloquer — et donc pour les fiches
-   stores — il faut réinstaller **Xcode complet** depuis l'App Store.
+   **Changer la langue de l'app** : écrire la préférence dans le plist
+   ne marche pas — `shared_preferences` le réécrit au lancement. Deux
+   voies : le réglage « Langue » de l'app, ou la langue du **device**,
+   que `effectiveLanguage` suit :
 
-   ⚠️ **Le disque.** Un build iOS debug laisse 4,3 Go dans `build/` et
-   1,5 Go dans `~/Library/Developer/Xcode/DerivedData` ; un runtime
-   iOS pèse ~8 Go, et un Xcode complet une quinzaine. Il y a 38 Go
-   libres au 02/11/2026 : c'est jouable, mais tout juste.
+   ```bash
+   xcrun simctl shutdown "iPhone 17"
+   plutil -replace AppleLanguages -json '["es-ES"]' \
+     ~/Library/Developer/CoreSimulator/Devices/<UDID>/data/Library/Preferences/.GlobalPreferences.plist
+   xcrun simctl boot "iPhone 17"
+   ```
 
-   **En attendant, pour voir un écran sans appareil** : un test golden
-   rend n'importe quel widget en PNG, qu'on peut ensuite regarder.
-   Charger Nunito depuis `assets/google_fonts/` avec un `FontLoader`,
-   sinon tout le texte sort en rectangles ; les emoji et les icônes
-   Material sortent en rectangles de toute façon. Ne **pas** committer
-   un tel test : en CI, le rendu diffère et la comparaison échoue.
-   C'est comme ça qu'ont été trouvés le débordement de 15 px de la
-   légende du calendrier et l'aperçu de grille resté blanc (un
-   `DecoratedBox` sans enfant s'écrase à zéro sous une contrainte de
-   hauteur lâche).
+   ⚠️ **`plutil` coupe les clés sur les points.** Une clé
+   `flutter.kultiva.language` doit s'écrire `'flutter\.kultiva\.language'`,
+   sinon c'est « Key path not found ».
+
+   ⚠️ **Le disque.** Un build iOS debug laisse 1 Go dans `build/` et
+   370 Mo dans `~/Library/Developer/Xcode/DerivedData` ; le runtime
+   iOS pèse ~8 Go. Il restait **15 Go libres** après installation du
+   runtime le 02/11 — surveiller, et `flutter clean` après une session
+   de builds iOS.
+
+   **Reste vrai** : personne n'a **vu** l'app bouger en vidéo, et un
+   test golden rend toujours n'importe quel widget en PNG sans
+   appareil (charger Nunito depuis `assets/google_fonts/` avec un
+   `FontLoader`, sinon le texte sort en rectangles ; ne pas committer
+   un tel test, le rendu diffère en CI). C'est comme ça qu'ont été
+   trouvés le débordement de 15 px de la légende du calendrier et
+   l'aperçu de grille resté blanc.
 
 10. **Le build Android ne marche qu'avec le JDK d'Android Studio** —
     le `java` du PATH est un OpenJDK 25 (Homebrew) que Gradle 8.14 ne
@@ -1252,6 +1272,57 @@ portent désormais sur le sarrasin, qui n'a pas de surcharge.
 ⚠️ **Restent des moyennes de zone.** Le méditerranéen de Marrakech
 n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
 
+20. **L'interface n'est pas traduite, et les fiches disaient le
+    contraire** — mesuré le 02/11/2026, après avoir fini l'espagnol et
+    regardé l'app tourner.
+
+    Les trois surcouches couvrent le **contenu**. L'interface, non :
+
+    - **541 chaînes françaises écrites en dur**, dans 53 fichiers hors
+      `lib/data` et `lib/l10n`. Les plus chargés : `country.dart` (45),
+      `onboarding_screen.dart` (27), `tutos_screen.dart` (27),
+      `phenology.dart` (26), `weather_screen.dart` (26),
+      `settings_screen.dart` (24), `sow_screen.dart` (24).
+    - **33 des 40 clés ARB ne sont appelées nulle part.** Les 17
+      `photos*` sont orphelines depuis le retrait de l'onglet Photo
+      (01/11) ; les 8 `recipes*` et les 8 `common*` **n'ont jamais été
+      branchées**. Seuls les 5 `tab*`, `settingsLanguage` et
+      `settingsLanguagePartial` servent.
+
+    **Ce que ça donne**, vérifié à l'écran : barre d'onglets « Inicio /
+    Diario / Catálogo / Recetas / Guías », et juste au-dessus « Semer ·
+    22 légumes », « Récolter · 42 légumes », « Météo du jour ». Les
+    recettes et les tutos, eux, sont bien en espagnol.
+
+    **Le pire endroit** : la **première page de l'onboarding** dit
+    « Le potager kawaii dans ta poche… tout au même endroit, **en
+    français**. » — en français, à un utilisateur espagnol. Les dix
+    textes de l'onboarding sont une `const List<_OnboardingContent>`
+    dans le widget.
+
+    ⚠️ **C'est la règle 10 qui s'applique** : 33 clés écrites et
+    injoignables, c'est un bug, pas une avance. Et c'est la cinquième
+    fois que ce projet s'y fait prendre. Les clés `recipes*` ne
+    correspondent même plus à l'écran — l'ARB dit « Recettes » et
+    « Un légume, ou un plat… », l'écran affiche « Garder ta récolte »
+    et « Un légume, ou une conserve… ». L'écran a été réécrit, l'ARB
+    est resté.
+
+    **Avant de reprendre** : décider d'abord si les 33 clés se
+    **branchent** ou se **suppriment** — les brancher demande de
+    réaligner leurs valeurs françaises sur ce que l'écran dit
+    aujourd'hui. Puis découper comme les recettes : un exportateur qui
+    sort les littérales par écran, un squelette par langue, et un test
+    qui refuse une clé orpheline. ⚠️ Et ne plus écrire « interface
+    traduite » dans une fiche tant que ça n'est pas fait.
+
+21. **L'index des tutos cite encore le Poussidex** — repéré le
+    02/11/2026 à l'écran. La carte « Découvrir l'application » a pour
+    sous-titre « Le tour complet — dashboard, Étal, Poussidex », alors
+    que le Poussidex a été supprimé le 31/10. Même famille que
+    l'alerte 17 (le tuto montre quatre onglets, l'app en a cinq) : les
+    textes d'accompagnement n'ont pas suivi les deux suppressions.
+
 ## 🗣️ Traduire le contenu (structure posée le 02/11/2026)
 
 **Le problème que ça règle.** L'app avait une interface anglaise posée
@@ -1304,17 +1375,42 @@ volontairement une étape : l'erreur nomme le fichier, la recette et
 l'étape.
 
 **L'état réel (02/11/2026)** : **les 736 recettes sont traduites en
-anglais**, les 123 légumes. La tomate a été écrite à la main comme
-modèle de ton ; les 7 lots ont été traduits par des agents Sonnet en
-parallèle, puis validés par `recipes_i18n_test.dart` — aucune clé
-inventée, comptes d'étapes exacts, nombres identiques au français sur
-les 5 700 chaînes. Un test verrouille désormais la **couverture** :
-ajouter une recette sans sa traduction fait échouer la suite.
+anglais et en espagnol**, les 123 légumes, plus les 33 tutos
+(1 266 phrases) et les 784 phrases de contenu dans les deux langues.
+La tomate a été écrite à la main comme modèle de ton ; le reste a été
+traduit par des agents Sonnet en parallèle, puis validé par les trois
+suites de tests — aucune clé inventée, comptes d'étapes exacts,
+nombres identiques au français. Un test verrouille la **couverture
+par langue** : ajouter une recette sans sa traduction, ou enregistrer
+une langue à moitié faite, fait échouer la suite.
 
 ⚠️ **Le prix réel, mesuré** : 130 000 à 240 000 jetons par lot sur
-Sonnet, ≈ **1,5 million pour l'anglais complet** (recettes, tutos et
-contenu). Pas 360 000 comme je l'avais estimé au départ : l'agent lit,
-vérifie et réfléchit en plus d'écrire. Mesurer avant de citer.
+Sonnet, ≈ **1,5 million pour l'anglais complet** et **1,67 million
+pour l'espagnol** (6 lots de recettes + tutos + contenu, huit agents
+en parallèle, sept minutes de temps réel). Pas 360 000 comme je
+l'avais estimé au départ : l'agent lit, vérifie et réfléchit en plus
+d'écrire. Mesurer avant de citer.
+
+⚠️ **Une charte vaut mieux qu'un prompt.** Les huit agents espagnols
+ont reçu le même fichier (`build/traduction/CHARTE_ES.md`, hors
+dépôt) : les quatre règles qui font échouer un fichier, ce qui ne se
+traduit pas (plats ouest-africains, emoji, gras Markdown), le choix du
+castillan sans doublet latino, l'échappement Dart, et le format du
+rapport. Le prompt de chaque agent ne fait alors que dire quel fichier
+remplir. Sept des huit ont écrit leur propre script de vérification
+des nombres avant de rendre — parce que la charte disait qu'un test
+refuserait le fichier.
+
+⚠️ **`tool/exporter_contenu.dart` lit sa langue dans un fichier.** Ni
+l'environnement du shell ni `--dart-define` n'atteignent l'isolat de
+`flutter test` :
+
+```bash
+mkdir -p build/traduction && echo es > build/traduction/LANGUE
+flutter test tool/exporter_contenu.dart   # → build/traduction/contenu_es.dart
+```
+
+Sans ce fichier, c'est l'anglais.
 
 **Ajouter une langue** : écrire `lib/data/recipes_<code>.dart`, ajouter
 une ligne à `recipeTextsByLanguage`, ajouter le code à

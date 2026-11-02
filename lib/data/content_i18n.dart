@@ -2,6 +2,7 @@ import '../services/prefs_service.dart';
 import 'badges.dart';
 import 'challenges.dart';
 import 'content_en.dart';
+import 'content_es.dart';
 import 'diseases.dart';
 import 'lexicon.dart';
 
@@ -35,6 +36,7 @@ import 'lexicon.dart';
 const Map<String, Map<String, String>> contentTextsByLanguage =
     <String, Map<String, String>>{
   'en': contentTextsEn,
+  'es': contentTextsEs,
 };
 
 /// Une phrase du contenu, dans la langue demandée, le français sinon.

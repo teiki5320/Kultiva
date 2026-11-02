@@ -51,12 +51,22 @@ Le pays se choisit au premier lancement (avec recherche) et se modifie
 - 🇫🇷 **Français** — la source, tout y est
 - 🇬🇧 **Anglais** — complet : interface, 130 cultures, 736 recettes,
   33 tutos, maladies, lexique, badges et défis
-- 🇪🇸 **Espagnol** — l'interface, les 130 cultures et 120 recettes sur 736 ; le reste arrive
+- 🇪🇸 **Espagnol** — complet aussi : 130 cultures, 736 recettes,
+  33 tutos, maladies, lexique, badges et défis
 
-**L'app est entièrement bilingue depuis le 2 novembre 2026** : les
-736 recettes, les 33 tutos, les maladies, le lexique, les badges, les
-défis et les conseils. Tout passe par une surcouche par langue — le
-français reste la source de vérité, et rien n'est recopié :
+**Le contenu est intégralement traduit dans les trois langues depuis
+le 2 novembre 2026** : les 736 recettes, les 33 tutos, les maladies, le
+lexique, les badges, les défis et les conseils. Tout passe par une
+surcouche par langue — le français reste la source de vérité, et rien
+n'est recopié :
+
+⚠️ **L'interface, elle, ne l'est pas encore.** Les cinq libellés
+d'onglets et le réglage « Langue » passent par les ARB ; les
+**541 autres chaînes** de l'app — tableau de bord, onboarding, météo,
+réglages, fiches légume — sont encore écrites en dur en français. Un
+utilisateur espagnol voit donc « Inicio / Diario / Catálogo / Recetas /
+Guías » en bas, et « Semer · 22 légumes » juste au-dessus. Le chantier
+est repéré, chiffré et pas commencé.
 
 - **Recettes** — `lib/data/recipes_en.dart`, champ par champ.
 - **Tutos** — `lib/data/tutos_en.dart`. Le dictionnaire est injecté

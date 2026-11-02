@@ -130,19 +130,24 @@ void main() {
     expect(recipeIngredientsIn(inconnue, 'en'), inconnue.ingredients);
   });
 
-  test('les 736 recettes sont traduites en anglais', () {
+  test('chaque langue couvre les 736 recettes', () {
     // Verrou de couverture : si une recette est ajoutée au catalogue
     // sans sa traduction, elle sortira en français sous une interface
-    // anglaise — et ce test le dira tout de suite.
-    final manquantes = <String>[
-      for (final e in recipesByVegetable.entries)
-        for (final r in e.value)
-          if (recipeTextFor(r, 'en') == null) '${e.key}/${r.name}',
-    ];
-    expect(manquantes, isEmpty,
-        reason: '${manquantes.length} recettes sans traduction anglaise. '
-            'Génère son lot : dart run tool/exporter_recettes.dart '
-            '--squelette --langue=en --lot=N');
+    // anglaise ou espagnole — et ce test le dira tout de suite. Il
+    // vaut pour toute langue enregistrée, y compris celles à venir :
+    // une langue à moitié traduite ne passe pas en douce.
+    for (final langue in recipeTextsByLanguage.keys) {
+      final manquantes = <String>[
+        for (final e in recipesByVegetable.entries)
+          for (final r in e.value)
+            if (recipeTextFor(r, langue) == null) '${e.key}/${r.name}',
+      ];
+      expect(manquantes, isEmpty,
+          reason: '${manquantes.length} recettes sans traduction '
+              '« $langue ». Génère le lot qui manque : dart run '
+              'tool/exporter_recettes.dart --squelette --langue=$langue '
+              '--lot=N');
+    }
   });
 
   test('une langue inconnue retombe sur le français', () {
@@ -215,21 +220,6 @@ void main() {
     for (final m in PreservationMethod.values) {
       expect(methodLabelIn(m, 'fr'), m.label);
     }
-  });
-
-  test('l\'espagnol a commencé et couvre un lot', () {
-    // Verrou d'avancement : il dit où on en est, et il échouera quand
-    // un lot de plus arrivera — c'est voulu, les chiffres des fiches
-    // doivent suivre.
-    final traduites = <String>[
-      for (final e in recipesByVegetable.entries)
-        for (final r in e.value)
-          if (recipeTextFor(r, 'es') != null) '${e.key}/${r.name}',
-    ];
-    expect(traduites, hasLength(120),
-        reason: '${traduites.length} recettes en espagnol. Si un lot '
-            'vient d\'arriver, corrige ce chiffre, le README et '
-            'docs/traduction-recettes.md.');
   });
 
   test('les durées se lisent dans la langue affichée', () {

@@ -12,10 +12,12 @@
 // les défis passent par `vegetable_medal.dart`, qui importe Flutter.
 //
 // Usage :
+//   echo es > build/traduction/LANGUE   # facultatif, défaut: en
 //   flutter test tool/exporter_contenu.dart
 //
 // Il affiche le compte par bloc et écrit le squelette dans
-// `build/traduction/contenu_en.dart`.
+// `build/traduction/contenu_<langue>.dart`, la langue venant du
+// fichier `build/traduction/LANGUE` (anglais par défaut).
 
 import 'dart:io';
 
@@ -91,11 +93,19 @@ void main() {
 
 void _exporte() {
   // Ni l'environnement du shell ni --dart-define n'atteignent
-  // l'isolat de test de façon fiable : le chemin de sortie est donc
-  // fixe, et le compte s'affiche en plus.
-  const langue = 'en';
+  // l'isolat de test de façon fiable. La langue se lit donc dans un
+  // fichier, que l'appelant écrit juste avant :
+  //
+  //   mkdir -p build/traduction && echo es > build/traduction/LANGUE
+  //   echo es > build/traduction/LANGUE   # facultatif, défaut: en
+//   flutter test tool/exporter_contenu.dart
+  //
+  // Sans ce fichier, c'est l'anglais, comme avant.
+  final marqueur = File('build/traduction/LANGUE');
+  final langue =
+      marqueur.existsSync() ? marqueur.readAsStringSync().trim() : 'en';
   const String? filtre = null;
-  const sortie = 'build/traduction/contenu_en.dart';
+  final sortie = 'build/traduction/contenu_$langue.dart';
   final blocs = _blocs();
 
   {
