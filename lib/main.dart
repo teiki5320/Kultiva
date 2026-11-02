@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -83,23 +84,45 @@ Future<void> _bootstrapAndRun() async {
   await _guard('plantations_init', () async {
     PlantationService.instance.load();
   });
-  await _guard('notifications_init', NotificationService.init);
   // Purge best-effort des photos locales orphelines (non bloquant).
   PhotoService.purgeOrphans();
-  // Re-programme le rappel mensuel si l'utilisateur l'a laissé activé.
-  if (PrefsService.instance.notifications.value) {
-    await _guard(
-      'monthly_reminder',
-      NotificationService.scheduleMonthlyReminder,
-    );
-  }
+
+  // ⚠️ **`runApp` passe avant les notifications, et c'est le point
+  // important de cette fonction.**
+  //
+  // `NotificationService.init` demande la permission iOS —
+  // `requestAlertPermission: true` dans les réglages Darwin. Tant
+  // qu'elle était attendue ici, l'app n'affichait **rien** avant que
+  // l'utilisateur ait répondu : le système posait sa question par
+  // dessus le splash natif, et si elle n'arrivait pas, le splash
+  // restait à l'écran pour toujours. Mesuré le 03/11/2026 sur un
+  // simulateur fraîchement réinstallé : 23 minutes de splash, le
+  // processus vivant à **0 % de CPU** et 77 Mo — il attendait.
+  //
+  // ⚠️ Et c'est la vraie cause de ce que la fiche appelait depuis le
+  // 02/11 « le premier lancement après un `simctl install` est lent,
+  // une à trois minutes ». Ce n'était pas de la lenteur : c'était
+  // cette attente, qui se résolvait quand la permission avait déjà
+  // été tranchée dans un conteneur précédent. Un nouvel utilisateur,
+  // lui, voit un splash figé.
+  //
+  // L'interface part donc d'abord, et les notifications s'initialisent
+  // derrière. La question de permission arrive alors par-dessus une
+  // app dessinée, ce qu'iOS attend.
+  runApp(const KultivaApp());
+
+  unawaited(_guard('notifications_init', () async {
+    await NotificationService.init();
+    if (PrefsService.instance.notifications.value) {
+      await NotificationService.scheduleMonthlyReminder();
+    }
+  }));
   if (PrefsService.instance.musicEnabled.value) {
-    await _guard(
+    unawaited(_guard(
       'start_music',
       () async => AudioService.instance.startMusic(),
-    );
+    ));
   }
-  runApp(const KultivaApp());
 }
 
 class KultivaApp extends StatelessWidget {
