@@ -20,20 +20,17 @@ void main() {
   });
 
   group('clearUserScopedData', () {
-    test('purge toutes les données rattachées au compte', () async {
-      // Données user-scoped réparties sur plusieurs sous-systèmes.
+    test('efface le jardin, dans tous ses sous-systèmes', () async {
+      // ⚠️ Les clés de Tamassi et de l'ancienne grille ont été
+      // retirées de la purge le 02/11/2026 : l'app n'a jamais été
+      // publiée, donc aucun téléphone ne les porte. Les lister était
+      // du ménage pour une poussière qui n'existe pas.
       await prefs.setPlantationsJson('[{"id":"x"}]');
       await prefs.setUnlockedBadges({'first_plant', 'streak_3'});
       await prefs.setCulturesJson('[{"id":"c"}]');
       await prefs.toggleFavorite('tomate');
-      await prefs.setString('kultiva.creature.xp', '80');
-      await prefs.setString('kultiva.creature.starter', 'soleia');
-      await prefs.setString('kultiva.creature.name', 'Choupi');
-      await prefs.setString('kultiva.creature.streak', '12');
       await prefs.setString('kultiva.challenges.v1', '{"a":"b"}');
       await prefs.setString('garden_plans_v1', '[{"id":"g"}]');
-      await prefs.setString('tamassi.stats.visits', '5');
-      await prefs.setString('tamassi.stats.water', '30');
 
       await prefs.clearUserScopedData();
 
@@ -41,14 +38,8 @@ void main() {
       expect(prefs.unlockedBadges, isEmpty);
       expect(prefs.culturesJson, isNull);
       expect(prefs.favorites.value, isEmpty);
-      expect(prefs.getString('kultiva.creature.xp'), isNull);
-      expect(prefs.getString('kultiva.creature.starter'), isNull);
-      expect(prefs.getString('kultiva.creature.name'), isNull);
-      expect(prefs.getString('kultiva.creature.streak'), isNull);
       expect(prefs.getString('kultiva.challenges.v1'), isNull);
       expect(prefs.getString('garden_plans_v1'), isNull);
-      expect(prefs.getString('tamassi.stats.visits'), isNull);
-      expect(prefs.getString('tamassi.stats.water'), isNull);
     });
 
     test('conserve les préférences de l\'appareil (région, thème, son)',

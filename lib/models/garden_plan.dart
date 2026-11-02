@@ -32,8 +32,8 @@ class PlannedCell {
   /// Optionnel : id d'une [CultureEntry] créée automatiquement pour
   /// suivre ce plant (phase, observations, photos…). Lien établi par
   /// `garden_planner_screen.dart::_onPlacePlant` au moment du placement.
-  /// Null pour les anciennes cellules (legacy d'avant la refonte
-  /// cohérence d'avril 2026).
+  /// Null seulement si la création de la culture a échoué : toute
+  /// cellule posée depuis la refonte d'avril 2026 en a un.
   final String? cultureId;
 
   PlannedCell({

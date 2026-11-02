@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'plantation.dart';
 import 'region_data.dart';
 
-/// Palier de médaille d'une espèce dans le Poussidex.
+/// Palier de médaille d'une espèce.
 ///
 /// Chaque espèce de légume collectionnée peut atteindre 4 paliers en
 /// fonction des actions de l'utilisateur (planter, récolter, cultiver

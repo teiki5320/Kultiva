@@ -48,12 +48,18 @@ Palette, à respecter exactement :
 Ton de voix : chaleureux, tutoiement, enfantin sans être niais.
 « Le potager kawaii dans ta poche 🌱 ».
 
-## La barre d'onglets, en bas, quatre onglets
+## La barre d'onglets, en bas, cinq onglets
 
 1. 🏠 **Home** — le tableau de bord
 2. 📔 **Cahier** — le cahier de culture (l'onglet qu'on ouvre chaque jour)
 3. 🛒 **Étal** — le catalogue
-4. 🎓 **Tutos** — les tutoriels
+4. 🍴 **Recettes** — « Garder ta récolte », les conservations
+5. 🎓 **Tutos** — les tutoriels
+
+⚠️ Ce prompt disait « quatre onglets » jusqu'au 02/11/2026, et le tuto
+produit avec lui en montrait quatre alors que l'app en avait cinq
+depuis le 01/11. Un prompt périmé regénère un tuto périmé : le
+corriger **avant** de relancer une session design.
 
 L'onglet actif est vert `#4A9B5A`, les autres gris-vert.
 

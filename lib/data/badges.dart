@@ -2,14 +2,21 @@ import '../models/vegetable_medal.dart';
 import '../models/vegetable.dart';
 import '../services/garden_stats.dart';
 
-/// Un badge débloquable dans le Poussidex.
-class PoussidexBadge {
+/// Un badge débloquable au jardin.
+///
+/// ⚠️ La classe s'appelait `PoussidexBadge` jusqu'au 02/11/2026 —
+/// d'après un écran supprimé le 31/10. **Les 50 identifiants n'ont
+/// pas bougé** : ce sont les noms des fichiers d'images
+/// (`assets/images/badges/<id>.webp`) et les clés persistées des
+/// badges débloqués. Renommer la classe est sans risque, renommer un
+/// identifiant ne l'est pas.
+class GardenBadge {
   final String id;
   final String emoji;
   final String name;
   final String description;
   final MedalTier tier;
-  const PoussidexBadge({
+  const GardenBadge({
     required this.id,
     required this.emoji,
     required this.name,
@@ -30,306 +37,306 @@ class PoussidexBadge {
 /// ⚠️ Les identifiants sont inchangés : les 50 médaillons sont des
 /// fichiers nommés d'après eux (`assets/images/badges/<id>.webp`). Les
 /// renommer, c'est perdre les images.
-const List<PoussidexBadge> allBadges = <PoussidexBadge>[
+const List<GardenBadge> allBadges = <GardenBadge>[
   // ─── BRONZE (15) — premiers pas ───
-  PoussidexBadge(
+  GardenBadge(
       id: 'first_step',
       emoji: '🌱',
       name: 'Premier pas',
       description: 'Planter ton premier légume.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'named',
       emoji: '📝',
       name: 'Carnet ouvert',
       description: 'Écrire une note sur un de tes plants.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'first_water',
       emoji: '💧',
       name: 'Baptême d\'eau',
       description: 'Arroser un plant pour la première fois.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'first_fertilize',
       emoji: '🟫',
       name: 'Première case',
       description: 'Placer un légume dans un potager carré.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'first_pet',
       emoji: '⭐',
       name: 'Coup de cœur',
       description: 'Mettre un légume en favori.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'first_challenge',
       emoji: '📸',
       name: '1er cliché',
       description: 'Compléter ton tout premier défi photo.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'streak_3',
       emoji: '🔥',
       name: 'Régulier',
       description: 'Arroser 3 jours d\'affilée.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'morning',
       emoji: '☀️',
       name: 'Matinal',
       description: 'Arroser avant 9 h du matin.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'night',
       emoji: '🌙',
       name: 'Nocturne',
       description: 'Arroser après 21 h.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'explorer',
       emoji: '🧺',
       name: 'Panier varié',
       description: 'Planter dans 3 familles différentes.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_15',
       emoji: '🌿',
       name: 'Germe',
       description: '5 plants à ton actif.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'see_bee',
       emoji: '🐝',
       name: 'Butineur',
       description: 'Planter une fleur.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'see_butterfly',
       emoji: '🌸',
       name: 'Parfumé',
       description: 'Planter un aromate.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'first_visit',
       emoji: '🏡',
       name: 'Premier jardin',
       description: 'Créer ton premier jardin.',
       tier: MedalTier.bronze),
-  PoussidexBadge(
+  GardenBadge(
       id: 'water_5',
       emoji: '💪',
       name: 'Arroseur',
       description: '5 arrosages au total.',
       tier: MedalTier.bronze),
   // ─── SILVER (15) — progression ───
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_20',
       emoji: '🌱',
       name: 'Pousse',
       description: '10 plants à ton actif.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_30',
       emoji: '🌾',
       name: 'Bourgeon',
       description: '20 plants à ton actif.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'water_20',
       emoji: '🚿',
       name: 'Arrosoir d\'argent',
       description: '20 arrosages au total.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'fertilize_20',
       emoji: '🧱',
       name: 'Dix cases',
       description: 'Remplir 10 cases de potager carré.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'pet_20',
       emoji: '📷',
       name: 'Album',
       description: '10 photos de plants.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'challenges_5',
       emoji: '🖼',
       name: 'Photographe',
       description: 'Compléter 5 défis photo.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'streak_7',
       emoji: '🔥',
       name: 'Semaine entière',
       description: 'Arroser 7 jours d\'affilée.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'mix_tiers',
       emoji: '🎖',
       name: 'Polyvalent',
       description: 'Des défis de 3 paliers différents.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'night_5',
       emoji: '🌙',
       name: 'Noctambule',
       description: '5 arrosages après 21 h.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'morning_5',
       emoji: '🌅',
       name: 'Lève-tôt',
       description: '5 arrosages avant 9 h.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'rain_login',
       emoji: '⏳',
       name: 'Patience',
       description: 'Suivre un même plant pendant 30 jours.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'snow_login',
       emoji: '❄️',
       name: 'Jardinier d\'hiver',
       description: 'Planter en hiver.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'sunny_login',
       emoji: '🌞',
       name: 'Plein été',
       description: 'Planter en été.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'visits_5',
       emoji: '🌈',
       name: 'Cinq espèces',
       description: 'Planter 5 espèces différentes.',
       tier: MedalTier.silver),
-  PoussidexBadge(
+  GardenBadge(
       id: 'trio_15',
       emoji: '🤹',
       name: 'Trio',
       description: '15 arrosages, 5 récoltes et 5 photos.',
       tier: MedalTier.silver),
   // ─── GOLD (12) — le jardin tourne ───
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_40',
       emoji: '🌻',
       name: 'Fleur',
       description: '30 plants à ton actif.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_50',
       emoji: '🌳',
       name: 'Plante',
       description: '50 plants à ton actif.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_60',
       emoji: '📚',
       name: 'Quinze espèces',
       description: 'Planter 15 espèces différentes.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_75',
       emoji: '🧑‍🌾',
       name: 'Vingt-cinq espèces',
       description: 'Planter 25 espèces différentes.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'water_100',
       emoji: '🌊',
       name: 'Océan',
       description: '100 arrosages au total.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'fertilize_100',
       emoji: '🧩',
       name: 'Carré complet',
       description: 'Remplir toutes les cases d\'un jardin.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'challenges_15',
       emoji: '🎨',
       name: 'Artiste',
       description: 'Compléter 15 défis photo.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'streak_30',
       emoji: '🔥',
       name: 'Trente jours',
       description: 'Arroser 30 jours d\'affilée.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'visits_10',
       emoji: '🏘',
       name: 'Trois jardins',
       description: 'Créer 3 jardins.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'all_bronze_challenges',
       emoji: '🥉',
       name: 'Bronze complet',
       description: 'Compléter tous les défis bronze.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'all_silver_challenges',
       emoji: '🥈',
       name: 'Argent complet',
       description: 'Compléter tous les défis argent.',
       tier: MedalTier.gold),
-  PoussidexBadge(
+  GardenBadge(
       id: 'four_seasons',
       emoji: '🗓',
       name: 'Quatre saisons',
       description: 'Planter aux quatre saisons.',
       tier: MedalTier.gold),
   // ─── SHINY (8) — pour les acharnés ───
-  PoussidexBadge(
+  GardenBadge(
       id: 'level_100',
       emoji: '🏆',
       name: 'Centenaire',
       description: '100 plants à ton actif.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'all_challenges',
       emoji: '🌟',
       name: 'Complétionniste',
       description: 'Compléter les 50 défis photo.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'streak_100',
       emoji: '🔥',
       name: 'Cent jours',
       description: 'Arroser 100 jours d\'affilée.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'all_gold_challenges',
       emoji: '🥇',
       name: 'Or complet',
       description: 'Compléter tous les défis or.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'all_shiny_challenges',
       emoji: '✨',
       name: 'Shiny complet',
       description: 'Compléter tous les défis shiny.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'veteran_50',
       emoji: '🧺',
       name: 'Vétéran',
       description: '50 récoltes au total.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'rare_40',
       emoji: '💎',
       name: 'Rare',
       description: 'Débloquer 40 badges.',
       tier: MedalTier.shiny),
-  PoussidexBadge(
+  GardenBadge(
       id: 'ultimate',
       emoji: '🏅',
       name: 'Ultime',

@@ -14,7 +14,7 @@ class KultivaColors {
   static const Color textSecondary = Color(0xFF8AAB8A);
   static const Color lightCard = Color(0xFFFFFFFF);
 
-  // --- Accents Poussidex (chips défis / badges dans Mon Jardin) ---
+  // --- Accents des chips de défis et de badges ---
   static const Color challengePink = Color(0xFFFF8FAB);
   static const Color badgeGold = Color(0xFFE8B923);
 

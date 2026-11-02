@@ -51,7 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     // le même glisser-déposer. Elle parle maintenant de ce qui s'ajoute
     // au cahier — le journal, les défis, les médailles.
     _OnboardingContent(
-      imagePath: 'assets/images/onboarding_poussidex.png',
+      imagePath: 'assets/images/onboarding_journal.png',
       fallbackEmoji: '📖',
       title: trUi('Le journal de ton jardin'),
       subtitle: trUi("Chaque semis, chaque arrosage, chaque récolte s'inscrit "

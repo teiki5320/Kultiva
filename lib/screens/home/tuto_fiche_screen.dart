@@ -117,9 +117,9 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
   ///   kultiva://home                → onglet Home (semis)
   ///   kultiva://cahier              → onglet Cahier de culture
   ///   kultiva://vegetables          → onglet Étal
-  ///   kultiva://poussidex           → Défis & badges, ouvert par-dessus
-  ///   kultiva://poussidex/badges    → section Badges
-  ///   kultiva://poussidex/challenges→ section Défis
+  ///   kultiva://defis               → Défis & badges, ouvert par-dessus
+  ///   kultiva://defis/badges        → section Badges
+  ///   kultiva://defis/challenges    → section Défis
   ///   kultiva://tutos               → onglet Tutos
   ///   kultiva://recettes            → onglet Recettes
   ///   kultiva://tuto/`<nom>`          → remplace la fiche par une autre
@@ -141,12 +141,7 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
         Navigator.of(context).pop();
         RootTabs.tabIndex.value = 2;
         return;
-      case 'poussidex':
       case 'defis':
-        // Le Poussidex a été supprimé le 31/10/2026 : sa collection
-        // faisait doublon avec le cahier de culture, et son journal y
-        // est remonté. La route survit pour les anciens liens et mène
-        // à ce qui lui restait en propre, les défis et les badges.
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(
             builder: (_) => DefisBadgesScreen(
@@ -163,14 +158,6 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
       case 'tutos':
         Navigator.of(context).pop();
         RootTabs.tabIndex.value = 4;
-        return;
-      case 'photos':
-      case 'photo':
-        // L'onglet Photo a été ajouté puis retiré le 01/11/2026. La
-        // route survit pour les anciens liens et mène au cahier de
-        // culture, où les photos d'un plant vivent désormais seules.
-        Navigator.of(context).pop();
-        RootTabs.tabIndex.value = 1;
         return;
       case 'tuto':
         if (segments.isNotEmpty) {

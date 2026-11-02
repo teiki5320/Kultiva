@@ -76,7 +76,7 @@ extension LexiconLocalized on LexiconEntry {
 ///
 /// ⚠️ `id` ne bouge jamais : les 50 médaillons sont des fichiers nommés
 /// d'après lui (`assets/images/badges/<id>.webp`).
-extension BadgeLocalized on PoussidexBadge {
+extension BadgeLocalized on GardenBadge {
   String get displayName => tr(name);
   String get displayDescription => tr(description);
 }

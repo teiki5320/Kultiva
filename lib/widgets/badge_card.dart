@@ -20,7 +20,7 @@ import '../utils/text_scale.dart';
 /// en silhouette verrouillée.
 Future<void> showBadgeCard(
   BuildContext context, {
-  required PoussidexBadge badge,
+  required GardenBadge badge,
   required bool unlocked,
 }) {
   return showGeneralDialog<void>(
@@ -46,7 +46,7 @@ Future<void> showBadgeCard(
 }
 
 class _BadgeCardOverlay extends StatefulWidget {
-  final PoussidexBadge badge;
+  final GardenBadge badge;
   final bool unlocked;
 
   const _BadgeCardOverlay({
@@ -208,7 +208,7 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
 
 /// Visuel de la carte (face avant). Format ~pokemon (280×400).
 class _BadgeCardVisual extends StatelessWidget {
-  final PoussidexBadge badge;
+  final GardenBadge badge;
   final bool unlocked;
 
   /// Rotation courante (en radians) — utilisée pour animer l'effet
@@ -832,7 +832,7 @@ class _TierColors {
 /// explosent autour. L'utilisateur peut tap pour fermer.
 Future<void> showBadgeUnlockedAnimation(
   BuildContext context, {
-  required PoussidexBadge badge,
+  required GardenBadge badge,
 }) {
   return showGeneralDialog<void>(
     context: context,
@@ -845,7 +845,7 @@ Future<void> showBadgeUnlockedAnimation(
 }
 
 class _BadgeUnlockedOverlay extends StatefulWidget {
-  final PoussidexBadge badge;
+  final GardenBadge badge;
   const _BadgeUnlockedOverlay({required this.badge});
 
   @override

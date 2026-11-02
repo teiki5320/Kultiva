@@ -110,7 +110,8 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 
 ```
 Kultiva/
-├── lib/                    # Code Dart principal (32 093 LoC sur 100 fichiers,
+├── lib/                    # Code Dart principal (119 fichiers, données
+│                           # comprises ; 22 906 lignes hors data et l10n,
 │                           # mesuré le 31/10/2026)
 │   ├── main.dart           # Bootstrap : onboarding → tabs
 │   ├── config/
@@ -170,7 +171,7 @@ Kultiva/
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
 │   ├── widgets/            # 13 fichiers
-│   │                       # badge_card (1 090 lignes), readable_width,
+│   │                       # badge_card (1 097 lignes), readable_width,
 │   │                       # petal_animation, season_header, share_card,
 │   │                       # challenge_story_card, garden_tutorial_sheet,
 │   │                       # jardins_intro_sheet, lexicon_text, medal_badge,
@@ -204,7 +205,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 45 fichiers — 1 076 tests (02/11/2026)
+├── test/                   # 44 fichiers — 1 070 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -698,7 +699,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 280 tests au 30/10/2026, dont une
+1. **Pas de test d'intégration** — 1 070 tests au 02/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
    fait de même aux dimensions d'un iPad en portrait et en paysage, et
@@ -710,8 +711,9 @@ Règles spécifiques au projet pour être efficace dès la première action :
    retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
    est supprimé.
 3. **Fichiers volumineux restants** — mesurés le 31/10/2026 :
-   `vegetable_detail_screen.dart` (1 283), `badge_card.dart` (1 090),
-   `sow_screen.dart` (1 033). `vegetables_base.dart` (4 281) et
+   `vegetable_detail_screen.dart` (1 373), `badge_card.dart` (1 097),
+   `sow_screen.dart` (1 051). Ils ont grossi d'une centaine de lignes
+   chacun le 02/11 en branchant la traduction — mesuré, pas estimé. `vegetables_base.dart` (4 281) et
    `west_africa.dart` (945) sont des fichiers de données, ils ne sont
    pas concernés.
    `planner_widgets.dart` a été découpé le 30/10 en `planner_cell`,
@@ -865,6 +867,17 @@ Règles spécifiques au projet pour être efficace dès la première action :
 
    Le premier démarrage d'un device neuf prend ~90 s et montre le logo
    Apple : ne pas conclure « écran noir » sur la première capture.
+
+   ⚠️ **Le premier lancement après un `simctl install` est lent**, une
+   à trois minutes, et l'app reste sur son splash pendant ce temps.
+   Les lancements suivants affichent l'écran en dix secondes. Je m'y
+   suis fait prendre deux fois le 02/11, et la seconde j'ai conclu à
+   une régression du code puis attribué le déblocage à une correction
+   de mise en page faite entre-temps. **C'était faux** : la correction
+   était bonne en soi — un titre tronqué — mais elle n'a rien débloqué.
+   Avant de diagnostiquer un blocage au démarrage : relancer sans
+   réinstaller, et vérifier le CPU du processus (`ps -o %cpu`). À 0 %
+   il attend, et attendre un `Future` n'est pas boucler.
    Pour piloter (taper, glisser), l'outil `Claude_Code_iOS_Simulator`
    prend des **points** (ici 402 × 874 pour 1206 × 2622 pixels, donc
    diviser par 3).
@@ -966,6 +979,59 @@ Règles spécifiques au projet pour être efficace dès la première action :
     Vérifié dans le navigateur à 375 × 812 : les dix scènes
     s'enchaînent, le halo désigne le bon élément, la barre d'onglets
     suit, et le bouton pause répond.
+
+## 🧹 Zéro installation : ce que ça autorise (02/11/2026)
+
+**Décision de Jean** : « personne n'a encore téléchargé Kultiva ».
+Aucune donnée ancienne n'existe donc sur aucun téléphone, et tout ce
+qui ne servait qu'à la compatibilité est parti.
+
+**Ce qui a été supprimé, et pourquoi c'était mort par construction :**
+
+- `services/plantation_migration.dart` (81 lignes) — convertissait une
+  « ancienne grille 2D » vers la collection de plants. Ce format n'a
+  jamais quitté un poste de développement ;
+- `CultureService.linkLegacyEntries()` — rattachait les cultures
+  écrites avant le 30/10/2026. ⚠️ Son filet de sécurité vivant,
+  `_plantationIdFor()`, **reste** : il recrée le dossier d'un plant
+  supprimé sous une culture encore active, ce qui peut arriver
+  aujourd'hui ;
+- `Plantation.merge()` — n'avait plus qu'un appelant, la migration.
+  Elle datait de la synchronisation cloud, retirée le 30/10 ;
+- les préférences `kultiva.gardenGrid` et
+  `kultiva.gridMigratedToPoussidex`, et dans `clearUserScopedData` les
+  clés `kultiva.creature.*`, `tamassi.stats.*` et `kultiva.auth.*` :
+  du ménage pour une poussière qui n'existe nulle part ;
+- les routes `kultiva://poussidex` et `kultiva://photos`, conservées
+  « pour les anciens liens » — il n'y a pas d'ancien lien ;
+- `PhotoService.pick()`, zéro appelant ;
+- `dayLabel()` et `monthLabel()` de `months.dart`, zéro appelant
+  (`journal_view` et `weather_screen` ont chacun leur `_dayLabel`) ;
+- deux entrées de lexique, « poussidex » et « streak ».
+
+**Renommé, sans toucher aux identifiants** : `PoussidexBadge` devient
+`GardenBadge`, et `onboarding_poussidex.png` devient
+`onboarding_journal.png`. ⚠️ **Les 50 identifiants de badge n'ont pas
+bougé** : ce sont les noms des fichiers d'images et les clés
+persistées. Renommer une classe est sans risque ; renommer un
+identifiant ne l'est pas.
+
+**Un commentaire qui mentait** : `clearUserScopedData()` se disait
+« plus appelée par l'app » alors que « Effacer mon jardin » l'appelle.
+
+**Bilan** : −22 tests (leur code est parti avec eux), 1 070 tests
+verts, `analyze` propre.
+
+⚠️ **Ce que cette décision ne couvre pas.** Elle vaut **jusqu'à la
+première publication**. Le jour où une version est sur une boutique,
+toute clé de préférence et tout format persisté deviennent un contrat :
+un champ renommé, c'est un jardin perdu. Le bon moment pour ce ménage,
+c'était maintenant.
+
+⚠️ **`supabase/migrations/` reste**, volontairement : c'est l'historique
+du schéma, et CLAUDE.md le conserve comme point de départ si un backend
+revenait (Cloudflare, pas Supabase). Il ne coûte rien et ne s'exécute
+jamais.
 
 ## Fiches à jour à chaque changement (règle de Jean, 22 octobre 2026)
 

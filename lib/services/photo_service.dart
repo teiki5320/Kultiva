@@ -71,14 +71,6 @@ class PhotoService {
     }
   }
 
-  /// Variante legacy qui retourne juste le chemin (ou null). Conservée
-  /// pour les callsites qui n'ont pas besoin de distinguer permission
-  /// refusée vs annulation.
-  static Future<String?> pick({required bool fromCamera}) async {
-    final r = await pickDetailed(fromCamera: fromCamera);
-    return r.path;
-  }
-
   /// Ouvre les réglages OS sur la fiche de l'app (fiche permissions).
   /// À utiliser depuis un dialog quand la caméra est refusée.
   static Future<bool> openSettings() => openAppSettings();

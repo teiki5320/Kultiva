@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/models/plantation.dart';
-import 'package:kultiva/services/plantation_migration.dart';
 
 void main() {
   group('Plantation JSON roundtrip', () {
@@ -97,105 +95,6 @@ void main() {
       final reopened = p.copyWith(clearHarvestedAt: true);
       expect(reopened.harvestedAt, isNull);
       expect(reopened.isActive, isTrue);
-    });
-  });
-
-  group('migrateGridToPlantations', () {
-    test('null or empty input returns empty list', () {
-      expect(migrateGridToPlantations(null), isEmpty);
-      expect(migrateGridToPlantations(''), isEmpty);
-    });
-
-    test('malformed JSON returns empty list without throwing', () {
-      expect(migrateGridToPlantations('not json'), isEmpty);
-      expect(migrateGridToPlantations('{"rows": "nope"}'), isEmpty);
-      expect(migrateGridToPlantations('{"rows": 2}'), isEmpty);
-    });
-
-    test('empty grid (all nulls) returns empty list', () {
-      final legacy = jsonEncode({
-        'rows': 2,
-        'cols': 3,
-        'cells': [null, null, null, null, null, null],
-      });
-      expect(migrateGridToPlantations(legacy), isEmpty);
-    });
-
-    test('single cell produces a single plantation with correct vegetableId',
-        () {
-      final legacy = jsonEncode({
-        'rows': 1,
-        'cols': 1,
-        'cells': ['tomate'],
-      });
-      final result = migrateGridToPlantations(legacy);
-      expect(result.length, 1);
-      expect(result.first.vegetableId, 'tomate');
-      expect(result.first.harvestCount, 0);
-      expect(result.first.wateredAt, isEmpty);
-    });
-
-    test('multiple cells produce one plantation each, in row-major order', () {
-      final legacy = jsonEncode({
-        'rows': 2,
-        'cols': 2,
-        'cells': ['tomate', null, 'carotte', 'courgette'],
-      });
-      final result = migrateGridToPlantations(legacy);
-      expect(result.length, 3);
-      expect(result.map((p) => p.vegetableId).toList(),
-          ['tomate', 'carotte', 'courgette']);
-    });
-
-    test('watered info is carried over to wateredAt', () {
-      final legacy = jsonEncode({
-        'rows': 1,
-        'cols': 2,
-        'cells': ['tomate', 'carotte'],
-        'watered': {
-          '0_0': '2025-04-10T08:00:00.000Z',
-          '0_1': '2025-04-11T08:00:00.000Z',
-        },
-      });
-      final result = migrateGridToPlantations(legacy);
-      expect(result.length, 2);
-      expect(result[0].wateredAt.length, 1);
-      expect(result[1].wateredAt.length, 1);
-    });
-
-    test('missing watered map is tolerated', () {
-      final legacy = jsonEncode({
-        'rows': 1,
-        'cols': 1,
-        'cells': ['tomate'],
-      });
-      final result = migrateGridToPlantations(legacy);
-      expect(result.first.wateredAt, isEmpty);
-    });
-
-    test('generated IDs are unique (same-millisecond migration)', () {
-      final legacy = jsonEncode({
-        'rows': 3,
-        'cols': 3,
-        'cells': List.filled(9, 'tomate'),
-      });
-      final result = migrateGridToPlantations(legacy);
-      final ids = result.map((p) => p.id).toSet();
-      expect(ids.length, result.length);
-    });
-
-    test('seed parameter makes ID generation deterministic', () {
-      final legacy = jsonEncode({
-        'rows': 1,
-        'cols': 2,
-        'cells': ['tomate', 'carotte'],
-      });
-      final a = migrateGridToPlantations(legacy, seed: 1);
-      final b = migrateGridToPlantations(legacy, seed: 1);
-      // Same seed → same random suffixes (last 5 digits of the ID).
-      final suffixA = a.map((p) => p.id.split('_').last).toList();
-      final suffixB = b.map((p) => p.id.split('_').last).toList();
-      expect(suffixA, suffixB);
     });
   });
 }

@@ -22,9 +22,6 @@ class PrefsService {
   static const _kNotifications = 'kultiva.notifications';
   static const _kOnboardingDone = 'kultiva.onboardingDone';
   static const _kFavorites = 'kultiva.favorites';
-  static const _kAuthEmail = 'kultiva.auth.email';
-  static const _kAuthName = 'kultiva.auth.name';
-  static const _kGardenGrid = 'kultiva.gardenGrid';
   static const _kWateringHistory = 'kultiva.wateringHistory';
   static const _kSoundEnabled = 'kultiva.soundEnabled';
   static const _kMusicEnabled = 'kultiva.musicEnabled';
@@ -35,7 +32,6 @@ class PrefsService {
   static const _kGardenTutorialDone = 'kultiva.gardenTutorialDone';
   static const _kPlantations = 'kultiva.plantations.v1';
   static const _kUnlockedBadges = 'kultiva.unlockedBadges.v1';
-  static const _kGridMigrated = 'kultiva.gridMigratedToPoussidex';
   static const _kLastWateringCheck = 'kultiva.lastWateringNotificationCheck';
   static const _kLastHeatwaveCheck = 'kultiva.lastHeatwaveNotificationCheck';
   static const _kLastFirstRainsCheck = 'kultiva.lastFirstRainsNotification';
@@ -279,18 +275,7 @@ class PrefsService {
     await _prefs?.setStringList(_kFavorites, next.toList());
   }
 
-  // --- Garden grid (legacy, migré vers Poussidex) ---
-  String? get gardenGrid => _prefs?.getString(_kGardenGrid);
-
-  Future<void> setGardenGrid(String? json) async {
-    if (json == null) {
-      await _prefs?.remove(_kGardenGrid);
-    } else {
-      await _prefs?.setString(_kGardenGrid, json);
-    }
-  }
-
-  // --- Poussidex : collection de plantations ---
+  // --- La collection de plants ---
   String? get plantationsJson => _prefs?.getString(_kPlantations);
 
   Future<void> setPlantationsJson(String json) async {
@@ -341,12 +326,6 @@ class PrefsService {
     await _prefs?.setStringList(_kRecipeCooked, entries);
   }
 
-  bool get gridMigrated => _prefs?.getBool(_kGridMigrated) ?? false;
-
-  Future<void> setGridMigrated(bool value) async {
-    await _prefs?.setBool(_kGridMigrated, value);
-  }
-
   /// Dernier moment où une notification d'alerte d'arrosage a été
   /// envoyée. Utilisé pour throttler à max 1 notif par 24h.
   DateTime? get lastWateringNotificationCheck {
@@ -392,11 +371,11 @@ class PrefsService {
   /// Les préférences de l'appareil (son, thème, région, notifications)
   /// sont conservées : seules les données du jardin sont effacées.
   ///
-  /// ⚠️ **Plus appelée par l'app** depuis le retrait des comptes
-  /// (30/10/2026) : elle servait à la déconnexion et à la suppression de
-  /// compte. Conservée telle quelle, testée, parce qu'elle est le seul
-  /// moyen de repartir de zéro sans réinstaller — reste à décider si on
-  /// l'expose dans les réglages.
+  /// Appelée par « Effacer mon jardin » dans les réglages — le seul
+  /// moyen de repartir de zéro sans réinstaller.
+  ///
+  /// ⚠️ Son commentaire disait « plus appelée par l'app » depuis le
+  /// retrait des comptes, alors qu'elle l'est. Corrigé le 02/11/2026.
   Future<void> clearUserScopedData() async {
     final p = _prefs;
     if (p == null) return;
@@ -406,32 +385,11 @@ class PrefsService {
       _kCultures,
       _kFavorites,
       _kWateringHistory,
-      _kGardenGrid,
-      _kGridMigrated,
       _kGardenTutorialDone,
-      'kultiva.creature.xp',
-      'kultiva.creature.starter',
-      'kultiva.creature.name',
-      'kultiva.creature.streak',
-      'kultiva.creature.lastSeen',
-      'kultiva.creature.lastWater',
-      'kultiva.creature.lastFertilize',
-      'kultiva.creature.lastCaress',
       'kultiva.challenges.v1',
       'garden_plans_v1',
     ];
     for (final k in exactKeys) {
-      await p.remove(k);
-    }
-    // Clés héritées du temps des comptes : plus écrites, mais une
-    // installation ancienne peut encore les porter.
-    for (final k in <String>[_kAuthEmail, _kAuthName]) {
-      await p.remove(k);
-    }
-    // Statistiques Tamassi : clés dynamiques `tamassi.stats.*`.
-    final statKeys =
-        p.getKeys().where((k) => k.startsWith('tamassi.stats.')).toList();
-    for (final k in statKeys) {
       await p.remove(k);
     }
     // Remet les notifiers réactifs à l'état vierge.

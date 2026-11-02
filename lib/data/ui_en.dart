@@ -18,12 +18,6 @@ const Map<String, String> uiTextsEn = <String, String>{
       'today',
   'hier':
       'yesterday',
-  'il y a {0} jours':
-      '{0} days ago',
-  '{0} {1} {2}':
-      '{0} {1} {2}',
-  '{0} {1}':
-      '{0} {1}',
   'Germination attendue':
       'Expected germination',
   'Levée prévue d\'ici {0} j (germe en moyenne en {1}).':

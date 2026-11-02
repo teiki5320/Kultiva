@@ -72,7 +72,7 @@ class _ChallengesGridState extends State<ChallengesGrid> {
     // de la v1 : plus de sauvegarde cloud, et donc plus de message
     // d'échec de synchronisation à afficher.
     if (!mounted) return;
-    final badge = PoussidexBadge(
+    final badge = GardenBadge(
       id: challenge.id,
       emoji: challenge.emoji,
       name: challenge.displayName,

@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kultiva/models/culture_entry.dart';
 import 'package:kultiva/services/culture_service.dart';
 import 'package:kultiva/services/plantation_service.dart';
 import 'package:kultiva/services/prefs_service.dart';
@@ -138,53 +137,6 @@ void main() {
   });
 
   group('rattachement des anciennes sauvegardes', () {
-    test('une culture sans lien reçoit un plant qui reprend ses arrosages',
-        () async {
-      final legacy = CultureEntry(
-        id: 'cul_legacy',
-        vegetableId: 'courgette',
-        startedAt: DateTime(2026, 4, 2),
-        wateredAt: <DateTime>[DateTime(2026, 4, 5), DateTime(2026, 4, 9)],
-      );
-      await prefs
-          .setCulturesJson(CultureEntry.encodeAll(<CultureEntry>[legacy]));
-      plants.load();
-
-      await cultures.linkLegacyEntries();
-
-      final migrated = cultures.byId('cul_legacy')!;
-      expect(migrated.linkedPlantationId, isNotNull);
-      final p = plants.byId(migrated.linkedPlantationId!)!;
-      expect(p.vegetableId, 'courgette');
-      expect(p.plantedAt, DateTime(2026, 4, 2));
-      expect(p.wateredAt, hasLength(2));
-    });
-
-    test('une culture terminée est rattachée à un plant clos', () async {
-      final legacy = CultureEntry(
-        id: 'cul_fini',
-        vegetableId: 'radis',
-        startedAt: DateTime(2026, 3, 1),
-        endedAt: DateTime(2026, 5, 1),
-      );
-      await prefs
-          .setCulturesJson(CultureEntry.encodeAll(<CultureEntry>[legacy]));
-      plants.load();
-
-      await cultures.linkLegacyEntries();
-      final p = plants.byId(cultures.byId('cul_fini')!.linkedPlantationId!)!;
-      expect(p.isActive, isFalse);
-      expect(p.harvestedAt, DateTime(2026, 5, 1));
-    });
-
-    test('le rattachement est idempotent : relancé, il ne duplique rien',
-        () async {
-      await cultures.add(vegetableId: 'tomate', startedAt: DateTime.now());
-      await cultures.linkLegacyEntries();
-      await cultures.linkLegacyEntries();
-      expect(plants.all, hasLength(1));
-    });
-
     test('les arrosages restent lisibles si le plant a été supprimé', () async {
       // L'utilisateur peut retirer un plant depuis le Poussidex : son
       // historique dans le cahier ne doit pas disparaître de l'écran.

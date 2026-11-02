@@ -65,25 +65,3 @@ String monthRangesLabel(Iterable<int> months) {
   final tete = morceaux.sublist(0, morceaux.length - 1).join(', ');
   return trUiArgs('{0} et {1}', <Object?>[tete, morceaux.last]);
 }
-
-/// « 14 mars 2026 », ou « aujourd'hui » / « hier » quand c'est récent.
-///
-/// Les dates de la pellicule se lisent surtout en relatif : on sait ce
-/// qu'on a photographié ce matin, pas le 14 mars.
-String dayLabel(DateTime d, {DateTime? now}) {
-  final maintenant = now ?? DateTime.now();
-  final jour = DateTime(d.year, d.month, d.day);
-  final aujourdhui = DateTime(maintenant.year, maintenant.month, maintenant.day);
-  final ecart = aujourdhui.difference(jour).inDays;
-  if (ecart == 0) return trUi('aujourd\'hui');
-  if (ecart == 1) return trUi('hier');
-  if (ecart > 1 && ecart < 7) {
-    return trUiArgs('il y a {0} jours', <Object?>[ecart]);
-  }
-  return trUiArgs('{0} {1} {2}',
-      <Object?>[d.day, monthNamesLong[d.month - 1], d.year]);
-}
-
-/// « mars 2026 » — l'intertitre des mois dans la pellicule.
-String monthLabel(DateTime d) =>
-    trUiArgs('{0} {1}', <Object?>[monthNamesLong[d.month - 1], d.year]);

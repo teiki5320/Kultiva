@@ -35,7 +35,7 @@ class BadgesGrid extends StatelessWidget {
 }
 
 class _BadgeTile extends StatelessWidget {
-  final PoussidexBadge badge;
+  final GardenBadge badge;
   final bool unlocked;
   const _BadgeTile({required this.badge, required this.unlocked});
 

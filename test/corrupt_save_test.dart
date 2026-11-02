@@ -79,10 +79,6 @@ void main() {
       expect(prefs.culturesJson, 'sauvegarde-cassee');
     });
 
-    test('le rattachement des anciennes entrées s\'abstient', () async {
-      await cultures.linkLegacyEntries();
-      expect(prefs.culturesJson, 'sauvegarde-cassee');
-    });
   });
 
   group('légume introuvable', () {

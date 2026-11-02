@@ -210,33 +210,6 @@ class CultureService {
     return pids.length;
   }
 
-  /// Rattache les cultures écrites avant le 30/10/2026 à un dossier de
-  /// plant, en y versant leurs arrosages déjà saisis.
-  ///
-  /// Idempotent : une culture déjà liée est laissée telle quelle. À
-  /// appeler une fois au démarrage, après `PlantationService.load()`.
-  Future<void> linkLegacyEntries() async {
-    final list = _loadForWrite();
-    if (list == null) return;
-    var changed = false;
-    for (var i = 0; i < list.length; i++) {
-      final c = list[i];
-      if (c.linkedPlantationId != null) continue;
-      final plantation = await PlantationService.instance.add(
-        c.vegetableId,
-        plantedAt: c.startedAt,
-        wateredAt: c.wateredAt,
-      );
-      if (!c.isActive) {
-        await PlantationService.instance
-            .terminate(plantation.id, at: c.endedAt);
-      }
-      list[i] = c.copyWith(linkedPlantationId: plantation.id);
-      changed = true;
-    }
-    if (changed) await _persist(list);
-  }
-
   // ───────────────────────────────────────────────────────────────────────
   // Interne
   // ───────────────────────────────────────────────────────────────────────

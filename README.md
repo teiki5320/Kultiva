@@ -73,7 +73,7 @@ Allemagne.
 - **Le reste** — `lib/data/content_en.dart`, 780 phrases.
 
 Chaque champ retombe sur le français séparément : rien ne peut sortir
-un écran vide. Trois suites de tests vérifient qu'aucune clé n'est
+un écran vide. Quatre suites de tests vérifient qu'aucune clé n'est
 orpheline et que **les nombres ne bougent jamais** — une saumure à 3 %
 reste à 3 %, un four à 100 °C ne devient pas 212 °F.
 
@@ -152,7 +152,7 @@ Le **catalogue d'espèces** vit entièrement dans l'app. Source de vérité : `l
 
 Les chantiers en cours et à venir sont listés dans **`_plans/roadmap.md`**.
 
-Le **français est la source** : toute chaîne nouvelle s'écrit en français d'abord, dans `lib/l10n/app_fr.arb`, puis se traduit dans `app_en.arb` (`flutter gen-l10n`). Les noms des cultures passent par `lib/data/names_en.dart` et `v.displayName` — **`v.name` reste le nom français**, c'est la source de vérité des clés, de la recherche sans accent et des tests. Tutos, recettes, conseils, maladies, badges et défis sont encore en français seulement. Les commentaires de code peuvent être en français ou en anglais selon le pattern dominant du fichier.
+Le **français est la source** : toute chaîne nouvelle s'écrit en français d'abord, puis se traduit. Une chaîne d'interface s'enveloppe dans `trUi('…')` et se traduit dans `ui_en.dart` / `ui_es.dart` ; les ARB (`lib/l10n/`) ne gardent que les cinq libellés d'onglets et la note du réglage « Langue ». Les noms des cultures passent par `lib/data/names_en.dart` et `v.displayName` — **`v.name` reste le nom français**, c'est la source de vérité des clés, de la recherche sans accent et des tests. Tutos, recettes, conseils, maladies, badges et défis sont traduits dans les trois langues, par surcouche : `lib/data/{recipes,tutos,content,ui}_{en,es}.dart`. L'interface passe par `trUi()`, pas par les ARB — `lib/data/ui_i18n.dart` dit pourquoi. Les commentaires de code peuvent être en français ou en anglais selon le pattern dominant du fichier.
 
 ## 🌐 Sites compagnons
 
