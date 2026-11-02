@@ -1560,4 +1560,10 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Upkeep',
   'À faire soi-même':
       'Make it yourself',
+  'Tropical à hiver frais':
+      'Cool-winter tropics',
+  'Mousson d\'été, hiver sec et frais : les légumes tempérés poussent de novembre à mars.':
+      'Summer monsoon, dry cool winter: temperate vegetables grow from November to March.',
+  'Saison fraîche':
+      'Cool season',
 };

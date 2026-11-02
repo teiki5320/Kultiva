@@ -207,7 +207,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 47 fichiers — 1 086 tests (02/11/2026)
+├── test/                   # 49 fichiers — 1 103 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -704,7 +704,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 086 tests au 02/11/2026, dont une
+1. **Pas de test d'intégration** — 1 103 tests au 02/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
    fait de même aux dimensions d'un iPad en portrait et en paysage, et
@@ -1058,6 +1058,61 @@ c'était maintenant.
 du schéma, et CLAUDE.md le conserve comme point de départ si un backend
 revenait (Cloudflare, pas Supabase). Il ne coûte rien et ne s'exécute
 jamais.
+
+## 🌾 La neuvième zone, et le climat qui suit enfin la zone (02/11/2026)
+
+**`ClimateZone.coolWinter` — tropical à hiver frais.** Mousson de juin à
+septembre, puis une saison sèche et fraîche de novembre à mars où l'on
+cultive les légumes tempérés. Plaine du Gange, nord du Viêt Nam.
+
+**Pourquoi elle manquait** : les huit autres zones n'avaient pas
+d'hiver. Hanoï cultive chou et carotte en décembre à 16 °C, et le
+maraîchage de Delhi est le *rabi*, de novembre à mars. Les calendriers
+guinéen et soudanien passaient cette saison entière sous silence — la
+moitié de l'année agricole de deux pays qui pèsent un milliard et demi
+d'habitants.
+
+`coolWinterCalendar` (`west_africa_zones.dart`) porte **55 cultures** en
+trois saisons : le *rabi* d'octobre-novembre (choux, racines,
+légumineuses, bulbes, feuilles), le *kharif* de juin-juillet, et le
+*zaid* de février-mars pour les cucurbitacées.
+`test/cool_winter_test.dart` verrouille, et deux de ses règles ont
+attrapé mes propres erreurs : le panais répétait la base à l'identique
+(surcharge inutile, donc bruit), et ma première formulation interdisait
+les semis avant septembre alors que **la pépinière de chou-fleur part
+en août**, fin de mousson. La règle juste est « pas d'avril à
+juillet », pas « après septembre ».
+
+**Inde** et **Viêt Nam** la portent, affinées par latitude : au sud de
+24° N l'Inde redevient soudanienne puis guinéenne, au sud de 16° N le
+Viêt Nam redevient guinéen.
+
+### Le climat ne lit plus la région
+
+Le même défaut que le calendrier du matin, dans cinq autres endroits.
+Une **région** ne dit plus que le contenu (ouest-africain ou non) ; le
+climat est une propriété de la **zone**.
+
+| Ce qui lisait la région | Ce que ça donnait |
+| --- | --- |
+| `Season.of` | Darwin voyait les quatre saisons européennes, São Paulo un hivernage là où il gèle |
+| `heatwaveThresholdFor` | Darwin alertait dès 30 °C — presque tous les jours ; São Paulo attendait 40 °C, jamais atteints |
+| `computeMedalTier` | São Paulo n'avait que deux saisons à collectionner au lieu de quatre, son podium plafonnait |
+| `checkAndNotifyFirstRains` | l'alerte « premières pluies » ne partait pas à Darwin, et partait à São Paulo |
+| `Country.isTropical` | répondait d'après la région du pays |
+
+`heatwaveThresholdFor(Region)` devient `heatwaveThresholdForZone(ClimateZone?)`,
+plus `currentHeatwaveThreshold()` pour les quatre appelants.
+`Region.isTropicalBase` **reste**, mais son seul usage légitime est
+désormais de **choisir une zone par défaut** quand aucune n'est connue.
+Trois endroits le font, et ils le disent.
+
+⚠️ **Une huitième saison, et pourquoi pas une des sept** :
+`Season.coolDry`, « Saison fraîche ». Elle ne pouvait pas être
+`harmattan`, qui désigne un vent sahélien dont personne n'a entendu
+parler à Delhi, ni `winter`, dont les particules sont des **flocons** —
+il ne neige pas à Hanoï. Dégradé bleu pâle, brume et feuillage :
+c'est la saison où le potager est le plus vert, pas la plus morte.
 
 ## 🧰 Les 39 fiches d'accessoires ont un mode d'emploi (02/11/2026)
 

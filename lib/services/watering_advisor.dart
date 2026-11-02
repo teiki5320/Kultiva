@@ -72,7 +72,7 @@ WateringAdvice? suggestWatering(
           "l'arrosage aujourd'hui."),
     );
   }
-  if (tmax >= heatwaveThresholdFor(region) && daysSinceWater >= 1) {
+  if (tmax >= currentHeatwaveThreshold() && daysSinceWater >= 1) {
     return WateringAdvice(
       urgency: WateringUrgency.heatwave,
       emoji: '🥵',

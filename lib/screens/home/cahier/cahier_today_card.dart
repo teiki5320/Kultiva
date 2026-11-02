@@ -8,7 +8,6 @@ import '../../../models/vegetable.dart';
 import '../../../models/watering_alert.dart';
 import '../../../models/weather_data.dart';
 import '../../../services/plantation_service.dart';
-import '../../../services/prefs_service.dart';
 import '../../../services/watering_service.dart';
 import '../../../services/weather_service.dart';
 import '../../../theme/app_theme.dart';
@@ -99,7 +98,7 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
   bool get _heatwave {
     final max = _todayMax;
     if (max == null) return false;
-    return max >= heatwaveThresholdFor(PrefsService.instance.region.value);
+    return max >= currentHeatwaveThreshold();
   }
 
   Future<void> _waterAll() async {

@@ -62,7 +62,22 @@ enum ClimateZone {
 
   /// Tropical d'altitude : doux toute l'année, rythmé par les pluies.
   /// Andes, hauts plateaux éthiopiens, Rwanda, Kenya, Mexique central.
-  highland;
+  highland,
+
+  // ─── Ajoutée le 02/11/2026 ───
+
+  /// Tropical à hiver frais : mousson d'été, puis une saison sèche et
+  /// fraîche où l'on cultive les légumes tempérés. Plaine du Gange,
+  /// nord du Viêt Nam, nord de la Birmanie, nord de la Thaïlande.
+  ///
+  /// ⚠️ **C'est la seule zone tropicale où le chou et la carotte
+  /// poussent**, et c'est pour ça qu'elle existe. Les huit autres
+  /// n'avaient pas d'hiver : Hanoï cultive chou et carotte en décembre
+  /// à 16 °C, et le maraîchage de Delhi est le *rabi*, de novembre à
+  /// mars. Le calendrier guinéen comme le soudanien ignoraient cette
+  /// saison entière — la moitié de l'année agricole de deux pays qui
+  /// pèsent un milliard et demi d'habitants.
+  coolWinter;
 
   /// Vrai pour les zones dont le calendrier suit les pluies plutôt que
   /// les saisons thermiques.
@@ -70,7 +85,8 @@ enum ClimateZone {
       this == ClimateZone.sahel ||
       this == ClimateZone.sudan ||
       this == ClimateZone.guinean ||
-      this == ClimateZone.highland;
+      this == ClimateZone.highland ||
+      this == ClimateZone.coolWinter;
 
   /// Libellé court de la sous-zone (sélecteur manuel).
   String get label {
@@ -91,6 +107,8 @@ enum ClimateZone {
         return trUi('Subtropical humide');
       case ClimateZone.highland:
         return trUi('Tropical d\'altitude');
+      case ClimateZone.coolWinter:
+        return trUi('Tropical à hiver frais');
     }
   }
 
@@ -116,6 +134,9 @@ enum ClimateZone {
         return trUi('Saison longue et humide, étés lourds.');
       case ClimateZone.highland:
         return trUi('Doux toute l\'année, rythmé par les pluies.');
+      case ClimateZone.coolWinter:
+        return trUi('Mousson d\'été, hiver sec et frais : les légumes '
+            'tempérés poussent de novembre à mars.');
     }
   }
 
@@ -331,9 +352,16 @@ enum Country {
       35.6762, 139.6503, 'Tokyo'),
   chine('CN', 'Chine', '🇨🇳', Region.france, ClimateZone.continental,
       39.9042, 116.4074, 'Pékin'),
-  inde('IN', 'Inde', '🇮🇳', Region.tropical, ClimateZone.sudan, 28.6139,
+  // ⚠️ Delhi était soudanienne, donc sur un calendrier sans hiver — le
+  // *rabi*, de novembre à mars, est pourtant la saison maraîchère
+  // principale du nord de l'Inde. `zoneAt` rend le soudanien au centre
+  // et le guinéen au sud.
+  inde('IN', 'Inde', '🇮🇳', Region.tropical, ClimateZone.coolWinter, 28.6139,
       77.2090, 'New Delhi'),
-  vietnam('VN', 'Viêt Nam', '🇻🇳', Region.tropical, ClimateZone.guinean,
+  // ⚠️ Hanoï était guinéenne, donc sans hiver — or il y fait 16 °C en
+  // décembre, et on y cultive chou et carotte. Le sud (Hô Chi Minh)
+  // reste guinéen, par `zoneAt`.
+  vietnam('VN', 'Viêt Nam', '🇻🇳', Region.tropical, ClimateZone.coolWinter,
       21.0278, 105.8342, 'Hanoï'),
   thailande('TH', 'Thaïlande', '🇹🇭', Region.tropical, ClimateZone.sudan,
       13.7563, 100.5018, 'Bangkok'),
@@ -394,7 +422,14 @@ enum Country {
 
   /// Vrai quand le calendrier suit les pluies. À préférer à
   /// [isWestAfrica] dès que la question est climatique.
-  bool get isTropical => region.isTropicalBase;
+  ///
+  /// ⚠️ C'est la **zone déclarée** du pays qui tranche, pas sa région.
+  /// Depuis l'ouverture mondiale, une région ne dit que le contenu
+  /// (ouest-africain ou non) ; le climat est une propriété de la zone.
+  /// Pour un pays qui chevauche les deux bases — Brésil, Australie —
+  /// cette réponse vaut pour sa capitale : affiner demande
+  /// [zoneAt] et une latitude.
+  bool get isTropical => zone.isTropical;
 
   /// Pays francophones d'Afrique de l'Ouest proposés dans les sélecteurs.
   static List<Country> get westAfricanCountries =>
@@ -478,7 +513,16 @@ enum Country {
         if (latitude < -38.0) return ClimateZone.temperate;
         return ClimateZone.mediterranean;
       case Country.inde:
-        if (latitude > 28.0) return ClimateZone.sudan;
+        // La plaine indo-gangétique (Delhi, Pendjab, Uttar Pradesh) a
+        // un hiver frais où poussent les légumes tempérés ; le Deccan
+        // est soudanien ; le Kerala et le Tamil Nadu sont guinéens.
+        if (latitude > 24.0) return ClimateZone.coolWinter;
+        if (latitude > 15.0) return ClimateZone.sudan;
+        return ClimateZone.guinean;
+      case Country.vietnam:
+        // Le nord (Hanoï, Sapa) a un hiver frais ; le sud (Hô Chi
+        // Minh, delta du Mékong) n'en a pas.
+        if (latitude > 16.0) return ClimateZone.coolWinter;
         return ClimateZone.guinean;
       case Country.mexique:
         if (latitude < 19.0) return ClimateZone.guinean;

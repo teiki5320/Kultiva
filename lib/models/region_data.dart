@@ -36,8 +36,18 @@ enum Region {
   String get displayLabel => trUi(label);
 
   /// Vrai si le calendrier suit les pluies plutôt que les saisons
-  /// thermiques. À préférer à `== Region.westAfrica` partout où la
-  /// question est climatique et non culturelle.
+  /// thermiques.
+  ///
+  /// ⚠️ **Ce n'est plus la bonne question depuis le 02/11/2026.** Le
+  /// climat est une propriété de la **zone** (`ClimateZone.isTropical`),
+  /// pas de la région : l'Australie est en région tempérée et Darwin
+  /// est tropical, le Brésil est en région tropicale et São Paulo
+  /// gèle. Une région ne dit plus que le **contenu** — ouest-africain
+  /// ou non.
+  ///
+  /// Il ne reste de légitime qu'un usage : **choisir une zone par
+  /// défaut** quand aucune n'est connue, faute de mieux. Trois
+  /// endroits le font, et ils le disent.
   bool get isTropicalBase =>
       this == Region.westAfrica || this == Region.tropical;
 

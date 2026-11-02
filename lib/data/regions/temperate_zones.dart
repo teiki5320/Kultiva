@@ -326,6 +326,7 @@ ZoneCalendar? zoneCalendarFor(ClimateZone zone, String vegetableId) {
     case ClimateZone.sahel:
     case ClimateZone.sudan:
     case ClimateZone.guinean:
+    case ClimateZone.coolWinter:
     case ClimateZone.highland:
       return null;
   }

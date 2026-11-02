@@ -154,6 +154,9 @@ class SeasonHeader extends StatelessWidget {
       case Season.rainySeason:
         // Vert profond d'hivernage, ciel chargé.
         return const <Color>[Color(0xFFA9D8B8), Color(0xFF7BB894)];
+      case Season.coolDry:
+        // Bleu pâle et brume du matin, saison fraîche des tropiques.
+        return const <Color>[Color(0xFFCFE3EC), Color(0xFFA8C8D8)];
     }
   }
 }

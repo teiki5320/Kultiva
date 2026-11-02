@@ -282,6 +282,158 @@ const Map<String, ZoneMonths> guineanCalendar = <String, ZoneMonths>{
   'pasteque': (sowingMonths: <int>[11, 12, 1], harvestMonths: <int>[2, 3, 4]),
 };
 
+/// Zone tropicale à hiver frais : mousson de juin à septembre, puis une
+/// saison sèche et fraîche de novembre à mars. Plaine du Gange, nord du
+/// Viêt Nam, nord de la Birmanie et de la Thaïlande.
+///
+/// ⚠️ **C'est la seule zone tropicale qui a un hiver**, et c'est tout
+/// l'intérêt du fichier. Les huit autres zones n'en avaient pas : le
+/// calendrier guinéen comme le soudanien ignoraient la saison où Hanoï
+/// cultive son chou et où Delhi fait son *rabi*. Un jardinier de Delhi
+/// lisait donc un calendrier qui passait sous silence la moitié de son
+/// année agricole.
+///
+/// La logique est à deux saisons :
+///
+/// - le **rabi**, semé d'octobre à novembre et récolté de décembre à
+///   mars : tous les légumes tempérés — choux, carotte, pois, pomme de
+///   terre, oignon, épinard. Entre 8 et 20 °C, ils réussissent mieux
+///   qu'en Europe ;
+/// - le **kharif**, semé en juin-juillet avec les pluies et récolté de
+///   septembre à novembre : gombo, aubergine, piment, maïs, niébé —
+///   ce que la base soudanienne décrit déjà ;
+/// - et pour quelques cucurbitacées, le **zaid** de février-mars,
+///   récolté avant la mousson.
+///
+/// Les cultures absentes d'ici gardent la base soudanienne, qui leur
+/// convient : elles n'ont pas de saison fraîche à exploiter.
+const Map<String, ZoneMonths> coolWinterCalendar = <String, ZoneMonths>{
+  // ── Rabi : les choux, qui n'existaient dans aucune zone tropicale ──
+  'chou_pomme': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1, 2]),
+  'chou_fleur': (
+    sowingMonths: <int>[8, 9, 10],
+    harvestMonths: <int>[11, 12, 1, 2]
+  ),
+  'brocoli': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1, 2]),
+  'chou_kale': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1, 2]),
+  'chou_bruxelles': (sowingMonths: <int>[8, 9], harvestMonths: <int>[12, 1]),
+  'chou_rave': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1]),
+  'chou_chinois': (
+    sowingMonths: <int>[9, 10],
+    harvestMonths: <int>[11, 12, 1]
+  ),
+  'pak_choi': (
+    sowingMonths: <int>[9, 10, 11],
+    harvestMonths: <int>[11, 12, 1, 2]
+  ),
+
+  // ── Rabi : racines ──────────────────────────────────────────────────
+  'carotte': (
+    sowingMonths: <int>[9, 10, 11],
+    harvestMonths: <int>[12, 1, 2, 3]
+  ),
+  'navet': (sowingMonths: <int>[9, 10], harvestMonths: <int>[11, 12, 1]),
+  'radis': (
+    sowingMonths: <int>[9, 10, 11, 12],
+    harvestMonths: <int>[11, 12, 1, 2]
+  ),
+  'radis_noir': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1]),
+  'betterave': (sowingMonths: <int>[10, 11], harvestMonths: <int>[1, 2, 3]),
+  'rutabaga': (sowingMonths: <int>[9, 10], harvestMonths: <int>[1, 2]),
+  'salsifis': (sowingMonths: <int>[10, 11], harvestMonths: <int>[2, 3]),
+  'topinambour': (sowingMonths: <int>[10, 11], harvestMonths: <int>[3, 4]),
+
+  // ── Rabi : légumineuses ─────────────────────────────────────────────
+  'petit_pois': (sowingMonths: <int>[10, 11], harvestMonths: <int>[1, 2, 3]),
+  'pois_mange_tout': (
+    sowingMonths: <int>[10, 11],
+    harvestMonths: <int>[1, 2, 3]
+  ),
+  'pois_chiche': (sowingMonths: <int>[10, 11], harvestMonths: <int>[3, 4]),
+  'feve': (sowingMonths: <int>[10, 11], harvestMonths: <int>[2, 3]),
+  'lentille': (sowingMonths: <int>[10, 11], harvestMonths: <int>[3, 4]),
+
+  // ── Rabi : bulbes et tubercules ─────────────────────────────────────
+  'pomme_de_terre': (
+    sowingMonths: <int>[10, 11],
+    harvestMonths: <int>[1, 2, 3]
+  ),
+  'oignon': (sowingMonths: <int>[10, 11], harvestMonths: <int>[3, 4, 5]),
+  'ail': (sowingMonths: <int>[10, 11], harvestMonths: <int>[3, 4]),
+  'echalote': (sowingMonths: <int>[10, 11], harvestMonths: <int>[2, 3]),
+  'poireau': (sowingMonths: <int>[9, 10], harvestMonths: <int>[1, 2, 3]),
+
+  // ── Rabi : feuilles ─────────────────────────────────────────────────
+  'laitue': (
+    sowingMonths: <int>[9, 10, 11, 12],
+    harvestMonths: <int>[11, 12, 1, 2, 3]
+  ),
+  'mache': (sowingMonths: <int>[10, 11], harvestMonths: <int>[12, 1, 2]),
+  'roquette': (sowingMonths: <int>[10, 11], harvestMonths: <int>[11, 12, 1]),
+  'epinard': (sowingMonths: <int>[10, 11], harvestMonths: <int>[12, 1, 2]),
+  'cresson': (sowingMonths: <int>[10, 11], harvestMonths: <int>[12, 1, 2]),
+  'blette': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1, 2, 3]),
+  'celeri': (sowingMonths: <int>[9, 10], harvestMonths: <int>[1, 2]),
+  'fenouil': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1, 2]),
+  'endive': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1]),
+  'artichaut': (sowingMonths: <int>[9, 10], harvestMonths: <int>[2, 3]),
+
+  // ── Rabi : aromates qui montent en graine dès la mousson ────────────
+  'coriandre': (sowingMonths: <int>[10, 11], harvestMonths: <int>[12, 1, 2]),
+  'persil': (sowingMonths: <int>[9, 10], harvestMonths: <int>[12, 1, 2, 3]),
+  'aneth': (sowingMonths: <int>[10, 11], harvestMonths: <int>[12, 1]),
+  'cerfeuil': (sowingMonths: <int>[10, 11], harvestMonths: <int>[12, 1]),
+  'moutarde_blanche': (
+    sowingMonths: <int>[10, 11],
+    harvestMonths: <int>[12, 1]
+  ),
+  'fraise': (sowingMonths: <int>[10, 11], harvestMonths: <int>[2, 3, 4]),
+
+  // ── Deux saisons : kharif de mousson, puis rabi ─────────────────────
+  'tomate': (
+    sowingMonths: <int>[6, 7, 10, 11],
+    harvestMonths: <int>[9, 10, 1, 2, 3]
+  ),
+  'poivron': (
+    sowingMonths: <int>[6, 7, 10, 11],
+    harvestMonths: <int>[9, 10, 1, 2, 3]
+  ),
+  'piment': (
+    sowingMonths: <int>[6, 7, 10, 11],
+    harvestMonths: <int>[9, 10, 11, 2, 3]
+  ),
+  'aubergine': (
+    sowingMonths: <int>[6, 7, 10, 11],
+    harvestMonths: <int>[9, 10, 11, 1, 2, 3]
+  ),
+  'haricot': (
+    sowingMonths: <int>[6, 7, 10, 11],
+    harvestMonths: <int>[9, 10, 1, 2]
+  ),
+
+  // ── Zaid : les cucurbitacées de la saison sèche et chaude ───────────
+  'concombre': (sowingMonths: <int>[2, 3, 6, 7], harvestMonths: <int>[4, 5, 8, 9]),
+  'cornichon': (
+    sowingMonths: <int>[2, 3, 6, 7],
+    harvestMonths: <int>[5, 6, 9, 10]
+  ),
+  'courgette': (
+    sowingMonths: <int>[2, 3, 6, 7],
+    harvestMonths: <int>[4, 5, 8, 9]
+  ),
+  'melon': (sowingMonths: <int>[1, 2], harvestMonths: <int>[4, 5]),
+  'pasteque': (sowingMonths: <int>[1, 2], harvestMonths: <int>[4, 5]),
+  'potiron': (
+    sowingMonths: <int>[2, 3, 6, 7],
+    harvestMonths: <int>[6, 7, 10, 11]
+  ),
+  'courge_butternut': (
+    sowingMonths: <int>[2, 3, 6, 7],
+    harvestMonths: <int>[6, 7, 10, 11]
+  ),
+  'gombo': (sowingMonths: <int>[2, 3, 6, 7], harvestMonths: <int>[5, 6, 9, 10]),
+};
+
 /// Retourne la surcharge de zone pour une culture, ou null si la base
 /// soudanienne convient.
 ZoneMonths? zoneOverride(ClimateZone zone, String vegetableId) {
@@ -290,6 +442,8 @@ ZoneMonths? zoneOverride(ClimateZone zone, String vegetableId) {
       return sahelCalendar[vegetableId];
     case ClimateZone.guinean:
       return guineanCalendar[vegetableId];
+    case ClimateZone.coolWinter:
+      return coolWinterCalendar[vegetableId];
     // Les autres zones n'utilisent pas la base ouest-africaine, ou
     // s'en servent telle quelle (soudanien, altitude).
     default:

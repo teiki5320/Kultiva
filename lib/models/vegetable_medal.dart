@@ -1,3 +1,4 @@
+import '../services/prefs_service.dart';
 import '../data/ui_i18n.dart';
 import 'package:flutter/material.dart';
 
@@ -114,8 +115,16 @@ MedalTier computeMedalTier(
   // Saisons distinctes où cette espèce a été plantée.
   // France : printemps=3-5, été=6-8, automne=9-11, hiver=12,1,2.
   // Tropiques : saison sèche=11-5, hivernage (pluies)=6-10.
+  //
+  // ⚠️ La question est climatique, donc elle se pose à la **zone**.
+  // Elle lisait la région : un jardinier de São Paulo (région
+  // tropicale, climat subtropical) n'avait que deux saisons à
+  // collectionner au lieu de quatre, et son podium plafonnait sans
+  // raison.
+  final tropical =
+      PrefsService.instance.effectiveZone?.isTropical ?? region.isTropicalBase;
   int seasonOf(int month) {
-    if (region.isTropicalBase) {
+    if (tropical) {
       return (month >= 6 && month <= 10) ? 0 : 1;
     }
     if (month >= 3 && month <= 5) return 0;

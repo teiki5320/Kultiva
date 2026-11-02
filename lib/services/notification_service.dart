@@ -267,7 +267,7 @@ class NotificationService {
       // Seuil régional : 30 °C en France, 40 °C en Afrique de l'Ouest
       // (sinon l'alerte sonnerait tous les jours de saison sèche).
       final threshold =
-          heatwaveThresholdFor(PrefsService.instance.region.value);
+          currentHeatwaveThreshold();
       final aujourdhui = weather.todayIndex;
       var hotStreak = 0;
       var maxStreak = 0;
@@ -368,7 +368,12 @@ class NotificationService {
   static Future<void> checkAndNotifyFirstRains() async {
     if (kIsWeb || !_initialized) return;
     if (!PrefsService.instance.notifications.value) return;
-    if (!PrefsService.instance.region.value.isTropicalBase) return;
+    // ⚠️ La zone, pas la région : l'alerte « premières pluies » n'a
+    // de sens que sous un climat de mousson, et un Australien de
+    // Darwin est en région tempérée.
+    if (!(PrefsService.instance.effectiveZone?.isTropical ?? false)) {
+      return;
+    }
 
     final last = PrefsService.instance.lastFirstRainsNotificationCheck;
     if (last != null && DateTime.now().difference(last).inDays < 30) {

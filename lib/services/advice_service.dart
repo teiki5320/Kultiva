@@ -71,7 +71,7 @@ class AdviceService {
 
     // ─── Chaleur ───
     final max = weather?.tempMaxToday;
-    if (max != null && max >= heatwaveThresholdFor(region)) {
+    if (max != null && max >= currentHeatwaveThreshold()) {
       sections.add(AdviceSection(
         emoji: '🥵',
         title: trUiArgs('{0} °C aujourd\'hui', <Object?>[max.round()]),

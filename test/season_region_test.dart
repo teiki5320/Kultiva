@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kultiva/models/country.dart';
 import 'package:kultiva/data/challenges.dart';
 import 'package:kultiva/data/regions/west_africa.dart';
 import 'package:kultiva/data/vegetables_base.dart';
@@ -164,10 +165,40 @@ void main() {
     });
   });
 
-  group('Seuil canicule régional', () {
-    test('30 °C en France, 40 °C en Afrique de l\'Ouest', () {
-      expect(heatwaveThresholdFor(Region.france), equals(30.0));
-      expect(heatwaveThresholdFor(Region.westAfrica), equals(40.0));
+  group('Seuil canicule', () {
+    // ⚠️ Le seuil prenait une `Region` jusqu'au 02/11/2026, et la
+    // région ne dit plus le climat : un jardinier de Darwin (Australie,
+    // région tempérée) recevait une alerte dès 30 °C, presque tous les
+    // jours, et un Brésilien de São Paulo n'en recevait qu'à 40 °C,
+    // qu'il n'atteint jamais.
+    test('30 °C sous les climats tempérés, 40 °C sous les tropiques', () {
+      for (final z in <ClimateZone>[
+        ClimateZone.temperate,
+        ClimateZone.mediterranean,
+        ClimateZone.continental,
+        ClimateZone.subtropical,
+      ]) {
+        expect(heatwaveThresholdForZone(z), equals(30.0), reason: z.name);
+      }
+      for (final z in <ClimateZone>[
+        ClimateZone.sahel,
+        ClimateZone.sudan,
+        ClimateZone.guinean,
+        ClimateZone.highland,
+        ClimateZone.coolWinter,
+      ]) {
+        expect(heatwaveThresholdForZone(z), equals(40.0), reason: z.name);
+      }
+    });
+
+    test('sans zone connue, on reste prudent à 30 °C', () {
+      expect(heatwaveThresholdForZone(null), equals(30.0));
+    });
+
+    test('Darwin et São Paulo ont enfin le bon seuil', () {
+      expect(
+          heatwaveThresholdForZone(Country.australie.zoneAt(-12.5)), 40.0);
+      expect(heatwaveThresholdForZone(Country.bresil.zoneAt(-23.5)), 30.0);
     });
   });
 

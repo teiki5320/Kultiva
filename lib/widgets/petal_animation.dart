@@ -21,7 +21,16 @@ enum Season {
   winter,
   harmattan,
   drySeason,
-  rainySeason;
+  rainySeason,
+
+  /// Saison sèche et fraîche des tropiques à hiver marqué : novembre à
+  /// février dans la plaine du Gange et au nord du Viêt Nam.
+  ///
+  /// ⚠️ Ajoutée le 02/11/2026 avec la zone `coolWinter`. Elle ne peut
+  /// pas être `harmattan`, qui désigne un vent sahélien — un jardinier
+  /// de Delhi n'a jamais entendu ce mot. Ni `winter`, dont les
+  /// particules sont des flocons : il ne neige pas à Hanoï.
+  coolDry;
 
   /// Calcule la saison européenne à partir d'un numéro de mois (1-12).
   ///
@@ -63,8 +72,15 @@ enum Season {
     // Au sud de l'équateur, tout est décalé de six mois : les saisons
     // thermiques comme la saison des pluies.
     final m = hemisphere == Hemisphere.south ? ((month + 5) % 12) + 1 : month;
-    if (!region.isTropicalBase) return fromMonth(m);
-    switch (zone) {
+    // ⚠️ C'est la **zone** qui décide, pas la région. Elle testait
+    // `region.isTropicalBase` jusqu'au 02/11/2026, et la région ne dit
+    // plus le climat depuis l'ouverture mondiale : un jardinier de
+    // Darwin (Australie, donc région tempérée) voyait les quatre
+    // saisons européennes sous un climat de mousson, et un Brésilien
+    // de São Paulo voyait un hivernage là où il gèle.
+    final z = zone ?? (region.isTropicalBase ? ClimateZone.sudan : null);
+    if (z == null || !z.isTropical) return fromMonth(m);
+    switch (z) {
       case ClimateZone.sahel:
         if (m >= 6 && m <= 9) return Season.rainySeason;
         if (m >= 11 || m <= 2) return Season.harmattan;
@@ -74,6 +90,13 @@ enum Season {
           return Season.rainySeason;
         }
         if (m == 12 || m == 1) return Season.harmattan;
+        return Season.drySeason;
+      case ClimateZone.coolWinter:
+        // Mousson de juin à septembre, saison fraîche de novembre à
+        // février — celle où l'on cultive —, puis la chaleur sèche de
+        // mars à mai.
+        if (m >= 6 && m <= 9) return Season.rainySeason;
+        if (m >= 11 || m <= 2) return Season.coolDry;
         return Season.drySeason;
       // Soudanien, altitude, et tout le reste : un seul hivernage.
       default:
@@ -99,6 +122,8 @@ enum Season {
         return trUi('Saison sèche');
       case Season.rainySeason:
         return trUi('Hivernage');
+      case Season.coolDry:
+        return trUi('Saison fraîche');
     }
   }
 
@@ -118,6 +143,8 @@ enum Season {
         return '☀️';
       case Season.rainySeason:
         return '🌧️';
+      case Season.coolDry:
+        return '🌤️';
     }
   }
 
@@ -138,6 +165,10 @@ enum Season {
         return const ['☀️', '✨', '🦋', '✨'];
       case Season.rainySeason:
         return const ['💧', '💧', '🌱', '💧'];
+      case Season.coolDry:
+        // Brume matinale et feuillage : c'est la saison où le potager
+        // est le plus vert, pas la plus morte.
+        return const ['🌫️', '🌿', '✨', '🌿'];
     }
   }
 
@@ -150,6 +181,7 @@ enum Season {
     switch (this) {
       case Season.spring:
       case Season.rainySeason:
+      case Season.coolDry:
         return 'assets/images/spring.png';
       case Season.summer:
       case Season.drySeason:
@@ -262,8 +294,9 @@ class _SeasonParticleAnimationState extends State<SeasonParticleAnimation>
       case Season.winter:
       case Season.harmattan:
       case Season.rainySeason:
+      case Season.coolDry:
         // Chute régulière du haut vers le bas (pétales, feuilles,
-        // flocons, poussière d'harmattan, gouttes de pluie).
+        // flocons, poussière d'harmattan, gouttes de pluie, brume).
         dy = (p.startY + t * p.speed) % 1.0;
         break;
     }

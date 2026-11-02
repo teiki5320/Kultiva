@@ -58,6 +58,7 @@ String? _noteFor(ClimateZone zone) {
     case ClimateZone.sahel:
     case ClimateZone.sudan:
     case ClimateZone.guinean:
+    case ClimateZone.coolWinter:
     case ClimateZone.highland:
       return null;
   }
@@ -116,6 +117,7 @@ RegionData deriveTemperate(
     case ClimateZone.sahel:
     case ClimateZone.sudan:
     case ClimateZone.guinean:
+    case ClimateZone.coolWinter:
     case ClimateZone.highland:
       break;
   }
