@@ -2131,4 +2131,715 @@ const Map<String, String> contentTextsEs = <String, String>{
       'De 8 a 12 días',
   '8 à 15 jours':
       'De 8 a 15 días',
+  // ─── fiche : technique de semis ───
+  'Bouturage de lianes ou plantation de slips':
+      'Esqueje de lianas o plantación de esquejes de raíz',
+  'Bouturage de tiges de 20 à 30 cm, plantées en biais':
+      'Esquejes de tallo de 20 a 30 cm, plantados en bisel',
+  'Bouturage ou achat de plant':
+      'Esqueje o compra de planta',
+  'Bouturage ou achat de plant — semis difficile':
+      'Esqueje o compra de planta: la siembra es difícil',
+  'Bouturage ou division de touffe (semis très lent)':
+      'Esqueje o división de mata (la semilla es muy lenta)',
+  'Bûche de chêne inoculée au mycélium':
+      'Tronco de roble inoculado con micelio',
+  'Division de touffe ou bouture de tige racinée dans l\'eau':
+      'División de mata o esqueje de tallo enraizado en agua',
+  'Kit de mycélium sur compost':
+      'Kit de micelio sobre compost',
+  'Kit de mycélium sur paille ou bûche inoculée':
+      'Kit de micelio sobre paja o tronco inoculado',
+  'Plantation d\'œilletons ou semis sous abri':
+      'Plantación de hijuelos o siembra protegida',
+  'Plantation de bulbes en terre':
+      'Plantación de bulbos en tierra',
+  'Plantation de caïeux directement en terre':
+      'Plantación de dientes directamente en tierra',
+  'Plantation de fragments de tubercules ou de mini-semenceaux':
+      'Plantación de trozos de tubérculo o de minitubérculos',
+  'Plantation de griffe ou division de touffe':
+      'Plantación de garra o división de mata',
+  'Plantation de griffes en tranchée':
+      'Plantación de garras en zanja',
+  'Plantation de plant en hiver':
+      'Plantación de planta en invierno',
+  'Plantation de plant ou bouturage en hiver':
+      'Plantación de planta o esqueje en invierno',
+  'Plantation de plant à l\'automne ou au printemps':
+      'Plantación de planta en otoño o en primavera',
+  'Plantation de plant — éviter les graines':
+      'Plantación de planta: evita la semilla',
+  'Plantation de plants ou drageons':
+      'Plantación de plantas o retoños',
+  'Plantation de plants ou stolons (le semis est lent)':
+      'Plantación de plantas o estolones (la semilla es lenta)',
+  'Plantation de rejets (baïonnette) dans un grand trou enrichi de fumier':
+      'Plantación de hijuelos en un hoyo grande enriquecido con estiércol',
+  'Plantation de rhizomes à bourgeons':
+      'Plantación de rizomas con yemas',
+  'Plantation de scion ou jeune arbre en hiver':
+      'Plantación de barbado o árbol joven en invierno',
+  'Plantation de tubercules au printemps':
+      'Plantación de tubérculos en primavera',
+  'Plantation de tubercules germés':
+      'Plantación de tubérculos germinados',
+  'Plantation de tubercules ou rejets':
+      'Plantación de tubérculos o hijuelos',
+  'Semis de graines fraîches en poquets ou en sachets':
+      'Siembra de semilla fresca a golpes o en sobres',
+  'Semis difficile — préférer le bouturage ou l\'achat de plant':
+      'Siembra difícil: mejor esqueje o planta comprada',
+  'Semis direct après les gelées':
+      'Siembra directa después de las heladas',
+  'Semis direct après les gelées, en poquets':
+      'Siembra directa después de las heladas, a golpes',
+  'Semis direct de graines décortiquées':
+      'Siembra directa de semilla descascarillada',
+  'Semis direct en ligne':
+      'Siembra directa en línea',
+  'Semis direct en ligne ou en godet':
+      'Siembra directa en línea o en maceta',
+  'Semis direct en ligne ou en poquets':
+      'Siembra directa en línea o a golpes',
+  'Semis direct en ligne ou à la volée':
+      'Siembra directa en línea o a voleo',
+  'Semis direct en ligne, graines fraîches':
+      'Siembra directa en línea, con semilla fresca',
+  'Semis direct en ligne, éclaircir à 10 cm':
+      'Siembra directa en línea, aclarando a 10 cm',
+  'Semis direct en ligne, éclaircir à 3 cm':
+      'Siembra directa en línea, aclarando a 3 cm',
+  'Semis direct en place':
+      'Siembra directa en su sitio',
+  'Semis direct en place après les gelées':
+      'Siembra directa en su sitio después de las heladas',
+  'Semis direct en place — supporte mal le repiquage':
+      'Siembra directa en su sitio: lleva mal el trasplante',
+  'Semis direct en poquets':
+      'Siembra directa a golpes',
+  'Semis direct en poquets de 2-3 graines':
+      'Siembra directa a golpes de 2-3 semillas',
+  'Semis direct en poquets de 3 graines':
+      'Siembra directa a golpes de 3 semillas',
+  'Semis direct en poquets de 3-4 graines, dès les premières pluies':
+      'Siembra directa a golpes de 3-4 semillas, con las primeras lluvias',
+  'Semis direct en sol chaud':
+      'Siembra directa en suelo cálido',
+  'Semis direct ou division de touffe':
+      'Siembra directa o división de mata',
+  'Semis direct ou en godet':
+      'Siembra directa o en maceta',
+  'Semis direct ou en godet, patient à lever':
+      'Siembra directa o en maceta, tarda en nacer',
+  'Semis direct ou en godet, tremper les graines 24 h avant':
+      'Siembra directa o en maceta, remojando la semilla 24 h antes',
+  'Semis direct ou plantation de bulbilles':
+      'Siembra directa o plantación de bulbillos',
+  'Semis direct à la volée':
+      'Siembra directa a voleo',
+  'Semis direct à la volée ou en ligne':
+      'Siembra directa a voleo o en línea',
+  'Semis direct, puis arrachage et forçage en cave':
+      'Siembra directa y luego arranque y forzado en bodega',
+  'Semis en godet ou bouturage':
+      'Siembra en maceta o esqueje',
+  'Semis en godet ou division de touffe':
+      'Siembra en maceta o división de mata',
+  'Semis en godet ou en place':
+      'Siembra en maceta o en su sitio',
+  'Semis en godet ou en place après les gelées':
+      'Siembra en maceta o en su sitio después de las heladas',
+  'Semis en godet ou semis direct en sol chaud':
+      'Siembra en maceta o siembra directa en suelo cálido',
+  'Semis en godet puis repiquage':
+      'Siembra en maceta y luego trasplante',
+  'Semis en godet puis repiquage ou semis direct':
+      'Siembra en maceta y luego trasplante, o siembra directa',
+  'Semis en godet sous abri ou semis direct après les gelées':
+      'Siembra en maceta protegida, o directa después de las heladas',
+  'Semis en godet sous abri puis repiquage':
+      'Siembra en maceta protegida y luego trasplante',
+  'Semis en godets ou en place après les saints de glace':
+      'Siembra en macetas o en su sitio pasadas las últimas heladas',
+  'Semis en place ou en godet':
+      'Siembra en su sitio o en maceta',
+  'Semis en pleine eau ou bouturage':
+      'Siembra en agua o esqueje',
+  'Semis en poquets ou bouturage de grosses branches':
+      'Siembra a golpes o esqueje de ramas gruesas',
+  'Semis en poquets ou bouturage de tiges, avec support':
+      'Siembra a golpes o esqueje de tallos, con un soporte',
+  'Semis en pépinière ou en place':
+      'Siembra en semillero o en su sitio',
+  'Semis en pépinière puis repiquage':
+      'Siembra en semillero y luego trasplante',
+  'Semis en pépinière puis repiquage profond':
+      'Siembra en semillero y luego trasplante profundo',
+  'Semis en pépinière puis repiquage à 4-5 feuilles':
+      'Siembra en semillero y luego trasplante con 4-5 hojas',
+  'Semis en pépinière puis repiquage, ou semis direct clair':
+      'Siembra en semillero y luego trasplante, o siembra directa clara',
+  'Semis en surface ou bouturage':
+      'Siembra en superficie o esqueje',
+  'Semis en surface ou division de touffe':
+      'Siembra en superficie o división de mata',
+  'Semis ou division de touffe':
+      'Siembra o división de mata',
+  'Semis sous abri chauffé':
+      'Siembra bajo abrigo con calor',
+  'Semis sous abri chauffé dès février':
+      'Siembra bajo abrigo con calor desde febrero',
+  'Semis sous abri chauffé ou en godets':
+      'Siembra bajo abrigo con calor o en macetas',
+  'Semis sous abri en terrine, repiquage':
+      'Siembra bajo abrigo en bandeja y luego trasplante',
+  'Semis à la volée puis griffage':
+      'Siembra a voleo y luego rastrillado',
+  'Semis à la volée très dense, puis léger ratissage':
+      'Siembra a voleo muy densa y luego un rastrillado ligero',
+  // ─── fiche : espacement ───
+  '1 m en tous sens':
+      '1 m en todos los sentidos',
+  '1 m × 1,5 m':
+      '1 m × 1,5 m',
+  '1 × 1,5 m':
+      '1 × 1,5 m',
+  '1,5 m en tous sens':
+      '1,5 m en todos los sentidos',
+  '1,5 m × 2 m':
+      '1,5 m × 2 m',
+  '10 × 20 cm':
+      '10 × 20 cm',
+  '10 × 25 cm':
+      '10 × 25 cm',
+  '10 × 30 cm':
+      '10 × 30 cm',
+  '10 × 40 cm':
+      '10 × 40 cm',
+  '100 × 120 cm':
+      '100 × 120 cm',
+  '100 × 150 cm':
+      '100 × 150 cm',
+  '120 × 150 cm':
+      '120 × 150 cm',
+  '15 × 20 cm':
+      '15 × 20 cm',
+  '15 × 25 cm':
+      '15 × 25 cm',
+  '15 × 30 cm':
+      '15 × 30 cm',
+  '15 × 40 cm':
+      '15 × 40 cm',
+  '150 × 200 cm':
+      '150 × 200 cm',
+  '2 m en tous sens':
+      '2 m en todos los sentidos',
+  '2,5 × 3 m':
+      '2,5 × 3 m',
+  '2,5 à 3 m en tous sens':
+      'De 2,5 a 3 m en todos los sentidos',
+  '20 × 25 cm':
+      '20 × 25 cm',
+  '20 × 30 cm':
+      '20 × 30 cm',
+  '20 × 40 cm':
+      '20 × 40 cm',
+  '20 × 50 cm':
+      '20 × 50 cm',
+  '200 × 250 cm':
+      '200 × 250 cm',
+  '25 × 30 cm':
+      '25 × 30 cm',
+  '25 × 40 cm':
+      '25 × 40 cm',
+  '3 × 15 cm':
+      '3 × 15 cm',
+  '30 × 30 cm':
+      '30 × 30 cm',
+  '30 × 35 cm':
+      '30 × 35 cm',
+  '30 × 40 cm':
+      '30 × 40 cm',
+  '30 × 50 cm':
+      '30 × 50 cm',
+  '30 × 60 cm':
+      '30 × 60 cm',
+  '30 × 70 cm':
+      '30 × 70 cm',
+  '30 × 90 cm':
+      '30 × 90 cm',
+  '300 × 400 cm':
+      '300 × 400 cm',
+  '300 × 400 cm (haute tige)':
+      '300 × 400 cm (de tronco alto)',
+  '35 × 60 cm':
+      '35 × 60 cm',
+  '40 × 10 cm':
+      '40 × 10 cm',
+  '40 × 150 cm':
+      '40 × 150 cm',
+  '40 × 50 cm':
+      '40 × 50 cm',
+  '40 × 60 cm':
+      '40 × 60 cm',
+  '40 × 80 cm':
+      '40 × 80 cm',
+  '400 × 500 cm':
+      '400 × 500 cm',
+  '5 × 15 cm':
+      '5 × 15 cm',
+  '5 × 20 cm':
+      '5 × 20 cm',
+  '5 × 25 cm':
+      '5 × 25 cm',
+  '5 × 30 cm':
+      '5 × 30 cm',
+  '5 × 40 cm':
+      '5 × 40 cm',
+  '50 × 100 cm':
+      '50 × 100 cm',
+  '50 × 100 cm en haie fourragère, 3 m en arbre isolé':
+      '50 × 100 cm en seto forrajero, 3 m como árbol aislado',
+  '50 × 200 cm (en haie)':
+      '50 × 200 cm (en seto)',
+  '50 × 50 cm':
+      '50 × 50 cm',
+  '50 × 60 cm':
+      '50 × 60 cm',
+  '50 × 80 cm':
+      '50 × 80 cm',
+  '60 × 100 cm':
+      '60 × 100 cm',
+  '60 × 60 cm':
+      '60 × 60 cm',
+  '60 × 70 cm':
+      '60 × 70 cm',
+  '60 × 80 cm':
+      '60 × 80 cm',
+  '80 × 100 cm':
+      '80 × 100 cm',
+  'Semis dense à la volée':
+      'Siembra densa a voleo',
+  // ─── fiche : arrosage ───
+  'Abondant en croissance':
+      'Abundante durante el crecimiento',
+  'Abondant en été, réduire à maturité':
+      'Abundante en verano, menos al madurar',
+  'Abondant et constant':
+      'Abundante y constante',
+  'Abondant et régulier':
+      'Abundante y regular',
+  'Abondant, aime les sols humides':
+      'Abundante, le gustan los suelos húmedos',
+  'Abondant, au pied':
+      'Abundante, al pie',
+  'Abondant, gourmand en eau toute l\'année':
+      'Abundante, pide mucha agua todo el año',
+  'Faible':
+      'Escaso',
+  'Faible une fois installé':
+      'Escaso una vez instalado',
+  'Faible une fois installée':
+      'Escaso una vez instalada',
+  'Faible, plante très rustique':
+      'Escaso, planta muy rústica',
+  'Faible, plante très résistante':
+      'Escaso, planta muy resistente',
+  'Faible, résiste à la sécheresse':
+      'Escaso, aguanta la sequía',
+  'Faible, se contente des pluies':
+      'Escaso, le basta con la lluvia',
+  'Faible, stopper avant récolte':
+      'Escaso, cortar antes de la cosecha',
+  'Faible, très résistant à la sécheresse':
+      'Escaso, muy resistente a la sequía',
+  'Faible, très résistant à la sécheresse une fois installé':
+      'Escaso, muy resistente a la sequía una vez instalado',
+  'Faible, très résistante à la sécheresse':
+      'Escaso, muy resistente a la sequía',
+  'Modéré':
+      'Moderado',
+  'Modéré, arrêter avant la récolte':
+      'Moderado, cortar antes de la cosecha',
+  'Modéré, au pied':
+      'Moderado, al pie',
+  'Modéré, augmenter à la floraison':
+      'Moderado, aumentar en la floración',
+  'Modéré, pas en excès':
+      'Moderado, nunca en exceso',
+  'Modéré, réduire avant récolte':
+      'Moderado, reducir antes de la cosecha',
+  'Modéré, résiste bien à la sécheresse':
+      'Moderado, aguanta bien la sequía',
+  'Modéré, sans mouiller le feuillage':
+      'Moderado, sin mojar el follaje',
+  'Modéré, sol drainé':
+      'Moderado, en suelo drenado',
+  'Modéré, sol frais':
+      'Moderado, en suelo fresco',
+  'Modéré, stopper avant récolte':
+      'Moderado, cortar antes de la cosecha',
+  'Modéré, supporte la sécheresse':
+      'Moderado, tolera la sequía',
+  'Permanent, sol détrempé':
+      'Permanente, suelo encharcado',
+  'Régulier (phase racine), faible (phase forçage)':
+      'Regular (fase de raíz), escaso (fase de forzado)',
+  'Régulier en croissance':
+      'Regular durante el crecimiento',
+  'Régulier en croissance, réduire à maturité':
+      'Regular durante el crecimiento, menos al madurar',
+  'Régulier en floraison':
+      'Regular durante la floración',
+  'Régulier en fructification':
+      'Regular durante la fructificación',
+  'Régulier en saison sèche, modéré le reste du temps':
+      'Regular en la estación seca, moderado el resto del tiempo',
+  'Régulier et abondant':
+      'Regular y abundante',
+  'Régulier et constant':
+      'Regular y constante',
+  'Régulier les 2 premières années':
+      'Regular los 2 primeros años',
+  'Régulier à l\'eau de pluie (eau calcaire à éviter)':
+      'Regular con agua de lluvia (evita el agua calcárea)',
+  'Régulier à la floraison':
+      'Regular en la floración',
+  'Régulier, abondant en période chaude':
+      'Regular, abundante en los golpes de calor',
+  'Régulier, abondant à la floraison':
+      'Regular, abundante en la floración',
+  'Régulier, aime l\'humidité':
+      'Regular, le gusta la humedad',
+  'Régulier, aime le frais':
+      'Regular, le gusta el fresco',
+  'Régulier, au pied':
+      'Regular, al pie',
+  'Régulier, au pied, sans mouiller le feuillage':
+      'Regular, al pie, sin mojar el follaje',
+  'Régulier, garder le sol frais':
+      'Regular, mantén el suelo fresco',
+  'Régulier, généreux':
+      'Regular, generoso',
+  'Régulier, modéré':
+      'Regular, moderado',
+  'Régulier, ne pas laisser sécher':
+      'Regular, no lo dejes secarse',
+  'Régulier, réduire à maturité pour concentrer les sucres':
+      'Regular, reducir al madurar para concentrar los azúcares',
+  'Régulier, sans excès':
+      'Regular, sin excesos',
+  'Régulier, sans excès — redoute l\'eau stagnante':
+      'Regular, sin excesos: teme el agua estancada',
+  'Régulier, sol toujours frais':
+      'Regular, suelo siempre fresco',
+  'Régulier, surtout en floraison':
+      'Regular, sobre todo en la floración',
+  'Régulier, surtout à la fructification':
+      'Regular, sobre todo en la fructificación',
+  'Régulier, éviter le dessèchement en surface':
+      'Regular, evita que la superficie se reseque',
+  'Tremper la bûche par périodes sèches':
+      'Remoja el tronco en los periodos secos',
+  'Très faible, supporte la sécheresse':
+      'Muy escaso, tolera la sequía',
+  'Très modéré, stopper 1 mois avant récolte':
+      'Muy moderado, cortar 1 mes antes de la cosecha',
+  'Vaporisation 2× par jour':
+      'Pulverización 2 veces al día',
+  'Vaporisation légère':
+      'Pulverización ligera',
+  // ─── fiche : sol ───
+  'Acide (terre de bruyère), drainé':
+      'Ácido (tierra de brezo), drenado',
+  'Argileux, profond, frais':
+      'Arcilloso, profundo, fresco',
+  'Argileux, riche en humus, très humide':
+      'Arcilloso, rico en humus, muy húmedo',
+  'Bûche fournie':
+      'Tronco incluido',
+  'Compost fourni dans le kit':
+      'Compost incluido en el kit',
+  'Drainé, calcaire toléré':
+      'Drenado, tolera la cal',
+  'Frais, drainé, peu fumé':
+      'Fresco, drenado, poco estercolado',
+  'Frais, humifère, drainé':
+      'Fresco, con buen humus, drenado',
+  'Frais, humifère, légèrement acide':
+      'Fresco, con buen humus, ligeramente ácido',
+  'Frais, humifère, pas trop riche en azote':
+      'Fresco, con buen humus, no demasiado rico en nitrógeno',
+  'Frais, léger, humifère':
+      'Fresco, ligero, con buen humus',
+  'Frais, profond, drainé':
+      'Fresco, profundo, drenado',
+  'Frais, profond, légèrement acide':
+      'Fresco, profundo, ligeramente ácido',
+  'Frais, profond, riche en humus':
+      'Fresco, profundo, rico en humus',
+  'Frais, riche en humus':
+      'Fresco, rico en humus',
+  'Léger, bien drainé, non fraîchement fumé':
+      'Ligero, bien drenado, sin estiércol reciente',
+  'Léger, bien drainé, pas de fumure fraîche':
+      'Ligero, bien drenado, nada de estiércol fresco',
+  'Léger, calcaire, drainé':
+      'Ligero, calcáreo, drenado',
+  'Léger, drainé, neutre':
+      'Ligero, drenado, neutro',
+  'Léger, drainé, pas trop riche':
+      'Ligero, drenado, no demasiado rico',
+  'Léger, meuble, frais':
+      'Ligero, mullido, fresco',
+  'Léger, meuble, peu azoté':
+      'Ligero, mullido, bajo en nitrógeno',
+  'Léger, sableux, bien drainé':
+      'Ligero, arenoso, bien drenado',
+  'Léger, sableux, drainé':
+      'Ligero, arenoso, drenado',
+  'Léger, sableux, profond, bien drainé':
+      'Ligero, arenoso, profundo, bien drenado',
+  'Meuble, humifère':
+      'Mullido, con buen humus',
+  'Meuble, profond, légèrement acide':
+      'Mullido, profundo, ligeramente ácido',
+  'Meuble, profond, riche':
+      'Mullido, profundo, rico',
+  'Meuble, profond, sans cailloux':
+      'Mullido, profundo, sin piedras',
+  'Meuble, sableux, sans cailloux':
+      'Mullido, arenoso, sin piedras',
+  'Ordinaire, bien drainé':
+      'Corriente, bien drenado',
+  'Ordinaire, frais':
+      'Corriente, fresco',
+  'Ordinaire, frais, drainé':
+      'Corriente, fresco, drenado',
+  'Ordinaire, sableux à argileux, drainé':
+      'Corriente, de arenoso a arcilloso, drenado',
+  'Ordinaire, tassé, frais':
+      'Corriente, compactado, fresco',
+  'Pauvre à moyen, sableux, bien drainé':
+      'De pobre a medio, arenoso, bien drenado',
+  'Pauvre, caillouteux, très bien drainé':
+      'Pobre, pedregoso, muy bien drenado',
+  'Pauvre, calcaire, drainé':
+      'Pobre, calcáreo, drenado',
+  'Pauvre, sec, calcaire, drainé':
+      'Pobre, seco, calcáreo, drenado',
+  'Pauvre, sec, drainé':
+      'Pobre, seco, drenado',
+  'Profond, drainé':
+      'Profundo, drenado',
+  'Profond, drainé, calcaire toléré':
+      'Profundo, drenado, tolera la cal',
+  'Profond, frais, drainé':
+      'Profundo, fresco, drenado',
+  'Profond, frais, drainé, légèrement acide':
+      'Profundo, fresco, drenado, ligeramente ácido',
+  'Profond, meuble':
+      'Profundo, mullido',
+  'Profond, meuble, riche, bien drainé':
+      'Profundo, mullido, rico, bien drenado',
+  'Profond, meuble, sans cailloux':
+      'Profundo, mullido, sin piedras',
+  'Profond, riche, humifère, bien drainé':
+      'Profundo, rico, con buen humus, bien drenado',
+  'Riche, argileux, frais':
+      'Rico, arcilloso, fresco',
+  'Riche, bien drainé':
+      'Rico, bien drenado',
+  'Riche, bien drainé, chaud':
+      'Rico, bien drenado, cálido',
+  'Riche, bien drainé, légèrement acide':
+      'Rico, bien drenado, ligeramente ácido',
+  'Riche, chaud, bien drainé':
+      'Rico, cálido, bien drenado',
+  'Riche, drainé':
+      'Rico, drenado',
+  'Riche, frais, bien drainé':
+      'Rico, fresco, bien drenado',
+  'Riche, frais, humifère':
+      'Rico, fresco, con buen humus',
+  'Riche, frais, légèrement acide':
+      'Rico, fresco, ligeramente ácido',
+  'Riche, frais, profond':
+      'Rico, fresco, profundo',
+  'Riche, humide, humifère':
+      'Rico, húmedo, con buen humus',
+  'Riche, humifère, bien drainé':
+      'Rico, con buen humus, bien drenado',
+  'Riche, humifère, frais':
+      'Rico, con buen humus, fresco',
+  'Riche, humifère, légèrement acide':
+      'Rico, con buen humus, ligeramente ácido',
+  'Riche, léger, humifère, bien drainé':
+      'Rico, ligero, con buen humus, bien drenado',
+  'Riche, profond, bien drainé':
+      'Rico, profundo, bien drenado',
+  'Riche, profond, bien fumé':
+      'Rico, profundo, bien estercolado',
+  'Riche, profond, frais':
+      'Rico, profundo, fresco',
+  'Riche, profond, frais, argileux':
+      'Rico, profundo, fresco, arcilloso',
+  'Riche, profond, très bien drainé':
+      'Rico, profundo, muy bien drenado',
+  'Sableux, léger, même pauvre':
+      'Arenoso, ligero, aunque sea pobre',
+  'Sableux, pauvre, bien drainé':
+      'Arenoso, pobre, bien drenado',
+  'Sableux, riche, bien drainé, chaud':
+      'Arenoso, rico, bien drenado, cálido',
+  'Sec, calcaire, drainé':
+      'Seco, calcáreo, drenado',
+  'Substrat fourni dans le kit':
+      'Sustrato incluido en el kit',
+  'Tout type':
+      'Cualquier tipo',
+  'Tout type, drainé':
+      'Cualquier tipo, drenado',
+  'Tout type, drainé, neutre à calcaire':
+      'Cualquier tipo, drenado, de neutro a calcáreo',
+  'Tout type, même pauvre':
+      'Cualquier tipo, aunque sea pobre',
+  'Très riche, profond, bien drainé':
+      'Muy rico, profundo, bien drenado',
+  // ─── fiche : rendement ───
+  '0,5 à 1 kg de calices/pied':
+      'De 0,5 a 1 kg de cálices por mata',
+  '0,5 à 1 kg/m²':
+      'De 0,5 a 1 kg por m²',
+  '0,5 à 1,5 kg/m²':
+      'De 0,5 a 1,5 kg por m²',
+  '1 chicon par racine':
+      '1 cogollo por raíz',
+  '1 grosse fleur par plant':
+      '1 flor grande por planta',
+  '1 régime de 10 à 20 kg/pied et par cycle':
+      '1 racimo de 10 a 20 kg por mata y ciclo',
+  '1 à 2 kg de feuilles/arbre/an (taille régulière)':
+      'De 1 a 2 kg de hojas por árbol y año (con poda regular)',
+  '1 à 2 kg sur 2 mois':
+      'De 1 a 2 kg a lo largo de 2 meses',
+  '1 à 2 kg/an sur 5 ans':
+      'De 1 a 2 kg al año durante 5 años',
+  '1 à 2 kg/m²':
+      'De 1 a 2 kg por m²',
+  '1 à 2 kg/pied':
+      'De 1 a 2 kg por mata',
+  '1 à 3 kg/pied':
+      'De 1 a 3 kg por mata',
+  '1,5 à 2,5 kg/m²':
+      'De 1,5 a 2,5 kg por m²',
+  '1,5 à 2,5 kg/m² (feuilles)':
+      'De 1,5 a 2,5 kg por m² (hojas)',
+  '1,5 à 3 kg/m²':
+      'De 1,5 a 3 kg por m²',
+  '1,5 à 3 kg/m² (feuilles)':
+      'De 1,5 a 3 kg por m² (hojas)',
+  '1,5 à 3 kg/pied':
+      'De 1,5 a 3 kg por mata',
+  '100 à 200 g/pied':
+      'De 100 a 200 g por mata',
+  '100 à 300 g/m²':
+      'De 100 a 300 g por m²',
+  '150 à 250 g/m² (grains secs)':
+      'De 150 a 250 g por m² (grano seco)',
+  '150 à 400 g/m² (grains)':
+      'De 150 a 400 g por m² (grano)',
+  '2 à 3 kg/m²':
+      'De 2 a 3 kg por m²',
+  '2 à 3 épis/pied':
+      'De 2 a 3 mazorcas por mata',
+  '2 à 4 fruits/pied':
+      'De 2 a 4 frutos por mata',
+  '2 à 4 kg/m²':
+      'De 2 a 4 kg por m²',
+  '2 à 4 kg/m² (feuilles)':
+      'De 2 a 4 kg por m² (hojas)',
+  '2 à 4 kg/pied':
+      'De 2 a 4 kg por mata',
+  '2 à 5 kg/pied':
+      'De 2 a 5 kg por mata',
+  '20 à 100 kg/arbre adulte':
+      'De 20 a 100 kg por árbol adulto',
+  '20 à 40 kg/arbre adulte':
+      'De 20 a 40 kg por árbol adulto',
+  '20 à 50 kg/arbre adulte':
+      'De 20 a 50 kg por árbol adulto',
+  '20 à 60 kg/arbre adulte':
+      'De 20 a 60 kg por árbol adulto',
+  '200 à 350 g/m² (grains secs)':
+      'De 200 a 350 g por m² (grano seco)',
+  '200 à 400 g/pied':
+      'De 200 a 400 g por mata',
+  '200 à 500 g/pied':
+      'De 200 a 500 g por mata',
+  '3 à 4 kg/m²':
+      'De 3 a 4 kg por m²',
+  '3 à 5 fruits/pied':
+      'De 3 a 5 frutos por mata',
+  '3 à 5 kg/m²':
+      'De 3 a 5 kg por m²',
+  '3 à 5 kg/pied':
+      'De 3 a 5 kg por mata',
+  '3 à 6 fruits/pied':
+      'De 3 a 6 frutos por mata',
+  '3 à 6 kg/pied':
+      'De 3 a 6 kg por mata',
+  '30 à 60 fruits/arbre/an':
+      'De 30 a 60 frutos por árbol y año',
+  '30 à 80 kg/arbre adulte':
+      'De 30 a 80 kg por árbol adulto',
+  '30 à 80 kg/pied femelle adulte':
+      'De 30 a 80 kg por mata hembra adulta',
+  '300 à 600 g/m² (grains)':
+      'De 300 a 600 g por m² (grano)',
+  '4 à 6 kg/m²':
+      'De 4 a 6 kg por m²',
+  '5 à 10 kg/pied':
+      'De 5 a 10 kg por mata',
+  '5 à 15 kg/arbre adulte':
+      'De 5 a 15 kg por árbol adulto',
+  '5 à 15 kg/pied':
+      'De 5 a 15 kg por mata',
+  '5 à 15 kg/pied adulte':
+      'De 5 a 15 kg por mata adulta',
+  '500 g à 1 kg/pied':
+      'De 500 g a 1 kg por mata',
+  '500 g à 1 kg/pied/an':
+      'De 500 g a 1 kg por mata y año',
+  '6 à 10 têtes/pied':
+      'De 6 a 10 cabezas por mata',
+  '80 à 150 g/m² (grains)':
+      'De 80 a 150 g por m² (grano)',
+  'Couvre-sol et engrais vert':
+      'Cubresuelos y abono verde',
+  'Engrais vert riche en azote':
+      'Abono verde rico en nitrógeno',
+  'Floraison continue sur 3 mois':
+      'Floración continua durante 3 meses',
+  'Floraison continue sur 4 mois':
+      'Floración continua durante 4 meses',
+  'Floraison continue sur 5 mois':
+      'Floración continua durante 5 meses',
+  'Floraison continue sur 6 mois':
+      'Floración continua durante 6 meses',
+  'Floraison sur 2 mois':
+      'Floración durante 2 meses',
+  'Récolte des fleurs sur 2 mois':
+      'Recolección de flores durante 2 meses',
+  'Récolte permanente':
+      'Cosecha permanente',
+  'Récolte sur 2 mois':
+      'Cosecha a lo largo de 2 meses',
+  'Récolte sur la belle saison':
+      'Cosecha durante la buena estación',
+  'Tiges à couper toute l\'année en climat chaud':
+      'Tallos para cortar todo el año en clima cálido',
+  'Vivace — récolte continue':
+      'Vivaz: cosecha continua',
 };

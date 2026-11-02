@@ -2132,4 +2132,715 @@ const Map<String, String> contentTextsEn = <String, String>{
       '8 to 12 days',
   '8 à 15 jours':
       '8 to 15 days',
+  // ─── fiche : technique de semis ───
+  'Bouturage de lianes ou plantation de slips':
+      'Take vine cuttings or plant slips',
+  'Bouturage de tiges de 20 à 30 cm, plantées en biais':
+      'Take 20 to 30 cm stem cuttings, planted at an angle',
+  'Bouturage ou achat de plant':
+      'Take cuttings or buy a plant',
+  'Bouturage ou achat de plant — semis difficile':
+      'Take cuttings or buy a plant — sowing is difficult',
+  'Bouturage ou division de touffe (semis très lent)':
+      'Take cuttings or divide the clump (seed is very slow)',
+  'Bûche de chêne inoculée au mycélium':
+      'An oak log inoculated with mycelium',
+  'Division de touffe ou bouture de tige racinée dans l\'eau':
+      'Divide the clump, or root a stem cutting in water',
+  'Kit de mycélium sur compost':
+      'A mycelium kit on compost',
+  'Kit de mycélium sur paille ou bûche inoculée':
+      'A mycelium kit on straw, or an inoculated log',
+  'Plantation d\'œilletons ou semis sous abri':
+      'Plant offsets, or sow under cover',
+  'Plantation de bulbes en terre':
+      'Plant the bulbs in the ground',
+  'Plantation de caïeux directement en terre':
+      'Plant the cloves straight into the ground',
+  'Plantation de fragments de tubercules ou de mini-semenceaux':
+      'Plant tuber pieces or mini-tubers',
+  'Plantation de griffe ou division de touffe':
+      'Plant a crown, or divide the clump',
+  'Plantation de griffes en tranchée':
+      'Plant the crowns in a trench',
+  'Plantation de plant en hiver':
+      'Plant in winter',
+  'Plantation de plant ou bouturage en hiver':
+      'Plant, or take cuttings, in winter',
+  'Plantation de plant à l\'automne ou au printemps':
+      'Plant in autumn or in spring',
+  'Plantation de plant — éviter les graines':
+      'Plant a young plant — avoid seed',
+  'Plantation de plants ou drageons':
+      'Plant young plants or suckers',
+  'Plantation de plants ou stolons (le semis est lent)':
+      'Plant young plants or runners (seed is slow)',
+  'Plantation de rejets (baïonnette) dans un grand trou enrichi de fumier':
+      'Plant suckers in a large hole enriched with manure',
+  'Plantation de rhizomes à bourgeons':
+      'Plant rhizomes with visible buds',
+  'Plantation de scion ou jeune arbre en hiver':
+      'Plant a maiden or a young tree in winter',
+  'Plantation de tubercules au printemps':
+      'Plant the tubers in spring',
+  'Plantation de tubercules germés':
+      'Plant sprouted tubers',
+  'Plantation de tubercules ou rejets':
+      'Plant tubers or suckers',
+  'Semis de graines fraîches en poquets ou en sachets':
+      'Sow fresh seed in stations or in packets',
+  'Semis difficile — préférer le bouturage ou l\'achat de plant':
+      'Difficult from seed — prefer cuttings or a bought plant',
+  'Semis direct après les gelées':
+      'Sow direct after the frosts',
+  'Semis direct après les gelées, en poquets':
+      'Sow direct after the frosts, in stations',
+  'Semis direct de graines décortiquées':
+      'Sow hulled seed direct',
+  'Semis direct en ligne':
+      'Sow direct in rows',
+  'Semis direct en ligne ou en godet':
+      'Sow direct in rows, or in pots',
+  'Semis direct en ligne ou en poquets':
+      'Sow direct in rows or in stations',
+  'Semis direct en ligne ou à la volée':
+      'Sow direct in rows or broadcast',
+  'Semis direct en ligne, graines fraîches':
+      'Sow direct in rows, with fresh seed',
+  'Semis direct en ligne, éclaircir à 10 cm':
+      'Sow direct in rows, thin to 10 cm',
+  'Semis direct en ligne, éclaircir à 3 cm':
+      'Sow direct in rows, thin to 3 cm',
+  'Semis direct en place':
+      'Sow direct where it will grow',
+  'Semis direct en place après les gelées':
+      'Sow direct where it will grow, after the frosts',
+  'Semis direct en place — supporte mal le repiquage':
+      'Sow direct where it will grow — it dislikes transplanting',
+  'Semis direct en poquets':
+      'Sow direct in stations',
+  'Semis direct en poquets de 2-3 graines':
+      'Sow direct in stations of 2-3 seeds',
+  'Semis direct en poquets de 3 graines':
+      'Sow direct in stations of 3 seeds',
+  'Semis direct en poquets de 3-4 graines, dès les premières pluies':
+      'Sow direct in stations of 3-4 seeds, with the first rains',
+  'Semis direct en sol chaud':
+      'Sow direct into warm soil',
+  'Semis direct ou division de touffe':
+      'Sow direct, or divide the clump',
+  'Semis direct ou en godet':
+      'Sow direct or in pots',
+  'Semis direct ou en godet, patient à lever':
+      'Sow direct or in pots, slow to come up',
+  'Semis direct ou en godet, tremper les graines 24 h avant':
+      'Sow direct or in pots, soaking the seed for 24 h first',
+  'Semis direct ou plantation de bulbilles':
+      'Sow direct, or plant bulbils',
+  'Semis direct à la volée':
+      'Broadcast direct',
+  'Semis direct à la volée ou en ligne':
+      'Broadcast direct, or sow in rows',
+  'Semis direct, puis arrachage et forçage en cave':
+      'Sow direct, then lift and force in a cellar',
+  'Semis en godet ou bouturage':
+      'Sow in pots, or take cuttings',
+  'Semis en godet ou division de touffe':
+      'Sow in pots, or divide the clump',
+  'Semis en godet ou en place':
+      'Sow in pots or where it will grow',
+  'Semis en godet ou en place après les gelées':
+      'Sow in pots or where it will grow, after the frosts',
+  'Semis en godet ou semis direct en sol chaud':
+      'Sow in pots, or sow direct into warm soil',
+  'Semis en godet puis repiquage':
+      'Sow in pots then prick out',
+  'Semis en godet puis repiquage ou semis direct':
+      'Sow in pots then prick out, or sow direct',
+  'Semis en godet sous abri ou semis direct après les gelées':
+      'Sow in pots under cover, or direct after the frosts',
+  'Semis en godet sous abri puis repiquage':
+      'Sow in pots under cover, then prick out',
+  'Semis en godets ou en place après les saints de glace':
+      'Sow in pots, or where it will grow once the late frosts are past',
+  'Semis en place ou en godet':
+      'Sow where it will grow, or in pots',
+  'Semis en pleine eau ou bouturage':
+      'Sow into standing water, or take cuttings',
+  'Semis en poquets ou bouturage de grosses branches':
+      'Sow in stations, or take cuttings from thick branches',
+  'Semis en poquets ou bouturage de tiges, avec support':
+      'Sow in stations, or take stem cuttings, with a support',
+  'Semis en pépinière ou en place':
+      'Sow in a seedbed or where it will grow',
+  'Semis en pépinière puis repiquage':
+      'Sow in a seedbed then prick out',
+  'Semis en pépinière puis repiquage profond':
+      'Sow in a seedbed then prick out deeply',
+  'Semis en pépinière puis repiquage à 4-5 feuilles':
+      'Sow in a seedbed then prick out at 4-5 leaves',
+  'Semis en pépinière puis repiquage, ou semis direct clair':
+      'Sow in a seedbed then prick out, or sow direct and thinly',
+  'Semis en surface ou bouturage':
+      'Sow on the surface, or take cuttings',
+  'Semis en surface ou division de touffe':
+      'Sow on the surface, or divide the clump',
+  'Semis ou division de touffe':
+      'Sow, or divide the clump',
+  'Semis sous abri chauffé':
+      'Sow under heated cover',
+  'Semis sous abri chauffé dès février':
+      'Sow under heated cover from February',
+  'Semis sous abri chauffé ou en godets':
+      'Sow under heated cover, or in pots',
+  'Semis sous abri en terrine, repiquage':
+      'Sow in a tray under cover, then prick out',
+  'Semis à la volée puis griffage':
+      'Broadcast, then rake in',
+  'Semis à la volée très dense, puis léger ratissage':
+      'Broadcast very thickly, then rake lightly',
+  // ─── fiche : espacement ───
+  '1 m en tous sens':
+      '1 m each way',
+  '1 m × 1,5 m':
+      '1 m × 1.5 m',
+  '1 × 1,5 m':
+      '1 × 1.5 m',
+  '1,5 m en tous sens':
+      '1.5 m each way',
+  '1,5 m × 2 m':
+      '1.5 m × 2 m',
+  '10 × 20 cm':
+      '10 × 20 cm',
+  '10 × 25 cm':
+      '10 × 25 cm',
+  '10 × 30 cm':
+      '10 × 30 cm',
+  '10 × 40 cm':
+      '10 × 40 cm',
+  '100 × 120 cm':
+      '100 × 120 cm',
+  '100 × 150 cm':
+      '100 × 150 cm',
+  '120 × 150 cm':
+      '120 × 150 cm',
+  '15 × 20 cm':
+      '15 × 20 cm',
+  '15 × 25 cm':
+      '15 × 25 cm',
+  '15 × 30 cm':
+      '15 × 30 cm',
+  '15 × 40 cm':
+      '15 × 40 cm',
+  '150 × 200 cm':
+      '150 × 200 cm',
+  '2 m en tous sens':
+      '2 m each way',
+  '2,5 × 3 m':
+      '2.5 × 3 m',
+  '2,5 à 3 m en tous sens':
+      '2.5 to 3 m each way',
+  '20 × 25 cm':
+      '20 × 25 cm',
+  '20 × 30 cm':
+      '20 × 30 cm',
+  '20 × 40 cm':
+      '20 × 40 cm',
+  '20 × 50 cm':
+      '20 × 50 cm',
+  '200 × 250 cm':
+      '200 × 250 cm',
+  '25 × 30 cm':
+      '25 × 30 cm',
+  '25 × 40 cm':
+      '25 × 40 cm',
+  '3 × 15 cm':
+      '3 × 15 cm',
+  '30 × 30 cm':
+      '30 × 30 cm',
+  '30 × 35 cm':
+      '30 × 35 cm',
+  '30 × 40 cm':
+      '30 × 40 cm',
+  '30 × 50 cm':
+      '30 × 50 cm',
+  '30 × 60 cm':
+      '30 × 60 cm',
+  '30 × 70 cm':
+      '30 × 70 cm',
+  '30 × 90 cm':
+      '30 × 90 cm',
+  '300 × 400 cm':
+      '300 × 400 cm',
+  '300 × 400 cm (haute tige)':
+      '300 × 400 cm (standard tree)',
+  '35 × 60 cm':
+      '35 × 60 cm',
+  '40 × 10 cm':
+      '40 × 10 cm',
+  '40 × 150 cm':
+      '40 × 150 cm',
+  '40 × 50 cm':
+      '40 × 50 cm',
+  '40 × 60 cm':
+      '40 × 60 cm',
+  '40 × 80 cm':
+      '40 × 80 cm',
+  '400 × 500 cm':
+      '400 × 500 cm',
+  '5 × 15 cm':
+      '5 × 15 cm',
+  '5 × 20 cm':
+      '5 × 20 cm',
+  '5 × 25 cm':
+      '5 × 25 cm',
+  '5 × 30 cm':
+      '5 × 30 cm',
+  '5 × 40 cm':
+      '5 × 40 cm',
+  '50 × 100 cm':
+      '50 × 100 cm',
+  '50 × 100 cm en haie fourragère, 3 m en arbre isolé':
+      '50 × 100 cm as a fodder hedge, 3 m as a standalone tree',
+  '50 × 200 cm (en haie)':
+      '50 × 200 cm (as a hedge)',
+  '50 × 50 cm':
+      '50 × 50 cm',
+  '50 × 60 cm':
+      '50 × 60 cm',
+  '50 × 80 cm':
+      '50 × 80 cm',
+  '60 × 100 cm':
+      '60 × 100 cm',
+  '60 × 60 cm':
+      '60 × 60 cm',
+  '60 × 70 cm':
+      '60 × 70 cm',
+  '60 × 80 cm':
+      '60 × 80 cm',
+  '80 × 100 cm':
+      '80 × 100 cm',
+  'Semis dense à la volée':
+      'Sown thickly, broadcast',
+  // ─── fiche : arrosage ───
+  'Abondant en croissance':
+      'Plentiful while growing',
+  'Abondant en été, réduire à maturité':
+      'Plentiful in summer, less as it ripens',
+  'Abondant et constant':
+      'Plentiful and constant',
+  'Abondant et régulier':
+      'Plentiful and regular',
+  'Abondant, aime les sols humides':
+      'Plentiful, it likes damp soil',
+  'Abondant, au pied':
+      'Plentiful, at the base',
+  'Abondant, gourmand en eau toute l\'année':
+      'Plentiful, thirsty all year round',
+  'Faible':
+      'Light',
+  'Faible une fois installé':
+      'Light once established',
+  'Faible une fois installée':
+      'Light once established',
+  'Faible, plante très rustique':
+      'Light, a very hardy plant',
+  'Faible, plante très résistante':
+      'Light, a very tough plant',
+  'Faible, résiste à la sécheresse':
+      'Light, it stands up to drought',
+  'Faible, se contente des pluies':
+      'Light, the rain is enough for it',
+  'Faible, stopper avant récolte':
+      'Light, stop before harvest',
+  'Faible, très résistant à la sécheresse':
+      'Light, very drought-resistant',
+  'Faible, très résistant à la sécheresse une fois installé':
+      'Light, very drought-resistant once established',
+  'Faible, très résistante à la sécheresse':
+      'Light, very drought-resistant',
+  'Modéré':
+      'Moderate',
+  'Modéré, arrêter avant la récolte':
+      'Moderate, stop before the harvest',
+  'Modéré, au pied':
+      'Moderate, at the base',
+  'Modéré, augmenter à la floraison':
+      'Moderate, increase at flowering',
+  'Modéré, pas en excès':
+      'Moderate, never to excess',
+  'Modéré, réduire avant récolte':
+      'Moderate, reduce before harvest',
+  'Modéré, résiste bien à la sécheresse':
+      'Moderate, it copes well with drought',
+  'Modéré, sans mouiller le feuillage':
+      'Moderate, without wetting the foliage',
+  'Modéré, sol drainé':
+      'Moderate, in well-drained soil',
+  'Modéré, sol frais':
+      'Moderate, in cool soil',
+  'Modéré, stopper avant récolte':
+      'Moderate, stop before harvest',
+  'Modéré, supporte la sécheresse':
+      'Moderate, it tolerates drought',
+  'Permanent, sol détrempé':
+      'Constant, soil kept waterlogged',
+  'Régulier (phase racine), faible (phase forçage)':
+      'Regular (root stage), light (forcing stage)',
+  'Régulier en croissance':
+      'Regular while growing',
+  'Régulier en croissance, réduire à maturité':
+      'Regular while growing, less as it ripens',
+  'Régulier en floraison':
+      'Regular while in flower',
+  'Régulier en fructification':
+      'Regular while fruiting',
+  'Régulier en saison sèche, modéré le reste du temps':
+      'Regular in the dry season, moderate the rest of the time',
+  'Régulier et abondant':
+      'Regular and plentiful',
+  'Régulier et constant':
+      'Regular and constant',
+  'Régulier les 2 premières années':
+      'Regular for the first 2 years',
+  'Régulier à l\'eau de pluie (eau calcaire à éviter)':
+      'Regular, with rainwater (avoid hard water)',
+  'Régulier à la floraison':
+      'Regular at flowering',
+  'Régulier, abondant en période chaude':
+      'Regular, plentiful in hot spells',
+  'Régulier, abondant à la floraison':
+      'Regular, plentiful at flowering',
+  'Régulier, aime l\'humidité':
+      'Regular, it likes damp',
+  'Régulier, aime le frais':
+      'Regular, it likes cool conditions',
+  'Régulier, au pied':
+      'Regular, at the base',
+  'Régulier, au pied, sans mouiller le feuillage':
+      'Regular, at the base, without wetting the foliage',
+  'Régulier, garder le sol frais':
+      'Regular, keep the soil cool',
+  'Régulier, généreux':
+      'Regular, generous',
+  'Régulier, modéré':
+      'Regular, moderate',
+  'Régulier, ne pas laisser sécher':
+      'Regular, never let it dry out',
+  'Régulier, réduire à maturité pour concentrer les sucres':
+      'Regular, reduce as it ripens to concentrate the sugars',
+  'Régulier, sans excès':
+      'Regular, without excess',
+  'Régulier, sans excès — redoute l\'eau stagnante':
+      'Regular, without excess — it hates standing water',
+  'Régulier, sol toujours frais':
+      'Regular, soil always cool',
+  'Régulier, surtout en floraison':
+      'Regular, above all while in flower',
+  'Régulier, surtout à la fructification':
+      'Regular, above all while fruiting',
+  'Régulier, éviter le dessèchement en surface':
+      'Regular, do not let the surface dry out',
+  'Tremper la bûche par périodes sèches':
+      'Soak the log during dry spells',
+  'Très faible, supporte la sécheresse':
+      'Very light, it tolerates drought',
+  'Très modéré, stopper 1 mois avant récolte':
+      'Very moderate, stop 1 month before harvest',
+  'Vaporisation 2× par jour':
+      'Mist 2× a day',
+  'Vaporisation légère':
+      'A light misting',
+  // ─── fiche : sol ───
+  'Acide (terre de bruyère), drainé':
+      'Acidic (ericaceous), well-drained',
+  'Argileux, profond, frais':
+      'Clay, deep, cool',
+  'Argileux, riche en humus, très humide':
+      'Clay, humus-rich, very damp',
+  'Bûche fournie':
+      'Log supplied',
+  'Compost fourni dans le kit':
+      'Compost supplied in the kit',
+  'Drainé, calcaire toléré':
+      'Well-drained, tolerates chalk',
+  'Frais, drainé, peu fumé':
+      'Cool, well-drained, lightly manured',
+  'Frais, humifère, drainé':
+      'Cool, high in humus, well-drained',
+  'Frais, humifère, légèrement acide':
+      'Cool, high in humus, slightly acidic',
+  'Frais, humifère, pas trop riche en azote':
+      'Cool, high in humus, not too rich in nitrogen',
+  'Frais, léger, humifère':
+      'Cool, light, high in humus',
+  'Frais, profond, drainé':
+      'Cool, deep, well-drained',
+  'Frais, profond, légèrement acide':
+      'Cool, deep, slightly acidic',
+  'Frais, profond, riche en humus':
+      'Cool, deep, humus-rich',
+  'Frais, riche en humus':
+      'Cool, humus-rich',
+  'Léger, bien drainé, non fraîchement fumé':
+      'Light, well-drained, not freshly manured',
+  'Léger, bien drainé, pas de fumure fraîche':
+      'Light, well-drained, no fresh manure',
+  'Léger, calcaire, drainé':
+      'Light, chalky, well-drained',
+  'Léger, drainé, neutre':
+      'Light, well-drained, neutral',
+  'Léger, drainé, pas trop riche':
+      'Light, well-drained, not too rich',
+  'Léger, meuble, frais':
+      'Light, loose, cool',
+  'Léger, meuble, peu azoté':
+      'Light, loose, low in nitrogen',
+  'Léger, sableux, bien drainé':
+      'Light, sandy, well-drained',
+  'Léger, sableux, drainé':
+      'Light, sandy, well-drained',
+  'Léger, sableux, profond, bien drainé':
+      'Light, sandy, deep, well-drained',
+  'Meuble, humifère':
+      'Loose, high in humus',
+  'Meuble, profond, légèrement acide':
+      'Loose, deep, slightly acidic',
+  'Meuble, profond, riche':
+      'Loose, deep, rich',
+  'Meuble, profond, sans cailloux':
+      'Loose, deep, free of stones',
+  'Meuble, sableux, sans cailloux':
+      'Loose, sandy, free of stones',
+  'Ordinaire, bien drainé':
+      'Ordinary, well-drained',
+  'Ordinaire, frais':
+      'Ordinary, cool',
+  'Ordinaire, frais, drainé':
+      'Ordinary, cool, well-drained',
+  'Ordinaire, sableux à argileux, drainé':
+      'Ordinary, sandy to clay, well-drained',
+  'Ordinaire, tassé, frais':
+      'Ordinary, firmed, cool',
+  'Pauvre à moyen, sableux, bien drainé':
+      'Poor to average, sandy, well-drained',
+  'Pauvre, caillouteux, très bien drainé':
+      'Poor, stony, very well drained',
+  'Pauvre, calcaire, drainé':
+      'Poor, chalky, well-drained',
+  'Pauvre, sec, calcaire, drainé':
+      'Poor, dry, chalky, well-drained',
+  'Pauvre, sec, drainé':
+      'Poor, dry, well-drained',
+  'Profond, drainé':
+      'Deep, well-drained',
+  'Profond, drainé, calcaire toléré':
+      'Deep, well-drained, tolerates chalk',
+  'Profond, frais, drainé':
+      'Deep, cool, well-drained',
+  'Profond, frais, drainé, légèrement acide':
+      'Deep, cool, well-drained, slightly acidic',
+  'Profond, meuble':
+      'Deep, loose',
+  'Profond, meuble, riche, bien drainé':
+      'Deep, loose, rich, well-drained',
+  'Profond, meuble, sans cailloux':
+      'Deep, loose, free of stones',
+  'Profond, riche, humifère, bien drainé':
+      'Deep, rich, high in humus, well-drained',
+  'Riche, argileux, frais':
+      'Rich, clay, cool',
+  'Riche, bien drainé':
+      'Rich, well-drained',
+  'Riche, bien drainé, chaud':
+      'Rich, well-drained, warm',
+  'Riche, bien drainé, légèrement acide':
+      'Rich, well-drained, slightly acidic',
+  'Riche, chaud, bien drainé':
+      'Rich, warm, well-drained',
+  'Riche, drainé':
+      'Rich, well-drained',
+  'Riche, frais, bien drainé':
+      'Rich, cool, well-drained',
+  'Riche, frais, humifère':
+      'Rich, cool, high in humus',
+  'Riche, frais, légèrement acide':
+      'Rich, cool, slightly acidic',
+  'Riche, frais, profond':
+      'Rich, cool, deep',
+  'Riche, humide, humifère':
+      'Rich, damp, high in humus',
+  'Riche, humifère, bien drainé':
+      'Rich, high in humus, well-drained',
+  'Riche, humifère, frais':
+      'Rich, high in humus, cool',
+  'Riche, humifère, légèrement acide':
+      'Rich, high in humus, slightly acidic',
+  'Riche, léger, humifère, bien drainé':
+      'Rich, light, high in humus, well-drained',
+  'Riche, profond, bien drainé':
+      'Rich, deep, well-drained',
+  'Riche, profond, bien fumé':
+      'Rich, deep, well manured',
+  'Riche, profond, frais':
+      'Rich, deep, cool',
+  'Riche, profond, frais, argileux':
+      'Rich, deep, cool, clay',
+  'Riche, profond, très bien drainé':
+      'Rich, deep, very well drained',
+  'Sableux, léger, même pauvre':
+      'Sandy, light, even a poor one',
+  'Sableux, pauvre, bien drainé':
+      'Sandy, poor, well-drained',
+  'Sableux, riche, bien drainé, chaud':
+      'Sandy, rich, well-drained, warm',
+  'Sec, calcaire, drainé':
+      'Dry, chalky, well-drained',
+  'Substrat fourni dans le kit':
+      'Growing medium supplied in the kit',
+  'Tout type':
+      'Any type',
+  'Tout type, drainé':
+      'Any type, well-drained',
+  'Tout type, drainé, neutre à calcaire':
+      'Any type, well-drained, neutral to chalky',
+  'Tout type, même pauvre':
+      'Any type, even a poor one',
+  'Très riche, profond, bien drainé':
+      'Very rich, deep, well-drained',
+  // ─── fiche : rendement ───
+  '0,5 à 1 kg de calices/pied':
+      '0.5 to 1 kg of calyces per plant',
+  '0,5 à 1 kg/m²':
+      '0.5 to 1 kg per m²',
+  '0,5 à 1,5 kg/m²':
+      '0.5 to 1.5 kg per m²',
+  '1 chicon par racine':
+      '1 chicon per root',
+  '1 grosse fleur par plant':
+      '1 large flower per plant',
+  '1 régime de 10 à 20 kg/pied et par cycle':
+      '1 bunch of 10 to 20 kg per plant per cycle',
+  '1 à 2 kg de feuilles/arbre/an (taille régulière)':
+      '1 to 2 kg of leaves per tree per year (with regular pruning)',
+  '1 à 2 kg sur 2 mois':
+      '1 to 2 kg over 2 months',
+  '1 à 2 kg/an sur 5 ans':
+      '1 to 2 kg a year over 5 years',
+  '1 à 2 kg/m²':
+      '1 to 2 kg per m²',
+  '1 à 2 kg/pied':
+      '1 to 2 kg per plant',
+  '1 à 3 kg/pied':
+      '1 to 3 kg per plant',
+  '1,5 à 2,5 kg/m²':
+      '1.5 to 2.5 kg per m²',
+  '1,5 à 2,5 kg/m² (feuilles)':
+      '1.5 to 2.5 kg per m² (leaves)',
+  '1,5 à 3 kg/m²':
+      '1.5 to 3 kg per m²',
+  '1,5 à 3 kg/m² (feuilles)':
+      '1.5 to 3 kg per m² (leaves)',
+  '1,5 à 3 kg/pied':
+      '1.5 to 3 kg per plant',
+  '100 à 200 g/pied':
+      '100 to 200 g per plant',
+  '100 à 300 g/m²':
+      '100 to 300 g per m²',
+  '150 à 250 g/m² (grains secs)':
+      '150 to 250 g per m² (dry grain)',
+  '150 à 400 g/m² (grains)':
+      '150 to 400 g per m² (grain)',
+  '2 à 3 kg/m²':
+      '2 to 3 kg per m²',
+  '2 à 3 épis/pied':
+      '2 to 3 cobs per plant',
+  '2 à 4 fruits/pied':
+      '2 to 4 fruit per plant',
+  '2 à 4 kg/m²':
+      '2 to 4 kg per m²',
+  '2 à 4 kg/m² (feuilles)':
+      '2 to 4 kg per m² (leaves)',
+  '2 à 4 kg/pied':
+      '2 to 4 kg per plant',
+  '2 à 5 kg/pied':
+      '2 to 5 kg per plant',
+  '20 à 100 kg/arbre adulte':
+      '20 to 100 kg per mature tree',
+  '20 à 40 kg/arbre adulte':
+      '20 to 40 kg per mature tree',
+  '20 à 50 kg/arbre adulte':
+      '20 to 50 kg per mature tree',
+  '20 à 60 kg/arbre adulte':
+      '20 to 60 kg per mature tree',
+  '200 à 350 g/m² (grains secs)':
+      '200 to 350 g per m² (dry grain)',
+  '200 à 400 g/pied':
+      '200 to 400 g per plant',
+  '200 à 500 g/pied':
+      '200 to 500 g per plant',
+  '3 à 4 kg/m²':
+      '3 to 4 kg per m²',
+  '3 à 5 fruits/pied':
+      '3 to 5 fruit per plant',
+  '3 à 5 kg/m²':
+      '3 to 5 kg per m²',
+  '3 à 5 kg/pied':
+      '3 to 5 kg per plant',
+  '3 à 6 fruits/pied':
+      '3 to 6 fruit per plant',
+  '3 à 6 kg/pied':
+      '3 to 6 kg per plant',
+  '30 à 60 fruits/arbre/an':
+      '30 to 60 fruit per tree per year',
+  '30 à 80 kg/arbre adulte':
+      '30 to 80 kg per mature tree',
+  '30 à 80 kg/pied femelle adulte':
+      '30 to 80 kg per mature female plant',
+  '300 à 600 g/m² (grains)':
+      '300 to 600 g per m² (grain)',
+  '4 à 6 kg/m²':
+      '4 to 6 kg per m²',
+  '5 à 10 kg/pied':
+      '5 to 10 kg per plant',
+  '5 à 15 kg/arbre adulte':
+      '5 to 15 kg per mature tree',
+  '5 à 15 kg/pied':
+      '5 to 15 kg per plant',
+  '5 à 15 kg/pied adulte':
+      '5 to 15 kg per mature plant',
+  '500 g à 1 kg/pied':
+      '500 g to 1 kg per plant',
+  '500 g à 1 kg/pied/an':
+      '500 g to 1 kg per plant per year',
+  '6 à 10 têtes/pied':
+      '6 to 10 heads per plant',
+  '80 à 150 g/m² (grains)':
+      '80 to 150 g per m² (grain)',
+  'Couvre-sol et engrais vert':
+      'Ground cover and green manure',
+  'Engrais vert riche en azote':
+      'A green manure rich in nitrogen',
+  'Floraison continue sur 3 mois':
+      'Flowers continuously for 3 months',
+  'Floraison continue sur 4 mois':
+      'Flowers continuously for 4 months',
+  'Floraison continue sur 5 mois':
+      'Flowers continuously for 5 months',
+  'Floraison continue sur 6 mois':
+      'Flowers continuously for 6 months',
+  'Floraison sur 2 mois':
+      'Flowers for 2 months',
+  'Récolte des fleurs sur 2 mois':
+      'Flowers picked over 2 months',
+  'Récolte permanente':
+      'Harvested continuously',
+  'Récolte sur 2 mois':
+      'Harvested over 2 months',
+  'Récolte sur la belle saison':
+      'Harvested through the growing season',
+  'Tiges à couper toute l\'année en climat chaud':
+      'Stems to cut all year round in a warm climate',
+  'Vivace — récolte continue':
+      'Perennial — harvested continuously',
 };
