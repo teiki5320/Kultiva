@@ -1937,4 +1937,199 @@ const Map<String, String> contentTextsEn = <String, String>{
       '15 m of hose covers four 1.20 m beds.',
   'Il se bouche au calcaire et à la terre : rince-le à pleine pression en début de saison.':
       'It clogs with limescale and soil: flush it at full pressure at the start of the season.',
+  // ─── fiche du catalogue : exposition, température, profondeur, levée ───
+  'Lumière indirecte, lieu humide':
+      'Indirect light, a damp spot',
+  'Mi-ombre':
+      'Partial shade',
+  'Mi-ombre en été':
+      'Partial shade in summer',
+  'Mi-ombre en été, soleil au printemps':
+      'Partial shade in summer, sun in spring',
+  'Mi-ombre en été, soleil en hiver':
+      'Partial shade in summer, sun in winter',
+  'Mi-ombre à soleil':
+      'Partial shade to full sun',
+  'Mi-ombre à soleil tamisé':
+      'Partial shade to filtered sun',
+  'Ombre, à l\'extérieur':
+      'Shade, outdoors',
+  'Plein soleil':
+      'Full sun',
+  'Plein soleil à mi-ombre légère':
+      'Full sun to light partial shade',
+  'Plein soleil, abrité du vent':
+      'Full sun, sheltered from the wind',
+  'Plein soleil, chaleur indispensable':
+      'Full sun, heat is essential',
+  'Plein soleil, à l\'abri':
+      'Full sun, under shelter',
+  'Plein soleil, à l\'abri du vent':
+      'Full sun, sheltered from the wind',
+  'Pénombre, lieu frais':
+      'Dim light, a cool spot',
+  'Soleil (phase racine), obscurité (phase forçage)':
+      'Sun (root stage), darkness (forcing stage)',
+  'Soleil ou mi-ombre':
+      'Sun or partial shade',
+  'Soleil à mi-ombre':
+      'Sun to partial shade',
+  'Soleil, à l\'abri du vent':
+      'Sun, sheltered from the wind',
+  '10 à 15 °C':
+      '10 to 15 °C',
+  '10 à 18 °C':
+      '10 to 18 °C',
+  '10 à 20 °C':
+      '10 to 20 °C',
+  '12 à 18 °C':
+      '12 to 18 °C',
+  '12 à 20 °C':
+      '12 to 20 °C',
+  '12 à 22 °C':
+      '12 to 22 °C',
+  '15 à 20 °C':
+      '15 to 20 °C',
+  '15 à 22 °C':
+      '15 to 22 °C',
+  '15 à 25 °C':
+      '15 to 25 °C',
+  '18 à 22 °C':
+      '18 to 22 °C',
+  '18 à 25 °C':
+      '18 to 25 °C',
+  '18 à 30 °C':
+      '18 to 30 °C',
+  '20 à 25 °C':
+      '20 to 25 °C',
+  '20 à 30 °C':
+      '20 to 30 °C',
+  '22 à 28 °C':
+      '22 to 28 °C',
+  '22 à 30 °C':
+      '22 to 30 °C',
+  '22 à 35 °C':
+      '22 to 35 °C',
+  '25 à 30 °C':
+      '25 to 30 °C',
+  '25 à 35 °C':
+      '25 to 35 °C',
+  '8 à 15 °C':
+      '8 to 15 °C',
+  '—':
+      '—',
+  '0,1 cm (en surface)':
+      '0.1 cm (on the surface)',
+  '0,3 cm':
+      '0.3 cm',
+  '0,5 cm':
+      '0.5 cm',
+  '0,5 à 1 cm':
+      '0.5 to 1 cm',
+  '1 cm':
+      '1 cm',
+  '1 à 2 cm':
+      '1 to 2 cm',
+  '1,5 cm':
+      '1.5 cm',
+  '10 cm':
+      '10 cm',
+  '10 à 15 cm':
+      '10 to 15 cm',
+  '15 à 20 cm (tranchée)':
+      '15 to 20 cm (trench)',
+  '2 cm':
+      '2 cm',
+  '2 à 3 cm':
+      '2 to 3 cm',
+  '3 cm':
+      '3 cm',
+  '3 à 5 cm':
+      '3 to 5 cm',
+  '30 à 40 cm (trou de plantation)':
+      '30 to 40 cm (planting hole)',
+  '4 à 5 cm':
+      '4 to 5 cm',
+  '5 à 10 cm':
+      '5 to 10 cm',
+  '5 à 10 cm (biais à 45°)':
+      '5 to 10 cm (at a 45° angle)',
+  '8 à 10 cm':
+      '8 to 10 cm',
+  'Surface':
+      'Surface',
+  'Surface, collet au niveau du sol':
+      'On the surface, crown level with the soil',
+  'Surface, ne pas couvrir':
+      'On the surface, do not cover',
+  'Surface, à peine couverte':
+      'On the surface, barely covered',
+  'Éclats plantés au niveau du collet':
+      'Divisions planted at crown level',
+  '10 à 14 jours':
+      '10 to 14 days',
+  '10 à 15 jours':
+      '10 to 15 days',
+  '10 à 15 jours (bourgeonnement)':
+      '10 to 15 days (budding)',
+  '10 à 15 jours (enracinement)':
+      '10 to 15 days (rooting)',
+  '10 à 20 jours':
+      '10 to 20 days',
+  '10 à 21 jours':
+      '10 to 21 days',
+  '14 à 21 jours':
+      '14 to 21 days',
+  '14 à 21 jours (apparition des primordia)':
+      '14 to 21 days (primordia appear)',
+  '15 à 20 jours':
+      '15 to 20 days',
+  '15 à 25 jours':
+      '15 to 25 days',
+  '15 à 30 jours':
+      '15 to 30 days',
+  '15 à 30 jours (si semis)':
+      '15 to 30 days (if sown)',
+  '180 à 360 jours (1ère récolte)':
+      '180 to 360 days (1st harvest)',
+  '20 à 30 jours':
+      '20 to 30 days',
+  '20 à 30 jours (levée)':
+      '20 to 30 days (emergence)',
+  '20 à 30 jours (reprise du rejet)':
+      '20 to 30 days (the sucker takes)',
+  '20 à 30 jours (si semis)':
+      '20 to 30 days (if sown)',
+  '20 à 40 jours':
+      '20 to 40 days',
+  '21 à 30 jours':
+      '21 to 30 days',
+  '3 à 5 jours':
+      '3 to 5 days',
+  '3 à 6 jours':
+      '3 to 6 days',
+  '3 à 7 jours':
+      '3 to 7 days',
+  '4 à 8 jours':
+      '4 to 8 days',
+  '5 à 10 jours':
+      '5 to 10 days',
+  '5 à 12 jours':
+      '5 to 12 days',
+  '5 à 8 jours':
+      '5 to 8 days',
+  '6 à 10 jours':
+      '6 to 10 days',
+  '6 à 12 jours':
+      '6 to 12 days',
+  '7 à 10 jours':
+      '7 to 10 days',
+  '7 à 14 jours':
+      '7 to 14 days',
+  '7 à 15 jours':
+      '7 to 15 days',
+  '8 à 12 jours':
+      '8 to 12 days',
+  '8 à 15 jours':
+      '8 to 15 days',
 };

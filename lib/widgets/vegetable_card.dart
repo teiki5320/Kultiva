@@ -1,3 +1,4 @@
+import '../data/content_i18n.dart';
 import '../data/names_en.dart';
 import '../data/ui_i18n.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,7 @@ class VegetableCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        vegetable.note ??
+                        vegetable.displayNote ??
                             vegetable.description ??
                             vegetable.category.label,
                         maxLines: 1,

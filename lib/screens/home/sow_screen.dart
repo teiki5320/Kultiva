@@ -775,10 +775,10 @@ class _SlideVegOfDay extends StatelessWidget {
                     fontSize: 18,
                   ),
                 ),
-                if (vegetable.note != null) ...[
+                if (vegetable.displayNote != null) ...[
                   const SizedBox(height: 4),
                   Text(
-                    vegetable.note!,
+                    vegetable.displayNote!,
                     style: TextStyle(
                       color: KultivaColors.textPrimary.withValues(alpha: 0.55),
                       fontSize: 12,

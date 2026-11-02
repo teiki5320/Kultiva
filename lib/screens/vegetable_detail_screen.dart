@@ -242,28 +242,29 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           _InfoSection(
             title: trUi('🌱  Semis'),
             rows: <_Row>[
-              _Row(trUi('Technique'), vegetable.sowingTechnique),
-              _Row(trUi('Profondeur'), vegetable.sowingDepth),
-              _Row(trUi('Température'), vegetable.germinationTemp),
-              _Row(trUi('Levée'), vegetable.germinationDays),
+              _Row(trUi('Technique'), vegetable.displaySowingTechnique),
+              _Row(trUi('Profondeur'), vegetable.displaySowingDepth),
+              _Row(trUi('Température'), vegetable.displayGerminationTemp),
+              _Row(trUi('Levée'), vegetable.displayGerminationDays),
             ],
           ),
           _InfoSection(
             title: trUi('🌿  Culture'),
             rows: <_Row>[
-              _Row(trUi('Exposition'), vegetable.exposure),
-              _Row(trUi('Espacement'), vegetable.spacing),
-              _Row(trUi('Arrosage'), vegetable.watering),
-              _Row(trUi('Sol'), vegetable.soil),
+              _Row(trUi('Exposition'), vegetable.displayExposure),
+              _Row(trUi('Espacement'), vegetable.displaySpacing),
+              _Row(trUi('Arrosage'), vegetable.displayWatering),
+              _Row(trUi('Sol'), vegetable.displaySoil),
             ],
           ),
           if (vegetable.harvestTimeBySeason != null &&
               vegetable.harvestTimeBySeason!.isNotEmpty)
-            _HarvestTimeSection(times: vegetable.harvestTimeBySeason!),
+            _HarvestTimeSection(
+                times: vegetable.displayHarvestTimeBySeason!),
           _InfoSection(
             title: trUi('📦  Rendement'),
             rows: <_Row>[
-              _Row(trUi('Estimation'), vegetable.yieldEstimate),
+              _Row(trUi('Estimation'), vegetable.displayYieldEstimate),
             ],
           ),
           if (companionMap.containsKey(vegetable.id))
@@ -475,10 +476,10 @@ class _HeaderCard extends StatelessWidget {
                 );
               },
             ),
-            if (vegetable.description != null) ...<Widget>[
+            if (vegetable.displayDescription != null) ...<Widget>[
               const SizedBox(height: 16),
               LexiconText(
-                vegetable.description!,
+                vegetable.displayDescription!,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ],

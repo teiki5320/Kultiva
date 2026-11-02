@@ -6,6 +6,7 @@ import 'content_es.dart';
 import 'accessory_guide.dart';
 import 'diseases.dart';
 import 'lexicon.dart';
+import '../models/vegetable.dart';
 
 /// Le reste du contenu de l'app, traduit : maladies, badges, défis,
 /// lexique, familles botaniques, conseils canicule, achat au marché.
@@ -62,6 +63,50 @@ extension AccessoryGuideLocalized on AccessoryGuide {
   String get displayHowMuch => tr(howMuch);
   String get displayCare => tr(care);
   String? get displayDiy => diy == null ? null : tr(diy!);
+}
+
+/// Les textes libres d'une fiche du catalogue, dans la langue de
+/// l'interface.
+///
+/// ⚠️ **Rien de tout cela n'était traduit avant le 02/11/2026.** Seul
+/// le *nom* des 130 cultures passait par `names_{en,es}.dart` ; la
+/// note, la description et les neuf champs techniques de la fiche
+/// restaient en français, dans une interface par ailleurs traduite.
+/// Trouvé en regardant le catalogue espagnol à l'écran : les chips de
+/// sous-catégorie disaient « Herramientas » au-dessus de vignettes
+/// nommées « Binette / serfouette ».
+///
+/// Le nom d'un **accessoire** reste la seule exception : il vit dans
+/// `names_{en,es}.dart` avec les cultures, keyé par l'identifiant, et
+/// `displayName` le lit déjà. Les 39 y ont été ajoutés le même jour.
+extension VegetableTextsLocalized on Vegetable {
+  /// La ligne d'accroche, sous le nom.
+  String? get displayNote => note == null ? null : tr(note!);
+
+  /// Le paragraphe de présentation.
+  String? get displayDescription =>
+      description == null ? null : tr(description!);
+
+  String? get displaySowingTechnique =>
+      sowingTechnique == null ? null : tr(sowingTechnique!);
+  String? get displaySowingDepth =>
+      sowingDepth == null ? null : tr(sowingDepth!);
+  String? get displayGerminationTemp =>
+      germinationTemp == null ? null : tr(germinationTemp!);
+  String? get displayGerminationDays =>
+      germinationDays == null ? null : tr(germinationDays!);
+  String? get displayExposure => exposure == null ? null : tr(exposure!);
+  String? get displaySpacing => spacing == null ? null : tr(spacing!);
+  String? get displayWatering => watering == null ? null : tr(watering!);
+  String? get displaySoil => soil == null ? null : tr(soil!);
+  String? get displayYieldEstimate =>
+      yieldEstimate == null ? null : tr(yieldEstimate!);
+
+  /// Les durées de récolte par saison. ⚠️ La **clé** est le nom
+  /// français de la saison et sert d'identifiant : elle ne se traduit
+  /// pas, seule la valeur le fait.
+  Map<String, String>? get displayHarvestTimeBySeason =>
+      harvestTimeBySeason?.map((k, v) => MapEntry(k, tr(v)));
 }
 
 /// Une maladie, dans la langue de l'interface.

@@ -3,6 +3,7 @@ import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/data/challenges.dart';
 import 'package:kultiva/data/content_i18n.dart';
 import 'package:kultiva/data/accessory_guide.dart';
+import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/data/diseases.dart';
 import 'package:kultiva/data/lexicon.dart';
 import 'package:kultiva/data/market_buying_tips.dart';
@@ -57,6 +58,23 @@ void main() {
       g.care,
       if (g.diy != null) g.diy!,
     ],
+    // ⚠️ Les textes libres des 169 fiches du catalogue, branchés le
+    // 02/11/2026. Ils n'étaient pas traduits du tout : seul le *nom*
+    // des 130 cultures passait par `names_{en,es}.dart`.
+    for (final v in vegetablesBase) ...<String>[
+      if (v.note != null) v.note!,
+      if (v.description != null) v.description!,
+      if (v.sowingTechnique != null) v.sowingTechnique!,
+      if (v.sowingDepth != null) v.sowingDepth!,
+      if (v.germinationTemp != null) v.germinationTemp!,
+      if (v.germinationDays != null) v.germinationDays!,
+      if (v.exposure != null) v.exposure!,
+      if (v.spacing != null) v.spacing!,
+      if (v.watering != null) v.watering!,
+      if (v.soil != null) v.soil!,
+      if (v.yieldEstimate != null) v.yieldEstimate!,
+      ...?v.harvestTimeBySeason?.values,
+    ],
   };
 
   List<String> nombres(String texte) => RegExp(r'\d+(?:[.,]\d+)?')
@@ -69,7 +87,9 @@ void main() {
     // relancer `flutter test tool/exporter_contenu.dart` pour voir où.
     // 780 phrases jusqu'au 02/11/2026, puis 957 avec les modes d'emploi
     // des 39 accessoires.
-    expect(sources.length, greaterThan(940));
+    // 780 jusqu'au 02/11/2026, puis 957 avec les accessoires,
+    // puis ~1 990 avec les textes des fiches du catalogue.
+    expect(sources.length, greaterThan(1900));
   });
 
   test('aucune clé traduite n\'est orpheline', () {

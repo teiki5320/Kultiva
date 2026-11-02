@@ -1936,4 +1936,199 @@ const Map<String, String> contentTextsEs = <String, String>{
       '15 m de tubo cubren cuatro bancales de 1,20 m.',
   'Il se bouche au calcaire et à la terre : rince-le à pleine pression en début de saison.':
       'Se obstruye con la cal y la tierra: enjuágalo a plena presión al principio de la temporada.',
+  // ─── fiche du catalogue : exposition, température, profondeur, levée ───
+  'Lumière indirecte, lieu humide':
+      'Luz indirecta, lugar húmedo',
+  'Mi-ombre':
+      'Media sombra',
+  'Mi-ombre en été':
+      'Media sombra en verano',
+  'Mi-ombre en été, soleil au printemps':
+      'Media sombra en verano, sol en primavera',
+  'Mi-ombre en été, soleil en hiver':
+      'Media sombra en verano, sol en invierno',
+  'Mi-ombre à soleil':
+      'De media sombra a sol',
+  'Mi-ombre à soleil tamisé':
+      'De media sombra a sol tamizado',
+  'Ombre, à l\'extérieur':
+      'Sombra, al aire libre',
+  'Plein soleil':
+      'Pleno sol',
+  'Plein soleil à mi-ombre légère':
+      'De pleno sol a media sombra ligera',
+  'Plein soleil, abrité du vent':
+      'Pleno sol, resguardado del viento',
+  'Plein soleil, chaleur indispensable':
+      'Pleno sol, el calor es imprescindible',
+  'Plein soleil, à l\'abri':
+      'Pleno sol, al abrigo',
+  'Plein soleil, à l\'abri du vent':
+      'Pleno sol, al abrigo del viento',
+  'Pénombre, lieu frais':
+      'Penumbra, lugar fresco',
+  'Soleil (phase racine), obscurité (phase forçage)':
+      'Sol (fase de raíz), oscuridad (fase de forzado)',
+  'Soleil ou mi-ombre':
+      'Sol o media sombra',
+  'Soleil à mi-ombre':
+      'De sol a media sombra',
+  'Soleil, à l\'abri du vent':
+      'Sol, al abrigo del viento',
+  '10 à 15 °C':
+      'De 10 a 15 °C',
+  '10 à 18 °C':
+      'De 10 a 18 °C',
+  '10 à 20 °C':
+      'De 10 a 20 °C',
+  '12 à 18 °C':
+      'De 12 a 18 °C',
+  '12 à 20 °C':
+      'De 12 a 20 °C',
+  '12 à 22 °C':
+      'De 12 a 22 °C',
+  '15 à 20 °C':
+      'De 15 a 20 °C',
+  '15 à 22 °C':
+      'De 15 a 22 °C',
+  '15 à 25 °C':
+      'De 15 a 25 °C',
+  '18 à 22 °C':
+      'De 18 a 22 °C',
+  '18 à 25 °C':
+      'De 18 a 25 °C',
+  '18 à 30 °C':
+      'De 18 a 30 °C',
+  '20 à 25 °C':
+      'De 20 a 25 °C',
+  '20 à 30 °C':
+      'De 20 a 30 °C',
+  '22 à 28 °C':
+      'De 22 a 28 °C',
+  '22 à 30 °C':
+      'De 22 a 30 °C',
+  '22 à 35 °C':
+      'De 22 a 35 °C',
+  '25 à 30 °C':
+      'De 25 a 30 °C',
+  '25 à 35 °C':
+      'De 25 a 35 °C',
+  '8 à 15 °C':
+      'De 8 a 15 °C',
+  '—':
+      '—',
+  '0,1 cm (en surface)':
+      '0,1 cm (en superficie)',
+  '0,3 cm':
+      '0,3 cm',
+  '0,5 cm':
+      '0,5 cm',
+  '0,5 à 1 cm':
+      'De 0,5 a 1 cm',
+  '1 cm':
+      '1 cm',
+  '1 à 2 cm':
+      'De 1 a 2 cm',
+  '1,5 cm':
+      '1,5 cm',
+  '10 cm':
+      '10 cm',
+  '10 à 15 cm':
+      'De 10 a 15 cm',
+  '15 à 20 cm (tranchée)':
+      'De 15 a 20 cm (en zanja)',
+  '2 cm':
+      '2 cm',
+  '2 à 3 cm':
+      'De 2 a 3 cm',
+  '3 cm':
+      '3 cm',
+  '3 à 5 cm':
+      'De 3 a 5 cm',
+  '30 à 40 cm (trou de plantation)':
+      'De 30 a 40 cm (hoyo de plantación)',
+  '4 à 5 cm':
+      'De 4 a 5 cm',
+  '5 à 10 cm':
+      'De 5 a 10 cm',
+  '5 à 10 cm (biais à 45°)':
+      'De 5 a 10 cm (en bisel a 45°)',
+  '8 à 10 cm':
+      'De 8 a 10 cm',
+  'Surface':
+      'En superficie',
+  'Surface, collet au niveau du sol':
+      'En superficie, con el cuello a ras de suelo',
+  'Surface, ne pas couvrir':
+      'En superficie, sin cubrir',
+  'Surface, à peine couverte':
+      'En superficie, apenas cubierta',
+  'Éclats plantés au niveau du collet':
+      'Esquejes plantados a la altura del cuello',
+  '10 à 14 jours':
+      'De 10 a 14 días',
+  '10 à 15 jours':
+      'De 10 a 15 días',
+  '10 à 15 jours (bourgeonnement)':
+      'De 10 a 15 días (brotación)',
+  '10 à 15 jours (enracinement)':
+      'De 10 a 15 días (enraizamiento)',
+  '10 à 20 jours':
+      'De 10 a 20 días',
+  '10 à 21 jours':
+      'De 10 a 21 días',
+  '14 à 21 jours':
+      'De 14 a 21 días',
+  '14 à 21 jours (apparition des primordia)':
+      'De 14 a 21 días (aparición de los primordios)',
+  '15 à 20 jours':
+      'De 15 a 20 días',
+  '15 à 25 jours':
+      'De 15 a 25 días',
+  '15 à 30 jours':
+      'De 15 a 30 días',
+  '15 à 30 jours (si semis)':
+      'De 15 a 30 días (si se siembra)',
+  '180 à 360 jours (1ère récolte)':
+      'De 180 a 360 días (1.ª cosecha)',
+  '20 à 30 jours':
+      'De 20 a 30 días',
+  '20 à 30 jours (levée)':
+      'De 20 a 30 días (nascencia)',
+  '20 à 30 jours (reprise du rejet)':
+      'De 20 a 30 días (arraigo del hijuelo)',
+  '20 à 30 jours (si semis)':
+      'De 20 a 30 días (si se siembra)',
+  '20 à 40 jours':
+      'De 20 a 40 días',
+  '21 à 30 jours':
+      'De 21 a 30 días',
+  '3 à 5 jours':
+      'De 3 a 5 días',
+  '3 à 6 jours':
+      'De 3 a 6 días',
+  '3 à 7 jours':
+      'De 3 a 7 días',
+  '4 à 8 jours':
+      'De 4 a 8 días',
+  '5 à 10 jours':
+      'De 5 a 10 días',
+  '5 à 12 jours':
+      'De 5 a 12 días',
+  '5 à 8 jours':
+      'De 5 a 8 días',
+  '6 à 10 jours':
+      'De 6 a 10 días',
+  '6 à 12 jours':
+      'De 6 a 12 días',
+  '7 à 10 jours':
+      'De 7 a 10 días',
+  '7 à 14 jours':
+      'De 7 a 14 días',
+  '7 à 15 jours':
+      'De 7 a 15 días',
+  '8 à 12 jours':
+      'De 8 a 12 días',
+  '8 à 15 jours':
+      'De 8 a 15 días',
 };
