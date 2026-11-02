@@ -1,6 +1,21 @@
 import '../data/ui_i18n.dart';
 import 'region_data.dart';
 
+/// Le lieu à afficher au-dessus d'un calendrier : le pays choisi,
+/// sinon la zone de calcul.
+///
+/// ⚠️ Ces titres affichaient `Region.label`, qui vaut « France » pour
+/// la base tempérée : un jardinier allemand lisait « Semis — France »,
+/// et le PDF s'intitulait « Calendrier — France ». Le pays est ce
+/// qu'il a choisi à l'installation, donc ce qu'il reconnaît. Le repli
+/// sur la région sert à qui n'a jamais passé l'onboarding.
+String placeLabelFor(Region region, Country? country) =>
+    country?.displayLabel ?? region.displayLabel;
+
+/// Le drapeau du pays choisi, sinon l'emoji de la région.
+String placeEmojiFor(Region region, Country? country) =>
+    country?.flag ?? region.emoji;
+
 /// Zone climatique, pour affiner saisons et conseils.
 ///
 /// Un même pays chevauche souvent plusieurs zones (le nord de la Côte
@@ -211,7 +226,10 @@ enum Country {
       41.9028, 12.4964, 'Rome'),
   grece('GR', 'Grèce', '🇬🇷', Region.france, ClimateZone.mediterranean,
       37.9838, 23.7275, 'Athènes'),
-  croatie('HR', 'Croatie', '🇭🇷', Region.france, ClimateZone.mediterranean,
+  // ⚠️ Zagreb n'est pas méditerranéenne : ses pluies sont maximales en
+  // juin et janvier tourne autour de 1 °C. C'est la côte dalmate qui
+  // est méditerranéenne, pas l'intérieur, où vit la capitale.
+  croatie('HR', 'Croatie', '🇭🇷', Region.france, ClimateZone.continental,
       45.8150, 15.9819, 'Zagreb'),
   turquie('TR', 'Turquie', '🇹🇷', Region.france, ClimateZone.mediterranean,
       39.9334, 32.8597, 'Ankara'),
@@ -223,7 +241,13 @@ enum Country {
       36.7538, 3.0588, 'Alger'),
   tunisie('TN', 'Tunisie', '🇹🇳', Region.france, ClimateZone.mediterranean,
       36.8065, 10.1815, 'Tunis'),
-  egypte('EG', 'Égypte', '🇪🇬', Region.tropical, ClimateZone.sahel,
+  // ⚠️ L'Égypte était sahélienne, donc sur un calendrier bâti sur des
+  // pluies de juin à septembre. Le Caire reçoit **25 mm par an** : il
+  // n'y a pas de saison des pluies. Le maraîchage y est irrigué et
+  // d'hiver (novembre-avril), ce que décrit le calendrier
+  // méditerranéen — salades et choux semés à l'automne, récoltés en
+  // hiver et au printemps.
+  egypte('EG', 'Égypte', '🇪🇬', Region.france, ClimateZone.mediterranean,
       30.0444, 31.2357, 'Le Caire'),
   liban('LB', 'Liban', '🇱🇧', Region.france, ClimateZone.mediterranean,
       33.8938, 35.5018, 'Beyrouth'),
@@ -253,8 +277,11 @@ enum Country {
       9.0320, 38.7469, 'Addis-Abeba'),
   madagascar('MG', 'Madagascar', '🇲🇬', Region.tropical, ClimateZone.sudan,
       -18.8792, 47.5079, 'Antananarivo', Hemisphere.south),
+  // ⚠️ Seul le Cap est méditerranéen. Pretoria, Johannesburg et le
+  // Gauteng — où vit la majorité — reçoivent leurs pluies d'octobre à
+  // mars, l'inverse exact d'un été sec, avec des gelées en juin.
   afriqueDuSud('ZA', 'Afrique du Sud', '🇿🇦', Region.france,
-      ClimateZone.mediterranean, -25.7479, 28.2293, 'Pretoria',
+      ClimateZone.subtropical, -25.7479, 28.2293, 'Pretoria',
       Hemisphere.south),
 
   // ─── Outre-mer français ───
@@ -268,8 +295,12 @@ enum Country {
       -52.3135, 'Cayenne'),
   mayotte('YT', 'Mayotte', '🇾🇹', Region.tropical, ClimateZone.sudan,
       -12.7806, 45.2278, 'Mamoudzou', Hemisphere.south),
-  nouvelleCaledonie('NC', 'Nouvelle-Calédonie', '🇳🇨', Region.france,
-      ClimateZone.subtropical, -22.2758, 166.4580, 'Nouméa', Hemisphere.south),
+  // ⚠️ La Nouvelle-Calédonie était sur la base tempérée : un
+  // calendrier européen retourné de six mois, pour une île à 22° sud
+  // dont la saison des pluies va de décembre à mars. Base tropicale,
+  // zone soudanienne (une seule saison des pluies, pas deux).
+  nouvelleCaledonie('NC', 'Nouvelle-Calédonie', '🇳🇨', Region.tropical,
+      ClimateZone.sudan, -22.2758, 166.4580, 'Nouméa', Hemisphere.south),
   polynesieFrancaise('PF', 'Polynésie française', '🇵🇫', Region.tropical,
       ClimateZone.guinean, -17.5516, -149.5585, 'Papeete', Hemisphere.south),
 
@@ -312,8 +343,13 @@ enum Country {
       ClimateZone.guinean, 14.5995, 120.9842, 'Manille'),
 
   // ─── Océanie ───
-  australie('AU', 'Australie', '🇦🇺', Region.france, ClimateZone.mediterranean,
-      -35.2809, 149.1300, 'Canberra', Hemisphere.south),
+  // ⚠️ Perth et Adélaïde sont méditerranéennes, mais le sud-est —
+  // Canberra, Sydney, Melbourne, où vivent les trois quarts du pays —
+  // reçoit de la pluie toute l'année et gèle en juillet. `zoneAt`
+  // rend le soudanien au nord de 24° S pour Darwin.
+  australie('AU', 'Australie', '🇦🇺', Region.france,
+      ClimateZone.subtropical, -35.2809, 149.1300, 'Canberra',
+      Hemisphere.south),
   nouvelleZelande('NZ', 'Nouvelle-Zélande', '🇳🇿', Region.france,
       ClimateZone.temperate, -41.2866, 174.7756, 'Wellington',
       Hemisphere.south);
@@ -419,10 +455,17 @@ enum Country {
         if (latitude > 34.0) return ClimateZone.continental;
         return ClimateZone.subtropical;
       case Country.australie:
-        // Le nord est tropical (Darwin), le sud méditerranéen. Au sud
-        // de l'équateur, « plus au nord » veut dire plus chaud.
+        // Le nord est tropical (Darwin, Cairns) : au sud de
+        // l'équateur, « plus au nord » veut dire plus chaud.
+        //
+        // ⚠️ Le reste rendait `mediterranean`, ce qui ne vaut que pour
+        // Perth et Adélaïde. Sydney, Melbourne, Canberra et Brisbane —
+        // les trois quarts du pays — reçoivent de la pluie toute
+        // l'année. On laisse donc retomber sur la zone déclarée
+        // (subtropicale) : distinguer Perth de Sydney demanderait la
+        // longitude, que `zoneAt` n'a pas.
         if (latitude > -24.0) return ClimateZone.sudan;
-        return ClimateZone.mediterranean;
+        break;
       case Country.bresil:
         // Amazonie humide au nord, savane au centre, sud subtropical.
         if (latitude < -22.0) return ClimateZone.subtropical;
@@ -440,11 +483,13 @@ enum Country {
       case Country.mexique:
         if (latitude < 19.0) return ClimateZone.guinean;
         return ClimateZone.highland;
-      case Country.maroc:
-      case Country.algerie:
-        // Au sud de l'Atlas, c'est le désert, pas la Méditerranée.
-        if (latitude < 31.0) return ClimateZone.sahel;
-        return ClimateZone.mediterranean;
+      // ⚠️ Le Maroc et l'Algérie rendaient `sahel` au sud de 31° N,
+      // « parce qu'au sud de l'Atlas c'est le désert ». Vrai pour le
+      // climat, faux pour le calendrier : le calendrier sahélien est
+      // bâti sur des pluies de juin à septembre, et il n'en tombe pas
+      // au sud de l'Atlas. Le maraîchage y est irrigué et d'hiver,
+      // comme en Égypte — c'est ce que décrit le méditerranéen. Donc
+      // plus d'affinage : la zone du pays suffit.
       default:
         break;
     }

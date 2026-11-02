@@ -207,7 +207,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 45 fichiers — 1 074 tests (02/11/2026)
+├── test/                   # 46 fichiers — 1 080 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -704,7 +704,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 074 tests au 02/11/2026, dont une
+1. **Pas de test d'intégration** — 1 080 tests au 02/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
    fait de même aux dimensions d'un iPad en portrait et en paysage, et
@@ -1476,42 +1476,88 @@ n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
     renommer relancerait la migration de l'ancienne grille chez tous
     ceux qui l'ont déjà faite.
 
-22. **Trois choses trouvées en dessinant le schéma de couverture
-    (02/11/2026)** — la fiche publiée est à
+22. **La passe de vérification des 73 pays (02/11/2026)** — demandée
+    par Jean après la Nouvelle-Calédonie : « si tu en as loupé un il y
+    en a peut-être d'autres ». Il y en avait. Fiche publiée :
     `https://claude.ai/artifact/Dpxa9TsY3QQ4Au3L56cLgF`.
 
-    - ✅ **Corrigé** : le bouton « Acheter » s'affichait dans **36
-      pays**. Il testait `region == Region.france`, qui veut dire
-      « base tempérée » depuis l'ouverture mondiale — donc aussi le
-      Japon, les États-Unis, l'Australie, le Chili, la Turquie, le
-      Maroc, tous renvoyés vers amazon.fr avec un tag français. Les
-      quatre fiches du dépôt annonçaient « France seulement » depuis
-      un jour. La règle vit maintenant dans `amazonLinkVisible`
-      (`vegetables_base.dart`, à côté du tag et de l'URL), avec
-      `test/amazon_link_test.dart` qui passe les 73 pays en revue.
-      ⚠️ **C'est le piège dont la fiche prévient pour
-      `== Region.westAfrica`, retombé de l'autre côté** : les deux
-      valeurs ont changé de sens le 01/11, et seule la première a été
-      relue.
+    ✅ **Le défaut structurel, et c'est le plus grave** : la base de
+    calendrier suivait la **région**, et `Country.zoneAt(latitude)`
+    peut rendre une zone de l'**autre** base. Le répartiteur retombait
+    alors sur la base brute — sans note, sans erreur, sans test.
+    Quatre pays le subissaient, dont le plus peuplé :
 
-    - ⬜ **À trancher** : la fiche légume affiche
-      `trUiArgs('Semis — {0}', [region.displayLabel])`, et
-      `pdf_service` écrit `Calendrier — {région}`. Un jardinier
-      allemand lit donc **« Semis — France »**. Deux réponses
-      possibles, et elles ne promettent pas la même chose : le **pays**
-      (« Semis — Allemagne ») est ce qu'il a choisi, mais laisse croire
-      à un calendrier allemand ; la **zone** (« Semis — Continental »)
-      dit la vérité — ce calendrier est partagé par dix pays — mais
-      personne ne se présente comme continental. Trois endroits :
-      `vegetable_detail_screen.dart` (semis, récolte, adaptation) et
-      `pdf_service.dart`.
+    - **Brésil** au sud de 23° S (São Paulo, Curitiba, Porto Alegre) :
+      zone subtropicale demandée, calendrier tropical non élargi ;
+    - **Australie** au nord de 24° S (Darwin, Cairns) : zone
+      soudanienne demandée, calendrier français retourné de six mois ;
+    - **Maroc** et **Algérie** au sud de 31° N : zone sahélienne
+      demandée, calendrier français brut.
 
-    - ⬜ **À trancher** : la **Nouvelle-Calédonie** est classée
-      `subtropical` avec `Region.france`, donc sur la **base
-      tempérée** décalée de six mois, alors que Nouméa est à 22° sud
-      avec un climat tropical à saison sèche. La base tropicale lui
-      irait mieux (`guinean` ou `sudan`). Une ligne dans
-      `country.dart`.
+    `regionalCalendar()` teste maintenant `zone.isTropical` et non
+    `region.isTropicalBase`. **Le climat est une propriété de la zone,
+    pas du pays** ; une région ne dit plus que le contenu
+    (ouest-africain ou non).
+
+    ⚠️ **Pourquoi aucun test ne l'avait vu** : `country_test` vérifiait
+    la zone **déclarée** d'un pays, jamais celle que `zoneAt()` rend à
+    une latitude donnée. Le nouveau test balaie −60° à +72° par
+    demi-degré pour les 73 pays. Un test qui vérifie la donnée au
+    repos ne dit rien de la fonction qui la transforme.
+
+    ✅ **Cinq zones corrigées**, chacune avec le fait qui contredisait
+    l'ancienne, écrit dans `country.dart` :
+
+    | Pays | Était | Est | Le fait |
+    | --- | --- | --- | --- |
+    | Croatie | méditerranéen | continental | Zagreb : pluies maximales en juin, janvier à 1 °C |
+    | Égypte | sahel (tropical) | méditerranéen (tempéré) | 25 mm de pluie par an, maraîchage irrigué d'hiver |
+    | Nouvelle-Calédonie | subtropical (tempéré) | soudanien (tropical) | 22° sud, pluies décembre-mars |
+    | Afrique du Sud | méditerranéen | subtropical | Pretoria : pluies d'octobre à mars, gelées en juin |
+    | Australie | méditerranéen | subtropical | Canberra : pluie toute l'année, gelées en juillet |
+
+    ⚠️ **Deux échanges assumés** : l'Afrique du Sud gagne le Gauteng et
+    perd le Cap, seul vrai méditerranéen du pays ; l'Australie gagne
+    Sydney-Melbourne-Canberra et perd Perth-Adélaïde. Distinguer Perth
+    de Sydney demanderait la **longitude**, que `zoneAt` n'a pas.
+
+    ⚠️ **Corriger une zone déclarée ne suffit pas** : j'ai mis
+    l'Australie en subtropical et Canberra recevait encore le
+    méditerranéen, parce que `zoneAt` le rendait toujours. **Une zone
+    vit à deux endroits** — le champ de l'enum et l'affinage par
+    latitude.
+
+    ✅ **Le libellé nomme le pays** : `placeLabelFor(region, country)`
+    remplace `region.displayLabel` dans les trois titres de la fiche
+    légume et l'en-tête du PDF. Un jardinier allemand lisait
+    « Semis — France ».
+
+    ✅ **La deuxième porte du lien Amazon**, oubliée le matin même : le
+    panier des accessoires testait encore la région, donc s'affichait
+    dans les 36 pays de la base tempérée. **Une règle à deux endroits
+    se corrige à deux endroits** — et c'est `grep` qui le dit, pas la
+    mémoire.
+
+    ⬜ **Reste ouvert** : les saisons (`Season.of`), le seuil de
+    canicule (`climate.dart`), les médailles, les notifications et les
+    animations de pétales lisent encore `region.isTropicalBase`. Ils
+    diront donc autre chose que le calendrier à Darwin et à São Paulo.
+    Le test `zoneAt` garde la donnée cohérente en attendant, en
+    exemptant nommément le Brésil et l'Australie, qui chevauchent
+    vraiment les deux bases.
+
+    ⬜ **Reste ouvert** : Hanoï et Delhi réclament une **neuvième
+    zone**, « hiver frais sous les tropiques ». Hanoï cultive chou et
+    carotte en décembre à 16 °C ; le maraîchage de Delhi est le
+    *rabi*, de novembre à mars. Les calendriers guinéen et soudanien
+    ignorent cette saison entière.
+
+    ⬜ **Reste ouvert** : Lima est un désert côtier classé tropical
+    d'altitude, Antananarivo est à 1 280 m classée soudanienne — les
+    deux inversées. Sans effet sur le calendrier (`sudan` et
+    `highland` en produisent un identique, vérifié : 14 calendriers
+    distincts pour 32 combinaisons), mais les saisons et les conseils
+    mentent. Ankara et Abuja sont à confirmer.
 
 ## 🗣️ Traduire le contenu (structure posée le 02/11/2026)
 

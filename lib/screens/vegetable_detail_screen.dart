@@ -15,6 +15,7 @@ import '../widgets/recipe_row.dart';
 import '../data/rotation.dart';
 import '../data/ui_i18n.dart';
 import '../data/vegetables_base.dart';
+import '../models/country.dart';
 import '../models/plantation.dart';
 import '../models/region_data.dart';
 import '../models/vegetable.dart';
@@ -193,6 +194,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
 
   Widget _buildPage(Vegetable vegetable, Region region) {
     final data = _findRegionData(currentCalendar(), vegetable.id);
+    final lieu = placeLabelFor(region, PrefsService.instance.country.value);
     return ReadableWidth(
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -206,7 +208,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           const SizedBox(height: 16),
           if (data != null && data.sowingMonths.isNotEmpty)
             _MonthsCard(
-              title: trUiArgs('Semis — {0}', <Object?>[region.displayLabel]),
+              title: trUiArgs('Semis — {0}', <Object?>[lieu]),
               months: data.sowingMonths,
               color: KultivaColors.primaryGreen,
               shortMonths: monthNamesShortCap,
@@ -214,7 +216,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
             const SizedBox(height: 12),
             _MonthsCard(
-              title: trUiArgs('Récolte — {0}', <Object?>[region.displayLabel]),
+              title: trUiArgs('Récolte — {0}', <Object?>[lieu]),
               months: data.harvestMonths,
               color: KultivaColors.terracotta,
               shortMonths: monthNamesShortCap,
@@ -419,9 +421,16 @@ class _HeaderCard extends StatelessWidget {
                 // Le panier du bandeau est réservé aux accessoires : les
                 // autres fiches ont le grand bouton en bas, et afficher
                 // les deux faisait doublon.
+                // ⚠️ Deuxième porte, oubliée le 02/11 quand la
+                // première a été corrigée : le panier des accessoires
+                // testait encore la région, donc s'affichait dans les
+                // 36 pays de la base tempérée. Une règle à deux
+                // endroits se corrige à deux endroits.
                 final url =
                     vegetable.category == VegetableCategory.accessories &&
-                            PrefsService.instance.region.value == Region.france
+                            amazonLinkVisible(
+                                PrefsService.instance.region.value,
+                                PrefsService.instance.country.value)
                         ? amazonUrlFor(vegetable)
                         : null;
                 // Sans panier, la pastille est centrée. Un `Row` à deux
@@ -906,14 +915,18 @@ class _RegionalNoteCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(region.emoji, style: const TextStyle(fontSize: 22)),
+            Text(placeEmojiFor(region, PrefsService.instance.country.value),
+                style: const TextStyle(fontSize: 22)),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    trUiArgs('Adaptation — {0}', <Object?>[region.displayLabel]),
+                    trUiArgs('Adaptation — {0}', <Object?>[
+                      placeLabelFor(
+                          region, PrefsService.instance.country.value)
+                    ]),
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       color: KultivaColors.textSecondary,

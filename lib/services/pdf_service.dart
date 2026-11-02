@@ -9,6 +9,7 @@ import '../data/ui_i18n.dart';
 import '../utils/months.dart';
 import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
+import '../models/country.dart';
 import '../models/region_data.dart';
 import 'culture_service.dart';
 import 'prefs_service.dart';
@@ -22,6 +23,9 @@ class PdfService {
       Vegetable vegetable, Region region) async {
     final doc = pw.Document();
     final regionData = _findRegionData(vegetable.id, region);
+    // L'en-tête disait « Calendrier — France » à un jardinier
+    // allemand : `Region.label` vaut « France » pour la base tempérée.
+    final pays = PrefsService.instance.country.value;
 
     doc.addPage(
       pw.Page(
@@ -72,7 +76,8 @@ class PdfService {
               // Calendrier
               if (regionData != null) ...[
                 pw.Text(
-                  trUiArgs('Calendrier — {0}', <Object?>[region.displayLabel]),
+                  trUiArgs('Calendrier — {0}',
+                      <Object?>[placeLabelFor(region, pays)]),
                   style: const pw.TextStyle(
                     fontSize: 16,
                     fontWeight: pw.FontWeight.bold,
@@ -93,7 +98,7 @@ class PdfService {
                       borderRadius: pw.BorderRadius.circular(4),
                     ),
                     child: pw.Text(
-                      '${region.emoji} ${regionData.regionalNote}',
+                      '${placeEmojiFor(region, pays)} ${regionData.regionalNote}',
                       style: const pw.TextStyle(fontSize: 10),
                     ),
                   ),

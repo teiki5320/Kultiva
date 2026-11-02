@@ -181,4 +181,78 @@ void _zoneTests() {
       }
     });
   });
+
+  group('zoneAt', () {
+    // ⚠️ Le test voisin vérifie la zone **déclarée** d'un pays. Il ne
+    // disait rien de `zoneAt(latitude)`, qui affine les grands pays —
+    // et qui rendait, le 02/11/2026, une zone de l'autre base pour
+    // quatre d'entre eux. Le calendrier retombait alors sur la base
+    // brute, sans note et sans erreur : le Brésil au sud de 23° S
+    // (São Paulo) recevait un calendrier tropical non élargi, le nord
+    // de l'Australie un calendrier français retourné.
+    //
+    // Depuis, la base suit la zone (`regionalCalendar`), donc une zone
+    // de l'autre base n'est plus un bug de calendrier. Ce test garde
+    // la donnée cohérente malgré tout : les saisons, le seuil de
+    // canicule et les animations lisent encore
+    // `region.isTropicalBase`, et diraient autre chose que le
+    // calendrier.
+    // Le Brésil et l'Australie chevauchent vraiment les deux bases :
+    // São Paulo gèle, Darwin est tropical. L'exemption est voulue et
+    // nommée — c'est elle qui rend la liste lisible. Tout autre pays
+    // qui apparaîtrait ici est une erreur de donnée.
+    const chevauchent = <Country>{Country.bresil, Country.australie};
+
+    test('rend toujours une zone de la base de son pays', () {
+      for (final c in Country.values) {
+        if (chevauchent.contains(c)) continue;
+        for (var lat = -60.0; lat <= 72.0; lat += 0.5) {
+          expect(c.zoneAt(lat).isTropical, c.region.isTropicalBase,
+              reason: '${c.label} à ${lat.toStringAsFixed(1)}° : '
+                  'zone ${c.zoneAt(lat).name}, '
+                  'région ${c.region.name}');
+        }
+      }
+    });
+
+    test('les deux pays qui chevauchent le font bien', () {
+      // Sans ça, l'exemption masquerait aussi la disparition de
+      // l'affinage qu'elle est censée autoriser.
+      expect(Country.bresil.zoneAt(-25.4).isTropical, isFalse,
+          reason: 'Curitiba doit être subtropicale');
+      expect(Country.bresil.zoneAt(-3.1).isTropical, isTrue,
+          reason: 'Manaus doit rester guinéenne');
+      expect(Country.australie.zoneAt(-12.5).isTropical, isTrue,
+          reason: 'Darwin doit être soudanienne');
+      expect(Country.australie.zoneAt(-37.8).isTropical, isFalse,
+          reason: 'Melbourne doit rester subtropicale');
+    });
+
+    test('sans latitude, c\'est la zone déclarée', () {
+      for (final c in Country.values) {
+        expect(c.zoneAt(null), c.zone, reason: c.label);
+      }
+    });
+  });
+
+  group('placeLabelFor', () {
+    // ⚠️ Les titres « Semis — … », « Récolte — … », « Adaptation — … »
+    // et l'en-tête du PDF affichaient `Region.label`, qui vaut
+    // « France » pour la base tempérée : un jardinier allemand lisait
+    // « Semis — France ».
+    test('nomme le pays choisi, pas sa base de calendrier', () {
+      expect(placeLabelFor(Region.france, Country.allemagne), 'Allemagne');
+      expect(placeLabelFor(Region.tropical, Country.bresil), 'Brésil');
+      expect(placeLabelFor(Region.westAfrica, Country.senegal), 'Sénégal');
+    });
+
+    test('retombe sur la région sans pays choisi', () {
+      expect(placeLabelFor(Region.france, null), Region.france.displayLabel);
+    });
+
+    test('le drapeau suit le pays', () {
+      expect(placeEmojiFor(Region.france, Country.japon), '🇯🇵');
+      expect(placeEmojiFor(Region.tropical, null), Region.tropical.emoji);
+    });
+  });
 }

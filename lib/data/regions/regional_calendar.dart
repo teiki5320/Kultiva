@@ -39,8 +39,22 @@ List<RegionData> regionalCalendar(
   final dejaVu = _cache[cle];
   if (dejaVu != null) return dejaVu;
 
+  // ⚠️ La base suit la **zone**, pas la région. Elle suivait la région
+  // jusqu'au 02/11/2026, et `zoneAt()` pouvait rendre une zone de
+  // l'autre base : le répartiteur retombait alors sur la base brute,
+  // sans note, sans erreur. Quatre pays le subissaient —
+  //
+  //   Brésil au sud de 23° S (São Paulo, Curitiba, Porto Alegre) :
+  //     zone subtropicale demandée, calendrier tropical non élargi ;
+  //   Australie au nord de 24° S (Darwin, Cairns) : zone soudanienne
+  //     demandée, calendrier français retourné de six mois ;
+  //   Maroc et Algérie au sud de 31° N : zone sahélienne demandée,
+  //     calendrier français brut.
+  //
+  // Le climat est une propriété de la zone, pas du pays : une région
+  // ne dit plus que le **contenu** (ouest-africain ou non).
   final List<RegionData> calcule;
-  if (region.isTropicalBase) {
+  if (z.isTropical) {
     calcule = _tropical(z, hemisphere);
   } else {
     calcule = franceData
