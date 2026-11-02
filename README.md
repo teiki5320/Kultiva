@@ -49,18 +49,20 @@ Le pays se choisit au premier lancement (avec recherche) et se modifie
 ## 🗣️ Langues
 
 - 🇫🇷 **Français** — la source, tout y est
-- 🇬🇧 **Anglais** — complet : interface, 130 cultures, 736 recettes,
-  33 tutos, maladies, lexique, badges et défis
-- 🇪🇸 **Espagnol** — complet aussi : 130 cultures, 736 recettes,
-  33 tutos, maladies, lexique, badges et défis
+- 🇬🇧 **Anglais** — complet : 4 894 chaînes, de l'interface aux fiches
+  du catalogue
+- 🇪🇸 **Espagnol** — complet aussi : les mêmes 4 894 chaînes
 
-**Le contenu est intégralement traduit dans les trois langues depuis
-le 2 novembre 2026** : les 736 recettes, les 33 tutos, les maladies, le
-lexique, les badges, les défis et les conseils. Tout passe par une
-surcouche par langue — le français reste la source de vérité, et rien
-n'est recopié :
+**Toute l'application est traduite dans les trois langues depuis le
+2 novembre 2026** : les 736 recettes, les 33 tutos, les maladies, le
+lexique, les badges, les défis, les modes d'emploi des 39 accessoires
+et **le texte des 169 fiches du catalogue** — leur note, leur
+description et leurs neuf champs techniques, qui étaient restés en
+français sous une interface traduite. Tout passe par une surcouche par
+langue — le français reste la source de vérité, et rien n'est
+recopié :
 
-**L'interface aussi**, depuis le 2 novembre 2026 : 772 libellés,
+**L'interface aussi**, depuis le 2 novembre 2026 : 779 libellés,
 titres, boutons, messages et notifications, du tableau de bord à
 l'onboarding. Les 73 noms de pays sont traduits et **triés dans la
 langue affichée** — un catalogue espagnol commence à Alemania, pas à

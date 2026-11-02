@@ -3579,4 +3579,343 @@ const Map<String, String> contentTextsEn = <String, String>{
       'Saves up to 50% of the water',
   'Évite la chaleur, préfère les saisons fraîches.':
       'It avoids heat and prefers the cool seasons.',
+  // ─── fiche : description ───
+  'Amoureuse du chaud, à démarrer très tôt en intérieur pour avoir des plants prêts au repiquage.':
+      'A heat lover, to be started very early indoors so the plants are ready to prick out.',
+  'Arbre fruitier aux fruits parfumés (pêche, nectarine, brugnon). Sensible à la cloque du pêcher — traiter à la bouillie bordelaise en hiver.':
+      'A fruit tree with fragrant fruit (peach, nectarine). Prone to peach leaf curl — treat with Bordeaux mixture in winter.',
+  'Arbre fruitier emblématique du printemps, sublime en floraison rose. Production rapide (3-4 ans) et abondante de cerises sucrées (bigarreau) ou acidulées (griotte).':
+      'The emblematic fruit tree of spring, magnificent in pink blossom. Quick to crop (3-4 years) and generous with sweet cherries (bigarreau) or sharp ones (morello).',
+  'Arbre fruitier généreux à l\'origine de nombreuses variétés (Reine-Claude, Mirabelle, Quetsche). Productif et facile, peu exigeant.':
+      'A generous fruit tree behind many varieties (greengage, mirabelle, quetsche). Productive, easy and undemanding.',
+  'Arbre fruitier méridional aux fruits jaune-orangé sucrés. Floraison précoce sensible aux gelées tardives — préférer un emplacement abrité.':
+      'A southern fruit tree with sweet orange-yellow fruit. Its early blossom is vulnerable to late frosts — choose a sheltered spot.',
+  'Arbre fruitier roi du verger français, des centaines de variétés (Reinette, Golden, Gala, Chanteclerc...). Vit 50 ans et plus.':
+      'The king of the French orchard, with hundreds of varieties (Reinette, Golden, Gala, Chantecler…). It lives 50 years and more.',
+  'Arbre fruitier élégant aux poires juteuses et parfumées (Williams, Conférence, Comice...). Plus exigeant que le pommier en chaleur.':
+      'An elegant fruit tree with juicy, fragrant pears (Williams, Conference, Comice…). It wants more warmth than an apple tree.',
+  'Arbre méditerranéen au feuillage caractéristique et aux fruits sucrés. Variétés bifères (deux récoltes par an) très productives.':
+      'A Mediterranean tree with distinctive foliage and sweet fruit. Twice-bearing varieties (two harvests a year) are very productive.',
+  'Arbre-légume tropical dont les petites feuilles concentrent protéines, fer et vitamines. Surnommé « arbre de vie », il repousse après chaque coupe et nourrit toute l\'année.':
+      'A tropical tree-vegetable whose small leaves concentrate protein, iron and vitamins. Nicknamed the tree of life, it regrows after every cut and feeds you all year.',
+  'Arbrisseau aromatique méditerranéen aux feuilles persistantes. Très résistant à la sécheresse, présent toute l\'année au jardin.':
+      'An aromatic Mediterranean shrub with evergreen leaves. Very drought-resistant, and there in the garden all year round.',
+  'Arbrisseau provençal aux épis bleu-violet très parfumés. Très mellifère, repousse les pucerons, parfait en bordure ou dans les rocailles.':
+      'A Provençal shrub with strongly scented blue-violet spikes. Excellent for bees, it repels aphids, and it is perfect as an edging or in a rockery.',
+  'Arbuste fruitier à baies noires acidulées, riches en vitamine C. Idéal pour confitures, gelées et liqueurs (la fameuse crème de cassis).':
+      'A fruiting shrub with sharp black berries, rich in vitamin C. Ideal for jams, jellies and liqueurs (the famous crème de cassis).',
+  'Arbuste persistant aux feuilles vert sombre, indispensable au bouquet garni. Pousse aussi bien en pot qu\'en pleine terre, peut atteindre 3 m.':
+      'An evergreen shrub with dark green leaves, essential to a bouquet garni. It grows as happily in a pot as in the ground, and can reach 3 m.',
+  'Arbuste rustique aux noisettes croquantes, très facile à cultiver. Pollinisation croisée — planter au moins deux variétés différentes.':
+      'A hardy shrub with crunchy hazelnuts, very easy to grow. It needs cross-pollination — plant at least two different varieties.',
+  'Arbuste à feuilles vert vif au parfum citronné intense. La star des tisanes du soir, à protéger du gel en hiver.':
+      'A shrub with bright green leaves and an intense lemon scent. The star of evening infusions; protect it from frost in winter.',
+  'Arbuste à grappes de baies rouges ou blanches, acidulées et juteuses. Parfait en gelée ou pour les desserts d\'été.':
+      'A shrub with clusters of red or white berries, sharp and juicy. Perfect as a jelly or in summer puddings.',
+  'Arche métallique 2 m de haut : parfaite pour faire grimper haricots à rames, courges, concombres, kiwis. Décoratif et productif.':
+      'A metal arch 2 m tall: perfect for climbing beans, squashes, cucumbers and kiwis. Decorative and productive.',
+  'Aromate annuel aux feuilles plumeuses au goût frais et anisé. Indispensable avec le saumon, les concombres et les marinades.':
+      'An annual herb with feathery leaves and a fresh, aniseed taste. Essential with salmon, cucumbers and pickles.',
+  'Aromate fin au goût anisé, indispensable à la cuisine française (béarnaise, vinaigre d\'estragon). Préférer la variété française à la russe (moins parfumée).':
+      'A refined herb with an aniseed taste, essential to French cooking (béarnaise, tarragon vinegar). Choose the French variety over the Russian one, which has less flavour.',
+  'Aromate fin et délicat au goût anisé subtil, base des fines herbes. Préfère la mi-ombre et la fraîcheur.':
+      'A fine, delicate herb with a subtle aniseed taste, one of the fines herbes. It prefers partial shade and cool conditions.',
+  'Aromate méditerranéen aux feuilles veloutées gris-vert. Saveur puissante pour viandes et farces, vertus médicinales reconnues.':
+      'A Mediterranean herb with velvety grey-green leaves. A powerful flavour for meat and stuffings, with recognised medicinal virtues.',
+  'Aromate poivré qui parfume haricots, fromages frais et grillades. La sarriette des montagnes (vivace) est plus rustique que celle des jardins (annuelle).':
+      'A peppery herb that flavours beans, fresh cheeses and grills. Winter savory (perennial) is hardier than summer savory (annual).',
+  'Aromate vivace au parfum chaud, indispensable en cuisine italienne. Floraison rose mellifère qui attire les pollinisateurs.':
+      'A perennial herb with a warm scent, essential in Italian cooking. Its pink flowers are good for bees and draw in pollinators.',
+  'Aromate vivace au parfum citronné, parfaite en tisane apaisante avant le coucher. Très mellifère, attire les abeilles.':
+      'A perennial herb with a lemon scent, perfect as a soothing infusion before bed. Excellent for bees.',
+  'Aromatique indispensable en cuisine, le persil pousse lentement mais dure longtemps.':
+      'An essential herb in the kitchen; parsley grows slowly but lasts a long time.',
+  'Aromatique méditerranéenne robuste, le thym résiste à la sécheresse et parfume plats et tisanes.':
+      'A tough Mediterranean herb, thyme stands up to drought and flavours both dishes and infusions.',
+  'Aromatique vigoureuse et envahissante, la menthe parfume thés, sauces et desserts.':
+      'A vigorous and invasive herb, mint flavours teas, sauces and puddings.',
+  'Aromatique à double usage : feuilles fraîches et graines séchées pour les épices.':
+      'A herb with two uses: fresh leaves, and dried seeds as a spice.',
+  'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.':
+      'A watering can with a fine rose for a soft rain, ideal for seedlings and young plants. Recommended capacity: 5 to 10 litres.',
+  'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.':
+      'An assortment of organic seed: tomatoes, carrots, salads, radishes, basil… Perfect for starting a vegetable garden.',
+  'Aussi appelée bette ou poirée, on consomme ses larges côtes et ses feuilles tendres.':
+      'Also called silverbeet, it is grown for its broad stems and tender leaves.',
+  'Bac compact pour appartement : les vers décomposent les déchets de cuisine et produisent un engrais liquide ultra-puissant. Sans odeur.':
+      'A compact bin for a flat: the worms break down kitchen waste and produce an extremely powerful liquid feed. No smell.',
+  'Bac de 300-600 L pour transformer épluchures et déchets verts en compost. Volume conseillé : 1 m³ pour un jardin moyen.':
+      'A 300-600 L bin to turn peelings and green waste into compost. Recommended volume: 1 m³ for an average garden.',
+  'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.':
+      'A box of wood or recycled plastic for growing on a balcony, a terrace or in a small garden. Ideal height: 40 to 80 cm.',
+  'Bac surélevé sur pieds (60-90 cm de haut). Idéal balcon, terrasse ou personnes à mobilité réduite. Profondeur min 30 cm pour les légumes.':
+      'A raised box on legs (60-90 cm tall). Ideal for a balcony, a terrace, or anyone with limited mobility. At least 30 cm deep for vegetables.',
+  'Bambous longs (1,80 à 2,40 m) à planter en tipi ou en ligne. Naturels, robustes et réutilisables plusieurs années.':
+      'Long bamboo canes (1.80 to 2.40 m) to set in a wigwam or a row. Natural, sturdy and reusable for several years.',
+  'Base alimentaire des régions humides : ses régimes de plantains se dégustent frits (alloco), bouillis ou braisés. Une touffe bien menée produit pendant des années.':
+      'A staple of the wet regions: its bunches of plantains are eaten fried (alloco), boiled or grilled. A well-managed clump bears for years.',
+  'Bouton floral charnu et raffiné, l\'artichaut est une vivace spectaculaire au potager.':
+      'A fleshy, refined flower bud; the artichoke is a spectacular perennial in the vegetable garden.',
+  'Branche ou rave, le céleri parfume soupes et salades avec son goût puissant.':
+      'Stem or root, celery flavours soups and salads with its powerful taste.',
+  'Bulbe blanc au goût anisé, le fenouil est croquant cru et fondant cuit.':
+      'A white bulb with an aniseed taste, fennel is crisp raw and melting when cooked.',
+  'Bulbe incontournable de la cuisine, se conserve longtemps après récolte.':
+      'An essential bulb in the kitchen, it keeps for a long time after harvest.',
+  'Cadre en bois posé au sol, divisé en cases de 30×30 cm. Méthode simple, esthétique et productive — parfait pour un petit jardin.':
+      'A wooden frame set on the ground, divided into 30×30 cm squares. A simple, handsome and productive method — perfect for a small garden.',
+  'Chair orangée, douce et fondante. Excellente en soupe, gratin ou rôtie au four.':
+      'Orange flesh, sweet and melting. Excellent in soup, as a gratin or roasted.',
+  'Champignon classique blanc ou brun (rosé), cultivable en cave ou cellier sur kit prêt à l\'emploi. Plusieurs vagues de récolte sur 1 à 2 mois.':
+      'The classic white or brown (chestnut) mushroom, grown in a cellar or larder from a ready-made kit. Several flushes over 1 to 2 months.',
+  'Champignon en éventail à chapeau gris ou jaune, facile à cultiver sur kit (paille ou bûche inoculée). Rendement rapide en quelques semaines.':
+      'A fan-shaped mushroom with a grey or yellow cap, easy to grow from a kit (straw or an inoculated log). A quick crop in a few weeks.',
+  'Champignon japonais à chapeau brun et chair ferme, classique de la cuisine asiatique. Cultivable sur bûche de chêne inoculée, productif sur 5 à 6 ans.':
+      'A Japanese mushroom with a brown cap and firm flesh, a classic of Asian cooking. Grown on an inoculated oak log, productive for 5 to 6 years.',
+  'Chou chinois à côtes blanches et feuilles vertes, croissance ultra-rapide. Délicieux sauté au wok ou en soupe.':
+      'A Chinese cabbage with white ribs and green leaves, extremely quick to grow. Delicious stir-fried or in soup.',
+  'Chou pommé allongé à feuilles tendres et nervures blanches. Base du kimchi coréen, parfait en salade ou sauté.':
+      'An elongated headed cabbage with tender leaves and white veins. The basis of Korean kimchi, perfect in a salad or stir-fried.',
+  'Chou à tige renflée en boule, à la chair tendre et sucrée. Se mange cru ou cuit, très digeste.':
+      'A cabbage with a swollen ball-shaped stem, tender and sweet. Eaten raw or cooked, and very easy to digest.',
+  'Cloche transparente à poser sur un plant fragile : forçage de printemps, protection contre le gel ou les limaces. Réutilisable saison après saison.':
+      'A clear cloche to set over a fragile plant: forcing in spring, protection from frost or from slugs. Reusable season after season.',
+  'Condiment universel, l\'ail se conserve des mois et demande très peu d\'entretien.':
+      'A universal flavouring, garlic keeps for months and asks for very little care.',
+  'Couche froide vitrée, idéale pour les semis précoces de février à avril. Permet de gagner 4-6 semaines sur le calendrier.':
+      'A glazed cold frame, ideal for early sowings from February to April. It gains you 4-6 weeks on the calendar.',
+  'Courge au goût de châtaigne, dont la peau se mange — très pratique en soupe.':
+      'A squash that tastes of chestnut, whose skin can be eaten — very handy in soup.',
+  'Cousin vert du chou-fleur, le brocoli est riche en vitamines et se récolte en jets successifs.':
+      'The green cousin of the cauliflower, broccoli is rich in vitamins and is picked as successive spears.',
+  'Cousine de l\'œillet d\'Inde, tagète erecta ou patula. Utilisée pour purger le sol des nématodes — semer une saison avant tomates ou pommes de terre.':
+      'A cousin of the French marigold, Tagetes erecta or patula. Used to clear the soil of nematodes — sow a season before tomatoes or potatoes.',
+  'Cousine plus douce de l\'origan, parfaite pour les viandes blanches et les sauces tomate. Plante annuelle ou vivace selon le climat.':
+      'A milder cousin of oregano, perfect for white meats and tomato sauces. Annual or perennial depending on the climate.',
+  'Cuve 200-500 L à raccorder sur une descente de gouttière. L\'eau de pluie est sans calcaire, à température ambiante : parfaite pour le potager.':
+      'A 200-500 L butt to connect to a downpipe. Rainwater has no limescale and is at air temperature: perfect for the vegetable garden.',
+  'Céréale d\'été, le maïs doux se récolte frais pour un goût sucré incomparable.':
+      'A summer cereal, sweetcorn is picked fresh for an incomparable sweetness.',
+  'Céréale reine du Sahel, aussi appelée petit mil ou millet perlé. Base du couscous de mil et des bouillies, elle pousse là où presque rien d\'autre ne résiste.':
+      'The queen of Sahelian cereals, also called pearl millet. The basis of millet couscous and porridges, it grows where almost nothing else holds out.',
+  'Céréale tropicale résistante à la sécheresse, base du tô et du couscous de mil en Afrique.':
+      'A drought-resistant tropical cereal, the basis of tô and millet couscous in Africa.',
+  'Double usage : feuilles consommées comme épinard en Afrique, graines comme céréale.':
+      'Two uses: the leaves are eaten like spinach in Africa, the seeds as a cereal.',
+  'Du doux au brûlant, le piment apporte saveur et couleur au potager comme en cuisine.':
+      'From mild to blazing, chillies bring flavour and colour to the garden and the kitchen alike.',
+  'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.':
+      'Organic fertiliser for the vegetable garden: composted manure, nettle tea or organic pellets. It feeds growth without chemicals.',
+  'Engrais vert légumineuse aux fleurs rouges. Fixe l\'azote dans le sol grâce aux nodosités racinaires — idéal avant des cultures gourmandes (tomate, courge).':
+      'A leguminous green manure with red flowers. It fixes nitrogen in the soil through its root nodules — ideal before hungry crops (tomato, squash).',
+  'Engrais vert rapide : germe et fleurit en 6 semaines. Désinfecte le sol (effet biocide), structure et étouffe les adventices.':
+      'A fast green manure: it germinates and flowers in 6 weeks. It cleans the soil (a biocidal effect), structures it and smothers weeds.',
+  'Engrais vert star : feuillage abondant, floraison mauve très mellifère. Étouffe les adventices, structure le sol et nourrit les abeilles avant d\'être enfoui.':
+      'The star green manure: abundant foliage and mauve flowers that bees love. It smothers weeds, structures the soil and feeds the bees before being dug in.',
+  'Engrais vert à floraison blanche très mellifère, croissance ultra-rapide. Idéal pour étouffer un terrain envahi en pleine saison.':
+      'A green manure with white flowers much loved by bees, and extremely fast-growing. Ideal for smothering an overgrown plot in mid-season.',
+  'Feuille mucilagineuse star des sauces gluantes : c\'est elle qui donne la fameuse sauce crincrin au Bénin et la mouloukhiya au Sahel. Croissance éclair en climat chaud.':
+      'The star mucilaginous leaf of slippery sauces: it makes the famous crincrin sauce in Benin and mouloukhiya in the Sahel. Lightning growth in a warm climate.',
+  'Feuilles blanches et croquantes obtenues par forçage en cave — une technique originale.':
+      'White, crisp leaves obtained by forcing in a cellar — an unusual technique.',
+  'Feuilles piquantes et poivrées, la roquette pousse vite et relève les salades.':
+      'Sharp, peppery leaves; rocket grows fast and lifts a salad.',
+  'Feuilles riches en fer, préfère la fraîcheur — à semer au printemps ou en automne.':
+      'Leaves rich in iron; it prefers cool weather — sow in spring or autumn.',
+  'Feuilles tendres, croissance rapide et récolte étalée tout au long de la saison.':
+      'Tender leaves, fast growth and a harvest spread across the whole season.',
+  'Filet à mailles larges à tendre au-dessus des fraisiers, des arbres fruitiers ou des semis. Empêche merles et étourneaux de tout picorer.':
+      'A wide-mesh net to stretch over strawberries, fruit trees or seedlings. It stops blackbirds and starlings pecking the lot.',
+  'Fleur comestible orange ou jaune au goût piquant, proche du cresson. Attire les pucerons loin des autres légumes — idéale en bordure de potager.':
+      'An edible orange or yellow flower with a peppery taste, close to watercress. It draws aphids away from the other vegetables — ideal as a garden edging.',
+  'Fleur double aux couleurs éclatantes (rose, orange, rouge, jaune). Très florifère, parfaite en bouquet, attire papillons et abeilles.':
+      'A double flower in brilliant colours (pink, orange, red, yellow). Very free-flowering, perfect in a bunch, and a draw for butterflies and bees.',
+  'Fleur jaune ou orange au feuillage très parfumé. Repousse les nématodes du sol et les insectes nuisibles — alliée précieuse au potager, surtout des tomates.':
+      'A yellow or orange flower with strongly scented foliage. It repels soil nematodes and harmful insects — a valuable ally in the garden, above all for tomatoes.',
+  'Fleur jaune-orangé comestible aux pétales ensoleillés. Vertus médicinales reconnues (calendula), excellente compagne du potager qui repousse les nématodes.':
+      'An edible orange-yellow flower with sunny petals. Recognised medicinal virtues (calendula), and an excellent companion in the garden, where it repels nematodes.',
+  'Fleur sauvage bleue des champs de blé, devenue rare en culture. Très mellifère, fleurs comestibles à parsemer en salade.':
+      'The blue wild flower of the wheat field, now rare in cultivation. Much loved by bees; the flowers are edible, scattered over a salad.',
+  'Fleur étoilée bleu vif au goût d\'huître, très mellifère. Indispensable au verger — attire massivement les abeilles pour la pollinisation.':
+      'A bright blue star-shaped flower that tastes of oyster, much loved by bees. Essential in an orchard — it draws bees in by the hundred for pollination.',
+  'Fourche à 4-5 dents : ameublit la terre en profondeur sans détruire la vie du sol. Indispensable pour qui pratique le "sol vivant".':
+      'A fork with 4-5 tines: it loosens the soil deeply without destroying the life in it. Essential for anyone working with living soil.',
+  'Fruit coloré et sucré, cousin doux du piment, à démarrer en intérieur.':
+      'A colourful, sweet fruit, the mild cousin of the chilli, to be started indoors.',
+  'Fruit d\'été sucré et parfumé, le melon demande chaleur et patience.':
+      'A sweet, fragrant summer fruit; melon asks for heat and patience.',
+  'Fruit tropical mucilagineux, incontournable dans les sauces ouest-africaines.':
+      'A mucilaginous tropical fruit, a fixture of West African sauces.',
+  'Fruitier tropical express : semé une année, il offre des papayes dès la suivante. Son tronc tendre et sa couronne de grandes feuilles embellissent le jardin de case.':
+      'An express tropical fruit tree: sown one year, it gives papayas the next. Its soft trunk and crown of big leaves are an ornament to a village garden.',
+  'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.':
+      'Tough, comfortable gardening gloves. Choose a thorn-proof model with a good grip.',
+  'Grand tubercule tropical, base de l\'alimentation en Afrique de l\'Ouest. Riche en amidon.':
+      'A large tropical tuber, a staple food in West Africa. Rich in starch.',
+  'Grande fleur rose, blanche ou pourpre au feuillage finement découpé. Très mellifère, germe et fleurit vite, idéal en massif ou en bouquet.':
+      'A large pink, white or purple flower with finely cut foliage. Much loved by bees, quick to germinate and flower, ideal in a border or a bunch.',
+  'Grande herbe au parfum de citron, indispensable en tisane et en cuisine. Sa touffe dense éloigne aussi les moustiques autour de la terrasse.':
+      'A tall grass scented with lemon, essential in infusions and in the kitchen. Its dense clump also keeps mosquitoes away from the terrace.',
+  'Granulés à base de phosphate de fer, autorisés en agriculture biologique. Non toxiques pour hérissons, oiseaux et animaux domestiques.':
+      'Pellets based on iron phosphate, approved for organic growing. Not toxic to hedgehogs, birds or pets.',
+  'Grille rigide à planter derrière les tomates. Permet de palisser les branches au fur et à mesure, plus solide que les tuteurs simples.':
+      'A rigid grid to set behind tomatoes. It lets you tie the branches in as they grow, and is sturdier than single stakes.',
+  'Gros fruit d\'automne, le potiron se conserve des mois et nourrit toute la famille.':
+      'A big autumn fruit, the pumpkin keeps for months and feeds the whole family.',
+  'Géant solaire jusqu\'à 3 m, avec ses grandes fleurs jaunes. Mellifère, productif en graines pour les oiseaux ou la cuisine, idéal en fond de massif.':
+      'A solar giant up to 3 m, with its big yellow flowers. Good for bees, productive in seed for the birds or the kitchen, ideal at the back of a border.',
+  'Généreuse et rapide, la courgette est parfaite pour débuter au potager.':
+      'Generous and quick, the courgette is perfect for a first vegetable garden.',
+  'Haricot à gousses jaune doré, à la chair fondante et au goût doux. Productif et facile, idéal pour débuter.':
+      'A bean with golden yellow pods, melting flesh and a mild taste. Productive and easy, ideal to start with.',
+  'Haricot à œil noir, pilier des protéines végétales en Afrique de l\'Ouest. Très résistant à la chaleur.':
+      'The black-eyed bean, a pillar of plant protein in West Africa. Very heat-resistant.',
+  'Hibiscus sabdariffa — ses calices rouges servent à préparer la célèbre boisson bissap.':
+      'Hibiscus sabdariffa — its red calyces are used to make the famous bissap drink.',
+  'Inflorescence blanche et compacte, le chou-fleur aime les climats doux et humides.':
+      'A white, compact head; cauliflower likes mild, damp climates.',
+  'L\'aromatique de l\'été par excellence, compagnon idéal de la tomate.':
+      'The summer herb above all others, the ideal companion to a tomato.',
+  'La cacahuète pousse sous terre — une légumineuse originale et productive en climat chaud.':
+      'The peanut grows underground — an unusual and productive legume in a warm climate.',
+  'Le fruit le plus rafraîchissant de l\'été, gorgé d\'eau et de sucre.':
+      'The most refreshing fruit of summer, brimming with water and sugar.',
+  'Le plus rapide du potager : récolte en 3 à 4 semaines. Parfait pour les débutants.':
+      'The quickest thing in the garden: picked in 3 to 4 weeks. Perfect for beginners.',
+  'Liane fruitière classique, raisins blancs ou noirs sucrés. Magnifique en pergola, productive et longue durée de vie (50 ans et plus).':
+      'The classic fruiting vine, with sweet white or black grapes. Magnificent over a pergola, productive and long-lived (50 years and more).',
+  'Liane vigoureuse aux fruits velus à chair verte ou jaune. La plupart des variétés ont besoin d\'un pied mâle pour 5-6 pieds femelles.':
+      'A vigorous vine with hairy fruit and green or yellow flesh. Most varieties need one male plant for every 5-6 female ones.',
+  'Lot d\'étiquettes en ardoise ou plastique avec marqueur. Indispensable pour ne pas oublier ce que tu as semé et où.':
+      'A set of slate or plastic labels with a marker. Essential if you are not to forget what you sowed and where.',
+  'Légume d\'hiver par excellence, le chou pommé résiste au froid et nourrit copieusement.':
+      'The winter vegetable above all others, headed cabbage stands the cold and feeds you generously.',
+  'Légume rustique et polyvalent, disponible presque toute l\'année au potager.':
+      'A hardy, versatile vegetable, available almost all year round in the garden.',
+  'Légumineuse de printemps, la fève est riche en protéines et enrichit le sol en azote.':
+      'A spring legume, the broad bean is rich in protein and feeds the soil with nitrogen.',
+  'Légumineuse fixatrice d\'azote, nain ou à rames, idéale en culture d\'été.':
+      'A nitrogen-fixing legume, dwarf or climbing, ideal as a summer crop.',
+  'Légumineuse printanière sucrée, à récolter jeune pour un maximum de tendreté.':
+      'A sweet spring legume, to be picked young for maximum tenderness.',
+  'Légumineuse star de la cuisine méditerranéenne (houmous, falafels). Résistante à la sécheresse, parfaite pour les sols pauvres.':
+      'The star legume of Mediterranean cooking (hummus, falafel). Drought-resistant, perfect for poor soil.',
+  'Légumineuse à grains plats riche en protéines, base des soupes et plats traditionnels. La lentille verte du Puy bénéficie d\'une AOP française.':
+      'A flat-seeded legume rich in protein, the basis of traditional soups and dishes. The green Puy lentil carries a French PDO.',
+  'Minuscule céréale ancestrale d\'Afrique de l\'Ouest au goût fin et à la digestion facile. Semée à la volée, elle couvre le sol en quelques jours et se contente de terres pauvres.':
+      'A tiny ancestral cereal of West Africa, fine in flavour and easy to digest. Broadcast by hand, it covers the ground in a few days and makes do with poor land.',
+  'Mélange de micro-organismes à saupoudrer sur le compost. Réduit le temps de maturation de 12 à 6 mois et limite les odeurs.':
+      'A mix of micro-organisms to scatter over the compost. It cuts the maturing time from 12 to 6 months and limits the smell.',
+  'Outil cylindrique qui creuse un trou parfait à la bonne profondeur. Idéal pour planter ail, échalotes, tulipes, jacinthes en quantité.':
+      'A cylindrical tool that cuts a perfect hole at the right depth. Ideal for planting garlic, shallots, tulips and hyacinths in quantity.',
+  'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.':
+      'The basic tool for cutting branches, picking vegetables and keeping your plants in order. Choose an ergonomic model with a steel blade.',
+  'Paillis 100% végétal à étaler en couche de 5-7 cm autour des plants. Garde le sol humide, freine les mauvaises herbes, se décompose en humus.':
+      'A 100% plant-based mulch to spread 5-7 cm thick around the plants. It keeps the soil damp, holds back weeds, and breaks down into humus.',
+  'Panier en osier ou plastique aéré pour récolter et transporter tes légumes du jardin à la cuisine sans les abîmer.':
+      'A basket of wicker or ventilated plastic, to pick your vegetables and carry them from the garden to the kitchen without bruising them.',
+  'Petit arbuste à baies bleues sucrées, riches en antioxydants. Exige un sol acide (terre de bruyère) — culture en pot recommandée en sol calcaire.':
+      'A small shrub with sweet blue berries, rich in antioxidants. It needs acidic soil (ericaceous) — growing in a pot is recommended on chalk.',
+  'Petit concombre récolté jeune, parfait pour les conserves au vinaigre. Plante prolifique, croissance rapide en plein soleil.':
+      'A small cucumber picked young, perfect for pickling. A prolific plant, fast-growing in full sun.',
+  'Petit fruit rouge parfumé sur arbuste vivace. Variétés remontantes (deux récoltes) ou non remontantes (une grosse récolte en juin).':
+      'A fragrant red fruit on a perennial shrub. Everbearing varieties (two crops) or summer-fruiting ones (one big crop in June).',
+  'Petit fruit rouge sucré, la fraise se cultive en pleine terre ou en pot sur un balcon.':
+      'A small sweet red fruit, the strawberry grows in the ground or in a pot on a balcony.',
+  'Petit outil à main pour gratter la surface du sol et casser la croûte. Permet d\'aérer la terre et d\'arracher les jeunes herbes.':
+      'A small hand tool for scratching the surface and breaking the crust. It aerates the soil and pulls out young weeds.',
+  'Petit tunnel en plastique avec armature métallique : protège les jeunes plants du froid au printemps et permet de cultiver tomates, poivrons même dans le nord.':
+      'A small plastic tunnel on a metal frame: it protects young plants from the cold in spring, and lets you grow tomatoes and peppers even in the north.',
+  'Petite aubergine ronde et légèrement amère, appelée djakhatou au Sénégal ou gboma au Togo. Indispensable dans le thiéboudienne et les sauces mijotées.':
+      'A small round, slightly bitter aubergine, called djakhatou in Senegal and gboma in Togo. Essential in thieboudienne and slow-cooked sauces.',
+  'Petite fleur multicolore (violet, jaune, blanc) à l\'aspect kawaii. Comestible en décoration de salades et desserts, fleurit même en hiver.':
+      'A small multicoloured flower (purple, yellow, white) with a kawaii look. Edible as a decoration on salads and puddings, and it flowers even in winter.',
+  'Petite graine oléagineuse au goût de noisette, base du tahini et de nombreuses pâtisseries.':
+      'A small oilseed with a hazelnut taste, the basis of tahini and of many pastries.',
+  'Petite pelle étroite pour repiquer les semis sans abîmer les racines. Indispensable au printemps pour la mise en place du potager.':
+      'A narrow little trowel for pricking out seedlings without damaging the roots. Essential in spring when the garden is being set up.',
+  'Petite salade d\'hiver au goût doux et noisette, ultra-rustique au froid.':
+      'A small winter salad with a mild, nutty taste, extremely hardy in cold weather.',
+  'Petites pommes vertes le long d\'une tige, le chou de Bruxelles adore le froid.':
+      'Little green heads along a stem; the Brussels sprout loves the cold.',
+  'Plante aquatique au goût piquant et iodé, très riche en vitamines. Pousse au bord d\'un ruisseau ou en jardinière constamment humide.':
+      'An aquatic plant with a sharp, briny taste, very rich in vitamins. It grows at the edge of a stream, or in a permanently wet container.',
+  'Plante grasse aux feuilles charnues et acidulées, très riche en oméga-3. Résiste à la sécheresse, idéale en plein été.':
+      'A succulent with fleshy, sharp-tasting leaves, very rich in omega-3. Drought-resistant, ideal in high summer.',
+  'Plante vivace tapissante aux petites fleurs blanches très parfumées. Tisane apaisante et digestive, classique du jardin de grand-mère.':
+      'A carpeting perennial with small, strongly scented white flowers. A soothing, digestive infusion, a classic of a grandmother\'s garden.',
+  'Plante vivace à grosses tiges acidulées, base des tartes et compotes printanières. Les feuilles sont toxiques, ne consommer que les pétioles.':
+      'A perennial with thick, sharp stems, the basis of spring tarts and compotes. The leaves are toxic; eat only the stalks.',
+  'Plus fine et parfumée que l\'oignon, l\'échalote est un classique de la cuisine française.':
+      'Finer and more fragrant than an onion, the shallot is a classic of French cooking.',
+  'Pois à cosse tendre qu\'on mange en entier, sans écosser. Croquant et sucré, parfait au wok ou cru à la croque.':
+      'A pea with a tender pod, eaten whole without shelling. Crunchy and sweet, perfect in a wok or raw as a snack.',
+  'Pot en terre cuite poreuse à enterrer entre les plants : se remplit d\'eau et la diffuse lentement. Réduit l\'arrosage à 1 fois par semaine.':
+      'A porous terracotta pot to bury between the plants: it fills with water and releases it slowly. It cuts watering to 1 time a week.',
+  'Racine blanche au goût sucré et anisé, proche de la carotte. Très rustique, supporte les gelées qui adoucissent sa chair.':
+      'A white root with a sweet, aniseed taste, close to a carrot. Very hardy, it stands the frosts that sweeten its flesh.',
+  'Racine douce et rapide à pousser, le navet est un allié des soupes et pot-au-feu.':
+      'A sweet root that grows fast, the turnip is an ally of soups and stews.',
+  'Racine généreuse à chair jaune, croisement entre chou et navet. Goût doux, parfait pour potages et purées d\'hiver.':
+      'A generous yellow-fleshed root, a cross between cabbage and turnip. Mild in taste, perfect for winter soups and purées.',
+  'Racine longue et fine au goût d\'huître ou d\'asperge. Légume oublié à redécouvrir, riche en inuline et fibres.':
+      'A long, thin root tasting of oyster or asparagus. A forgotten vegetable worth rediscovering, rich in inulin and fibre.',
+  'Racine sucrée et colorée, la betterave se mange crue ou cuite et colore les plats.':
+      'A sweet, colourful root, beetroot is eaten raw or cooked and colours a dish.',
+  'Racine sucrée et croquante, facile à cultiver en sol meuble et sableux.':
+      'A sweet, crunchy root, easy to grow in loose, sandy soil.',
+  'Radis d\'hiver à peau noire et chair blanche, piquant et croquant. Très bonne conservation, riche en vitamine C.':
+      'A winter radish with black skin and white flesh, hot and crunchy. It keeps very well and is rich in vitamin C.',
+  'Rafraîchissant et productif, le concombre aime la chaleur et l\'eau. Idéal en salade.':
+      'Refreshing and productive, the cucumber likes heat and water. Ideal in a salad.',
+  'Rhizome aromatique piquant et citronné, utilisé frais ou séché en cuisine et en tisane.':
+      'An aromatic rhizome, hot and lemony, used fresh or dried in cooking and in infusions.',
+  'Ronce cultivée aux longs rameaux sans épines, productive et gourmande. Donne de grosses mûres juteuses, bien meilleures que les mûres sauvages.':
+      'A cultivated bramble with long thornless canes, productive and hungry. It gives big juicy blackberries, far better than wild ones.',
+  'Se branche sur le robinet et programme l\'arrosage automatiquement (durée + créneau). À combiner avec un kit goutte à goutte ou un tuyau perforé.':
+      'It fits on the tap and runs the watering automatically (duration + time slot). To be combined with a drip kit or a perforated hose.',
+  'Star du potager, la tomate aime le soleil et la chaleur. Se prête à toutes les utilisations en cuisine.':
+      'The star of the vegetable garden, the tomato likes sun and heat. It lends itself to every use in the kitchen.',
+  'Super-aliment à la mode, le kale est un chou frisé ultra-rustique qui résiste au gel.':
+      'A fashionable superfood, kale is an extremely hardy curly cabbage that stands frost.',
+  'Système d\'arrosage automatique avec tuyaux et goutteurs. Délivre l\'eau directement au pied des plants, idéal en été et pour partir en vacances.':
+      'An automatic watering system with hoses and drippers. It delivers water straight to the base of the plants, ideal in summer and when you go on holiday.',
+  'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.':
+      'A universal organic potting compost enriched with compost. Ideal for seedlings, potting on and container gardening.',
+  'Toile tissée à tendre au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable sous climat tropical et en canicule : semis, salades et jeunes plants ne grillent plus aux heures chaudes.':
+      'A woven fabric to stretch above the crops to filter out 30 to 50 % of the sun. Essential in a tropical climate and in a heatwave: seedlings, salads and young plants no longer scorch in the hot hours.',
+  'Tubercule de base de l\'alimentation mondiale, facile à cultiver et très productif.':
+      'A staple tuber of the world\'s diet, easy to grow and very productive.',
+  'Tubercule rustique à saveur d\'artichaut. Plante vivace géante de 2 à 3 m, productive et increvable, mais peut devenir envahissante.':
+      'A hardy tuber tasting of artichoke. A giant perennial of 2 to 3 m, productive and indestructible, but it can take over.',
+  'Tubercule sucré et nutritif, pilier de la cuisine africaine et tropicale.':
+      'A sweet, nourishing tuber, a pillar of African and tropical cooking.',
+  'Tubercule tropical riche en amidon, base alimentaire en Afrique, Asie et Caraïbes.':
+      'A starchy tropical tuber, a staple food in Africa, Asia and the Caribbean.',
+  'Tubercule tropical résistant à la sécheresse, base de l\'alimentation de millions de personnes.':
+      'A drought-resistant tropical tuber, the staple food of millions of people.',
+  'Tuteur en métal en forme de spirale : la tige de tomate s\'enroule naturellement dedans. Pas besoin de ficelle ni d\'attaches, gain de temps énorme.':
+      'A metal stake in a spiral: the tomato stem winds up it naturally. No string, no ties, and an enormous saving of time.',
+  'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.':
+      'Stakes of bamboo, metal or spiral wire to guide climbing plants. Essential for tomatoes and beans.',
+  'Tuyau qui suinte sur toute sa longueur et arrose les plants en ligne. Facile à installer, idéal pour les rangs de salades, carottes, fraisiers.':
+      'A hose that seeps along its whole length and waters the plants in a row. Easy to lay, ideal for rows of salads, carrots and strawberries.',
+  'Vivace acidulée, l\'oseille donne du pep aux soupes, sauces et salades.':
+      'A sharp-tasting perennial, sorrel lifts soups, sauces and salads.',
+  'Vivace aromatique facile, la ciboulette revient chaque année et parfume salades et omelettes.':
+      'An easy aromatic perennial, chives come back every year and flavour salads and omelettes.',
+  'Vivace de luxe, l\'asperge demande de la patience mais produit pendant 15 à 20 ans.':
+      'A luxury perennial, asparagus asks for patience but bears for 15 to 20 years.',
+  'Voile blanc épais (P30) à poser sur les plants sensibles en hiver. Protège artichauts, poireaux, choux, oliviers, agrumes en pots.':
+      'A thick white fleece (P30) to lay over vulnerable plants in winter. It protects artichokes, leeks, cabbages, olives and potted citrus.',
+  'Voile léger (P17) à poser au printemps pour réchauffer le sol et démarrer plus tôt salades, radis, carottes. Laisse passer pluie et lumière.':
+      'A light fleece (P17) to lay in spring to warm the soil and start salads, radishes and carrots earlier. It lets rain and light through.',
+  'Voile à fines mailles à poser sur les cultures. Empêche piéride du chou, mouche de la carotte, altises et pucerons sans aucun traitement.':
+      'A fine-mesh net to lay over the crops. It keeps out the cabbage white, carrot fly, flea beetles and aphids with no treatment at all.',
+  'Écorces de pin maritime, idéales pour les massifs et arbres fruitiers. Décoratif, dure 2-3 ans, acidifie légèrement le sol (parfait pour fraisiers).':
+      'Maritime pine bark, ideal for borders and fruit trees. Decorative, it lasts 2-3 years and slightly acidifies the soil (perfect for strawberries).',
+  'Épinard de Ceylan : une liane aux feuilles charnues et brillantes qui adore la chaleur humide, quand les épinards classiques déclarent forfait.':
+      'Ceylon spinach: a vine with fleshy, glossy leaves that loves damp heat, just when ordinary spinach gives up.',
+  'Épinard de Lagos aux feuilles tendres et aux jolis plumeaux colorés. L\'un des légumes-feuilles les plus cultivés du Nigéria au Bénin — à la fois beau et bon.':
+      'Lagos spinach, with tender leaves and pretty coloured plumes. One of the most widely grown leaf vegetables from Nigeria to Benin — good to look at and good to eat.',
 };

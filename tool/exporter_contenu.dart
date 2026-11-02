@@ -25,6 +25,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/data/accessory_guide.dart';
 import '../lib/data/badges.dart';
+import '../lib/data/vegetables_base.dart';
 import '../lib/data/challenges.dart';
 import '../lib/data/diseases.dart';
 import '../lib/data/lexicon.dart';
@@ -80,6 +81,25 @@ Map<String, List<String>> _blocs() {
   ajoute('achat_marche', <String>[
     for (final liste in marketBuyingTips.values)
       for (final t in liste) ...<String>[t.what, t.advice],
+  ]);
+
+  // Les textes libres des 169 fiches du catalogue, branchés le
+  // 02/11/2026. Rien de tout cela n'était traduit avant.
+  ajoute('fiches_catalogue', <String>[
+    for (final v in vegetablesBase) ...<String>[
+      if (v.note != null) v.note!,
+      if (v.description != null) v.description!,
+      if (v.sowingTechnique != null) v.sowingTechnique!,
+      if (v.sowingDepth != null) v.sowingDepth!,
+      if (v.germinationTemp != null) v.germinationTemp!,
+      if (v.germinationDays != null) v.germinationDays!,
+      if (v.exposure != null) v.exposure!,
+      if (v.spacing != null) v.spacing!,
+      if (v.watering != null) v.watering!,
+      if (v.soil != null) v.soil!,
+      if (v.yieldEstimate != null) v.yieldEstimate!,
+      ...?v.harvestTimeBySeason?.values,
+    ],
   ]);
 
   // Les modes d'emploi des 39 accessoires, écrits le 02/11/2026.

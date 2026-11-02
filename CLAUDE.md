@@ -207,7 +207,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 49 fichiers — 1 103 tests (02/11/2026)
+├── test/                   # 50 fichiers — 1 104 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -704,7 +704,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 103 tests au 02/11/2026, dont une
+1. **Pas de test d'intégration** — 1 104 tests au 02/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
    fait de même aux dimensions d'un iPad en portrait et en paysage, et
@@ -1058,6 +1058,85 @@ c'était maintenant.
 du schéma, et CLAUDE.md le conserve comme point de départ si un backend
 revenait (Cloudflare, pas Supabase). Il ne coûte rien et ne s'exécute
 jamais.
+
+## 🗂️ Le catalogue n'était pas traduit du tout (02/11/2026)
+
+**Trouvé en regardant le catalogue espagnol à l'écran**, pas en lisant
+le code : les chips de sous-catégorie disaient « Herramientas » au-dessus
+de vignettes nommées « Binette / serfouette ». Seul le **nom** des 130
+cultures passait par `names_{en,es}.dart`. La note, la description et
+les neuf champs techniques des 169 fiches restaient en français, dans
+une interface par ailleurs entièrement traduite — **1 032 chaînes,
+8 324 mots**, depuis l'ouverture mondiale.
+
+| Ce qui ne l'était pas | Chaînes distinctes |
+| --- | --- |
+| Descriptions | 169 |
+| Notes (la ligne sous le nom) | 169 |
+| Durées de récolte par saison | 200 |
+| Technique de semis | 83 |
+| Sol | 78 |
+| Rendement | 67 |
+| Arrosage | 65 |
+| Espacement | 62 |
+| Noms des 39 accessoires | 39 |
+| Exposition, température, profondeur, levée | 98 |
+
+**La surcouche** : `displayNote`, `displayDescription` et neuf getters
+sur `Vegetable` (`content_i18n.dart`), branchés dans la fiche, la
+vignette du catalogue et l'écran Semer. Les noms d'accessoires, eux,
+rejoignent `names_{en,es}.dart` avec les cultures — `displayName` les
+lisait déjà.
+
+⚠️ **Composer plutôt qu'écrire, partout où c'est possible.** Six des
+dix jeux ont été **générés par règle** et non traduits à la main :
+
+- les chiffres (température, profondeur, levée, espacement) par un
+  patron, parce qu'une profondeur de semis est une **consigne** ;
+- le **sol** par segments — 52 segments couvrent 78 phrases, séparés
+  par des virgules ;
+- le **rendement** par chiffre + unité + dénominateur ;
+- les **durées de récolte** par durée + précision — 91 parenthèses et
+  44 phrases libres couvrent les 200.
+
+C'est plus sûr que la main, et ça garde la même formulation d'une
+fiche à l'autre. Le poseur (`scratchpad/poser.py`, hors dépôt) refuse
+d'écrire si un chiffre bouge.
+
+⚠️ **Quatre pièges rencontrés, tous attrapés par le test des nombres
+ou par le mien :**
+
+- le « 1 » de « 1ère récolte » compte comme un nombre : « first
+  harvest » le perdait, d'où « 1st harvest » et « 1.ª cosecha » ;
+- le « 2 » de « Vaporisation 2× par jour » disparaissait dans « Mist
+  twice a day » ;
+- « 3 000 ans » devenu « 3,000 years » : la virgule anglaise des
+  milliers casse la comparaison ;
+- « humifère » et « riche en humus » traduits pareil donnaient
+  « rich, humus-rich » dans la même ligne.
+
+### ⚠️ `v.name` affiché : le défaut qui est revenu treize fois
+
+`Vegetable.name` est le nom **français** — la clé des données, de la
+recherche sans accent et des tests. Ce qui s'affiche, c'est
+`displayName`. Onze endroits les confondaient le 01/11, un douzième le
+02/11 (la vignette du catalogue, qui disait « Chou kale » à un
+anglophone alors que la vue liste juste à côté traduisait) et un
+treizième le même jour : les pastilles de **compagnonnage et de
+rotation**, vues en espagnol à l'écran — « Fraise », « Carotte »,
+« Haricot vert » sous une fiche entièrement castillane.
+
+`flutter analyze` ne peut rien dire : les deux sont des `String`.
+`test/noms_affiches_test.dart` cherche donc les expressions qui
+**affichent** un nom (`Text(v.name)`, `label: Text(…)`, un trou de
+`trUiArgs`) et laisse tranquilles la recherche et les clés, qui s'en
+servent à bon droit. Vérifié en recassant volontairement une ligne.
+
+**L'état, mesuré le 02/11/2026** : **4 894 chaînes par langue** —
+1 943 de contenu, 1 267 de tutos, 779 d'interface, 736 de recettes,
+169 de noms. Couverture **complète** en anglais et en espagnol. Les
+six noms identiques au français (Melon, Taro, Cosmos, Zinnia, Fonio,
+Moringa) le sont parce que c'est le même mot.
 
 ## 🌾 La neuvième zone, et le climat qui suit enfin la zone (02/11/2026)
 

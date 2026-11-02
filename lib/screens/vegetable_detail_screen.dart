@@ -836,7 +836,10 @@ class _RotationSection extends StatelessWidget {
                     return Chip(
                       avatar:
                           Text(v.emoji, style: const TextStyle(fontSize: 16)),
-                      label: Text(v.name,
+                      // ⚠️ `displayName`, pas `name` : les pastilles
+                      // de rotation affichaient « Haricot vert » sous
+                      // une fiche espagnole.
+                      label: Text(v.displayName,
                           style: const TextStyle(fontWeight: FontWeight.w600)),
                     );
                   }).toList(),
@@ -897,7 +900,8 @@ class _CompanionSection extends StatelessWidget {
                   return Chip(
                     avatar: Text(v.emoji, style: const TextStyle(fontSize: 16)),
                     label: Text(
-                      v.name,
+                      // ⚠️ Idem pour les pastilles de compagnonnage.
+                      v.displayName,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   );

@@ -3578,4 +3578,343 @@ const Map<String, String> contentTextsEs = <String, String>{
       'Ahorra hasta un 50% de agua',
   'Évite la chaleur, préfère les saisons fraîches.':
       'Evita el calor, prefiere las estaciones frescas.',
+  // ─── fiche : description ───
+  'Amoureuse du chaud, à démarrer très tôt en intérieur pour avoir des plants prêts au repiquage.':
+      'Amante del calor, hay que empezarla muy pronto en interior para tener plantas listas para trasplantar.',
+  'Arbre fruitier aux fruits parfumés (pêche, nectarine, brugnon). Sensible à la cloque du pêcher — traiter à la bouillie bordelaise en hiver.':
+      'Árbol frutal de frutos perfumados (melocotón, nectarina). Sensible a la lepra del melocotonero: trátalo con caldo bordelés en invierno.',
+  'Arbre fruitier emblématique du printemps, sublime en floraison rose. Production rapide (3-4 ans) et abondante de cerises sucrées (bigarreau) ou acidulées (griotte).':
+      'Árbol frutal emblemático de la primavera, espléndido en flor rosa. Producción rápida (3-4 años) y abundante de cerezas dulces (picota) o ácidas (guinda).',
+  'Arbre fruitier généreux à l\'origine de nombreuses variétés (Reine-Claude, Mirabelle, Quetsche). Productif et facile, peu exigeant.':
+      'Árbol frutal generoso del que vienen muchas variedades (reina claudia, ciruela mirabel, ciruela quetsche). Productivo, fácil y poco exigente.',
+  'Arbre fruitier méridional aux fruits jaune-orangé sucrés. Floraison précoce sensible aux gelées tardives — préférer un emplacement abrité.':
+      'Árbol frutal meridional de frutos amarillo-anaranjados y dulces. Su floración temprana teme las heladas tardías: busca un sitio resguardado.',
+  'Arbre fruitier roi du verger français, des centaines de variétés (Reinette, Golden, Gala, Chanteclerc...). Vit 50 ans et plus.':
+      'El rey del huerto frutal francés, con centenares de variedades (Reineta, Golden, Gala, Chantecler...). Vive 50 años y más.',
+  'Arbre fruitier élégant aux poires juteuses et parfumées (Williams, Conférence, Comice...). Plus exigeant que le pommier en chaleur.':
+      'Árbol frutal elegante de peras jugosas y perfumadas (Williams, Conferencia, Comice...). Más exigente en calor que el manzano.',
+  'Arbre méditerranéen au feuillage caractéristique et aux fruits sucrés. Variétés bifères (deux récoltes par an) très productives.':
+      'Árbol mediterráneo de follaje característico y frutos dulces. Las variedades bíferas (dos cosechas al año) son muy productivas.',
+  'Arbre-légume tropical dont les petites feuilles concentrent protéines, fer et vitamines. Surnommé « arbre de vie », il repousse après chaque coupe et nourrit toute l\'année.':
+      'Árbol-hortaliza tropical cuyas hojitas concentran proteínas, hierro y vitaminas. Apodado «árbol de la vida», rebrota tras cada corte y alimenta todo el año.',
+  'Arbrisseau aromatique méditerranéen aux feuilles persistantes. Très résistant à la sécheresse, présent toute l\'année au jardin.':
+      'Arbusto aromático mediterráneo de hoja perenne. Muy resistente a la sequía, está en el huerto todo el año.',
+  'Arbrisseau provençal aux épis bleu-violet très parfumés. Très mellifère, repousse les pucerons, parfait en bordure ou dans les rocailles.':
+      'Arbusto provenzal de espigas azul violeta muy perfumadas. Muy melífero, repele los pulgones y va perfecto en bordura o en rocalla.',
+  'Arbuste fruitier à baies noires acidulées, riches en vitamine C. Idéal pour confitures, gelées et liqueurs (la fameuse crème de cassis).':
+      'Arbusto frutal de bayas negras y ácidas, ricas en vitamina C. Ideal para mermeladas, jaleas y licores (la famosa crema de casis).',
+  'Arbuste persistant aux feuilles vert sombre, indispensable au bouquet garni. Pousse aussi bien en pot qu\'en pleine terre, peut atteindre 3 m.':
+      'Arbusto perenne de hojas verde oscuro, imprescindible en el bouquet garni. Crece igual de bien en maceta que en plena tierra y puede llegar a 3 m.',
+  'Arbuste rustique aux noisettes croquantes, très facile à cultiver. Pollinisation croisée — planter au moins deux variétés différentes.':
+      'Arbusto rústico de avellanas crujientes, muy fácil de cultivar. Polinización cruzada: planta al menos dos variedades distintas.',
+  'Arbuste à feuilles vert vif au parfum citronné intense. La star des tisanes du soir, à protéger du gel en hiver.':
+      'Arbusto de hojas verde vivo con un intenso perfume a limón. La estrella de las infusiones de la noche; protégelo de la helada en invierno.',
+  'Arbuste à grappes de baies rouges ou blanches, acidulées et juteuses. Parfait en gelée ou pour les desserts d\'été.':
+      'Arbusto de racimos de bayas rojas o blancas, ácidas y jugosas. Perfecto en jalea o para los postres de verano.',
+  'Arche métallique 2 m de haut : parfaite pour faire grimper haricots à rames, courges, concombres, kiwis. Décoratif et productif.':
+      'Arco metálico de 2 m de alto: perfecto para que trepen judías de enrame, calabazas, pepinos y kiwis. Decorativo y productivo.',
+  'Aromate annuel aux feuilles plumeuses au goût frais et anisé. Indispensable avec le saumon, les concombres et les marinades.':
+      'Aromática anual de hojas plumosas y sabor fresco y anisado. Imprescindible con el salmón, los pepinos y los encurtidos.',
+  'Aromate fin au goût anisé, indispensable à la cuisine française (béarnaise, vinaigre d\'estragon). Préférer la variété française à la russe (moins parfumée).':
+      'Aromática fina de sabor anisado, imprescindible en la cocina francesa (bearnesa, vinagre al estragón). Elige la variedad francesa antes que la rusa, menos perfumada.',
+  'Aromate fin et délicat au goût anisé subtil, base des fines herbes. Préfère la mi-ombre et la fraîcheur.':
+      'Aromática fina y delicada, de sabor anisado sutil, una de las finas hierbas. Prefiere la media sombra y el fresco.',
+  'Aromate méditerranéen aux feuilles veloutées gris-vert. Saveur puissante pour viandes et farces, vertus médicinales reconnues.':
+      'Aromática mediterránea de hojas aterciopeladas gris verdoso. Sabor potente para carnes y rellenos, con virtudes medicinales reconocidas.',
+  'Aromate poivré qui parfume haricots, fromages frais et grillades. La sarriette des montagnes (vivace) est plus rustique que celle des jardins (annuelle).':
+      'Aromática picante que perfuma judías, quesos frescos y parrilladas. La ajedrea de montaña (vivaz) es más rústica que la de jardín (anual).',
+  'Aromate vivace au parfum chaud, indispensable en cuisine italienne. Floraison rose mellifère qui attire les pollinisateurs.':
+      'Aromática vivaz de perfume cálido, imprescindible en la cocina italiana. Su floración rosa es melífera y atrae a los polinizadores.',
+  'Aromate vivace au parfum citronné, parfaite en tisane apaisante avant le coucher. Très mellifère, attire les abeilles.':
+      'Aromática vivaz de perfume alimonado, perfecta en infusión relajante antes de dormir. Muy melífera, atrae a las abejas.',
+  'Aromatique indispensable en cuisine, le persil pousse lentement mais dure longtemps.':
+      'Aromática imprescindible en la cocina, el perejil crece despacio pero dura mucho.',
+  'Aromatique méditerranéenne robuste, le thym résiste à la sécheresse et parfume plats et tisanes.':
+      'Aromática mediterránea robusta, el tomillo aguanta la sequía y perfuma platos e infusiones.',
+  'Aromatique vigoureuse et envahissante, la menthe parfume thés, sauces et desserts.':
+      'Aromática vigorosa e invasora, la menta perfuma tés, salsas y postres.',
+  'Aromatique à double usage : feuilles fraîches et graines séchées pour les épices.':
+      'Aromática de doble uso: hojas frescas y semillas secas como especia.',
+  'Arrosoir avec pomme fine pour un arrosage en pluie douce, idéal pour les semis et jeunes plants. Capacité recommandée : 5 à 10 litres.':
+      'Regadera con alcachofa fina para un riego en lluvia suave, ideal para semilleros y plantas jóvenes. Capacidad recomendada: de 5 a 10 litros.',
+  'Assortiment de semences bio : tomates, carottes, salades, radis, basilic... Parfait pour débuter son potager.':
+      'Surtido de semillas ecológicas: tomates, zanahorias, lechugas, rábanos, albahaca... Perfecto para empezar el huerto.',
+  'Aussi appelée bette ou poirée, on consomme ses larges côtes et ses feuilles tendres.':
+      'También llamada acelga, se comen sus anchas pencas y sus hojas tiernas.',
+  'Bac compact pour appartement : les vers décomposent les déchets de cuisine et produisent un engrais liquide ultra-puissant. Sans odeur.':
+      'Cubo compacto para piso: las lombrices descomponen los residuos de cocina y producen un abono líquido potentísimo. Sin olor.',
+  'Bac de 300-600 L pour transformer épluchures et déchets verts en compost. Volume conseillé : 1 m³ pour un jardin moyen.':
+      'Compostador de 300-600 L para convertir mondas y residuos verdes en compost. Volumen recomendado: 1 m³ para un jardín medio.',
+  'Bac en bois ou plastique recyclé pour cultiver sur un balcon, une terrasse ou un petit jardin. Hauteur idéale : 40 à 80 cm.':
+      'Jardinera de madera o plástico reciclado para cultivar en un balcón, una terraza o un huerto pequeño. Altura ideal: de 40 a 80 cm.',
+  'Bac surélevé sur pieds (60-90 cm de haut). Idéal balcon, terrasse ou personnes à mobilité réduite. Profondeur min 30 cm pour les légumes.':
+      'Jardinera elevada sobre patas (de 60-90 cm de alto). Ideal para balcón, terraza o personas con movilidad reducida. Mínimo 30 cm de profundidad para las hortalizas.',
+  'Bambous longs (1,80 à 2,40 m) à planter en tipi ou en ligne. Naturels, robustes et réutilisables plusieurs années.':
+      'Cañas largas (de 1,80 a 2,40 m) para clavar en tipi o en línea. Naturales, robustas y reutilizables durante varios años.',
+  'Base alimentaire des régions humides : ses régimes de plantains se dégustent frits (alloco), bouillis ou braisés. Une touffe bien menée produit pendant des années.':
+      'Base alimentaria de las regiones húmedas: sus racimos de plátano macho se comen fritos (alloco), hervidos o asados. Una mata bien llevada produce durante años.',
+  'Bouton floral charnu et raffiné, l\'artichaut est une vivace spectaculaire au potager.':
+      'Botón floral carnoso y refinado, la alcachofa es una vivaz espectacular en el huerto.',
+  'Branche ou rave, le céleri parfume soupes et salades avec son goût puissant.':
+      'En rama o en bola, el apio perfuma sopas y ensaladas con su sabor potente.',
+  'Bulbe blanc au goût anisé, le fenouil est croquant cru et fondant cuit.':
+      'Bulbo blanco de sabor anisado, el hinojo es crujiente crudo y meloso cocinado.',
+  'Bulbe incontournable de la cuisine, se conserve longtemps après récolte.':
+      'Bulbo imprescindible en la cocina, se conserva mucho tiempo tras la cosecha.',
+  'Cadre en bois posé au sol, divisé en cases de 30×30 cm. Méthode simple, esthétique et productive — parfait pour un petit jardin.':
+      'Marco de madera apoyado en el suelo, dividido en casillas de 30×30 cm. Método sencillo, bonito y productivo: perfecto para un huerto pequeño.',
+  'Chair orangée, douce et fondante. Excellente en soupe, gratin ou rôtie au four.':
+      'Carne anaranjada, dulce y melosa. Excelente en sopa, en gratén o asada al horno.',
+  'Champignon classique blanc ou brun (rosé), cultivable en cave ou cellier sur kit prêt à l\'emploi. Plusieurs vagues de récolte sur 1 à 2 mois.':
+      'El champiñón clásico, blanco o pardo, cultivable en bodega o despensa con un kit listo para usar. Varias oleadas de cosecha a lo largo de 1 a 2 meses.',
+  'Champignon en éventail à chapeau gris ou jaune, facile à cultiver sur kit (paille ou bûche inoculée). Rendement rapide en quelques semaines.':
+      'Seta en abanico de sombrero gris o amarillo, fácil de cultivar con kit (paja o tronco inoculado). Rendimiento rápido en pocas semanas.',
+  'Champignon japonais à chapeau brun et chair ferme, classique de la cuisine asiatique. Cultivable sur bûche de chêne inoculée, productif sur 5 à 6 ans.':
+      'Seta japonesa de sombrero pardo y carne firme, clásica de la cocina asiática. Se cultiva sobre tronco de roble inoculado y produce de 5 a 6 años.',
+  'Chou chinois à côtes blanches et feuilles vertes, croissance ultra-rapide. Délicieux sauté au wok ou en soupe.':
+      'Col china de pencas blancas y hojas verdes, de crecimiento rapidísimo. Deliciosa salteada al wok o en sopa.',
+  'Chou pommé allongé à feuilles tendres et nervures blanches. Base du kimchi coréen, parfait en salade ou sauté.':
+      'Col acogollada alargada, de hojas tiernas y nervios blancos. Base del kimchi coreano, perfecta en ensalada o salteada.',
+  'Chou à tige renflée en boule, à la chair tendre et sucrée. Se mange cru ou cuit, très digeste.':
+      'Col de tallo engrosado en bola, de carne tierna y dulce. Se come cruda o cocinada y es muy digestiva.',
+  'Cloche transparente à poser sur un plant fragile : forçage de printemps, protection contre le gel ou les limaces. Réutilisable saison après saison.':
+      'Campana transparente para poner sobre una planta frágil: forzado de primavera, protección contra la helada o las babosas. Reutilizable temporada tras temporada.',
+  'Condiment universel, l\'ail se conserve des mois et demande très peu d\'entretien.':
+      'Condimento universal, el ajo se conserva meses y pide muy poco cuidado.',
+  'Couche froide vitrée, idéale pour les semis précoces de février à avril. Permet de gagner 4-6 semaines sur le calendrier.':
+      'Cama fría acristalada, ideal para las siembras tempranas de febrero a abril. Permite ganar 4-6 semanas en el calendario.',
+  'Courge au goût de châtaigne, dont la peau se mange — très pratique en soupe.':
+      'Calabaza con sabor a castaña, cuya piel se come: muy práctica en sopa.',
+  'Cousin vert du chou-fleur, le brocoli est riche en vitamines et se récolte en jets successifs.':
+      'Primo verde de la coliflor, el brócoli es rico en vitaminas y se cosecha por brotes sucesivos.',
+  'Cousine de l\'œillet d\'Inde, tagète erecta ou patula. Utilisée pour purger le sol des nématodes — semer une saison avant tomates ou pommes de terre.':
+      'Prima del clavel de moro, Tagetes erecta o patula. Se usa para limpiar el suelo de nematodos: siémbrala una temporada antes que tomates o patatas.',
+  'Cousine plus douce de l\'origan, parfaite pour les viandes blanches et les sauces tomate. Plante annuelle ou vivace selon le climat.':
+      'Prima más suave del orégano, perfecta para carnes blancas y salsas de tomate. Anual o vivaz según el clima.',
+  'Cuve 200-500 L à raccorder sur une descente de gouttière. L\'eau de pluie est sans calcaire, à température ambiante : parfaite pour le potager.':
+      'Depósito de 200-500 L para conectar a una bajante. El agua de lluvia no tiene cal y está a temperatura ambiente: perfecta para el huerto.',
+  'Céréale d\'été, le maïs doux se récolte frais pour un goût sucré incomparable.':
+      'Cereal de verano, el maíz dulce se cosecha fresco para un sabor azucarado incomparable.',
+  'Céréale reine du Sahel, aussi appelée petit mil ou millet perlé. Base du couscous de mil et des bouillies, elle pousse là où presque rien d\'autre ne résiste.':
+      'Cereal reina del Sahel, también llamado mijo perla. Base del cuscús de mijo y de las gachas, crece donde casi nada más aguanta.',
+  'Céréale tropicale résistante à la sécheresse, base du tô et du couscous de mil en Afrique.':
+      'Cereal tropical resistente a la sequía, base del tô y del cuscús de mijo en África.',
+  'Double usage : feuilles consommées comme épinard en Afrique, graines comme céréale.':
+      'Doble uso: las hojas se comen como espinaca en África y las semillas como cereal.',
+  'Du doux au brûlant, le piment apporte saveur et couleur au potager comme en cuisine.':
+      'Del suave al ardiente, el chile aporta sabor y color al huerto y a la cocina.',
+  'Engrais organique pour potager : fumier composté, purin d\'ortie ou granulés bio. Stimule la croissance sans produits chimiques.':
+      'Abono orgánico para el huerto: estiércol compostado, purín de ortiga o gránulos ecológicos. Estimula el crecimiento sin productos químicos.',
+  'Engrais vert légumineuse aux fleurs rouges. Fixe l\'azote dans le sol grâce aux nodosités racinaires — idéal avant des cultures gourmandes (tomate, courge).':
+      'Abono verde leguminoso de flores rojas. Fija el nitrógeno en el suelo gracias a los nódulos de la raíz: ideal antes de cultivos exigentes (tomate, calabaza).',
+  'Engrais vert rapide : germe et fleurit en 6 semaines. Désinfecte le sol (effet biocide), structure et étouffe les adventices.':
+      'Abono verde rápido: germina y florece en 6 semanas. Desinfecta el suelo (efecto biocida), lo estructura y ahoga las malas hierbas.',
+  'Engrais vert star : feuillage abondant, floraison mauve très mellifère. Étouffe les adventices, structure le sol et nourrit les abeilles avant d\'être enfoui.':
+      'El abono verde estrella: follaje abundante y floración malva muy melífera. Ahoga las malas hierbas, estructura el suelo y alimenta a las abejas antes de enterrarse.',
+  'Engrais vert à floraison blanche très mellifère, croissance ultra-rapide. Idéal pour étouffer un terrain envahi en pleine saison.':
+      'Abono verde de floración blanca muy melífera y crecimiento rapidísimo. Ideal para ahogar un terreno invadido en plena temporada.',
+  'Feuille mucilagineuse star des sauces gluantes : c\'est elle qui donne la fameuse sauce crincrin au Bénin et la mouloukhiya au Sahel. Croissance éclair en climat chaud.':
+      'La hoja mucilaginosa estrella de las salsas espesas: de ella salen la famosa salsa crincrin de Benín y la mulujía del Sahel. Crecimiento fulgurante en clima cálido.',
+  'Feuilles blanches et croquantes obtenues par forçage en cave — une technique originale.':
+      'Hojas blancas y crujientes obtenidas por forzado en bodega: una técnica original.',
+  'Feuilles piquantes et poivrées, la roquette pousse vite et relève les salades.':
+      'Hojas picantes y con un punto de pimienta, la rúcula crece rápido y realza las ensaladas.',
+  'Feuilles riches en fer, préfère la fraîcheur — à semer au printemps ou en automne.':
+      'Hojas ricas en hierro; prefiere el fresco: siémbrala en primavera o en otoño.',
+  'Feuilles tendres, croissance rapide et récolte étalée tout au long de la saison.':
+      'Hojas tiernas, crecimiento rápido y cosecha repartida a lo largo de toda la temporada.',
+  'Filet à mailles larges à tendre au-dessus des fraisiers, des arbres fruitiers ou des semis. Empêche merles et étourneaux de tout picorer.':
+      'Malla de trama ancha para tender sobre fresales, frutales o semilleros. Impide que mirlos y estorninos lo picoteen todo.',
+  'Fleur comestible orange ou jaune au goût piquant, proche du cresson. Attire les pucerons loin des autres légumes — idéale en bordure de potager.':
+      'Flor comestible naranja o amarilla de sabor picante, cercano al berro. Atrae a los pulgones lejos de las demás hortalizas: ideal en bordura del huerto.',
+  'Fleur double aux couleurs éclatantes (rose, orange, rouge, jaune). Très florifère, parfaite en bouquet, attire papillons et abeilles.':
+      'Flor doble de colores vivos (rosa, naranja, rojo, amarillo). Muy florífera, perfecta en ramo, atrae mariposas y abejas.',
+  'Fleur jaune ou orange au feuillage très parfumé. Repousse les nématodes du sol et les insectes nuisibles — alliée précieuse au potager, surtout des tomates.':
+      'Flor amarilla o naranja de follaje muy perfumado. Repele los nematodos del suelo y los insectos dañinos: una aliada valiosa en el huerto, sobre todo con los tomates.',
+  'Fleur jaune-orangé comestible aux pétales ensoleillés. Vertus médicinales reconnues (calendula), excellente compagne du potager qui repousse les nématodes.':
+      'Flor comestible amarillo-anaranjada de pétalos luminosos. Virtudes medicinales reconocidas (caléndula) y excelente compañera del huerto, pues repele los nematodos.',
+  'Fleur sauvage bleue des champs de blé, devenue rare en culture. Très mellifère, fleurs comestibles à parsemer en salade.':
+      'Flor silvestre azul de los trigales, hoy rara en cultivo. Muy melífera, con flores comestibles para esparcir en ensalada.',
+  'Fleur étoilée bleu vif au goût d\'huître, très mellifère. Indispensable au verger — attire massivement les abeilles pour la pollinisation.':
+      'Flor estrellada azul intenso con sabor a ostra, muy melífera. Imprescindible en el frutal: atrae a las abejas en masa para la polinización.',
+  'Fourche à 4-5 dents : ameublit la terre en profondeur sans détruire la vie du sol. Indispensable pour qui pratique le "sol vivant".':
+      'Horca de 4-5 púas: mulle la tierra en profundidad sin destruir la vida del suelo. Imprescindible para quien practica el suelo vivo.',
+  'Fruit coloré et sucré, cousin doux du piment, à démarrer en intérieur.':
+      'Fruto colorido y dulce, primo suave del chile, para empezar en interior.',
+  'Fruit d\'été sucré et parfumé, le melon demande chaleur et patience.':
+      'Fruto de verano dulce y perfumado, el melón pide calor y paciencia.',
+  'Fruit tropical mucilagineux, incontournable dans les sauces ouest-africaines.':
+      'Fruto tropical mucilaginoso, imprescindible en las salsas de África Occidental.',
+  'Fruitier tropical express : semé une année, il offre des papayes dès la suivante. Son tronc tendre et sa couronne de grandes feuilles embellissent le jardin de case.':
+      'Frutal tropical exprés: sembrado un año, da papayas al siguiente. Su tronco tierno y su corona de hojas grandes embellecen el huerto de la casa.',
+  'Gants résistants et confortables pour le jardinage. Choisir un modèle anti-épines avec bonne préhension.':
+      'Guantes resistentes y cómodos para la jardinería. Elige un modelo antiespinas con buen agarre.',
+  'Grand tubercule tropical, base de l\'alimentation en Afrique de l\'Ouest. Riche en amidon.':
+      'Tubérculo tropical grande, base de la alimentación en África Occidental. Rico en almidón.',
+  'Grande fleur rose, blanche ou pourpre au feuillage finement découpé. Très mellifère, germe et fleurit vite, idéal en massif ou en bouquet.':
+      'Flor grande rosa, blanca o púrpura, de follaje finamente recortado. Muy melífera, germina y florece rápido, ideal en macizo o en ramo.',
+  'Grande herbe au parfum de citron, indispensable en tisane et en cuisine. Sa touffe dense éloigne aussi les moustiques autour de la terrasse.':
+      'Hierba alta con perfume a limón, imprescindible en infusión y en la cocina. Su mata densa también aleja a los mosquitos de la terraza.',
+  'Granulés à base de phosphate de fer, autorisés en agriculture biologique. Non toxiques pour hérissons, oiseaux et animaux domestiques.':
+      'Gránulos a base de fosfato de hierro, autorizados en agricultura ecológica. No tóxicos para erizos, pájaros ni animales domésticos.',
+  'Grille rigide à planter derrière les tomates. Permet de palisser les branches au fur et à mesure, plus solide que les tuteurs simples.':
+      'Rejilla rígida para clavar detrás de los tomates. Permite ir entutorando las ramas y es más sólida que los tutores simples.',
+  'Gros fruit d\'automne, le potiron se conserve des mois et nourrit toute la famille.':
+      'Fruto grande de otoño, la calabaza se conserva meses y alimenta a toda la familia.',
+  'Géant solaire jusqu\'à 3 m, avec ses grandes fleurs jaunes. Mellifère, productif en graines pour les oiseaux ou la cuisine, idéal en fond de massif.':
+      'Gigante solar de hasta 3 m, con sus grandes flores amarillas. Melífero, productivo en semillas para los pájaros o la cocina, ideal al fondo de un macizo.',
+  'Généreuse et rapide, la courgette est parfaite pour débuter au potager.':
+      'Generoso y rápido, el calabacín es perfecto para empezar en el huerto.',
+  'Haricot à gousses jaune doré, à la chair fondante et au goût doux. Productif et facile, idéal pour débuter.':
+      'Judía de vainas amarillo dorado, de carne meliflua y sabor suave. Productiva y fácil, ideal para empezar.',
+  'Haricot à œil noir, pilier des protéines végétales en Afrique de l\'Ouest. Très résistant à la chaleur.':
+      'Judía de ojo negro, pilar de las proteínas vegetales en África Occidental. Muy resistente al calor.',
+  'Hibiscus sabdariffa — ses calices rouges servent à préparer la célèbre boisson bissap.':
+      'Hibiscus sabdariffa: sus cálices rojos sirven para preparar la famosa bebida bissap.',
+  'Inflorescence blanche et compacte, le chou-fleur aime les climats doux et humides.':
+      'Inflorescencia blanca y compacta, a la coliflor le gustan los climas suaves y húmedos.',
+  'L\'aromatique de l\'été par excellence, compagnon idéal de la tomate.':
+      'La aromática del verano por excelencia, compañera ideal del tomate.',
+  'La cacahuète pousse sous terre — une légumineuse originale et productive en climat chaud.':
+      'El cacahuete crece bajo tierra: una leguminosa original y productiva en clima cálido.',
+  'Le fruit le plus rafraîchissant de l\'été, gorgé d\'eau et de sucre.':
+      'El fruto más refrescante del verano, cargado de agua y de azúcar.',
+  'Le plus rapide du potager : récolte en 3 à 4 semaines. Parfait pour les débutants.':
+      'El más rápido del huerto: cosecha en 3 o 4 semanas. Perfecto para principiantes.',
+  'Liane fruitière classique, raisins blancs ou noirs sucrés. Magnifique en pergola, productive et longue durée de vie (50 ans et plus).':
+      'Liana frutal clásica, de uvas blancas o negras y dulces. Magnífica en pérgola, productiva y de vida larga (50 años y más).',
+  'Liane vigoureuse aux fruits velus à chair verte ou jaune. La plupart des variétés ont besoin d\'un pied mâle pour 5-6 pieds femelles.':
+      'Liana vigorosa de frutos vellosos con carne verde o amarilla. La mayoría de las variedades necesitan un pie macho por cada 5-6 pies hembra.',
+  'Lot d\'étiquettes en ardoise ou plastique avec marqueur. Indispensable pour ne pas oublier ce que tu as semé et où.':
+      'Juego de etiquetas de pizarra o plástico con rotulador. Imprescindible para no olvidar qué sembraste y dónde.',
+  'Légume d\'hiver par excellence, le chou pommé résiste au froid et nourrit copieusement.':
+      'Hortaliza de invierno por excelencia, la col acogollada aguanta el frío y alimenta con creces.',
+  'Légume rustique et polyvalent, disponible presque toute l\'année au potager.':
+      'Hortaliza rústica y polivalente, disponible casi todo el año en el huerto.',
+  'Légumineuse de printemps, la fève est riche en protéines et enrichit le sol en azote.':
+      'Leguminosa de primavera, el haba es rica en proteínas y enriquece el suelo en nitrógeno.',
+  'Légumineuse fixatrice d\'azote, nain ou à rames, idéale en culture d\'été.':
+      'Leguminosa fijadora de nitrógeno, enana o de enrame, ideal como cultivo de verano.',
+  'Légumineuse printanière sucrée, à récolter jeune pour un maximum de tendreté.':
+      'Leguminosa primaveral y dulce, para cosechar joven y tenerla bien tierna.',
+  'Légumineuse star de la cuisine méditerranéenne (houmous, falafels). Résistante à la sécheresse, parfaite pour les sols pauvres.':
+      'Leguminosa estrella de la cocina mediterránea (hummus, faláfel). Resistente a la sequía, perfecta para suelos pobres.',
+  'Légumineuse à grains plats riche en protéines, base des soupes et plats traditionnels. La lentille verte du Puy bénéficie d\'une AOP française.':
+      'Leguminosa de grano plano y rica en proteínas, base de sopas y platos tradicionales. La lenteja verde de Le Puy tiene una DOP francesa.',
+  'Minuscule céréale ancestrale d\'Afrique de l\'Ouest au goût fin et à la digestion facile. Semée à la volée, elle couvre le sol en quelques jours et se contente de terres pauvres.':
+      'Cereal ancestral diminuto de África Occidental, de sabor fino y digestión fácil. Sembrado a voleo, cubre el suelo en pocos días y se conforma con tierras pobres.',
+  'Mélange de micro-organismes à saupoudrer sur le compost. Réduit le temps de maturation de 12 à 6 mois et limite les odeurs.':
+      'Mezcla de microorganismos para espolvorear sobre el compost. Reduce el tiempo de maduración de 12 a 6 meses y limita los olores.',
+  'Outil cylindrique qui creuse un trou parfait à la bonne profondeur. Idéal pour planter ail, échalotes, tulipes, jacinthes en quantité.':
+      'Herramienta cilíndrica que abre un hoyo perfecto a la profundidad justa. Ideal para plantar ajo, chalotas, tulipanes y jacintos en cantidad.',
+  'Outil de base pour couper les branches, récolter les légumes et entretenir vos plants. Choisissez un modèle ergonomique avec lame en acier.':
+      'Herramienta básica para cortar ramas, cosechar hortalizas y cuidar tus plantas. Elige un modelo ergonómico con hoja de acero.',
+  'Paillis 100% végétal à étaler en couche de 5-7 cm autour des plants. Garde le sol humide, freine les mauvaises herbes, se décompose en humus.':
+      'Acolchado 100% vegetal para extender en una capa de 5-7 cm alrededor de las plantas. Mantiene el suelo húmedo, frena las malas hierbas y se descompone en humus.',
+  'Panier en osier ou plastique aéré pour récolter et transporter tes légumes du jardin à la cuisine sans les abîmer.':
+      'Cesta de mimbre o de plástico aireado para cosechar y llevar tus hortalizas del huerto a la cocina sin estropearlas.',
+  'Petit arbuste à baies bleues sucrées, riches en antioxydants. Exige un sol acide (terre de bruyère) — culture en pot recommandée en sol calcaire.':
+      'Arbusto pequeño de bayas azules y dulces, ricas en antioxidantes. Exige suelo ácido (tierra de brezo): en suelo calcáreo, mejor en maceta.',
+  'Petit concombre récolté jeune, parfait pour les conserves au vinaigre. Plante prolifique, croissance rapide en plein soleil.':
+      'Pepino pequeño cosechado joven, perfecto para conservas en vinagre. Planta prolífica, de crecimiento rápido a pleno sol.',
+  'Petit fruit rouge parfumé sur arbuste vivace. Variétés remontantes (deux récoltes) ou non remontantes (une grosse récolte en juin).':
+      'Fruto rojo y perfumado en arbusto vivaz. Variedades reflorecientes (dos cosechas) o no reflorecientes (una gran cosecha en junio).',
+  'Petit fruit rouge sucré, la fraise se cultive en pleine terre ou en pot sur un balcon.':
+      'Fruto rojo pequeño y dulce, la fresa se cultiva en plena tierra o en maceta en un balcón.',
+  'Petit outil à main pour gratter la surface du sol et casser la croûte. Permet d\'aérer la terre et d\'arracher les jeunes herbes.':
+      'Herramienta de mano pequeña para rascar la superficie del suelo y romper la costra. Airea la tierra y arranca las hierbas jóvenes.',
+  'Petit tunnel en plastique avec armature métallique : protège les jeunes plants du froid au printemps et permet de cultiver tomates, poivrons même dans le nord.':
+      'Túnel pequeño de plástico con armazón metálico: protege las plantas jóvenes del frío en primavera y permite cultivar tomates y pimientos incluso en el norte.',
+  'Petite aubergine ronde et légèrement amère, appelée djakhatou au Sénégal ou gboma au Togo. Indispensable dans le thiéboudienne et les sauces mijotées.':
+      'Berenjena pequeña, redonda y algo amarga, llamada djakhatou en Senegal o gboma en Togo. Imprescindible en el thiéboudienne y en las salsas guisadas.',
+  'Petite fleur multicolore (violet, jaune, blanc) à l\'aspect kawaii. Comestible en décoration de salades et desserts, fleurit même en hiver.':
+      'Flor pequeña multicolor (violeta, amarillo, blanco) de aspecto kawaii. Comestible como decoración de ensaladas y postres, florece incluso en invierno.',
+  'Petite graine oléagineuse au goût de noisette, base du tahini et de nombreuses pâtisseries.':
+      'Semilla oleaginosa pequeña con sabor a avellana, base del tahini y de muchos dulces.',
+  'Petite pelle étroite pour repiquer les semis sans abîmer les racines. Indispensable au printemps pour la mise en place du potager.':
+      'Palita estrecha para trasplantar los plantones sin dañar las raíces. Imprescindible en primavera al montar el huerto.',
+  'Petite salade d\'hiver au goût doux et noisette, ultra-rustique au froid.':
+      'Ensalada pequeña de invierno, de sabor suave y a avellana, resistentísima al frío.',
+  'Petites pommes vertes le long d\'une tige, le chou de Bruxelles adore le froid.':
+      'Pequeñas coles a lo largo de un tallo, a la col de Bruselas le encanta el frío.',
+  'Plante aquatique au goût piquant et iodé, très riche en vitamines. Pousse au bord d\'un ruisseau ou en jardinière constamment humide.':
+      'Planta acuática de sabor picante y yodado, muy rica en vitaminas. Crece a la orilla de un arroyo o en una jardinera siempre húmeda.',
+  'Plante grasse aux feuilles charnues et acidulées, très riche en oméga-3. Résiste à la sécheresse, idéale en plein été.':
+      'Planta crasa de hojas carnosas y ácidas, muy rica en omega-3. Aguanta la sequía, ideal en pleno verano.',
+  'Plante vivace tapissante aux petites fleurs blanches très parfumées. Tisane apaisante et digestive, classique du jardin de grand-mère.':
+      'Vivaz tapizante de florecitas blancas muy perfumadas. Infusión relajante y digestiva, un clásico del jardín de la abuela.',
+  'Plante vivace à grosses tiges acidulées, base des tartes et compotes printanières. Les feuilles sont toxiques, ne consommer que les pétioles.':
+      'Vivaz de tallos gruesos y ácidos, base de las tartas y compotas de primavera. Las hojas son tóxicas: come solo los pecíolos.',
+  'Plus fine et parfumée que l\'oignon, l\'échalote est un classique de la cuisine française.':
+      'Más fina y perfumada que la cebolla, la chalota es un clásico de la cocina francesa.',
+  'Pois à cosse tendre qu\'on mange en entier, sans écosser. Croquant et sucré, parfait au wok ou cru à la croque.':
+      'Guisante de vaina tierna que se come entero, sin desgranar. Crujiente y dulce, perfecto al wok o crudo para picar.',
+  'Pot en terre cuite poreuse à enterrer entre les plants : se remplit d\'eau et la diffuse lentement. Réduit l\'arrosage à 1 fois par semaine.':
+      'Vasija de barro poroso para enterrar entre las plantas: se llena de agua y la difunde despacio. Reduce el riego a 1 vez por semana.',
+  'Racine blanche au goût sucré et anisé, proche de la carotte. Très rustique, supporte les gelées qui adoucissent sa chair.':
+      'Raíz blanca de sabor dulce y anisado, cercana a la zanahoria. Muy rústica, aguanta las heladas, que endulzan su carne.',
+  'Racine douce et rapide à pousser, le navet est un allié des soupes et pot-au-feu.':
+      'Raíz dulce y de crecimiento rápido, el nabo es un aliado de sopas y cocidos.',
+  'Racine généreuse à chair jaune, croisement entre chou et navet. Goût doux, parfait pour potages et purées d\'hiver.':
+      'Raíz generosa de carne amarilla, cruce entre col y nabo. De sabor suave, perfecta para potajes y purés de invierno.',
+  'Racine longue et fine au goût d\'huître ou d\'asperge. Légume oublié à redécouvrir, riche en inuline et fibres.':
+      'Raíz larga y fina con sabor a ostra o a espárrago. Hortaliza olvidada que merece redescubrirse, rica en inulina y fibra.',
+  'Racine sucrée et colorée, la betterave se mange crue ou cuite et colore les plats.':
+      'Raíz dulce y colorida, la remolacha se come cruda o cocida y tiñe los platos.',
+  'Racine sucrée et croquante, facile à cultiver en sol meuble et sableux.':
+      'Raíz dulce y crujiente, fácil de cultivar en suelo mullido y arenoso.',
+  'Radis d\'hiver à peau noire et chair blanche, piquant et croquant. Très bonne conservation, riche en vitamine C.':
+      'Rábano de invierno de piel negra y carne blanca, picante y crujiente. Se conserva muy bien y es rico en vitamina C.',
+  'Rafraîchissant et productif, le concombre aime la chaleur et l\'eau. Idéal en salade.':
+      'Refrescante y productivo, al pepino le gustan el calor y el agua. Ideal en ensalada.',
+  'Rhizome aromatique piquant et citronné, utilisé frais ou séché en cuisine et en tisane.':
+      'Rizoma aromático picante y alimonado, usado fresco o seco en la cocina y en infusión.',
+  'Ronce cultivée aux longs rameaux sans épines, productive et gourmande. Donne de grosses mûres juteuses, bien meilleures que les mûres sauvages.':
+      'Zarza cultivada de ramas largas y sin espinas, productiva y exigente. Da moras grandes y jugosas, mucho mejores que las silvestres.',
+  'Se branche sur le robinet et programme l\'arrosage automatiquement (durée + créneau). À combiner avec un kit goutte à goutte ou un tuyau perforé.':
+      'Se conecta al grifo y programa el riego de forma automática (duración y franja horaria). Para combinar con un kit de goteo o un tubo perforado.',
+  'Star du potager, la tomate aime le soleil et la chaleur. Se prête à toutes les utilisations en cuisine.':
+      'Estrella del huerto, al tomate le gustan el sol y el calor. Se presta a todos los usos en la cocina.',
+  'Super-aliment à la mode, le kale est un chou frisé ultra-rustique qui résiste au gel.':
+      'Superalimento de moda, el kale es una col rizada resistentísima que aguanta la helada.',
+  'Système d\'arrosage automatique avec tuyaux et goutteurs. Délivre l\'eau directement au pied des plants, idéal en été et pour partir en vacances.':
+      'Sistema de riego automático con tubos y goteros. Lleva el agua directamente al pie de las plantas, ideal en verano y para irse de vacaciones.',
+  'Terreau universel biologique enrichi en compost. Idéal pour les semis, le rempotage et le potager en bacs.':
+      'Sustrato universal ecológico enriquecido con compost. Ideal para semilleros, trasplantes a maceta y huerto en jardineras.',
+  'Toile tissée à tendre au-dessus des cultures pour tamiser 30 à 50 % du soleil. Indispensable sous climat tropical et en canicule : semis, salades et jeunes plants ne grillent plus aux heures chaudes.':
+      'Tela tejida para tender sobre los cultivos y tamizar del 30 al 50 % del sol. Imprescindible en clima tropical y en ola de calor: semilleros, lechugas y plantas jóvenes dejan de quemarse en las horas de calor.',
+  'Tubercule de base de l\'alimentation mondiale, facile à cultiver et très productif.':
+      'Tubérculo básico de la alimentación mundial, fácil de cultivar y muy productivo.',
+  'Tubercule rustique à saveur d\'artichaut. Plante vivace géante de 2 à 3 m, productive et increvable, mais peut devenir envahissante.':
+      'Tubérculo rústico con sabor a alcachofa. Planta vivaz gigante de 2 a 3 m, productiva e indestructible, pero puede volverse invasora.',
+  'Tubercule sucré et nutritif, pilier de la cuisine africaine et tropicale.':
+      'Tubérculo dulce y nutritivo, pilar de la cocina africana y tropical.',
+  'Tubercule tropical riche en amidon, base alimentaire en Afrique, Asie et Caraïbes.':
+      'Tubérculo tropical rico en almidón, base alimentaria en África, Asia y el Caribe.',
+  'Tubercule tropical résistant à la sécheresse, base de l\'alimentation de millions de personnes.':
+      'Tubérculo tropical resistente a la sequía, base de la alimentación de millones de personas.',
+  'Tuteur en métal en forme de spirale : la tige de tomate s\'enroule naturellement dedans. Pas besoin de ficelle ni d\'attaches, gain de temps énorme.':
+      'Tutor metálico en espiral: el tallo del tomate se enrosca solo. Sin cordel ni ataduras, un ahorro de tiempo enorme.',
+  'Tuteurs en bambou, métal ou spirale pour guider la croissance des plants grimpants. Indispensable pour tomates et haricots.':
+      'Tutores de bambú, metal o espiral para guiar el crecimiento de las trepadoras. Imprescindibles para tomates y judías.',
+  'Tuyau qui suinte sur toute sa longueur et arrose les plants en ligne. Facile à installer, idéal pour les rangs de salades, carottes, fraisiers.':
+      'Tubo que rezuma en toda su longitud y riega las plantas en línea. Fácil de instalar, ideal para hileras de lechugas, zanahorias y fresales.',
+  'Vivace acidulée, l\'oseille donne du pep aux soupes, sauces et salades.':
+      'Vivaz ácida, la acedera da chispa a sopas, salsas y ensaladas.',
+  'Vivace aromatique facile, la ciboulette revient chaque année et parfume salades et omelettes.':
+      'Vivaz aromática fácil, el cebollino vuelve cada año y perfuma ensaladas y tortillas.',
+  'Vivace de luxe, l\'asperge demande de la patience mais produit pendant 15 à 20 ans.':
+      'Vivaz de lujo, el espárrago pide paciencia pero produce de 15 a 20 años.',
+  'Voile blanc épais (P30) à poser sur les plants sensibles en hiver. Protège artichauts, poireaux, choux, oliviers, agrumes en pots.':
+      'Velo blanco grueso (P30) para poner sobre las plantas sensibles en invierno. Protege alcachofas, puerros, coles, olivos y cítricos en maceta.',
+  'Voile léger (P17) à poser au printemps pour réchauffer le sol et démarrer plus tôt salades, radis, carottes. Laisse passer pluie et lumière.':
+      'Velo ligero (P17) para poner en primavera y calentar el suelo, y así adelantar lechugas, rábanos y zanahorias. Deja pasar la lluvia y la luz.',
+  'Voile à fines mailles à poser sur les cultures. Empêche piéride du chou, mouche de la carotte, altises et pucerons sans aucun traitement.':
+      'Malla de trama fina para poner sobre los cultivos. Impide la mariposa de la col, la mosca de la zanahoria, las altisas y los pulgones sin ningún tratamiento.',
+  'Écorces de pin maritime, idéales pour les massifs et arbres fruitiers. Décoratif, dure 2-3 ans, acidifie légèrement le sol (parfait pour fraisiers).':
+      'Corteza de pino marítimo, ideal para macizos y frutales. Decorativa, dura 2-3 años y acidifica ligeramente el suelo (perfecta para fresales).',
+  'Épinard de Ceylan : une liane aux feuilles charnues et brillantes qui adore la chaleur humide, quand les épinards classiques déclarent forfait.':
+      'Espinaca de Ceilán: una liana de hojas carnosas y brillantes a la que le encanta el calor húmedo, justo cuando la espinaca clásica se rinde.',
+  'Épinard de Lagos aux feuilles tendres et aux jolis plumeaux colorés. L\'un des légumes-feuilles les plus cultivés du Nigéria au Bénin — à la fois beau et bon.':
+      'Espinaca de Lagos, de hojas tiernas y bonitos plumeros de color. Una de las hortalizas de hoja más cultivadas de Nigeria a Benín: bonita y buena a la vez.',
 };
