@@ -1582,4 +1582,359 @@ const Map<String, String> contentTextsEn = <String, String>{
       'Save the black seeds of a ripe, tasty papaya; rinse them to remove the pulp and sow them fresh, and they will come up all the better. Sow several plants so you can keep the females or hermaphrodites, which are the most productive.',
   'En pépinière, choisis de jeunes plants en sachet, trapus et bien verts, au pivot non spiralé. Repique-les jeunes (20 à 30 cm) : le papayer déteste qu\'on abîme ses racines.':
       'In a nursery, choose young bagged plants, stocky and well green, with an untwisted taproot. Transplant them young (20 to 30 cm): papaya hates having its roots damaged.',
+  // ─── accessoires (177 phrases, 3323 mots) ───
+  'Toute l\'année, et deux fois par jour en canicule.':
+      'All year round, and twice a day in a heatwave.',
+  'Arrose au pied, jamais sur les feuilles : l\'eau sur le feuillage appelle le mildiou. Retire la pomme pour les plants installés, remets-la pour les jeunes semis que le jet déchausserait.':
+      'Water at the base, never on the leaves: water on the foliage invites blight. Take the rose off for established plants, put it back for young seedlings that the jet would wash out.',
+  'Un arrosoir de 10 L couvre deux carrés de 1,20 m. En dessous de 5 L, tu feras trois allers-retours.':
+      'A 10 L watering can covers two 1.20 m beds. Below 5 L, you\'ll be making three trips.',
+  'Vide-le avant l\'hiver : l\'eau qui gèle dedans fend le plastique. Rince la pomme, le calcaire la bouche trou par trou.':
+      'Empty it before winter: water freezing inside splits the plastic. Rinse the rose, limescale blocks it hole by hole.',
+  'D\'avril à septembre, deux ou trois jours après chaque pluie.':
+      'From April to September, two or three days after each rain.',
+  'Gratte les deux premiers centimètres quand la surface est sèche : tu casses la croûte et tu coupes les herbes au collet. Jamais plus profond — tu abîmerais les racines de ce que tu veux garder.':
+      'Scrape the top two centimetres when the surface is dry: you break the crust and cut the weeds at the collar. Never deeper — you would damage the roots of what you want to keep.',
+  'Une seule. Un fer de 14 cm passe entre les rangs d\'un carré, un fer large ne passe nulle part.':
+      'Just one. A 14 cm blade fits between the rows of a bed, a wide one fits nowhere.',
+  'Affûte le fer deux fois par saison et graisse le manche à l\'huile de lin.':
+      'Sharpen the blade twice a season and oil the handle with linseed oil.',
+  'Au semis, avant d\'oublier — c\'est-à-dire tout de suite.':
+      'At sowing, before you forget — which means right now.',
+  'Écris le nom et la date, au crayon de papier : le feutre s\'efface au soleil en trois semaines. Plante l\'étiquette au nord du rang, elle ne fera pas d\'ombre.':
+      'Write the name and the date, in pencil: marker fades in the sun within three weeks. Put the label at the north end of the row, where it casts no shade.',
+  'Une par variété, pas par plant. Une vingtaine couvre un potager de quatre carrés.':
+      'One per variety, not per plant. Twenty covers a garden of four beds.',
+  'Lave-les en fin de saison : elles se réécrivent des années.':
+      'Wash them at the end of the season: they can be rewritten for years.',
+  'Des bandes découpées dans un pot de yaourt et un crayon de papier font exactement le même travail.':
+      'Strips cut from a yoghurt pot and a pencil do exactly the same job.',
+  'Pour la ronce, le rosier, le compost et tout ce qui pique.':
+      'For brambles, roses, the compost heap and anything that pricks.',
+  'Enlève-les pour semer et repiquer : les doigts nus sentent si la motte est assez humide, les gants l\'écrasent.':
+      'Take them off to sow and prick out: bare fingers can feel whether the rootball is damp enough, gloves just crush it.',
+  'Une paire enduite pour le gros œuvre, une paire fine pour la récolte. Deux paires, pas une.':
+      'A coated pair for heavy work, a thin pair for harvesting. Two pairs, not one.',
+  'Sèche-les à l\'ombre et à plat. Au soleil, l\'enduit craquelle en une saison.':
+      'Dry them flat and in the shade. In the sun, the coating cracks within a season.',
+  'En février-mars avant les semis, et en octobre avant l\'hiver.':
+      'In February and March before sowing, and in October before winter.',
+  'Plante les dents, recule d\'un pas en basculant le manche vers toi : la terre se soulève et se fissure sans être retournée. Les couches du sol restent dans l\'ordre, et la vie qui les habite avec.':
+      'Push the tines in and step back while tipping the handle towards you: the soil lifts and cracks without being turned over. The layers stay in order, and the life in them with them.',
+  'Une grelinette à 4 dents suffit pour des carrés ; la 5 dents est faite pour la pleine terre.':
+      'A 4-tine fork is enough for raised beds; the 5-tine one is made for open ground.',
+  'Brosse la terre des dents et passe un chiffon huilé avant de la ranger.':
+      'Brush the soil off the tines and wipe them with an oiled cloth before storing.',
+  'Du premier radis à la dernière courge.':
+      'From the first radish to the last squash.',
+  'Récolte le matin, avant que le soleil ne fasse transpirer les feuilles : les salades tiennent deux jours de plus. Ne tasse pas, les tomates du fond s\'écrasent sous le reste.':
+      'Harvest in the morning, before the sun makes the leaves sweat: salads keep two days longer. Don\'t pack it down, the tomatoes at the bottom get crushed under the rest.',
+  'Un panier de 10 L porte une récolte de courgettes. Au-delà, c\'est la cagette.':
+      'A 10 L basket holds one courgette harvest. Beyond that, use a crate.',
+  'Rince-le et sèche-le à l\'ombre, surtout s\'il est en osier.':
+      'Rinse it and dry it in the shade, especially if it is wicker.',
+  'Une cagette à fruits du marché fait l\'affaire, et elle s\'empile.':
+      'A fruit crate from the market does the job, and it stacks.',
+  'D\'octobre à décembre pour l\'ail, l\'oignon et l\'échalote.':
+      'From October to December for garlic, onion and shallot.',
+  'Enfonce, tourne d\'un quart de tour, retire : tu emportes une carotte de terre. Pose le bulbe pointe en haut au fond du trou et rebouche avec la terre prélevée.':
+      'Push in, give it a quarter turn, pull out: you lift a plug of soil. Set the bulb pointed end up at the bottom of the hole and fill back in with the soil you took out.',
+  'Un seul. La profondeur se règle à trois fois la hauteur du bulbe.':
+      'Just one. Set the depth to three times the height of the bulb.',
+  'Essuie-le après usage : il rouille là où la peinture part.':
+      'Wipe it after use: it rusts wherever the paint comes off.',
+  'Toute l\'année : tailler, récolter, couper les gourmands.':
+      'All year round: pruning, harvesting, pinching out side shoots.',
+  'Désinfecte la lame à l\'alcool entre deux plants quand l\'un est malade, sinon tu transportes le virus d\'un pied à l\'autre. Coupe en biais, juste au-dessus d\'un œil.':
+      'Disinfect the blade with alcohol between two plants when one is diseased, otherwise you carry the virus from one to the next. Cut on a slant, just above a bud.',
+  'Un seul, mais un dont les lames se remplacent : c\'est ce qui fait la différence entre dix ans et deux.':
+      'Just one, but one whose blades can be replaced: that is the difference between ten years and two.',
+  'Essuie la sève après chaque usage, affûte une fois par mois, huile l\'axe.':
+      'Wipe the sap off after each use, sharpen once a month, oil the pivot.',
+  'Au repiquage, de mars à juin.':
+      'At pricking out, from March to June.',
+  'Creuse plus large que la motte, pose, rebouche et tasse à la main avant d\'arroser. Ne tire jamais un plant par la tige : glisse la lame dessous et soulève la motte entière.':
+      'Dig wider than the rootball, set it in, fill back and firm by hand before watering. Never pull a plant up by the stem: slide the blade underneath and lift the whole rootball.',
+  'Un seul. Le modèle gradué évite de deviner la profondeur.':
+      'Just one. The graduated model saves you guessing the depth.',
+  'Le manche en bois se fend s\'il passe l\'hiver dehors.':
+      'A wooden handle splits if it spends the winter outdoors.',
+  'À la plantation — pas quand le plant penche. À ce moment-là, les racines occupent déjà la place du tuteur.':
+      'At planting — not when the plant starts leaning. By then the roots already occupy the stake\'s place.',
+  'Plante le tuteur d\'abord, le plant ensuite, à 5 cm. Attache en huit avec un lien souple, sans serrer : la tige va grossir.':
+      'Put the stake in first and the plant second, 5 cm away. Tie in a figure of eight with soft twine, loosely: the stem is going to thicken.',
+  'Un par pied de tomate, trois par poquet de haricots grimpants.':
+      'One per tomato plant, three per station of climbing beans.',
+  'Brosse et laisse sécher en fin de saison : les champignons passent l\'hiver dans le bois.':
+      'Brush them and let them dry at the end of the season: fungi overwinter in the wood.',
+  'Une branche de noisetier ou de châtaignier coupée en hiver tient trois saisons.':
+      'A hazel or chestnut branch cut in winter lasts three seasons.',
+  'Au printemps, avant que les coureuses ne partent au sol.':
+      'In spring, before the runners take off along the ground.',
+  'Plante deux pieds de courge ou de haricot d\'Espagne de chaque côté et guide les premières tiges à la main : ensuite elles s\'accrochent seules. Les fruits suspendus restent propres et poussent droits.':
+      'Plant two squash or runner bean plants on each side and guide the first stems by hand: after that they climb on their own. Hanging fruit stays clean and grows straight.',
+  'Une arche de 2 m de large nourrit quatre pieds grimpants et libère autant de surface au sol.':
+      'A 2 m wide arch feeds four climbing plants and frees up as much ground.',
+  'Ancre-la ou démonte-la avant les coups de vent d\'automne : couverte de feuilles, elle fait voile.':
+      'Anchor it or take it down before the autumn gales: covered in leaves, it acts like a sail.',
+  'Deux panneaux de treillis à béton cintrés et liés font une arche solide pour trois fois moins.':
+      'Two panels of reinforcing mesh bent and tied together make a solid arch for three times less.',
+  'Au montage du jardin, idéalement en février-mars.':
+      'When setting the garden up, ideally in February or March.',
+  'Pose-le sur du carton brun, pas sur une bâche : le carton étouffe l\'herbe puis disparaît, et les vers remontent du sol. Remplis en couches — branches, tontes, compost, terreau en surface.':
+      'Set it on brown cardboard, not on a membrane: cardboard smothers the grass then disappears, and the worms come up. Fill it in layers — branches, grass clippings, compost, potting soil on top.',
+  '1,20 m de côté, pas plus : c\'est la portée de deux bras, et tu ne marcheras jamais dedans.':
+      '1.20 m a side, no more: that is the reach of two arms, and you will never have to walk inside it.',
+  'Huile l\'intérieur à l\'huile de lin tous les deux ans. Jamais de produit de traitement : il migre dans la terre.':
+      'Oil the inside with linseed oil every two years. Never a wood treatment: it migrates into the soil.',
+  'Quatre planches de douglas non traité de 27 mm, vissées aux angles sur des tasseaux.':
+      'Four untreated Douglas fir boards 27 mm thick, screwed at the corners onto battens.',
+  'De février à avril, puis de septembre à novembre.':
+      'From February to April, then from September to November.',
+  'Oriente la pente au sud et ouvre dès que le soleil tape : il fait 15 °C de plus à l\'intérieur, et des semis cuisent en une heure. Referme avant le coucher du soleil.':
+      'Face the slope south and open it as soon as the sun hits: it is 15 °C warmer inside, and seedlings cook in an hour. Close it before sunset.',
+  'Un châssis de 1 m² abrite les semis de tout un potager de quatre carrés.':
+      'A 1 m² frame shelters the seedlings of a whole four-bed garden.',
+  'Lave le vitrage chaque automne : 20 % de lumière en plus pour un coup d\'éponge.':
+      'Wash the glass every autumn: 20 % more light for one wipe of a sponge.',
+  'Une vieille fenêtre posée sur un cadre de planches fait un châssis parfait.':
+      'An old window laid on a frame of boards makes a perfect cold frame.',
+  'Les deux semaines qui suivent un repiquage précoce, et sur les derniers plants d\'automne.':
+      'The two weeks following an early transplant, and over the last autumn plants.',
+  'Pose-la le soir, retire-la le matin si le soleil donne. Enfonce le bord d\'un centimètre dans la terre, sinon le vent la promène dans le jardin.':
+      'Put it on in the evening, take it off in the morning if the sun is out. Push the rim a centimetre into the soil, or the wind will walk it around the garden.',
+  'Une par plant précoce. Quatre ou cinq suffisent — ce n\'est pas une couverture, c\'est une avance.':
+      'One per early plant. Four or five is enough — it is not a blanket, it is a head start.',
+  'Range-les emboîtées à l\'abri : le plastique devient cassant après un hiver au gel.':
+      'Store them stacked under cover: the plastic turns brittle after a winter of frost.',
+  'Une bouteille d\'eau de 5 L coupée, goulot laissé ouvert pour que l\'air circule.':
+      'A 5 L water bottle cut in half, with the neck left open so the air can circulate.',
+  'En avril-mai, au semis des haricots et des pois grimpants.':
+      'In April and May, when sowing beans and climbing peas.',
+  'Plante trois rames en tipi, liées en haut, et sème quatre grains au pied de chacune. Un tipi encaisse le vent qu\'un rang droit prend de plein fouet.':
+      'Set three canes in a wigwam, tied at the top, and sow four seeds at the foot of each. A wigwam takes the wind that a straight row meets head on.',
+  'Une rame de 1,80 m pour trois pieds. Neuf rames font un carré de haricots.':
+      'One 1.80 m cane for three plants. Nine canes make a bed of beans.',
+  'Rentre-les sèches et debout : couchées à terre tout l\'hiver, elles pourrissent par le bas.':
+      'Bring them in dry and standing up: left lying on the ground all winter, they rot from the bottom.',
+  'Le bambou se coupe en janvier dans n\'importe quelle haie qui en porte, et sèche deux mois à l\'abri.':
+      'Bamboo is cut in January from any hedge that carries it, and dries for two months under cover.',
+  'De mars à mai, puis de septembre aux premières gelées.':
+      'From March to May, then from September to the first frosts.',
+  'Tends la bâche sans pli : un pli retient l\'eau, et le poids déchire l\'arceau. Laisse les deux bouts ouverts par beau temps, sinon l\'air stagnant fait pourrir les salades.':
+      'Stretch the cover without a crease: a crease holds water, and the weight tears the hoop. Leave both ends open in fine weather, or the still air rots the salads.',
+  'Un tunnel de 3 m couvre deux carrés mis bout à bout.':
+      'A 3 m tunnel covers two beds set end to end.',
+  'Replie la bâche sèche à l\'automne. Rangée mouillée, elle moisit en un hiver.':
+      'Fold the cover away dry in autumn. Stored wet, it goes mouldy in one winter.',
+  'Des arceaux en tuyau PER et une bâche de 100 microns clipsée rendent le même service.':
+      'Hoops of plastic water pipe and a 100 micron sheet clipped on do the same job.',
+  'Toute l\'année. C\'est d\'abord un choix de dos.':
+      'All year round. It is first of all a choice you make for your back.',
+  'Remplis sur 25 cm au minimum : en dessous, la terre sèche en une demi-journée d\'été. Place-la à l\'est, le soleil du matin suffit aux salades et ne les brûle pas.':
+      'Fill it to at least 25 cm: below that, the soil dries out in half a summer day. Face it east, the morning sun is enough for salads and does not scorch them.',
+  'Une table de 80 × 40 cm tient dix salades, ou un rang de radis qu\'on renouvelle toutes les trois semaines.':
+      'An 80 × 40 cm table holds ten salads, or a row of radishes renewed every three weeks.',
+  'Vérifie que le fond est percé et que l\'eau sort vraiment : une table qui retient l\'eau noie les racines.':
+      'Check that the base is drilled and that the water really drains: a table that holds water drowns the roots.',
+  'À la plantation, en mai — pas une fois que le pied fait un mètre et part dans tous les sens.':
+      'At planting, in May — not once the plant is a metre tall and heading off in all directions.',
+  'Conduis une seule tige par pied en l\'enroulant autour d\'une ficelle verticale, et pince les gourmands chaque semaine. Moins de fruits, mais plus gros, et un feuillage qui sèche vite après la pluie — donc moins de mildiou.':
+      'Train a single stem per plant by winding it around a vertical string, and pinch out the side shoots every week. Fewer fruit, but bigger, and foliage that dries fast after rain — so less blight.',
+  'Un treillis de 1,20 m porte quatre pieds espacés de 40 cm.':
+      'A 1.20 m trellis carries four plants spaced 40 cm apart.',
+  'Retire ficelles et feuilles sèches avant l\'hiver : le mildiou hiverne dessus.':
+      'Take the strings and dry leaves off before winter: blight overwinters on them.',
+  'Une ficelle de chanvre tendue entre une barre haute et le sol fait exactement ça.':
+      'A hemp string tied between a high bar and the ground does exactly that.',
+  'À la plantation d\'une tomate.':
+      'When planting a tomato.',
+  'Plante la spirale à 10 cm du pied et fais passer la tige dans les boucles au fur et à mesure : rien à attacher, la tige se cale d\'elle-même. Tourne toujours dans le même sens.':
+      'Push the spiral in 10 cm from the plant and feed the stem through the loops as it grows: nothing to tie, the stem settles itself. Always turn the same way.',
+  'Un par pied. 1,70 m de haut pour une tomate indéterminée, qui ne s\'arrête jamais de monter.':
+      'One per plant. 1.70 m tall for an indeterminate tomato, which never stops climbing.',
+  'Essuie la terre et range-les au sec : ils durent dix ans.':
+      'Wipe the soil off and store them dry: they last ten years.',
+  'Dès la plantation des salades, et après chaque pluie de printemps.':
+      'As soon as the salads go in, and after every spring shower.',
+  'Éparpille quelques granulés autour des jeunes plants, jamais en tas : un tas rassemble les limaces au même endroit au lieu de les éloigner. Le phosphate de fer les fait cesser de manger, et elles meurent cachées — tu ne verras pas de cadavres, c\'est normal.':
+      'Scatter a few pellets around the young plants, never in a heap: a heap gathers the slugs in one place instead of keeping them away. Iron phosphate makes them stop feeding, and they die out of sight — you will not find any bodies, and that is normal.',
+  '5 g par m², à renouveler après une forte pluie.':
+      '5 g per m², renewed after heavy rain.',
+  'Garde la boîte fermée et au sec : mouillés, les granulés se délitent et ne servent plus.':
+      'Keep the tub closed and dry: wet pellets break down and stop working.',
+  'Une planche posée à plat le soir : tu ramasses dessous au matin. Gratuit, mais il faut y aller tous les jours.':
+      'A plank laid flat in the evening: you collect underneath in the morning. Free, but you have to go out every day.',
+  'De mai à août, contre la mouche de la carotte et la piéride du chou.':
+      'From May to August, against carrot fly and the cabbage white.',
+  'Pose-le dès le semis, avant que l\'insecte n\'arrive : posé après la ponte, il enferme les chenilles avec le chou. Enterre ou leste les bords, la mouche passe par le moindre jour.':
+      'Put it on from sowing, before the insect arrives: laid on after egg-laying, it shuts the caterpillars in with the cabbage. Bury or weight the edges, the fly gets through the smallest gap.',
+  'Maille de 0,8 mm contre la mouche de la carotte, 1,35 mm suffit contre les papillons. Prévois 1 m de plus que le carré dans chaque sens.':
+      '0.8 mm mesh against carrot fly, 1.35 mm is enough against butterflies. Allow 1 m more than the bed in each direction.',
+  'Rentre-le sec et plié : les UV le fragilisent en deux saisons dehors.':
+      'Bring it in dry and folded: UV makes it brittle after two seasons outdoors.',
+  'Trois semaines avant la maturité des fraises et des cerises.':
+      'Three weeks before the strawberries and cherries ripen.',
+  'Tends-le sur des arceaux, jamais à même les feuilles : posé dessus, les oiseaux picorent à travers et les oisillons s\'y prennent les pattes. Maille de 15 à 20 mm.':
+      'Stretch it over hoops, never straight onto the leaves: laid on top, the birds peck through it and fledglings catch their feet in it. 15 to 20 mm mesh.',
+  'La surface du carré, plus 50 cm de retombée sur chaque bord pour le fixer au sol.':
+      'The area of the bed, plus 50 cm of overhang on each side to pin it down.',
+  'Enroule-le au lieu de le froisser : les mailles se déchirent aux plis.':
+      'Roll it rather than crumple it: the mesh tears along the folds.',
+  'De juin à septembre en France. Aux heures chaudes toute l\'année sous les tropiques.':
+      'From June to September in France. During the hot hours all year round in the tropics.',
+  'Tends-le à 50 cm au-dessus des cultures, pas posé dessus : l\'air doit circuler, sinon tu fabriques une étuve. 30 % d\'ombrage pour les tomates et les aubergines, 50 % pour les salades et les semis.':
+      'Stretch it 50 cm above the crops, not resting on them: the air has to circulate, or you build an oven. 30 % shade for tomatoes and aubergines, 50 % for salads and seedlings.',
+  'Une toile de 2 × 3 m couvre deux carrés.':
+      'A 2 × 3 m sheet covers two beds.',
+  'Les œillets lâchent avant la toile : double-les d\'une sangle cousue.':
+      'The eyelets give way before the fabric: back them with a sewn strap.',
+  'Un vieux voilage, ou une canisse posée sur quatre piquets, tamise autant.':
+      'An old net curtain, or a reed screen on four posts, filters just as well.',
+  'De février à avril, sur les semis et les premiers repiquages.':
+      'From February to April, over seedlings and the first transplants.',
+  'Pose-le flottant, bords enterrés, sans tendre : les plants le soulèvent en poussant. Il gagne 2 à 3 °C la nuit et coupe le vent, ce qui compte autant. Retire-le à la floraison, les insectes doivent pouvoir passer.':
+      'Lay it loose, edges buried, without stretching: the plants lift it as they grow. It gains 2 to 3 °C at night and cuts the wind, which counts just as much. Take it off at flowering, the insects have to get through.',
+  'Un voile P17 de 2 × 5 m couvre deux carrés et se recoupe aux ciseaux.':
+      'A P17 fleece of 2 × 5 m covers two beds and can be cut down with scissors.',
+  'Il tient deux ou trois saisons. Répare les déchirures au ruban adhésif de serre.':
+      'It lasts two or three seasons. Mend tears with greenhouse tape.',
+  'De novembre à mars, posé avant la première gelée annoncée.':
+      'From November to March, put on before the first forecast frost.',
+  'Enveloppe sans serrer et laisse le haut ouvert : un voile fermé retient l\'humidité et fait pourrir le cœur de la plante. Il protège jusqu\'à −5 °C, pas au-delà — en dessous, il faut rentrer les pots.':
+      'Wrap without tightening and leave the top open: a closed fleece holds moisture and rots the heart of the plant. It protects down to −5 °C, no further — below that, the pots have to come in.',
+  'Un voile P30 de 2 × 5 m enveloppe trois artichauts, ou deux agrumes en pot.':
+      'A P30 fleece of 2 × 5 m wraps three artichokes, or two citrus trees in pots.',
+  'Secoue la neige : son poids mouillé casse les branches que le voile protège.':
+      'Shake the snow off: its wet weight breaks the very branches the fleece is protecting.',
+  'Au démarrage d\'un tas, et quand il ne chauffe plus.':
+      'When starting a heap, and when it stops heating up.',
+  'Saupoudre une poignée tous les 20 cm de déchets, puis arrose : il apporte l\'azote et les ferments qui manquent à un tas trop sec ou trop ligneux. ⚠️ Un tas qui sent mauvais manque d\'air, pas d\'activateur — retourne-le d\'abord.':
+      'Scatter a handful every 20 cm of waste, then water: it brings the nitrogen and the ferments a heap that is too dry or too woody is missing. ⚠️ A heap that smells bad lacks air, not activator — turn it first.',
+  'Une poignée par couche. Un tas bien équilibré en vert et en brun n\'en a pas besoin du tout.':
+      'A handful per layer. A heap well balanced in green and brown does not need any at all.',
+  'Referme le sac : à l\'humidité, la poudre s\'agglomère en blocs.':
+      'Close the bag again: in damp air, the powder cakes into lumps.',
+  'Une couche de tontes fraîches, ou du purin d\'ortie dilué, fait le même apport d\'azote.':
+      'A layer of fresh grass clippings, or diluted nettle tea, brings the same nitrogen.',
+  'Toute l\'année. Le tas ne démarre vraiment qu\'au printemps, quand il se réchauffe.':
+      'All year round. The heap only really starts in spring, when it warms up.',
+  'Alterne une couche de vert — épluchures, tontes — et une couche de brun — feuilles, carton, broyat — à peu près moitié-moitié. Retourne tous les deux mois. Ni viande, ni laitage, ni plante malade.':
+      'Alternate a layer of green — peelings, clippings — and a layer of brown — leaves, cardboard, wood chip — roughly half and half. Turn it every two months. No meat, no dairy, no diseased plants.',
+  'Un bac de 300 à 600 L suffit à une famille et rend de quoi pailler et amender quatre carrés par an.':
+      'A 300 to 600 L bin is enough for a family and gives you enough to mulch and feed four beds a year.',
+  'Pose-le à l\'ombre et sur la terre nue : les vers doivent pouvoir monter du sol.':
+      'Put it in the shade and on bare soil: the worms have to be able to come up from the ground.',
+  'Quatre palettes vissées en carré, dont une face démontable pour sortir le compost par le bas.':
+      'Four pallets screwed into a square, with one side removable to take the compost out from the bottom.',
+  'Au printemps à la plantation, puis une fois par mois sur les gourmands : tomate, courgette, chou, poireau.':
+      'In spring at planting, then once a month on the hungry ones: tomato, courgette, cabbage, leek.',
+  'Griffe-le en surface et arrose. Enfoui trop profond, il nourrit sous les racines. Jamais sur une terre sèche, ni sur un plant qui souffre déjà de la chaleur.':
+      'Rake it into the surface and water. Buried too deep, it feeds below the roots. Never on dry soil, nor on a plant already suffering from the heat.',
+  '100 g par m² au printemps, et c\'est tout. Trop d\'azote donne un feuillage magnifique et pas de fruits.':
+      '100 g per m² in spring, and that\'s all. Too much nitrogen gives magnificent foliage and no fruit.',
+  'Les granulés se gardent des années au sec ; un engrais liquide, un an.':
+      'Granules keep for years in the dry; a liquid feed, one year.',
+  'Le purin d\'ortie dilué à 10 % remplace l\'azote, la cendre de bois tamisée apporte la potasse.':
+      'Nettle tea diluted to 10 % replaces the nitrogen, and sieved wood ash brings the potash.',
+  'Toute l\'année, et c\'est la solution quand il n\'y a pas de jardin.':
+      'All year round, and it is the answer when there is no garden.',
+  'Démarre avec 250 g de vers (Eisenia) et nourris petit : ils mangent environ la moitié de leur poids par jour, épluchures coupées fin. Ni agrumes, ni oignon, ni ail — ils acidifient le bac et les vers fuient.':
+      'Start with 250 g of worms (Eisenia) and feed them little: they eat about half their own weight a day, peelings chopped small. No citrus, no onion, no garlic — they acidify the bin and the worms leave.',
+  'Trois plateaux traitent les déchets de deux personnes, et rendent du lombricompost plus le jus à diluer pour les plantes.':
+      'Three trays handle the waste of two people, and give you worm compost plus the liquid to dilute for your plants.',
+  'Entre 15 et 25 °C : ni au soleil d\'été, ni dehors en hiver. Un bac trop humide se corrige avec du carton déchiré.':
+      'Between 15 and 25 °C: not in the summer sun, not outdoors in winter. A bin that is too wet is corrected with torn cardboard.',
+  'Deux seaux de 20 L emboîtés, le premier percé au fond, font un lombricomposteur d\'essai.':
+      'Two 20 L buckets stacked, the top one drilled at the bottom, make a trial wormery.',
+  'Au printemps, sur une terre réchauffée et désherbée.':
+      'In spring, on warmed and weeded soil.',
+  'Étale 5 à 7 cm en dégageant le collet des plants. Réserve-le aux massifs, aux fraisiers et aux petits fruits : il acidifie en se décomposant, et il est trop lent pour un carré qu\'on remanie chaque année.':
+      'Spread 5 to 7 cm, keeping it clear of the collar of the plants. Save it for borders, strawberries and soft fruit: it acidifies as it breaks down, and it is too slow for a bed you rework every year.',
+  'Un sac de 50 L couvre 1 m² sur 5 cm d\'épaisseur.':
+      'A 50 L bag covers 1 m² to a depth of 5 cm.',
+  'Il tient deux à trois ans. Recharge d\'un centimètre chaque printemps.':
+      'It lasts two to three years. Top it up by a centimetre each spring.',
+  'De mai aux premières gelées, dès que la terre est réchauffée.':
+      'From May to the first frosts, as soon as the soil has warmed up.',
+  'Étale 3 à 5 cm sur une terre déjà humide et désherbée : pailler une terre sèche la garde sèche. Dégage le pied des plants de 5 cm, sinon le collet pourrit.':
+      'Spread 3 to 5 cm on soil that is already damp and weeded: mulching dry soil keeps it dry. Keep it 5 cm clear of the base of the plants, or the collar rots.',
+  'Un sac de 100 L couvre 2,5 m² sur 4 cm — soit deux carrés.':
+      'A 100 L bag covers 2.5 m² to a depth of 4 cm — two beds.',
+  'Il disparaît en une saison en nourrissant le sol. C\'est voulu, pas un défaut.':
+      'It disappears in one season, feeding the soil as it goes. That is the point, not a fault.',
+  'Les tontes séchées deux jours, les feuilles mortes ou la paille font le même travail pour rien.':
+      'Grass clippings dried for two days, dead leaves or straw do the same job for nothing.',
+  'Au semis et au rempotage, de février à juin.':
+      'At sowing and potting on, from February to June.',
+  'Tamise-le pour les semis : une graine de carotte ne traverse pas un morceau d\'écorce. En pleine terre, ne remplace jamais la terre par du terreau — mélange-les à moitié, le terreau seul sèche vite et se tasse.':
+      'Sieve it for seedlings: a carrot seed cannot push past a piece of bark. In open ground, never replace the soil with potting compost — mix them half and half, compost on its own dries fast and settles.',
+  'Un sac de 20 L remplit trente godets. Une table de culture de 80 × 40 cm sur 25 cm de profondeur en demande 80 L.':
+      'A 20 L bag fills thirty pots. An 80 × 40 cm growing table 25 cm deep needs 80 L.',
+  'Referme le sac : à l\'air, le terreau sèche et devient hydrophobe — l\'eau glisse dessus sans entrer.':
+      'Close the bag again: in the open air, compost dries out and turns water-repellent — the water runs off without going in.',
+  'Toute l\'année sur un balcon. Au printemps pour démarrer.':
+      'All year round on a balcony. In spring to get started.',
+  'Compte 30 cm de profondeur pour une tomate, 20 pour des salades, 40 pour une carotte longue. Ne mets des billes d\'argile que si l\'eau ne s\'évacue pas : sinon elles prennent la place des racines.':
+      'Allow 30 cm of depth for a tomato, 20 for salads, 40 for a long carrot. Only add clay pebbles if the water does not drain: otherwise they take the place of the roots.',
+  'Un bac de 80 × 40 cm porte deux pieds de tomate, ou huit salades.':
+      'An 80 × 40 cm planter carries two tomato plants, or eight salads.',
+  'Une terre cuite pleine d\'eau éclate au gel : vide-la ou rentre-la avant l\'hiver.':
+      'Terracotta full of water shatters in a frost: empty it or bring it in before winter.',
+  'Un grand sac de terreau couché, percé dessous et fendu dessus, fait un bac de culture pour une saison.':
+      'A big bag of potting compost laid flat, holed underneath and slit on top, makes a growing bed for one season.',
+  'En janvier-février, quand on prépare l\'année sur le papier.':
+      'In January and February, when you are planning the year on paper.',
+  'Commence par cinq ou six variétés faciles — radis, laitue, haricot, courgette, basilic, tomate cerise — plutôt que par vingt sachets dont la moitié finira périmée. Note la date d\'achat sur chaque sachet.':
+      'Start with five or six easy varieties — radish, lettuce, bean, courgette, basil, cherry tomato — rather than twenty packets half of which will go out of date. Write the purchase date on each packet.',
+  'Un sachet de radis sème plusieurs rangs : échelonne-les de trois semaines. Un sachet de tomate suffit à plusieurs saisons.':
+      'One packet of radish sows several rows: stagger them three weeks apart. One packet of tomato is enough for several seasons.',
+  'Au sec, au frais, à l\'obscurité. Les graines de panais et d\'oignon ne germent plus après deux ans ; celles de tomate tiennent bien plus longtemps.':
+      'Dry, cool and dark. Parsnip and onion seed no longer germinates after two years; tomato seed keeps far longer.',
+  'Récupère tes graines de tomate : laisse fermenter la pulpe trois jours, rince, sèche. ⚠️ Pas sur un hybride F1, la descendance ne ressemble à rien.':
+      'Save your own tomato seed: let the pulp ferment for three days, rinse, dry. ⚠️ Not from an F1 hybrid, the offspring look like nothing.',
+  'De mai à septembre, installé avant les grosses chaleurs.':
+      'From May to September, installed before the real heat.',
+  'Un goutteur par pied, pas un tuyau en serpentin : l\'eau doit arriver aux racines, pas entre les plants. Fais tourner tôt le matin, 20 à 30 minutes d\'affilée plutôt que peu chaque jour — un arrosage long fait descendre les racines.':
+      'One dripper per plant, not a hose snaking about: the water has to reach the roots, not the space between plants. Run it early in the morning, 20 to 30 minutes at a stretch rather than a little every day — a long watering sends the roots down.',
+  'Quatre goutteurs de 2 L/h par carré de 1,20 m.':
+      'Four 2 L/h drippers per 1.20 m bed.',
+  'Démonte et rince les goutteurs à l\'automne, le calcaire les bouche. Vide la ligne avant le gel.':
+      'Take the drippers off and rinse them in autumn, limescale blocks them. Drain the line before the frost.',
+  'De juin à septembre, et pendant les absences.':
+      'From June to September, and while you are away.',
+  'Enterre-la jusqu\'au col entre deux ou trois plants, puis remplis : la terre cuite suinte à la demande et les racines viennent chercher l\'eau. Garde le couvercle, sinon tu arroses les moustiques.':
+      'Bury it up to the neck between two or three plants, then fill it: the terracotta seeps on demand and the roots come to find the water. Keep the lid on, or you are watering mosquitoes.',
+  'Une oya de 5 L alimente trois pieds de tomate pendant trois à cinq jours en été. Deux par carré.':
+      'A 5 L olla feeds three tomato plants for three to five days in summer. Two per bed.',
+  'Déterre-la avant l\'hiver : pleine d\'eau, elle éclate au gel. Brosse le dépôt blanc à l\'eau claire, sans savon.':
+      'Dig it up before winter: full of water, it shatters in a frost. Brush the white deposit off with clean water, no soap.',
+  'Deux pots de terre cuite non émaillés collés bord à bord, le trou du bas bouché au mastic, font une oya.':
+      'Two unglazed terracotta pots glued rim to rim, the bottom hole sealed with mastic, make an olla.',
+  'Avant de partir, et de juin à août.':
+      'Before you go away, and from June to August.',
+  'Règle un créneau long et peu fréquent : 30 minutes trois fois par semaine plutôt que 10 minutes tous les jours. ⚠️ Fais un cycle complet devant toi avant de partir — une pile faible ou un robinet à moitié ouvert, et tu retrouves tout sec.':
+      'Set a long, infrequent slot: 30 minutes three times a week rather than 10 minutes every day. ⚠️ Run a full cycle in front of you before you leave — a weak battery or a half-open tap, and you come back to everything dry.',
+  'Un seul, sur le robinet, en tête du goutte à goutte.':
+      'Just one, on the tap, at the head of the drip line.',
+  'Retire la pile et rentre le boîtier l\'hiver : il gèle et se fend.':
+      'Take the battery out and bring the unit in for winter: it freezes and splits.',
+  'Toute l\'année : il se remplit l\'hiver pour servir l\'été.':
+      'All year round: it fills in winter to serve in summer.',
+  'Raccorde-le à une descente de gouttière avec un collecteur filtrant, et pose le robinet assez haut pour glisser un arrosoir dessous. L\'eau de pluie est sans calcaire et à température ambiante : les plants ne prennent pas le choc froid du robinet.':
+      'Connect it to a downpipe with a filtering diverter, and set the tap high enough to slide a watering can underneath. Rainwater has no limescale and is at air temperature: the plants do not get the cold shock of the mains.',
+  '1 mm de pluie sur 10 m² de toit rend 10 L. Une cuve de 300 L se vide en une semaine de canicule sur quatre carrés.':
+      '1 mm of rain on 10 m² of roof gives 10 L. A 300 L butt empties in a week of heatwave over four beds.',
+  'Couvre-la : à la lumière l\'eau verdit, et une cuve ouverte est un piège pour les animaux. Nettoie le fond une fois par an.':
+      'Cover it: in the light the water turns green, and an open butt is a trap for animals. Clean the bottom once a year.',
+  'Un bidon alimentaire de 200 L d\'occasion et un collecteur de gouttière suffisent.':
+      'A second-hand 200 L food-grade drum and a gutter diverter are enough.',
+  'De mai à septembre, sur les rangs serrés.':
+      'From May to September, on close-planted rows.',
+  'Déroule-le le long du rang, enterré de 5 cm ou glissé sous le paillis, et branche-le sur un robinet à faible pression. Il est fait pour les rangs continus — salades, carottes, fraisiers — là où le goutte à goutte demanderait trente goutteurs.':
+      'Unroll it along the row, buried 5 cm down or slipped under the mulch, and connect it to a low-pressure tap. It is made for continuous rows — salads, carrots, strawberries — where drip irrigation would need thirty drippers.',
+  '15 m de tuyau couvrent quatre carrés de 1,20 m.':
+      '15 m of hose covers four 1.20 m beds.',
+  'Il se bouche au calcaire et à la terre : rince-le à pleine pression en début de saison.':
+      'It clogs with limescale and soil: flush it at full pressure at the start of the season.',
 };

@@ -343,7 +343,7 @@ const Map<String, AccessoryGuide> accessoryGuides = <String, AccessoryGuide>{
         'sec ou trop ligneux. ⚠️ Un tas qui sent mauvais manque d\'air, '
         'pas d\'activateur — retourne-le d\'abord.',
     howMuch: 'Une poignée par couche. Un tas bien équilibré en vert et '
-        'en brun n\'en a besoin du tout.',
+        'en brun n\'en a pas besoin du tout.',
     care: 'Referme le sac : à l\'humidité, la poudre s\'agglomère en '
         'blocs.',
     diy: 'Une couche de tontes fraîches, ou du purin d\'ortie dilué, '

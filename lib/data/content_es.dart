@@ -1581,4 +1581,359 @@ const Map<String, String> contentTextsEs = <String, String>{
       'Recoge las semillas negras de una papaya bien madura y sabrosa; enjuágalas para quitar la pulpa y siémbralas frescas, germinan mucho mejor. Siembra varias matas para poder quedarte con las hembras o las hermafroditas, las más productivas.',
   'En pépinière, choisis de jeunes plants en sachet, trapus et bien verts, au pivot non spiralé. Repique-les jeunes (20 à 30 cm) : le papayer déteste qu\'on abîme ses racines.':
       'En semillero, elige plantas jóvenes en bolsa, robustas y bien verdes, de raíz pivotante sin espiral. Trasplántalas jóvenes (20 a 30 cm): la papaya odia que le dañen las raíces.',
+  // ─── accessoires (177 phrases, 3323 mots) ───
+  'Toute l\'année, et deux fois par jour en canicule.':
+      'Todo el año, y dos veces al día en plena ola de calor.',
+  'Arrose au pied, jamais sur les feuilles : l\'eau sur le feuillage appelle le mildiou. Retire la pomme pour les plants installés, remets-la pour les jeunes semis que le jet déchausserait.':
+      'Riega al pie, nunca sobre las hojas: el agua en el follaje llama al mildiu. Quita la alcachofa para las plantas ya instaladas y vuelve a ponerla para los plantones jóvenes, que el chorro descalzaría.',
+  'Un arrosoir de 10 L couvre deux carrés de 1,20 m. En dessous de 5 L, tu feras trois allers-retours.':
+      'Una regadera de 10 L cubre dos bancales de 1,20 m. Por debajo de 5 L, harás tres viajes.',
+  'Vide-le avant l\'hiver : l\'eau qui gèle dedans fend le plastique. Rince la pomme, le calcaire la bouche trou par trou.':
+      'Vacíala antes del invierno: el agua que se hiela dentro raja el plástico. Enjuaga la alcachofa, la cal la obstruye agujero a agujero.',
+  'D\'avril à septembre, deux ou trois jours après chaque pluie.':
+      'De abril a septiembre, dos o tres días después de cada lluvia.',
+  'Gratte les deux premiers centimètres quand la surface est sèche : tu casses la croûte et tu coupes les herbes au collet. Jamais plus profond — tu abîmerais les racines de ce que tu veux garder.':
+      'Rasca los dos primeros centímetros cuando la superficie esté seca: rompes la costra y cortas las hierbas por el cuello. Nunca más hondo: dañarías las raíces de lo que quieres conservar.',
+  'Une seule. Un fer de 14 cm passe entre les rangs d\'un carré, un fer large ne passe nulle part.':
+      'Una sola. Una hoja de 14 cm pasa entre las hileras de un bancal; una ancha no pasa por ninguna parte.',
+  'Affûte le fer deux fois par saison et graisse le manche à l\'huile de lin.':
+      'Afila la hoja dos veces por temporada y engrasa el mango con aceite de linaza.',
+  'Au semis, avant d\'oublier — c\'est-à-dire tout de suite.':
+      'Al sembrar, antes de que se te olvide: es decir, ahora mismo.',
+  'Écris le nom et la date, au crayon de papier : le feutre s\'efface au soleil en trois semaines. Plante l\'étiquette au nord du rang, elle ne fera pas d\'ombre.':
+      'Escribe el nombre y la fecha a lápiz: el rotulador se borra al sol en tres semanas. Clava la etiqueta al norte de la hilera, así no dará sombra.',
+  'Une par variété, pas par plant. Une vingtaine couvre un potager de quatre carrés.':
+      'Una por variedad, no por planta. Con una veintena cubres un huerto de cuatro bancales.',
+  'Lave-les en fin de saison : elles se réécrivent des années.':
+      'Lávalas al final de la temporada: se reescriben durante años.',
+  'Des bandes découpées dans un pot de yaourt et un crayon de papier font exactement le même travail.':
+      'Unas tiras recortadas de un envase de yogur y un lápiz hacen exactamente el mismo trabajo.',
+  'Pour la ronce, le rosier, le compost et tout ce qui pique.':
+      'Para la zarza, el rosal, el compost y todo lo que pincha.',
+  'Enlève-les pour semer et repiquer : les doigts nus sentent si la motte est assez humide, les gants l\'écrasent.':
+      'Quítatelos para sembrar y trasplantar: los dedos desnudos notan si el cepellón está bastante húmedo, los guantes lo aplastan.',
+  'Une paire enduite pour le gros œuvre, une paire fine pour la récolte. Deux paires, pas une.':
+      'Un par recubierto para el trabajo duro y un par fino para la cosecha. Dos pares, no uno.',
+  'Sèche-les à l\'ombre et à plat. Au soleil, l\'enduit craquelle en une saison.':
+      'Sécalos a la sombra y en plano. Al sol, el recubrimiento se cuartea en una temporada.',
+  'En février-mars avant les semis, et en octobre avant l\'hiver.':
+      'En febrero y marzo antes de las siembras, y en octubre antes del invierno.',
+  'Plante les dents, recule d\'un pas en basculant le manche vers toi : la terre se soulève et se fissure sans être retournée. Les couches du sol restent dans l\'ordre, et la vie qui les habite avec.':
+      'Clava las púas y retrocede un paso inclinando el mango hacia ti: la tierra se levanta y se agrieta sin voltearse. Las capas del suelo quedan en su orden, y la vida que las habita con ellas.',
+  'Une grelinette à 4 dents suffit pour des carrés ; la 5 dents est faite pour la pleine terre.':
+      'Una laya de 4 púas basta para los bancales; la de 5 está hecha para plena tierra.',
+  'Brosse la terre des dents et passe un chiffon huilé avant de la ranger.':
+      'Cepilla la tierra de las púas y pasa un trapo aceitado antes de guardarla.',
+  'Du premier radis à la dernière courge.':
+      'Del primer rábano a la última calabaza.',
+  'Récolte le matin, avant que le soleil ne fasse transpirer les feuilles : les salades tiennent deux jours de plus. Ne tasse pas, les tomates du fond s\'écrasent sous le reste.':
+      'Cosecha por la mañana, antes de que el sol haga sudar las hojas: las lechugas aguantan dos días más. No apelmaces, los tomates del fondo se aplastan bajo lo demás.',
+  'Un panier de 10 L porte une récolte de courgettes. Au-delà, c\'est la cagette.':
+      'Una cesta de 10 L lleva una cosecha de calabacines. Más allá, toca la caja.',
+  'Rince-le et sèche-le à l\'ombre, surtout s\'il est en osier.':
+      'Enjuágala y sécala a la sombra, sobre todo si es de mimbre.',
+  'Une cagette à fruits du marché fait l\'affaire, et elle s\'empile.':
+      'Una caja de fruta del mercado sirve igual, y además se apila.',
+  'D\'octobre à décembre pour l\'ail, l\'oignon et l\'échalote.':
+      'De octubre a diciembre para el ajo, la cebolla y la chalota.',
+  'Enfonce, tourne d\'un quart de tour, retire : tu emportes une carotte de terre. Pose le bulbe pointe en haut au fond du trou et rebouche avec la terre prélevée.':
+      'Húndelo, gíralo un cuarto de vuelta y sácalo: te llevas un cilindro de tierra. Coloca el bulbo con la punta hacia arriba en el fondo del hoyo y tapa con la tierra extraída.',
+  'Un seul. La profondeur se règle à trois fois la hauteur du bulbe.':
+      'Uno solo. La profundidad se ajusta a tres veces la altura del bulbo.',
+  'Essuie-le après usage : il rouille là où la peinture part.':
+      'Sécalo después de usarlo: se oxida allí donde se va la pintura.',
+  'Toute l\'année : tailler, récolter, couper les gourmands.':
+      'Todo el año: podar, cosechar, quitar los chupones.',
+  'Désinfecte la lame à l\'alcool entre deux plants quand l\'un est malade, sinon tu transportes le virus d\'un pied à l\'autre. Coupe en biais, juste au-dessus d\'un œil.':
+      'Desinfecta la hoja con alcohol entre dos plantas cuando una esté enferma; si no, llevas el virus de un pie a otro. Corta en bisel, justo por encima de una yema.',
+  'Un seul, mais un dont les lames se remplacent : c\'est ce qui fait la différence entre dix ans et deux.':
+      'Una sola, pero con hojas de recambio: eso marca la diferencia entre diez años y dos.',
+  'Essuie la sève après chaque usage, affûte une fois par mois, huile l\'axe.':
+      'Limpia la savia después de cada uso, afila una vez al mes y engrasa el eje.',
+  'Au repiquage, de mars à juin.':
+      'En el trasplante, de marzo a junio.',
+  'Creuse plus large que la motte, pose, rebouche et tasse à la main avant d\'arroser. Ne tire jamais un plant par la tige : glisse la lame dessous et soulève la motte entière.':
+      'Cava más ancho que el cepellón, coloca, tapa y aprieta con la mano antes de regar. Nunca tires de una planta por el tallo: desliza la hoja por debajo y levanta el cepellón entero.',
+  'Un seul. Le modèle gradué évite de deviner la profondeur.':
+      'Uno solo. El modelo graduado evita adivinar la profundidad.',
+  'Le manche en bois se fend s\'il passe l\'hiver dehors.':
+      'El mango de madera se raja si pasa el invierno a la intemperie.',
+  'À la plantation — pas quand le plant penche. À ce moment-là, les racines occupent déjà la place du tuteur.':
+      'En la plantación, no cuando la planta ya se inclina. Para entonces las raíces ocupan el sitio del tutor.',
+  'Plante le tuteur d\'abord, le plant ensuite, à 5 cm. Attache en huit avec un lien souple, sans serrer : la tige va grossir.':
+      'Clava primero el tutor y después la planta, a 5 cm. Ata en ocho con una ligadura blanda, sin apretar: el tallo va a engordar.',
+  'Un par pied de tomate, trois par poquet de haricots grimpants.':
+      'Uno por mata de tomate, tres por golpe de judías trepadoras.',
+  'Brosse et laisse sécher en fin de saison : les champignons passent l\'hiver dans le bois.':
+      'Cepíllalos y déjalos secar al final de la temporada: los hongos pasan el invierno en la madera.',
+  'Une branche de noisetier ou de châtaignier coupée en hiver tient trois saisons.':
+      'Una rama de avellano o de castaño cortada en invierno aguanta tres temporadas.',
+  'Au printemps, avant que les coureuses ne partent au sol.':
+      'En primavera, antes de que las trepadoras se echen al suelo.',
+  'Plante deux pieds de courge ou de haricot d\'Espagne de chaque côté et guide les premières tiges à la main : ensuite elles s\'accrochent seules. Les fruits suspendus restent propres et poussent droits.':
+      'Planta dos matas de calabaza o de judía de España a cada lado y guía los primeros tallos con la mano: después se agarran solos. Los frutos colgando quedan limpios y crecen rectos.',
+  'Une arche de 2 m de large nourrit quatre pieds grimpants et libère autant de surface au sol.':
+      'Un arco de 2 m de ancho alimenta cuatro plantas trepadoras y libera otro tanto de suelo.',
+  'Ancre-la ou démonte-la avant les coups de vent d\'automne : couverte de feuilles, elle fait voile.':
+      'Ánclalo o desmóntalo antes de los vendavales de otoño: cubierto de hojas, hace de vela.',
+  'Deux panneaux de treillis à béton cintrés et liés font une arche solide pour trois fois moins.':
+      'Dos paneles de mallazo curvados y atados hacen un arco sólido por tres veces menos.',
+  'Au montage du jardin, idéalement en février-mars.':
+      'Al montar el huerto, idealmente en febrero o marzo.',
+  'Pose-le sur du carton brun, pas sur une bâche : le carton étouffe l\'herbe puis disparaît, et les vers remontent du sol. Remplis en couches — branches, tontes, compost, terreau en surface.':
+      'Colócalo sobre cartón marrón, no sobre una lona: el cartón ahoga la hierba y luego desaparece, y las lombrices suben. Rellena por capas: ramas, siega, compost y sustrato en superficie.',
+  '1,20 m de côté, pas plus : c\'est la portée de deux bras, et tu ne marcheras jamais dedans.':
+      '1,20 m de lado, no más: es el alcance de dos brazos, y así nunca pisarás dentro.',
+  'Huile l\'intérieur à l\'huile de lin tous les deux ans. Jamais de produit de traitement : il migre dans la terre.':
+      'Aceita el interior con aceite de linaza cada dos años. Nunca un producto de tratamiento: migra a la tierra.',
+  'Quatre planches de douglas non traité de 27 mm, vissées aux angles sur des tasseaux.':
+      'Cuatro tablas de douglas sin tratar de 27 mm, atornilladas en las esquinas sobre listones.',
+  'De février à avril, puis de septembre à novembre.':
+      'De febrero a abril, y luego de septiembre a noviembre.',
+  'Oriente la pente au sud et ouvre dès que le soleil tape : il fait 15 °C de plus à l\'intérieur, et des semis cuisent en une heure. Referme avant le coucher du soleil.':
+      'Orienta la pendiente al sur y abre en cuanto pegue el sol: dentro hace 15 °C más, y unos plantones se cuecen en una hora. Cierra antes de la puesta de sol.',
+  'Un châssis de 1 m² abrite les semis de tout un potager de quatre carrés.':
+      'Una cajonera de 1 m² alberga los semilleros de todo un huerto de cuatro bancales.',
+  'Lave le vitrage chaque automne : 20 % de lumière en plus pour un coup d\'éponge.':
+      'Limpia el cristal cada otoño: un 20 % más de luz por un pase de bayeta.',
+  'Une vieille fenêtre posée sur un cadre de planches fait un châssis parfait.':
+      'Una ventana vieja apoyada en un marco de tablas hace una cajonera perfecta.',
+  'Les deux semaines qui suivent un repiquage précoce, et sur les derniers plants d\'automne.':
+      'Las dos semanas siguientes a un trasplante temprano, y sobre las últimas plantas de otoño.',
+  'Pose-la le soir, retire-la le matin si le soleil donne. Enfonce le bord d\'un centimètre dans la terre, sinon le vent la promène dans le jardin.':
+      'Ponla por la tarde y quítala por la mañana si da el sol. Hunde el borde un centímetro en la tierra o el viento la paseará por el huerto.',
+  'Une par plant précoce. Quatre ou cinq suffisent — ce n\'est pas une couverture, c\'est une avance.':
+      'Una por planta temprana. Con cuatro o cinco basta: no es una manta, es una ventaja.',
+  'Range-les emboîtées à l\'abri : le plastique devient cassant après un hiver au gel.':
+      'Guárdalas encajadas y a cubierto: el plástico se vuelve quebradizo tras un invierno de heladas.',
+  'Une bouteille d\'eau de 5 L coupée, goulot laissé ouvert pour que l\'air circule.':
+      'Una botella de agua de 5 L cortada, con el cuello abierto para que circule el aire.',
+  'En avril-mai, au semis des haricots et des pois grimpants.':
+      'En abril y mayo, al sembrar judías y guisantes trepadores.',
+  'Plante trois rames en tipi, liées en haut, et sème quatre grains au pied de chacune. Un tipi encaisse le vent qu\'un rang droit prend de plein fouet.':
+      'Clava tres cañas en tipi, atadas arriba, y siembra cuatro granos al pie de cada una. Un tipi aguanta el viento que una hilera recta recibe de lleno.',
+  'Une rame de 1,80 m pour trois pieds. Neuf rames font un carré de haricots.':
+      'Una caña de 1,80 m para tres matas. Nueve cañas hacen un bancal de judías.',
+  'Rentre-les sèches et debout : couchées à terre tout l\'hiver, elles pourrissent par le bas.':
+      'Guárdalas secas y de pie: tumbadas en el suelo todo el invierno, se pudren por abajo.',
+  'Le bambou se coupe en janvier dans n\'importe quelle haie qui en porte, et sèche deux mois à l\'abri.':
+      'El bambú se corta en enero en cualquier seto que lo tenga, y seca dos meses a cubierto.',
+  'De mars à mai, puis de septembre aux premières gelées.':
+      'De marzo a mayo, y luego de septiembre a las primeras heladas.',
+  'Tends la bâche sans pli : un pli retient l\'eau, et le poids déchire l\'arceau. Laisse les deux bouts ouverts par beau temps, sinon l\'air stagnant fait pourrir les salades.':
+      'Tensa el plástico sin pliegues: un pliegue retiene el agua y el peso rompe el arco. Deja los dos extremos abiertos cuando haga bueno, o el aire estancado pudrirá las lechugas.',
+  'Un tunnel de 3 m couvre deux carrés mis bout à bout.':
+      'Un túnel de 3 m cubre dos bancales puestos en línea.',
+  'Replie la bâche sèche à l\'automne. Rangée mouillée, elle moisit en un hiver.':
+      'Recoge el plástico seco en otoño. Guardado mojado, se enmohece en un invierno.',
+  'Des arceaux en tuyau PER et une bâche de 100 microns clipsée rendent le même service.':
+      'Unos arcos de tubo de fontanería y un plástico de 100 micras con pinzas dan el mismo servicio.',
+  'Toute l\'année. C\'est d\'abord un choix de dos.':
+      'Todo el año. Es sobre todo una decisión para la espalda.',
+  'Remplis sur 25 cm au minimum : en dessous, la terre sèche en une demi-journée d\'été. Place-la à l\'est, le soleil du matin suffit aux salades et ne les brûle pas.':
+      'Rellena 25 cm como mínimo: por debajo, la tierra se seca en media jornada de verano. Colócala al este, el sol de la mañana basta para las lechugas y no las quema.',
+  'Une table de 80 × 40 cm tient dix salades, ou un rang de radis qu\'on renouvelle toutes les trois semaines.':
+      'Una mesa de 80 × 40 cm da para diez lechugas, o una hilera de rábanos que se renueva cada tres semanas.',
+  'Vérifie que le fond est percé et que l\'eau sort vraiment : une table qui retient l\'eau noie les racines.':
+      'Comprueba que el fondo esté perforado y que el agua salga de verdad: una mesa que retiene el agua ahoga las raíces.',
+  'À la plantation, en mai — pas une fois que le pied fait un mètre et part dans tous les sens.':
+      'En la plantación, en mayo, y no cuando la mata ya mide un metro y se va en todas direcciones.',
+  'Conduis une seule tige par pied en l\'enroulant autour d\'une ficelle verticale, et pince les gourmands chaque semaine. Moins de fruits, mais plus gros, et un feuillage qui sèche vite après la pluie — donc moins de mildiou.':
+      'Conduce un solo tallo por mata enrollándolo en un cordel vertical, y despunta los chupones cada semana. Menos frutos, pero más grandes, y un follaje que seca rápido tras la lluvia: menos mildiu.',
+  'Un treillis de 1,20 m porte quatre pieds espacés de 40 cm.':
+      'Un enrejado de 1,20 m sostiene cuatro matas separadas 40 cm.',
+  'Retire ficelles et feuilles sèches avant l\'hiver : le mildiou hiverne dessus.':
+      'Retira cordeles y hojas secas antes del invierno: el mildiu inverna encima.',
+  'Une ficelle de chanvre tendue entre une barre haute et le sol fait exactement ça.':
+      'Un cordel de cáñamo tensado entre una barra alta y el suelo hace exactamente eso.',
+  'À la plantation d\'une tomate.':
+      'Al plantar un tomate.',
+  'Plante la spirale à 10 cm du pied et fais passer la tige dans les boucles au fur et à mesure : rien à attacher, la tige se cale d\'elle-même. Tourne toujours dans le même sens.':
+      'Clava la espiral a 10 cm de la mata y ve pasando el tallo por las vueltas a medida que crece: nada que atar, el tallo se sujeta solo. Gira siempre en el mismo sentido.',
+  'Un par pied. 1,70 m de haut pour une tomate indéterminée, qui ne s\'arrête jamais de monter.':
+      'Uno por mata. 1,70 m de alto para un tomate indeterminado, que no deja de subir.',
+  'Essuie la terre et range-les au sec : ils durent dix ans.':
+      'Límpiales la tierra y guárdalos en seco: duran diez años.',
+  'Dès la plantation des salades, et après chaque pluie de printemps.':
+      'Desde que plantas las lechugas, y después de cada lluvia de primavera.',
+  'Éparpille quelques granulés autour des jeunes plants, jamais en tas : un tas rassemble les limaces au même endroit au lieu de les éloigner. Le phosphate de fer les fait cesser de manger, et elles meurent cachées — tu ne verras pas de cadavres, c\'est normal.':
+      'Esparce unos pocos gránulos alrededor de las plantas jóvenes, nunca en montón: un montón reúne a las babosas en un sitio en vez de alejarlas. El fosfato de hierro hace que dejen de comer, y mueren escondidas: no verás cadáveres, y es normal.',
+  '5 g par m², à renouveler après une forte pluie.':
+      '5 g por m², a renovar después de una lluvia fuerte.',
+  'Garde la boîte fermée et au sec : mouillés, les granulés se délitent et ne servent plus.':
+      'Guarda el bote cerrado y en seco: mojados, los gránulos se deshacen y ya no sirven.',
+  'Une planche posée à plat le soir : tu ramasses dessous au matin. Gratuit, mais il faut y aller tous les jours.':
+      'Una tabla puesta en plano por la tarde: recoges debajo por la mañana. Gratis, pero hay que ir todos los días.',
+  'De mai à août, contre la mouche de la carotte et la piéride du chou.':
+      'De mayo a agosto, contra la mosca de la zanahoria y la mariposa de la col.',
+  'Pose-le dès le semis, avant que l\'insecte n\'arrive : posé après la ponte, il enferme les chenilles avec le chou. Enterre ou leste les bords, la mouche passe par le moindre jour.':
+      'Ponla desde la siembra, antes de que llegue el insecto: puesta después de la puesta de huevos, encierra a las orugas con la col. Entierra o lastra los bordes, la mosca pasa por el menor hueco.',
+  'Maille de 0,8 mm contre la mouche de la carotte, 1,35 mm suffit contre les papillons. Prévois 1 m de plus que le carré dans chaque sens.':
+      'Malla de 0,8 mm contra la mosca de la zanahoria; 1,35 mm basta contra las mariposas. Calcula 1 m más que el bancal en cada sentido.',
+  'Rentre-le sec et plié : les UV le fragilisent en deux saisons dehors.':
+      'Guárdala seca y doblada: los UV la vuelven quebradiza en dos temporadas a la intemperie.',
+  'Trois semaines avant la maturité des fraises et des cerises.':
+      'Tres semanas antes de que maduren las fresas y las cerezas.',
+  'Tends-le sur des arceaux, jamais à même les feuilles : posé dessus, les oiseaux picorent à travers et les oisillons s\'y prennent les pattes. Maille de 15 à 20 mm.':
+      'Tiéndela sobre arcos, nunca encima de las hojas: apoyada, los pájaros picotean a través y los pollos se enganchan las patas. Malla de 15 a 20 mm.',
+  'La surface du carré, plus 50 cm de retombée sur chaque bord pour le fixer au sol.':
+      'La superficie del bancal, más 50 cm de caída por cada lado para fijarla al suelo.',
+  'Enroule-le au lieu de le froisser : les mailles se déchirent aux plis.':
+      'Enróllala en vez de arrugarla: la malla se rasga por los pliegues.',
+  'De juin à septembre en France. Aux heures chaudes toute l\'année sous les tropiques.':
+      'De junio a septiembre en Francia. En las horas de calor todo el año en el trópico.',
+  'Tends-le à 50 cm au-dessus des cultures, pas posé dessus : l\'air doit circuler, sinon tu fabriques une étuve. 30 % d\'ombrage pour les tomates et les aubergines, 50 % pour les salades et les semis.':
+      'Tiéndela a 50 cm por encima del cultivo, no apoyada: el aire tiene que circular, si no fabricas una estufa. Un 30 % de sombreo para tomates y berenjenas, un 50 % para lechugas y semilleros.',
+  'Une toile de 2 × 3 m couvre deux carrés.':
+      'Una tela de 2 × 3 m cubre dos bancales.',
+  'Les œillets lâchent avant la toile : double-les d\'une sangle cousue.':
+      'Los ojales ceden antes que la tela: refuérzalos con una cincha cosida.',
+  'Un vieux voilage, ou une canisse posée sur quatre piquets, tamise autant.':
+      'Un visillo viejo, o un cañizo sobre cuatro postes, tamiza igual.',
+  'De février à avril, sur les semis et les premiers repiquages.':
+      'De febrero a abril, sobre los semilleros y los primeros trasplantes.',
+  'Pose-le flottant, bords enterrés, sans tendre : les plants le soulèvent en poussant. Il gagne 2 à 3 °C la nuit et coupe le vent, ce qui compte autant. Retire-le à la floraison, les insectes doivent pouvoir passer.':
+      'Ponlo flotante, con los bordes enterrados y sin tensar: las plantas lo levantan al crecer. Gana de 2 a 3 °C por la noche y corta el viento, que cuenta otro tanto. Quítalo en la floración, los insectos tienen que pasar.',
+  'Un voile P17 de 2 × 5 m couvre deux carrés et se recoupe aux ciseaux.':
+      'Un velo P17 de 2 × 5 m cubre dos bancales y se recorta con tijeras.',
+  'Il tient deux ou trois saisons. Répare les déchirures au ruban adhésif de serre.':
+      'Aguanta dos o tres temporadas. Repara los desgarros con cinta de invernadero.',
+  'De novembre à mars, posé avant la première gelée annoncée.':
+      'De noviembre a marzo, puesto antes de la primera helada anunciada.',
+  'Enveloppe sans serrer et laisse le haut ouvert : un voile fermé retient l\'humidité et fait pourrir le cœur de la plante. Il protège jusqu\'à −5 °C, pas au-delà — en dessous, il faut rentrer les pots.':
+      'Envuelve sin apretar y deja la parte alta abierta: un velo cerrado retiene la humedad y pudre el corazón de la planta. Protege hasta −5 °C, no más: por debajo hay que meter las macetas.',
+  'Un voile P30 de 2 × 5 m enveloppe trois artichauts, ou deux agrumes en pot.':
+      'Un velo P30 de 2 × 5 m envuelve tres alcachofas, o dos cítricos en maceta.',
+  'Secoue la neige : son poids mouillé casse les branches que le voile protège.':
+      'Sacude la nieve: su peso mojado rompe las ramas que el velo protege.',
+  'Au démarrage d\'un tas, et quand il ne chauffe plus.':
+      'Al arrancar un montón, y cuando deja de calentarse.',
+  'Saupoudre une poignée tous les 20 cm de déchets, puis arrose : il apporte l\'azote et les ferments qui manquent à un tas trop sec ou trop ligneux. ⚠️ Un tas qui sent mauvais manque d\'air, pas d\'activateur — retourne-le d\'abord.':
+      'Espolvorea un puñado cada 20 cm de residuos y riega: aporta el nitrógeno y los fermentos que le faltan a un montón demasiado seco o leñoso. ⚠️ Un montón que huele mal necesita aire, no activador: voltéalo primero.',
+  'Une poignée par couche. Un tas bien équilibré en vert et en brun n\'en a pas besoin du tout.':
+      'Un puñado por capa. Un montón bien equilibrado en verde y marrón no lo necesita en absoluto.',
+  'Referme le sac : à l\'humidité, la poudre s\'agglomère en blocs.':
+      'Vuelve a cerrar el saco: con humedad, el polvo se apelmaza en bloques.',
+  'Une couche de tontes fraîches, ou du purin d\'ortie dilué, fait le même apport d\'azote.':
+      'Una capa de siega fresca, o purín de ortiga diluido, aporta el mismo nitrógeno.',
+  'Toute l\'année. Le tas ne démarre vraiment qu\'au printemps, quand il se réchauffe.':
+      'Todo el año. El montón no arranca de verdad hasta la primavera, cuando se calienta.',
+  'Alterne une couche de vert — épluchures, tontes — et une couche de brun — feuilles, carton, broyat — à peu près moitié-moitié. Retourne tous les deux mois. Ni viande, ni laitage, ni plante malade.':
+      'Alterna una capa de verde —mondas, siega— y una de marrón —hojas, cartón, triturado—, más o menos mitad y mitad. Voltea cada dos meses. Ni carne, ni lácteos, ni planta enferma.',
+  'Un bac de 300 à 600 L suffit à une famille et rend de quoi pailler et amender quatre carrés par an.':
+      'Un compostador de 300 a 600 L basta para una familia y da para acolchar y enmendar cuatro bancales al año.',
+  'Pose-le à l\'ombre et sur la terre nue : les vers doivent pouvoir monter du sol.':
+      'Colócalo a la sombra y sobre tierra desnuda: las lombrices tienen que poder subir del suelo.',
+  'Quatre palettes vissées en carré, dont une face démontable pour sortir le compost par le bas.':
+      'Cuatro palés atornillados en cuadrado, con una cara desmontable para sacar el compost por abajo.',
+  'Au printemps à la plantation, puis une fois par mois sur les gourmands : tomate, courgette, chou, poireau.':
+      'En primavera al plantar, y luego una vez al mes en las exigentes: tomate, calabacín, col, puerro.',
+  'Griffe-le en surface et arrose. Enfoui trop profond, il nourrit sous les racines. Jamais sur une terre sèche, ni sur un plant qui souffre déjà de la chaleur.':
+      'Ráscalo en superficie y riega. Enterrado demasiado hondo, alimenta por debajo de las raíces. Nunca sobre tierra seca ni sobre una planta que ya sufre el calor.',
+  '100 g par m² au printemps, et c\'est tout. Trop d\'azote donne un feuillage magnifique et pas de fruits.':
+      '100 g por m² en primavera, y nada más. Demasiado nitrógeno da un follaje magnífico y ningún fruto.',
+  'Les granulés se gardent des années au sec ; un engrais liquide, un an.':
+      'Los gránulos se conservan años en seco; un abono líquido, un año.',
+  'Le purin d\'ortie dilué à 10 % remplace l\'azote, la cendre de bois tamisée apporte la potasse.':
+      'El purín de ortiga diluido al 10 % sustituye el nitrógeno, y la ceniza de madera cribada aporta la potasa.',
+  'Toute l\'année, et c\'est la solution quand il n\'y a pas de jardin.':
+      'Todo el año, y es la solución cuando no hay jardín.',
+  'Démarre avec 250 g de vers (Eisenia) et nourris petit : ils mangent environ la moitié de leur poids par jour, épluchures coupées fin. Ni agrumes, ni oignon, ni ail — ils acidifient le bac et les vers fuient.':
+      'Empieza con 250 g de lombrices (Eisenia) y alimenta poco: comen alrededor de la mitad de su peso al día, con las mondas cortadas finas. Ni cítricos, ni cebolla, ni ajo: acidifican el cubo y las lombrices huyen.',
+  'Trois plateaux traitent les déchets de deux personnes, et rendent du lombricompost plus le jus à diluer pour les plantes.':
+      'Tres bandejas procesan los residuos de dos personas y dan humus de lombriz más el lixiviado para diluir y regar.',
+  'Entre 15 et 25 °C : ni au soleil d\'été, ni dehors en hiver. Un bac trop humide se corrige avec du carton déchiré.':
+      'Entre 15 y 25 °C: ni al sol de verano, ni fuera en invierno. Un cubo demasiado húmedo se corrige con cartón roto.',
+  'Deux seaux de 20 L emboîtés, le premier percé au fond, font un lombricomposteur d\'essai.':
+      'Dos cubos de 20 L encajados, el de arriba perforado en el fondo, hacen un vermicompostador de prueba.',
+  'Au printemps, sur une terre réchauffée et désherbée.':
+      'En primavera, sobre tierra ya templada y desherbada.',
+  'Étale 5 à 7 cm en dégageant le collet des plants. Réserve-le aux massifs, aux fraisiers et aux petits fruits : il acidifie en se décomposant, et il est trop lent pour un carré qu\'on remanie chaque année.':
+      'Extiende de 5 a 7 cm despejando el cuello de las plantas. Resérvalo para macizos, fresas y frutos pequeños: acidifica al descomponerse y es demasiado lento para un bancal que se remueve cada año.',
+  'Un sac de 50 L couvre 1 m² sur 5 cm d\'épaisseur.':
+      'Un saco de 50 L cubre 1 m² con 5 cm de espesor.',
+  'Il tient deux à trois ans. Recharge d\'un centimètre chaque printemps.':
+      'Aguanta de dos a tres años. Recarga un centímetro cada primavera.',
+  'De mai aux premières gelées, dès que la terre est réchauffée.':
+      'De mayo a las primeras heladas, en cuanto la tierra se haya templado.',
+  'Étale 3 à 5 cm sur une terre déjà humide et désherbée : pailler une terre sèche la garde sèche. Dégage le pied des plants de 5 cm, sinon le collet pourrit.':
+      'Extiende de 3 a 5 cm sobre tierra ya húmeda y desherbada: acolchar una tierra seca la mantiene seca. Despeja 5 cm alrededor del pie de las plantas, si no el cuello se pudre.',
+  'Un sac de 100 L couvre 2,5 m² sur 4 cm — soit deux carrés.':
+      'Un saco de 100 L cubre 2,5 m² con 4 cm de espesor: dos bancales.',
+  'Il disparaît en une saison en nourrissant le sol. C\'est voulu, pas un défaut.':
+      'Desaparece en una temporada alimentando el suelo. Es lo buscado, no un defecto.',
+  'Les tontes séchées deux jours, les feuilles mortes ou la paille font le même travail pour rien.':
+      'La siega secada dos días, las hojas muertas o la paja hacen el mismo trabajo por nada.',
+  'Au semis et au rempotage, de février à juin.':
+      'En la siembra y el trasplante a maceta, de febrero a junio.',
+  'Tamise-le pour les semis : une graine de carotte ne traverse pas un morceau d\'écorce. En pleine terre, ne remplace jamais la terre par du terreau — mélange-les à moitié, le terreau seul sèche vite et se tasse.':
+      'Tamízalo para los semilleros: una semilla de zanahoria no atraviesa un trozo de corteza. En plena tierra, nunca sustituyas la tierra por sustrato: mézclalos a partes iguales, el sustrato solo se seca rápido y se compacta.',
+  'Un sac de 20 L remplit trente godets. Une table de culture de 80 × 40 cm sur 25 cm de profondeur en demande 80 L.':
+      'Un saco de 20 L llena treinta macetitas. Una mesa de cultivo de 80 × 40 cm con 25 cm de profundidad pide 80 L.',
+  'Referme le sac : à l\'air, le terreau sèche et devient hydrophobe — l\'eau glisse dessus sans entrer.':
+      'Vuelve a cerrar el saco: al aire, el sustrato se seca y se vuelve hidrófobo, y el agua resbala por encima sin entrar.',
+  'Toute l\'année sur un balcon. Au printemps pour démarrer.':
+      'Todo el año en un balcón. En primavera para empezar.',
+  'Compte 30 cm de profondeur pour une tomate, 20 pour des salades, 40 pour une carotte longue. Ne mets des billes d\'argile que si l\'eau ne s\'évacue pas : sinon elles prennent la place des racines.':
+      'Cuenta 30 cm de profundidad para un tomate, 20 para lechugas y 40 para una zanahoria larga. Pon arcilla expandida solo si el agua no se evacúa: si no, ocupa el sitio de las raíces.',
+  'Un bac de 80 × 40 cm porte deux pieds de tomate, ou huit salades.':
+      'Una jardinera de 80 × 40 cm lleva dos matas de tomate, u ocho lechugas.',
+  'Une terre cuite pleine d\'eau éclate au gel : vide-la ou rentre-la avant l\'hiver.':
+      'El barro cocido lleno de agua estalla con la helada: vacíalo o guárdalo antes del invierno.',
+  'Un grand sac de terreau couché, percé dessous et fendu dessus, fait un bac de culture pour une saison.':
+      'Un saco grande de sustrato tumbado, perforado por debajo y abierto por arriba, hace una jardinera para una temporada.',
+  'En janvier-février, quand on prépare l\'année sur le papier.':
+      'En enero y febrero, cuando se prepara el año sobre el papel.',
+  'Commence par cinq ou six variétés faciles — radis, laitue, haricot, courgette, basilic, tomate cerise — plutôt que par vingt sachets dont la moitié finira périmée. Note la date d\'achat sur chaque sachet.':
+      'Empieza por cinco o seis variedades fáciles —rábano, lechuga, judía, calabacín, albahaca, tomate cherry— y no por veinte sobres de los que la mitad caducará. Apunta la fecha de compra en cada sobre.',
+  'Un sachet de radis sème plusieurs rangs : échelonne-les de trois semaines. Un sachet de tomate suffit à plusieurs saisons.':
+      'Un sobre de rábano siembra varias hileras: escalónalas cada tres semanas. Un sobre de tomate basta para varias temporadas.',
+  'Au sec, au frais, à l\'obscurité. Les graines de panais et d\'oignon ne germent plus après deux ans ; celles de tomate tiennent bien plus longtemps.':
+      'En seco, en fresco y a oscuras. Las semillas de chirivía y de cebolla ya no germinan pasados dos años; las de tomate aguantan mucho más.',
+  'Récupère tes graines de tomate : laisse fermenter la pulpe trois jours, rince, sèche. ⚠️ Pas sur un hybride F1, la descendance ne ressemble à rien.':
+      'Guarda tus propias semillas de tomate: deja fermentar la pulpa tres días, enjuaga y seca. ⚠️ No de un híbrido F1: la descendencia no se parece a nada.',
+  'De mai à septembre, installé avant les grosses chaleurs.':
+      'De mayo a septiembre, instalado antes de los grandes calores.',
+  'Un goutteur par pied, pas un tuyau en serpentin : l\'eau doit arriver aux racines, pas entre les plants. Fais tourner tôt le matin, 20 à 30 minutes d\'affilée plutôt que peu chaque jour — un arrosage long fait descendre les racines.':
+      'Un gotero por mata, no un tubo en serpentín: el agua tiene que llegar a las raíces, no entre las plantas. Hazlo funcionar temprano, de 20 a 30 minutos seguidos en vez de poco cada día: un riego largo hace bajar las raíces.',
+  'Quatre goutteurs de 2 L/h par carré de 1,20 m.':
+      'Cuatro goteros de 2 L/h por bancal de 1,20 m.',
+  'Démonte et rince les goutteurs à l\'automne, le calcaire les bouche. Vide la ligne avant le gel.':
+      'Desmonta y enjuaga los goteros en otoño, la cal los obstruye. Vacía la línea antes de la helada.',
+  'De juin à septembre, et pendant les absences.':
+      'De junio a septiembre, y durante las ausencias.',
+  'Enterre-la jusqu\'au col entre deux ou trois plants, puis remplis : la terre cuite suinte à la demande et les racines viennent chercher l\'eau. Garde le couvercle, sinon tu arroses les moustiques.':
+      'Entiérrala hasta el cuello entre dos o tres plantas y llénala: el barro cocido rezuma a demanda y las raíces vienen a buscar el agua. Deja la tapa puesta, si no estarás regando a los mosquitos.',
+  'Une oya de 5 L alimente trois pieds de tomate pendant trois à cinq jours en été. Deux par carré.':
+      'Una olla de 5 L alimenta tres matas de tomate de tres a cinco días en verano. Dos por bancal.',
+  'Déterre-la avant l\'hiver : pleine d\'eau, elle éclate au gel. Brosse le dépôt blanc à l\'eau claire, sans savon.':
+      'Desentiérrala antes del invierno: llena de agua, estalla con la helada. Cepilla el poso blanco con agua limpia, sin jabón.',
+  'Deux pots de terre cuite non émaillés collés bord à bord, le trou du bas bouché au mastic, font une oya.':
+      'Dos macetas de barro sin esmaltar pegadas borde con borde, con el agujero de abajo sellado con masilla, hacen una olla.',
+  'Avant de partir, et de juin à août.':
+      'Antes de irte, y de junio a agosto.',
+  'Règle un créneau long et peu fréquent : 30 minutes trois fois par semaine plutôt que 10 minutes tous les jours. ⚠️ Fais un cycle complet devant toi avant de partir — une pile faible ou un robinet à moitié ouvert, et tu retrouves tout sec.':
+      'Programa una franja larga y poco frecuente: 30 minutos tres veces por semana en vez de 10 minutos todos los días. ⚠️ Haz un ciclo completo delante de ti antes de irte: una pila floja o un grifo a medio abrir, y lo encuentras todo seco.',
+  'Un seul, sur le robinet, en tête du goutte à goutte.':
+      'Uno solo, en el grifo, a la cabeza del goteo.',
+  'Retire la pile et rentre le boîtier l\'hiver : il gèle et se fend.':
+      'Quita la pila y guarda la caja en invierno: se hiela y se raja.',
+  'Toute l\'année : il se remplit l\'hiver pour servir l\'été.':
+      'Todo el año: se llena en invierno para servir en verano.',
+  'Raccorde-le à une descente de gouttière avec un collecteur filtrant, et pose le robinet assez haut pour glisser un arrosoir dessous. L\'eau de pluie est sans calcaire et à température ambiante : les plants ne prennent pas le choc froid du robinet.':
+      'Conéctalo a una bajante con un colector filtrante, y pon el grifo lo bastante alto para meter una regadera debajo. El agua de lluvia no tiene cal y está a temperatura ambiente: las plantas no reciben el choque frío del grifo.',
+  '1 mm de pluie sur 10 m² de toit rend 10 L. Une cuve de 300 L se vide en une semaine de canicule sur quatre carrés.':
+      '1 mm de lluvia sobre 10 m² de tejado da 10 L. Un depósito de 300 L se vacía en una semana de ola de calor sobre cuatro bancales.',
+  'Couvre-la : à la lumière l\'eau verdit, et une cuve ouverte est un piège pour les animaux. Nettoie le fond une fois par an.':
+      'Tápalo: con la luz el agua se vuelve verde, y un depósito abierto es una trampa para los animales. Limpia el fondo una vez al año.',
+  'Un bidon alimentaire de 200 L d\'occasion et un collecteur de gouttière suffisent.':
+      'Un bidón alimentario de 200 L de segunda mano y un colector de canalón bastan.',
+  'De mai à septembre, sur les rangs serrés.':
+      'De mayo a septiembre, en las hileras apretadas.',
+  'Déroule-le le long du rang, enterré de 5 cm ou glissé sous le paillis, et branche-le sur un robinet à faible pression. Il est fait pour les rangs continus — salades, carottes, fraisiers — là où le goutte à goutte demanderait trente goutteurs.':
+      'Desenróllalo a lo largo de la hilera, enterrado 5 cm o deslizado bajo el acolchado, y conéctalo a un grifo de baja presión. Está hecho para hileras continuas —lechugas, zanahorias, fresas— donde el goteo pediría treinta goteros.',
+  '15 m de tuyau couvrent quatre carrés de 1,20 m.':
+      '15 m de tubo cubren cuatro bancales de 1,20 m.',
+  'Il se bouche au calcaire et à la terre : rince-le à pleine pression en début de saison.':
+      'Se obstruye con la cal y la tierra: enjuágalo a plena presión al principio de la temporada.',
 };
