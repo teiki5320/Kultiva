@@ -169,10 +169,29 @@ class PrefsService {
   /// Choisit un pays et aligne la région dessus. [zone] est la sous-zone
   /// affinée (par latitude GPS ou choix manuel) ; null réinitialise sur
   /// la zone par défaut du pays.
-  Future<void> setCountry(Country value, {ClimateZone? zone}) async {
+  ///
+  /// **La langue suit le pays**, sauf si [suivreLaLangue] est faux.
+  /// ⚠️ Elle ne le suivait pas jusqu'au 02/11/2026 : choisir l'Espagne
+  /// changeait le calendrier et les saisons, et laissait les menus en
+  /// français. Signalé par Jean — « quand je choisis l'Espagne rien ne
+  /// change dans les menus ». C'était défendable sur le papier (le
+  /// pays dit le climat, la langue dit la langue) et faux à l'usage :
+  /// personne ne va chercher deux réglages pour dire une seule chose.
+  ///
+  /// Le réglage « Langue » reste maître : il s'applique après, et
+  /// garde la main tant qu'on ne rechange pas de pays.
+  Future<void> setCountry(Country value,
+      {ClimateZone? zone, bool suivreLaLangue = true}) async {
     country.value = value;
     region.value = value.region;
     climateZone.value = zone;
+    final langue = value.preferredLanguage;
+    if (suivreLaLangue &&
+        langue != null &&
+        supportedLanguages.contains(langue) &&
+        langue != language.value) {
+      await setLanguage(langue);
+    }
     await _prefs?.setString(_kCountry, value.isoCode);
     await _prefs?.setString(_kRegion, value.region.id);
     if (zone == null) {

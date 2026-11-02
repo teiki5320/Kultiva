@@ -1565,4 +1565,8 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Monzón de verano, invierno seco y fresco: las hortalizas de clima templado crecen de noviembre a marzo.',
   'Saison fraîche':
       'Estación fresca',
+  'Langue passée en {0}. Tu peux la changer juste en dessous.':
+      'Idioma cambiado a {0}. Puedes cambiarlo justo debajo.',
+  'Le pays choisit le calendrier de semis, les saisons et la langue.':
+      'El país elige el calendario de siembra, las estaciones y el idioma.',
 };

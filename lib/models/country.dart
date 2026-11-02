@@ -420,6 +420,29 @@ enum Country {
   /// ne l'est pas.
   bool get isWestAfrica => region == Region.westAfrica;
 
+  /// La langue que le jardinier d'ici lira le plus probablement, parmi
+  /// celles que Kultiva parle. `null` quand aucune ne convient — on
+  /// retombe alors sur l'anglais, ou sur la langue du téléphone.
+  ///
+  /// ⚠️ **Ce n'est pas la langue officielle du pays, c'est celle de
+  /// l'app.** Le Maghreb et le Liban sont en français parce que
+  /// Kultiva ne parle pas arabe ; l'Inde et l'Indonésie sont en
+  /// anglais pour la même raison. Le jour où une langue s'ajoute,
+  /// c'est cette table qu'on corrige.
+  String? get preferredLanguage {
+    const fr = <String>{
+      'FR', 'BE', 'LU', 'CH', 'CA', 'SN', 'CI', 'ML', 'BF', 'BJ', 'TG',
+      'NE', 'GN', 'CM', 'GA', 'CG', 'CD', 'MG', 'TD', 'MR', 'HT', 'GP',
+      'MQ', 'GF', 'RE', 'YT', 'PF', 'NC', 'DZ', 'MA', 'TN', 'LB',
+    };
+    const es = <String>{'ES', 'MX', 'CO', 'PE', 'CL', 'AR', 'UY'};
+    if (fr.contains(isoCode)) return 'fr';
+    if (es.contains(isoCode)) return 'es';
+    // Partout ailleurs, l'anglais est la langue de travail la plus
+    // probable — y compris là où ce n'est la langue de personne.
+    return 'en';
+  }
+
   /// Vrai quand le calendrier suit les pluies. À préférer à
   /// [isWestAfrica] dès que la question est climatique.
   ///

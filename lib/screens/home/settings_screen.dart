@@ -34,44 +34,11 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 children: <Widget>[
                   _SectionTitle(title: trUi('🌍  Pays')),
-                  Card(
-                    child: ValueListenableBuilder<Country?>(
-                      valueListenable: PrefsService.instance.country,
-                      builder: (context, country, _) {
-                        final region = PrefsService.instance.region.value;
-                        final effective = country ??
-                            (region == Region.france ? Country.france : null);
-                        return RadioGroup<Country>(
-                          groupValue: effective,
-                          onChanged: (v) {
-                            if (v != null) {
-                              PrefsService.instance.setCountry(v);
-                            }
-                          },
-                          child: Column(
-                            children: <Widget>[
-                              // Ordre alphabétique : aucun pays n'est
-                              // privilégié (le pays courant est coché).
-                              for (final (i, c)
-                                  in Country.ordered().indexed) ...<Widget>[
-                                if (i > 0) const Divider(height: 0, indent: 16),
-                                RadioListTile<Country>(
-                                  value: c,
-                                  title: Text(
-                                    '${c.flag}   ${c.displayLabel}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  activeColor: KultivaColors.primaryGreen,
-                                ),
-                              ],
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  // ⚠️ C'étaient 73 boutons radio empilés, soit toute
+                  // la page de réglages avant d'atteindre le son ou la
+                  // langue. Un menu déroulant filtrable tient en une
+                  // ligne : demande de Jean, et il avait raison.
+                  const _SelecteurPays(),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -501,6 +468,94 @@ class _SectionTitle extends StatelessWidget {
               fontWeight: FontWeight.w800,
             ),
       ),
+    );
+  }
+}
+
+/// Le choix du pays : une ligne qui déroule la liste des 73, filtrable
+/// au clavier.
+///
+/// ⚠️ **Choisir un pays change aussi la langue** depuis le 02/11/2026,
+/// et on le dit à l'écran plutôt que de le laisser découvrir. Le
+/// réglage « Langue », juste en dessous, reste maître ensuite.
+class _SelecteurPays extends StatelessWidget {
+  const _SelecteurPays();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<Country?>(
+      valueListenable: PrefsService.instance.country,
+      builder: (context, country, _) {
+        final region = PrefsService.instance.region.value;
+        final choisi =
+            country ?? (region == Region.france ? Country.france : null);
+        final pays = Country.ordered();
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                LayoutBuilder(
+                  builder: (context, c) => DropdownMenu<Country>(
+                    initialSelection: choisi,
+                    width: c.maxWidth,
+                    // Une liste de 73 ne se parcourt pas : on tape les
+                    // premières lettres. `displayLabel`, donc dans la
+                    // langue affichée — un hispanophone cherche
+                    // « Alemania ».
+                    enableFilter: true,
+                    requestFocusOnTap: true,
+                    menuHeight: 360,
+                    label: Text(trUi('Où jardines-tu ?')),
+                    inputDecorationTheme: const InputDecorationTheme(
+                      border: OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                    dropdownMenuEntries: <DropdownMenuEntry<Country>>[
+                      for (final c in pays)
+                        DropdownMenuEntry<Country>(
+                          value: c,
+                          label: '${c.flag}   ${c.displayLabel}',
+                        ),
+                    ],
+                    onSelected: (v) async {
+                      if (v == null) return;
+                      final avant =
+                          PrefsService.instance.effectiveLanguage;
+                      await PrefsService.instance.setCountry(v);
+                      if (!context.mounted) return;
+                      final apres =
+                          PrefsService.instance.effectiveLanguage;
+                      if (apres != avant) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(trUiArgs(
+                              'Langue passée en {0}. Tu peux la changer '
+                              'juste en dessous.',
+                              <Object?>[_langueLabel(apres)],
+                            )),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  trUi('Le pays choisit le calendrier de semis, les '
+                      'saisons et la langue.'),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    height: 1.4,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

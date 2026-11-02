@@ -1566,4 +1566,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Summer monsoon, dry cool winter: temperate vegetables grow from November to March.',
   'Saison fraîche':
       'Cool season',
+  'Langue passée en {0}. Tu peux la changer juste en dessous.':
+      'Language switched to {0}. You can change it just below.',
+  'Le pays choisit le calendrier de semis, les saisons et la langue.':
+      'The country sets the sowing calendar, the seasons and the language.',
 };
