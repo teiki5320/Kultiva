@@ -1231,16 +1231,18 @@ vinaigre dilué ne protège plus d'un botulisme. Vérifié en cassant
 volontairement une étape : l'erreur nomme le fichier, la recette et
 l'étape.
 
-**L'état réel (02/11/2026)** : **21 légumes sur 123** sont traduits en
-anglais — la tomate, écrite comme modèle de ton, et les 20 du lot 1,
-traduits par un agent Sonnet. **616 recettes attendent**, en 6 lots.
-La fiche de passation est `docs/traduction-recettes.md` — elle suffit à
-une session, sans explorer le dépôt.
+**L'état réel (02/11/2026)** : **les 736 recettes sont traduites en
+anglais**, les 123 légumes. La tomate a été écrite à la main comme
+modèle de ton ; les 7 lots ont été traduits par des agents Sonnet en
+parallèle, puis validés par `recipes_i18n_test.dart` — aucune clé
+inventée, comptes d'étapes exacts, nombres identiques au français sur
+les 5 700 chaînes. Un test verrouille désormais la **couverture** :
+ajouter une recette sans sa traduction fait échouer la suite.
 
-⚠️ **Le prix réel d'un lot, mesuré** : 190 000 jetons sur Sonnet pour
-20 légumes et 120 recettes. Donc ≈ **1,3 million de jetons par
-langue**, pas 360 000 comme je l'avais estimé — l'agent lit, vérifie et
-réfléchit en plus d'écrire. Mesurer avant de citer, ici comme ailleurs.
+⚠️ **Le prix réel, mesuré** : 130 000 à 240 000 jetons par lot sur
+Sonnet, ≈ **1,5 million pour l'anglais complet** (recettes, tutos et
+contenu). Pas 360 000 comme je l'avais estimé au départ : l'agent lit,
+vérifie et réfléchit en plus d'écrire. Mesurer avant de citer.
 
 **Ajouter une langue** : écrire `lib/data/recipes_<code>.dart`, ajouter
 une ligne à `recipeTextsByLanguage`, ajouter le code à
@@ -1290,8 +1292,21 @@ Le walker ignore `<script>` et `<style>`, et un `MutationObserver`
 reprend les textes ajoutés après coup — le tuto du dashboard écrit ses
 légendes au fil de l'animation.
 
-**`conserver_legumes` est le modèle**, traduit en entier et vérifié en
-capture : mise en page intacte, 8-12 °C, 3 %, 100 °C préservés.
+**Les 33 tutos sont traduits** — 1 266 phrases. `conserver_legumes` a
+été écrit à la main comme modèle et vérifié en capture (mise en page
+intacte, 8-12 °C, 3 %, 100 °C préservés) ; les 1 230 autres phrases
+viennent d'un agent, validées par le test.
+
+⚠️ **Un piège du test, trouvé le 02/11** : il cherchait la phrase
+française dans le HTML brut, donc « Défis & badges » était introuvable
+dans un fichier qui écrit « Défis &amp; badges ». Le test décode
+maintenant les entités, comme l'extracteur.
+
+⚠️ **Phrases coupées par une balise.** Certains tutos coupent une
+phrase en trois nœuds de texte (« Le » / « calendrier » / « lunaire au
+potager »). Chaque morceau est traduit séparément, et la phrase ne se
+recolle correctement que si l'ordre des mots le permet. À regarder en
+premier si un tuto anglais lit bizarrement.
 
 ### Le reste du contenu (02/11/2026)
 

@@ -16,6 +16,7 @@ library;
 
 import '../../models/country.dart';
 import '../../models/region_data.dart';
+import 'temperate_zones.dart';
 
 
 
@@ -69,6 +70,27 @@ RegionData deriveTemperate(
   ClimateZone zone, {
   Hemisphere hemisphere = Hemisphere.north,
 }) {
+  // Un calendrier écrit à la main pour cette zone l'emporte sur le
+  // décalage. C'est tout l'intérêt de `temperate_zones.dart` : en
+  // méditerranéen, une laitue ne se sème pas « un mois plus tôt »,
+  // elle se sème six mois plus tard, à l'automne.
+  final ecrit = zoneCalendarFor(zone, base.vegetableId);
+  if (ecrit != null) {
+    final o = hemisphere.monthOffset;
+    return RegionData(
+      regionId: base.regionId,
+      vegetableId: base.vegetableId,
+      sowingMonths: shiftMonths(ecrit.sowing, o),
+      harvestMonths: shiftMonths(ecrit.harvest, o),
+      regionalNote: <String>[
+        ecrit.note,
+        if (o != 0)
+          'Décalé de six mois : tu es dans l\'hémisphère sud, où les '
+              'saisons sont inversées.',
+      ].join(' '),
+    );
+  }
+
   List<int> semis = base.sowingMonths;
   List<int> recolte = base.harvestMonths;
 

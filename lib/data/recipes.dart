@@ -9060,7 +9060,7 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
         RecipeStep('🔥', 'Cuis-les à couvert avec l\'eau et le sucre, à feu doux, en remuant, jusqu\'à ce qu\'elles s\'écrasent.', minutes: 20),
         RecipeStep('🥣', 'Écrase à la fourchette pour une compote rustique, ou passe au moulin à légumes pour une compote lisse.'),
         RecipeStep('🫙', 'Remplis les bocaux propres de compote chaude **jusqu\'à 2 cm du bord**, essuie les bords et ferme avec des joints neufs.'),
-        RecipeStep('♨️', 'Pose les bocaux dans une grande marmite, **couverts d\'eau**, et stérilise à 100 °C à partir de l\'ébullition.', minutes: 25),
+        RecipeStep('♨️', 'Pose les bocaux dans une grande marmite, **couverts d\'eau**, et stérilise **25 minutes à 100 °C**, à compter de l\'ébullition.', minutes: 25),
         RecipeStep('⏱', 'Laisse refroidir dans l\'eau, puis vérifie : couvercle creusé ou joint qui tient. Sinon, au frais et à manger dans la semaine.', minutes: 60),
       ],
     ),

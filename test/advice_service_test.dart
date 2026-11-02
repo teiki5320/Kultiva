@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/models/culture_entry.dart';
 import 'package:kultiva/models/plantation.dart';
+import 'package:kultiva/data/content_i18n.dart';
+import 'package:kultiva/data/diseases.dart';
 import 'package:kultiva/services/advice_service.dart';
 import 'package:kultiva/services/plantation_service.dart';
 import 'package:kultiva/services/prefs_service.dart';
@@ -66,7 +68,13 @@ void main() {
       final surveiller =
           advice.sections.where((s) => s.title == 'À surveiller');
       expect(surveiller, hasLength(1));
-      expect(surveiller.first.body, contains('Mildiou'));
+      // ⚠️ L'environnement de test tourne en `en-US`, donc la fiche
+      // sort en anglais depuis que les maladies sont traduites
+      // (02/11/2026). Ce test lisait « Mildiou » et croyait lire du
+      // français : c'est le piège que CLAUDE.md signale. On vérifie
+      // donc la maladie dans la langue réellement rendue.
+      expect(surveiller.first.body,
+          contains(trIn(diseaseMap['tomate']!.first.name, 'en')));
     });
 
     test('aucune section vide', () {

@@ -4,6 +4,7 @@ import 'package:kultiva/data/market_data.dart';
 import 'package:kultiva/data/recipes.dart';
 import 'package:kultiva/data/regions/france.dart';
 import 'package:kultiva/data/regions/regional_calendar.dart';
+import 'package:kultiva/data/regions/temperate_zones.dart';
 import 'package:kultiva/data/regions/west_africa.dart';
 import 'package:kultiva/data/regions/west_africa_zones.dart';
 import 'package:kultiva/data/regions/zone_shift.dart';
@@ -24,27 +25,40 @@ void main() {
       }
     });
 
-    test('méditerranéen → un mois plus tôt, continental → un mois plus tard',
+    test('une culture sans calendrier écrit reste dérivée par décalage',
         () {
-      RegionData tomate(ClimateZone z) =>
+      // ⚠️ Mis à jour le 02/11/2026. Ce test portait sur la tomate,
+      // qui a depuis un calendrier **écrit** pour les deux zones
+      // (`temperate_zones.dart`) : le décalage uniforme ne la décrit
+      // plus. On vérifie donc la dérivation sur une culture qui n'a
+      // pas de surcharge, et les calendriers écrits sont testés dans
+      // `temperate_zones_test.dart`.
+      const sansSurcharge = 'sarrasin';
+      RegionData cal(ClimateZone z) =>
           regionalCalendar(Region.france, zone: z)
-              .firstWhere((r) => r.vegetableId == 'tomate');
+              .firstWhere((r) => r.vegetableId == sansSurcharge);
 
-      final base = franceData.firstWhere((r) => r.vegetableId == 'tomate');
-      final med = tomate(ClimateZone.mediterranean);
-      final cont = tomate(ClimateZone.continental);
+      final base =
+          franceData.firstWhere((r) => r.vegetableId == sansSurcharge);
+      final med = cal(ClimateZone.mediterranean);
+      final cont = cal(ClimateZone.continental);
 
       expect(med.sowingMonths, shiftMonths(base.sowingMonths, -1));
       expect(cont.harvestMonths, shiftMonths(base.harvestMonths, 1));
       // Un calendrier dérivé doit le dire : c'est une approximation.
-      expect(med.regionalNote, isNotNull);
-      expect(cont.regionalNote, isNotNull);
+      expect(med.regionalNote, contains('adapté'));
+      expect(cont.regionalNote, contains('adapté'));
     });
 
     test('le continental ne sème pas dehors en plein hiver', () {
       final cal =
           regionalCalendar(Region.france, zone: ClimateZone.continental);
       for (final r in cal) {
+        // Les cultures à calendrier écrit ont leurs propres règles,
+        // vérifiées dans `temperate_zones_test.dart` : l'ail se plante
+        // bien en octobre, et un poivron se sème en février **à
+        // l'abri**. Ici on teste la dérivation automatique.
+        if (continentalCalendar.containsKey(r.vegetableId)) continue;
         // Sauf quand il ne resterait plus rien : mieux vaut une date
         // discutable qu'un légume disparu du calendrier.
         if (r.sowingMonths.length > 1) {

@@ -20,11 +20,23 @@ void main() {
   /// Le texte de chaque tuto, espaces normalisés, pour y chercher une
   /// clé. On lit le fichier brut : il suffit de savoir si la phrase
   /// française s'y trouve encore.
+  /// Les entités HTML que l'extracteur décode à la lecture : il faut
+  /// les décoder ici aussi, sinon « Défis & badges » est introuvable
+  /// dans un fichier qui écrit « Défis &amp; badges ».
+  String lisible(String html) => html
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .replaceAll('&amp;', '&')
+      .replaceAll('&nbsp;', ' ')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&#39;', '\'')
+      .replaceAll('&rsquo;', '\u2019')
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>');
+
   final tutos = <String, String>{
     for (final f in Directory('assets/tutos').listSync().whereType<File>())
       if (f.path.endsWith('.html'))
-        f.uri.pathSegments.last:
-            f.readAsStringSync().replaceAll(RegExp(r'\s+'), ' '),
+        f.uri.pathSegments.last: lisible(f.readAsStringSync()),
   };
 
   List<String> nombres(String texte) => RegExp(r'\d+(?:[.,]\d+)?')
@@ -123,16 +135,28 @@ void main() {
     });
   });
 
-  test('conserver_legumes, le tuto de référence, est traduit en entier',
+  test('aucune traduction n\'est vide', () {
+    // Une valeur vide passerait le filtre d'injection, mais c'est du
+    // travail à moitié fait qu'il vaut mieux voir tout de suite.
+    tutoTextsByLanguage.forEach((langue, dico) {
+      for (final e in dico.entries) {
+        expect(e.value, isNotEmpty,
+            reason: '$langue · clé non traduite : ${e.key}');
+      }
+    });
+  });
+
+  test('la traduction dit autre chose que le français, presque partout',
       () {
-    // Le modèle que les 32 autres copient. S'il se dégrade, les lots
-    // suivants copieront un modèle dégradé.
+    // Quelques phrases sont identiques dans les deux langues — un
+    // emoji suivi d'un nom propre (« 🥒 Courgette »), une unité. Mais
+    // si la moitié du dictionnaire était identique, c'est qu'on
+    // aurait recopié le français.
     final en = tutoTextsByLanguage['en']!;
-    expect(en.length, greaterThanOrEqualTo(36));
-    for (final e in en.entries) {
-      expect(e.value, isNotEmpty, reason: 'Clé vide : ${e.key}');
-      expect(e.value, isNot(e.key),
-          reason: 'Traduction identique au français : ${e.key}');
-    }
+    final identiques =
+        en.entries.where((e) => e.value == e.key).length;
+    expect(identiques / en.length, lessThan(0.1),
+        reason: '\$identiques phrases sur \${en.length} sont identiques '
+            'au français.');
   });
 }

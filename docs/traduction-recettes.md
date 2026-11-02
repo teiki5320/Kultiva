@@ -144,12 +144,10 @@ Garde ce qui rend une étape utile : la raison derrière le geste.
 | 9 méthodes de conservation | ✅ français + anglais |
 | Durées (« 3 semaines ») | ✅ français + anglais |
 | Libellés du lecteur animé | ✅ français + anglais (`playerUiFor`) |
-| Recettes — 21 légumes sur 123 | ✅ anglais (tomate = le modèle, + lot 1) |
-| Recettes — les 102 légumes restants | ⬜ à faire, 6 lots |
-| Tutos — mécanisme | ✅ dictionnaire injecté dans le DOM |
-| Tutos — `conserver_legumes` | ✅ anglais, **le modèle** |
-| Tutos — les 32 autres | ⬜ à faire (`tool/exporter_tutos.py`) |
-| Maladies, badges, défis, lexique, conseils | ⬜ structure pas encore faite |
+| Recettes — les 736 | ✅ anglais, 123 légumes |
+| Tutos — les 33 | ✅ anglais, 1 266 phrases |
+| Maladies, badges, défis, lexique, conseils | ✅ anglais, 784 phrases |
+| Espagnol, portugais | ⬜ à faire — même outillage, `--langue=es` |
 
 **Le prix réel d'un lot de recettes, mesuré** : 190 000 jetons sur
 Sonnet pour 20 légumes et 120 recettes — soit ≈ 1,3 million de jetons

@@ -114,12 +114,35 @@ void main() {
   });
 
   test('une recette non traduite retombe sur le français', () {
-    // La courgette n'est pas encore traduite : elle doit s'afficher en
-    // français sous une interface anglaise, pas en blanc.
-    final courgette = recipesByVegetable['courgette']!.first;
-    expect(recipeNameIn(courgette, 'en'), courgette.name);
-    expect(recipeStepsIn(courgette, 'en'), courgette.steps);
-    expect(recipeIngredientsIn(courgette, 'en'), courgette.ingredients);
+    // ⚠️ Mis à jour le 02/11/2026 : les 736 recettes du catalogue sont
+    // traduites, donc aucune ne sert plus de cas de repli. On en
+    // fabrique une hors catalogue — elle n'a pas de propriétaire,
+    // donc pas de traduction possible.
+    const inconnue = Recipe(
+      name: 'Gratin de rutabagas oubliés',
+      emoji: '🥣',
+      description: 'Une recette qui n\'est dans aucun catalogue.',
+      ingredients: <String>['2 rutabagas'],
+      steps: <RecipeStep>[RecipeStep('🔪', 'Épluche et coupe en rondelles.')],
+    );
+    expect(recipeNameIn(inconnue, 'en'), inconnue.name);
+    expect(recipeStepsIn(inconnue, 'en'), inconnue.steps);
+    expect(recipeIngredientsIn(inconnue, 'en'), inconnue.ingredients);
+  });
+
+  test('les 736 recettes sont traduites en anglais', () {
+    // Verrou de couverture : si une recette est ajoutée au catalogue
+    // sans sa traduction, elle sortira en français sous une interface
+    // anglaise — et ce test le dira tout de suite.
+    final manquantes = <String>[
+      for (final e in recipesByVegetable.entries)
+        for (final r in e.value)
+          if (recipeTextFor(r, 'en') == null) '${e.key}/${r.name}',
+    ];
+    expect(manquantes, isEmpty,
+        reason: '${manquantes.length} recettes sans traduction anglaise. '
+            'Génère son lot : dart run tool/exporter_recettes.dart '
+            '--squelette --langue=en --lot=N');
   });
 
   test('une langue inconnue retombe sur le français', () {
