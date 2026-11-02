@@ -215,7 +215,7 @@ class NotificationService {
       final androidDetails = AndroidNotificationDetails(
         'kultiva_watering',
         trUi('Alertes arrosage'),
-        channelDescription: trUi('Notifications quand vos légumes ont soif'),
+        channelDescription: trUi('Notifications quand tes légumes ont soif'),
         importance: Importance.high,
         priority: Priority.high,
       );
@@ -228,7 +228,7 @@ class NotificationService {
 
       await _plugin.show(
         _wateringId,
-        trUi('💧 Vos légumes ont soif !'),
+        trUi('💧 Tes légumes ont soif !'),
         body,
         details,
       );

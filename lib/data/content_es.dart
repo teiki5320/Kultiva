@@ -1389,10 +1389,6 @@ const Map<String, String> contentTextsEs = <String, String>{
       'tubérculo de siembra',
   'Fragment de tubercule (ou petit tubercule entier) utilisé comme semence, notamment pour l\'igname et la pomme de terre. Choisis des semenceaux sains et fermes : c\'est la garantie d\'une belle levée.':
       'Fragmento de tubérculo (o tubérculo pequeño entero) usado como semilla, sobre todo para el ñame y la patata. Elige tubérculos de siembra sanos y firmes: es la garantía de una buena germinación.',
-  'poussidex':
-      'poussidex',
-  'Ton "Pokédex" de jardinier dans Kultiva : collection de badges, défis photo et statistiques qui retracent tout ton parcours au potager.':
-      'Tu "Pokédex" de hortelano en Kultiva: colección de insignias, retos fotográficos y estadísticas que cuentan todo tu recorrido por el huerto.',
   'shiny':
       'shiny',
   'Médaille et version "légendaire" d\'un badge : la plus rare, la plus brillante. Obtenue après de longues séries d\'actions parfaites !':
@@ -1401,10 +1397,6 @@ const Map<String, String> contentTextsEs = <String, String>{
       'reto',
   'Mini-quête photo à réaliser dans Kultiva (photographier un semis, une récolte, une fleur…). Chaque défi réussi débloque un badge, et la photo reste sur ton téléphone.':
       'Minimisión fotográfica que hay que cumplir en Kultiva (fotografiar una siembra, una cosecha, una flor...). Cada reto superado desbloquea una insignia, y la foto se queda en tu teléfono.',
-  'streak':
-      'racha',
-  'Nombre de jours consécutifs où tu ouvres l\'app. Plus la streak est longue, plus certains badges se débloquent (Régulier, Fidèle, Vétéran).':
-      'Número de días seguidos en que abres la app. Cuanto más larga es la racha, más insignias se desbloquean (Constante, Fiel, Veterano).',
 
   // ─── familles (26 phrases, 26 mots) ───
   'Solanacées':

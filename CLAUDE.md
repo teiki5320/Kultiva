@@ -355,8 +355,8 @@ dart run tool/exporter_recettes.dart --squelette --langue=en --lot=3
   kawaii dans ta poche 🌱 ».
 - **Localisation** : **français (source), anglais, espagnol**.
   Depuis le 02/11/2026, le **contenu** est complet dans les trois
-  langues — 130 cultures, 736 recettes, 33 tutos (1 266 phrases),
-  maladies, lexique, badges, défis (784 phrases). Soit ≈ 2 900 chaînes
+  langues — 130 cultures, 736 recettes, 33 tutos (1 267 phrases),
+  maladies, lexique, badges, défis (780 phrases). Soit ≈ 2 900 chaînes
   par langue, écrites par huit agents Sonnet et validées par les tests
   de nombres.
   **L'interface aussi**, depuis le 02/11/2026 : 773 chaînes par
@@ -1057,13 +1057,25 @@ Le Studio de Jean affiche les fiches de ce dépôt (docs/INFRA.md, docs/MARKETIN
     potager carré. Si la correction doit revenir, sa place est le
     dossier du plant (`showPlantationSheet`), pas un onglet.
 
-17. **Le tuto du dashboard montre quatre onglets, l'app en a cinq** —
-    repéré le 01/11/2026. `assets/tutos/decouvrir_dashboard.html`
-    redessine la barre en HTML (Home, Cahier, Étal, Tutos) : il a été
-    produit avant l'ajout de Recettes et n'a pas suivi. Rien n'échoue,
-    le tuto raconte simplement une app d'avant-hier. À reprendre avec
-    `docs/prompt-tuto-dashboard.md`, qui dit lui aussi « quatre
-    onglets ».
+17. ~~**Le tuto du dashboard montre quatre onglets**~~ — ✅ **FAIT le
+    02/11/2026.** Le cinquième onglet (🍴 Recettes) est dans la barre,
+    et « Recettes » est traduit dans les dictionnaires de tutos. Les
+    scènes n'utilisaient que les index 0 à 2, donc l'ordre n'a pas
+    bougé.
+
+    **Deux choses ont suivi**, trouvées en regardant la page traduite :
+
+    - les **noms et initiales de mois** du tuto venaient de son propre
+      JavaScript, donc restaient français : il affichait « Novembre »
+      et un « J » pour janvier sous une interface espagnole. Ils
+      viennent maintenant de Dart (`__KULTIVA_MOIS__` et
+      `__KULTIVA_MOIS1__`) ;
+    - ses cartes avaient une **hauteur fixe de 104 px** : « Retos e
+      insignias » passait sur deux lignes et chevauchait la pastille.
+      `min-height` et une réserve de 34 px sous la pastille.
+
+    ⚠️ `docs/prompt-tuto-dashboard.md` dit encore « quatre onglets » :
+    à corriger avant de régénérer le tuto depuis ce prompt.
 
 ## 🫙 « Garder ta récolte » (structure arrêtée le 01/11/2026)
 
@@ -1323,12 +1335,30 @@ n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
       seraient devenues orphelines. `heatwave_tips.dart` rend donc du
       français, et son commentaire dit pourquoi.
 
-21. **L'index des tutos cite encore le Poussidex** — repéré le
-    02/11/2026 à l'écran. La carte « Découvrir l'application » a pour
-    sous-titre « Le tour complet — dashboard, Étal, Poussidex », alors
-    que le Poussidex a été supprimé le 31/10. Même famille que
-    l'alerte 17 (le tuto montre quatre onglets, l'app en a cinq) : les
-    textes d'accompagnement n'ont pas suivi les deux suppressions.
+21. ~~**Des textes citent encore le Poussidex**~~ — ✅ **FAIT le
+    02/11/2026.** Les quatre derniers endroits visibles sont réécrits :
+    le sous-titre « Le tour complet — dashboard, Cahier, Étal,
+    Recettes », le dialogue de suppression d'un plant (« de ton cahier
+    de culture »), le texte de partage (« dans mon jardin Kultiva ») et
+    le dos de la carte de badge (« BADGES » au lieu de
+    « POUSSIDEX »).
+
+    **Deux entrées de lexique sont parties avec** — « poussidex » et
+    « streak » définissaient des notions supprimées le 31/10, et la
+    définition de « streak » citait un badge « Fidèle » qui n'existe
+    pas dans les 50. Le contenu passe de 784 à **780 phrases**, et le
+    test des clés orphelines a réclamé leurs traductions tout seul.
+
+    **Au passage** : « Apprends à jardiner en vidéo » devient
+    « Apprends à jardiner, fiche par fiche » — les tutos sont des
+    fiches HTML, pas des vidéos. Et les deux dernières notifications
+    qui vouvoyaient (« Vos légumes ont soif ») tutoient comme le reste
+    de l'app.
+
+    ⚠️ **`kultiva.gridMigratedToPoussidex` reste**, et doit rester :
+    c'est une **clé de préférence** déjà écrite sur les téléphones. La
+    renommer relancerait la migration de l'ancienne grille chez tous
+    ceux qui l'ont déjà faite.
 
 ## 🗣️ Traduire le contenu (structure posée le 02/11/2026)
 
@@ -1383,7 +1413,7 @@ l'étape.
 
 **L'état réel (02/11/2026)** : **les 736 recettes sont traduites en
 anglais et en espagnol**, les 123 légumes, plus les 33 tutos
-(1 266 phrases) et les 784 phrases de contenu dans les deux langues.
+(1 267 phrases) et les 780 phrases de contenu dans les deux langues.
 La tomate a été écrite à la main comme modèle de ton ; le reste a été
 traduit par des agents Sonnet en parallèle, puis validé par les trois
 suites de tests — aucune clé inventée, comptes d'étapes exacts,
@@ -1439,7 +1469,7 @@ pas de ce chantier : « Il te faut », « Une idée pour ta récolte de… »
 
 ### Les tutos : traduits sans être touchés (02/11/2026)
 
-**Le volume, mesuré** : 34 tutos, **1 266 textes distincts, 11 157
+**Le volume, mesuré** : 34 tutos, **1 267 textes distincts, 11 158
 mots** — cinq fois moins que les recettes. J'avais raisonné comme si
 c'était un second chantier de même taille ; c'était faux.
 
@@ -1467,7 +1497,7 @@ Le walker ignore `<script>` et `<style>`, et un `MutationObserver`
 reprend les textes ajoutés après coup — le tuto du dashboard écrit ses
 légendes au fil de l'animation.
 
-**Les 33 tutos sont traduits** — 1 266 phrases. `conserver_legumes` a
+**Les 33 tutos sont traduits** — 1 267 phrases. `conserver_legumes` a
 été écrit à la main comme modèle et vérifié en capture (mise en page
 intacte, 8-12 °C, 3 %, 100 °C préservés) ; les 1 230 autres phrases
 viennent d'un agent, validées par le test.
@@ -1477,6 +1507,26 @@ française dans le HTML brut, donc « Défis & badges » était introuvable
 dans un fichier qui écrit « Défis &amp; badges ». Le test décode
 maintenant les entités, comme l'extracteur.
 
+⚠️ **Les mois d'un calendrier ne sont pas des phrases.** « J » vaut
+janvier, juin et juillet, et vaut « E » en espagnol. Les cases d'un
+calendrier portent donc `data-mois="1".."12"`, et le walker les
+remplit depuis `__KULTIVA_MOIS1__`, posé par Dart. Les noms longs
+voyagent aussi, dans `__KULTIVA_MOIS__`, pour les tutos qui
+construisent leur contenu en JavaScript.
+
+⚠️ **Deux blocs injectés, et l'ordre compte.** Les **données** entrent
+juste après `<body>`, donc avant le script du tuto — sinon
+`decouvrir_dashboard`, qui bâtit son calendrier lui-même, lirait la
+table des mois avant qu'elle existe. Le **walker**, lui, passe avant
+`</body>`, après que les scripts du tuto ont posé leur contenu. Un
+test vérifie l'ordre, et un autre qu'en retirant les deux blocs on
+retombe **exactement** sur le fichier d'origine.
+
+⚠️ **« Jamais modifiés » veut dire « jamais dupliqués par langue »**,
+pas « intouchables ». Le français d'un tuto reste la source : on le
+corrige dans son fichier, comme n'importe quelle donnée. C'est ce qui
+a permis de marquer les douze cases de `quand_semer`.
+
 ⚠️ **Phrases coupées par une balise.** Certains tutos coupent une
 phrase en trois nœuds de texte (« Le » / « calendrier » / « lunaire au
 potager »). Chaque morceau est traduit séparément, et la phrase ne se
@@ -1485,8 +1535,8 @@ premier si un tuto anglais lit bizarrement.
 
 ### Le reste du contenu (02/11/2026)
 
-**784 phrases, 7 292 mots** : maladies et ravageurs (323), lexique
-(162), défis (110), badges (100), achat au marché (56), familles
+**780 phrases, 7 248 mots** : maladies et ravageurs (323), lexique
+(158), défis (110), badges (100), achat au marché (56), familles
 botaniques (26), conseils canicule (7).
 
 Même principe, dictionnaire unique keyé par la phrase française :

@@ -101,7 +101,7 @@ void main() {
       // ferait disparaître la phrase française au lieu de la garder.
       final debut = en.indexOf('__KULTIVA_TUTO_T__=') +
           '__KULTIVA_TUTO_T__='.length;
-      final fin = en.indexOf(';(function', debut);
+      final fin = en.indexOf(';</script>', debut);
       final dico =
           jsonDecode(en.substring(debut, fin)) as Map<String, dynamic>;
       expect(dico, isNotEmpty);
@@ -128,10 +128,42 @@ void main() {
     });
 
     test('ne touche pas au corps du tuto', () {
-      expect(en.startsWith(html.substring(0, html.indexOf('</body>'))),
-          isTrue,
-          reason: 'Tout ce qui précède </body> doit être intact : les '
-              'fichiers des tutos ne sont jamais modifiés.');
+      // L'injection **ajoute** deux blocs et ne modifie rien : les
+      // données juste après `<body>`, le walker avant `</body>`. En
+      // les retirant, on doit retomber **exactement** sur le fichier
+      // d'origine — c'est la garantie que les 34 tutos restent une
+      // source unique, jamais dupliquée par langue.
+      final sansScripts = en
+          .replaceAll(RegExp(r'<script>window\.__KULTIVA_LANG__[\s\S]*?</script>'), '')
+          .replaceAll(RegExp(r'<script>\(function \(\)[\s\S]*?</script>'), '');
+      expect(sansScripts, html,
+          reason: 'Le fichier du tuto doit ressortir intact une fois '
+              'les deux blocs injectés retirés.');
+    });
+
+    test('pose les données avant le script du tuto', () {
+      // ⚠️ L'ordre est le fond du mécanisme : `decouvrir_dashboard`
+      // construit son calendrier lui-même et lit `__KULTIVA_MOIS1__`.
+      // Si les données arrivaient après, il retomberait sur les
+      // initiales françaises — un J pour janvier en espagnol.
+      expect(en.indexOf('__KULTIVA_MOIS1__'),
+          lessThan(en.indexOf('(function ()')),
+          reason: 'Les données doivent précéder le walker, et surtout '
+              'le script propre au tuto.');
+      expect(en.indexOf('__KULTIVA_MOIS1__'), greaterThan(en.indexOf('<body')));
+    });
+
+    test('les initiales de mois suivent la langue', () {
+      // « J » vaut janvier, juin et juillet ; en espagnol janvier est
+      // « enero ». Une clé de phrase ne peut pas rendre les deux.
+      final es = tutoTraduit(
+          File('assets/tutos/quand_semer.html').readAsStringSync(), 'es');
+      expect(es, contains('"E"'),
+          reason: 'Janvier doit donner un E en espagnol.');
+      expect(File('assets/tutos/quand_semer.html').readAsStringSync(),
+          contains('data-mois="1"'),
+          reason: 'Les cases du calendrier doivent être marquées pour '
+              'que le walker les remplisse.');
     });
   });
 

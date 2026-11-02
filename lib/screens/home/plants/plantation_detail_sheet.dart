@@ -293,8 +293,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
       builder: (_) => AlertDialog(
         title: Text(trUi('Retirer ce plant ?')),
         content: Text(trUiArgs(
-            'Cette action supprime définitivement {0} de ton Poussidex. '
-            'Tes arrosages et récoltes liés seront perdus.',
+            'Cette action supprime définitivement {0} de ton cahier de '
+            'culture. Tes arrosages et récoltes liés seront perdus.',
             <Object?>[widget.vegetable.displayName])),
         actions: <Widget>[
           TextButton(

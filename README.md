@@ -70,7 +70,7 @@ Allemagne.
 - **Tutos** — `lib/data/tutos_en.dart`. Le dictionnaire est injecté
   dans la page et appliqué dans le DOM : les 34 fichiers HTML ne sont
   jamais modifiés.
-- **Le reste** — `lib/data/content_en.dart`, 784 phrases.
+- **Le reste** — `lib/data/content_en.dart`, 780 phrases.
 
 Chaque champ retombe sur le français séparément : rien ne peut sortir
 un écran vide. Trois suites de tests vérifient qu'aucune clé n'est

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'tutos_en.dart';
 import 'tutos_es.dart';
+import 'ui_i18n.dart';
 
 /// Traduire les 34 tutos HTML sans les toucher.
 ///
@@ -77,8 +78,23 @@ const String _walker = r'''
     for (var c = n.firstChild; c; c = c.nextSibling) parcours(c);
   }
 
+  // Les initiales de mois d'un calendrier ne sont pas des phrases :
+  // « J » vaut janvier, juin et juillet, et vaut « E » en espagnol.
+  // Elles viennent donc d'une table indexée, posée par Dart, et se
+  // reconnaissent à leur attribut `data-mois` (1 = janvier).
+  function mois(n) {
+    var M = window.__KULTIVA_MOIS1__;
+    if (!M || !n.querySelectorAll) return;
+    var cases = n.querySelectorAll('[data-mois]');
+    for (var i = 0; i < cases.length; i++) {
+      var k = parseInt(cases[i].getAttribute('data-mois'), 10);
+      if (k >= 1 && k <= 12) cases[i].textContent = M[k - 1];
+    }
+  }
+
   function tout() {
     parcours(document.body);
+    mois(document.body);
     var t = trad(document.title);
     if (t) document.title = t;
   }
@@ -92,7 +108,7 @@ const String _walker = r'''
     var o = new MutationObserver(function (lots) {
       for (var i = 0; i < lots.length; i++) {
         var aj = lots[i].addedNodes;
-        for (var j = 0; j < aj.length; j++) parcours(aj[j]);
+        for (var j = 0; j < aj.length; j++) { parcours(aj[j]); mois(aj[j]); }
         if (lots[i].type === 'characterData') texte(lots[i].target);
       }
     });
@@ -120,14 +136,40 @@ String tutoTraduit(String html, String languageCode) {
   };
   if (utiles.isEmpty) return html;
 
-  final bloc = '<script>window.__KULTIVA_LANG__=' // ignore: prefer_adjacent_string_concatenation
-      '${jsonEncode(languageCode)};'
-      'window.__KULTIVA_TUTO_T__=${jsonEncode(utiles)};'
-      '$_walker</script>';
+  // Les initiales de mois voyagent à part : voir `mois()` dans le
+  // walker, et l'avertissement en tête de `ui_i18n.dart`.
+  final initiales = <String>[
+    for (final m in monthNamesShortIn(languageCode)) m[0].toUpperCase(),
+  ];
+  final moisLongs = monthNamesLongIn(languageCode);
 
-  // Avant `</body>` : le DOM est lu, et les scripts propres au tuto
-  // ont déjà posé leur contenu initial.
-  final i = html.lastIndexOf('</body>');
-  if (i < 0) return '$html$bloc';
-  return html.substring(0, i) + bloc + html.substring(i);
+  // ⚠️ **Deux blocs, et l'ordre compte.**
+  //
+  // Les *données* entrent juste après `<body>`, donc **avant** le
+  // script du tuto. Sinon `decouvrir_dashboard`, qui construit son
+  // calendrier lui-même, lirait `__KULTIVA_MOIS1__` avant qu'elle
+  // existe et retomberait sur les initiales françaises — un J pour
+  // janvier en espagnol.
+  //
+  // Le *walker*, lui, passe avant `</body>`, donc **après** que les
+  // scripts du tuto ont posé leur contenu : il a tout à lire.
+  final donnees = '<script>window.__KULTIVA_LANG__=' // ignore: prefer_adjacent_string_concatenation
+      '${jsonEncode(languageCode)};'
+      'window.__KULTIVA_MOIS1__=${jsonEncode(initiales)};'
+      'window.__KULTIVA_MOIS__=${jsonEncode(moisLongs)};'
+      'window.__KULTIVA_TUTO_T__=${jsonEncode(utiles)};</script>';
+  final bloc = '<script>$_walker</script>';
+
+  var out = html;
+  final ouvre = out.indexOf('<body');
+  if (ouvre >= 0) {
+    final fin = out.indexOf('>', ouvre);
+    if (fin > 0) out = out.substring(0, fin + 1) + donnees + out.substring(fin + 1);
+  } else {
+    out = donnees + out;
+  }
+
+  final i = out.lastIndexOf('</body>');
+  if (i < 0) return '$out$bloc';
+  return out.substring(0, i) + bloc + out.substring(i);
 }

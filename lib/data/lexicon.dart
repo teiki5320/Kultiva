@@ -332,10 +332,13 @@ const List<LexiconEntry> lexicon = <LexiconEntry>[
   ),
 
   // ─── Spécifique app Kultiva ──────────────────────────────────────
-  LexiconEntry(
-    'poussidex',
-    "Ton \"Pokédex\" de jardinier dans Kultiva : collection de badges, défis photo et statistiques qui retracent tout ton parcours au potager.",
-  ),
+  //
+  // ⚠️ « poussidex » et « streak » ont été retirés le 02/11/2026 : ils
+  // définissaient deux notions supprimées le 31/10 (l'album de
+  // collection, et les jours d'ouverture consécutifs). La définition
+  // de « streak » citait même un badge « Fidèle » qui n'existe pas
+  // dans les 50. Un lexique qui explique ce que l'app n'a plus est
+  // pire que pas de lexique.
   LexiconEntry(
     'shiny',
     "Médaille et version \"légendaire\" d'un badge : la plus rare, la plus brillante. Obtenue après de longues séries d'actions parfaites !",
@@ -343,10 +346,6 @@ const List<LexiconEntry> lexicon = <LexiconEntry>[
   LexiconEntry(
     'défi',
     "Mini-quête photo à réaliser dans Kultiva (photographier un semis, une récolte, une fleur…). Chaque défi réussi débloque un badge, et la photo reste sur ton téléphone.",
-  ),
-  LexiconEntry(
-    'streak',
-    "Nombre de jours consécutifs où tu ouvres l'app. Plus la streak est longue, plus certains badges se débloquent (Régulier, Fidèle, Vétéran).",
   ),
 ];
 

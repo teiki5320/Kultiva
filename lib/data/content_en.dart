@@ -1390,10 +1390,6 @@ const Map<String, String> contentTextsEn = <String, String>{
       'seed tuber',
   'Fragment de tubercule (ou petit tubercule entier) utilisé comme semence, notamment pour l\'igname et la pomme de terre. Choisis des semenceaux sains et fermes : c\'est la garantie d\'une belle levée.':
       'A piece of tuber (or a small whole tuber) used as seed, notably for yam and potato. Choose healthy, firm seed tubers: it is the guarantee of good emergence.',
-  'poussidex':
-      'Poussidex',
-  'Ton "Pokédex" de jardinier dans Kultiva : collection de badges, défis photo et statistiques qui retracent tout ton parcours au potager.':
-      'Your gardener\'s "Pokédex" in Kultiva: a collection of badges, photo challenges and statistics that trace your whole journey in the veg patch.',
   'shiny':
       'shiny',
   'Médaille et version "légendaire" d\'un badge : la plus rare, la plus brillante. Obtenue après de longues séries d\'actions parfaites !':
@@ -1402,10 +1398,6 @@ const Map<String, String> contentTextsEn = <String, String>{
       'challenge',
   'Mini-quête photo à réaliser dans Kultiva (photographier un semis, une récolte, une fleur…). Chaque défi réussi débloque un badge, et la photo reste sur ton téléphone.':
       'A mini photo quest to complete in Kultiva (photograph a seedling, a harvest, a flower…). Each challenge you complete unlocks a badge, and the photo stays on your phone.',
-  'streak':
-      'streak',
-  'Nombre de jours consécutifs où tu ouvres l\'app. Plus la streak est longue, plus certains badges se débloquent (Régulier, Fidèle, Vétéran).':
-      'The number of consecutive days you open the app. The longer the streak, the more badges unlock (Regular, Loyal, Veteran).',
 
   // ─── familles (26 phrases, 26 mots) ───
   'Solanacées':

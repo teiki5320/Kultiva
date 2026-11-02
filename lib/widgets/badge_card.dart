@@ -620,7 +620,10 @@ class _BadgeCardBack extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'POUSSIDEX',
+                      // Le dos de la carte disait « POUSSIDEX », écran
+                      // supprimé le 31/10/2026. C'est une carte de
+                      // badge : elle le dit.
+                      'BADGES',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 22,
@@ -630,7 +633,7 @@ class _BadgeCardBack extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'COLLECTION',
+                      trUi('COLLECTION'),
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 11,

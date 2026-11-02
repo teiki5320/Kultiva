@@ -60,7 +60,7 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
       await file.writeAsBytes(bytes);
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
-        text: trUiArgs('Regarde mon {0} dans mon Poussidex Kultiva ! 🌱',
+        text: trUiArgs('Regarde mon {0} dans mon jardin Kultiva ! 🌱',
             <Object?>[widget.vegetable.displayName.toLowerCase()]),
       );
       if (mounted) Navigator.of(context).pop();

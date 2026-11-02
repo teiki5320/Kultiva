@@ -313,7 +313,7 @@ class TutosScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          trUi('Apprends à jardiner en vidéo'),
+                          trUi('Apprends à jardiner, fiche par fiche'),
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.85),
                             fontWeight: FontWeight.w600,
@@ -476,7 +476,7 @@ class _TutoTile extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            trUi('Le tour complet — dashboard, Étal, Poussidex'),
+                            trUi('Le tour complet — dashboard, Cahier, Étal, Recettes'),
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,

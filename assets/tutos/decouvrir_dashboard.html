@@ -111,7 +111,11 @@ body:not(.list) .list-title{position:absolute;width:1px;height:1px;overflow:hidd
 .season-emoji{font-size:34px;line-height:1}
 .season-temp{font-size:15px;font-weight:900;background:rgba(255,255,255,.7);border-radius:20px;padding:2px 10px}
 .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{border-radius:18px;padding:12px;height:104px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;position:relative;box-shadow:0 2px 8px rgba(42,74,58,.06)}
+/* min-height et non height : « Retos e insignias » et
+   « Challenges & badges » prennent deux lignes là où « Défis &
+   badges » en prend une, et le titre chevauchait la pastille. */
+.card{border-radius:18px;padding:12px;min-height:104px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;position:relative;box-shadow:0 2px 8px rgba(42,74,58,.06)}
+.card b{padding-top:34px}
 .card .ic{position:absolute;top:10px;left:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.75);display:grid;place-items:center;font-size:19px}
 .card b{font-size:14px;font-weight:900;line-height:1.15}
 .card small{font-size:11px;font-weight:700;color:#5E7F6B;line-height:1.25}
@@ -381,6 +385,7 @@ body:not(.list) .list-title{position:absolute;width:1px;height:1px;overflow:hidd
             <div class="tab on"><span class="te">🏠</span>Home</div>
             <div class="tab"><span class="te">📔</span>Cahier</div>
             <div class="tab"><span class="te">🛒</span>Étal</div>
+            <div class="tab"><span class="te">🍴</span>Recettes</div>
             <div class="tab"><span class="te">🎓</span>Tutos</div>
           </nav>
         </div>
@@ -435,7 +440,8 @@ body:not(.list) .list-title{position:absolute;width:1px;height:1px;overflow:hidd
   ];
 
   /* ---------- Contenu qui dépend de la date (pour ne jamais être périmé) ---------- */
-  var MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+  // Les noms de mois viennent de Dart quand la page est traduite.
+  var MOIS = window.__KULTIVA_MOIS__ || ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
   var m = new Date().getMonth();
   var saison = m === 11 || m < 2 ? ["Hiver","❄️","6°C","s-winter"]
              : m < 5 ? ["Printemps","🌸","15°C","s-spring"]
@@ -459,7 +465,9 @@ body:not(.list) .list-title{position:absolute;width:1px;height:1px;overflow:hidd
     ["Ail",       [10,11,2],        [6,7]]
   ];
   var calIn = $("#cal-in"), months = $("#cal-months");
-  "JFMAMJJASOND".split("").forEach(function (l, i) {
+  // Les initiales viennent de Dart quand la page est traduite : en
+  // espagnol janvier est « enero », donc un E et pas un J.
+  (window.__KULTIVA_MOIS1__ || "JFMAMJJASOND".split("")).forEach(function (l, i) {
     var s = document.createElement("span"); s.textContent = l; if (i === m) s.className = "now"; months.appendChild(s);
   });
   CAL.forEach(function (v) {

@@ -638,12 +638,12 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Growing yams',
   '🎓 Tutos':
       '🎓 Tutorials',
-  'Apprends à jardiner en vidéo':
-      'Learn to garden with videos',
+  'Apprends à jardiner, fiche par fiche':
+      'Learn gardening, one card at a time',
   'Ouvre la fiche':
       'Open the guide',
-  'Le tour complet — dashboard, Étal, Poussidex':
-      'The full tour — dashboard, Catalog, Poussidex',
+  'Le tour complet — dashboard, Cahier, Étal, Recettes':
+      'The full tour — dashboard, Journal, Catalog, Recipes',
   'Étal':
       'Catalog',
   '{0} variétés':
@@ -812,8 +812,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       '📜 History',
   'Retirer ce plant ?':
       'Remove this plant?',
-  'Cette action supprime définitivement {0} de ton Poussidex. Tes arrosages et récoltes liés seront perdus.':
-      'This permanently deletes {0} from your Poussidex. Your linked waterings and harvests will be lost.',
+  'Cette action supprime définitivement {0} de ton cahier de culture. Tes arrosages et récoltes liés seront perdus.':
+      'This permanently deletes {0} from your garden journal. Your linked waterings and harvests will be lost.',
   'Prendre une photo':
       'Take a photo',
   'Choisir depuis la galerie':
@@ -1096,9 +1096,9 @@ const Map<String, String> uiTextsEn = <String, String>{
       '{0} days without water. {1} need water!',
   'Alertes arrosage':
       'Watering alerts',
-  'Notifications quand vos légumes ont soif':
+  'Notifications quand tes légumes ont soif':
       'Notifications when your vegetables are thirsty',
-  '💧 Vos légumes ont soif !':
+  '💧 Tes légumes ont soif !':
       '💧 Your vegetables are thirsty!',
   'Arrose tôt le matin ou en soirée, paille tes plants et ombre les jeunes pousses.':
       'Water early in the morning or in the evening, mulch your plants and shade the young shoots.',
@@ -1248,8 +1248,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'November',
   'Décembre':
       'December',
-  'Regarde mon {0} dans mon Poussidex Kultiva ! 🌱':
-      'Look at my {0} in my Kultiva Poussidex! 🌱',
+  'Regarde mon {0} dans mon jardin Kultiva ! 🌱':
+      'Look at my {0} in my Kultiva garden! 🌱',
   'Jour':
       'Day',
   'Planté le {0}  •  Kultiva':
@@ -1554,4 +1554,6 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Ethiopia',
   'Jardin 1':
       'Garden 1',
+  'COLLECTION':
+      'COLLECTION',
 };

@@ -145,10 +145,10 @@ Garde ce qui rend une étape utile : la raison derrière le geste.
 | Durées (« 3 semaines ») | ✅ français + anglais |
 | Libellés du lecteur animé | ✅ français + anglais (`playerUiFor`) |
 | Recettes — les 736 | ✅ anglais, 123 légumes |
-| Tutos — les 33 | ✅ anglais, 1 266 phrases |
-| Maladies, badges, défis, lexique, conseils | ✅ anglais, 784 phrases |
+| Tutos — les 33 | ✅ les deux langues, 1 267 phrases |
+| Maladies, badges, défis, lexique, conseils | ✅ les deux langues, 780 phrases |
 | Espagnol — 130 cultures | ✅ `names_es.dart` |
-| Espagnol — recettes, tutos, contenu | ✅ 736 + 1 266 + 784, comme l'anglais |
+| Espagnol — recettes, tutos, contenu | ✅ 736 + 1 267 + 780, comme l'anglais |
 | Interface — 773 chaînes | ✅ `ui_en.dart`, `ui_es.dart` |
 | Portugais | ⬜ à faire — `--langue=pt` |
 

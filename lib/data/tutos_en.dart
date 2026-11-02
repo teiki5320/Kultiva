@@ -2559,4 +2559,7 @@ const Map<String, String> tutoTextsEn = <String, String>{
       'Treating as a matter of routine:',
   'ne traite que si nécessaire. Un jardin sain avec des auxiliaires se défend souvent seul.':
       'only treat when necessary. A healthy garden with helpful insects often defends itself.',
+  // Le cinquième onglet, ajouté au tuto du dashboard le 02/11/2026.
+  'Recettes':
+      'Recipes',
 };
