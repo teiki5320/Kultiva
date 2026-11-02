@@ -153,12 +153,15 @@ Kultiva/
 │   │                       # watering_advisor, pdf, garden_stats,
 │   │                       # plantation_migration, culture, garden_plan,
 │   │                       # review
-│   ├── data/               # 13 fichiers (+ names_en, zone_shift)
+│   ├── data/               # 16 fichiers (+ names_en, zone_shift,
+│   │                       #  recipes_i18n, recipes_en)
 │   │   ├── vegetables_base.dart    # 169 entrées (130 cultures + 39 accessoires)
 │   │   ├── badges.dart (50) / challenges.dart (50) / diseases.dart
 │   │   ├── companions.dart / rotation.dart / lexicon.dart
 │   │   ├── local_names.dart / market_data.dart / market_buying_tips.dart
-│   │   ├── recipes.dart      # noms locaux, maraîchage FCFA, achat, cuisine (AO)
+│   │   ├── recipes.dart      # 736 recettes, source de vérité (français)
+│   │   ├── recipes_i18n.dart # le mécanisme de surcouche par langue
+│   │   ├── recipes_en.dart   # les recettes en anglais (tomate faite)
 │   │   └── regions/          # france.dart, west_africa.dart,
 │   │                         # west_africa_zones.dart (sous-zones),
 │   │                         # regional_calendar.dart (zone + hémisphère,
@@ -201,7 +204,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 35 fichiers — 376 tests (01/11/2026)
+├── test/                   # 41 fichiers — 1 043 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -329,6 +332,10 @@ cd ios && pod install --repo-update && cd ..
 #   storeFile=...  storePassword=...  keyAlias=...  keyPassword=...
 
 # Aucun backend : rien à lancer ni à configurer côté serveur.
+
+# Traduction : sortir un lot de recettes à traduire
+dart run tool/exporter_recettes.dart --lots
+dart run tool/exporter_recettes.dart --squelette --langue=en --lot=3
 ```
 
 ## 🎨 Design / UX
@@ -347,9 +354,10 @@ cd ios && pod install --repo-update && cd ..
   utilise ta localisation pour afficher la météo de ton jardin », « Le potager
   kawaii dans ta poche 🌱 ».
 - **Localisation** : **français (source) et anglais** depuis le
-  01/11/2026. Interface + noms des 130 cultures traduits ; tutos,
-  recettes, conseils, maladies, badges et défis restent en français,
-  et le réglage « Langue » le dit. Les chaînes passent par
+  01/11/2026. Interface + noms des 130 cultures traduits ; les
+  **recettes** sont traduisibles depuis le 02/11/2026 (voir la section
+  « Traduire le contenu » plus bas) ; tutos, conseils, maladies, badges
+  et défis restent en français, et le réglage « Langue » le dit. Les chaînes passent par
   `lib/l10n/*.arb` (`flutter gen-l10n`), les noms de légumes par
   `lib/data/names_en.dart` et `v.displayName`. **`v.name` reste le nom
   français** : c'est la source de vérité des clés, de la recherche
@@ -439,6 +447,15 @@ pour l'Afrique de l'Ouest.
   fichiers qui divergent à la première correction.
 - **Ne pas réintroduire de CDN ni de Google Fonts** dans un tuto *ni
   dans le lecteur de recettes* : ils doivent tourner hors ligne.
+- **Ne jamais traduire un nombre.** Dans une recette, les grammes de
+  sel, les degrés, les pourcentages de vinaigre et les temps de
+  stérilisation sont des règles de sécurité alimentaire. Les unités se
+  traduisent (« 30 g de sel » → « 30 g of salt »), les valeurs se
+  recopient — pas de Fahrenheit, pas d'onces.
+  `test/recipes_i18n_test.dart` le vérifie sur chaque chaîne.
+- **Ne pas faire éditer `recipes.dart` par un traducteur** : 11 821
+  lignes de Dart avec des `\'` et des `\$` échappés. Passer par
+  `tool/exporter_recettes.dart`, qui sort un squelette déjà valide.
 - **Un test de libellés doit dire sa langue** — l'environnement de test
   tourne en `en-US`. `onglets_test` a validé des libellés anglais
   pendant un moment en croyant lire du français.
@@ -1162,6 +1179,88 @@ journée alors qu'il y en avait 369 et 7.
     (rembg, modèle `isnet-general-use`). Un test exige qu'à chaque
     légume peint corresponde sa version détourée : **en ajoutant un
     légume, relancer l'outil** avec son id.
+
+## 🗣️ Traduire le contenu (structure posée le 02/11/2026)
+
+**Le problème que ça règle.** L'app avait une interface anglaise posée
+sur 736 recettes françaises. Un anglophone lisait « Recipes », cliquait,
+et tombait sur « Coulis de tomates en bocaux ». Ce n'était pas une
+traduction à venir, c'était une traduction cassée, déjà livrée.
+
+**Pourquoi il fallait une structure avant de traduire.** Les 57 000 mots
+de recettes sont en dur dans `lib/data/recipes.dart`, 11 821 lignes de
+Dart avec apostrophes et dollars échappés. Il n'existait **aucun endroit
+où une deuxième langue puisse atterrir**. Faire éditer ce fichier par un
+agent de traduction, c'était risquer la compilation sur un `\'` oublié.
+
+**Le patron retenu** est celui de `names_en.dart`, qui marche depuis le
+01/11 : **une surcouche, pas un second catalogue.**
+
+- `lib/data/recipes_i18n.dart` — le mécanisme. `RecipeText` (name,
+  description, keeps, ingredients, steps), la table
+  `recipeTextsByLanguage`, les fonctions pures `recipeNameIn`,
+  `recipeStepsIn`… et l'extension `display*` qui lit la langue dans
+  `PrefsService`. Y vivent aussi les neuf méthodes de conservation
+  traduites (`methodLabelIn`) et `dureeLisibleIn` — sans quoi un écran
+  anglais affichait « 3 semaines » sous un titre anglais.
+- `lib/data/recipes_en.dart` — la surcouche anglaise. Clé =
+  `légume/nom français`, celle des favoris. **Le nom français sert de
+  clé même dans un fichier étranger** : il ne change pas quand on
+  traduit, alors qu'une clé anglaise aurait obligé à renommer les sept
+  lots à la première retouche de style.
+- `tool/exporter_recettes.dart` — sort les lots à traduire. Il
+  **importe** le catalogue au lieu de le lire : pas d'expression
+  régulière, donc pas de casse sur un nom contenant une apostrophe.
+- `test/recipes_i18n_test.dart` — 10 tests, dont celui qui compte.
+
+**Ce qui ne voyage pas dans une traduction, exprès** : l'emoji d'une
+étape (il choisit la scène animée du lecteur), son minuteur, les
+minutes, les parts, la méthode. Ce qui n'a pas de langue reste dans le
+catalogue, donc ne peut pas se perdre en route.
+
+**Le repli est par champ.** Une recette dont le nom est traduit mais pas
+les étapes affiche un nom anglais et des étapes françaises. C'est ce qui
+permet de traduire par morceaux sans jamais casser l'app — et c'est
+pourquoi une liste d'étapes de longueur différente est refusée **en
+entier** plutôt que mélangée.
+
+⚠️ **Le test des nombres est le garde-fou du chantier.** Il compare les
+chiffres de chaque chaîne traduite à ceux du français. Une saumure à
+3 % devenue 2 % ne conserve plus, elle fait pousser autre chose ; un
+vinaigre dilué ne protège plus d'un botulisme. Vérifié en cassant
+volontairement une étape : l'erreur nomme le fichier, la recette et
+l'étape.
+
+**L'état réel** : la tomate est traduite en anglais (ses 3
+conservations, en entier), comme modèle de ton. **733 recettes
+attendent**, en 7 lots de 20 légumes, indépendants les uns des autres.
+La fiche de passation est `docs/traduction-recettes.md` — elle suffit à
+une session, sans explorer le dépôt.
+
+**Ajouter une langue** : écrire `lib/data/recipes_<code>.dart`, ajouter
+une ligne à `recipeTextsByLanguage`, ajouter le code à
+`PrefsService.supportedLanguages` et l'ARB correspondant. Rien d'autre
+à brancher — les écrans lisent déjà la surcouche.
+
+**Le lecteur de recettes parle la langue aussi.** `recipe_player.html`
+est un document hors ligne : il ne peut pas lire les ARB. Ses propres
+libellés — « Ce qu'il te faut », « étape 1 », « C'est parti », les
+minuteurs, les mois — voyagent donc dans le JSON, champ `ui`, produit
+par `playerUiFor()`. Une clé manquante retombe sur le français côté
+JavaScript. Sans ça, une recette anglaise s'ouvrait dans une boîte
+française : constaté à l'écran le 02/11/2026, puis corrigé et revérifié
+en capture.
+
+⚠️ **Restent en français dans l'écran Recettes**, et relèvent des ARB et
+pas de ce chantier : « Il te faut », « Une idée pour ta récolte de… »
+(partage) et « Pour 4 personnes · écrite pour 4 » (choix des parts).
+
+⚠️ **Les tutos, les maladies, les badges, les défis et les conseils
+n'ont pas encore de structure de traduction.** Pour les 34 tutos HTML,
+la décision n'est pas prise : dupliquer les fichiers par langue, ou
+sortir leurs textes en JSON et faire du HTML un gabarit. Deuxième
+option recommandée — 34 fichiers × n langues divergent à la première
+correction, c'est le même raisonnement que `zone_shift.dart`.
 
 ### Voir un écran HTML sans le simulateur
 

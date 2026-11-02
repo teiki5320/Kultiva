@@ -413,16 +413,37 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
 
   var R = __RECIPE__;
 
+  /// Les libellés du lecteur, dans la langue de l'interface.
+  ///
+  /// Dart envoie `R.ui` quand la langue n'est pas le français. Le
+  /// deuxième argument est le texte français, qui sert de défaut : une
+  /// langue qui oublie une clé garde un mot français, pas un trou.
+  /// Les recettes, elles, sont déjà traduites côté Dart.
+  function T(cle, fr) {
+    var u = R.ui;
+    return (u && typeof u[cle] === 'string' && u[cle]) ? u[cle] : fr;
+  }
+
   // ─── Outils communs aux deux directions ──────────────────────
   var THEME = R.theme === 'dark' ? 'dark' : 'light';
   var racine = document.documentElement;
   racine.setAttribute('data-theme', THEME);
 
+  // Le pied de page est écrit en dur dans le HTML : il est posé une
+  // fois, au démarrage, plutôt qu'à chaque rendu d'étape.
+  (function () {
+    var p = document.getElementById('prec');
+    if (p) p.setAttribute('aria-label', T('etapePrec', 'Étape précédente'));
+    var s = document.querySelector('#suiv .libelle');
+    if (s) s.textContent = T('suivant', 'Suivant');
+  })();
+
   var REDUIT = !!(window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  var MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  var MOIS = (R.ui && R.ui.mois && R.ui.mois.length === 12) ? R.ui.mois
+    : ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+       'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
   var AUJOURDHUI = new Date();
 
   /// La saison suit le mois, comme les bandeaux de l'app. Calculée ici
@@ -491,7 +512,8 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
 
   function dateLongue(d) {
     var j = d.getDate();
-    return (j === 1 ? '1er' : j) + ' ' + MOIS[d.getMonth()] + ' ' + d.getFullYear();
+    return (j === 1 ? T('premier', '1er') : j) + ' ' +
+      MOIS[d.getMonth()] + ' ' + d.getFullYear();
   }
 
   var NOMBRES = { un: 1, une: 1, deux: 2, trois: 3, quatre: 4, cinq: 5,
@@ -525,9 +547,9 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
   }
 
   function dureeLisible(min) {
-    if (min < 60) return min + ' min';
+    if (min < 60) return min + ' ' + T('uMin', 'min');
     var h = Math.floor(min / 60), r = min % 60;
-    return h + ' h' + (r ? ' ' + (r < 10 ? '0' : '') + r : '');
+    return h + ' ' + T('uH', 'h') + (r ? ' ' + (r < 10 ? '0' : '') + r : '');
   }
 
   var INFOS = infosDe(R.subtitle);
@@ -790,8 +812,11 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
       return '<li><b class="qte' + (q.qte ? '' : ' vide') + '">' + (q.qte ? echappe(q.qte) : '') +
         '</b><span>' + echappe(q.reste) + '</span></li>';
     }).join('');
-    return li ? '<h2 class="sec">Ce qu’il te faut</h2><ul class="ingr">' + li + '</ul>'
-      : '<p class="rien">Tout se passe dans les étapes 🌱</p>';
+    return li
+      ? '<h2 class="sec">' + echappe(T('ilTeFaut', 'Ce qu’il te faut')) +
+        '</h2><ul class="ingr">' + li + '</ul>'
+      : '<p class="rien">' +
+        echappe(T('rien', 'Tout se passe dans les étapes 🌱')) + '</p>';
   }
   function vedetteHtml() {
     return '<div class="vedette" aria-hidden="true">' +
@@ -813,9 +838,10 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
   }
   function etiquetteHtml(classe) {
     var avant = consommerAvant(INFOS.garde);
-    return '<div class="etiquette ' + (classe || '') + '"><span class="sur">À écrire sur l’étiquette</span>' +
+    return '<div class="etiquette ' + (classe || '') + '"><span class="sur">' + echappe(T('etiquette', 'À écrire sur l’étiquette')) + '</span>' +
       '<strong>' + echappe(R.name) + '</strong>' +
-      '<span class="quand">Préparé le ' + dateLongue(AUJOURDHUI) + '</span>' +
+      '<span class="quand">' + echappe(T('prepareLe', 'Préparé le')) + ' ' +
+        dateLongue(AUJOURDHUI) + '</span>' +
       (avant ? '<span class="garde">' + echappe(R.emoji || '🫙') + ' À consommer avant ' + avant + '</span>'
         : INFOS.garde ? '<span class="garde">' + echappe(R.emoji || '🫙') + ' ' + echappe(INFOS.garde) + '</span>' : '') +
       '</div>';
@@ -868,9 +894,10 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
     return String(k + 1);
   }
   function legendeDe(k) {
-    if (k < 0) return 'C\u2019est parti\u00a0!';
+    if (k < 0) return T('intro', 'C\u2019est parti\u00a0!');
     if (k >= N) return 'Bravo\u00a0!';
-    return echappe((ETAPES[k].emoji || '') + ' étape ' + (k + 1));
+    return echappe((ETAPES[k].emoji || '') + ' ' + T('etape', 'étape') +
+      ' ' + (k + 1));
   }
   function carte(k, place) {
     var centre = place === 'centre';
@@ -895,7 +922,12 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
       carte(k, 'centre') + '</div></div>';
   }
   var UI = {
-    libelles: { depart: 'C’est parti 🌱', suivant: 'Suivant', termine: 'Terminé', revoir: 'Revoir la recette' },
+    libelles: {
+      depart: T('depart', 'C’est parti 🌱'),
+      suivant: T('suivant', 'Suivant'),
+      termine: T('termine', 'Terminé'),
+      revoir: T('revoir', 'Revoir la recette'),
+    },
     intro: function () {
       return el('<section class="v13 v14 v13-intro">' + manege(-1) +
         '<h1>' + echappe(R.name) + '</h1>' + pucesHtml() + ingredientsHtml() + '</section>');
@@ -1141,15 +1173,17 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
       }
       var etat = p.querySelector('.t-etat');
       if (etat) {
-        etat.textContent = t.fini ? 'C’est prêt !'
-          : t.marche ? 'Ça tourne… je sonne à la fin'
-          : t.parti ? 'En pause'
-          : dureeLisible(Math.round(t.total / 60000)) + ', quand tu es prêt';
+        etat.textContent = t.fini ? T('pret', 'C’est prêt !')
+          : t.marche ? T('tourne', 'Ça tourne… je sonne à la fin')
+          : t.parti ? T('pause', 'En pause')
+          : dureeLisible(Math.round(t.total / 60000)) +
+            T('quandPret', ', quand tu es prêt');
       }
       var b = p.querySelector('[data-t="bascule"]');
       if (b) {
-        b.textContent = t.fini ? '↺ Relancer' : t.marche ? '❚❚ Pause'
-          : t.parti ? '▶ Reprendre' : '▶ Lancer';
+        b.textContent = t.fini ? T('relancer', '↺ Relancer')
+          : t.marche ? T('enPause', '❚❚ Pause')
+          : t.parti ? T('reprendre', '▶ Reprendre') : T('lancer', '▶ Lancer');
       }
       if ((t.marche || t.fini) && i !== index && !actif) {
         actif = { i: i, t: t, reste: reste };
@@ -1159,8 +1193,9 @@ button:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
     if (actif) {
       mini.hidden = false;
       mini.classList.toggle('fini', actif.t.fini);
-      mini.textContent = (actif.t.fini ? '⏰ C’est prêt' : '⏱ ' + hms(actif.reste)) +
-        ' · étape ' + (pages[actif.i].etape + 1);
+      mini.textContent =
+        (actif.t.fini ? T('pretCourt', '⏰ C’est prêt') : '⏱ ' + hms(actif.reste)) +
+        ' · ' + T('etape', 'étape') + ' ' + (pages[actif.i].etape + 1);
       mini.onclick = function () { montre(actif.i); };
     } else {
       mini.hidden = true;

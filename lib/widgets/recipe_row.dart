@@ -3,6 +3,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../data/names_en.dart';
 import '../data/recipes.dart';
+import '../data/recipes_i18n.dart';
 import '../data/vegetables_base.dart';
 import '../screens/home/recettes/recipe_player_screen.dart';
 import '../screens/vegetable_detail_screen.dart';
@@ -64,7 +65,7 @@ class RecipeRow extends StatelessWidget {
                         children: <Widget>[
                           Flexible(
                             child: Text(
-                              recipe.name,
+                              recipe.displayName,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -80,7 +81,7 @@ class RecipeRow extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        recipe.description,
+                        recipe.displayDescription,
                         style: const TextStyle(
                           fontSize: 12,
                           height: 1.35,
@@ -103,12 +104,13 @@ class RecipeRow extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 4),
                           child: _Garde(recipe: recipe),
                         ),
-                      if (recipe.subtitle != null || cuisineLe != null)
+                      if (recipe.displaySubtitle != null || cuisineLe != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 3),
                           child: Text(
                             <String>[
-                              if (recipe.subtitle != null) recipe.subtitle!,
+                              if (recipe.displaySubtitle != null)
+                                recipe.displaySubtitle!,
                               if (cuisineLe != null)
                                 'déjà cuisiné ${dateCourte(cuisineLe)}',
                             ].join('  ·  '),
@@ -193,16 +195,16 @@ class _FicheCourte extends StatelessWidget {
                 Text(recipe.emoji, style: const TextStyle(fontSize: 34)),
                 const SizedBox(height: 8),
                 Text(
-                  recipe.name,
+                  recipe.displayName,
                   style: const TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
-                if (recipe.subtitle != null) ...<Widget>[
+                if (recipe.displaySubtitle != null) ...<Widget>[
                   const SizedBox(height: 4),
                   Text(
-                    recipe.subtitle!,
+                    recipe.displaySubtitle!,
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -212,7 +214,7 @@ class _FicheCourte extends StatelessWidget {
                 ],
                 const SizedBox(height: 12),
                 Text(
-                  recipe.description,
+                  recipe.displayDescription,
                   style: const TextStyle(fontSize: 14, height: 1.45),
                 ),
                 if (recipe.ingredients.isNotEmpty) ...<Widget>[
@@ -222,7 +224,7 @@ class _FicheCourte extends StatelessWidget {
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 6),
-                  for (final ing in recipe.ingredients)
+                  for (final ing in recipe.displayIngredients)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 3),
                       child: Text('·  $ing',
@@ -294,24 +296,24 @@ class _FicheCourte extends StatelessWidget {
 /// colle dans une liste de courses, une capture non.
 Future<void> partagerRecette(String vegetableName, Recipe recipe) async {
   final lignes = <String>[
-    '${recipe.emoji}  ${recipe.name}',
-    if (recipe.subtitle != null) recipe.subtitle!,
+    '${recipe.emoji}  ${recipe.displayName}',
+    if (recipe.displaySubtitle != null) recipe.displaySubtitle!,
     '',
-    recipe.description,
+    recipe.displayDescription,
     if (recipe.ingredients.isNotEmpty) ...<String>[
       '',
       'Il te faut :',
-      ...recipe.ingredients.map((i) => '· $i'),
+      ...recipe.displayIngredients.map((i) => '· $i'),
     ],
     if (recipe.steps.isNotEmpty) ...<String>[
       '',
-      for (final (i, s) in recipe.steps.indexed) '${i + 1}. ${s.text}',
+      for (final (i, s) in recipe.displaySteps.indexed) '${i + 1}. ${s.text}',
     ],
     '',
     'Une idée pour ta récolte de $vegetableName — Kultiva 🌱',
   ];
   try {
-    await Share.share(lignes.join('\n'), subject: recipe.name);
+    await Share.share(lignes.join('\n'), subject: recipe.displayName);
   } catch (e, s) {
     await ErrorReporter.report('partage_recette', e, s);
   }
@@ -338,8 +340,8 @@ class _Garde extends StatelessWidget {
       ),
       child: Text(
         <String>[
-          if (m != null) '${m.emoji} ${m.label}',
-          recipe.keeps!,
+          if (m != null) '${m.emoji} ${recipe.displayMethodLabel}',
+          recipe.displayKeeps!,
         ].join('  ·  '),
         style: const TextStyle(
           fontSize: 10.5,

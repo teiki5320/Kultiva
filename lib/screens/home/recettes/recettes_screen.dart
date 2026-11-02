@@ -2,6 +2,7 @@ import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/recipes.dart';
+import '../../../data/recipes_i18n.dart';
 import '../../../data/regions/regional_calendar.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
@@ -112,10 +113,17 @@ class _RecettesScreenState extends State<RecettesScreen> {
         final dansLeNom = foldAccents(veg.displayName).contains(q);
         // La recherche couvre le nom du plat, sa description et ses
         // ingrédients : « gratin » trouvait, « crème » ne trouvait rien.
+        //
+        // Elle lit le texte **affiché** et le français : un anglophone
+        // tape « jam », mais les recettes pas encore traduites n'ont
+        // que « confiture ».
         final dansUneRecette = recettes.any((r) =>
             foldAccents(r.name).contains(q) ||
+            foldAccents(r.displayName).contains(q) ||
             foldAccents(r.description).contains(q) ||
-            r.ingredients.any((i) => foldAccents(i).contains(q)));
+            foldAccents(r.displayDescription).contains(q) ||
+            r.ingredients.any((i) => foldAccents(i).contains(q)) ||
+            r.displayIngredients.any((i) => foldAccents(i).contains(q)));
         if (!dansLeNom && !dansUneRecette) return;
       }
       out.add(_Entree(veg, recettes, auJardin.contains(id)));

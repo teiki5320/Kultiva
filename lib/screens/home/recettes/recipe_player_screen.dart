@@ -6,7 +6,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/names_en.dart';
 import '../../../data/recipes.dart';
+import '../../../data/recipes_i18n.dart';
 import '../../../data/vegetables_base.dart';
+import '../../../services/prefs_service.dart';
 import '../../../services/recipe_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/recipe_portions.dart';
@@ -142,14 +144,18 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
           await rootBundle.loadString('assets/recipes/recipe_player.html');
       final r = widget.recipe;
       final ingredients =
-          scaleIngredients(r.ingredients, _partsEcrites, _parts);
+          scaleIngredients(r.displayIngredients, _partsEcrites, _parts);
       final legume = vegetableById(widget.vegetableId);
       final image = await _imageDuLegume(widget.vegetableId);
       final json = jsonEncode(<String, dynamic>{
-        'name': r.name,
+        'name': r.displayName,
         'emoji': r.emoji,
         'subtitle': _sousTitre(r),
         'theme': sombre ? 'dark' : 'light',
+        // Les libellés du lecteur lui-même : il est hors ligne et ne
+        // peut pas lire les ARB, ils voyagent donc avec la recette.
+        if (playerUiFor(PrefsService.instance.effectiveLanguage) != null)
+          'ui': playerUiFor(PrefsService.instance.effectiveLanguage),
         // Le légume joue dans les scènes animées du lecteur. Sans
         // image (légume inconnu, fichier absent), c'est son emoji.
         'vegetable': <String, dynamic>{
@@ -158,7 +164,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
           if (image != null) 'image': image,
         },
         'ingredients': ingredients,
-        'steps': r.steps
+        'steps': r.displaySteps
             .map((s) => <String, dynamic>{
                   'emoji': s.emoji,
                   'text': s.text,
@@ -180,12 +186,13 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
   /// Le sous-titre suit le nombre de parts choisi, sinon il
   /// contredirait les quantités affichées juste en dessous.
   String _sousTitre(Recipe r) {
+    final langue = PrefsService.instance.effectiveLanguage;
     final bouts = <String>[
-      if (r.minutes != null) dureeLisible(r.minutes!),
-      '$_parts pers.',
+      if (r.minutes != null) dureeLisibleIn(r.minutes!, langue),
+      '$_parts ${langue == 'en' ? 'servings' : 'pers.'}',
       // Pour une conservation, la durée de garde compte plus que le
       // temps de préparation : c'est elle qu'on vient chercher.
-      if (r.keeps != null) r.keeps!,
+      if (r.displayKeeps != null) r.displayKeeps!,
     ];
     return bouts.join('  ·  ');
   }
@@ -195,7 +202,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
     final c = _controller;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.recipe.name),
+        title: Text(widget.recipe.displayName),
         titleTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
             ),
