@@ -5105,7 +5105,8 @@ const Map<String, List<Recipe>> recipesByVegetable = <String, List<Recipe>>{
       name: 'Confiture de fraises',
       emoji: '🍯',
       description:
-          'Poids pour poids avec le sucre, un citron, et la cuisine sent l\'été.',
+          '700 g de sucre par kilo de fruits, un citron, et la cuisine sent '
+          'l\'été.',
       minutes: 60,
       serves: 8,
       method: PreservationMethod.confiture,

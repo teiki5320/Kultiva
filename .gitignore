@@ -63,3 +63,11 @@ test/failures/
 _recette_demo.html
 .claude/launch.json
 .apercu-temp/
+
+# Les planches PNG d'origine, remplacées par les WebP du catalogue.
+# 16 Mo ni déclarés dans pubspec, ni référencés par le code : ils ne
+# partaient pas dans l'app, mais ils pesaient sur chaque clone et
+# chaque build de CI. L'historique git les garde si besoin.
+assets/images/badges_png_v1/
+assets/images/vegetables_png_v1/
+assets/images/accessories_png_v1/

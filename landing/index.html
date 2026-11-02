@@ -63,6 +63,9 @@
     color: #fff;
     border-color: #4A9B5A;
   }
+  .btn.disabled { cursor: default; opacity: .72; }
+  .btn.disabled:hover { transform: none; }
+
 
   section { padding: 60px 0; }
 
@@ -142,9 +145,12 @@
     <h1>Kultiva</h1>
     <p class="tagline">Le potager kawaii dans ta poche 🌱</p>
     <div class="hero-cta">
-      <!-- TODO: remplacer href="#" par les vrais liens stores une fois publié. -->
-      <a href="#" class="btn primary">Bientôt sur l'App Store</a>
-      <a href="#" class="btn">Bientôt sur Google Play</a>
+      <!-- Les deux boutons ne sont pas des liens tant que l'app n'est
+           pas publiée : un href="#" renvoie en haut de la page, ce qui
+           est pire qu'un bouton inerte. Au moment de la publication,
+           remettre des <a href> vers les fiches des boutiques. -->
+      <span class="btn primary disabled">Bientôt sur l'App Store</span>
+      <span class="btn disabled">Bientôt sur Google Play</span>
     </div>
   </div>
 </header>

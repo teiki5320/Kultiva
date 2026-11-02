@@ -150,7 +150,7 @@ Modifiable à tout moment sans nouvelle version :
 Semis, récoltes, météo et cahier de culture : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
 ```
 
-### 2.3 Description — 2 360/4 000 caractères
+### 2.3 Description — 2 697/4 000 caractères
 
 Texte brut, sans HTML. Les trois premières lignes accrochent avant le
 « plus » :
@@ -158,13 +158,16 @@ Texte brut, sans HTML. Les trois premières lignes accrochent avant le
 ```
 Le potager kawaii dans ta poche 🌱
 
-Kultiva t'accompagne du choix des graines à la fierté de la première tomate — que tu jardines sur un balcon en ville, dans un carré potager en Bretagne… ou sous les premières pluies de Dakar : l'app couvre la France métropolitaine et 8 pays francophones d'Afrique de l'Ouest.
+Kultiva t'accompagne du choix des graines à la fierté de la première tomate — que tu jardines sur un balcon en ville, dans un carré potager en Bretagne… ou sous les premières pluies de Dakar : l'app couvre 73 pays sur six continents, en français, en anglais et en espagnol.
 
 📅 UN CALENDRIER QUI CONNAÎT TA RÉGION
 Chaque mois, découvre quoi semer, planter et récolter chez toi. Semis sous abri, pleine terre, récoltes : tout est adapté à ton climat, et exportable en PDF pour l'accrocher dans l'abri de jardin.
 
 🌽 130 CULTURES EN FICHES DÉTAILLÉES
 Tomate, courgette, radis, fraisier, basilic… mais aussi gombo, niébé, mil ou bissap. Pour chaque plante : profondeur de semis, exposition, arrosage, distances de plantation, rendement estimé et petits conseils de pro.
+
+🫙 GARDER TA RÉCOLTE
+736 recettes, et les trois premières de chaque légume sont des façons de le conserver : bocal, congélation, séchage, lacto-fermentation, confiture. Chacune dit combien de temps ça se garde, et 448 se déroulent pas à pas, hors ligne, minuteur compris.
 
 📓 MES JARDINS, TON POTAGER EN CARRÉS
 Dessine tes carrés, place tes plants par glisser-déposer et suis chacun d'eux : arrosages, phases de croissance auto-suggérées, photos, avertissement de rotation des cultures et conseils selon la météo du jour.
@@ -341,3 +344,164 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | Compte de démonstration | ✅ Sans objet — l'app n'a pas de compte (§2.8) |
 | Déclaration DSA | ⏳ **À retrancher** (§1.5) — le motif « trader » a disparu avec l'affiliation le 20/10/2026 |
 | Captures d'écran | ⏳ Toi (sur une installation garnie, §5) |
+
+---
+
+## 7. Localisations anglaise et espagnole
+
+> ⚠️ **Ajoutées le 2 novembre 2026.** Cette fiche était écrite pour une
+> app française seule, alors que l'application parle les trois langues
+> depuis le même jour — 4 894 chaînes par langue. Une fiche App Store
+> est **par langue** : sans ces deux-là, un anglophone qui cherche
+> « gardening calendar » ne trouve rien.
+>
+> Dans App Store Connect : page de la version → menu de langue en haut
+> à droite → **Ajouter une langue** → English (U.S.) puis
+> Spanish (Spain). Les captures peuvent être les mêmes qu'en français
+> tant qu'elles ne portent pas de texte incrusté.
+
+### 7.1 English (U.S.)
+
+**Name** — 7/30 :
+
+```
+Kultiva
+```
+
+**Subtitle** — 25/30 :
+
+```
+Your pocket kawaii garden
+```
+
+**Promotional text** — 128/170 :
+
+```
+Sowing, harvests, weather and a growing journal: Kultiva walks with you from the first seeds to the pride of the first tomato. 🌱
+```
+
+**Description** — 2616/4 000 :
+
+```
+The kawaii vegetable garden in your pocket 🌱
+
+Kultiva walks with you from choosing the seeds to the pride of the first tomato — whether you garden on a city balcony, in a raised bed in Brittany, or under the first rains of Dakar: the app covers 73 countries on six continents, in French, English and Spanish.
+
+📅 A CALENDAR THAT KNOWS WHERE YOU LIVE
+Every month, find out what to sow, plant and harvest where you are. Under cover, in open ground, harvests: everything follows your climate — nine climate zones and both hemispheres — and it exports to PDF to pin up in the shed.
+
+🌽 130 CROPS IN DETAILED CARDS
+Tomato, courgette, radish, strawberry, basil… and also okra, cowpea, millet and hibiscus. For each plant: sowing depth, aspect, watering, spacing, expected yield and the small things that make the difference.
+
+🫙 KEEPING YOUR HARVEST
+736 recipes, and the first three for every vegetable are ways to keep it: jars, freezing, drying, lacto-fermentation, jam. Each one says how long it keeps, and 448 walk you through step by step, offline, with a timer.
+
+📓 MY GARDENS, YOUR BED BY BED
+Draw your beds, place your plants by dragging them, and follow each one: watering, growth stages suggested for you, photos, a crop-rotation warning and advice based on today's weather.
+
+📔 EVERY MORNING, WHAT NEEDS DOING
+Your growing journal answers the only question that matters when you wake up: who is thirsty, what is ripe, and whether it will be too hot today. One tap logs the watering for the whole garden.
+
+👨‍👩‍👧 FOR GARDENING AS A FAMILY
+Step-by-step tutorials, photo challenges and badges to collect: Kultiva is built to give children green fingers — and turn the garden into a Sunday adventure.
+
+🌦️ WEATHER AND SMART ALERTS
+A 7-day forecast for your town, sensible watering reminders, heatwave alerts with advice crop by crop. Your garden warns you before it gets thirsty.
+
+📖 YOUR GARDEN'S DIARY
+Every planting, every watering, every harvest and every photo is written down on its date. Read your season back day by day, and earn bronze, silver and gold medals for each vegetable you grow.
+
+📸 PHOTO CHALLENGES AND BADGES
+50 photo challenges and 50 badges to unlock. The badges reward what you actually do: your first plant, three days of watering in a row, a bed filled right to the edges.
+
+🎓 LEARNING WHILE HAVING FUN
+33 illustrated tutorials, a gardener's glossary, a guide to diseases and companion planting (who likes growing next to whom).
+
+And above all: Kultiva works with no connection and no account. Your data stays on your phone, and nowhere else.
+
+Download Kultiva and grow your first small happiness. 🌸
+```
+
+**Keywords** — **96/100 bytes** :
+
+```
+gardening,sowing,garden,vegetables,calendar,harvest,plants,seeds,balcony,weather,watering,tomato
+```
+
+### 7.2 Spanish (Spain)
+
+**Nombre** — 7/30 :
+
+```
+Kultiva
+```
+
+**Subtítulo** — 28/30 :
+
+```
+Tu huerto kawaii de bolsillo
+```
+
+**Texto promocional** — 126/170 :
+
+```
+Siembras, cosechas, tiempo y cuaderno de cultivo: Kultiva te acompaña de las primeras semillas al orgullo del primer tomate. 🌱
+```
+
+**Descripción** — 2709/4 000 :
+
+```
+El huerto kawaii en tu bolsillo 🌱
+
+Kultiva te acompaña desde la elección de las semillas hasta el orgullo del primer tomate — cultives en un balcón de ciudad, en un bancal en Bretaña o bajo las primeras lluvias de Dakar: la app cubre 73 países en seis continentes, en francés, inglés y español.
+
+📅 UN CALENDARIO QUE CONOCE TU ZONA
+Cada mes, descubre qué sembrar, plantar y cosechar donde vives. Siembra protegida, plena tierra, cosechas: todo se adapta a tu clima — nueve zonas climáticas y los dos hemisferios — y se exporta en PDF para colgarlo en la caseta.
+
+🌽 130 CULTIVOS EN FICHAS DETALLADAS
+Tomate, calabacín, rábano, fresa, albahaca… y también quimbombó, judía de ojo negro, mijo o hibisco. De cada planta: profundidad de siembra, exposición, riego, marco de plantación, rendimiento estimado y los pequeños trucos que marcan la diferencia.
+
+🫙 GUARDAR LA COSECHA
+736 recetas, y las tres primeras de cada hortaliza son formas de conservarla: tarros, congelación, secado, fermentación, mermelada. Cada una dice cuánto se guarda, y 448 te llevan paso a paso, sin conexión y con temporizador.
+
+📓 MIS HUERTOS, BANCAL A BANCAL
+Dibuja tus bancales, coloca las plantas arrastrándolas y sigue cada una: riegos, fases de crecimiento sugeridas, fotos, aviso de rotación de cultivos y consejos según el tiempo de hoy.
+
+📔 CADA MAÑANA, LO QUE HAY QUE HACER
+Tu cuaderno de cultivo responde a la única pregunta que importa al despertar: quién tiene sed, qué está maduro y si hoy hará demasiado calor. Un gesto para anotar el riego de todo el huerto.
+
+👨‍👩‍👧 PARA CULTIVAR EN FAMILIA
+Tutoriales paso a paso, retos fotográficos e insignias para coleccionar: Kultiva está pensada para dar buena mano a los niños — y convertir el huerto en la aventura del domingo.
+
+🌦️ TIEMPO Y AVISOS ÚTILES
+Previsión de 7 días para tu ciudad, recordatorios de riego con cabeza, avisos de ola de calor con consejos hortaliza por hortaliza. Tu huerto te avisa antes de tener sed.
+
+📖 EL DIARIO DE TU HUERTO
+Cada plantación, cada riego, cada cosecha y cada foto queda anotada en su fecha. Relee tu temporada día a día y gana medallas de bronce, plata y oro por cada hortaliza cultivada.
+
+📸 RETOS FOTOGRÁFICOS E INSIGNIAS
+50 retos fotográficos y 50 insignias por desbloquear. Las insignias premian lo que haces de verdad: tu primera planta, tres días de riego seguidos, un bancal lleno hasta el borde.
+
+🎓 APRENDER DISFRUTANDO
+33 tutoriales ilustrados, un léxico del hortelano, una guía de enfermedades y el compañerismo vegetal (a quién le gusta crecer al lado de quién).
+
+Y sobre todo: Kultiva funciona sin conexión y sin cuenta. Tus datos se quedan en tu teléfono, y en ningún otro sitio.
+
+Descarga Kultiva y haz crecer tu primera alegría. 🌸
+```
+
+**Palabras clave** — **94/100 bytes** (les accents comptent double
+en UTF-8) :
+
+```
+jardinería,siembra,huerto,hortalizas,calendario,cosecha,plantas,semillas,balcón,riego,tomate
+```
+
+### 7.3 Ce qui ne se traduit pas
+
+- Les **URL** d'assistance et marketing : la landing est en français.
+  ⚠️ À revoir si elle est traduite un jour.
+- La **politique de confidentialité** : même page pour les trois.
+- Les **informations pour la revue** : Apple les lit en anglais.
+- Le **questionnaire de confidentialité** et la **déclaration DSA** :
+  ils ne sont pas localisables.

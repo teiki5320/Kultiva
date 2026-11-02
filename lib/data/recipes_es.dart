@@ -5810,8 +5810,8 @@ const Map<String, RecipeText> recipeTextsEs = <String, RecipeText>{
   'fraise/Confiture de fraises': RecipeText(
     // FR: Confiture de fraises
     name: 'Mermelada de fresas',
-    // FR: Poids pour poids avec le sucre, un citron, et la cuisine sent l'été.
-    description: 'Peso por peso con el azúcar, un limón, y la cocina huele a verano.',
+    // FR: 700 g de sucre par kilo de fruits, un citron, et la cuisine sent l'été.
+    description: '700 g de azúcar por kilo de fruta, un limón, y la cocina huele a verano.',
     // FR: 2 ans au placard
     keeps: '2 años en la despensa',
     ingredients: <String>[
