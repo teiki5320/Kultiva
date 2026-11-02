@@ -1559,4 +1559,10 @@ const Map<String, String> uiTextsEs = <String, String>{
       'En invernadero',
   ', sous serre seulement':
       ', solo en invernadero',
+  'Appuie pour changer':
+      'Toca para cambiar',
+  'Chercher un pays…':
+      'Buscar un país…',
+  'Aucun pays ne correspond.':
+      'Ningún país coincide.',
 };

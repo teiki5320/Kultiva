@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kultiva/utils/months.dart';
 import 'package:kultiva/utils/recipe_portions.dart';
 import 'package:kultiva/services/prefs_service.dart';
 
@@ -82,8 +83,21 @@ void main() {
     });
 
     test('au-delà, le jour et le mois en toutes lettres', () {
-      expect(dateCourte(DateTime(2026, 11, 3)), 'le 3 novembre');
-      expect(dateCourte(DateTime(2026, 1, 21)), 'le 21 janvier');
+      // ⚠️ Pas de date en dur : ce test portait sur le 3 novembre
+      // 2026, et il a cassé le 3 novembre 2026 à minuit — `dateCourte`
+      // répondait « aujourd'hui ». Une date fixe dans un test qui
+      // parle du **temps qui passe** est une bombe à retardement.
+      final vieux = DateTime.now().subtract(const Duration(days: 40));
+      expect(
+        dateCourte(vieux),
+        'le ${vieux.day} ${monthNamesLong[vieux.month - 1]}',
+      );
+      // Et l'avant-veille, juste après la frontière « hier ».
+      final avantHier = DateTime.now().subtract(const Duration(days: 2));
+      expect(
+        dateCourte(avantHier),
+        'le ${avantHier.day} ${monthNamesLong[avantHier.month - 1]}',
+      );
     });
   });
 }

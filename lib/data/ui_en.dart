@@ -1560,4 +1560,10 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Greenhouse',
   ', sous serre seulement':
       ', greenhouse only',
+  'Appuie pour changer':
+      'Tap to change',
+  'Chercher un pays…':
+      'Search for a country…',
+  'Aucun pays ne correspond.':
+      'No country matches.',
 };

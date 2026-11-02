@@ -10,6 +10,7 @@ import '../../services/geolocation_service.dart';
 import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/text_normalize.dart';
 import '../home/tuto_fiche_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -472,8 +473,15 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-/// Le choix du pays : une ligne qui déroule la liste des 73, filtrable
-/// au clavier.
+/// Le choix du pays : une ligne qui ouvre la liste des 73, avec une
+/// recherche.
+///
+/// ⚠️ **Première tentative : un `DropdownMenu` filtrable.** Il ne
+/// s'ouvrait pas — vérifié à l'écran, la capture d'avant et celle
+/// d'après le tap étaient identiques à l'octet près. Je l'avais livré
+/// sans le regarder. Une feuille modale est de toute façon la bonne
+/// réponse sur téléphone pour 73 entrées, et c'est la convention de
+/// navigation du projet.
 ///
 /// ⚠️ **Choisir un pays change aussi la langue** depuis le 02/11/2026,
 /// et on le dit à l'écran plutôt que de le laisser découvrir. Le
@@ -489,58 +497,23 @@ class _SelecteurPays extends StatelessWidget {
         final region = PrefsService.instance.region.value;
         final choisi =
             country ?? (region == Region.france ? Country.france : null);
-        final pays = Country.ordered();
         return Card(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                LayoutBuilder(
-                  builder: (context, c) => DropdownMenu<Country>(
-                    initialSelection: choisi,
-                    width: c.maxWidth,
-                    // Une liste de 73 ne se parcourt pas : on tape les
-                    // premières lettres. `displayLabel`, donc dans la
-                    // langue affichée — un hispanophone cherche
-                    // « Alemania ».
-                    enableFilter: true,
-                    requestFocusOnTap: true,
-                    menuHeight: 360,
-                    label: Text(trUi('Où jardines-tu ?')),
-                    inputDecorationTheme: const InputDecorationTheme(
-                      border: OutlineInputBorder(),
-                      isDense: true,
-                    ),
-                    dropdownMenuEntries: <DropdownMenuEntry<Country>>[
-                      for (final c in pays)
-                        DropdownMenuEntry<Country>(
-                          value: c,
-                          label: '${c.flag}   ${c.displayLabel}',
-                        ),
-                    ],
-                    onSelected: (v) async {
-                      if (v == null) return;
-                      final avant = PrefsService.instance.effectiveLanguage;
-                      await PrefsService.instance.setCountry(v);
-                      if (!context.mounted) return;
-                      final apres = PrefsService.instance.effectiveLanguage;
-                      if (apres != avant) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(trUiArgs(
-                              'Langue passée en {0}. Tu peux la changer '
-                              'juste en dessous.',
-                              <Object?>[_langueLabel(apres)],
-                            )),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: Text(choisi?.flag ?? '🌍',
+                    style: const TextStyle(fontSize: 26)),
+                title: Text(
+                  choisi?.displayLabel ?? trUi('Où jardines-tu ?'),
+                  style: const TextStyle(fontWeight: FontWeight.w800),
                 ),
-                const SizedBox(height: 10),
-                Text(
+                subtitle: Text(trUi('Appuie pour changer')),
+                trailing: const Icon(Icons.expand_more),
+                onTap: () => _choisir(context),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+                child: Text(
                   trUi('Le pays choisit le calendrier de semis, les '
                       'saisons et la langue.'),
                   style: const TextStyle(
@@ -549,11 +522,109 @@ class _SelecteurPays extends StatelessWidget {
                     color: KultivaColors.textSecondary,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+
+  Future<void> _choisir(BuildContext context) async {
+    final avant = PrefsService.instance.effectiveLanguage;
+    final choix = await showModalBottomSheet<Country>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) => const _ListePays(),
+    );
+    if (choix == null || !context.mounted) return;
+    await PrefsService.instance.setCountry(choix);
+    if (!context.mounted) return;
+    final apres = PrefsService.instance.effectiveLanguage;
+    if (apres != avant) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(trUiArgs(
+            'Langue passée en {0}. Tu peux la changer juste en dessous.',
+            <Object?>[_langueLabel(apres)],
+          )),
+        ),
+      );
+    }
+  }
+}
+
+/// La liste des 73 pays, filtrable au clavier.
+///
+/// ⚠️ La recherche porte sur le nom affiché **et** sur le nom
+/// français, plus la capitale et le code ISO : un hispanophone tape
+/// « Alemania », un francophone « Allemagne », et les deux trouvent.
+/// Même règle que l'onboarding.
+class _ListePays extends StatefulWidget {
+  const _ListePays();
+
+  @override
+  State<_ListePays> createState() => _ListePaysState();
+}
+
+class _ListePaysState extends State<_ListePays> {
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    final q = foldAccents(_query.trim());
+    final pays = Country.ordered()
+        .where((c) =>
+            q.isEmpty ||
+            foldAccents(c.displayLabel).contains(q) ||
+            foldAccents(c.label).contains(q) ||
+            foldAccents(c.displayCapital).contains(q) ||
+            c.isoCode.toLowerCase() == q)
+        .toList();
+    final actuel = PrefsService.instance.country.value;
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: TextField(
+              autofocus: true,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: trUi('Chercher un pays…'),
+                border: const OutlineInputBorder(),
+                isDense: true,
+              ),
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+          Expanded(
+            child: pays.isEmpty
+                ? Center(child: Text(trUi('Aucun pays ne correspond.')))
+                : ListView.builder(
+                    itemCount: pays.length,
+                    itemBuilder: (_, i) {
+                      final c = pays[i];
+                      return ListTile(
+                        leading: Text(c.flag,
+                            style: const TextStyle(fontSize: 24)),
+                        title: Text(c.displayLabel,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w700)),
+                        subtitle: Text(c.displayCapital),
+                        trailing: c == actuel
+                            ? const Icon(Icons.check,
+                                color: KultivaColors.primaryGreen)
+                            : null,
+                        onTap: () => Navigator.of(context).pop(c),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
