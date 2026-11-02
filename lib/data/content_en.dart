@@ -3240,4 +3240,343 @@ const Map<String, String> contentTextsEn = <String, String>{
       'Early varieties from July to August',
   'Variétés précoces en août':
       'Early varieties in August',
+  // ─── fiche : la note sous le nom ───
+  '"Un binage vaut deux arrosages"':
+      '"One hoeing is worth two waterings"',
+  '5e céréale mondiale — pousse là où le maïs ne résiste pas.':
+      'The world\'s 5th cereal — it grows where maize gives up.',
+  'A besoin de chaleur : minimum 20 °C pour bien pousser.':
+      'It needs warmth: a minimum of 20 °C to grow well.',
+  'Accélère la décomposition':
+      'Speeds up decomposition',
+  'Adore la chaleur — pas avant mai dans le nord.':
+      'It loves heat — not before May in the north.',
+  'Aime l\'eau courante ou un substrat très humide.':
+      'It likes running water, or a very wet growing medium.',
+  'Aime la chaleur — réservée au sud ou semis tardif.':
+      'It likes heat — for the south, or a late sowing.',
+  'Alternative simple au goutte à goutte':
+      'A simple alternative to drip irrigation',
+  'Après la récolte, coupe le pied : un rejet prend le relais pour le cycle suivant.':
+      'After harvest, cut the stem down: a sucker takes over for the next cycle.',
+  'Arrosage ancestral et économe':
+      'Age-old watering, and frugal with it',
+  'Arroser même en ton absence':
+      'Water even while you are away',
+  'Attendre 2 à 3 ans après la plantation avant la première récolte.':
+      'Wait 2 to 3 years after planting before the first harvest.',
+  'Attendre que le sol atteigne 12 °C avant de semer.':
+      'Wait until the soil reaches 12 °C before sowing.',
+  'Aérer le sol sans le retourner':
+      'Aerate the soil without turning it over',
+  'Bisannuelle — semer en été pour fleurir au printemps suivant.':
+      'Biennial — sow in summer to flower the following spring.',
+  'Butter les plants quand ils atteignent 20 cm de haut.':
+      'Earth the plants up when they reach 20 cm tall.',
+  'Bûche placée à l\'ombre dehors, à arroser en été sec.':
+      'Keep the log outdoors in the shade, and water it in a dry summer.',
+  'Champion de la sécheresse — nourrit le Sahel depuis plus de 3 000 ans.':
+      'A champion of drought — it has fed the Sahel for over 3 000 years.',
+  'Chaque graine donne 2 à 3 plants — éclaircir après la levée.':
+      'Each seed gives 2 to 3 plants — thin after they come up.',
+  'Chaque pied produit beaucoup — prévoir 1 m² par plant.':
+      'Each plant produces a lot — allow 1 m² per plant.',
+  'Coffret de graines variées pour démarrer':
+      'A box of assorted seed to get started',
+  'Compostage en appartement':
+      'Composting in a flat',
+  'Coupe régulièrement la cime : l\'arbre reste bas et produit plus de feuilles.':
+      'Cut the top out regularly: the tree stays low and makes more leaves.',
+  'Couper régulièrement pour stimuler la repousse.':
+      'Cut it back regularly to keep it coming.',
+  'Craint le froid et le vent — à cultiver en pot si besoin.':
+      'It fears cold and wind — grow it in a pot if need be.',
+  'Cultiver en pot pour éviter qu\'elle n\'envahisse tout le jardin.':
+      'Grow it in a pot, or it will take over the whole garden.',
+  'Culture en 2 temps : racines au jardin, puis forçage en obscurité.':
+      'Grown in 2 stages: roots in the garden, then forced in the dark.',
+  'Culture facile, enrichit le sol en azote comme toutes les légumineuses.':
+      'Easy to grow, and like every legume it feeds the soil with nitrogen.',
+  'Cycle long (8 à 12 mois) — planter en début de saison des pluies.':
+      'A long cycle (8 to 12 months) — plant at the start of the rains.',
+  'Détruit par les gelées — ne pas le laisser grainer pour éviter les repousses.':
+      'Killed by frost — do not let it seed, or it comes back everywhere.',
+  'Effet anti-nématodes maximal en culture pleine sur 1 saison.':
+      'Its effect against nematodes is strongest as a full crop over 1 season.',
+  'Filets anti-oiseaux indispensables à la maturité — ils adorent les cerises.':
+      'Bird netting is essential as they ripen — birds adore cherries.',
+  'Fleurs et feuilles comestibles, à parsemer en salade.':
+      'Flowers and leaves are edible, scattered over a salad.',
+  'Fleurs et jeunes feuilles comestibles. Se ressème toute seule.':
+      'Flowers and young leaves are edible. It seeds itself.',
+  'Floraison fragile en mars — protéger des gelées tardives.':
+      'Fragile blossom in March — protect it from late frosts.',
+  'Floraison ininterrompue jusqu\'aux gelées.':
+      'It flowers without a break until the frosts.',
+  'Frileuse — rentrer en pot ou pailler en hiver dans le nord.':
+      'Tender — bring the pot in, or mulch it in winter in the north.',
+  'Gagner 2-3 semaines au printemps':
+      'Gain 2-3 weeks in spring',
+  'Garde l\'humidité, nourrit le sol':
+      'Holds the moisture, feeds the soil',
+  'Garder la trace de tes variétés':
+      'Keep track of your varieties',
+  'Grimpante généreuse — offre-lui un treillis et récolte toute la saison chaude.':
+      'A generous climber — give it a trellis and pick all through the warm season.',
+  'Idéal en cave fraîche (12-18 °C), à l\'abri de la lumière directe.':
+      'Ideal in a cool cellar (12-18 °C), out of direct light.',
+  'Idéale entre deux cultures — semer en septembre après récoltes d\'été.':
+      'Ideal between two crops — sow in September after the summer harvests.',
+  'Indispensable pour tailler et récolter':
+      'Essential for pruning and harvesting',
+  'Jardiner debout, sans mal au dos':
+      'Garden standing up, with no backache',
+  'L\'eau de pluie, gratuite et idéale':
+      'Rainwater: free, and just right',
+  'L\'incontournable pour débuter':
+      'The one to start with',
+  'La base pour des plants en bonne santé':
+      'The basis for healthy plants',
+  'La céréale la plus rapide du monde : certaines variétés mûrissent en 8 semaines !':
+      'The fastest cereal in the world: some varieties ripen in 8 weeks!',
+  'La plupart des variétés ont besoin d\'un pollinisateur — planter à plusieurs.':
+      'Most varieties need a pollinator — plant several.',
+  'La salade d\'hiver par excellence — semée en automne, récoltée en hiver.':
+      'The winter salad above all others — sown in autumn, picked in winter.',
+  'Laisser les fruits mûrir sur pied jusqu\'aux premières fraîcheurs.':
+      'Let the fruit ripen on the plant until the first cool nights.',
+  'Le gel améliore la saveur — ne pas récolter trop tôt.':
+      'Frost improves the flavour — do not pick too early.',
+  'Le goût s\'améliore après les premières gelées.':
+      'The taste improves after the first frosts.',
+  'Le seul anti-limace bio efficace':
+      'The only organic slug control that works',
+  'Les fleurs se courbent vers le sol pour enfouir les gousses.':
+      'The flowers bend down to the ground to bury their pods.',
+  'Légume rustique, idéal pour la conservation en cave.':
+      'A hardy vegetable, ideal for storing in a cellar.',
+  'Légume-soleil, à semer sous abri en fin d\'hiver.':
+      'A sun-lover, to be sown under cover at the end of winter.',
+  'Maintenir l\'humidité — vaporiser deux fois par jour.':
+      'Keep it damp — mist it twice a day.',
+  'Mini-serre pour semis d\'hiver':
+      'A mini-greenhouse for winter sowings',
+  'Moins envahissant que le potiron, idéal pour petits jardins.':
+      'Less rampant than a pumpkin, ideal for small gardens.',
+  'Monte vite en graines dès qu\'il fait chaud — semer en succession.':
+      'It bolts as soon as it turns hot — sow in succession.',
+  'Monte vite en graines l\'été — préférer le printemps ou l\'automne.':
+      'It bolts quickly in summer — prefer spring or autumn.',
+  'Multiplication par division — les graines donnent souvent l\'estragon russe sans saveur.':
+      'Propagate by division — seed often gives the tasteless Russian tarragon.',
+  'Même culture que le poivron, mais plus résistant à la chaleur.':
+      'Grown like a sweet pepper, but it stands up to heat better.',
+  'Ne pas confondre avec le laurier-rose ou laurier-cerise (toxiques).':
+      'Do not confuse it with oleander or cherry laurel (both toxic).',
+  'Nourrir le sol naturellement':
+      'Feed the soil naturally',
+  'Pailler généreusement et tailler chaque hiver pour rester productif.':
+      'Mulch generously and prune every winter to keep it productive.',
+  'Pailler le sol pour garder les fruits propres et frais.':
+      'Mulch the soil to keep the fruit clean and cool.',
+  'Paillis longue durée pour massifs':
+      'Long-lasting mulch for borders',
+  'Palisser sur un fil de fer pour faciliter la récolte.':
+      'Train it along a wire to make picking easier.',
+  'Palisser sur un grillage pour gagner de la place.':
+      'Train it up a mesh panel to save space.',
+  'Pincer les tiges dès l\'apparition des pucerons noirs en haut.':
+      'Pinch out the tips as soon as blackfly appear at the top.',
+  'Pincer les tiges pour limiter à 3-4 fruits par pied.':
+      'Pinch out the stems to limit it to 3-4 fruit per plant.',
+  'Plante décorative au jardin et utile en cuisine — double usage.':
+      'Decorative in the garden and useful in the kitchen — it does both.',
+  'Plante peu exigeante — fixe l\'azote et enrichit le sol.':
+      'An undemanding plant — it fixes nitrogen and enriches the soil.',
+  'Plante plusieurs pieds : certains papayers sont mâles et ne donnent pas de fruits.':
+      'Plant several: some papayas are male and bear no fruit.',
+  'Plante vivace — peut devenir envahissante par semis spontané.':
+      'A perennial — it can take over by seeding itself.',
+  'Plante vivace — tailler après floraison pour la garder compacte.':
+      'A perennial — cut it back after flowering to keep it compact.',
+  'Plante vivace — un seul plant suffit pour des années.':
+      'A perennial — one plant is enough for years.',
+  'Planter les bulbes à fleur de sol, pointe en haut.':
+      'Plant the bulbs level with the soil, pointed end up.',
+  'Planter les caïeux pointe en haut, à fleur de sol.':
+      'Plant the cloves pointed end up, level with the soil.',
+  'Plantée près des haricots, elle éloigne les pucerons.':
+      'Planted near beans, it keeps aphids away.',
+  'Plus rustique que l\'aubergine classique — elle produit pendant des mois.':
+      'Tougher than the common aubergine — it bears for months.',
+  'Potager surélevé pour balcon ou terrasse':
+      'A raised bed for a balcony or terrace',
+  'Pour conduire les tomates indéterminées':
+      'To train indeterminate tomatoes',
+  'Pour courges et plantes grimpantes':
+      'For squashes and climbers',
+  'Pour haricots et pois grimpants':
+      'For climbing beans and peas',
+  'Pour planter ail, oignons, tulipes':
+      'To plant garlic, onions and tulips',
+  'Pour repiquer les jeunes plants':
+      'To prick out young plants',
+  'Pour transporter les légumes':
+      'To carry the vegetables in',
+  'Pour un arrosage doux et précis':
+      'For gentle, accurate watering',
+  'Pousse très vite en climat chaud — quasi aucune maladie.':
+      'It grows very fast in a warm climate — and catches almost nothing.',
+  'Production rapide (2-3 ans) — durée de vie limitée à 15-20 ans.':
+      'Quick to crop (2-3 years) — but a lifespan limited to 15-20 years.',
+  'Prolonger la saison de culture':
+      'Stretch the growing season',
+  'Protège du gel jusqu\'à -5°C':
+      'Protects down to -5°C',
+  'Protège les cultures du soleil brûlant':
+      'Shields crops from scorching sun',
+  'Protéger la pomme du soleil en rabattant les feuilles.':
+      'Shade the heart from the sun by folding the leaves over it.',
+  'Protéger ses mains au jardin':
+      'Protect your hands in the garden',
+  'Protéger un plant individuellement':
+      'Protect a single plant',
+  'Préfère les températures fraîches — semer en fin d\'été.':
+      'It prefers cool temperatures — sow at the end of summer.',
+  'Préférer les variétés autofertiles ou planter à plusieurs.':
+      'Prefer self-fertile varieties, or plant several.',
+  'Prévoir beaucoup de place — chaque pied est imposant.':
+      'Allow plenty of room — each plant is substantial.',
+  'Recycle tes déchets en or noir':
+      'Turn your waste into black gold',
+  'Repiquer profond et butter pour allonger le fût blanc.':
+      'Prick out deeply and earth up to lengthen the white shank.',
+  'Récolte 30 à 45 jours après semis — parfait pour débuter.':
+      'Picked 30 to 45 days after sowing — perfect to start with.',
+  'Récolte les jeunes pousses : la plante se ramifie et en redonne aussitôt.':
+      'Pick the young shoots: the plant branches and gives more at once.',
+  'Récolte tous les 2 jours pour des cornichons fermes.':
+      'Pick every 2 days for firm gherkins.',
+  'Récolter au moment de la floraison pour un arôme maximal.':
+      'Pick at flowering time for the strongest aroma.',
+  'Récolter avant que les boutons floraux ne s\'ouvrent.':
+      'Pick before the flower buds open.',
+  'Récolter avant que les capsules ne s\'ouvrent — elles libèrent les graines.':
+      'Pick before the capsules open — they scatter the seed.',
+  'Récolter dès que les noisettes tombent au sol naturellement.':
+      'Pick the hazelnuts up as soon as they fall of their own accord.',
+  'Récolter jeune (5-7 cm) pour une chair fondante.':
+      'Pick young (5-7 cm) for melting flesh.',
+  'Récolter jeune avant que les graines ne grossissent dans la cosse.':
+      'Pick young, before the seeds swell inside the pod.',
+  'Récolter les fleurs en plein soleil pour préserver les arômes.':
+      'Pick the flowers in full sun to keep the aroma.',
+  'Récolter régulièrement pour stimuler la production.':
+      'Pick regularly to keep production going.',
+  'Récolter à pleine maturité — les prunes ne mûrissent pas après cueillette.':
+      'Pick fully ripe — plums do not ripen once picked.',
+  'Réserver une grande pergola — pieds très vigoureux (jusqu\'à 8 m).':
+      'Give it a big pergola — the plants are very vigorous (up to 8 m).',
+  'Sauve tes fraises et tes cerises':
+      'Saves your strawberries and cherries',
+  'Se cultive à partir d\'un morceau de rhizome frais du commerce.':
+      'Grown from a piece of fresh rhizome bought at the shop.',
+  'Se multiplie par boutures de tige — pas de graines nécessaires.':
+      'Propagated from stem cuttings — no seed needed.',
+  'Se multiplie par boutures de tiges, pas par graines.':
+      'Propagated from stem cuttings, not from seed.',
+  'Se multiplie par simple éclat de touffe — un brin raciné suffit.':
+      'Propagated by simply splitting the clump — one rooted sprig is enough.',
+  'Se ressème spontanément — laisser quelques fleurs monter en graines.':
+      'It seeds itself — let a few flowers run to seed.',
+  'Se ressème spontanément — un classique du jardin de grand-mère.':
+      'It seeds itself — a classic of a grandmother\'s garden.',
+  'Se ressème spontanément, presque indestructible.':
+      'It seeds itself, and is nearly indestructible.',
+  'Se sème ou se plante en bulbilles (plus simple).':
+      'Sow it, or plant bulbils (simpler).',
+  'Semer clair pour éviter d\'éclaircir plus tard.':
+      'Sow thinly to save thinning later.',
+  'Semer dès mars en sol meuble — germination lente (3 à 4 semaines).':
+      'Sow from March in loose soil — germination is slow (3 to 4 weeks).',
+  'Semer en bloc (pas en ligne) pour favoriser la pollinisation.':
+      'Sow in a block (not in a row) to help pollination.',
+  'Semer en mars-avril ou en septembre — n\'aime pas la chaleur.':
+      'Sow in March-April or in September — it dislikes heat.',
+  'Semer en place dès avril — repiquage difficile.':
+      'Sow where it will grow from April — it transplants badly.',
+  'Semer en été pour récolter à l\'automne et conserver tout l\'hiver.':
+      'Sow in summer for an autumn harvest, and keep it all winter.',
+  'Semer en été pour une récolte d\'automne — il préfère le frais.':
+      'Sow in summer for an autumn harvest — it prefers cool weather.',
+  'Semer fin été pour profiter de la fixation d\'azote tout l\'hiver.':
+      'Sow in late summer to get nitrogen fixed all winter.',
+  'Semer peu à la fois, mais souvent (tous les 10 jours).':
+      'Sow a little at a time, but often (every 10 days).',
+  'Semer tous les 15 jours pour en récolter en continu.':
+      'Sow every 15 days to keep picking.',
+  'Semer toutes les 3 semaines pour une récolte continue.':
+      'Sow every 3 weeks for a continuous harvest.',
+  'Semer très tôt — germination lente et long cycle.':
+      'Sow very early — germination is slow and the cycle long.',
+  'Semer tôt — le petit pois craint la chaleur estivale.':
+      'Sow early — peas dislike summer heat.',
+  'Semis très long à lever — patience requise.':
+      'Very slow to come up — it takes patience.',
+  'Sensible à la montée en graines — éviter le stress hydrique.':
+      'Prone to bolting — avoid letting it go short of water.',
+  'Sol acide indispensable (pH 4,5 à 5,5).':
+      'Acidic soil is essential (pH 4.5 to 5.5).',
+  'Soupe du soir et jardin fleuri : la célosie fait les deux à la fois !':
+      'Evening soup and a flowering garden: celosia does both at once!',
+  'Soutenir tomates, haricots, pois...':
+      'Hold up tomatoes, beans, peas…',
+  'Spécial tomates, pas besoin de lier':
+      'Made for tomatoes, with no tying',
+  'Stop pucerons, mouches, papillons':
+      'Stops aphids, flies, butterflies',
+  'Suit la course du soleil pendant sa croissance.':
+      'It follows the sun as it grows.',
+  'Tailler après floraison pour garder une touffe compacte.':
+      'Cut it back after flowering to keep the clump compact.',
+  'Tailler en hiver pour renouveler les rameaux productifs.':
+      'Prune in winter to renew the fruiting shoots.',
+  'Tailler tous les hivers pour limiter la pousse et concentrer la sève.':
+      'Prune every winter to curb growth and concentrate the sap.',
+  'Température clé pour la levée : viser 25 °C.':
+      'The key temperature for germination: aim for 25 °C.',
+  'Toujours cuire avant consommation — le taro cru est irritant.':
+      'Always cook it before eating — raw taro is an irritant.',
+  'Tremper les graines 24 h avant le semis pour accélérer la levée.':
+      'Soak the seed for 24 h before sowing to speed up germination.',
+  'Très gourmand en chaleur et en eau — le fruit idéal des tropiques.':
+      'A heavy feeder for warmth and water — the ideal tropical fruit.',
+  'Très gourmand en espace — prévoir 2 à 3 m² par pied.':
+      'A space-hungry plant — allow 2 to 3 m² each.',
+  'Très peu exigeant — supporte la sécheresse et les sols pauvres.':
+      'Very undemanding — it copes with drought and poor soil.',
+  'Très productive — un seul pied nourrit pendant des mois.':
+      'Very productive — a single plant feeds you for months.',
+  'Très rustique — demande peu d\'eau et de soin une fois installé.':
+      'Very hardy — it asks for little water and little care once established.',
+  'Très rustique, supporte les climats froids et la mi-ombre.':
+      'Very hardy, it copes with cold climates and partial shade.',
+  'Une fois planté, revient chaque année — choisir l\'emplacement avec soin.':
+      'Once planted it comes back every year — choose the spot carefully.',
+  'Vivace facile — un pied dure des années avec peu de soins.':
+      'An easy perennial — one plant lasts years with little care.',
+  'Vivace pour 10 ans — choisir un coin définitif riche en compost.':
+      'A perennial for 10 years — choose a permanent corner rich in compost.',
+  'Vivace — un pied produit pendant 3 à 5 ans.':
+      'A perennial — one plant bears for 3 to 5 years.',
+  'À enfouir avant montée en graines (8-10 semaines).':
+      'Dig it in before it runs to seed (8-10 weeks).',
+  'À ne pas confondre avec l\'origan — la marjolaine est plus subtile.':
+      'Not to be confused with oregano — marjoram is subtler.',
+  'À planter au pied des tomates et aubergines.':
+      'To plant at the foot of tomatoes and aubergines.',
+  'Économise jusqu\'à 50% d\'eau':
+      'Saves up to 50% of the water',
+  'Évite la chaleur, préfère les saisons fraîches.':
+      'It avoids heat and prefers the cool seasons.',
 };

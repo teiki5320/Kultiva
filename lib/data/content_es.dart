@@ -3239,4 +3239,343 @@ const Map<String, String> contentTextsEs = <String, String>{
       'Variedades tempranas de julio a agosto',
   'Variétés précoces en août':
       'Variedades tempranas en agosto',
+  // ─── fiche : la note sous le nom ───
+  '"Un binage vaut deux arrosages"':
+      '"Una escarda vale por dos riegos"',
+  '5e céréale mondiale — pousse là où le maïs ne résiste pas.':
+      '5.º cereal del mundo: crece donde el maíz no aguanta.',
+  'A besoin de chaleur : minimum 20 °C pour bien pousser.':
+      'Necesita calor: un mínimo de 20 °C para crecer bien.',
+  'Accélère la décomposition':
+      'Acelera la descomposición',
+  'Adore la chaleur — pas avant mai dans le nord.':
+      'Le encanta el calor: no antes de mayo en el norte.',
+  'Aime l\'eau courante ou un substrat très humide.':
+      'Le gusta el agua corriente o un sustrato muy húmedo.',
+  'Aime la chaleur — réservée au sud ou semis tardif.':
+      'Le gusta el calor: para el sur, o con siembra tardía.',
+  'Alternative simple au goutte à goutte':
+      'Alternativa sencilla al riego por goteo',
+  'Après la récolte, coupe le pied : un rejet prend le relais pour le cycle suivant.':
+      'Tras la cosecha, corta el pie: un hijuelo toma el relevo para el ciclo siguiente.',
+  'Arrosage ancestral et économe':
+      'Riego ancestral y ahorrador',
+  'Arroser même en ton absence':
+      'Riega incluso en tu ausencia',
+  'Attendre 2 à 3 ans après la plantation avant la première récolte.':
+      'Espera de 2 a 3 años tras la plantación antes de la primera cosecha.',
+  'Attendre que le sol atteigne 12 °C avant de semer.':
+      'Espera a que el suelo alcance los 12 °C antes de sembrar.',
+  'Aérer le sol sans le retourner':
+      'Airea el suelo sin voltearlo',
+  'Bisannuelle — semer en été pour fleurir au printemps suivant.':
+      'Bienal: siembra en verano para que florezca la primavera siguiente.',
+  'Butter les plants quand ils atteignent 20 cm de haut.':
+      'Aporca las plantas cuando alcancen los 20 cm de alto.',
+  'Bûche placée à l\'ombre dehors, à arroser en été sec.':
+      'Tronco a la sombra, al aire libre, y riégalo en verano seco.',
+  'Champion de la sécheresse — nourrit le Sahel depuis plus de 3 000 ans.':
+      'Campeón de la sequía: alimenta al Sahel desde hace más de 3 000 años.',
+  'Chaque graine donne 2 à 3 plants — éclaircir après la levée.':
+      'Cada semilla da de 2 a 3 plantas: aclara después de la nascencia.',
+  'Chaque pied produit beaucoup — prévoir 1 m² par plant.':
+      'Cada mata produce mucho: calcula 1 m² por planta.',
+  'Coffret de graines variées pour démarrer':
+      'Caja de semillas variadas para empezar',
+  'Compostage en appartement':
+      'Compostaje en piso',
+  'Coupe régulièrement la cime : l\'arbre reste bas et produit plus de feuilles.':
+      'Corta la copa con regularidad: el árbol se queda bajo y da más hojas.',
+  'Couper régulièrement pour stimuler la repousse.':
+      'Corta con regularidad para estimular el rebrote.',
+  'Craint le froid et le vent — à cultiver en pot si besoin.':
+      'Teme el frío y el viento: cultívala en maceta si hace falta.',
+  'Cultiver en pot pour éviter qu\'elle n\'envahisse tout le jardin.':
+      'Cultívala en maceta o invadirá todo el huerto.',
+  'Culture en 2 temps : racines au jardin, puis forçage en obscurité.':
+      'Cultivo en 2 tiempos: raíces en el huerto y luego forzado a oscuras.',
+  'Culture facile, enrichit le sol en azote comme toutes les légumineuses.':
+      'Fácil de cultivar y, como toda leguminosa, enriquece el suelo en nitrógeno.',
+  'Cycle long (8 à 12 mois) — planter en début de saison des pluies.':
+      'Ciclo largo (de 8 a 12 meses): planta al principio de la estación de lluvias.',
+  'Détruit par les gelées — ne pas le laisser grainer pour éviter les repousses.':
+      'Lo destruyen las heladas: no lo dejes granar o rebrotará por todas partes.',
+  'Effet anti-nématodes maximal en culture pleine sur 1 saison.':
+      'El efecto antinematodos es máximo en cultivo pleno durante 1 temporada.',
+  'Filets anti-oiseaux indispensables à la maturité — ils adorent les cerises.':
+      'La malla antipájaros es imprescindible al madurar: les encantan las cerezas.',
+  'Fleurs et feuilles comestibles, à parsemer en salade.':
+      'Flores y hojas comestibles, para esparcir en ensalada.',
+  'Fleurs et jeunes feuilles comestibles. Se ressème toute seule.':
+      'Flores y hojas jóvenes comestibles. Se resiembra sola.',
+  'Floraison fragile en mars — protéger des gelées tardives.':
+      'Floración frágil en marzo: protégela de las heladas tardías.',
+  'Floraison ininterrompue jusqu\'aux gelées.':
+      'Florece sin parar hasta las heladas.',
+  'Frileuse — rentrer en pot ou pailler en hiver dans le nord.':
+      'Friolera: métela en maceta o acolcha en invierno en el norte.',
+  'Gagner 2-3 semaines au printemps':
+      'Gana 2-3 semanas en primavera',
+  'Garde l\'humidité, nourrit le sol':
+      'Retiene la humedad y alimenta el suelo',
+  'Garder la trace de tes variétés':
+      'Lleva la cuenta de tus variedades',
+  'Grimpante généreuse — offre-lui un treillis et récolte toute la saison chaude.':
+      'Trepadora generosa: dale un enrejado y cosecha toda la estación cálida.',
+  'Idéal en cave fraîche (12-18 °C), à l\'abri de la lumière directe.':
+      'Ideal en una bodega fresca (12-18 °C), sin luz directa.',
+  'Idéale entre deux cultures — semer en septembre après récoltes d\'été.':
+      'Ideal entre dos cultivos: siembra en septiembre tras las cosechas de verano.',
+  'Indispensable pour tailler et récolter':
+      'Imprescindible para podar y cosechar',
+  'Jardiner debout, sans mal au dos':
+      'Cultiva de pie, sin dolor de espalda',
+  'L\'eau de pluie, gratuite et idéale':
+      'El agua de lluvia: gratis e ideal',
+  'L\'incontournable pour débuter':
+      'La imprescindible para empezar',
+  'La base pour des plants en bonne santé':
+      'La base para plantas sanas',
+  'La céréale la plus rapide du monde : certaines variétés mûrissent en 8 semaines !':
+      'El cereal más rápido del mundo: ¡algunas variedades maduran en 8 semanas!',
+  'La plupart des variétés ont besoin d\'un pollinisateur — planter à plusieurs.':
+      'La mayoría de las variedades necesitan polinizador: planta varias.',
+  'La salade d\'hiver par excellence — semée en automne, récoltée en hiver.':
+      'La ensalada de invierno por excelencia: sembrada en otoño, cosechada en invierno.',
+  'Laisser les fruits mûrir sur pied jusqu\'aux premières fraîcheurs.':
+      'Deja madurar los frutos en la mata hasta los primeros frescos.',
+  'Le gel améliore la saveur — ne pas récolter trop tôt.':
+      'La helada mejora el sabor: no coseches demasiado pronto.',
+  'Le goût s\'améliore après les premières gelées.':
+      'El sabor mejora tras las primeras heladas.',
+  'Le seul anti-limace bio efficace':
+      'El único antibabosas ecológico que funciona',
+  'Les fleurs se courbent vers le sol pour enfouir les gousses.':
+      'Las flores se doblan hacia el suelo para enterrar las vainas.',
+  'Légume rustique, idéal pour la conservation en cave.':
+      'Hortaliza rústica, ideal para conservar en bodega.',
+  'Légume-soleil, à semer sous abri en fin d\'hiver.':
+      'Hortaliza de sol, para sembrar bajo abrigo a finales de invierno.',
+  'Maintenir l\'humidité — vaporiser deux fois par jour.':
+      'Mantén la humedad: pulveriza dos veces al día.',
+  'Mini-serre pour semis d\'hiver':
+      'Mini invernadero para siembras de invierno',
+  'Moins envahissant que le potiron, idéal pour petits jardins.':
+      'Menos invasora que la calabaza, ideal para huertos pequeños.',
+  'Monte vite en graines dès qu\'il fait chaud — semer en succession.':
+      'Se espiga en cuanto aprieta el calor: siembra escalonado.',
+  'Monte vite en graines l\'été — préférer le printemps ou l\'automne.':
+      'Se espiga rápido en verano: mejor en primavera o en otoño.',
+  'Multiplication par division — les graines donnent souvent l\'estragon russe sans saveur.':
+      'Multiplicación por división: la semilla suele dar el estragón ruso, sin sabor.',
+  'Même culture que le poivron, mais plus résistant à la chaleur.':
+      'Mismo cultivo que el pimiento, pero más resistente al calor.',
+  'Ne pas confondre avec le laurier-rose ou laurier-cerise (toxiques).':
+      'No lo confundas con la adelfa ni con el laurel cerezo (tóxicos).',
+  'Nourrir le sol naturellement':
+      'Alimenta el suelo de forma natural',
+  'Pailler généreusement et tailler chaque hiver pour rester productif.':
+      'Acolcha con generosidad y poda cada invierno para que siga produciendo.',
+  'Pailler le sol pour garder les fruits propres et frais.':
+      'Acolcha el suelo para que los frutos queden limpios y frescos.',
+  'Paillis longue durée pour massifs':
+      'Acolchado de larga duración para macizos',
+  'Palisser sur un fil de fer pour faciliter la récolte.':
+      'Entútorala en un alambre para facilitar la cosecha.',
+  'Palisser sur un grillage pour gagner de la place.':
+      'Entútorala en una malla para ganar sitio.',
+  'Pincer les tiges dès l\'apparition des pucerons noirs en haut.':
+      'Despunta los tallos en cuanto asomen los pulgones negros arriba.',
+  'Pincer les tiges pour limiter à 3-4 fruits par pied.':
+      'Despunta los tallos para dejar 3-4 frutos por mata.',
+  'Plante décorative au jardin et utile en cuisine — double usage.':
+      'Decorativa en el huerto y útil en la cocina: doble uso.',
+  'Plante peu exigeante — fixe l\'azote et enrichit le sol.':
+      'Planta poco exigente: fija el nitrógeno y enriquece el suelo.',
+  'Plante plusieurs pieds : certains papayers sont mâles et ne donnent pas de fruits.':
+      'Planta varios pies: algunos papayos son machos y no dan fruto.',
+  'Plante vivace — peut devenir envahissante par semis spontané.':
+      'Planta vivaz: puede volverse invasora por siembra espontánea.',
+  'Plante vivace — tailler après floraison pour la garder compacte.':
+      'Planta vivaz: pódala tras la floración para mantenerla compacta.',
+  'Plante vivace — un seul plant suffit pour des années.':
+      'Planta vivaz: con una mata basta para años.',
+  'Planter les bulbes à fleur de sol, pointe en haut.':
+      'Planta los bulbos a ras de suelo, con la punta hacia arriba.',
+  'Planter les caïeux pointe en haut, à fleur de sol.':
+      'Planta los dientes con la punta hacia arriba, a ras de suelo.',
+  'Plantée près des haricots, elle éloigne les pucerons.':
+      'Plantada cerca de las judías, aleja a los pulgones.',
+  'Plus rustique que l\'aubergine classique — elle produit pendant des mois.':
+      'Más rústica que la berenjena clásica: produce durante meses.',
+  'Potager surélevé pour balcon ou terrasse':
+      'Huerto elevado para balcón o terraza',
+  'Pour conduire les tomates indéterminées':
+      'Para conducir los tomates indeterminados',
+  'Pour courges et plantes grimpantes':
+      'Para calabazas y plantas trepadoras',
+  'Pour haricots et pois grimpants':
+      'Para judías y guisantes trepadores',
+  'Pour planter ail, oignons, tulipes':
+      'Para plantar ajo, cebollas y tulipanes',
+  'Pour repiquer les jeunes plants':
+      'Para trasplantar las plantas jóvenes',
+  'Pour transporter les légumes':
+      'Para transportar las hortalizas',
+  'Pour un arrosage doux et précis':
+      'Para un riego suave y preciso',
+  'Pousse très vite en climat chaud — quasi aucune maladie.':
+      'Crece muy rápido en clima cálido y casi no coge enfermedades.',
+  'Production rapide (2-3 ans) — durée de vie limitée à 15-20 ans.':
+      'Producción rápida (2-3 años), pero vida limitada a 15-20 años.',
+  'Prolonger la saison de culture':
+      'Alarga la temporada de cultivo',
+  'Protège du gel jusqu\'à -5°C':
+      'Protege de la helada hasta -5°C',
+  'Protège les cultures du soleil brûlant':
+      'Protege los cultivos del sol abrasador',
+  'Protéger la pomme du soleil en rabattant les feuilles.':
+      'Protege el cogollo del sol doblando las hojas por encima.',
+  'Protéger ses mains au jardin':
+      'Protege tus manos en el huerto',
+  'Protéger un plant individuellement':
+      'Protege una planta de una en una',
+  'Préfère les températures fraîches — semer en fin d\'été.':
+      'Prefiere las temperaturas frescas: siembra a finales de verano.',
+  'Préférer les variétés autofertiles ou planter à plusieurs.':
+      'Elige variedades autofértiles o planta varias.',
+  'Prévoir beaucoup de place — chaque pied est imposant.':
+      'Reserva mucho sitio: cada mata es imponente.',
+  'Recycle tes déchets en or noir':
+      'Convierte tus residuos en oro negro',
+  'Repiquer profond et butter pour allonger le fût blanc.':
+      'Trasplanta hondo y aporca para alargar el fuste blanco.',
+  'Récolte 30 à 45 jours après semis — parfait pour débuter.':
+      'Cosecha de 30 a 45 días tras la siembra: perfecta para empezar.',
+  'Récolte les jeunes pousses : la plante se ramifie et en redonne aussitôt.':
+      'Cosecha los brotes jóvenes: la planta se ramifica y vuelve a dar enseguida.',
+  'Récolte tous les 2 jours pour des cornichons fermes.':
+      'Cosecha cada 2 días para tener pepinillos firmes.',
+  'Récolter au moment de la floraison pour un arôme maximal.':
+      'Cosecha en plena floración para un aroma máximo.',
+  'Récolter avant que les boutons floraux ne s\'ouvrent.':
+      'Cosecha antes de que se abran los botones florales.',
+  'Récolter avant que les capsules ne s\'ouvrent — elles libèrent les graines.':
+      'Cosecha antes de que se abran las cápsulas: sueltan la semilla.',
+  'Récolter dès que les noisettes tombent au sol naturellement.':
+      'Recoge las avellanas en cuanto caigan solas al suelo.',
+  'Récolter jeune (5-7 cm) pour une chair fondante.':
+      'Cosecha joven (5-7 cm) para una carne tierna.',
+  'Récolter jeune avant que les graines ne grossissent dans la cosse.':
+      'Cosecha joven, antes de que engorden las semillas en la vaina.',
+  'Récolter les fleurs en plein soleil pour préserver les arômes.':
+      'Cosecha las flores a pleno sol para conservar los aromas.',
+  'Récolter régulièrement pour stimuler la production.':
+      'Cosecha con regularidad para estimular la producción.',
+  'Récolter à pleine maturité — les prunes ne mûrissent pas après cueillette.':
+      'Cosecha en plena madurez: las ciruelas no maduran una vez recogidas.',
+  'Réserver une grande pergola — pieds très vigoureux (jusqu\'à 8 m).':
+      'Resérvale una pérgola grande: las matas son muy vigorosas (hasta 8 m).',
+  'Sauve tes fraises et tes cerises':
+      'Salva tus fresas y tus cerezas',
+  'Se cultive à partir d\'un morceau de rhizome frais du commerce.':
+      'Se cultiva a partir de un trozo de rizoma fresco de tienda.',
+  'Se multiplie par boutures de tige — pas de graines nécessaires.':
+      'Se multiplica por esquejes de tallo: no hacen falta semillas.',
+  'Se multiplie par boutures de tiges, pas par graines.':
+      'Se multiplica por esquejes de tallo, no por semilla.',
+  'Se multiplie par simple éclat de touffe — un brin raciné suffit.':
+      'Se multiplica con un simple esqueje de mata: basta una brizna enraizada.',
+  'Se ressème spontanément — laisser quelques fleurs monter en graines.':
+      'Se resiembra sola: deja que algunas flores granen.',
+  'Se ressème spontanément — un classique du jardin de grand-mère.':
+      'Se resiembra sola: un clásico del jardín de la abuela.',
+  'Se ressème spontanément, presque indestructible.':
+      'Se resiembra sola, es casi indestructible.',
+  'Se sème ou se plante en bulbilles (plus simple).':
+      'Se siembra o se planta en bulbillos (más sencillo).',
+  'Semer clair pour éviter d\'éclaircir plus tard.':
+      'Siembra clara para no tener que aclarar después.',
+  'Semer dès mars en sol meuble — germination lente (3 à 4 semaines).':
+      'Siembra desde marzo en suelo mullido: germinación lenta (de 3 a 4 semanas).',
+  'Semer en bloc (pas en ligne) pour favoriser la pollinisation.':
+      'Siembra en bloque (no en línea) para favorecer la polinización.',
+  'Semer en mars-avril ou en septembre — n\'aime pas la chaleur.':
+      'Siembra en marzo-abril o en septiembre: no le gusta el calor.',
+  'Semer en place dès avril — repiquage difficile.':
+      'Siembra en su sitio desde abril: el trasplante es difícil.',
+  'Semer en été pour récolter à l\'automne et conserver tout l\'hiver.':
+      'Siembra en verano para cosechar en otoño y conservar todo el invierno.',
+  'Semer en été pour une récolte d\'automne — il préfère le frais.':
+      'Siembra en verano para una cosecha de otoño: prefiere el fresco.',
+  'Semer fin été pour profiter de la fixation d\'azote tout l\'hiver.':
+      'Siembra a finales de verano para aprovechar la fijación de nitrógeno todo el invierno.',
+  'Semer peu à la fois, mais souvent (tous les 10 jours).':
+      'Siembra poco cada vez, pero a menudo (cada 10 días).',
+  'Semer tous les 15 jours pour en récolter en continu.':
+      'Siembra cada 15 días para cosechar sin parar.',
+  'Semer toutes les 3 semaines pour une récolte continue.':
+      'Siembra cada 3 semanas para una cosecha continua.',
+  'Semer très tôt — germination lente et long cycle.':
+      'Siembra muy pronto: germinación lenta y ciclo largo.',
+  'Semer tôt — le petit pois craint la chaleur estivale.':
+      'Siembra pronto: el guisante teme el calor del verano.',
+  'Semis très long à lever — patience requise.':
+      'Tarda muchísimo en nacer: hace falta paciencia.',
+  'Sensible à la montée en graines — éviter le stress hydrique.':
+      'Sensible al espigado: evita que pase sed.',
+  'Sol acide indispensable (pH 4,5 à 5,5).':
+      'El suelo ácido es imprescindible (pH de 4,5 a 5,5).',
+  'Soupe du soir et jardin fleuri : la célosie fait les deux à la fois !':
+      'Sopa de la noche y jardín florido: ¡la celosía hace las dos cosas!',
+  'Soutenir tomates, haricots, pois...':
+      'Sostén tomates, judías, guisantes…',
+  'Spécial tomates, pas besoin de lier':
+      'Especial tomates, sin necesidad de atar',
+  'Stop pucerons, mouches, papillons':
+      'Frena pulgones, moscas y mariposas',
+  'Suit la course du soleil pendant sa croissance.':
+      'Sigue el recorrido del sol mientras crece.',
+  'Tailler après floraison pour garder une touffe compacte.':
+      'Pódala tras la floración para mantener la mata compacta.',
+  'Tailler en hiver pour renouveler les rameaux productifs.':
+      'Poda en invierno para renovar las ramas productivas.',
+  'Tailler tous les hivers pour limiter la pousse et concentrer la sève.':
+      'Poda todos los inviernos para limitar el crecimiento y concentrar la savia.',
+  'Température clé pour la levée : viser 25 °C.':
+      'Temperatura clave para la nascencia: apunta a 25 °C.',
+  'Toujours cuire avant consommation — le taro cru est irritant.':
+      'Cuécelo siempre antes de comerlo: el taro crudo es irritante.',
+  'Tremper les graines 24 h avant le semis pour accélérer la levée.':
+      'Remoja las semillas 24 h antes de sembrar para acelerar la nascencia.',
+  'Très gourmand en chaleur et en eau — le fruit idéal des tropiques.':
+      'Muy exigente en calor y agua: el fruto ideal del trópico.',
+  'Très gourmand en espace — prévoir 2 à 3 m² par pied.':
+      'Muy exigente en sitio: calcula de 2 a 3 m² por mata.',
+  'Très peu exigeant — supporte la sécheresse et les sols pauvres.':
+      'Muy poco exigente: aguanta la sequía y los suelos pobres.',
+  'Très productive — un seul pied nourrit pendant des mois.':
+      'Muy productiva: una sola mata alimenta durante meses.',
+  'Très rustique — demande peu d\'eau et de soin une fois installé.':
+      'Muy rústico: pide poca agua y pocos cuidados una vez instalado.',
+  'Très rustique, supporte les climats froids et la mi-ombre.':
+      'Muy rústica, aguanta los climas fríos y la media sombra.',
+  'Une fois planté, revient chaque année — choisir l\'emplacement avec soin.':
+      'Una vez plantado vuelve cada año: elige el sitio con cuidado.',
+  'Vivace facile — un pied dure des années avec peu de soins.':
+      'Vivaz fácil: una mata dura años con pocos cuidados.',
+  'Vivace pour 10 ans — choisir un coin définitif riche en compost.':
+      'Vivaz para 10 años: elige un rincón definitivo y rico en compost.',
+  'Vivace — un pied produit pendant 3 à 5 ans.':
+      'Vivaz: una mata produce de 3 a 5 años.',
+  'À enfouir avant montée en graines (8-10 semaines).':
+      'Entiérralo antes de que grane (8-10 semanas).',
+  'À ne pas confondre avec l\'origan — la marjolaine est plus subtile.':
+      'No la confundas con el orégano: la mejorana es más sutil.',
+  'À planter au pied des tomates et aubergines.':
+      'Para plantar al pie de tomates y berenjenas.',
+  'Économise jusqu\'à 50% d\'eau':
+      'Ahorra hasta un 50% de agua',
+  'Évite la chaleur, préfère les saisons fraîches.':
+      'Evita el calor, prefiere las estaciones frescas.',
 };
