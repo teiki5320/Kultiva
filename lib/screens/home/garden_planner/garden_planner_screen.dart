@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/garden_plan.dart';
@@ -24,13 +25,13 @@ sealed class PickerFilter {
 class FavoritesFilter extends PickerFilter {
   const FavoritesFilter();
   @override
-  String get label => 'Favoris';
+  String get label => trUi('Favoris');
 }
 
 class AllFilter extends PickerFilter {
   const AllFilter();
   @override
-  String get label => 'Toutes';
+  String get label => trUi('Toutes');
 }
 
 class CategoryFilter extends PickerFilter {
@@ -74,19 +75,19 @@ enum PlannerSeason {
   String get label {
     switch (this) {
       case PlannerSeason.all:
-        return "Toute l'année";
+        return trUi("Toute l'année");
       case PlannerSeason.spring:
-        return 'Printemps';
+        return trUi('Printemps');
       case PlannerSeason.summer:
-        return 'Été';
+        return trUi('Été');
       case PlannerSeason.autumn:
-        return 'Automne';
+        return trUi('Automne');
       case PlannerSeason.winter:
-        return 'Hiver';
+        return trUi('Hiver');
       case PlannerSeason.dry:
-        return 'Saison sèche';
+        return trUi('Saison sèche');
       case PlannerSeason.rains:
-        return 'Hivernage';
+        return trUi('Hivernage');
     }
   }
 
@@ -221,7 +222,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             style: TextButton.styleFrom(
               foregroundColor: KultivaColors.primaryGreen,
             ),
-            child: const Text('Annuler'),
+            child: Text(trUi('Annuler')),
           ),
           leadingWidth: 90,
           title: Text(
@@ -241,9 +242,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                 ),
                 onPressed: _dirty ? _onSave : null,
-                child: const Text(
-                  'Sauvegarder',
-                  style: TextStyle(fontWeight: FontWeight.w700),
+                child: Text(
+                  trUi('Sauvegarder'),
+                  style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -294,7 +295,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           TextButton.icon(
             onPressed: _openConfig,
             icon: const Icon(Icons.dashboard_customize, size: 18),
-            label: const Text('Configurer'),
+            label: Text(trUi('Configurer')),
             style: TextButton.styleFrom(
               foregroundColor: KultivaColors.textPrimary,
             ),
@@ -308,7 +309,9 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                '🌱 $_totalPlants plant${_totalPlants > 1 ? 's' : ''}',
+                _totalPlants > 1
+                    ? trUiArgs('🌱 {0} plants', <Object?>[_totalPlants])
+                    : trUiArgs('🌱 {0} plant', <Object?>[_totalPlants]),
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
@@ -320,7 +323,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
           TextButton.icon(
             onPressed: _showTips,
             icon: const Icon(Icons.help_outline, size: 18),
-            label: const Text('Conseils'),
+            label: Text(trUi('Conseils')),
             style: TextButton.styleFrom(
               foregroundColor: KultivaColors.textPrimary,
             ),
@@ -550,16 +553,16 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     final discard = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Quitter sans sauvegarder ?'),
-        content: const Text('Tes modifications seront perdues.'),
+        title: Text(trUi('Quitter sans sauvegarder ?')),
+        content: Text(trUi('Tes modifications seront perdues.')),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Continuer l\'édition'),
+            child: Text(trUi("Continuer l'édition")),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Quitter'),
+            child: Text(trUi('Quitter')),
           ),
         ],
       ),
@@ -596,7 +599,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
     if (!mounted) return;
     setState(() => _dirty = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Jardin sauvegardé 🌱')),
+      SnackBar(content: Text(trUi('Jardin sauvegardé 🌱'))),
     );
   }
 }

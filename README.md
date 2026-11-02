@@ -60,13 +60,11 @@ lexique, les badges, les défis et les conseils. Tout passe par une
 surcouche par langue — le français reste la source de vérité, et rien
 n'est recopié :
 
-⚠️ **L'interface, elle, ne l'est pas encore.** Les cinq libellés
-d'onglets et le réglage « Langue » passent par les ARB ; les
-**541 autres chaînes** de l'app — tableau de bord, onboarding, météo,
-réglages, fiches légume — sont encore écrites en dur en français. Un
-utilisateur espagnol voit donc « Inicio / Diario / Catálogo / Recetas /
-Guías » en bas, et « Semer · 22 légumes » juste au-dessus. Le chantier
-est repéré, chiffré et pas commencé.
+**L'interface aussi**, depuis le 2 novembre 2026 : 773 libellés,
+titres, boutons, messages et notifications, du tableau de bord à
+l'onboarding. Les 73 noms de pays sont traduits et **triés dans la
+langue affichée** — un catalogue espagnol commence à Alemania, pas à
+Allemagne.
 
 - **Recettes** — `lib/data/recipes_en.dart`, champ par champ.
 - **Tutos** — `lib/data/tutos_en.dart`. Le dictionnaire est injecté

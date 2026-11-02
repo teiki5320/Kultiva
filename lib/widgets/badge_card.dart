@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../data/content_i18n.dart';
+import '../data/ui_i18n.dart';
 import '../data/badges.dart';
 import '../models/vegetable_medal.dart';
 import '../services/audio_service.dart';
@@ -26,7 +27,7 @@ Future<void> showBadgeCard(
     context: context,
     barrierColor: Colors.black.withValues(alpha: 0.75),
     barrierDismissible: true,
-    barrierLabel: 'Fermer',
+    barrierLabel: trUi('Fermer'),
     transitionDuration: const Duration(milliseconds: 240),
     pageBuilder: (_, __, ___) => _BadgeCardOverlay(
       badge: badge,
@@ -180,8 +181,10 @@ class _BadgeCardOverlayState extends State<_BadgeCardOverlay>
 
               return Semantics(
                 label: widget.unlocked
-                    ? 'Badge ${widget.badge.displayName}, débloqué'
-                    : 'Badge ${widget.badge.displayName}, verrouillé',
+                    ? trUiArgs('Badge {0}, débloqué',
+                        <Object?>[widget.badge.displayName])
+                    : trUiArgs('Badge {0}, verrouillé',
+                        <Object?>[widget.badge.displayName]),
                 child: GestureDetector(
                   // Tap sur la carte = retournement (au lieu de rien).
                   onTap: _toggleFlip,
@@ -832,7 +835,7 @@ Future<void> showBadgeUnlockedAnimation(
     context: context,
     barrierColor: Colors.black.withValues(alpha: 0.85),
     barrierDismissible: false,
-    barrierLabel: 'Nouveau badge',
+    barrierLabel: trUi('Nouveau badge'),
     transitionDuration: const Duration(milliseconds: 1),
     pageBuilder: (_, __, ___) => _BadgeUnlockedOverlay(badge: badge),
   );
@@ -954,7 +957,7 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
                   child: Column(
                     children: <Widget>[
                       Text(
-                        '✨ NOUVEAU BADGE ✨',
+                        trUi('✨ NOUVEAU BADGE ✨'),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
@@ -993,7 +996,7 @@ class _BadgeUnlockedOverlayState extends State<_BadgeUnlockedOverlay>
                 bottom: MediaQuery.of(context).size.height * 0.08,
                 child: IgnorePointer(
                   child: Text(
-                    'Tape n\'importe où pour continuer',
+                    trUi('Tape n\'importe où pour continuer'),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

@@ -149,7 +149,7 @@ Garde ce qui rend une étape utile : la raison derrière le geste.
 | Maladies, badges, défis, lexique, conseils | ✅ anglais, 784 phrases |
 | Espagnol — 130 cultures | ✅ `names_es.dart` |
 | Espagnol — recettes, tutos, contenu | ✅ 736 + 1 266 + 784, comme l'anglais |
-| **Interface — les 541 chaînes en dur** | ⬜ **pas commencé**, voir plus bas |
+| Interface — 773 chaînes | ✅ `ui_en.dart`, `ui_es.dart` |
 | Portugais | ⬜ à faire — `--langue=pt` |
 
 **Le prix réel d'un lot de recettes, mesuré** : 190 000 jetons sur
@@ -158,34 +158,102 @@ par langue. L'agent lit, vérifie et réfléchit en plus d'écrire. Les
 huit agents du 2 novembre (6 lots + tutos + contenu espagnols) ont
 coûté **1,67 million de jetons** en sept minutes de temps réel.
 
-## ⚠️ L'interface n'est pas traduite
+## L'interface (02/11/2026)
 
-Mesuré le 02/11/2026, et c'est le trou du dispositif. Les trois
-surcouches couvrent le **contenu** — recettes, tutos, maladies,
-lexique, badges, défis. L'**interface**, non :
+**773 chaînes par langue**, branchées par **722 appels** `trUi()` dans
+53 fichiers. Le chantier s'est fait en deux vagues : sept agents pour
+**brancher** (envelopper les littérales, sans traduire), puis six pour
+**traduire** les squelettes.
 
-- **541 chaînes françaises écrites en dur** dans 53 fichiers de
-  `lib/screens`, `lib/services`, `lib/utils` et `lib/models`. Les plus
-  chargés : `country.dart` (45), `onboarding_screen.dart` (27),
-  `tutos_screen.dart` (27), `phenology.dart` (26),
-  `weather_screen.dart` (26), `settings_screen.dart` (24),
-  `sow_screen.dart` (24).
-- **33 des 40 clés ARB ne sont appelées nulle part.** Les 17 `photos*`
-  sont orphelines depuis le retrait de l'onglet Photo (01/11) ; les 8
-  `recipes*` et les 8 `common*` n'ont jamais été branchées — l'écran
-  des recettes affiche « Garder ta récolte » et « Un légume, ou une
-  conserve… », qui ne sont pas les valeurs de l'ARB. Seuls les 5
-  `tab*`, `settingsLanguage` et `settingsLanguagePartial` servent.
+### Pourquoi un dictionnaire et pas les ARB
 
-**Ce que ça donne à l'écran** : la barre d'onglets dit « Inicio /
-Diario / Catálogo / Recetas / Guías », et le tableau de bord juste
-au-dessus dit « Semer · 22 légumes ». Les recettes et les tutos, eux,
-sont bien en espagnol.
+Le réflexe serait `flutter gen-l10n`. Trois raisons l'écartent, et
+elles sont dans `lib/data/ui_i18n.dart` :
 
-Pour mesurer à nouveau, chercher les littérales contenant un caractère
-ou un mot-outil français hors `lib/data` et `lib/l10n`. Le chantier se
-découperait comme les recettes : par écran, avec un exportateur qui
-sort les littérales et un test qui refuse une clé orpheline.
+1. **La moitié de ces chaînes vit hors d'un widget.** `phenology.dart`,
+   `country.dart`, `notification_service.dart`, `advice_service.dart` et
+   `watering_advisor.dart` en portent plus de 150 et n'ont aucun
+   `BuildContext`. Un ARB se lit par `AppLocalizations.of(context)` : il
+   aurait fallu faire descendre un contexte dans des services, donc
+   mélanger présentation et logique métier.
+2. **Il aurait fallu nommer 773 clés**, qui mentent dès la première
+   retouche de style. La clé est la phrase française elle-même.
+3. **C'est le patron des trois autres surcouches.** Un seul modèle
+   mental pour toute la traduction du projet.
+
+Les ARB gardent ce qu'ils font mieux : les cinq libellés d'onglets et
+la note du réglage « Langue ». Les **33 clés orphelines ont été
+retirées** — 17 `photos*` mortes depuis le retrait de l'onglet Photo,
+8 `recipes*` et 8 `common*` jamais branchées.
+
+### Les chaînes composées : des trous numérotés
+
+107 chaînes étaient écrites par interpolation. Elles portent maintenant
+des trous :
+
+```dart
+trUiArgs('{0} ans avant de replanter au même endroit', <Object?>[3])
+```
+
+**La place d'un trou est libre dans la traduction** — c'est tout
+l'intérêt par rapport à une concaténation. Un trou oublié ferait
+disparaître la valeur en silence ; le test le refuse.
+
+### Ce qui échappe au dictionnaire, et pourquoi
+
+⚠️ **Les mois, les jours et les noms de pays** sont des tables
+indexées, pas des clés. Deux collisions l'ont imposé pendant le
+branchement :
+
+- « juin » est à la fois le mois court et le mois long. En anglais ils
+  diffèrent (« jun » / « june ») : **une clé devrait rendre deux
+  valeurs**. Idem « août », « Juin », « Août » ;
+- « Mar » est à la fois **mardi** et **mars**. Une seule clé pour deux
+  sens sans rapport : le mardi de la météo serait devenu un mois.
+
+Les noms de pays, eux, sont des champs `final String` d'un enum `const`
+qui ne peut pas appeler de fonction. Ils passent par un getter
+`displayLabel`, comme `Vegetable.displayName`.
+`tool/exporter_enums.dart` les sort pour le squelette, et
+`test/ui_i18n_test.dart` les lit **dans l'enum**, ce qui est exact par
+construction.
+
+### L'outillage
+
+```bash
+python3 tool/exporter_interface.py --compte
+flutter test tool/exporter_enums.dart        # les libellés d'enum
+python3 tool/exporter_interface.py --squelette --langue=es --part=2/3
+```
+
+⚠️ **L'exportateur lit du code, pas des données.** Il lui faut donc un
+vrai lecteur de chaînes Dart : une expression régulière se fait piéger
+par `'l\'ail'` et par les littérales adjacentes que Dart colle en une
+seule. Le test embarque le même lecteur, et il ignore les commentaires
+— un commentaire qui cite `trUi()` avait été pris pour un appel.
+
+### Les dix tests
+
+`test/ui_i18n_test.dart` : couverture par langue, aucune clé
+orpheline, les trous du français se retrouvent tous, les nombres ne
+bougent pas, aucune valeur vide, le français et une langue inconnue
+ressortent inchangés, et **chaque appel enveloppe une littérale** — sauf
+les trois getters d'enum, seuls tolérés.
+
+⚠️ **Les tests qui comparent du français doivent forcer la langue.**
+L'environnement de test tourne en `en-US`, donc `trUi()` rend de
+l'anglais. Vingt tests sont tombés d'un coup en remplissant les
+dictionnaires. Deux choses à faire, pas une :
+
+```dart
+setUpAll(() => PrefsService.instance.language.value = 'fr');
+// …et, si le test appelle PrefsService.load(), semer la langue :
+SharedPreferences.setMockInitialValues(<String, Object>{
+  'flutter.kultiva.language': 'fr',
+});
+```
+
+Sans la seconde, `load()` relit les préférences et écrase la première.
 
 ## Traduire un tuto
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../services/garden_stats.dart';
 import '../../../services/prefs_service.dart';
 import '../../../services/review_service.dart';
@@ -58,6 +59,26 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
         .maybeRequestReview(unlockedBadgeCount: _unlocked.length);
   }
 
+  /// « 3 défis sur 50  ·  2 badges sur 50 » — les quatre accords
+  /// possibles sont des clés distinctes : chaque langue accorde à sa
+  /// façon.
+  static String _sousTitre(int faits, int badges) {
+    final args = <Object?>[
+      faits,
+      allChallenges.length,
+      badges,
+      allBadges.length,
+    ];
+    if (faits > 1) {
+      return badges > 1
+          ? trUiArgs('{0} défis sur {1}  ·  {2} badges sur {3}', args)
+          : trUiArgs('{0} défis sur {1}  ·  {2} badge sur {3}', args);
+    }
+    return badges > 1
+        ? trUiArgs('{0} défi sur {1}  ·  {2} badges sur {3}', args)
+        : trUiArgs('{0} défi sur {1}  ·  {2} badge sur {3}', args);
+  }
+
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
@@ -82,9 +103,9 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text(
-                          '📸  Défis & badges',
-                          style: TextStyle(
+                        Text(
+                          trUi('📸  Défis & badges'),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -95,11 +116,7 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '$faits défi${faits > 1 ? 's' : ''} sur '
-                          '${allChallenges.length}  ·  '
-                          '${_unlocked.length} badge'
-                          '${_unlocked.length > 1 ? 's' : ''} sur '
-                          '${allBadges.length}',
+                          _sousTitre(faits, _unlocked.length),
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -117,7 +134,7 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
                   top: 8,
                   left: 8,
                   child: Semantics(
-                    label: 'Retour',
+                    label: trUi('Retour'),
                     button: true,
                     child: GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
@@ -165,9 +182,9 @@ class _Switcher extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
       child: SegmentedButton<bool>(
-        segments: const <ButtonSegment<bool>>[
-          ButtonSegment<bool>(value: false, label: Text('📸  Défis')),
-          ButtonSegment<bool>(value: true, label: Text('🏆  Badges')),
+        segments: <ButtonSegment<bool>>[
+          ButtonSegment<bool>(value: false, label: Text(trUi('📸  Défis'))),
+          ButtonSegment<bool>(value: true, label: Text(trUi('🏆  Badges'))),
         ],
         selected: <bool>{badges},
         showSelectedIcon: false,

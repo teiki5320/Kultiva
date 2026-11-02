@@ -1,3 +1,4 @@
+import '../data/ui_i18n.dart';
 import 'region_data.dart';
 
 /// Zone climatique, pour affiner saisons et conseils.
@@ -60,21 +61,21 @@ enum ClimateZone {
   String get label {
     switch (this) {
       case ClimateZone.temperate:
-        return 'Tempéré';
+        return trUi('Tempéré');
       case ClimateZone.sahel:
-        return 'Sahel (plus sec)';
+        return trUi('Sahel (plus sec)');
       case ClimateZone.sudan:
-        return 'Soudanien (centre)';
+        return trUi('Soudanien (centre)');
       case ClimateZone.guinean:
-        return 'Guinéen (plus humide)';
+        return trUi('Guinéen (plus humide)');
       case ClimateZone.mediterranean:
-        return 'Méditerranéen';
+        return trUi('Méditerranéen');
       case ClimateZone.continental:
-        return 'Continental';
+        return trUi('Continental');
       case ClimateZone.subtropical:
-        return 'Subtropical humide';
+        return trUi('Subtropical humide');
       case ClimateZone.highland:
-        return 'Tropical d\'altitude';
+        return trUi('Tropical d\'altitude');
     }
   }
 
@@ -82,22 +83,24 @@ enum ClimateZone {
   String get description {
     switch (this) {
       case ClimateZone.temperate:
-        return 'Quatre saisons européennes.';
+        return trUi('Quatre saisons européennes.');
       case ClimateZone.sahel:
-        return 'Saison des pluies courte (juin-sept), harmattan marqué.';
+        return trUi(
+            'Saison des pluies courte (juin-sept), harmattan marqué.');
       case ClimateZone.sudan:
-        return 'Saison des pluies de mai/juin à octobre.';
+        return trUi('Saison des pluies de mai/juin à octobre.');
       case ClimateZone.guinean:
-        return 'Climat humide, deux saisons des pluies.';
+        return trUi('Climat humide, deux saisons des pluies.');
       case ClimateZone.mediterranean:
-        return 'Été chaud et sec, hiver doux : on sème tôt, et aussi à '
-            'l\'automne.';
+        return trUi('Été chaud et sec, hiver doux : on sème tôt, et aussi à '
+            'l\'automne.');
       case ClimateZone.continental:
-        return 'Hiver froid, saison de culture courte : on sème plus tard.';
+        return trUi(
+            'Hiver froid, saison de culture courte : on sème plus tard.');
       case ClimateZone.subtropical:
-        return 'Saison longue et humide, étés lourds.';
+        return trUi('Saison longue et humide, étés lourds.');
       case ClimateZone.highland:
-        return 'Doux toute l\'année, rythmé par les pluies.';
+        return trUi('Doux toute l\'année, rythmé par les pluies.');
     }
   }
 
@@ -332,6 +335,21 @@ enum Country {
       this.capitalLat, this.capitalLon, this.capitalName,
       [this.hemisphere = Hemisphere.north]);
 
+  /// Le nom du pays dans la langue affichée.
+  ///
+  /// ⚠️ [label] est un champ d'un enum `const` : il ne peut pas
+  /// appeler de fonction, donc il reste le français. C'est **ce
+  /// getter** qu'il faut afficher, jamais [label]. Le tri de
+  /// [ordered] et la recherche de l'onboarding passent par lui aussi,
+  /// sinon un Allemand chercherait « Allemagne » pour trouver
+  /// « Germany ».
+  String get displayLabel => trUi(label);
+
+  /// Le nom de la capitale dans la langue affichée — « Londres » ou
+  /// « London ». Sert de nom de ville quand la géolocalisation est
+  /// refusée.
+  String get displayCapital => trUi(capitalName);
+
   /// ⚠️ Les huit pays d'Afrique de l'Ouest, et eux seuls. Depuis
   /// l'ouverture mondiale, `region == Region.westAfrica` ne suffit
   /// plus : la base tropicale est partagée, le contenu ouest-africain
@@ -351,7 +369,7 @@ enum Country {
   /// par ordre alphabétique — la France n'est PAS privilégiée : un
   /// utilisateur sénégalais doit arriver sur une appli sénégalaise.
   static List<Country> ordered({Country? first}) {
-    String key(Country c) => c.label
+    String key(Country c) => c.displayLabel
         .toLowerCase()
         .replaceAll('é', 'e')
         .replaceAll('è', 'e')

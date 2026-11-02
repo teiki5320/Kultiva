@@ -1,3 +1,4 @@
+import '../data/ui_i18n.dart';
 /// Région active pour l'affichage des calendriers de semis / récolte.
 ///
 /// Extensible — pour ajouter une nouvelle région, ajoute une valeur d'enum
@@ -25,6 +26,14 @@ enum Region {
   final String emoji;
 
   const Region(this.id, this.label, this.emoji);
+
+  /// Le nom de la région dans la langue affichée.
+  ///
+  /// ⚠️ [label] est un champ d'un enum `const` : il ne peut pas
+  /// appeler de fonction, donc il reste le français. C'est **ce
+  /// getter** qu'il faut afficher, jamais [label] — même règle que
+  /// `Vegetable.displayName`.
+  String get displayLabel => trUi(label);
 
   /// Vrai si le calendrier suit les pluies plutôt que les saisons
   /// thermiques. À préférer à `== Region.westAfrica` partout où la

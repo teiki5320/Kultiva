@@ -1,3 +1,4 @@
+import '../data/ui_i18n.dart';
 import 'package:flutter/material.dart';
 
 import 'plantation.dart';
@@ -47,13 +48,13 @@ extension MedalTierX on MedalTier {
       case MedalTier.none:
         return '';
       case MedalTier.bronze:
-        return 'Bronze';
+        return trUi('Bronze');
       case MedalTier.silver:
-        return 'Argent';
+        return trUi('Argent');
       case MedalTier.gold:
-        return 'Or';
+        return trUi('Or');
       case MedalTier.shiny:
-        return 'Shiny';
+        return trUi('Shiny');
     }
   }
 

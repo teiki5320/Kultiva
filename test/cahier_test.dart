@@ -51,7 +51,11 @@ void main() {
   }
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
+    SharedPreferences.setMockInitialValues(<String, Object>{
+        // ⚠️ `load()` relit les préférences et écraserait une
+        // langue posée dans `setUpAll`. Elle se sème donc ici.
+        'flutter.kultiva.language': 'fr',
+      });
     await PrefsService.instance.load();
     // `load()` relit les préférences et remet la langue à null ;
     // on la repose après, sinon l'environnement de test (en-US)

@@ -1,3 +1,5 @@
+import '../data/ui_i18n.dart';
+
 /// Sous-catégorie d'un accessoire dans le catalogue Kultiva.
 enum AccessorySubCategory {
   tools,
@@ -11,19 +13,19 @@ enum AccessorySubCategory {
   String get label {
     switch (this) {
       case AccessorySubCategory.tools:
-        return 'Outils';
+        return trUi('Outils');
       case AccessorySubCategory.pots:
-        return 'Bacs & Pots';
+        return trUi('Bacs & Pots');
       case AccessorySubCategory.soil:
-        return 'Terreau & Engrais';
+        return trUi('Terreau & Engrais');
       case AccessorySubCategory.seeds:
-        return 'Semences';
+        return trUi('Semences');
       case AccessorySubCategory.watering:
-        return 'Arrosage';
+        return trUi('Arrosage');
       case AccessorySubCategory.protection:
-        return 'Protection';
+        return trUi('Protection');
       case AccessorySubCategory.structures:
-        return 'Structures';
+        return trUi('Structures');
     }
   }
 
@@ -63,25 +65,25 @@ enum VegetableCategory {
   String get label {
     switch (this) {
       case VegetableCategory.flowers:
-        return 'Fleurs';
+        return trUi('Fleurs');
       case VegetableCategory.leaves:
-        return 'Feuilles';
+        return trUi('Feuilles');
       case VegetableCategory.fruits:
-        return 'Fruits';
+        return trUi('Fruits');
       case VegetableCategory.bulbs:
-        return 'Bulbes';
+        return trUi('Bulbes');
       case VegetableCategory.tubers:
-        return 'Tubercules';
+        return trUi('Tubercules');
       case VegetableCategory.seeds:
-        return 'Graines';
+        return trUi('Graines');
       case VegetableCategory.roots:
-        return 'Racines';
+        return trUi('Racines');
       case VegetableCategory.stems:
-        return 'Tiges';
+        return trUi('Tiges');
       case VegetableCategory.aromatics:
-        return 'Aromatiques';
+        return trUi('Aromatiques');
       case VegetableCategory.accessories:
-        return 'Accessoires';
+        return trUi('Accessoires');
     }
   }
 

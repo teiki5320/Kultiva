@@ -37,7 +37,7 @@ physiques, dons.
 
 - 🫙 **Garder ta récolte** : pour chaque légume, trois conservations (bocal, congélation, séchage, lacto-fermentation…) avec leur durée de garde et un pas-à-pas animé — 736 recettes, dont 448 déroulées étape par étape.
 - 📔 **Cahier de culture** : « à faire aujourd'hui » dit qui a soif, qui est mûr et s'il va faire trop chaud, puis les jardins pleine terre, le suivi par plant et l'avertissement de rotation.
-- 🌍 **73 pays, deux langues, hors ligne** : calendriers par pays et zone climatique (hémisphère sud compris), sans compte ni serveur. **Tout le contenu est traduit en français, en anglais et en espagnol** depuis le 2 novembre 2026 : recettes, tutos, maladies, lexique, badges et défis. ⚠️ Ne pas écrire « interface traduite » dans une fiche de boutique : l'interface elle-même est encore en français à 98 % (voir `docs/INFRA.md`).
+- 🌍 **73 pays, deux langues, hors ligne** : calendriers par pays et zone climatique (hémisphère sud compris), sans compte ni serveur. **Tout le contenu est traduit en français, en anglais et en espagnol** depuis le 2 novembre 2026 : recettes, tutos, maladies, lexique, badges et défis. **L'interface l'est aussi** depuis le 2 novembre 2026 : tableau de bord, onboarding, réglages, météo, notifications, et les 73 noms de pays. Un utilisateur anglophone ou hispanophone ne voit plus un mot de français.
 
 ## Canaux
 

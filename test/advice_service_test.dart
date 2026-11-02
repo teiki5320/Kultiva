@@ -13,11 +13,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// déjà. Ces tests verrouillent les deux règles qui la rendent juste —
 /// le stade observé l'emporte sur la déduction, mais il se périme.
 void main() {
+  // ⚠️ L'environnement de test tourne en `en-US`, donc `trUi()` rend
+  // de l'anglais. Ce fichier compare du **français** — le texte source
+  // de l'app — donc il force la langue. Sans ça, il validerait des
+  // libellés anglais en croyant lire du français, ce qui est
+  // exactement le piège qu'`onglets_test` s'est pris en 2026.
+  setUpAll(() => PrefsService.instance.language.value = 'fr');
+
   TestWidgetsFlutterBinding.ensureInitialized();
   final service = PlantationService.instance;
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
+    SharedPreferences.setMockInitialValues(<String, Object>{
+        // ⚠️ `load()` relit les préférences et écraserait une
+        // langue posée dans `setUpAll`. Elle se sème donc ici.
+        'flutter.kultiva.language': 'fr',
+      });
     await PrefsService.instance.load();
     service.load();
   });
@@ -68,13 +79,13 @@ void main() {
       final surveiller =
           advice.sections.where((s) => s.title == 'À surveiller');
       expect(surveiller, hasLength(1));
-      // ⚠️ L'environnement de test tourne en `en-US`, donc la fiche
-      // sort en anglais depuis que les maladies sont traduites
-      // (02/11/2026). Ce test lisait « Mildiou » et croyait lire du
-      // français : c'est le piège que CLAUDE.md signale. On vérifie
-      // donc la maladie dans la langue réellement rendue.
+      // ⚠️ Ce fichier force le français (voir le `setUp`), donc la
+      // fiche sort en français. Il lisait « Mildiou » en dur et
+      // croyait lire du français alors que l'environnement de test
+      // tourne en `en-US` : on passe par `trIn(..., 'fr')`, qui dit
+      // sa langue au lieu de la supposer.
       expect(surveiller.first.body,
-          contains(trIn(diseaseMap['tomate']!.first.name, 'en')));
+          contains(trIn(diseaseMap['tomate']!.first.name, 'fr')));
     });
 
     test('aucune section vide', () {

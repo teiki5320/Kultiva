@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../data/recipes.dart';
 import '../../../data/recipes_i18n.dart';
 import '../../../data/regions/regional_calendar.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
 import '../../../services/plantation_service.dart';
@@ -54,6 +55,20 @@ class _RecettesScreenState extends State<RecettesScreen> {
   /// région et de la zone climatique de l'utilisateur. Calculé une
   /// fois : le calendrier ne change pas pendant qu'on cherche.
   late final Set<String> _recoltablesCeMois = _calculerSaison();
+
+  /// « 12 façons de garder 3 récoltes » — les quatre accords possibles
+  /// sont des clés distinctes : chaque langue accorde à sa façon.
+  static String _sousTitre(int total, int recoltes) {
+    final args = <Object?>[total, recoltes];
+    if (total > 1) {
+      return recoltes > 1
+          ? trUiArgs('{0} façons de garder {1} récoltes', args)
+          : trUiArgs('{0} façons de garder {1} récolte', args);
+    }
+    return recoltes > 1
+        ? trUiArgs('{0} façon de garder {1} récoltes', args)
+        : trUiArgs('{0} façon de garder {1} récolte', args);
+  }
 
   static Set<String> _calculerSaison() {
     final mois = DateTime.now().month;
@@ -163,9 +178,9 @@ class _RecettesScreenState extends State<RecettesScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text(
-                          '🫙  Garder ta récolte',
-                          style: TextStyle(
+                        Text(
+                          trUi('🫙  Garder ta récolte'),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -176,9 +191,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '$total façon${total > 1 ? 's' : ''} de garder '
-                          '${entrees.length} récolte'
-                          '${entrees.length > 1 ? 's' : ''}',
+                          _sousTitre(total, entrees.length),
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -200,7 +213,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
                 controller: _recherche,
                 onChanged: (v) => setState(() => _query = v),
                 decoration: InputDecoration(
-                  hintText: 'Un légume, ou une conserve…',
+                  hintText: trUi('Un légume, ou une conserve…'),
                   prefixIcon: const Icon(Icons.search, size: 20),
                   suffixIcon: _query.isEmpty
                       ? null
@@ -225,7 +238,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 13),
                 children: <Widget>[
                   PastelChip(
-                    label: 'Tout',
+                    label: trUi('Tout'),
                     emoji: '🍽',
                     color: KultivaColors.primaryGreen,
                     selected: _categorie == null && !_saison && !_favoris,
@@ -236,14 +249,14 @@ class _RecettesScreenState extends State<RecettesScreen> {
                     }),
                   ),
                   PastelChip(
-                    label: 'C\'est la saison',
+                    label: trUi("C'est la saison"),
                     emoji: '📅',
                     color: KultivaColors.terracotta,
                     selected: _saison,
                     onTap: () => setState(() => _saison = !_saison),
                   ),
                   PastelChip(
-                    label: 'Mes favoris',
+                    label: trUi('Mes favoris'),
                     emoji: '🔖',
                     color: KultivaColors.primaryGreen,
                     selected: _favoris,
@@ -355,9 +368,9 @@ class _CarteLegume extends StatelessWidget {
                       color: KultivaColors.primaryGreen.withValues(alpha: 0.16),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Text(
-                      'Dans ton jardin',
-                      style: TextStyle(
+                    child: Text(
+                      trUi('Dans ton jardin'),
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
                         color: KultivaColors.primaryGreen,
@@ -397,18 +410,19 @@ class _RienTrouve extends StatelessWidget {
   /// sinon on croit que l'app n'a pas de recettes.
   String get _message {
     if (favoris && query.isEmpty && !saison && categorie == null) {
-      return 'Tu n\'as encore mis aucune recette de côté.\n'
-          'Touche le marque-page sur celles qui te tentent.';
+      return trUi("Tu n'as encore mis aucune recette de côté.\n"
+          'Touche le marque-page sur celles qui te tentent.');
     }
     final bouts = <String>[
-      if (query.isNotEmpty) 'qui parle de « $query »',
+      if (query.isNotEmpty) trUiArgs('qui parle de « {0} »', <Object?>[query]),
       if (categorie != null)
-        'dans la famille « ${categorie!.label.toLowerCase()} »',
-      if (saison) 'à récolter ce mois-ci',
-      if (favoris) 'parmi tes favoris',
+        trUiArgs('dans la famille « {0} »',
+            <Object?>[categorie!.label.toLowerCase()]),
+      if (saison) trUi('à récolter ce mois-ci'),
+      if (favoris) trUi('parmi tes favoris'),
     ];
-    if (bouts.isEmpty) return 'Aucune recette.';
-    return 'Aucune recette ${bouts.join(', ')}.';
+    if (bouts.isEmpty) return trUi('Aucune recette.');
+    return trUiArgs('Aucune recette {0}.', <Object?>[bouts.join(', ')]);
   }
 
   @override

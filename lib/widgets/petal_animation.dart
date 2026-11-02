@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../data/ui_i18n.dart';
 import '../services/prefs_service.dart';
 
 import '../models/country.dart';
@@ -85,19 +86,19 @@ enum Season {
   String get label {
     switch (this) {
       case Season.spring:
-        return 'Printemps';
+        return trUi('Printemps');
       case Season.summer:
-        return 'Été';
+        return trUi('Été');
       case Season.autumn:
-        return 'Automne';
+        return trUi('Automne');
       case Season.winter:
-        return 'Hiver';
+        return trUi('Hiver');
       case Season.harmattan:
-        return 'Harmattan';
+        return trUi('Harmattan');
       case Season.drySeason:
-        return 'Saison sèche';
+        return trUi('Saison sèche');
       case Season.rainySeason:
-        return 'Hivernage';
+        return trUi('Hivernage');
     }
   }
 

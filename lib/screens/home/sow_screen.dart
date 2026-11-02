@@ -9,6 +9,7 @@ import '../../data/companions.dart';
 import '../../data/diseases.dart';
 import '../../data/regions/regional_calendar.dart';
 import '../../data/rotation.dart';
+import '../../data/ui_i18n.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
@@ -16,6 +17,7 @@ import '../../services/prefs_service.dart';
 import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/months.dart';
 import '../../utils/text_scale.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
@@ -97,16 +99,18 @@ class _SowScreenState extends State<SowScreen> {
           ? vegetablesBase.where((v) => v.id == entry.value.first).firstOrNull
           : null;
       if (veg != null && comp != null) {
-        tips.add(
-            '${veg.emoji} ${veg.displayName} adore pousser à côté de ${comp.emoji} ${comp.name} !');
+        tips.add(trUiArgs(
+            '{0} {1} adore pousser à côté de {2} {3} !',
+            <Object?>[veg.emoji, veg.displayName, comp.emoji, comp.displayName]));
       }
     }
 
     for (final entry in rotationMap.entries) {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       if (veg != null) {
-        tips.add(
-            '${veg.emoji} ${veg.displayName} : attendre ${entry.value.waitYears} ans avant de replanter au même endroit.');
+        tips.add(trUiArgs(
+            '{0} {1} : attendre {2} ans avant de replanter au même endroit.',
+            <Object?>[veg.emoji, veg.displayName, entry.value.waitYears]));
       }
     }
 
@@ -114,8 +118,8 @@ class _SowScreenState extends State<SowScreen> {
       final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
       if (veg != null && entry.value.isNotEmpty) {
         final d = entry.value.first;
-        tips.add(
-            '${veg.emoji} ${veg.displayName} : attention au ${d.displayName}. ${d.displayRemedy}.');
+        tips.add(trUiArgs('{0} {1} : attention au {2}. {3}.',
+            <Object?>[veg.emoji, veg.displayName, d.displayName, d.displayRemedy]));
       }
     }
 
@@ -176,7 +180,7 @@ class _SowScreenState extends State<SowScreen> {
                     top: 8,
                     right: 12,
                     child: Semantics(
-                      label: 'Paramètres',
+                      label: trUi('Paramètres'),
                       button: true,
                       child: GestureDetector(
                         onTap: () => Navigator.of(context).push(
@@ -202,8 +206,10 @@ class _SowScreenState extends State<SowScreen> {
                       top: 48,
                       right: 12,
                       child: Semantics(
-                        label:
-                            'Météo : ${_weather!.currentTemp.toStringAsFixed(0)} degrés, ${_weather!.weatherLabel}',
+                        label: trUiArgs('Météo : {0} degrés, {1}', <Object?>[
+                          _weather!.currentTemp.toStringAsFixed(0),
+                          _weather!.weatherLabel
+                        ]),
                         button: true,
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).push(
@@ -253,8 +259,8 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '🌱',
                             imagePath: 'assets/images/card_semer.png',
-                            label: 'Semer',
-                            subtitle: '${toSow.length} légumes',
+                            label: trUi('Semer'),
+                            subtitle: trUiArgs('{0} légumes', <Object?>[toSow.length]),
                             gradientColors: const [
                               KultivaColors.springA,
                               KultivaColors.springB,
@@ -272,8 +278,8 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '🧺',
                             imagePath: 'assets/images/card_recolter.png',
-                            label: 'Récolter',
-                            subtitle: '${toHarvest.length} légumes',
+                            label: trUi('Récolter'),
+                            subtitle: trUiArgs('{0} légumes', <Object?>[toHarvest.length]),
                             gradientColors: const [
                               KultivaColors.summerA,
                               KultivaColors.summerB,
@@ -295,8 +301,8 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '📅',
                             imagePath: 'assets/images/card_calendrier.png',
-                            label: 'Calendrier',
-                            subtitle: 'Vue annuelle',
+                            label: trUi('Calendrier'),
+                            subtitle: trUi('Vue annuelle'),
                             gradientColors: const [
                               KultivaColors.winterA,
                               KultivaColors.winterB,
@@ -313,8 +319,8 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '🌻',
                             imagePath: 'assets/images/card_dujour.png',
-                            label: 'Légume du jour',
-                            subtitle: vegOfDay.name,
+                            label: trUi('Légume du jour'),
+                            subtitle: vegOfDay.displayName,
                             gradientColors: const [
                               KultivaColors.autumnA,
                               KultivaColors.autumnB,
@@ -337,8 +343,8 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '📸',
                             imagePath: null,
-                            label: 'Défis & badges',
-                            subtitle: '50 défis photo, 50 badges',
+                            label: trUi('Défis & badges'),
+                            subtitle: trUi('50 défis photo, 50 badges'),
                             gradientColors: const [
                               KultivaColors.springA,
                               KultivaColors.springB,
@@ -356,8 +362,8 @@ class _SowScreenState extends State<SowScreen> {
                           child: _KawaiiCard(
                             emoji: '📸',
                             imagePath: null,
-                            label: 'Actualités',
-                            subtitle: 'Suis-nous sur Instagram',
+                            label: trUi('Actualités'),
+                            subtitle: trUi('Suis-nous sur Instagram'),
                             gradientColors: const [
                               KultivaColors.summerA,
                               KultivaColors.summerB,
@@ -455,8 +461,9 @@ class _SowScreenState extends State<SowScreen> {
     final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Impossible d\'ouvrir Instagram pour le moment.'),
+        SnackBar(
+          content:
+              Text(trUi('Impossible d\'ouvrir Instagram pour le moment.')),
         ),
       );
     }
@@ -497,7 +504,12 @@ class _KawaiiCard extends StatelessWidget {
           onTap();
         },
         child: Container(
-          height: scaledHeight(context, 130),
+          // 138 et non 130 : la hauteur utile était de 98 px, et un
+          // libellé sur deux lignes en demande 99 (44 d'icône + 40 de
+          // titre + 2 + 13 de sous-titre). « Défis & badges » tient sur
+          // une ligne, « Challenges & badges » et « Retos e insignias »
+          // non — la carte les coupait au milieu.
+          height: scaledHeight(context, 138),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -538,6 +550,7 @@ class _KawaiiCard extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       width: 44,
@@ -565,26 +578,49 @@ class _KawaiiCard extends StatelessWidget {
                             )
                           : Text(emoji, style: const TextStyle(fontSize: 22)),
                     ),
-                    const Spacer(),
-                    Text(
-                      label,
-                      style: TextStyle(
-                        color: KultivaColors.textPrimary.withValues(alpha: 0.9),
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
+                    // ⚠️ Le titre et le sous-titre forment **un seul**
+                    // enfant flexible, collé en bas par le
+                    // `spaceBetween` de la colonne.
+                    //
+                    // Avant, un `Spacer()` poussait le texte vers le
+                    // bas. Mais un `Spacer` est un `Expanded`, donc il
+                    // se partageait l'espace libre à parts égales avec
+                    // le titre : celui-ci n'obtenait qu'une ligne, et
+                    // « Challenges & badges » s'affichait
+                    // « Challenges & ». Le français, qui tient sur une
+                    // ligne, ne montrait rien du problème.
+                    Flexible(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              label,
+                              style: TextStyle(
+                                color: KultivaColors.textPrimary
+                                    .withValues(alpha: 0.9),
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            subtitle,
+                            style: TextStyle(
+                              color: KultivaColors.textPrimary
+                                  .withValues(alpha: 0.55),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        color:
-                            KultivaColors.textPrimary.withValues(alpha: 0.55),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -723,7 +759,7 @@ class _SlideVegOfDay extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '✨ Légume du jour',
+                  trUi('✨ Légume du jour'),
                   style: TextStyle(
                     color: KultivaColors.primaryGreen.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w700,
@@ -796,7 +832,7 @@ class _SlideWeather extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '🌤 Météo du jour',
+                        trUi('🌤 Météo du jour'),
                         style: TextStyle(
                           color: const Color(0xFF5A8FB8).withValues(alpha: 0.8),
                           fontWeight: FontWeight.w700,
@@ -815,8 +851,11 @@ class _SlideWeather extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         weather!.rainNext3Days > 0
-                            ? '${weather!.rainNext3Days.toStringAsFixed(1)} mm de pluie prévus sous 3 jours'
-                            : 'Pas de pluie prévue sur 3 jours',
+                            ? trUiArgs('{0} mm de pluie prévus sous 3 jours',
+                                <Object?>[
+                                    weather!.rainNext3Days.toStringAsFixed(1)
+                                  ])
+                            : trUi('Pas de pluie prévue sur 3 jours'),
                         style: TextStyle(
                           color:
                               KultivaColors.textPrimary.withValues(alpha: 0.55),
@@ -845,7 +884,7 @@ class _SlideWeather extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Chargement météo...',
+                          trUi('Chargement météo...'),
                           style: TextStyle(
                             color: KultivaColors.textPrimary
                                 .withValues(alpha: 0.5),
@@ -856,7 +895,8 @@ class _SlideWeather extends StatelessWidget {
                       ],
                     )
                   : Text(
-                      'Météo indisponible\nActive la localisation pour les prévisions',
+                      trUi(
+                          'Météo indisponible\nActive la localisation pour les prévisions'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: KultivaColors.textPrimary.withValues(alpha: 0.5),
@@ -902,7 +942,7 @@ class _SlideTip extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Conseil du jour',
+                  trUi('Conseil du jour'),
                   style: TextStyle(
                     color: KultivaColors.terracotta.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w700,
@@ -948,21 +988,6 @@ class _SlideSeason extends StatelessWidget {
     required this.harvestCount,
   });
 
-  static const List<String> _monthNames = [
-    'janvier',
-    'février',
-    'mars',
-    'avril',
-    'mai',
-    'juin',
-    'juillet',
-    'août',
-    'septembre',
-    'octobre',
-    'novembre',
-    'décembre',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return _SlideBase(
@@ -1000,7 +1025,7 @@ class _SlideSeason extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'En ${_monthNames[month - 1]}',
+                  trUiArgs('En {0}', <Object?>[monthNamesLong[month - 1]]),
                   style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 17,
@@ -1008,7 +1033,8 @@ class _SlideSeason extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '🌱 $sowCount à semer  ·  🧺 $harvestCount à récolter',
+                  trUiArgs('🌱 {0} à semer  ·  🧺 {1} à récolter',
+                      <Object?>[sowCount, harvestCount]),
                   style: TextStyle(
                     color: KultivaColors.textPrimary.withValues(alpha: 0.55),
                     fontSize: 12,

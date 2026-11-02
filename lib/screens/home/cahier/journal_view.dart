@@ -1,5 +1,7 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/plantation.dart';
 import '../../../theme/app_theme.dart';
@@ -38,8 +40,8 @@ class GardenJournalView extends StatelessWidget {
     final today = DateTime(now.year, now.month, now.day);
     final dd = DateTime(d.year, d.month, d.day);
     final diff = today.difference(dd).inDays;
-    if (diff == 0) return "AUJOURD'HUI";
-    if (diff == 1) return 'HIER';
+    if (diff == 0) return trUi("AUJOURD'HUI");
+    if (diff == 1) return trUi('HIER');
     return '${d.day} ${monthNamesLong[d.month - 1].toUpperCase()}';
   }
 
@@ -48,14 +50,14 @@ class GardenJournalView extends StatelessWidget {
     final events = <_JournalEvent>[];
     for (final p in plantations) {
       final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
-      final label = v == null ? p.vegetableId : '${v.emoji} ${v.name}';
+      final label = v == null ? p.vegetableId : '${v.emoji} ${v.displayName}';
       final color =
           v == null ? KultivaColors.primaryGreen : v.category.familyColor;
 
       events.add(_JournalEvent(
         date: p.plantedAt,
         icon: '🌱',
-        action: 'Planté',
+        action: trUi('Planté'),
         vegetableLabel: label,
         color: color,
       ));
@@ -63,7 +65,7 @@ class GardenJournalView extends StatelessWidget {
         events.add(_JournalEvent(
           date: w,
           icon: '💧',
-          action: 'Arrosé',
+          action: trUi('Arrosé'),
           vegetableLabel: label,
           color: KultivaColors.waterBlue,
         ));
@@ -72,7 +74,7 @@ class GardenJournalView extends StatelessWidget {
         events.add(_JournalEvent(
           date: p.harvestedAt!,
           icon: '🏁',
-          action: 'Culture terminée',
+          action: trUi('Culture terminée'),
           vegetableLabel: label,
           color: KultivaColors.terracotta,
         ));
@@ -85,7 +87,7 @@ class GardenJournalView extends StatelessWidget {
         events.add(_JournalEvent(
           date: DateTime.fromMillisecondsSinceEpoch(ts),
           icon: '📷',
-          action: 'Photo ajoutée',
+          action: trUi('Photo ajoutée'),
           vegetableLabel: label,
           color: const Color(0xFFFFB74D),
         ));
@@ -93,13 +95,14 @@ class GardenJournalView extends StatelessWidget {
     }
 
     if (events.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Text(
-            '📜\n\nTon journal se remplira au fil de tes actions.\nPlante, arrose, récolte !',
+            trUi('📜\n\nTon journal se remplira au fil de tes actions.\n'
+                'Plante, arrose, récolte !'),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: KultivaColors.textSecondary,
               fontSize: 13,
               height: 1.5,
@@ -200,8 +203,11 @@ class _JournalTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label:
-          '${event.action} ${event.vegetableLabel} à ${_timeLabel(event.date)}',
+      label: trUiArgs('{0} {1} à {2}', <Object?>[
+        event.action,
+        event.vegetableLabel,
+        _timeLabel(event.date),
+      ]),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(

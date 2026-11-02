@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../services/plantation_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/petal_animation.dart';
@@ -45,11 +46,11 @@ class _CahierJournalSectionState extends State<CahierJournalSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.fromLTRB(16, 18, 16, 0),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 18, 16, 0),
           child: Text(
-            'Journal',
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+            trUi('Journal'),
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
           ),
         ),
         GardenJournalView(
@@ -66,7 +67,7 @@ class _CahierJournalSectionState extends State<CahierJournalSection> {
             style: TextButton.styleFrom(
               foregroundColor: KultivaColors.primaryGreen,
             ),
-            child: const Text('Tout le journal'),
+            child: Text(trUi('Tout le journal')),
           ),
         ),
       ],
@@ -94,16 +95,16 @@ class JournalScreen extends StatelessWidget {
                   height: kPageHeaderHeight,
                   hideLabel: true,
                 ),
-                const Positioned.fill(
+                Positioned.fill(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 18),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 18),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '📖  Journal du jardin',
-                          style: TextStyle(
+                          trUi('📖  Journal du jardin'),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -112,10 +113,10 @@ class JournalScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Text(
-                          'Tout ce que tu as fait, jour par jour',
-                          style: TextStyle(
+                          trUi('Tout ce que tu as fait, jour par jour'),
+                          style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -132,7 +133,7 @@ class JournalScreen extends StatelessWidget {
                   top: 8,
                   left: 8,
                   child: Semantics(
-                    label: 'Retour',
+                    label: trUi('Retour'),
                     button: true,
                     child: GestureDetector(
                       onTap: () => Navigator.of(context).pop(),

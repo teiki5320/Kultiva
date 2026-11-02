@@ -1,4 +1,5 @@
 import '../data/names_en.dart';
+import '../data/ui_i18n.dart';
 import 'package:flutter/material.dart';
 
 import '../models/vegetable.dart';
@@ -33,8 +34,8 @@ class VegetableCard extends StatelessWidget {
     final cc = vegetable.category.familyColor;
     return Semantics(
       label: '${vegetable.displayName}, ${vegetable.category.label}'
-          '${canSowNow ? ', à semer ce mois' : ''}'
-          '${isFavorite ? ', favori' : ''}',
+          '${canSowNow ? trUi(', à semer ce mois') : ''}'
+          '${isFavorite ? trUi(', favori') : ''}',
       button: onTap != null,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
@@ -85,9 +86,9 @@ class VegetableCard extends StatelessWidget {
                                 color: KultivaColors.primaryGreen,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Text(
-                                'Semer',
-                                style: TextStyle(
+                              child: Text(
+                                trUi('Semer'),
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w800,
                                   fontSize: 10,
@@ -133,8 +134,10 @@ class VegetableCard extends StatelessWidget {
                 if (onFavoriteToggle != null)
                   Semantics(
                     label: isFavorite
-                        ? 'Retirer ${vegetable.displayName} des favoris'
-                        : 'Ajouter ${vegetable.displayName} aux favoris',
+                        ? trUiArgs('Retirer {0} des favoris',
+                            <Object?>[vegetable.displayName])
+                        : trUiArgs('Ajouter {0} aux favoris',
+                            <Object?>[vegetable.displayName]),
                     button: true,
                     child: GestureDetector(
                       onTap: () {

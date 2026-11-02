@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/ui_i18n.dart';
 import '../theme/app_theme.dart';
 import '../utils/text_scale.dart';
 
@@ -21,38 +22,39 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
   final PageController _controller = PageController();
   int _page = 0;
 
-  static const List<_IntroSlide> _slides = <_IntroSlide>[
+  // Getter et non `static const` : les textes passent par trUi().
+  List<_IntroSlide> get _slides => <_IntroSlide>[
     _IntroSlide(
       emoji: '📔',
-      title: 'Ton cahier de culture',
-      subtitle: "Crée autant de jardins pleine terre que tu veux, chacun "
+      title: trUi('Ton cahier de culture'),
+      subtitle: trUi("Crée autant de jardins pleine terre que tu veux, chacun "
           "avec sa grille de cases. En haut, « à faire aujourd'hui » te "
-          "dit qui a soif, qui est mûr et s'il va faire trop chaud.",
-      gradient: [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
+          "dit qui a soif, qui est mûr et s'il va faire trop chaud."),
+      gradient: const [Color(0xFFE0FFE8), Color(0xFFC0E8D0)],
     ),
     _IntroSlide(
       emoji: '🟢',
-      title: 'Place tes plants',
-      subtitle: "Choisis un plant en bas, dépose-le sur une case. La case "
+      title: trUi('Place tes plants'),
+      subtitle: trUi("Choisis un plant en bas, dépose-le sur une case. La case "
           "se remplit avec un emoji + le nombre de plants. Tap pour "
-          "ouvrir la fiche détaillée.",
-      gradient: [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
+          "ouvrir la fiche détaillée."),
+      gradient: const [Color(0xFFFFE0EC), Color(0xFFFFBDD2)],
     ),
     _IntroSlide(
       emoji: '💧',
-      title: 'Suis tes plants au quotidien',
-      subtitle: "Bouton « Arroser » dans chaque fiche, conseils d'irrigation "
+      title: trUi('Suis tes plants au quotidien'),
+      subtitle: trUi("Bouton « Arroser » dans chaque fiche, conseils d'irrigation "
           "adaptés au légume, et un badge couleur pour savoir si tu "
-          "as arrosé récemment ou pas.",
-      gradient: [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
+          "as arrosé récemment ou pas."),
+      gradient: const [Color(0xFFE0F0FF), Color(0xFFC0D8F0)],
     ),
     _IntroSlide(
       emoji: '📅',
-      title: 'Date de plantation = stade',
-      subtitle: "Tu peux corriger la date de plantation à tout moment. "
+      title: trUi('Date de plantation = stade'),
+      subtitle: trUi("Tu peux corriger la date de plantation à tout moment. "
           "L'app calcule automatiquement le stade (semis / croissance / "
-          "floraison / fructification) et adapte ses conseils.",
-      gradient: [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
+          "floraison / fructification) et adapte ses conseils."),
+      gradient: const [Color(0xFFFFF0D8), Color(0xFFF8D8A0)],
     ),
   ];
 
@@ -90,10 +92,10 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
                 children: [
                   const Text('📔', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Bienvenue dans Mes jardins',
-                      style: TextStyle(
+                      trUi('Bienvenue dans Mes jardins'),
+                      style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
                         color: KultivaColors.textPrimary,
@@ -102,7 +104,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Passer'),
+                    child: Text(trUi('Passer')),
                   ),
                 ],
               ),
@@ -145,7 +147,7 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
                         duration: const Duration(milliseconds: 250),
                         curve: Curves.easeOut,
                       ),
-                      child: const Text('Retour'),
+                      child: Text(trUi('Retour')),
                     ),
                   const Spacer(),
                   ElevatedButton(
@@ -165,7 +167,9 @@ class _JardinsIntroSheetState extends State<JardinsIntroSheet> {
                           horizontal: 24, vertical: 12),
                     ),
                     child: Text(
-                      _page < _slides.length - 1 ? 'Suivant' : 'C\'est parti !',
+                      _page < _slides.length - 1
+                          ? trUi('Suivant')
+                          : trUi('C\'est parti !'),
                       style: const TextStyle(fontWeight: FontWeight.w800),
                     ),
                   ),

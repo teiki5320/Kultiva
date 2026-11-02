@@ -2,6 +2,7 @@ import '../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/regions/regional_calendar.dart';
+import '../../data/ui_i18n.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
@@ -58,9 +59,14 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
     final parts = <String>[];
     final semis = monthRangesLabel(rd.sowingMonths);
     final recolte = monthRangesLabel(rd.harvestMonths);
-    if (semis.isNotEmpty) parts.add('semis $semis');
-    if (recolte.isNotEmpty) parts.add('récolte $recolte');
-    if (parts.isEmpty) return '${veg.displayName} : aucune période connue';
+    if (semis.isNotEmpty) parts.add(trUiArgs('semis {0}', <Object?>[semis]));
+    if (recolte.isNotEmpty) {
+      parts.add(trUiArgs('récolte {0}', <Object?>[recolte]));
+    }
+    if (parts.isEmpty) {
+      return trUiArgs(
+          '{0} : aucune période connue', <Object?>[veg.displayName]);
+    }
     return '${veg.displayName} : ${parts.join(', ')}';
   }
 
@@ -79,22 +85,25 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
   /// la saison, et filtrer sur novembre parlait du mois en cours.
   String _emptyMessage() {
     if (_query.isNotEmpty) {
-      return 'Aucun légume ne porte « $_query » dans son nom.';
+      return trUiArgs(
+          'Aucun légume ne porte « {0} » dans son nom.', <Object?>[_query]);
     }
     final mois =
         _filterMonth == null ? null : monthNamesLong[_filterMonth! - 1];
     if (_category != null && mois != null) {
-      return 'Aucun ${_category!.label.toLowerCase()} à semer ni à '
-          'récolter en $mois chez toi.';
+      return trUiArgs(
+          'Aucun {0} à semer ni à récolter en {1} chez toi.',
+          <Object?>[_category!.label.toLowerCase(), mois]);
     }
     if (_category != null) {
-      return 'Aucun ${_category!.label.toLowerCase()} au calendrier de '
-          'ta région.';
+      return trUiArgs('Aucun {0} au calendrier de ta région.',
+          <Object?>[_category!.label.toLowerCase()]);
     }
     if (mois != null) {
-      return 'Rien à semer ni à récolter en $mois dans ta région.';
+      return trUiArgs('Rien à semer ni à récolter en {0} dans ta région.',
+          <Object?>[mois]);
     }
-    return 'Le calendrier de ta région est vide.';
+    return trUi('Le calendrier de ta région est vide.');
   }
 
   void _clearFilters() {
@@ -124,7 +133,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                 vegetablesBase.where((v) => v.id == a.vegetableId).firstOrNull;
             final vb =
                 vegetablesBase.where((v) => v.id == b.vegetableId).firstOrNull;
-            return compareFolded(va?.name ?? '', vb?.name ?? '');
+            return compareFolded(va?.displayName ?? '', vb?.displayName ?? '');
           });
 
         // Filtre par mois actif.
@@ -145,7 +154,9 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
             if (v == null) return false;
             if (_category != null && v.category != _category) return false;
             if (cherche.isEmpty) return true;
-            return foldAccents(v.name.toLowerCase()).contains(cherche);
+            // Les deux langues : la clé reste le nom français.
+            return foldAccents(v.name.toLowerCase()).contains(cherche) ||
+                foldAccents(v.displayName.toLowerCase()).contains(cherche);
           }).toList();
         }
 
@@ -166,7 +177,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                     left: 8,
                     child: SafeArea(
                       child: Semantics(
-                        label: 'Fermer le calendrier',
+                        label: trUi('Fermer le calendrier'),
                         button: true,
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
@@ -189,7 +200,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                       right: 8,
                       child: SafeArea(
                         child: Semantics(
-                          label: 'Afficher tous les mois',
+                          label: trUi('Afficher tous les mois'),
                           button: true,
                           child: GestureDetector(
                             onTap: () => setState(() => _filterMonth = null),
@@ -215,16 +226,18 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                 color: KultivaColors.lightGreen.withValues(alpha: 0.1),
                 child: Row(
                   children: [
-                    const _LegendItem(
-                        color: KultivaColors.primaryGreen, label: 'Semis'),
+                    _LegendItem(
+                        color: KultivaColors.primaryGreen,
+                        label: trUi('Semis')),
                     const SizedBox(width: 16),
-                    const _LegendItem(
-                        color: KultivaColors.terracotta, label: 'Récolte'),
+                    _LegendItem(
+                        color: KultivaColors.terracotta,
+                        label: trUi('Récolte')),
                     const SizedBox(width: 12),
-                    const _LegendItem(
+                    _LegendItem(
                       color: KultivaColors.primaryGreen,
                       secondColor: KultivaColors.terracotta,
-                      label: 'Les deux',
+                      label: trUi('Les deux'),
                     ),
                     const SizedBox(width: 12),
                     // `Expanded` et pas `Spacer` : sur un iPhone SE à
@@ -264,19 +277,19 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Semantics(
-                  label: 'Rechercher un légume',
+                  label: trUi('Rechercher un légume'),
                   textField: true,
                   child: TextField(
                     controller: _searchCtrl,
                     onChanged: (v) => setState(() => _query = v.trim()),
                     decoration: InputDecoration(
                       isDense: true,
-                      hintText: 'Rechercher un légume…',
+                      hintText: trUi('Rechercher un légume…'),
                       prefixIcon: const Icon(Icons.search),
                       suffixIcon: _query.isEmpty
                           ? null
                           : Semantics(
-                              label: 'Effacer la recherche',
+                              label: trUi('Effacer la recherche'),
                               button: true,
                               child: IconButton(
                                 icon: const Icon(Icons.close),
@@ -297,7 +310,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   children: <Widget>[
                     PastelChip(
-                      label: 'Toutes',
+                      label: trUi('Toutes'),
                       emoji: '✨',
                       color: KultivaColors.primaryGreen,
                       selected: _category == null,
@@ -392,7 +405,7 @@ class _MonthHeader extends StatelessWidget {
             Expanded(
               child: Semantics(
                 label: monthNamesLongCap[m - 1],
-                hint: 'Filtre le calendrier sur ce mois',
+                hint: trUi('Filtre le calendrier sur ce mois'),
                 button: true,
                 selected: filterMonth == m,
                 excludeSemantics: true,
@@ -472,7 +485,7 @@ class _VegetableYearRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: summary,
-      hint: 'Ouvre sa fiche',
+      hint: trUi('Ouvre sa fiche'),
       button: true,
       excludeSemantics: true,
       child: InkWell(
@@ -653,7 +666,7 @@ class _EmptyResult extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: KultivaColors.primaryGreen,
               ),
-              child: const Text('Tout afficher'),
+              child: Text(trUi('Tout afficher')),
             ),
           ],
         ),

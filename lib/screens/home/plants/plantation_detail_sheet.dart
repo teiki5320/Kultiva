@@ -1,4 +1,5 @@
 import '../../../data/names_en.dart';
+import '../../../data/ui_i18n.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/plantation.dart';
@@ -57,13 +58,15 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
     final thirsty = p.isActive && p.daysSinceWatered >= v.effectiveWateringDays;
 
     final events = <_TimelineEvent>[];
-    events.add(_TimelineEvent(date: p.plantedAt, emoji: '🌱', label: 'Planté'));
+    events.add(_TimelineEvent(date: p.plantedAt, emoji: '🌱', label: trUi('Planté')));
     for (final w in p.wateredAt) {
-      events.add(_TimelineEvent(date: w, emoji: '💧', label: 'Arrosé'));
+      events.add(_TimelineEvent(date: w, emoji: '💧', label: trUi('Arrosé')));
     }
     if (p.harvestedAt != null) {
       events.add(_TimelineEvent(
-          date: p.harvestedAt!, emoji: '🏁', label: 'Culture terminée'));
+          date: p.harvestedAt!,
+          emoji: '🏁',
+          label: trUi('Culture terminée')));
     }
     events.sort((a, b) => b.date.compareTo(a.date));
 
@@ -122,7 +125,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                             Text(v.emoji, style: const TextStyle(fontSize: 52)),
                       ),
                       const SizedBox(height: 12),
-                      Text(v.name,
+                      Text(v.displayName,
                           style: const TextStyle(
                               fontWeight: FontWeight.w800, fontSize: 22)),
                       Text(v.category.label,
@@ -139,16 +142,16 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                 children: <Widget>[
                   Text(
                     p.isActive
-                        ? 'Jour ${days + 1} / $expected'
-                        : 'Culture terminée',
+                        ? trUiArgs('Jour {0} / {1}', <Object?>[days + 1, expected])
+                        : trUi('Culture terminée'),
                     style: const TextStyle(
                         fontWeight: FontWeight.w800, fontSize: 14),
                   ),
                   if (p.isActive)
                     Text(
                       remaining == 0
-                          ? '✨ Prêt à récolter'
-                          : '⏳ $remaining j restants',
+                          ? trUi('✨ Prêt à récolter')
+                          : trUiArgs('⏳ {0} j restants', <Object?>[remaining]),
                       style: const TextStyle(
                         color: KultivaColors.textSecondary,
                         fontWeight: FontWeight.w700,
@@ -171,18 +174,24 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
               _InfoRow(
                 icon: '💧',
                 label: p.lastWatered == null
-                    ? 'Jamais arrosé'
-                    : 'Dernier arrosage : ${_fmtDate(p.lastWatered!)} (${p.daysSinceWatered}j)',
+                    ? trUi('Jamais arrosé')
+                    : trUiArgs('Dernier arrosage : {0} ({1}j)', <Object?>[
+                        _fmtDate(p.lastWatered!),
+                        p.daysSinceWatered,
+                      ]),
                 alert: thirsty,
               ),
               _InfoRow(
                 icon: '🧺',
-                label:
-                    '${p.harvestCount} récolte${p.harvestCount > 1 ? "s" : ""} enregistrée${p.harvestCount > 1 ? "s" : ""}',
+                label: p.harvestCount > 1
+                    ? trUiArgs('{0} récoltes enregistrées',
+                        <Object?>[p.harvestCount])
+                    : trUiArgs('{0} récolte enregistrée',
+                        <Object?>[p.harvestCount]),
               ),
               _InfoRow(
                 icon: '📅',
-                label: 'Planté le ${_fmtDate(p.plantedAt)}',
+                label: trUiArgs('Planté le {0}', <Object?>[_fmtDate(p.plantedAt)]),
               ),
               if (v.watering != null) _InfoRow(icon: '🌊', label: v.watering!),
               const SizedBox(height: 18),
@@ -197,7 +206,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                 child: TextButton.icon(
                   onPressed: () => _openShareDialog(context, cc),
                   icon: const Icon(Icons.share, size: 16),
-                  label: const Text('Partager cette carte'),
+                  label: Text(trUi('Partager cette carte')),
                   style: TextButton.styleFrom(
                     foregroundColor: KultivaColors.primaryGreen,
                     padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -216,7 +225,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                     child: ElevatedButton.icon(
                       onPressed: p.isActive ? widget.onWater : null,
                       icon: const Text('💧', style: TextStyle(fontSize: 18)),
-                      label: const Text('Arroser'),
+                      label: Text(trUi('Arroser')),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: KultivaColors.waterBlue,
                         foregroundColor: Colors.white,
@@ -229,7 +238,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                     child: ElevatedButton.icon(
                       onPressed: p.isActive ? widget.onHarvest : null,
                       icon: const Text('🧺', style: TextStyle(fontSize: 18)),
-                      label: const Text('Récolter'),
+                      label: Text(trUi('Récolter')),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: KultivaColors.terracotta,
                         foregroundColor: Colors.white,
@@ -247,7 +256,7 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                       child: OutlinedButton.icon(
                         onPressed: widget.onTerminate,
                         icon: const Text('🏁', style: TextStyle(fontSize: 14)),
-                        label: const Text('Terminer'),
+                        label: Text(trUi('Terminer')),
                       ),
                     ),
                   if (p.isActive) const SizedBox(width: 10),
@@ -256,16 +265,17 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                       onPressed: () => _confirmRemove(context),
                       icon: const Icon(Icons.delete_outline,
                           size: 18, color: Colors.red),
-                      label: const Text('Retirer',
-                          style: TextStyle(color: Colors.red)),
+                      label: Text(trUi('Retirer'),
+                          style: const TextStyle(color: Colors.red)),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              const Text(
-                '📜 Historique',
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              Text(
+                trUi('📜 Historique'),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
               ),
               const SizedBox(height: 8),
               for (final e in events)
@@ -281,20 +291,23 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
     showDialog<void>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Retirer ce plant ?'),
-        content: Text(
-            'Cette action supprime définitivement ${widget.vegetable.displayName} de ton Poussidex. Tes arrosages et récoltes liés seront perdus.'),
+        title: Text(trUi('Retirer ce plant ?')),
+        content: Text(trUiArgs(
+            'Cette action supprime définitivement {0} de ton Poussidex. '
+            'Tes arrosages et récoltes liés seront perdus.',
+            <Object?>[widget.vegetable.displayName])),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Annuler'),
+            child: Text(trUi('Annuler')),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               widget.onRemove();
             },
-            child: const Text('Retirer', style: TextStyle(color: Colors.red)),
+            child: Text(trUi('Retirer'),
+                style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -335,8 +348,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
               const SizedBox(height: 12),
               ListTile(
                 leading: const Text('📸', style: TextStyle(fontSize: 22)),
-                title: const Text('Prendre une photo',
-                    style: TextStyle(fontWeight: FontWeight.w700)),
+                title: Text(trUi('Prendre une photo'),
+                    style: const TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
                   Navigator.pop(ctx);
                   widget.onAddPhoto(true);
@@ -344,8 +357,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
               ),
               ListTile(
                 leading: const Text('🖼️', style: TextStyle(fontSize: 22)),
-                title: const Text('Choisir depuis la galerie',
-                    style: TextStyle(fontWeight: FontWeight.w700)),
+                title: Text(trUi('Choisir depuis la galerie'),
+                    style: const TextStyle(fontWeight: FontWeight.w700)),
                 onTap: () {
                   Navigator.pop(ctx);
                   widget.onAddPhoto(false);
@@ -454,7 +467,9 @@ class _PhotoGallery extends StatelessWidget {
             const Text('📷', style: TextStyle(fontSize: 16)),
             const SizedBox(width: 8),
             Text(
-              'Photos${photos.isEmpty ? "" : " (${photos.length})"}',
+              photos.isEmpty
+                  ? trUi('Photos')
+                  : trUiArgs('Photos ({0})', <Object?>[photos.length]),
               style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
             ),
           ],
@@ -471,7 +486,7 @@ class _PhotoGallery extends StatelessWidget {
                   onRemove: () => onRemove(path),
                 ),
               Semantics(
-                label: 'Ajouter une photo de ce plant',
+                label: trUi('Ajouter une photo de ce plant'),
                 button: true,
                 child: GestureDetector(
                   onTap: onAdd,
@@ -495,7 +510,7 @@ class _PhotoGallery extends StatelessWidget {
                             color: KultivaColors.primaryGreen, size: 28),
                         const SizedBox(height: 4),
                         Text(
-                          photos.isEmpty ? 'Ajouter' : '+',
+                          photos.isEmpty ? trUi('Ajouter') : '+',
                           style: const TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w800,
@@ -547,7 +562,7 @@ class _PhotoThumb extends StatelessWidget {
             top: 4,
             right: 4,
             child: Semantics(
-              label: 'Retirer cette photo',
+              label: trUi('Retirer cette photo'),
               button: true,
               excludeSemantics: true,
               child: GestureDetector(
@@ -555,19 +570,19 @@ class _PhotoThumb extends StatelessWidget {
                   showDialog<void>(
                     context: context,
                     builder: (_) => AlertDialog(
-                      title: const Text('Retirer la photo ?'),
+                      title: Text(trUi('Retirer la photo ?')),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('Annuler'),
+                          child: Text(trUi('Annuler')),
                         ),
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                             onRemove();
                           },
-                          child: const Text('Retirer',
-                              style: TextStyle(color: Colors.red)),
+                          child: Text(trUi('Retirer'),
+                              style: const TextStyle(color: Colors.red)),
                         ),
                       ],
                     ),
@@ -632,9 +647,9 @@ class _NoteEditorState extends State<_NoteEditor> {
             controller: _ctrl,
             autofocus: true,
             maxLines: 3,
-            decoration: const InputDecoration(
-              hintText: 'Ajoute une note sur ce plant…',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              hintText: trUi('Ajoute une note sur ce plant…'),
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
           ),
@@ -647,12 +662,12 @@ class _NoteEditorState extends State<_NoteEditor> {
                   _ctrl.text = widget.initial ?? '';
                   setState(() => _editing = false);
                 },
-                child: const Text('Annuler'),
+                child: Text(trUi('Annuler')),
               ),
               const SizedBox(width: 6),
               ElevatedButton(
                 onPressed: _save,
-                child: const Text('Enregistrer'),
+                child: Text(trUi('Enregistrer')),
               ),
             ],
           ),
@@ -661,8 +676,10 @@ class _NoteEditorState extends State<_NoteEditor> {
     }
     final text = widget.initial;
     return Semantics(
-      label: text == null || text.isEmpty ? 'Ajouter une note' : 'Note : $text',
-      hint: 'Touche pour modifier',
+      label: text == null || text.isEmpty
+          ? trUi('Ajouter une note')
+          : trUiArgs('Note : {0}', <Object?>[text]),
+      hint: trUi('Touche pour modifier'),
       button: true,
       excludeSemantics: true,
       child: InkWell(
@@ -682,7 +699,7 @@ class _NoteEditorState extends State<_NoteEditor> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  text == null || text.isEmpty ? 'Ajouter une note…' : text,
+                  text == null || text.isEmpty ? trUi('Ajouter une note…') : text,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,

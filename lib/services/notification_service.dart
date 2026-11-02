@@ -5,6 +5,8 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../data/content_i18n.dart';
+import '../data/names_en.dart';
+import '../data/ui_i18n.dart';
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
 import '../models/vegetable.dart';
@@ -129,16 +131,16 @@ class NotificationService {
         );
       }
 
-      const androidDetails = AndroidNotificationDetails(
+      final androidDetails = AndroidNotificationDetails(
         'kultiva_monthly',
-        'Rappel mensuel',
-        channelDescription:
-            'Résumé mensuel : légumes à semer, à récolter, astuces.',
+        trUi('Rappel mensuel'),
+        channelDescription: trUi(
+            'Résumé mensuel : légumes à semer, à récolter, astuces.'),
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
       );
       const iosDetails = DarwinNotificationDetails();
-      const details = NotificationDetails(
+      final details = NotificationDetails(
         android: androidDetails,
         iOS: iosDetails,
         macOS: iosDetails,
@@ -146,8 +148,8 @@ class NotificationService {
 
       await _plugin.zonedSchedule(
         _monthlyId,
-        '🌱 Un nouveau mois au potager',
-        'Découvre ce que tu peux semer et récolter ce mois-ci.',
+        trUi('🌱 Un nouveau mois au potager'),
+        trUi('Découvre ce que tu peux semer et récolter ce mois-ci.'),
         next,
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
@@ -198,25 +200,27 @@ class NotificationService {
 
       if (urgent.isEmpty) return;
 
-      final names = urgent.take(3).map((a) => a.vegetable.name).join(', ');
-      final suffix = urgent.length > 3 ? ' et ${urgent.length - 3} autres' : '';
+      final names = urgent.take(3).map((a) => a.vegetable.displayName).join(', ');
       // On annonce les jours sans **eau** (pluie ou arrosage), pas les
       // jours sans pluie : un plant arrosé hier n'a pas soif, et le dire
       // autrement donnerait une notification que l'utilisateur sait
       // fausse.
       final days = urgent.first.daysSinceWater;
-      final body = '$days jours sans eau. '
-          '$names$suffix ont besoin d\'eau !';
+      final body = urgent.length > 3
+          ? trUiArgs('{0} jours sans eau. {1} et {2} autres ont besoin '
+              'd\'eau !', <Object?>[days, names, urgent.length - 3])
+          : trUiArgs('{0} jours sans eau. {1} ont besoin d\'eau !',
+              <Object?>[days, names]);
 
-      const androidDetails = AndroidNotificationDetails(
+      final androidDetails = AndroidNotificationDetails(
         'kultiva_watering',
-        'Alertes arrosage',
-        channelDescription: 'Notifications quand vos légumes ont soif',
+        trUi('Alertes arrosage'),
+        channelDescription: trUi('Notifications quand vos légumes ont soif'),
         importance: Importance.high,
         priority: Priority.high,
       );
       const iosDetails = DarwinNotificationDetails();
-      const details = NotificationDetails(
+      final details = NotificationDetails(
         android: androidDetails,
         iOS: iosDetails,
         macOS: iosDetails,
@@ -224,7 +228,7 @@ class NotificationService {
 
       await _plugin.show(
         _wateringId,
-        '💧 Vos légumes ont soif !',
+        trUi('💧 Vos légumes ont soif !'),
         body,
         details,
       );
@@ -292,8 +296,8 @@ class NotificationService {
       final actives = PlantationService.instance.active;
       String tip;
       if (actives.isEmpty) {
-        tip = 'Arrose tôt le matin ou en soirée, paille tes plants '
-            'et ombre les jeunes pousses.';
+        tip = trUi('Arrose tôt le matin ou en soirée, paille tes plants '
+            'et ombre les jeunes pousses.');
       } else {
         final categories = <VegetableCategory, int>{};
         for (final c in actives) {
@@ -312,16 +316,16 @@ class NotificationService {
         tip = tr(heatwaveTipFor(top));
       }
 
-      const androidDetails = AndroidNotificationDetails(
+      final androidDetails = AndroidNotificationDetails(
         'kultiva_heatwave',
-        'Alerte canicule',
+        trUi('Alerte canicule'),
         channelDescription:
-            'Avertissement quand une vague de chaleur est prévue.',
+            trUi('Avertissement quand une vague de chaleur est prévue.'),
         importance: Importance.high,
         priority: Priority.high,
       );
       const iosDetails = DarwinNotificationDetails();
-      const details = NotificationDetails(
+      final details = NotificationDetails(
         android: androidDetails,
         iOS: iosDetails,
         macOS: iosDetails,
@@ -329,7 +333,8 @@ class NotificationService {
 
       await _plugin.show(
         _heatwaveId,
-        '🥵 Canicule prévue (${peak.toStringAsFixed(0)}°C)',
+        trUiArgs('🥵 Canicule prévue ({0}°C)',
+            <Object?>[peak.toStringAsFixed(0)]),
         tip,
         details,
       );
@@ -385,17 +390,17 @@ class NotificationService {
       }
       if (upcoming < 10) return;
 
-      const androidDetails = AndroidNotificationDetails(
+      final androidDetails = AndroidNotificationDetails(
         'kultiva_first_rains',
-        'Premières pluies',
+        trUi('Premières pluies'),
         channelDescription:
-            "Signal de semis quand les premières pluies de l'hivernage "
-            'arrivent.',
+            trUi("Signal de semis quand les premières pluies de l'hivernage "
+                'arrivent.'),
         importance: Importance.high,
         priority: Priority.high,
       );
       const iosDetails = DarwinNotificationDetails();
-      const details = NotificationDetails(
+      final details = NotificationDetails(
         android: androidDetails,
         iOS: iosDetails,
         macOS: iosDetails,
@@ -403,10 +408,12 @@ class NotificationService {
 
       await _plugin.show(
         _firstRainsId,
-        '🌧️ Les premières pluies arrivent !',
-        "${upcoming.toStringAsFixed(0)} mm de pluie prévus ces prochains "
-            "jours : c'est le moment de semer niébé, maïs, gombo et "
-            'arachide. Prépare tes billons !',
+        trUi('🌧️ Les premières pluies arrivent !'),
+        trUiArgs(
+            "{0} mm de pluie prévus ces prochains jours : c'est le moment "
+            'de semer niébé, maïs, gombo et arachide. '
+            'Prépare tes billons !',
+            <Object?>[upcoming.toStringAsFixed(0)]),
         details,
       );
       await PrefsService.instance

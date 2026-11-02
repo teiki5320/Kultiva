@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/regions/regional_calendar.dart';
+import '../../data/ui_i18n.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
 import '../../models/vegetable.dart';
@@ -97,7 +98,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                     left: 8,
                     child: SafeArea(
                       child: Semantics(
-                        label: 'Fermer le calendrier du mois',
+                        label: trUi('Fermer le calendrier du mois'),
                         button: true,
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).pop(),
@@ -187,7 +188,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   children: [
                     _CategoryChip(
-                      label: 'Toutes',
+                      label: trUi('Toutes'),
                       emoji: '✨',
                       color: KultivaColors.primaryGreen,
                       selected: _selectedCategory == null,
@@ -212,8 +213,11 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               if (activeVegs.isNotEmpty) ...[
                 _SectionHeader(
                   icon: isHarvest ? '🧺' : '✅',
-                  title:
-                      '${isHarvest ? "À récolter" : "À semer"} en ${monthNamesLongCap[_selectedMonth - 1]}',
+                  title: isHarvest
+                      ? trUiArgs('À récolter en {0}',
+                          <Object?>[monthNamesLongCap[_selectedMonth - 1]])
+                      : trUiArgs('À semer en {0}',
+                          <Object?>[monthNamesLongCap[_selectedMonth - 1]]),
                 ),
                 ValueListenableBuilder<Set<String>>(
                   valueListenable: PrefsService.instance.favorites,
@@ -248,7 +252,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              "Rien à semer ce mois-ci. Patience, jardinier !",
+                              trUi("Rien à semer ce mois-ci. Patience, jardinier !"),
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
@@ -259,7 +263,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                 ),
               if (later.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                const _SectionHeader(icon: '⏳', title: 'Pas encore la saison'),
+                _SectionHeader(icon: '⏳', title: trUi('Pas encore la saison')),
                 ValueListenableBuilder<Set<String>>(
                   valueListenable: PrefsService.instance.favorites,
                   builder: (_, favs, __) => Column(

@@ -1,4 +1,5 @@
 import '../data/rotation.dart';
+import '../data/ui_i18n.dart';
 import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
 
@@ -26,13 +27,21 @@ class RotationWarning {
     required this.waitYears,
   });
 
+  /// « 1 an » / « 3 ans » : le singulier et le pluriel sont deux clés
+  /// du dictionnaire, parce qu'une autre langue n'accorde pas pareil.
+  static String _duree(int n) => n > 1
+      ? trUiArgs('{0} ans', <Object?>[n])
+      : trUiArgs('{0} an', <Object?>[n]);
+
   String get message {
     final yearsAgoText = yearsAgo == 0
-        ? "cette saison"
-        : "il y a $yearsAgo an${yearsAgo > 1 ? 's' : ''}";
+        ? trUi('cette saison')
+        : trUiArgs('il y a {0}', <Object?>[_duree(yearsAgo)]);
     if (kind == RotationWarningKind.sameVegetable) {
-      return "Tu as déjà cultivé ce légume $yearsAgoText. La rotation "
-          "recommande $waitYears an${waitYears > 1 ? 's' : ''} d'attente.";
+      return trUiArgs(
+          'Tu as déjà cultivé ce légume {0}. La rotation recommande {1} '
+          "d'attente.",
+          <Object?>[yearsAgoText, _duree(waitYears)]);
     }
     final nom = vegetablesBase
             .where((v) => v.id == previousVegetableId)
@@ -40,9 +49,10 @@ class RotationWarning {
             ?.name
             .toLowerCase() ??
         previousVegetableId;
-    return "Tu as déjà cultivé un $family ici ($nom) $yearsAgoText. "
-        "Évite la même famille avant $waitYears "
-        "an${waitYears > 1 ? 's' : ''}.";
+    return trUiArgs(
+        'Tu as déjà cultivé un {0} ici ({1}) {2}. '
+        'Évite la même famille avant {3}.',
+        <Object?>[family, nom, yearsAgoText, _duree(waitYears)]);
   }
 }
 

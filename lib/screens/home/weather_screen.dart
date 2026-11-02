@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../data/ui_i18n.dart';
+import '../../utils/months.dart';
 import '../../services/photo_service.dart';
 import '../../services/prefs_service.dart';
 import '../../models/weather_data.dart';
@@ -53,10 +55,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
     if (_weather == null) {
       text = '📍 …';
     } else if (isFallback) {
-      text = '📍 ${_weather!.locationName ?? 'Paris'} · '
-          'localisation désactivée';
+      text = trUiArgs('📍 {0} · localisation désactivée',
+          <Object?>[_weather!.locationName ?? 'Paris']);
     } else {
-      text = '📍 ${_weather!.locationName ?? 'Ma position'}';
+      text = '📍 ${_weather!.locationName ?? trUi('Ma position')}';
     }
 
     final pill = Container(
@@ -88,27 +90,28 @@ class _WeatherScreenState extends State<WeatherScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        title: const Row(
+        title: Row(
           children: <Widget>[
-            Text('📍', style: TextStyle(fontSize: 26)),
-            SizedBox(width: 10),
+            const Text('📍', style: TextStyle(fontSize: 26)),
+            const SizedBox(width: 10),
             Expanded(
-              child: Text('Localisation désactivée',
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
+              child: Text(trUi('Localisation désactivée'),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 17)),
             ),
           ],
         ),
-        content: const Text(
-          'Pour te montrer la météo de ton jardin, Kultiva a besoin '
-          'd\'accéder à ta position.\n\n'
-          'En attendant, on affiche la météo de Paris par défaut. '
-          'Tu peux autoriser la localisation dans les réglages.',
-          style: TextStyle(fontSize: 14, height: 1.4),
+        content: Text(
+          trUi('Pour te montrer la météo de ton jardin, Kultiva a besoin '
+              'd\'accéder à ta position.\n\n'
+              'En attendant, on affiche la météo de Paris par défaut. '
+              'Tu peux autoriser la localisation dans les réglages.'),
+          style: const TextStyle(fontSize: 14, height: 1.4),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Plus tard'),
+            child: Text(trUi('Plus tard')),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -122,8 +125,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               Navigator.of(ctx).pop();
               await PhotoService.openSettings();
             },
-            child: const Text('Ouvrir les Réglages',
-                style: TextStyle(fontWeight: FontWeight.w700)),
+            child: Text(trUi('Ouvrir les Réglages'),
+                style: const TextStyle(fontWeight: FontWeight.w700)),
           ),
         ],
       ),
@@ -137,12 +140,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   String _dayLabel(int offset) {
-    if (offset == 0) return "Aujourd'hui";
-    if (offset == -1) return 'Hier';
-    if (offset == 1) return 'Demain';
+    if (offset == 0) return trUi("Aujourd'hui");
+    if (offset == -1) return trUi('Hier');
+    if (offset == 1) return trUi('Demain');
     final date = DateTime.now().add(Duration(days: offset));
-    const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-    return '${days[date.weekday - 1]} ${date.day}';
+    // ⚠️ Pas `trUi('Mar')` : « Mar » est aussi mars, et une clé ne
+    // peut pas rendre mardi d'un côté et March de l'autre.
+    return '${weekdayNamesShort[date.weekday - 1]} ${date.day}';
   }
 
   String _weatherEmojiForCode(int code) {
@@ -162,18 +166,18 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String _temp(double t) => t.isNaN ? '—' : '${t.toStringAsFixed(0)}°';
 
   String _adviceForDay(double rain, double tmax, double tmin) {
-    if (rain > 5) return '🌧️ Pluie prévue — pas besoin d\'arroser !';
-    if (rain > 1) return '💧 Légère pluie — arrosage léger suffit';
+    if (rain > 5) return trUi('🌧️ Pluie prévue — pas besoin d\'arroser !');
+    if (rain > 1) return trUi('💧 Légère pluie — arrosage léger suffit');
     // Sans température, on ne se prononce pas sur la chaleur, le gel
     // ni l'amplitude : les tests ci-dessous seraient tous faux avec
     // NaN et l'app annoncerait « belle journée » sans rien en savoir.
     if (tmax.isNaN || tmin.isNaN) {
-      return '🌱 Température du jour indisponible';
+      return trUi('🌱 Température du jour indisponible');
     }
-    if (tmax > 28) return '☀️ Très chaud — arrose tôt le matin ou le soir';
-    if (tmin < 2) return '❄️ Risque de gel — protège tes plants sensibles';
-    if (tmax - tmin > 15) return '🌡️ Grosse amplitude — surveille tes semis';
-    return '🌱 Belle journée pour jardiner !';
+    if (tmax > 28) return trUi('☀️ Très chaud — arrose tôt le matin ou le soir');
+    if (tmin < 2) return trUi('❄️ Risque de gel — protège tes plants sensibles');
+    if (tmax - tmin > 15) return trUi('🌡️ Grosse amplitude — surveille tes semis');
+    return trUi('🌱 Belle journée pour jardiner !');
   }
 
   @override
@@ -198,7 +202,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 left: 8,
                 child: SafeArea(
                   child: Semantics(
-                    label: 'Retour',
+                    label: trUi('Retour'),
                     button: true,
                     child: GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
@@ -220,7 +224,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 right: 8,
                 child: SafeArea(
                   child: Semantics(
-                    label: 'Rafraîchir la météo',
+                    label: trUi('Rafraîchir la météo'),
                     button: true,
                     child: GestureDetector(
                       onTap: _refreshWeather,
@@ -245,8 +249,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Text('🌤 Météo',
-                        style: TextStyle(
+                    Text(trUi('🌤 Météo'),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
                           fontSize: 22,
@@ -264,7 +268,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           if (_loading)
             const Expanded(child: Center(child: CircularProgressIndicator()))
           else if (_weather == null)
-            const Expanded(child: Center(child: Text('Météo indisponible')))
+            Expanded(child: Center(child: Text(trUi('Météo indisponible'))))
           else
             Expanded(
               child: Column(
@@ -286,7 +290,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.chevron_left),
-                          tooltip: 'Jour précédent',
+                          tooltip: trUi('Jour précédent'),
                           onPressed: _currentIndex > 0
                               ? () => _pageCtrl.previousPage(
                                   duration: const Duration(milliseconds: 250),
@@ -314,7 +318,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.chevron_right),
-                          tooltip: 'Jour suivant',
+                          tooltip: trUi('Jour suivant'),
                           onPressed: _currentIndex <
                                   _weather!.dailyDates.length - 1
                               ? () => _pageCtrl.nextPage(
@@ -344,8 +348,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final advice = _adviceForDay(rain, tmax, tmin);
 
     final String daySemanticLabel = offset == 0
-        ? '${_dayLabel(offset)}, ${w.currentTemp.toStringAsFixed(0)} degrés, ${w.weatherLabel}'
-        : '${_dayLabel(offset)}, max ${_temp(tmax)}';
+        ? trUiArgs('{0}, {1} degrés, {2}', <Object?>[
+            _dayLabel(offset),
+            w.currentTemp.toStringAsFixed(0),
+            w.weatherLabel,
+          ])
+        : trUiArgs('{0}, max {1}', <Object?>[_dayLabel(offset), _temp(tmax)]);
 
     return Semantics(
       label: daySemanticLabel,
@@ -366,7 +374,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(height: 8),
             if (offset == 0) ...[
               Semantics(
-                label: '${w.currentTemp.toStringAsFixed(0)} degrés',
+                label: trUiArgs(
+                    '{0} degrés', <Object?>[w.currentTemp.toStringAsFixed(0)]),
                 child: Text('${w.currentTemp.toStringAsFixed(0)}°C',
                     style: const TextStyle(
                         fontSize: 48, fontWeight: FontWeight.w800)),
@@ -377,8 +386,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
             ] else
               Semantics(
                 label: tmax.isNaN
-                    ? 'température indisponible'
-                    : '${tmax.toStringAsFixed(0)} degrés',
+                    ? trUi('température indisponible')
+                    : trUiArgs('{0} degrés', <Object?>[tmax.toStringAsFixed(0)]),
                 child: Text(_temp(tmax),
                     style: const TextStyle(
                         fontSize: 48, fontWeight: FontWeight.w800)),
@@ -386,8 +395,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(height: 16),
             // Température min/max.
             Semantics(
-              label:
-                  'Minimum ${tmin.toStringAsFixed(0)} degrés, maximum ${tmax.toStringAsFixed(0)} degrés',
+              label: trUiArgs('Minimum {0} degrés, maximum {1} degrés', <Object?>[
+                tmin.toStringAsFixed(0),
+                tmax.toStringAsFixed(0),
+              ]),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -401,10 +412,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     const ExcludeSemantics(
                         child: Text('🌡', style: TextStyle(fontSize: 18))),
                     const SizedBox(width: 8),
-                    Text('Min ${_temp(tmin)}',
+                    Text(trUiArgs('Min {0}', <Object?>[_temp(tmin)]),
                         style: const TextStyle(fontWeight: FontWeight.w700)),
                     const SizedBox(width: 16),
-                    Text('Max ${_temp(tmax)}',
+                    Text(trUiArgs('Max {0}', <Object?>[_temp(tmax)]),
                         style: const TextStyle(fontWeight: FontWeight.w700)),
                   ],
                 ),
@@ -413,7 +424,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(height: 12),
             // Précipitations.
             Semantics(
-              label: '${rain.toStringAsFixed(1)} millimètres de pluie',
+              label: trUiArgs('{0} millimètres de pluie',
+                  <Object?>[rain.toStringAsFixed(1)]),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -427,7 +439,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     const ExcludeSemantics(
                         child: Text('💧', style: TextStyle(fontSize: 18))),
                     const SizedBox(width: 8),
-                    Text('${rain.toStringAsFixed(1)} mm de pluie',
+                    Text(
+                        trUiArgs('{0} mm de pluie',
+                            <Object?>[rain.toStringAsFixed(1)]),
                         style: const TextStyle(fontWeight: FontWeight.w700)),
                   ],
                 ),
@@ -450,7 +464,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('💡 Conseil jardinage',
+                  Text(trUi('💡 Conseil jardinage'),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w800,

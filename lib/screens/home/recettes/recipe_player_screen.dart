@@ -7,6 +7,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../data/names_en.dart';
 import '../../../data/recipes.dart';
 import '../../../data/recipes_i18n.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../services/prefs_service.dart';
 import '../../../services/recipe_service.dart';
@@ -189,7 +190,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
     final langue = PrefsService.instance.effectiveLanguage;
     final bouts = <String>[
       if (r.minutes != null) dureeLisibleIn(r.minutes!, langue),
-      '$_parts ${langue == 'en' ? 'servings' : 'pers.'}',
+      trUiArgsIn('{0} pers.', <Object?>[_parts], langue),
       // Pour une conservation, la durée de garde compte plus que le
       // temps de préparation : c'est elle qu'on vient chercher.
       if (r.displayKeeps != null) r.displayKeeps!,
@@ -217,8 +218,9 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
                 children: <Widget>[
                   IconButton(
                     tooltip: cuisine
-                        ? 'Cuisinée ${dateCourte(svc.cookedOn(_cle)!)}'
-                        : 'Je l\'ai cuisinée',
+                        ? trUiArgs('Cuisinée {0}',
+                            <Object?>[dateCourte(svc.cookedOn(_cle)!)])
+                        : trUi("Je l'ai cuisinée"),
                     icon: Icon(cuisine
                         ? Icons.check_circle
                         : Icons.check_circle_outline),
@@ -228,14 +230,15 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
                         : svc.markCooked(_cle),
                   ),
                   IconButton(
-                    tooltip:
-                        favori ? 'Retirer des favoris' : 'Mettre de côté',
+                    tooltip: favori
+                        ? trUi('Retirer des favoris')
+                        : trUi('Mettre de côté'),
                     icon: Icon(favori ? Icons.bookmark : Icons.bookmark_border),
                     color: favori ? KultivaColors.primaryGreen : null,
                     onPressed: () => svc.toggleFavorite(_cle),
                   ),
                   IconButton(
-                    tooltip: 'Partager',
+                    tooltip: trUi('Partager'),
                     icon: const Icon(Icons.share_outlined),
                     onPressed: () => partagerRecette(
                       vegetableById(widget.vegetableId).displayName,
@@ -253,7 +256,8 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(28),
                 child: Text(
-                  'Impossible d\'ouvrir la recette.\n$_erreur',
+                  trUiArgs("Impossible d'ouvrir la recette.\n{0}",
+                      <Object?>[_erreur]),
                   textAlign: TextAlign.center,
                   style: const TextStyle(height: 1.4),
                 ),
@@ -307,20 +311,25 @@ class _ChoixDesParts extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Pour $parts personne${parts > 1 ? 's' : ''}'
-              '${parts == ecritPour ? '' : '  ·  écrite pour $ecritPour'}',
+              <String>[
+                parts > 1
+                    ? trUiArgs('Pour {0} personnes', <Object?>[parts])
+                    : trUiArgs('Pour {0} personne', <Object?>[parts]),
+                if (parts != ecritPour)
+                  trUiArgs('écrite pour {0}', <Object?>[ecritPour]),
+              ].join('  ·  '),
               style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
             ),
           ),
           IconButton(
             visualDensity: VisualDensity.compact,
-            tooltip: 'Moins',
+            tooltip: trUi('Moins'),
             icon: const Icon(Icons.remove_circle_outline, size: 21),
             onPressed: parts <= 1 ? null : () => onChanged(parts - 1),
           ),
           IconButton(
             visualDensity: VisualDensity.compact,
-            tooltip: 'Plus',
+            tooltip: trUi('Plus'),
             icon: const Icon(Icons.add_circle_outline, size: 21),
             onPressed: parts >= 20 ? null : () => onChanged(parts + 1),
           ),

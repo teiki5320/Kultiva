@@ -7,6 +7,8 @@ library;
 import 'package:flutter/material.dart';
 
 import '../../../data/companions.dart';
+import '../../../data/names_en.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/vegetable.dart';
@@ -47,9 +49,9 @@ class PlannerPhaseAdviceTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Text(
-                  'Conseil pour ce stade',
-                  style: TextStyle(
+                Text(
+                  trUi('Conseil pour ce stade'),
+                  style: const TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
                     color: Color(0xFF7A5A1E),
@@ -80,7 +82,7 @@ class PlannerCompanionInfo extends StatelessWidget {
 
   String _label(String id) {
     final v = vegetableById(id);
-    return '${v.emoji} ${v.name}';
+    return '${v.emoji} ${v.displayName}';
   }
 
   @override
@@ -99,7 +101,7 @@ class PlannerCompanionInfo extends StatelessWidget {
               const Text('👍', style: TextStyle(fontSize: 14)),
               const SizedBox(width: 6),
               Text(
-                'À planter à côté',
+                trUi('À planter à côté'),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
@@ -135,7 +137,7 @@ class PlannerCompanionInfo extends StatelessWidget {
               const Text('⚠️', style: TextStyle(fontSize: 14)),
               const SizedBox(width: 6),
               Text(
-                'À éviter à côté',
+                trUi('À éviter à côté'),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
@@ -216,7 +218,8 @@ class PlannerRotationWarning extends StatelessWidget {
       // le cas courant, où rien ne s'affiche, laisse un trou.
       padding: const EdgeInsets.only(bottom: 12),
       child: Semantics(
-        label: 'Attention à la rotation. ${avertissement.message}',
+        label: trUiArgs('Attention à la rotation. {0}',
+            <Object?>[avertissement.message]),
         excludeSemantics: true,
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -236,9 +239,9 @@ class PlannerRotationWarning extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      'Attention à la rotation',
-                      style: TextStyle(
+                    Text(
+                      trUi('Attention à la rotation'),
+                      style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w800,
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../config/app_info.dart';
+import '../../data/ui_i18n.dart';
 import '../../models/country.dart';
 import '../../models/region_data.dart';
 import '../../services/audio_service.dart';
@@ -24,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
         bottom: false,
         child: Column(
           children: <Widget>[
-            AppBar(title: const Text('Paramètres')),
+            AppBar(title: Text(trUi('Paramètres'))),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(
@@ -32,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
                   vertical: 8,
                 ),
                 children: <Widget>[
-                  const _SectionTitle(title: '🌍  Pays'),
+                  _SectionTitle(title: trUi('🌍  Pays')),
                   Card(
                     child: ValueListenableBuilder<Country?>(
                       valueListenable: PrefsService.instance.country,
@@ -57,7 +58,7 @@ class SettingsScreen extends StatelessWidget {
                                 RadioListTile<Country>(
                                   value: c,
                                   title: Text(
-                                    '${c.flag}   ${c.label}',
+                                    '${c.flag}   ${c.displayLabel}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -87,22 +88,26 @@ class SettingsScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Pays détecté : ${detected.country.flag} ${detected.country.label}',
+                                  trUiArgs('Pays détecté : {0} {1}', <Object?>[
+                                    detected.country.flag,
+                                    detected.country.displayLabel,
+                                  ]),
                                 ),
                               ),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text(
-                                  'Impossible de détecter ton pays. Vérifie tes permissions de localisation.',
+                                  trUi('Impossible de détecter ton pays. '
+                                      'Vérifie tes permissions de localisation.'),
                                 ),
                               ),
                             );
                           }
                         },
                         icon: const Icon(Icons.my_location),
-                        label: const Text('Détecter mon pays automatiquement'),
+                        label: Text(trUi('Détecter mon pays automatiquement')),
                       ),
                     ),
                   ),
@@ -122,7 +127,7 @@ class SettingsScreen extends StatelessWidget {
                           return Column(
                             children: <Widget>[
                               const SizedBox(height: 8),
-                              const _SectionTitle(title: '🌦️  Ma zone'),
+                              _SectionTitle(title: trUi('🌦️  Ma zone')),
                               Card(
                                 child: RadioGroup<ClimateZone>(
                                   groupValue: effective,
@@ -162,7 +167,7 @@ class SettingsScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  const _SectionTitle(title: '🔔  Notifications'),
+                  _SectionTitle(title: trUi('🔔  Notifications')),
                   Card(
                     child: Column(
                       children: <Widget>[
@@ -173,12 +178,13 @@ class SettingsScreen extends StatelessWidget {
                               value: value,
                               onChanged: PrefsService.instance.setNotifications,
                               activeThumbColor: KultivaColors.primaryGreen,
-                              title: const Text(
-                                'Rappel mensuel',
-                                style: TextStyle(fontWeight: FontWeight.w700),
+                              title: Text(
+                                trUi('Rappel mensuel'),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700),
                               ),
-                              subtitle: const Text(
-                                "Une notification le 1er de chaque mois",
+                              subtitle: Text(
+                                trUi("Une notification le 1er de chaque mois"),
                               ),
                             );
                           },
@@ -197,9 +203,10 @@ class SettingsScreen extends StatelessWidget {
                               }
                             },
                             activeThumbColor: KultivaColors.primaryGreen,
-                            title: const Text('Musique de fond',
-                                style: TextStyle(fontWeight: FontWeight.w700)),
-                            subtitle: const Text('Ambiance douce japonisante'),
+                            title: Text(trUi('Musique de fond'),
+                                style:
+                                    const TextStyle(fontWeight: FontWeight.w700)),
+                            subtitle: Text(trUi('Ambiance douce japonisante')),
                           ),
                         ),
                         const Divider(height: 0, indent: 16),
@@ -207,8 +214,9 @@ class SettingsScreen extends StatelessWidget {
                           valueListenable: PrefsService.instance.soundVolume,
                           builder: (context, v, _) => ListTile(
                             leading: const Icon(Icons.volume_up),
-                            title: const Text('Volume',
-                                style: TextStyle(fontWeight: FontWeight.w700)),
+                            title: Text(trUi('Volume'),
+                                style:
+                                    const TextStyle(fontWeight: FontWeight.w700)),
                             subtitle: Slider(
                               value: v,
                               min: 0,
@@ -237,12 +245,13 @@ class SettingsScreen extends StatelessWidget {
                           onChanged: PrefsService.instance.setLanguage,
                           child: Column(
                             children: <Widget>[
-                              const RadioListTile<String?>(
+                              RadioListTile<String?>(
                                 value: null,
                                 activeColor: KultivaColors.primaryGreen,
                                 title: Text(
-                                  'Celle du téléphone',
-                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  trUi('Celle du téléphone'),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ),
                               for (final code
@@ -282,7 +291,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const _SectionTitle(title: '🌙  Apparence'),
+                  _SectionTitle(title: trUi('🌙  Apparence')),
                   Card(
                     child: ValueListenableBuilder<bool>(
                       valueListenable: PrefsService.instance.darkMode,
@@ -291,16 +300,16 @@ class SettingsScreen extends StatelessWidget {
                           value: value,
                           onChanged: PrefsService.instance.setDarkMode,
                           activeThumbColor: KultivaColors.primaryGreen,
-                          title: const Text(
-                            'Mode sombre',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                          title: Text(
+                            trUi('Mode sombre'),
+                            style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
                         );
                       },
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const _SectionTitle(title: '🌱  Mon jardin'),
+                  _SectionTitle(title: trUi('🌱  Mon jardin')),
                   Card(
                     child: Column(
                       children: <Widget>[
@@ -309,20 +318,20 @@ class SettingsScreen extends StatelessWidget {
                             Icons.replay,
                             color: KultivaColors.primaryGreen,
                           ),
-                          title: const Text(
-                            'Revoir la présentation',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                          title: Text(
+                            trUi('Revoir la présentation'),
+                            style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
-                          subtitle:
-                              const Text('Réafficher les écrans de bienvenue'),
+                          subtitle: Text(
+                              trUi('Réafficher les écrans de bienvenue')),
                           onTap: () async {
                             await PrefsService.instance
                                 .setOnboardingDone(false);
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'Redémarre l\'app pour revoir l\'onboarding'),
+                                SnackBar(
+                                  content: Text(trUi(
+                                      'Redémarre l\'app pour revoir l\'onboarding')),
                                 ),
                               );
                             }
@@ -338,17 +347,17 @@ class SettingsScreen extends StatelessWidget {
                             Icons.delete_forever,
                             color: KultivaColors.terracotta,
                           ),
-                          title: const Text(
-                            'Effacer mon jardin',
-                            style: TextStyle(
+                          title: Text(
+                            trUi('Effacer mon jardin'),
+                            style: const TextStyle(
                               fontWeight: FontWeight.w700,
                               color: KultivaColors.terracotta,
                             ),
                           ),
-                          subtitle: const Text(
-                            'Plants, badges, défis et jardins — '
-                            'définitif',
-                            style: TextStyle(fontSize: 11),
+                          subtitle: Text(
+                            trUi('Plants, badges, défis et jardins — '
+                                'définitif'),
+                            style: const TextStyle(fontSize: 11),
                           ),
                           onTap: () => _confirmErase(context),
                         ),
@@ -360,14 +369,14 @@ class SettingsScreen extends StatelessWidget {
                     child: TextButton(
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute<void>(
-                          builder: (_) => const TutoFicheScreen(
-                            titre: 'Politique de confidentialité',
+                          builder: (_) => TutoFicheScreen(
+                            titre: trUi('Politique de confidentialité'),
                             assetPath: 'assets/tutos/privacy_policy.html',
                           ),
                         ),
                       ),
                       child: Text(
-                        'Politique de confidentialité',
+                        trUi('Politique de confidentialité'),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: KultivaColors.primaryGreen,
                               decoration: TextDecoration.underline,
@@ -403,20 +412,20 @@ class SettingsScreen extends StatelessWidget {
     final first = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Effacer ton jardin ?'),
-        content: const Text(
-          'Tes plants, tes photos, tes badges, tes défis, tes jardins '
-          'seront effacés de ce téléphone.\n\n'
-          'Tes réglages (son, thème, région) sont conservés.',
+        title: Text(trUi('Effacer ton jardin ?')),
+        content: Text(
+          trUi('Tes plants, tes photos, tes badges, tes défis, tes jardins '
+              'seront effacés de ce téléphone.\n\n'
+              'Tes réglages (son, thème, région) sont conservés.'),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Annuler'),
+            child: Text(trUi('Annuler')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Continuer'),
+            child: Text(trUi('Continuer')),
           ),
         ],
       ),
@@ -426,22 +435,22 @@ class SettingsScreen extends StatelessWidget {
     final second = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('C\'est définitif'),
-        content: const Text(
-          'Kultiva n\'a pas de compte : rien n\'est sauvegardé ailleurs. '
-          'Une fois effacé, ton jardin ne peut pas être récupéré.',
+        title: Text(trUi('C\'est définitif')),
+        content: Text(
+          trUi('Kultiva n\'a pas de compte : rien n\'est sauvegardé ailleurs. '
+              'Une fois effacé, ton jardin ne peut pas être récupéré.'),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Garder mon jardin'),
+            child: Text(trUi('Garder mon jardin')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(
               foregroundColor: KultivaColors.terracotta,
             ),
-            child: const Text('Tout effacer'),
+            child: Text(trUi('Tout effacer')),
           ),
         ],
       ),
@@ -456,9 +465,9 @@ class SettingsScreen extends StatelessWidget {
     if (!context.mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('🧹 Ton jardin a été effacé. À toi de rejouer !'),
-        duration: Duration(seconds: 3),
+      SnackBar(
+        content: Text(trUi('🧹 Ton jardin a été effacé. À toi de rejouer !')),
+        duration: const Duration(seconds: 3),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/content_i18n.dart';
 import '../../../data/badges.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/text_scale.dart';
@@ -66,9 +67,9 @@ class _BadgeTile extends StatelessWidget {
       // L'état du badge est porté par la couleur seule : grisé = verrouillé.
       // Un lecteur d'écran ne voit pas une couleur, il faut le dire.
       label: unlocked
-          ? 'Badge ${badge.displayName}, débloqué'
-          : 'Badge ${badge.displayName}, verrouillé',
-      hint: unlocked ? 'Ouvre la carte du badge' : null,
+          ? trUiArgs('Badge {0}, débloqué', <Object?>[badge.displayName])
+          : trUiArgs('Badge {0}, verrouillé', <Object?>[badge.displayName]),
+      hint: unlocked ? trUi('Ouvre la carte du badge') : null,
       button: unlocked,
       child: GestureDetector(
         onTap: unlocked

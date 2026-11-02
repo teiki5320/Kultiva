@@ -1,3 +1,4 @@
+import '../data/ui_i18n.dart';
 import '../models/region_data.dart';
 import '../models/watering_advice.dart';
 import '../models/weather_data.dart';
@@ -58,45 +59,52 @@ WateringAdvice? suggestWatering(
     return WateringAdvice(
       urgency: WateringUrgency.skip,
       emoji: '🌧️',
-      message: "Pas besoin d'arroser : ${rainNext48h.toStringAsFixed(0)} mm "
-          "de pluie prévus dans 48 h.",
+      message: trUiArgs(
+          "Pas besoin d'arroser : {0} mm de pluie prévus dans 48 h.",
+          <Object?>[rainNext48h.toStringAsFixed(0)]),
     );
   }
   if (rainLast48h >= 5) {
-    return const WateringAdvice(
+    return WateringAdvice(
       urgency: WateringUrgency.skip,
       emoji: '☔',
-      message: "Sol déjà bien humide après la pluie récente. Saute "
-          "l'arrosage aujourd'hui.",
+      message: trUi("Sol déjà bien humide après la pluie récente. Saute "
+          "l'arrosage aujourd'hui."),
     );
   }
   if (tmax >= heatwaveThresholdFor(region) && daysSinceWater >= 1) {
     return WateringAdvice(
       urgency: WateringUrgency.heatwave,
       emoji: '🥵',
-      message: "Canicule prévue (${tmax.toStringAsFixed(0)}°C). Arrose tôt "
-          "le matin ou en soirée, et pense au paillage.",
+      message: trUiArgs(
+          'Canicule prévue ({0}°C). Arrose tôt le matin ou en soirée, '
+          'et pense au paillage.',
+          <Object?>[tmax.toStringAsFixed(0)]),
     );
   }
   if (daysSinceWater >= 5 && weather.consecutiveDryDays >= 3) {
     return WateringAdvice(
       urgency: WateringUrgency.overdue,
       emoji: '🚱',
-      message: "Sécheresse depuis ${weather.consecutiveDryDays} jours et "
-          "pas d'arrosage depuis $daysSinceWater j. C'est urgent.",
+      message: trUiArgs(
+          "Sécheresse depuis {0} jours et pas d'arrosage depuis {1} j. "
+          "C'est urgent.",
+          <Object?>[weather.consecutiveDryDays, daysSinceWater]),
     );
   }
   if (daysSinceWater >= 3) {
     return WateringAdvice(
       urgency: WateringUrgency.dueSoon,
       emoji: '💧',
-      message: "Pas d'arrosage depuis $daysSinceWater j et pas de pluie "
-          "prévue. Pense à arroser ce soir.",
+      message: trUiArgs(
+          "Pas d'arrosage depuis {0} j et pas de pluie prévue. "
+          'Pense à arroser ce soir.',
+          <Object?>[daysSinceWater]),
     );
   }
-  return const WateringAdvice(
+  return WateringAdvice(
     urgency: WateringUrgency.ok,
     emoji: '✅',
-    message: 'Tout va bien : sol récemment arrosé ou pluie attendue.',
+    message: trUi('Tout va bien : sol récemment arrosé ou pluie attendue.'),
   );
 }

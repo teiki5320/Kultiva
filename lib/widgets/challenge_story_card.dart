@@ -9,6 +9,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../data/content_i18n.dart';
 import '../data/challenges.dart';
+import '../data/ui_i18n.dart';
 import '../models/vegetable_medal.dart';
 import '../theme/app_theme.dart';
 import 'plantation_photo.dart';
@@ -68,8 +69,9 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
       final box = context.findRenderObject() as RenderBox?;
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
-        text: 'J\'ai complété le défi "${widget.challenge.displayName}" '
-            'sur Kultiva ! ${widget.challenge.emoji} 🌱',
+        text: trUiArgs(
+            'J\'ai complété le défi "{0}" sur Kultiva ! {1} 🌱',
+            <Object?>[widget.challenge.displayName, widget.challenge.emoji]),
         sharePositionOrigin:
             box != null ? box.localToGlobal(Offset.zero) & box.size : null,
       );
@@ -77,7 +79,10 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Impossible de partager : $e")),
+          SnackBar(
+            content: Text(
+                trUiArgs('Impossible de partager : {0}', <Object?>[e])),
+          ),
         );
       }
     } finally {
@@ -118,7 +123,7 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
                     foregroundColor: KultivaColors.textPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  child: const Text('Annuler'),
+                  child: Text(trUi('Annuler')),
                 ),
               ),
               const SizedBox(width: 10),
@@ -134,7 +139,7 @@ class _StoryShareDialogState extends State<_StoryShareDialog> {
                               strokeWidth: 2, color: Colors.white),
                         )
                       : const Icon(Icons.share, size: 18),
-                  label: Text(_sharing ? 'Export…' : 'Partager'),
+                  label: Text(_sharing ? trUi('Export…') : trUi('Partager')),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: KultivaColors.primaryGreen,
                     foregroundColor: Colors.white,
@@ -245,7 +250,8 @@ class _StoryCardVisual extends StatelessWidget {
                       const SizedBox(width: 8),
                       Flexible(
                         child: Text(
-                          'DÉFI ${challenge.tier.label.toUpperCase()}',
+                          trUiArgs('DÉFI {0}',
+                              <Object?>[challenge.tier.label.toUpperCase()]),
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
@@ -301,9 +307,9 @@ class _StoryCardVisual extends StatelessWidget {
                     children: <Widget>[
                       const Text('✅', style: TextStyle(fontSize: 16)),
                       const SizedBox(width: 8),
-                      const Text(
-                        'Défi complété',
-                        style: TextStyle(
+                      Text(
+                        trUi('Défi complété'),
+                        style: const TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 14,
                         ),

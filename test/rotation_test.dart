@@ -24,6 +24,13 @@ CultureEntry _culture(String vegetableId, {required int ansAvant}) {
 }
 
 void main() {
+  // ⚠️ L'environnement de test tourne en `en-US`, donc `trUi()` rend
+  // de l'anglais. Ce fichier compare du **français** — le texte source
+  // de l'app — donc il force la langue. Sans ça, il validerait des
+  // libellés anglais en croyant lire du français, ce qui est
+  // exactement le piège qu'`onglets_test` s'est pris en 2026.
+  setUpAll(() => PrefsService.instance.language.value = 'fr');
+
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('checkRotation', () {
@@ -75,7 +82,11 @@ void main() {
 
   group('PlannerRotationWarning', () {
     setUp(() async {
-      SharedPreferences.setMockInitialValues(<String, Object>{});
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        // ⚠️ `load()` relit les préférences et écraserait une
+        // langue posée dans `setUpAll`. Elle se sème donc ici.
+        'flutter.kultiva.language': 'fr',
+      });
       await PrefsService.instance.load();
     });
 

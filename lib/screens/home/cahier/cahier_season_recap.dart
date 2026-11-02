@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../services/culture_service.dart';
 import '../../../services/error_reporter.dart';
 import '../../../services/pdf_service.dart';
@@ -41,7 +42,7 @@ class _CahierSeasonRecapState extends State<CahierSeasonRecap> {
       await ErrorReporter.report('pdf_season_recap', e, st);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('🧾 Export impossible pour le moment')),
+          SnackBar(content: Text(trUi('🧾 Export impossible pour le moment'))),
         );
       }
     } finally {
@@ -64,7 +65,9 @@ class _CahierSeasonRecapState extends State<CahierSeasonRecap> {
         onPressed: _enCours ? null : () => _exporter(annee),
         icon: const Text('🧾', style: TextStyle(fontSize: 16)),
         label: Text(
-          _enCours ? 'Préparation…' : 'Récap de la saison $annee',
+          _enCours
+              ? trUi('Préparation…')
+              : trUiArgs('Récap de la saison {0}', <Object?>[annee]),
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         style: OutlinedButton.styleFrom(

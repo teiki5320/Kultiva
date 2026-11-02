@@ -1,3 +1,4 @@
+import '../data/ui_i18n.dart';
 import 'vegetable.dart';
 
 /// Résultat d'analyse d'arrosage pour un légume dans le potager.
@@ -54,11 +55,13 @@ class WateringAlert {
 
   /// Message lisible.
   String get message {
-    if (!needsWatering) return 'Arrosage OK';
+    if (!needsWatering) return trUi('Arrosage OK');
     if (rainExpected) {
-      return '$daysSinceWater jours sans eau — pluie prévue (${rainForecast.toStringAsFixed(0)} mm)';
+      return trUiArgs('{0} jours sans eau — pluie prévue ({1} mm)',
+          <Object?>[daysSinceWater, rainForecast.toStringAsFixed(0)]);
     }
-    return '$daysSinceWater jours sans eau — arrosage nécessaire !';
+    return trUiArgs(
+        '{0} jours sans eau — arrosage nécessaire !', <Object?>[daysSinceWater]);
   }
 
   /// Emoji d'état.

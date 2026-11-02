@@ -359,12 +359,12 @@ dart run tool/exporter_recettes.dart --squelette --langue=en --lot=3
   maladies, lexique, badges, défis (784 phrases). Soit ≈ 2 900 chaînes
   par langue, écrites par huit agents Sonnet et validées par les tests
   de nombres.
-  ⚠️ **L'interface, elle, ne l'est pas** — voir l'alerte 20. Seuls les
-  cinq libellés d'onglets et le réglage « Langue » passent par les
-  ARB ; 541 chaînes restent en dur en français. Vérifié à l'écran le
-  02/11 : la barre dit « Inicio / Diario / Catálogo / Recetas /
-  Guías », le tableau de bord juste au-dessus dit « Semer ·
-  22 légumes ».
+  **L'interface aussi**, depuis le 02/11/2026 : 773 chaînes par
+  langue, branchées par 722 appels `trUi()` dans 53 fichiers. Vérifié
+  à l'écran dans les trois langues. ⚠️ Les mois, les jours et les
+  73 noms de pays passent par des **tables indexées** et non par le
+  dictionnaire — voir la section « Traduire l'interface » plus bas, et
+  l'avertissement en tête de `ui_i18n.dart`.
   Les neuf méthodes de conservation, les unités de durée et les
   libellés du lecteur sont traduits aussi — un test refuse une langue
   qui aurait les recettes sans eux. Voir
@@ -1272,49 +1272,56 @@ portent désormais sur le sarrasin, qui n'a pas de surcharge.
 ⚠️ **Restent des moyennes de zone.** Le méditerranéen de Marrakech
 n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
 
-20. **L'interface n'est pas traduite, et les fiches disaient le
-    contraire** — mesuré le 02/11/2026, après avoir fini l'espagnol et
-    regardé l'app tourner.
+20. ~~**L'interface n'est pas traduite**~~ — ✅ **FAIT le
+    02/11/2026.** 773 chaînes par langue, 722 appels `trUi()` dans
+    53 fichiers, et les 33 clés ARB orphelines retirées. Treize agents
+    en deux vagues : sept pour **brancher** (envelopper les littérales
+    sans traduire), six pour **traduire**.
 
-    Les trois surcouches couvrent le **contenu**. L'interface, non :
+    **Ce que le branchement a appris, et qui resservira :**
 
-    - **541 chaînes françaises écrites en dur**, dans 53 fichiers hors
-      `lib/data` et `lib/l10n`. Les plus chargés : `country.dart` (45),
-      `onboarding_screen.dart` (27), `tutos_screen.dart` (27),
-      `phenology.dart` (26), `weather_screen.dart` (26),
-      `settings_screen.dart` (24), `sow_screen.dart` (24).
-    - **33 des 40 clés ARB ne sont appelées nulle part.** Les 17
-      `photos*` sont orphelines depuis le retrait de l'onglet Photo
-      (01/11) ; les 8 `recipes*` et les 8 `common*` **n'ont jamais été
-      branchées**. Seuls les 5 `tab*`, `settingsLanguage` et
-      `settingsLanguagePartial` servent.
-
-    **Ce que ça donne**, vérifié à l'écran : barre d'onglets « Inicio /
-    Diario / Catálogo / Recetas / Guías », et juste au-dessus « Semer ·
-    22 légumes », « Récolter · 42 légumes », « Météo du jour ». Les
-    recettes et les tutos, eux, sont bien en espagnol.
-
-    **Le pire endroit** : la **première page de l'onboarding** dit
-    « Le potager kawaii dans ta poche… tout au même endroit, **en
-    français**. » — en français, à un utilisateur espagnol. Les dix
-    textes de l'onboarding sont une `const List<_OnboardingContent>`
-    dans le widget.
-
-    ⚠️ **C'est la règle 10 qui s'applique** : 33 clés écrites et
-    injoignables, c'est un bug, pas une avance. Et c'est la cinquième
-    fois que ce projet s'y fait prendre. Les clés `recipes*` ne
-    correspondent même plus à l'écran — l'ARB dit « Recettes » et
-    « Un légume, ou un plat… », l'écran affiche « Garder ta récolte »
-    et « Un légume, ou une conserve… ». L'écran a été réécrit, l'ARB
-    est resté.
-
-    **Avant de reprendre** : décider d'abord si les 33 clés se
-    **branchent** ou se **suppriment** — les brancher demande de
-    réaligner leurs valeurs françaises sur ce que l'écran dit
-    aujourd'hui. Puis découper comme les recettes : un exportateur qui
-    sort les littérales par écran, un squelette par langue, et un test
-    qui refuse une clé orpheline. ⚠️ Et ne plus écrire « interface
-    traduite » dans une fiche tant que ça n'est pas fait.
+    - ⚠️ **Deux collisions de clés**, trouvées seulement parce qu'un
+      agent a su les nommer. « juin » est à la fois le mois court et le
+      mois long — en anglais « jun » et « june », donc **une clé
+      devrait rendre deux valeurs**. Et « Mar » est à la fois **mardi**
+      et **mars**. Les mois et les jours sont donc des **tables
+      indexées** dans `ui_i18n.dart`, pas des phrases. Un ensemble
+      fermé et ordonné n'est pas du texte libre.
+    - ⚠️ **Un champ d'enum `const` ne peut pas appeler de fonction.**
+      `Country.label`, `Country.capitalName` et `Region.label` passent
+      par un getter `displayLabel`, comme `Vegetable.displayName`.
+      `tool/exporter_enums.dart` les sort pour le squelette, et le test
+      les lit **dans l'enum**.
+    - ⚠️ **Le tri et la recherche suivent la langue.** Le catalogue
+      espagnol commence à Alemania, et une recherche répond aux deux
+      langues — la clé reste le nom français, mais un hispanophone tape
+      « zanahoria ».
+    - ⚠️ **`v.name` affiché, c'était du français partout.** Onze
+      endroits l'utilisaient au lieu de `v.displayName` : notifications,
+      PDF, potager carré, dossier de plant. Et `advice_service`
+      affichait des **identifiants bruts** de compagnonnage.
+    - ⚠️ **Un `Spacer` vole l'espace d'un `Flexible`.** Les deux sont
+      flexibles, donc ils se partagent l'espace libre à parts égales :
+      le titre de la carte du dashboard n'obtenait qu'une ligne, et
+      « Challenges & badges » s'affichait « Challenges & ». Le
+      français, qui tient sur une ligne, ne montrait rien. La carte est
+      passée à 138 px et sa colonne à `spaceBetween`.
+      **Une traduction est un test de mise en page** : les autres
+      langues sont plus longues, et c'est l'écran qui le dit, pas le
+      compilateur.
+    - ⚠️ **Vingt tests sont tombés d'un coup** en remplissant les
+      dictionnaires : ils comparaient du français alors que
+      l'environnement de test tourne en `en-US`. Il faut **deux**
+      choses, pas une — `setUpAll(() => PrefsService.instance
+      .language.value = 'fr')` **et** semer
+      `'flutter.kultiva.language': 'fr'` dans
+      `setMockInitialValues`, sinon `load()` écrase la première.
+    - ⚠️ **Un seul propriétaire par chaîne.** Les sept conseils
+      canicule ont été enveloppés par erreur dans `trUi` alors que
+      leurs trois appelants font déjà `tr(…)` : ils auraient été
+      traduits deux fois, et leurs entrées de `content_en.dart`
+      seraient devenues orphelines. `heatwave_tips.dart` rend donc du
+      français, et son commentaire dit pourquoi.
 
 21. **L'index des tutos cite encore le Poussidex** — repéré le
     02/11/2026 à l'écran. La carte « Découvrir l'application » a pour
@@ -1541,6 +1548,55 @@ n'avait vu :
 - ⬜ **Détail de forme** : les heures gardent la notation française en
   anglais (« Water before 9h ») parce que « 9 am » changerait le
   chiffre et ferait échouer le test des nombres. Lisible, mais sec.
+
+### Traduire l'interface (02/11/2026)
+
+**773 chaînes par langue**, 722 appels `trUi()` dans 53 fichiers.
+`lib/data/ui_i18n.dart` porte le mécanisme, `ui_en.dart` et
+`ui_es.dart` les dictionnaires.
+
+**Pourquoi un dictionnaire et pas les ARB** — la raison est écrite en
+tête de `ui_i18n.dart`, en trois points : la moitié de ces chaînes
+vivent dans des services sans `BuildContext` (y faire descendre un
+contexte, ce serait mélanger présentation et logique métier) ; nommer
+773 clés produit 773 noms qui mentent à la première retouche ; et
+c'est déjà le patron des trois autres surcouches. Les ARB gardent les
+cinq onglets et la note du réglage « Langue ».
+
+**Les chaînes composées ont des trous numérotés** :
+
+```dart
+trUiArgs('{0} ans avant de replanter au même endroit', <Object?>[3])
+```
+
+La place d'un trou est **libre** dans la traduction — c'est l'intérêt
+par rapport à une concaténation, qui fige l'ordre des mots.
+
+**Ce qui n'est pas dans le dictionnaire, et pourquoi** : les mois, les
+jours et les 73 noms de pays. Les deux premiers parce qu'une clé ne
+peut pas rendre deux valeurs (« juin » court et long, « Mar » mardi et
+mars) ; les pays parce qu'un champ d'enum `const` ne peut pas appeler
+de fonction — ils passent par `displayLabel`.
+
+**L'outillage** :
+
+```bash
+python3 tool/exporter_interface.py --compte
+flutter test tool/exporter_enums.dart     # les libellés d'enum
+python3 tool/exporter_interface.py --squelette --langue=es --part=2/3
+```
+
+⚠️ **L'exportateur lit du code, pas des données**, donc il embarque un
+vrai lecteur de chaînes Dart : une expression régulière se fait piéger
+par `'l\'ail'` et par les littérales adjacentes que Dart colle en une.
+Le test embarque le même lecteur, et tous deux ignorent les
+commentaires — un commentaire qui citait `trUi()` avait été pris pour
+un appel.
+
+⚠️ **Ajouter une chaîne d'interface fait échouer la suite** jusqu'à ce
+qu'elle soit traduite dans les deux langues. C'est voulu : une langue
+enregistrée est une langue finie, sinon l'app panache deux langues
+dans la même phrase.
 
 ### Voir un écran HTML sans le simulateur
 

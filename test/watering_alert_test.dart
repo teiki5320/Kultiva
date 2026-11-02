@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/models/watering_alert.dart';
+import 'package:kultiva/services/prefs_service.dart';
 
 /// Couvre le bug qui faisait partir la notification « ta tomate a besoin
 /// d'eau » alors que l'utilisateur venait de l'arroser dans l'app.
@@ -8,6 +9,13 @@ import 'package:kultiva/models/watering_alert.dart';
 /// L'alerte ne comptait que les jours **sans pluie**. Elle compte
 /// maintenant les jours sans **eau**, pluie ou arrosoir.
 void main() {
+  // ⚠️ L'environnement de test tourne en `en-US`, donc `trUi()` rend
+  // de l'anglais. Ce fichier compare du **français** — le texte source
+  // de l'app — donc il force la langue. Sans ça, il validerait des
+  // libellés anglais en croyant lire du français, ce qui est
+  // exactement le piège qu'`onglets_test` s'est pris en 2026.
+  setUpAll(() => PrefsService.instance.language.value = 'fr');
+
   final tomate = vegetablesBase.firstWhere((v) => v.id == 'tomate');
   final seuil = tomate.effectiveWateringDays;
 

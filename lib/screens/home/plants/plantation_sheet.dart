@@ -1,5 +1,7 @@
+import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../models/photo_pick_result.dart';
 import '../../../models/plantation.dart';
 import '../../../models/vegetable.dart';
@@ -73,20 +75,20 @@ Future<void> _confirmRemove(
   final ok = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: Text('Retirer ${v.name} ?'),
-      content: const Text(
-        'Le plant et ses photos seront supprimés de ta collection. '
-        'Cette action est définitive.',
+      title: Text(trUiArgs('Retirer {0} ?', <Object?>[v.displayName])),
+      content: Text(
+        trUi('Le plant et ses photos seront supprimés de ta collection. '
+            'Cette action est définitive.'),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: const Text('Annuler'),
+          child: Text(trUi('Annuler')),
         ),
         TextButton(
           onPressed: () => Navigator.pop(ctx, true),
           style: TextButton.styleFrom(foregroundColor: Colors.red),
-          child: const Text('Retirer'),
+          child: Text(trUi('Retirer')),
         ),
       ],
     ),
@@ -117,8 +119,9 @@ Future<void> _addPhoto(
     case PhotoPickStatus.error:
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('📷 Photo impossible — réessaie dans un instant'),
+          SnackBar(
+            content: Text(
+                trUi('📷 Photo impossible — réessaie dans un instant')),
           ),
         );
       }

@@ -16,7 +16,11 @@ void main() {
   final prefs = PrefsService.instance;
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
+    SharedPreferences.setMockInitialValues(<String, Object>{
+        // ⚠️ `load()` relit les préférences et écraserait une
+        // langue posée dans `setUpAll`. Elle se sème donc ici.
+        'flutter.kultiva.language': 'fr',
+      });
     await prefs.load();
     service.load();
   });

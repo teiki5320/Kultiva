@@ -1,8 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/models/country.dart';
 import 'package:kultiva/models/region_data.dart';
+import 'package:kultiva/services/prefs_service.dart';
 
 void main() {
+  // ⚠️ L'environnement de test tourne en `en-US`, donc `trUi()` rend
+  // de l'anglais. Ce fichier compare du **français** — le texte source
+  // de l'app — donc il force la langue. Sans ça, il validerait des
+  // libellés anglais en croyant lire du français, ce qui est
+  // exactement le piège qu'`onglets_test` s'est pris en 2026.
+  setUpAll(() => PrefsService.instance.language.value = 'fr');
+
   _zoneTests();
   group('Country', () {
     test(

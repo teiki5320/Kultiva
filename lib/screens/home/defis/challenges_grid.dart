@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../data/content_i18n.dart';
 import '../../../data/badges.dart';
 import '../../../data/challenges.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../models/vegetable_medal.dart';
 import '../../../services/audio_service.dart';
 import '../../../models/photo_pick_result.dart';
@@ -101,7 +102,8 @@ class _ChallengesGridState extends State<ChallengesGrid> {
           child: Row(
             children: <Widget>[
               Text(
-                '📸 $completedCount / ${challenges.length} défis complétés',
+                trUiArgs('📸 {0} / {1} défis complétés',
+                    <Object?>[completedCount, challenges.length]),
                 style: const TextStyle(
                   fontWeight: FontWeight.w800,
                   fontSize: 14,
@@ -203,9 +205,9 @@ class _ChallengeTile extends StatelessWidget {
 
     return Semantics(
       label: done
-          ? 'Défi ${challenge.displayName}, réussi'
-          : 'Défi ${challenge.displayName}, à faire',
-      hint: done ? 'Revoir ta photo' : 'Prendre la photo',
+          ? trUiArgs('Défi {0}, réussi', <Object?>[challenge.displayName])
+          : trUiArgs('Défi {0}, à faire', <Object?>[challenge.displayName]),
+      hint: done ? trUi('Revoir ta photo') : trUi('Prendre la photo'),
       button: true,
       child: GestureDetector(
         onTap: done ? onTap : onParticipate,
@@ -294,7 +296,7 @@ class _ChallengeTile extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
-                                  '📷 Participer',
+                                  trUi('📷 Participer'),
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w800,

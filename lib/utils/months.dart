@@ -1,70 +1,37 @@
-/// Constantes de noms de mois en français — centralisées pour éviter
-/// la duplication (précédemment définies dans 6+ fichiers).
+import '../data/ui_i18n.dart';
+import '../services/prefs_service.dart';
+
+/// Les noms de mois et de jours, dans la langue affichée.
 ///
 /// Index 0 = janvier, 11 = décembre. Pour convertir depuis un
-/// [DateTime], utiliser `monthNamesShort[date.month - 1]`.
-const List<String> monthNamesShort = <String>[
-  'jan',
-  'fév',
-  'mar',
-  'avr',
-  'mai',
-  'juin',
-  'juil',
-  'août',
-  'sep',
-  'oct',
-  'nov',
-  'déc',
-];
+/// [DateTime], utiliser `monthNamesShort[date.month - 1]` ;
+/// pour un jour, `weekdayNamesShort[date.weekday - 1]`.
+///
+/// Ce sont des getters et non des `const` : la liste dépend de la
+/// langue. À lire à l'usage, jamais à garder dans un champ.
+///
+/// ⚠️ **Ils ne passent pas par le dictionnaire de phrases**, et
+/// `ui_i18n.dart` dit pourquoi : « juin » est à la fois le mois court
+/// et le mois long, et « Mar » est à la fois mardi et mars. Une clé ne
+/// peut pas rendre deux valeurs. Ce sont des tables indexées.
+String get _langue => PrefsService.instance.effectiveLanguage;
 
-/// Version "Jan/Fév/..." pour calendriers à grille.
-const List<String> monthNamesShortCap = <String>[
-  'Jan',
-  'Fév',
-  'Mar',
-  'Avr',
-  'Mai',
-  'Juin',
-  'Juil',
-  'Août',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Déc',
-];
+/// « jan », « fév »… pour les grilles étroites.
+List<String> get monthNamesShort => monthNamesShortIn(_langue);
 
-/// Version longue en minuscule pour texte narratif.
-const List<String> monthNamesLong = <String>[
-  'janvier',
-  'février',
-  'mars',
-  'avril',
-  'mai',
-  'juin',
-  'juillet',
-  'août',
-  'septembre',
-  'octobre',
-  'novembre',
-  'décembre',
-];
+/// « Jan », « Fév »… pour les calendriers à grille.
+List<String> get monthNamesShortCap =>
+    monthNamesShortIn(_langue).map(capitaliser).toList(growable: false);
 
-/// Version longue capitalisée pour titres de section.
-const List<String> monthNamesLongCap = <String>[
-  'Janvier',
-  'Février',
-  'Mars',
-  'Avril',
-  'Mai',
-  'Juin',
-  'Juillet',
-  'Août',
-  'Septembre',
-  'Octobre',
-  'Novembre',
-  'Décembre',
-];
+/// « janvier », « février »… pour le texte narratif.
+List<String> get monthNamesLong => monthNamesLongIn(_langue);
+
+/// « Janvier », « Février »… pour les titres de section.
+List<String> get monthNamesLongCap =>
+    monthNamesLongIn(_langue).map(capitaliser).toList(growable: false);
+
+/// « Lun », « Mar »… lundi en premier, comme `DateTime.weekday`.
+List<String> get weekdayNamesShort => weekdayNamesShortIn(_langue);
 
 /// Transforme une liste de mois en phrase lisible.
 ///
@@ -78,7 +45,7 @@ const List<String> monthNamesLongCap = <String>[
 String monthRangesLabel(Iterable<int> months) {
   final set = months.where((m) => m >= 1 && m <= 12).toSet();
   if (set.isEmpty) return '';
-  if (set.length == 12) return "toute l'année";
+  if (set.length == 12) return trUi("toute l'année");
   int precedent(int m) => m == 1 ? 12 : m - 1;
   int suivant(int m) => m == 12 ? 1 : m + 1;
   // Un début de série est un mois dont le précédent manque.
@@ -91,11 +58,12 @@ String monthRangesLabel(Iterable<int> months) {
     }
     morceaux.add(debut == fin
         ? monthNamesLong[debut - 1]
-        : 'de ${monthNamesLong[debut - 1]} à ${monthNamesLong[fin - 1]}');
+        : trUiArgs('de {0} à {1}',
+            <Object?>[monthNamesLong[debut - 1], monthNamesLong[fin - 1]]));
   }
   if (morceaux.length == 1) return morceaux.first;
   final tete = morceaux.sublist(0, morceaux.length - 1).join(', ');
-  return '$tete et ${morceaux.last}';
+  return trUiArgs('{0} et {1}', <Object?>[tete, morceaux.last]);
 }
 
 /// « 14 mars 2026 », ou « aujourd'hui » / « hier » quand c'est récent.
@@ -107,12 +75,15 @@ String dayLabel(DateTime d, {DateTime? now}) {
   final jour = DateTime(d.year, d.month, d.day);
   final aujourdhui = DateTime(maintenant.year, maintenant.month, maintenant.day);
   final ecart = aujourdhui.difference(jour).inDays;
-  if (ecart == 0) return 'aujourd\'hui';
-  if (ecart == 1) return 'hier';
-  if (ecart > 1 && ecart < 7) return 'il y a $ecart jours';
-  return '${d.day} ${monthNamesLong[d.month - 1]} ${d.year}';
+  if (ecart == 0) return trUi('aujourd\'hui');
+  if (ecart == 1) return trUi('hier');
+  if (ecart > 1 && ecart < 7) {
+    return trUiArgs('il y a {0} jours', <Object?>[ecart]);
+  }
+  return trUiArgs('{0} {1} {2}',
+      <Object?>[d.day, monthNamesLong[d.month - 1], d.year]);
 }
 
 /// « mars 2026 » — l'intertitre des mois dans la pellicule.
 String monthLabel(DateTime d) =>
-    '${monthNamesLong[d.month - 1]} ${d.year}';
+    trUiArgs('{0} {1}', <Object?>[monthNamesLong[d.month - 1], d.year]);

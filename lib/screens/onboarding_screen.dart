@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/ui_i18n.dart';
 import '../models/country.dart';
 import '../models/region_data.dart';
 import '../services/geolocation_service.dart';
@@ -19,28 +20,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _page = 0;
 
-  static const List<_OnboardingContent> _pages = <_OnboardingContent>[
+  static List<_OnboardingContent> get _pages => <_OnboardingContent>[
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_1.png',
       fallbackEmoji: '🌱',
-      title: 'Bienvenue sur Kultiva',
-      subtitle: "Le potager kawaii dans ta poche. Calendrier de semis, suivi "
-          "de tes plants, météo, conseils — tout au même endroit, en français.",
+      title: trUi('Bienvenue sur Kultiva'),
+      subtitle: trUi(
+          'Le potager kawaii dans ta poche. Calendrier de semis, suivi '
+          'de tes plants, météo, conseils — tout au même endroit, en '
+          'français.'),
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_2.png',
       fallbackEmoji: '📔',
-      title: 'Ton cahier de culture',
-      subtitle: "Crée ton potager pleine terre, place tes plants par "
-          "glisser-déposer dans les cases et suis chaque phase de "
-          "croissance.",
+      title: trUi('Ton cahier de culture'),
+      subtitle: trUi('Crée ton potager pleine terre, place tes plants par '
+          'glisser-déposer dans les cases et suis chaque phase de '
+          'croissance.'),
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_3.png',
       fallbackEmoji: '🌦️',
-      title: 'Météo + alertes arrosage',
-      subtitle: "L'app suit la météo de ton jardin et te prévient quand "
-          "il faut arroser, protéger d'une canicule ou rentrer un plant.",
+      title: trUi('Météo + alertes arrosage'),
+      subtitle: trUi("L'app suit la météo de ton jardin et te prévient quand "
+          "il faut arroser, protéger d'une canicule ou rentrer un plant."),
     ),
     // Cette page présentait le Poussidex, puis a été renommée « Ton
     // cahier de culture » sans que son texte change : l'onboarding
@@ -50,18 +53,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_poussidex.png',
       fallbackEmoji: '📖',
-      title: 'Le journal de ton jardin',
-      subtitle: "Chaque semis, chaque arrosage, chaque récolte s'inscrit "
+      title: trUi('Le journal de ton jardin'),
+      subtitle: trUi("Chaque semis, chaque arrosage, chaque récolte s'inscrit "
           "à sa date. Relis ta saison jour par jour, décroche des "
-          "médailles par légume et 50 défis photo.",
+          "médailles par légume et 50 défis photo."),
     ),
     _OnboardingContent(
       imagePath: 'assets/images/onboarding_tutos.png',
       fallbackEmoji: '📚',
-      title: 'Apprends à ton rythme',
-      subtitle: "L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
+      title: trUi('Apprends à ton rythme'),
+      subtitle: trUi("L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
           "bien arroser, lutter contre les nuisibles et apprendre les "
-          "bons gestes au jardin.",
+          "bons gestes au jardin."),
     ),
   ];
 
@@ -126,7 +129,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         duration: const Duration(milliseconds: 250),
                         curve: Curves.easeOut,
                       ),
-                      child: const Text('Retour'),
+                      child: Text(trUi('Retour')),
                     ),
                   const Spacer(),
                   ElevatedButton(
@@ -141,7 +144,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       }
                     },
                     child: Text(
-                      _page < _totalPages - 1 ? 'Suivant' : 'Commencer',
+                      _page < _totalPages - 1
+                          ? trUi('Suivant')
+                          : trUi('Commencer'),
                     ),
                   ),
                 ],
@@ -287,15 +292,15 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-              '${detected.country.flag} Tu jardines : ${detected.country.label} !'),
+          content: Text(trUiArgs('{0} Tu jardines : {1} !',
+              <Object?>[detected.country.flag, detected.country.displayLabel])),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
-            "Impossible de détecter ton pays — choisis-le dans la liste.",
+            trUi('Impossible de détecter ton pays — choisis-le dans la liste.'),
           ),
         ),
       );
@@ -312,7 +317,9 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
         final countries = Country.ordered(first: _suggested)
             .where((c) =>
                 q.isEmpty ||
+                foldAccents(c.displayLabel).contains(q) ||
                 foldAccents(c.label).contains(q) ||
+                foldAccents(c.displayCapital).contains(q) ||
                 foldAccents(c.capitalName).contains(q) ||
                 c.isoCode.toLowerCase() == q)
             .toList();
@@ -340,7 +347,7 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Où jardines-tu ?',
+                trUi('Où jardines-tu ?'),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w800,
@@ -348,8 +355,8 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                "Calendrier de semis, saisons et conseils s'adaptent "
-                'à ton pays.',
+                trUi("Calendrier de semis, saisons et conseils s'adaptent "
+                    'à ton pays.'),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: KultivaColors.textSecondary,
@@ -361,7 +368,7 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                 onChanged: (v) => setState(() => _query = v),
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  hintText: 'Cherche ton pays ou ta capitale…',
+                  hintText: trUi('Cherche ton pays ou ta capitale…'),
                   prefixIcon: const Icon(Icons.search, size: 20),
                   suffixIcon: _query.isEmpty
                       ? null
@@ -385,8 +392,10 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Text(
-                    'Aucun pays ne porte « $_query ». Kultiva en couvre '
-                    '${Country.values.length} — dis-nous si le tien manque.',
+                    trUiArgs(
+                        'Aucun pays ne porte « {0} ». Kultiva en couvre {1} '
+                        '— dis-nous si le tien manque.',
+                        <Object?>[_query, Country.values.length]),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 13,
@@ -415,8 +424,9 @@ class _RegionSelectorPageState extends State<_RegionSelectorPage> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.my_location),
-                label: Text(
-                    _detecting ? 'Détection en cours…' : 'Détecter mon pays'),
+                label: Text(_detecting
+                    ? trUi('Détection en cours…')
+                    : trUi('Détecter mon pays')),
               ),
             ],
           ),
@@ -443,8 +453,9 @@ class _CountryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: suggested && !selected
-          ? '${country.label}, suggéré d\'après ton téléphone'
-          : country.label,
+          ? trUiArgs('{0}, suggéré d\'après ton téléphone',
+              <Object?>[country.displayLabel])
+          : country.displayLabel,
       button: true,
       selected: selected,
       excludeSemantics: true,
@@ -472,7 +483,7 @@ class _CountryTile extends StatelessWidget {
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
-                  country.label,
+                  country.displayLabel,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
@@ -486,9 +497,9 @@ class _CountryTile extends StatelessWidget {
                     color: KultivaColors.primaryGreen.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(999),
                   ),
-                  child: const Text(
-                    '📍 Suggéré',
-                    style: TextStyle(
+                  child: Text(
+                    trUi('📍 Suggéré'),
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                       color: KultivaColors.primaryGreen,

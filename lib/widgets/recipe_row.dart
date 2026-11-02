@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart';
 import '../data/names_en.dart';
 import '../data/recipes.dart';
 import '../data/recipes_i18n.dart';
+import '../data/ui_i18n.dart';
 import '../data/vegetables_base.dart';
 import '../screens/home/recettes/recipe_player_screen.dart';
 import '../screens/vegetable_detail_screen.dart';
@@ -112,7 +113,8 @@ class RecipeRow extends StatelessWidget {
                               if (recipe.displaySubtitle != null)
                                 recipe.displaySubtitle!,
                               if (cuisineLe != null)
-                                'déjà cuisiné ${dateCourte(cuisineLe)}',
+                                trUiArgs('déjà cuisiné {0}',
+                                    <Object?>[dateCourte(cuisineLe)]),
                             ].join('  ·  '),
                             style: const TextStyle(
                               fontSize: 11,
@@ -127,7 +129,9 @@ class RecipeRow extends StatelessWidget {
                 IconButton(
                   visualDensity: VisualDensity.compact,
                   iconSize: 19,
-                  tooltip: favori ? 'Retirer des favoris' : 'Mettre de côté',
+                  tooltip: favori
+                      ? trUi('Retirer des favoris')
+                      : trUi('Mettre de côté'),
                   icon: Icon(
                     favori ? Icons.bookmark : Icons.bookmark_border,
                     color: favori ? KultivaColors.primaryGreen : null,
@@ -219,9 +223,10 @@ class _FicheCourte extends StatelessWidget {
                 ),
                 if (recipe.ingredients.isNotEmpty) ...<Widget>[
                   const SizedBox(height: 16),
-                  const Text(
-                    'Il te faut',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
+                  Text(
+                    trUi('Il te faut'),
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 6),
                   for (final ing in recipe.displayIngredients)
@@ -247,13 +252,14 @@ class _FicheCourte extends StatelessWidget {
                         size: 18,
                       ),
                       label: Text(cuisineLe == null
-                          ? 'Je l\'ai cuisinée'
-                          : 'Cuisinée ${dateCourte(cuisineLe)}'),
+                          ? trUi("Je l'ai cuisinée")
+                          : trUiArgs(
+                              'Cuisinée {0}', <Object?>[dateCourte(cuisineLe)])),
                     ),
                     OutlinedButton.icon(
                       onPressed: () => partagerRecette(veg.displayName, recipe),
                       icon: const Icon(Icons.share_outlined, size: 18),
-                      label: const Text('Partager'),
+                      label: Text(trUi('Partager')),
                     ),
                     OutlinedButton.icon(
                       onPressed: () {
@@ -272,10 +278,10 @@ class _FicheCourte extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 14),
-                const Text(
-                  'Le pas-à-pas animé de cette recette n\'est pas encore '
-                  'écrit — il arrive.',
-                  style: TextStyle(
+                Text(
+                  trUi("Le pas-à-pas animé de cette recette n'est pas encore "
+                      'écrit — il arrive.'),
+                  style: const TextStyle(
                     fontSize: 12,
                     height: 1.4,
                     color: KultivaColors.textSecondary,
@@ -302,7 +308,7 @@ Future<void> partagerRecette(String vegetableName, Recipe recipe) async {
     recipe.displayDescription,
     if (recipe.ingredients.isNotEmpty) ...<String>[
       '',
-      'Il te faut :',
+      trUi('Il te faut :'),
       ...recipe.displayIngredients.map((i) => '· $i'),
     ],
     if (recipe.steps.isNotEmpty) ...<String>[
@@ -310,7 +316,8 @@ Future<void> partagerRecette(String vegetableName, Recipe recipe) async {
       for (final (i, s) in recipe.displaySteps.indexed) '${i + 1}. ${s.text}',
     ],
     '',
-    'Une idée pour ta récolte de $vegetableName — Kultiva 🌱',
+    trUiArgs('Une idée pour ta récolte de {0} — Kultiva 🌱',
+        <Object?>[vegetableName]),
   ];
   try {
     await Share.share(lignes.join('\n'), subject: recipe.displayName);

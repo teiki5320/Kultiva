@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/ui_i18n.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/garden_plan.dart';
 import '../../services/audio_service.dart';
@@ -81,12 +82,12 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
                 if (plans.isEmpty)
                   const _EmptyState()
                 else ...<Widget>[
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 18, 16, 8),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
                     child: Text(
-                      'Mes jardins',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                      trUi('Mes jardins'),
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w800),
                     ),
                   ),
                   for (final p in plans)
@@ -156,9 +157,9 @@ class _CahierHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(
-                    '📔  Cahier de culture',
-                    style: TextStyle(
+                  Text(
+                    trUi('📔  Cahier de culture'),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: Colors.white,
@@ -189,13 +190,19 @@ class _CahierHeader extends StatelessWidget {
   }
 
   static String _resume(int jardins, int cases, int plants) {
-    if (jardins == 0) return 'Ton premier jardin t\'attend';
-    final j = '$jardins jardin${jardins > 1 ? 's' : ''}';
-    final c = '$cases case${cases > 1 ? 's' : ''} occupée'
-        '${cases > 1 ? 's' : ''}';
+    if (jardins == 0) return trUi('Ton premier jardin t\'attend');
+    // Le pluriel a ses deux phrases : chaque langue accorde à sa façon.
+    final j = jardins > 1
+        ? trUiArgs('{0} jardins', <Object?>[jardins])
+        : trUiArgs('{0} jardin', <Object?>[jardins]);
+    final c = cases > 1
+        ? trUiArgs('{0} cases occupées', <Object?>[cases])
+        : trUiArgs('{0} case occupée', <Object?>[cases]);
     if (plants == 0) return '$j · $c';
-    return '$j · $c · $plants plant${plants > 1 ? 's' : ''} suivi'
-        '${plants > 1 ? 's' : ''}';
+    final pl = plants > 1
+        ? trUiArgs('{0} plants suivis', <Object?>[plants])
+        : trUiArgs('{0} plant suivi', <Object?>[plants]);
+    return '$j · $c · $pl';
   }
 }
 
@@ -204,28 +211,28 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(32, 40, 32, 32),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(32, 40, 32, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text('🌿', style: TextStyle(fontSize: 64)),
-          SizedBox(height: 18),
+          const Text('🌿', style: TextStyle(fontSize: 64)),
+          const SizedBox(height: 18),
           Text(
-            'Aucun jardin pour l\'instant',
+            trUi('Aucun jardin pour l\'instant'),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w800,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
-            'Crée ton premier jardin pleine terre avec le bouton '
-            'en bas. Tu pourras ensuite y placer tes plants par '
-            'glisser-déposer.',
+            trUi('Crée ton premier jardin pleine terre avec le bouton '
+                'en bas. Tu pourras ensuite y placer tes plants par '
+                'glisser-déposer.'),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13,
               color: KultivaColors.textSecondary,
               height: 1.4,
@@ -249,8 +256,9 @@ class _SoilGardenCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Semantics(
-        label: 'Jardin ${plan.name}, $filledCells cases occupées sur $total',
-        hint: 'Ouvre le plan de ce jardin',
+        label: trUiArgs('Jardin {0}, {1} cases occupées sur {2}',
+            <Object?>[plan.name, filledCells, total]),
+        hint: trUi('Ouvre le plan de ce jardin'),
         button: true,
         excludeSemantics: true,
         child: InkWell(
@@ -313,8 +321,9 @@ class _SoilGardenCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Pleine terre  ·  ${plan.cols}×${plan.rows}  ·  '
-                        '$filledCells/$total occupées',
+                        trUiArgs(
+                            'Pleine terre  ·  {0}×{1}  ·  {2}/{3} occupées',
+                            <Object?>[plan.cols, plan.rows, filledCells, total]),
                         style: const TextStyle(
                           fontSize: 12,
                           color: KultivaColors.textSecondary,
@@ -412,9 +421,9 @@ class _BottomActions extends StatelessWidget {
         child: FilledButton.icon(
           onPressed: onCreateSoil,
           icon: const Text('🌻', style: TextStyle(fontSize: 18)),
-          label: const Text(
-            '+ Nouveau jardin',
-            style: TextStyle(fontWeight: FontWeight.w800),
+          label: Text(
+            trUi('+ Nouveau jardin'),
+            style: const TextStyle(fontWeight: FontWeight.w800),
           ),
           style: FilledButton.styleFrom(
             backgroundColor: KultivaColors.primaryGreen,

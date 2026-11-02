@@ -1,6 +1,7 @@
 import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/plantation.dart';
 import '../../../services/plantation_service.dart';
@@ -58,7 +59,8 @@ class _CahierPlantsSectionState extends State<CahierPlantsSection> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
           child: Text(
-            'Au jardin en ce moment  ·  ${actifs.length}',
+            trUiArgs(
+                'Au jardin en ce moment  ·  {0}', <Object?>[actifs.length]),
             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
           ),
         ),
@@ -75,7 +77,7 @@ class _CahierPlantsSectionState extends State<CahierPlantsSection> {
               style: TextButton.styleFrom(
                 foregroundColor: KultivaColors.primaryGreen,
               ),
-              child: Text('Voir les $reste autres'),
+              child: Text(trUiArgs('Voir les {0} autres', <Object?>[reste])),
             ),
           ),
       ],
@@ -89,9 +91,9 @@ class _PlantRow extends StatelessWidget {
 
   /// « il y a 3 jours », « aujourd'hui », « hier ».
   static String _ilYA(int jours) {
-    if (jours <= 0) return "aujourd'hui";
-    if (jours == 1) return 'hier';
-    return 'il y a $jours j';
+    if (jours <= 0) return trUi("aujourd'hui");
+    if (jours == 1) return trUi('hier');
+    return trUiArgs('il y a {0} j', <Object?>[jours]);
   }
 
   @override
@@ -109,16 +111,16 @@ class _PlantRow extends StatelessWidget {
         : DateTime.now().difference(plantation.wateredAt.last).inDays;
 
     final details = <String>[
-      'planté ${_ilYA(jours)}',
+      trUiArgs('planté {0}', <Object?>[_ilYA(jours)]),
       if (etape != null) etape.label.toLowerCase(),
       dernierArrosage == null
-          ? 'jamais arrosé'
-          : 'arrosé ${_ilYA(dernierArrosage)}',
+          ? trUi('jamais arrosé')
+          : trUiArgs('arrosé {0}', <Object?>[_ilYA(dernierArrosage)]),
     ].join('  ·  ');
 
     return Semantics(
       label: '${veg.displayName}, $details',
-      hint: 'Ouvre le dossier de ce plant',
+      hint: trUi('Ouvre le dossier de ce plant'),
       button: true,
       excludeSemantics: true,
       child: InkWell(

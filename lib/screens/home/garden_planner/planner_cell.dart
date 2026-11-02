@@ -7,6 +7,7 @@ library;
 import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/culture_entry.dart';
 import '../../../models/garden_plan.dart';
@@ -106,9 +107,12 @@ class PlannerGridCell extends StatelessWidget {
             color: Colors.transparent,
             child: Semantics(
               label: c == null
-                  ? 'Case vide'
-                  : 'Case plantée : ${vegetableById(c.vegetableId).name}',
-              hint: c == null ? 'Poser un plant' : 'Ouvrir la fiche du plant',
+                  ? trUi('Case vide')
+                  : trUiArgs('Case plantée : {0}',
+                      <Object?>[vegetableById(c.vegetableId).displayName]),
+              hint: c == null
+                  ? trUi('Poser un plant')
+                  : trUi('Ouvrir la fiche du plant'),
               button: true,
               child: InkWell(
                 borderRadius: BorderRadius.circular(14),
@@ -218,19 +222,22 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
     final days = DateTime.now().difference(when).inDays;
     final dateStr =
         '${when.day.toString().padLeft(2, '0')}/${when.month.toString().padLeft(2, '0')}/${when.year}';
-    if (days == 0) return 'Planté aujourd\'hui ($dateStr)';
-    if (days == 1) return 'Planté hier ($dateStr)';
-    return 'Planté il y a $days jours ($dateStr)';
+    if (days == 0) {
+      return trUiArgs("Planté aujourd'hui ({0})", <Object?>[dateStr]);
+    }
+    if (days == 1) return trUiArgs('Planté hier ({0})', <Object?>[dateStr]);
+    return trUiArgs(
+        'Planté il y a {0} jours ({1})', <Object?>[days, dateStr]);
   }
 
   /// Date dernier arrosage formatée pour l'utilisateur (ou message
   /// d'invitation si jamais).
   String _formatLastWatering(DateTime? when) {
-    if (when == null) return 'Pas encore arrosé';
+    if (when == null) return trUi('Pas encore arrosé');
     final days = DateTime.now().difference(when).inDays;
-    if (days == 0) return 'Arrosé aujourd\'hui';
-    if (days == 1) return 'Arrosé hier';
-    return 'Arrosé il y a $days jours';
+    if (days == 0) return trUi("Arrosé aujourd'hui");
+    if (days == 1) return trUi('Arrosé hier');
+    return trUiArgs('Arrosé il y a {0} jours', <Object?>[days]);
   }
 
   /// Couleur du badge arrosage : vert si récent (≤ seuil), orange si à
@@ -250,10 +257,12 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
       initialDate: _plantedAt,
       firstDate: now.subtract(const Duration(days: 365)),
       lastDate: now,
-      helpText: 'Date de plantation',
-      cancelText: 'Annuler',
+      helpText: trUi('Date de plantation'),
+      cancelText: trUi('Annuler'),
       confirmText: 'OK',
-      locale: const Locale('fr', 'FR'),
+      // Pas de locale figée : le sélecteur suit celle de MaterialApp,
+      // donc la langue choisie dans les réglages. Figé en fr-FR, le
+      // calendrier restait en français sous une interface espagnole.
     );
     if (picked == null) return;
     setState(() => _plantedAt = picked);
@@ -268,9 +277,9 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
     if (mounted) {
       setState(() {}); // Refresh badge
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('💧 Arrosage enregistré'),
-          duration: Duration(seconds: 2),
+        SnackBar(
+          content: Text(trUi('💧 Arrosage enregistré')),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
@@ -345,8 +354,8 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
 
             // ─── Date de plantation (modifiable) ──────────────────
             Semantics(
-              label: 'Date de plantation',
-              hint: 'Choisir une autre date',
+              label: trUi('Date de plantation'),
+              hint: trUi('Choisir une autre date'),
               button: true,
               child: InkWell(
                 onTap: () => _pickDate(context),
@@ -379,7 +388,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              'Stade : ${phase.emoji} ${phase.label}',
+                              trUiArgs('Stade : {0} {1}', <Object?>[phase.emoji, phase.label]),
                               style: const TextStyle(
                                 fontSize: 11,
                                 color: KultivaColors.textSecondary,
@@ -428,7 +437,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                         FilledButton.icon(
                           onPressed: _markWatered,
                           icon: const Icon(Icons.water_drop, size: 16),
-                          label: const Text('Arroser'),
+                          label: Text(trUi('Arroser')),
                           style: FilledButton.styleFrom(
                             backgroundColor: KultivaColors.waterBlue,
                             padding: const EdgeInsets.symmetric(
@@ -480,8 +489,10 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                       ),
                     ],
                     Text(
-                      'Fréquence indicative : tous les $wateringDays jours '
-                      'environ (selon météo).',
+                      trUiArgs(
+                          'Fréquence indicative : tous les {0} jours '
+                          'environ (selon météo).',
+                          <Object?>[wateringDays]),
                       style: const TextStyle(
                         fontSize: 10,
                         fontStyle: FontStyle.italic,
@@ -503,9 +514,9 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
             ),
 
             // ─── Densité plants par case ──────────────────────────
-            const Text(
-              "Combien de plants dans cette case ?",
-              style: TextStyle(
+            Text(
+              trUi('Combien de plants dans cette case ?'),
+              style: const TextStyle(
                 fontSize: 13,
                 color: KultivaColors.textSecondary,
               ),
@@ -538,7 +549,8 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
             ),
             const SizedBox(height: 6),
             Text(
-              'Maximum recommandé : $maxDensity plants par case (30×30 cm)',
+              trUiArgs('Maximum recommandé : {0} plants par case (30×30 cm)',
+                  <Object?>[maxDensity]),
               style: const TextStyle(
                 fontSize: 11,
                 color: KultivaColors.textSecondary,
@@ -553,7 +565,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                   child: OutlinedButton.icon(
                     onPressed: widget.onClear,
                     icon: const Icon(Icons.delete_outline),
-                    label: const Text('Vider'),
+                    label: Text(trUi('Vider')),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -566,7 +578,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                       widget.onCountChanged(_count);
                       Navigator.of(context).pop();
                     },
-                    child: const Text('Valider'),
+                    child: Text(trUi('Valider')),
                   ),
                 ),
               ],

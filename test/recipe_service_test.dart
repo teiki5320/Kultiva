@@ -13,7 +13,11 @@ void main() {
   const soupe = Recipe(name: 'Soupe', emoji: '🍲', description: 'test');
 
   setUp(() async {
-    SharedPreferences.setMockInitialValues(<String, Object>{});
+    SharedPreferences.setMockInitialValues(<String, Object>{
+        // ⚠️ `load()` relit les préférences et écraserait une
+        // langue posée dans `setUpAll`. Elle se sème donc ici.
+        'flutter.kultiva.language': 'fr',
+      });
     await PrefsService.instance.load();
   });
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/ui_i18n.dart';
 import '../models/vegetable_medal.dart';
 
 /// Affiche un emoji dans un cercle entouré d'un anneau coloré selon le
@@ -116,7 +117,9 @@ class MedalBadge extends StatelessWidget {
 
     if (!showCornerMedal || tier == MedalTier.none) {
       return Semantics(
-        label: tier == MedalTier.none ? emoji : 'Médaille ${tier.label}',
+        label: tier == MedalTier.none
+            ? emoji
+            : trUiArgs('Médaille {0}', <Object?>[tier.label]),
         image: true,
         child: ring,
       );
@@ -124,7 +127,7 @@ class MedalBadge extends StatelessWidget {
 
     // Pastille médaille coin haut-droit.
     return Semantics(
-      label: 'Médaille ${tier.label}',
+      label: trUiArgs('Médaille {0}', <Object?>[tier.label]),
       image: true,
       child: SizedBox(
         width: size,

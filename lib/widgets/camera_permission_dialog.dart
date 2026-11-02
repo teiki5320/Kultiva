@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/ui_i18n.dart';
 import '../models/photo_pick_result.dart';
 import '../services/photo_service.dart';
 import '../theme/app_theme.dart';
@@ -17,29 +18,30 @@ Future<void> showCameraPermissionDialog(BuildContext context) async {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      title: const Row(
+      title: Row(
         children: <Widget>[
-          Text('📷', style: TextStyle(fontSize: 28)),
-          SizedBox(width: 10),
+          const Text('📷', style: TextStyle(fontSize: 28)),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Appareil photo bloqué',
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+              trUi('Appareil photo bloqué'),
+              style:
+                  const TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
             ),
           ),
         ],
       ),
-      content: const Text(
-        'Kultiva a besoin de l\'appareil photo pour les défis photo '
-        'et les photos de plants.\n\n'
-        'Tu as refusé l\'autorisation. Tu peux la réactiver dans '
-        'les réglages du téléphone.',
-        style: TextStyle(fontSize: 14, height: 1.4),
+      content: Text(
+        trUi("Kultiva a besoin de l'appareil photo pour les défis photo "
+            'et les photos de plants.\n\n'
+            "Tu as refusé l'autorisation. Tu peux la réactiver dans "
+            'les réglages du téléphone.'),
+        style: const TextStyle(fontSize: 14, height: 1.4),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: const Text('Plus tard'),
+          child: Text(trUi('Plus tard')),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -53,9 +55,9 @@ Future<void> showCameraPermissionDialog(BuildContext context) async {
             Navigator.of(ctx).pop();
             await PhotoService.openSettings();
           },
-          child: const Text(
-            'Ouvrir les Réglages',
-            style: TextStyle(fontWeight: FontWeight.w700),
+          child: Text(
+            trUi('Ouvrir les Réglages'),
+            style: const TextStyle(fontWeight: FontWeight.w700),
           ),
         ),
       ],

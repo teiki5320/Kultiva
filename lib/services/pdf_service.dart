@@ -3,7 +3,10 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 import '../data/companions.dart';
+import '../data/names_en.dart';
 import '../data/regions/regional_calendar.dart';
+import '../data/ui_i18n.dart';
+import '../utils/months.dart';
 import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
 import '../models/region_data.dart';
@@ -32,7 +35,7 @@ class PdfService {
               pw.Row(
                 children: [
                   pw.Text(
-                    '${vegetable.emoji}  ${vegetable.name}',
+                    '${vegetable.emoji}  ${vegetable.displayName}',
                     style: const pw.TextStyle(
                       fontSize: 28,
                       fontWeight: pw.FontWeight.bold,
@@ -69,7 +72,7 @@ class PdfService {
               // Calendrier
               if (regionData != null) ...[
                 pw.Text(
-                  'Calendrier — ${region.label}',
+                  trUiArgs('Calendrier — {0}', <Object?>[region.displayLabel]),
                   style: const pw.TextStyle(
                     fontSize: 16,
                     fontWeight: pw.FontWeight.bold,
@@ -77,10 +80,10 @@ class PdfService {
                 ),
                 pw.SizedBox(height: 8),
                 _buildMonthBar(
-                    'Semis', regionData.sowingMonths, PdfColors.green),
+                    trUi('Semis'), regionData.sowingMonths, PdfColors.green),
                 pw.SizedBox(height: 4),
-                _buildMonthBar(
-                    'Récolte', regionData.harvestMonths, PdfColors.orange),
+                _buildMonthBar(trUi('Récolte'), regionData.harvestMonths,
+                    PdfColors.orange),
                 if (regionData.regionalNote != null) ...[
                   pw.SizedBox(height: 6),
                   pw.Container(
@@ -102,7 +105,7 @@ class PdfService {
 
               // Techniques
               pw.Text(
-                'Techniques de culture',
+                trUi('Techniques de culture'),
                 style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
@@ -110,15 +113,15 @@ class PdfService {
               ),
               pw.SizedBox(height: 8),
               _buildInfoTable(<List<String?>>[
-                ['Technique', vegetable.sowingTechnique],
-                ['Profondeur', vegetable.sowingDepth],
-                ['Température germination', vegetable.germinationTemp],
-                ['Levée', vegetable.germinationDays],
-                ['Exposition', vegetable.exposure],
-                ['Espacement', vegetable.spacing],
-                ['Arrosage', vegetable.watering],
-                ['Sol', vegetable.soil],
-                ['Rendement', vegetable.yieldEstimate],
+                [trUi('Technique'), vegetable.sowingTechnique],
+                [trUi('Profondeur'), vegetable.sowingDepth],
+                [trUi('Température germination'), vegetable.germinationTemp],
+                [trUi('Levée'), vegetable.germinationDays],
+                [trUi('Exposition'), vegetable.exposure],
+                [trUi('Espacement'), vegetable.spacing],
+                [trUi('Arrosage'), vegetable.watering],
+                [trUi('Sol'), vegetable.soil],
+                [trUi('Rendement'), vegetable.yieldEstimate],
               ]),
 
               // Compagnonnage
@@ -128,7 +131,7 @@ class PdfService {
                 pw.Divider(),
                 pw.SizedBox(height: 8),
                 pw.Text(
-                  'Compagnonnage',
+                  trUi('Compagnonnage'),
                   style: const pw.TextStyle(
                     fontSize: 16,
                     fontWeight: pw.FontWeight.bold,
@@ -137,14 +140,14 @@ class PdfService {
                 pw.SizedBox(height: 8),
                 if (companionMap.containsKey(vegetable.id))
                   _buildCompanionRow(
-                    'Bons voisins',
+                    trUi('Bons voisins'),
                     companionMap[vegetable.id]!,
                     PdfColors.green700,
                   ),
                 if (incompatibleMap.containsKey(vegetable.id)) ...[
                   pw.SizedBox(height: 4),
                   _buildCompanionRow(
-                    'À éviter',
+                    trUi('À éviter'),
                     incompatibleMap[vegetable.id]!,
                     PdfColors.red700,
                   ),
@@ -155,7 +158,7 @@ class PdfService {
               pw.Divider(color: PdfColors.grey300),
               pw.SizedBox(height: 4),
               pw.Text(
-                'Fiche générée par Kultiva',
+                trUi('Fiche générée par Kultiva'),
                 style:
                     const pw.TextStyle(fontSize: 9, color: PdfColors.grey500),
               ),
@@ -221,7 +224,7 @@ class PdfService {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: <pw.Widget>[
               pw.Text(
-                'Récap saison $year',
+                trUiArgs('Récap saison {0}', <Object?>[year]),
                 style: const pw.TextStyle(
                   fontSize: 28,
                   fontWeight: pw.FontWeight.bold,
@@ -229,7 +232,7 @@ class PdfService {
               ),
               pw.SizedBox(height: 4),
               pw.Text(
-                'Cahier de culture pleine terre',
+                trUi('Cahier de culture pleine terre'),
                 style: const pw.TextStyle(
                   fontSize: 13,
                   color: PdfColors.grey700,
@@ -238,17 +241,19 @@ class PdfService {
               pw.SizedBox(height: 22),
               pw.Row(
                 children: <pw.Widget>[
-                  _Stat(label: 'Cultures', value: '$totalCultures'),
-                  _Stat(label: 'Arrosages', value: '$waterings'),
+                  _Stat(label: trUi('Cultures'), value: '$totalCultures'),
+                  _Stat(label: trUi('Arrosages'), value: '$waterings'),
                   _Stat(
-                    label: 'Durée moy.',
-                    value: avgDuration == 0 ? '—' : '$avgDuration j',
+                    label: trUi('Durée moy.'),
+                    value: avgDuration == 0
+                        ? '—'
+                        : trUiArgs('{0} j', <Object?>[avgDuration]),
                   ),
                 ],
               ),
               pw.SizedBox(height: 24),
               pw.Text(
-                'Top 5 légumes',
+                trUi('Top 5 légumes'),
                 style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
@@ -257,7 +262,7 @@ class PdfService {
               pw.SizedBox(height: 8),
               if (topVeg.isEmpty)
                 pw.Text(
-                  'Aucune culture cette saison.',
+                  trUi('Aucune culture cette saison.'),
                   style: const pw.TextStyle(color: PdfColors.grey700),
                 ),
               for (final entry in topVeg)
@@ -287,7 +292,7 @@ class PdfService {
                 ),
               pw.SizedBox(height: 22),
               pw.Text(
-                'Répartition par famille',
+                trUi('Répartition par famille'),
                 style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
@@ -300,13 +305,17 @@ class PdfService {
                 pw.Padding(
                   padding: const pw.EdgeInsets.symmetric(vertical: 2),
                   child: pw.Text(
-                    '${entry.key.label} : ${entry.value} culture${entry.value > 1 ? 's' : ''}',
+                    entry.value > 1
+                        ? trUiArgs('{0} : {1} cultures',
+                            <Object?>[entry.key.label, entry.value])
+                        : trUiArgs('{0} : {1} culture',
+                            <Object?>[entry.key.label, entry.value]),
                     style: const pw.TextStyle(fontSize: 12),
                   ),
                 ),
               pw.SizedBox(height: 22),
               pw.Text(
-                'Détail des cultures',
+                trUi('Détail des cultures'),
                 style: const pw.TextStyle(
                   fontSize: 16,
                   fontWeight: pw.FontWeight.bold,
@@ -318,15 +327,17 @@ class PdfService {
                   padding: const pw.EdgeInsets.symmetric(vertical: 3),
                   child: pw.Text(
                     '${_fmtShort(c.startedAt)} → '
-                    '${c.endedAt == null ? "en cours" : _fmtShort(c.endedAt!)}'
+                    '${c.endedAt == null ? trUi("en cours") : _fmtShort(c.endedAt!)}'
                     '   ${_vegName(c.vegetableId)}'
-                    '   (${wateringCounts[c.id] ?? 0} arrosages)',
+                    '   ${trUiArgs("({0} arrosages)", <Object?>[
+                      wateringCounts[c.id] ?? 0
+                    ])}',
                     style: const pw.TextStyle(fontSize: 11),
                   ),
                 ),
               pw.SizedBox(height: 32),
               pw.Text(
-                'Récap généré par Kultiva',
+                trUi('Récap généré par Kultiva'),
                 style: const pw.TextStyle(
                   fontSize: 9,
                   color: PdfColors.grey500,
@@ -340,14 +351,14 @@ class PdfService {
 
     await Printing.layoutPdf(
       onLayout: (_) => doc.save(),
-      name: 'Kultiva — Récap $year',
+      name: trUiArgs('Kultiva — Récap {0}', <Object?>[year]),
     );
   }
 
   static String _vegName(String id) {
     try {
       final v = vegetablesBase.firstWhere((veg) => veg.id == id);
-      return v.name;
+      return v.displayName;
     } catch (_) {
       return id;
     }
@@ -366,20 +377,14 @@ class PdfService {
     }
   }
 
-  static const List<String> _shortMonths = [
-    'J',
-    'F',
-    'M',
-    'A',
-    'M',
-    'J',
-    'J',
-    'A',
-    'S',
-    'O',
-    'N',
-    'D',
-  ];
+  /// Les douze initiales de la barre de mois.
+  ///
+  /// Dérivées de la table des mois abrégés plutôt qu'écrites à la
+  /// main : en espagnol, janvier est « enero », donc la première
+  /// colonne porte un **E** et non un J. Écrites en dur, elles
+  /// auraient menti dans une langue sur trois.
+  static List<String> get _shortMonths =>
+      monthNamesShort.map((m) => m[0].toUpperCase()).toList(growable: false);
 
   static pw.Widget _buildMonthBar(
       String label, List<int> months, PdfColor color) {
@@ -449,7 +454,7 @@ class PdfService {
       String label, List<String> ids, PdfColor color) {
     final names = ids.map((id) {
       try {
-        return vegetablesBase.firstWhere((v) => v.id == id).name;
+        return vegetablesBase.firstWhere((v) => v.id == id).displayName;
       } catch (_) {
         return id;
       }

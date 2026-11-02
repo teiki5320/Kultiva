@@ -8,6 +8,7 @@ import '../../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/regions/regional_calendar.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/region_data.dart';
 import '../../../models/garden_plan.dart';
@@ -115,16 +116,16 @@ class PlannerPlantPicker extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Text(
-                'Choisir les plantes',
-                style: TextStyle(
+              Text(
+                trUi('Choisir les plantes'),
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               const Spacer(),
               PopupMenuButton<PlannerSeason>(
-                tooltip: 'Filtrer par saison',
+                tooltip: trUi('Filtrer par saison'),
                 initialValue: season,
                 onSelected: onSeasonChanged,
                 itemBuilder: (_) =>
@@ -185,8 +186,9 @@ class PlannerPlantPicker extends StatelessWidget {
                 ? Center(
                     child: Text(
                       filter is FavoritesFilter
-                          ? 'Aucun favori. Ajoute des plantes en favori depuis l\'onglet Étal.'
-                          : 'Aucune plante dans ce filtre.',
+                          ? trUi('Aucun favori. Ajoute des plantes en favori '
+                              "depuis l'onglet Étal.")
+                          : trUi('Aucune plante dans ce filtre.'),
                       style: const TextStyle(
                         fontSize: 12,
                         color: KultivaColors.textSecondary,
@@ -254,8 +256,8 @@ class PlannerIrrigationBanner extends StatelessWidget {
     final ids = _cultureIdsInPlan();
     if (ids.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Aucun plant à arroser dans ce jardin'),
+        SnackBar(
+          content: Text(trUi('Aucun plant à arroser dans ce jardin')),
         ),
       );
       return;
@@ -265,7 +267,7 @@ class PlannerIrrigationBanner extends StatelessWidget {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('💧 $count plant(s) arrosé(s)'),
+          content: Text(trUiArgs('💧 {0} plant(s) arrosé(s)', <Object?>[count])),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -336,7 +338,7 @@ class PlannerIrrigationBanner extends StatelessWidget {
           ),
           // ─── Partie droite : bouton Arroser (bleu eau) ───
           Semantics(
-            label: 'Arroser tous les plants',
+            label: trUi('Arroser tous les plants'),
             button: true,
             enabled: cultureCount > 0,
             excludeSemantics: true,
@@ -370,9 +372,9 @@ class PlannerIrrigationBanner extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 3),
-                    const Text(
-                      'Arroser',
-                      style: TextStyle(
+                    Text(
+                      trUi('Arroser'),
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
                         color: KultivaColors.waterBlue,
@@ -393,8 +395,8 @@ class PlannerIrrigationBanner extends StatelessWidget {
     if (w == null) {
       return (
         emoji: '💧',
-        title: 'Irrigation',
-        message: 'Météo en cours de chargement…',
+        title: trUi('Irrigation'),
+        message: trUi('Météo en cours de chargement…'),
         color: Colors.blue,
       );
     }
@@ -406,25 +408,30 @@ class PlannerIrrigationBanner extends StatelessWidget {
     if (dailyRain >= 5) {
       return (
         emoji: '🌧️',
-        title: 'Pluie attendue',
-        message: 'Pluie cumulée ~ ${dailyRain.toStringAsFixed(0)} mm sur 3j. '
-            'Pas besoin d\'arroser pour l\'instant.',
+        title: trUi('Pluie attendue'),
+        message: trUiArgs(
+            'Pluie cumulée ~ {0} mm sur 3j. '
+            "Pas besoin d'arroser pour l'instant.",
+            <Object?>[dailyRain.toStringAsFixed(0)]),
         color: Colors.blue,
       );
     }
     if (maxTempNext3 >= 28) {
       return (
         emoji: '☀️',
-        title: 'Forte chaleur',
-        message: 'Pic à ${maxTempNext3.toStringAsFixed(0)} °C prévu. Arrose '
+        title: trUi('Forte chaleur'),
+        message: trUiArgs(
+            'Pic à {0} °C prévu. Arrose '
             'tôt le matin ou en fin de journée, pailler les pieds.',
+            <Object?>[maxTempNext3.toStringAsFixed(0)]),
         color: Colors.orange,
       );
     }
     return (
       emoji: '🌤️',
-      title: 'Conditions normales',
-      message: 'Vérifie tes plants : un sol sec sur 3 cm = il faut arroser.',
+      title: trUi('Conditions normales'),
+      message:
+          trUi('Vérifie tes plants : un sol sec sur 3 cm = il faut arroser.'),
       color: KultivaColors.primaryGreen,
     );
   }
@@ -532,10 +539,10 @@ class PlannerTipsSheet extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Comment utiliser le planificateur',
-                    style: TextStyle(
+                    trUi('Comment utiliser le planificateur'),
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w800,
                     ),
@@ -543,36 +550,36 @@ class PlannerTipsSheet extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.close),
-                  tooltip: 'Fermer',
+                  tooltip: trUi('Fermer'),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            const PlannerTipStep(
+            PlannerTipStep(
               n: 1,
-              text:
-                  "Glisse une plante depuis la barre du bas vers une case de la grille pour la planter.",
+              text: trUi('Glisse une plante depuis la barre du bas vers une '
+                  'case de la grille pour la planter.'),
             ),
-            const PlannerTipStep(
+            PlannerTipStep(
               n: 2,
-              text:
-                  "Touche une case occupée pour voir les détails ou la vider.",
+              text: trUi(
+                  'Touche une case occupée pour voir les détails ou la vider.'),
             ),
-            const PlannerTipStep(
+            PlannerTipStep(
               n: 3,
-              text:
-                  "Le chiffre indique le nombre de plants qui tiennent dans une case (ex. 9 carottes par 30×30 cm).",
+              text: trUi('Le chiffre indique le nombre de plants qui tiennent '
+                  'dans une case (ex. 9 carottes par 30×30 cm).'),
             ),
-            const PlannerTipStep(
+            PlannerTipStep(
               n: 4,
-              text:
-                  "Anneau vert autour d'une case = plantes compagnes voisines, anneau rouge = à séparer.",
+              text: trUi("Anneau vert autour d'une case = plantes compagnes "
+                  'voisines, anneau rouge = à séparer.'),
             ),
-            const PlannerTipStep(
+            PlannerTipStep(
               n: 5,
-              text:
-                  "Chaque case mesure 1×1 pied (≈ 30×30 cm). Configure la taille de ton jardin via « Configurer ».",
+              text: trUi('Chaque case mesure 1×1 pied (≈ 30×30 cm). Configure '
+                  'la taille de ton jardin via « Configurer ».'),
             ),
           ],
         );

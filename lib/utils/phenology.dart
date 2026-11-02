@@ -1,3 +1,4 @@
+import '../data/ui_i18n.dart';
 import '../models/culture_entry.dart';
 import '../models/vegetable.dart';
 
@@ -47,25 +48,29 @@ PhenologyHint? expectedStage(Vegetable veg, int daysSinceStart) {
   if (daysSinceStart < germMax) {
     return PhenologyHint(
       emoji: '🌰',
-      label: 'Germination attendue',
-      detail: 'Levée prévue d\'ici ${germMax - daysSinceStart} j '
-          '(germe en moyenne en ${veg.germinationDays ?? "$germMax j"}).',
+      label: trUi('Germination attendue'),
+      detail: trUiArgs(
+          'Levée prévue d\'ici {0} j (germe en moyenne en {1}).',
+          <Object?>[
+            germMax - daysSinceStart,
+            veg.germinationDays ?? trUiArgs('{0} j', <Object?>[germMax]),
+          ]),
     );
   }
   if (daysSinceStart < germMax + 10) {
-    return const PhenologyHint(
+    return PhenologyHint(
       emoji: '🌱',
-      label: 'Plantule',
-      detail: 'Premières vraies feuilles. Pince les plus faibles, '
-          'surveille les limaces.',
+      label: trUi('Plantule'),
+      detail: trUi('Premières vraies feuilles. Pince les plus faibles, '
+          'surveille les limaces.'),
     );
   }
   if (daysSinceStart < harvestStart - 14) {
-    return const PhenologyHint(
+    return PhenologyHint(
       emoji: '🌿',
-      label: 'Croissance végétative',
-      detail: 'Le plant prend du volume. Apporte un peu de compost '
-          'si le feuillage jaunit.',
+      label: trUi('Croissance végétative'),
+      detail: trUi('Le plant prend du volume. Apporte un peu de compost '
+          'si le feuillage jaunit.'),
     );
   }
   if (daysSinceStart < harvestStart) {
@@ -77,18 +82,18 @@ PhenologyHint? expectedStage(Vegetable veg, int daysSinceStart) {
     );
   }
   if (daysSinceStart < harvestEnd) {
-    return const PhenologyHint(
+    return PhenologyHint(
       emoji: '🧺',
-      label: 'Récolte attendue',
-      detail: 'Tu peux commencer à récolter. Goûte régulièrement '
-          'pour repérer le pic de saveur.',
+      label: trUi('Récolte attendue'),
+      detail: trUi('Tu peux commencer à récolter. Goûte régulièrement '
+          'pour repérer le pic de saveur.'),
       harvestReady: true,
     );
   }
-  return const PhenologyHint(
+  return PhenologyHint(
     emoji: '🍂',
-    label: 'Cycle terminé',
-    detail: 'Pense à arracher et préparer le sol pour la rotation.',
+    label: trUi('Cycle terminé'),
+    detail: trUi('Pense à arracher et préparer le sol pour la rotation.'),
   );
 }
 
@@ -164,42 +169,42 @@ GrowthPhase deducedPhase(Vegetable veg, int daysSinceStarted) {
   switch (c) {
     case VegetableCategory.fruits:
       return (
-        label: 'Floraison / nouaison',
-        detail: 'Les premières fleurs annoncent la fructification. '
-            'Tuteure si besoin et pince les gourmands (tomates).'
+        label: trUi('Floraison / nouaison'),
+        detail: trUi('Les premières fleurs annoncent la fructification. '
+            'Tuteure si besoin et pince les gourmands (tomates).')
       );
     case VegetableCategory.tubers:
       return (
-        label: 'Tubérisation',
-        detail: 'Les tubercules se forment sous terre. Butte le pied '
-            'pour les couvrir et arrose régulièrement.'
+        label: trUi('Tubérisation'),
+        detail: trUi('Les tubercules se forment sous terre. Butte le pied '
+            'pour les couvrir et arrose régulièrement.')
       );
     case VegetableCategory.roots:
       return (
-        label: 'Grossissement',
-        detail: 'Les racines s\'allongent. Éclaircis si tu ne l\'as '
-            'pas encore fait pour laisser la place.'
+        label: trUi('Grossissement'),
+        detail: trUi('Les racines s\'allongent. Éclaircis si tu ne l\'as '
+            'pas encore fait pour laisser la place.')
       );
     case VegetableCategory.bulbs:
       return (
-        label: 'Bulbaison',
-        detail: 'Le bulbe se forme. Réduis l\'arrosage à l\'approche '
-            'de la récolte.'
+        label: trUi('Bulbaison'),
+        detail: trUi('Le bulbe se forme. Réduis l\'arrosage à l\'approche '
+            'de la récolte.')
       );
     case VegetableCategory.leaves:
     case VegetableCategory.aromatics:
       return (
-        label: 'Plein développement',
-        detail: 'Surveille les pucerons, les limaces et la montée '
-            'à graines.'
+        label: trUi('Plein développement'),
+        detail: trUi('Surveille les pucerons, les limaces et la montée '
+            'à graines.')
       );
     case VegetableCategory.flowers:
     case VegetableCategory.seeds:
     case VegetableCategory.stems:
       return (
-        label: 'Pré-récolte',
-        detail: 'Les organes commencent à mûrir. Garde un œil sur '
-            'la météo.'
+        label: trUi('Pré-récolte'),
+        detail: trUi('Les organes commencent à mûrir. Garde un œil sur '
+            'la météo.')
       );
     case VegetableCategory.accessories:
       return (label: '', detail: '');

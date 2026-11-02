@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/content_i18n.dart';
+import '../../../data/names_en.dart';
+import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
 import '../../../models/watering_alert.dart';
@@ -116,8 +118,8 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(ids.length == 1
-            ? 'Arrosage noté 💧'
-            : '${ids.length} plants arrosés 💧'),
+            ? trUi('Arrosage noté 💧')
+            : trUiArgs('{0} plants arrosés 💧', <Object?>[ids.length])),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -137,19 +139,20 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
     if (_alerts.isNotEmpty) {
       lignes.add(_TaskLine(
         emoji: '💧',
-        text: 'Arroser : ${_listeEspeces(_alerts.map((a) => a.vegetable))}',
+        text: trUiArgs('Arroser : {0}',
+            <Object?>[_listeEspeces(_alerts.map((a) => a.vegetable))]),
         urgent: _alerts.any((a) => a.urgency >= 2),
         // Le bouton reste en place pendant l'écriture, seulement
         // désactivé : le faire disparaître déplaçait la ligne sous le
         // doigt au moment du tap.
-        action: 'Arroser',
+        action: trUi('Arroser'),
         onAction: _watering ? null : _waterAll,
       ));
     }
     if (recoltes.isNotEmpty) {
       lignes.add(_TaskLine(
         emoji: '🧺',
-        text: 'À récolter : ${_listeEspeces(recoltes)}',
+        text: trUiArgs('À récolter : {0}', <Object?>[_listeEspeces(recoltes)]),
       ));
     }
     if (_heatwave) {
@@ -162,8 +165,12 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
       lignes.add(_TaskLine(
         emoji: '🥵',
         urgent: true,
-        text: '${_todayMax!.round()} °C aujourd\'hui. '
-            '${categorie == null ? "Pense à pailler et ombrer." : tr(heatwaveTipFor(categorie))}',
+        text: trUiArgs("{0} °C aujourd'hui. {1}", <Object?>[
+          _todayMax!.round(),
+          categorie == null
+              ? trUi('Pense à pailler et ombrer.')
+              : tr(heatwaveTipFor(categorie)),
+        ]),
       ));
     }
 
@@ -171,10 +178,12 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
       lignes.add(_TaskLine(
         emoji: '✅',
         text: _loading
-            ? 'Lecture du jardin…'
-            : 'Rien d\'urgent aujourd\'hui. '
-                '${actifs.length} plant${actifs.length > 1 ? 's' : ''} '
-                'en terre.',
+            ? trUi('Lecture du jardin…')
+            : actifs.length > 1
+                ? trUiArgs("Rien d'urgent aujourd'hui. {0} plants en terre.",
+                    <Object?>[actifs.length])
+                : trUiArgs("Rien d'urgent aujourd'hui. {0} plant en terre.",
+                    <Object?>[actifs.length]),
       ));
     }
 
@@ -201,9 +210,9 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'À faire aujourd\'hui',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+            Text(
+              trUi("À faire aujourd'hui"),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 10),
             ...lignes,
@@ -215,14 +224,17 @@ class _CahierTodayCardState extends State<CahierTodayCard> {
 
   /// « tomate, courgette et radis » — les noms, pas « 3 espèces ».
   static String _listeEspeces(Iterable<Vegetable> legumes) {
-    final noms = legumes.map((v) => v.name.toLowerCase()).toList();
+    final noms = legumes.map((v) => v.displayName.toLowerCase()).toList();
     if (noms.length <= 3) {
       if (noms.length == 1) return noms.first;
-      return '${noms.sublist(0, noms.length - 1).join(', ')} '
-          'et ${noms.last}';
+      return trUiArgs('{0} et {1}',
+          <Object?>[noms.sublist(0, noms.length - 1).join(', '), noms.last]);
     }
-    return '${noms.take(3).join(', ')} et ${noms.length - 3} autre'
-        '${noms.length - 3 > 1 ? 's' : ''}';
+    return noms.length - 3 > 1
+        ? trUiArgs('{0} et {1} autres',
+            <Object?>[noms.take(3).join(', '), noms.length - 3])
+        : trUiArgs('{0} et {1} autre',
+            <Object?>[noms.take(3).join(', '), noms.length - 3]);
   }
 }
 

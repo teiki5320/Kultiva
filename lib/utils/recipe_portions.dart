@@ -13,6 +13,9 @@
 /// pincée par trois.
 library;
 
+import '../data/ui_i18n.dart';
+import 'months.dart';
+
 /// Met à l'échelle une liste d'ingrédients écrite pour [from] personnes
 /// afin de nourrir [to] personnes.
 List<String> scaleIngredients(
@@ -73,11 +76,12 @@ String dateCourte(DateTime quand) {
   final jours = DateTime(today.year, today.month, today.day)
       .difference(DateTime(quand.year, quand.month, quand.day))
       .inDays;
-  if (jours == 0) return 'aujourd\'hui';
-  if (jours == 1) return 'hier';
-  const mois = <String>[
-    'janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin',
-    'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.',
-  ];
-  return 'le ${quand.day} ${mois[quand.month - 1]}';
+  if (jours == 0) return trUi('aujourd\'hui');
+  if (jours == 1) return trUi('hier');
+  // Le mois **long**, et pas l'abrégé : la table abrégée est sans
+  // point final, parce qu'elle sert la barre de douze mois de la fiche
+  // légume, où chaque cellule fait 24 px. « le 3 nov » n'est pas du
+  // français ; « le 3 novembre » l'est, et la place ne manque pas ici.
+  return trUiArgs('le {0} {1}',
+      <Object?>[quand.day, monthNamesLong[quand.month - 1]]);
 }

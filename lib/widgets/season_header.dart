@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/ui_i18n.dart';
 import '../utils/text_scale.dart';
 
 import '../theme/app_theme.dart';
@@ -33,20 +34,20 @@ class SeasonHeader extends StatelessWidget {
     this.hideLabel = false,
   });
 
-  static const List<String> _months = <String>[
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre',
-  ];
+  static List<String> get _months => <String>[
+        trUi('Janvier'),
+        trUi('Février'),
+        trUi('Mars'),
+        trUi('Avril'),
+        trUi('Mai'),
+        trUi('Juin'),
+        trUi('Juillet'),
+        trUi('Août'),
+        trUi('Septembre'),
+        trUi('Octobre'),
+        trUi('Novembre'),
+        trUi('Décembre'),
+      ];
 
   @override
   Widget build(BuildContext context) {

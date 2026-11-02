@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../../data/ui_i18n.dart';
 import '../../models/garden_plan.dart';
 import '../../services/garden_plan_service.dart';
 import '../../theme/app_theme.dart';
@@ -34,7 +35,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
   void initState() {
     super.initState();
     final ex = widget.existing;
-    _nameCtrl = TextEditingController(text: ex?.name ?? 'Jardin 1');
+    _nameCtrl = TextEditingController(text: ex?.name ?? trUi('Jardin 1'));
     _locationCtrl = TextEditingController(text: ex?.location ?? '');
     _unit = ex?.unit ?? GardenUnit.cm;
     _widthCm = ex != null ? (ex.cols * 30) : 120;
@@ -65,10 +66,10 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
             // En-tête.
             Row(
               children: <Widget>[
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Configuration du jardin',
-                    style: TextStyle(
+                    trUi('Configuration du jardin'),
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
                     ),
@@ -76,7 +77,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.close, size: 22),
-                  tooltip: 'Fermer',
+                  tooltip: trUi('Fermer'),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -85,7 +86,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
 
             // Section Lieu.
             _SectionCard(
-              title: 'Lieu',
+              title: trUi('Lieu'),
               icon: Icons.place,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,16 +96,16 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                       Expanded(
                         child: TextField(
                           controller: _locationCtrl,
-                          decoration: const InputDecoration(
-                            hintText: 'Ville, code postal, région…',
-                            border: OutlineInputBorder(),
+                          decoration: InputDecoration(
+                            hintText: trUi('Ville, code postal, région…'),
+                            border: const OutlineInputBorder(),
                             isDense: true,
                           ),
                         ),
                       ),
                       const SizedBox(width: 6),
                       IconButton.filledTonal(
-                        tooltip: 'Détecter ma position',
+                        tooltip: trUi('Détecter ma position'),
                         onPressed: _detectingLocation ? null : _detectLocation,
                         icon: _detectingLocation
                             ? const SizedBox(
@@ -118,9 +119,9 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Pour connaître ton climat et les dates de gel.',
-                    style: TextStyle(
+                  Text(
+                    trUi('Pour connaître ton climat et les dates de gel.'),
+                    style: const TextStyle(
                       fontSize: 11,
                       color: KultivaColors.textSecondary,
                     ),
@@ -132,7 +133,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
 
             // Section Nom.
             _SectionCard(
-              title: 'Nom',
+              title: trUi('Nom'),
               icon: Icons.fence,
               child: TextField(
                 controller: _nameCtrl,
@@ -146,21 +147,21 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
 
             // Section Taille.
             _SectionCard(
-              title: 'Taille',
+              title: trUi('Taille'),
               icon: Icons.grid_view,
               child: Column(
                 children: <Widget>[
                   // Toggle cm / pieds.
                   Center(
                     child: SegmentedButton<GardenUnit>(
-                      segments: const <ButtonSegment<GardenUnit>>[
-                        ButtonSegment<GardenUnit>(
+                      segments: <ButtonSegment<GardenUnit>>[
+                        const ButtonSegment<GardenUnit>(
                           value: GardenUnit.cm,
                           label: Text('cm'),
                         ),
                         ButtonSegment<GardenUnit>(
                           value: GardenUnit.ft,
-                          label: Text('pieds'),
+                          label: Text(trUi('pieds')),
                         ),
                       ],
                       selected: <GardenUnit>{_unit},
@@ -179,7 +180,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       _SizePicker(
-                        label: 'Largeur',
+                        label: trUi('Largeur'),
                         valueCm: _widthCm,
                         unit: _unit,
                         onChanged: (cm) => setState(() => _widthCm = cm),
@@ -195,7 +196,7 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                         ),
                       ),
                       _SizePicker(
-                        label: 'Profondeur',
+                        label: trUi('Profondeur'),
                         valueCm: _heightCm,
                         unit: _unit,
                         onChanged: (cm) => setState(() => _heightCm = cm),
@@ -204,7 +205,8 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${_widthCm ~/ 30} × ${_heightCm ~/ 30} cases (1 case = 30×30 cm)',
+                    trUiArgs('{0} × {1} cases (1 case = 30×30 cm)',
+                        <Object?>[_widthCm ~/ 30, _heightCm ~/ 30]),
                     style: const TextStyle(
                       fontSize: 11,
                       color: KultivaColors.textSecondary,
@@ -227,9 +229,9 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
                   ),
                 ),
                 onPressed: _save,
-                child: const Text(
-                  'Terminé',
-                  style: TextStyle(
+                child: Text(
+                  trUi('Terminé'),
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
                   ),
@@ -254,8 +256,9 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
           perm == LocationPermission.deniedForever) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Localisation refusée. Tape ta ville à la main."),
+            SnackBar(
+              content: Text(
+                  trUi("Localisation refusée. Tape ta ville à la main.")),
             ),
           );
         }
@@ -280,7 +283,8 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Échec de la géoloc : $e')),
+          SnackBar(
+              content: Text(trUiArgs('Échec de la géoloc : {0}', <Object?>[e]))),
         );
       }
     } finally {

@@ -1,6 +1,9 @@
 import '../data/content_i18n.dart';
 import '../data/companions.dart';
 import '../data/diseases.dart';
+import '../data/names_en.dart';
+import '../data/ui_i18n.dart';
+import '../data/vegetables_base.dart';
 import '../models/culture_entry.dart';
 import '../models/plant_advice.dart';
 import '../models/plantation.dart';
@@ -45,7 +48,7 @@ class AdviceService {
     final sections = <AdviceSection>[
       AdviceSection(
         emoji: phase.emoji,
-        title: 'À faire maintenant',
+        title: trUi('À faire maintenant'),
         body: phaseAdvice(vegetable, phase),
       ),
     ];
@@ -59,7 +62,7 @@ class AdviceService {
     if (eau != null) {
       sections.add(AdviceSection(
         emoji: eau.emoji,
-        title: 'Eau',
+        title: trUi('Eau'),
         body: eau.message,
         urgent: eau.urgency == WateringUrgency.overdue ||
             eau.urgency == WateringUrgency.heatwave,
@@ -71,7 +74,7 @@ class AdviceService {
     if (max != null && max >= heatwaveThresholdFor(region)) {
       sections.add(AdviceSection(
         emoji: '🥵',
-        title: '${max.round()} °C aujourd\'hui',
+        title: trUiArgs('{0} °C aujourd\'hui', <Object?>[max.round()]),
         body: tr(heatwaveTipFor(vegetable.category)),
         urgent: true,
       ));
@@ -82,7 +85,7 @@ class AdviceService {
     if (maladies.isNotEmpty) {
       sections.add(AdviceSection(
         emoji: '🔍',
-        title: 'À surveiller',
+        title: trUi('À surveiller'),
         // Trois suffisent : une liste de cinq maladies sur une photo
         // de plant en bonne santé décourage plus qu'elle n'aide.
         body: maladies
@@ -96,7 +99,7 @@ class AdviceService {
     if (hint != null) {
       sections.add(AdviceSection(
         emoji: hint.harvestReady ? '🧺' : '📅',
-        title: hint.harvestReady ? 'C\'est le moment' : 'Récolte',
+        title: hint.harvestReady ? trUi('C\'est le moment') : trUi('Récolte'),
         body: hint.detail,
         urgent: hint.harvestReady,
       ));
@@ -107,8 +110,15 @@ class AdviceService {
     if (amies.isNotEmpty) {
       sections.add(AdviceSection(
         emoji: '👍',
-        title: 'Bons voisins',
-        body: amies.take(6).join(', '),
+        title: trUi('Bons voisins'),
+        // ⚠️ `companionMap` ne contient que des **identifiants** :
+        // affichés bruts, ils donnaient « pommier, carotte » en
+        // français même sous une interface anglaise, et
+        // « chou_pomme » pour les ids composés.
+        body: amies
+            .take(6)
+            .map((id) => vegetableById(id).displayName)
+            .join(', '),
       ));
     }
 
@@ -120,7 +130,7 @@ class AdviceService {
     if (rotation != null) {
       sections.add(AdviceSection(
         emoji: '🔄',
-        title: 'Attention à la rotation',
+        title: trUi('Attention à la rotation'),
         body: rotation.message,
         urgent: true,
       ));
@@ -153,26 +163,26 @@ class AdviceService {
   static String phaseAdvice(Vegetable veg, GrowthPhase phase) {
     switch (phase) {
       case GrowthPhase.seedling:
-        return 'Garde le sol humide, protège des limaces et du froid '
-            'avec un voile si besoin.';
+        return trUi('Garde le sol humide, protège des limaces et du froid '
+            'avec un voile si besoin.');
       case GrowthPhase.vegetative:
         if (veg.category == VegetableCategory.fruits) {
-          return 'Tuteure le plant, pince les gourmands (tomates), '
-              'apporte du compost si feuilles claires.';
+          return trUi('Tuteure le plant, pince les gourmands (tomates), '
+              'apporte du compost si feuilles claires.');
         }
         if (veg.category == VegetableCategory.leaves ||
             veg.category == VegetableCategory.aromatics) {
-          return 'Récolte au fur et à mesure pour stimuler la repousse, '
-              'arrose au pied le matin.';
+          return trUi('Récolte au fur et à mesure pour stimuler la repousse, '
+              'arrose au pied le matin.');
         }
-        return 'Le plant prend du volume — arrose régulièrement et '
-            'bine le pied pour aérer le sol.';
+        return trUi('Le plant prend du volume — arrose régulièrement et '
+            'bine le pied pour aérer le sol.');
       case GrowthPhase.flowering:
-        return 'Floraison en cours : maintenir l\'arrosage régulier, '
-            'apporter de la potasse (cendres de bois).';
+        return trUi('Floraison en cours : maintenir l\'arrosage régulier, '
+            'apporter de la potasse (cendres de bois).');
       case GrowthPhase.fruiting:
-        return 'Récolte régulière pour stimuler la production. '
-            'Surveille les nuisibles et l\'humidité.';
+        return trUi('Récolte régulière pour stimuler la production. '
+            'Surveille les nuisibles et l\'humidité.');
     }
   }
 }

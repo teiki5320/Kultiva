@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../data/tutos_i18n.dart';
+import '../../data/ui_i18n.dart';
 import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../root_tabs.dart';
@@ -68,7 +69,9 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
       if (mounted) {
         setState(() => _loading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Impossible de charger la fiche : $e')),
+          SnackBar(
+              content: Text(trUiArgs(
+                  'Impossible de charger la fiche : {0}', <Object?>[e]))),
         );
       }
     }

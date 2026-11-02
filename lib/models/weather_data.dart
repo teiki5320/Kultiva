@@ -1,3 +1,5 @@
+import '../data/ui_i18n.dart';
+
 /// Données météo récupérées depuis Open-Meteo.
 class WeatherData {
   final double latitude;
@@ -93,25 +95,25 @@ class WeatherData {
   String get weatherLabel {
     switch (currentWeatherCode) {
       case 0:
-        return 'Ciel dégagé';
+        return trUi('Ciel dégagé');
       case 1:
-        return 'Peu nuageux';
+        return trUi('Peu nuageux');
       case 2:
-        return 'Partiellement nuageux';
+        return trUi('Partiellement nuageux');
       case 3:
-        return 'Couvert';
+        return trUi('Couvert');
       case >= 51 && <= 57:
-        return 'Bruine';
+        return trUi('Bruine');
       case >= 61 && <= 67:
-        return 'Pluie';
+        return trUi('Pluie');
       case >= 71 && <= 77:
-        return 'Neige';
+        return trUi('Neige');
       case >= 80 && <= 82:
-        return 'Averses';
+        return trUi('Averses');
       case >= 95 && <= 99:
-        return 'Orage';
+        return trUi('Orage');
       default:
-        return 'Variable';
+        return trUi('Variable');
     }
   }
 

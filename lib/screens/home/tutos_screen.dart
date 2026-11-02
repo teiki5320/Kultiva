@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/ui_i18n.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/season_header.dart' show kPageHeaderHeight;
 import '../../utils/text_scale.dart';
@@ -32,208 +33,208 @@ class _TutoItem {
   });
 }
 
-const _categories = <_TutoCategory>[
+List<_TutoCategory> get _categories => <_TutoCategory>[
   _TutoCategory(
     emoji: '🎒',
     imagePath: 'assets/images/tuto_prise_en_main.png',
-    label: 'Prise en main',
-    color: Color(0xFFB565F2),
+    label: trUi('Prise en main'),
+    color: const Color(0xFFB565F2),
     items: [
       _TutoItem(
           emoji: '🏠',
-          label: "Découvrir l'application",
+          label: trUi("Découvrir l'application"),
           htmlAsset: 'assets/tutos/decouvrir_dashboard.html'),
     ],
   ),
   _TutoCategory(
     emoji: '💡',
     imagePath: 'assets/images/tuto_astuces.png',
-    label: 'Astuces',
-    color: Color(0xFFFFB74D),
+    label: trUi('Astuces'),
+    color: const Color(0xFFFFB74D),
     items: [
       _TutoItem(
           emoji: '🌙',
-          label: 'Jardiner avec la lune',
+          label: trUi('Jardiner avec la lune'),
           htmlAsset: 'assets/tutos/jardiner_avec_lune.html'),
       _TutoItem(
           emoji: '🐝',
-          label: 'Attirer les pollinisateurs',
+          label: trUi('Attirer les pollinisateurs'),
           htmlAsset: 'assets/tutos/attirer_pollinisateurs.html'),
       _TutoItem(
           emoji: '♻️',
-          label: 'Réutiliser ses déchets',
+          label: trUi('Réutiliser ses déchets'),
           htmlAsset: 'assets/tutos/reutiliser_dechets.html'),
       _TutoItem(
           emoji: '⏰',
-          label: 'Gain de temps au jardin',
+          label: trUi('Gain de temps au jardin'),
           htmlAsset: 'assets/tutos/gain_temps_jardin.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🌱',
     imagePath: 'assets/images/tuto_semis.png',
-    label: 'Semis',
-    color: Color(0xFF4A9B5A),
+    label: trUi('Semis'),
+    color: const Color(0xFF4A9B5A),
     items: [
       _TutoItem(
           emoji: '🌱',
-          label: 'Réussir ses semis',
+          label: trUi('Réussir ses semis'),
           htmlAsset: 'assets/tutos/reussir_semis.html'),
       _TutoItem(
           emoji: '🏠',
-          label: 'Semis en intérieur',
+          label: trUi('Semis en intérieur'),
           htmlAsset: 'assets/tutos/semis_interieur.html'),
       _TutoItem(
           emoji: '📅',
-          label: 'Quand semer ?',
+          label: trUi('Quand semer ?'),
           htmlAsset: 'assets/tutos/quand_semer.html'),
       _TutoItem(
           emoji: '🌡️',
-          label: 'Température de germination',
+          label: trUi('Température de germination'),
           htmlAsset: 'assets/tutos/temperature_germination.html'),
     ],
   ),
   _TutoCategory(
     emoji: '💧',
     imagePath: 'assets/images/tuto_arrosage.png',
-    label: 'Arrosage',
-    color: Color(0xFF4A90D9),
+    label: trUi('Arrosage'),
+    color: const Color(0xFF4A90D9),
     items: [
       _TutoItem(
           emoji: '💧',
-          label: 'Bien arroser',
+          label: trUi('Bien arroser'),
           htmlAsset: 'assets/tutos/bien_arroser.html'),
       _TutoItem(
           emoji: '🕐',
-          label: 'Quand arroser ?',
+          label: trUi('Quand arroser ?'),
           htmlAsset: 'assets/tutos/quand_arroser.html'),
       _TutoItem(
           emoji: '💦',
-          label: 'Arrosage goutte à goutte',
+          label: trUi('Arrosage goutte à goutte'),
           htmlAsset: 'assets/tutos/goutte_a_goutte.html'),
       _TutoItem(
           emoji: '🌧️',
-          label: 'Récupérer l\'eau de pluie',
+          label: trUi('Récupérer l\'eau de pluie'),
           htmlAsset: 'assets/tutos/eau_de_pluie.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🧺',
     imagePath: 'assets/images/tuto_recolte.png',
-    label: 'Récolte',
-    color: Color(0xFFE8A87C),
+    label: trUi('Récolte'),
+    color: const Color(0xFFE8A87C),
     items: [
       _TutoItem(
           emoji: '🍅',
-          label: 'Quand récolter ?',
+          label: trUi('Quand récolter ?'),
           htmlAsset: 'assets/tutos/quand_recolter.html'),
       _TutoItem(
           emoji: '🥫',
-          label: 'Conserver ses légumes',
+          label: trUi('Conserver ses légumes'),
           htmlAsset: 'assets/tutos/conserver_legumes.html'),
       _TutoItem(
           emoji: '🌿',
-          label: 'Récolter les aromatiques',
+          label: trUi('Récolter les aromatiques'),
           htmlAsset: 'assets/tutos/recolter_aromatiques.html'),
       _TutoItem(
           emoji: '🥕',
-          label: 'Récolter les racines',
+          label: trUi('Récolter les racines'),
           htmlAsset: 'assets/tutos/recolter_racines.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🌍',
     imagePath: 'assets/images/tuto_sol.png',
-    label: 'Sol & Compost',
-    color: Color(0xFF8B6914),
+    label: trUi('Sol & Compost'),
+    color: const Color(0xFF8B6914),
     items: [
       _TutoItem(
           emoji: '🪱',
-          label: 'Faire son compost',
+          label: trUi('Faire son compost'),
           htmlAsset: 'assets/tutos/faire_compost.html'),
       _TutoItem(
           emoji: '🌍',
-          label: 'Préparer le sol',
+          label: trUi('Préparer le sol'),
           htmlAsset: 'assets/tutos/preparer_sol.html'),
       _TutoItem(
           emoji: '🧪',
-          label: 'Engrais naturels',
+          label: trUi('Engrais naturels'),
           htmlAsset: 'assets/tutos/engrais_naturels.html'),
       _TutoItem(
           emoji: '🍂',
-          label: 'Paillage',
+          label: trUi('Paillage'),
           htmlAsset: 'assets/tutos/paillage.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🐛',
     imagePath: 'assets/images/tuto_maladies.png',
-    label: 'Maladies & Nuisibles',
-    color: Color(0xFFCC4444),
+    label: trUi('Maladies & Nuisibles'),
+    color: const Color(0xFFCC4444),
     items: [
       _TutoItem(
           emoji: '🐌',
-          label: 'Lutter contre les limaces',
+          label: trUi('Lutter contre les limaces'),
           htmlAsset: 'assets/tutos/lutter_limaces.html'),
       _TutoItem(
           emoji: '🍄',
-          label: 'Mildiou',
+          label: trUi('Mildiou'),
           htmlAsset: 'assets/tutos/mildiou.html'),
       _TutoItem(
           emoji: '🐛',
-          label: 'Pucerons',
+          label: trUi('Pucerons'),
           htmlAsset: 'assets/tutos/pucerons.html'),
       _TutoItem(
           emoji: '🌿',
-          label: 'Traitements bio',
+          label: trUi('Traitements bio'),
           htmlAsset: 'assets/tutos/traitements_bio.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🏡',
     imagePath: 'assets/images/tuto_amenagement.png',
-    label: 'Aménagement',
-    color: Color(0xFF7BAFD4),
+    label: trUi('Aménagement'),
+    color: const Color(0xFF7BAFD4),
     items: [
       _TutoItem(
           emoji: '📦',
-          label: 'Potager surélevé',
+          label: trUi('Potager surélevé'),
           htmlAsset: 'assets/tutos/potager_sureleve.html'),
       _TutoItem(
           emoji: '🏡',
-          label: 'Potager en carrés',
+          label: trUi('Potager en carrés'),
           htmlAsset: 'assets/tutos/potager_carres.html'),
       _TutoItem(
           emoji: '🌻',
-          label: 'Associations de plantes',
+          label: trUi('Associations de plantes'),
           htmlAsset: 'assets/tutos/associations_plantes.html'),
       _TutoItem(
           emoji: '🪴',
-          label: 'Potager en balcon',
+          label: trUi('Potager en balcon'),
           htmlAsset: 'assets/tutos/potager_balcon.html'),
     ],
   ),
   _TutoCategory(
     emoji: '🌴',
     imagePath: 'assets/images/tuto_climat_tropical.png',
-    label: 'Climat tropical',
-    color: Color(0xFF26A69A),
+    label: trUi('Climat tropical'),
+    color: const Color(0xFF26A69A),
     items: [
       _TutoItem(
           emoji: '☀️',
-          label: 'Jardiner en saison sèche',
+          label: trUi('Jardiner en saison sèche'),
           htmlAsset: 'assets/tutos/jardiner_saison_seche.html'),
       _TutoItem(
           emoji: '🌧️',
-          label: "Préparer l'hivernage",
+          label: trUi("Préparer l'hivernage"),
           htmlAsset: 'assets/tutos/preparer_hivernage.html'),
       _TutoItem(
           emoji: '⛱️',
-          label: 'Fabriquer une ombrière',
+          label: trUi('Fabriquer une ombrière'),
           htmlAsset: 'assets/tutos/fabriquer_ombriere.html'),
       _TutoItem(
           emoji: '🍠',
-          label: "Cultiver l'igname",
+          label: trUi("Cultiver l'igname"),
           htmlAsset: 'assets/tutos/cultiver_igname.html'),
     ],
   ),
@@ -299,9 +300,9 @@ class TutosScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          '🎓 Tutos',
-                          style: TextStyle(
+                        Text(
+                          trUi('🎓 Tutos'),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
                             fontSize: 24,
@@ -312,7 +313,7 @@ class TutosScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Apprends à jardiner en vidéo',
+                          trUi('Apprends à jardiner en vidéo'),
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.85),
                             fontWeight: FontWeight.w600,
@@ -404,7 +405,7 @@ class _TutoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: item.label,
-      hint: item.htmlAsset != null ? 'Ouvre la fiche' : null,
+      hint: item.htmlAsset != null ? trUi('Ouvre la fiche') : null,
       button: item.htmlAsset != null,
       child: GestureDetector(
         onTap: () {
@@ -474,9 +475,9 @@ class _TutoTile extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            'Le tour complet — dashboard, Étal, Poussidex',
-                            style: TextStyle(
+                          Text(
+                            trUi('Le tour complet — dashboard, Étal, Poussidex'),
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: KultivaColors.textSecondary,

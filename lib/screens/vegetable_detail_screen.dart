@@ -13,6 +13,7 @@ import '../data/market_data.dart';
 import '../data/recipes.dart';
 import '../widgets/recipe_row.dart';
 import '../data/rotation.dart';
+import '../data/ui_i18n.dart';
 import '../data/vegetables_base.dart';
 import '../models/plantation.dart';
 import '../models/region_data.dart';
@@ -79,9 +80,10 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${v.emoji} ${v.name} est noté dans ton cahier'),
+        content: Text(trUiArgs(
+            '{0} {1} est noté dans ton cahier', <Object?>[v.emoji, v.displayName])),
         action: SnackBarAction(
-          label: 'Voir',
+          label: trUi('Voir'),
           onPressed: () {
             // Onglet 1 = Cahier. Il pointait sur 2, c'est-à-dire
             // l'Étal : le bouton « Voir » renvoyait au catalogue
@@ -106,8 +108,8 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Impossible d'ouvrir le lien."),
+          SnackBar(
+            content: Text(trUi("Impossible d'ouvrir le lien.")),
           ),
         );
       }
@@ -122,11 +124,11 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
         return Scaffold(
           appBar: AppBar(
             title:
-                Text('${_currentVegetable.emoji}  ${_currentVegetable.name}'),
+                Text('${_currentVegetable.emoji}  ${_currentVegetable.displayName}'),
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.picture_as_pdf),
-                tooltip: 'Exporter PDF',
+                tooltip: trUi('Exporter PDF'),
                 onPressed: () =>
                     PdfService.printVegetableSheet(_currentVegetable, region),
               ),
@@ -140,8 +142,10 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
                       color: KultivaColors.terracotta,
                     ),
                     tooltip: isFav
-                        ? 'Retirer ${_currentVegetable.name} des favoris'
-                        : 'Ajouter ${_currentVegetable.name} aux favoris',
+                        ? trUiArgs('Retirer {0} des favoris',
+                            <Object?>[_currentVegetable.displayName])
+                        : trUiArgs('Ajouter {0} aux favoris',
+                            <Object?>[_currentVegetable.displayName]),
                     onPressed: () => PrefsService.instance
                         .toggleFavorite(_currentVegetable.id),
                   );
@@ -166,8 +170,8 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
                       icon: const Text('🌱', style: TextStyle(fontSize: 18)),
                       label: Text(
                         count == 0
-                            ? 'Je l\'ai planté'
-                            : 'Je l\'ai planté ($count)',
+                            ? trUi('Je l\'ai planté')
+                            : trUiArgs('Je l\'ai planté ({0})', <Object?>[count]),
                       ),
                     );
                   },
@@ -202,7 +206,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           const SizedBox(height: 16),
           if (data != null && data.sowingMonths.isNotEmpty)
             _MonthsCard(
-              title: 'Semis — ${region.label}',
+              title: trUiArgs('Semis — {0}', <Object?>[region.displayLabel]),
               months: data.sowingMonths,
               color: KultivaColors.primaryGreen,
               shortMonths: monthNamesShortCap,
@@ -210,7 +214,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           if (data != null && data.harvestMonths.isNotEmpty) ...<Widget>[
             const SizedBox(height: 12),
             _MonthsCard(
-              title: 'Récolte — ${region.label}',
+              title: trUiArgs('Récolte — {0}', <Object?>[region.displayLabel]),
               months: data.harvestMonths,
               color: KultivaColors.terracotta,
               shortMonths: monthNamesShortCap,
@@ -225,41 +229,41 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
           ],
           const SizedBox(height: 16),
           _InfoSection(
-            title: '🌱  Semis',
+            title: trUi('🌱  Semis'),
             rows: <_Row>[
-              _Row('Technique', vegetable.sowingTechnique),
-              _Row('Profondeur', vegetable.sowingDepth),
-              _Row('Température', vegetable.germinationTemp),
-              _Row('Levée', vegetable.germinationDays),
+              _Row(trUi('Technique'), vegetable.sowingTechnique),
+              _Row(trUi('Profondeur'), vegetable.sowingDepth),
+              _Row(trUi('Température'), vegetable.germinationTemp),
+              _Row(trUi('Levée'), vegetable.germinationDays),
             ],
           ),
           _InfoSection(
-            title: '🌿  Culture',
+            title: trUi('🌿  Culture'),
             rows: <_Row>[
-              _Row('Exposition', vegetable.exposure),
-              _Row('Espacement', vegetable.spacing),
-              _Row('Arrosage', vegetable.watering),
-              _Row('Sol', vegetable.soil),
+              _Row(trUi('Exposition'), vegetable.exposure),
+              _Row(trUi('Espacement'), vegetable.spacing),
+              _Row(trUi('Arrosage'), vegetable.watering),
+              _Row(trUi('Sol'), vegetable.soil),
             ],
           ),
           if (vegetable.harvestTimeBySeason != null &&
               vegetable.harvestTimeBySeason!.isNotEmpty)
             _HarvestTimeSection(times: vegetable.harvestTimeBySeason!),
           _InfoSection(
-            title: '📦  Rendement',
+            title: trUi('📦  Rendement'),
             rows: <_Row>[
-              _Row('Estimation', vegetable.yieldEstimate),
+              _Row(trUi('Estimation'), vegetable.yieldEstimate),
             ],
           ),
           if (companionMap.containsKey(vegetable.id))
             _CompanionSection(
-              title: '🤝  Bons voisins',
+              title: trUi('🤝  Bons voisins'),
               ids: companionMap[vegetable.id]!,
               color: KultivaColors.primaryGreen,
             ),
           if (incompatibleMap.containsKey(vegetable.id))
             _CompanionSection(
-              title: '⛔  À éviter à côté',
+              title: trUi('⛔  À éviter à côté'),
               ids: incompatibleMap[vegetable.id]!,
               color: KultivaColors.terracotta,
             ),
@@ -277,12 +281,12 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               otherRecipesFor(vegetable.id).isNotEmpty)
             _RecipesSection(vegetableId: vegetable.id),
           if (_list.length > 1)
-            const Padding(
-              padding: EdgeInsets.only(top: 12),
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
               child: Text(
-                '← Swipe pour naviguer →',
+                trUi('← Swipe pour naviguer →'),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: KultivaColors.textSecondary,
                   fontSize: 12,
                 ),
@@ -300,9 +304,9 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               child: ElevatedButton.icon(
                 onPressed: () => _openUrl(context, amazonUrlFor(vegetable)!),
                 icon: const Text('🛒', style: TextStyle(fontSize: 24)),
-                label: const Text('Acheter',
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                label: Text(trUi('Acheter'),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w800)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: KultivaColors.terracotta,
                   foregroundColor: Colors.white,
@@ -315,10 +319,11 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Lien partenaire · Kultiva touche une petite commission si tu achètes.',
+            Text(
+              trUi(
+                  'Lien partenaire · Kultiva touche une petite commission si tu achètes.'),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 11,
                 color: Color(0xFF8a8c80),
                 fontStyle: FontStyle.italic,
@@ -429,15 +434,15 @@ class _HeaderCard extends StatelessWidget {
                     badge,
                     _MiniActionBlock(
                       emoji: '🛒',
-                      label: 'Acheter',
-                      sublabel: 'Lien partenaire',
+                      label: trUi('Acheter'),
+                      sublabel: trUi('Lien partenaire'),
                       gradientColors: <Color>[
                         KultivaColors.terracotta.withValues(alpha: 0.28),
                         KultivaColors.summerA.withValues(alpha: 0.4),
                       ],
                       foreground: KultivaColors.terracotta,
-                      tooltip: 'Lien partenaire Amazon — Kultiva touche '
-                          'une petite commission si tu achètes.',
+                      tooltip: trUi('Lien partenaire Amazon — Kultiva touche '
+                          'une petite commission si tu achètes.'),
                       onTap: () {
                         AudioService.instance.play(Sfx.cart);
                         launchUrl(
@@ -623,9 +628,9 @@ class _HarvestTimeSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                '⏱  Temps avant récolte',
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              Text(
+                trUi('⏱  Temps avant récolte'),
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
               ),
               const SizedBox(height: 10),
               for (final e in entries)
@@ -674,13 +679,13 @@ class _HarvestTimeSection extends StatelessWidget {
   String _seasonLabel(String key) {
     switch (key) {
       case 'spring':
-        return 'Printemps';
+        return trUi('Printemps');
       case 'summer':
-        return 'Été';
+        return trUi('Été');
       case 'autumn':
-        return 'Automne';
+        return trUi('Automne');
       case 'winter':
-        return 'Hiver';
+        return trUi('Hiver');
     }
     return key;
   }
@@ -700,9 +705,9 @@ class _DiseaseSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                '🐛  Maladies & ravageurs',
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              Text(
+                trUi('🐛  Maladies & ravageurs'),
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
               ),
               const SizedBox(height: 10),
               for (final d in diseases)
@@ -758,16 +763,16 @@ class _RotationSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                '🔄  Rotation des cultures',
-                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+              Text(
+                trUi('🔄  Rotation des cultures'),
+                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
               ),
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Text(
-                    'Famille : ',
-                    style: TextStyle(
+                  Text(
+                    trUi('Famille : '),
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: KultivaColors.textSecondary,
                     ),
@@ -779,24 +784,25 @@ class _RotationSection extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  const Text(
-                    'Attendre : ',
-                    style: TextStyle(
+                  Text(
+                    trUi('Attendre : '),
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       color: KultivaColors.textSecondary,
                     ),
                   ),
                   Text(
-                    '${data.waitYears} ans avant de replanter au même endroit',
+                    trUiArgs('{0} ans avant de replanter au même endroit',
+                        <Object?>[data.waitYears]),
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
               if (successors.isNotEmpty) ...[
                 const SizedBox(height: 8),
-                const Text(
-                  'Bons successeurs :',
-                  style: TextStyle(
+                Text(
+                  trUi('Bons successeurs :'),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     color: KultivaColors.textSecondary,
                   ),
@@ -905,7 +911,7 @@ class _RegionalNoteCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Adaptation — ${region.label}',
+                    trUiArgs('Adaptation — {0}', <Object?>[region.displayLabel]),
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       color: KultivaColors.textSecondary,
@@ -1022,7 +1028,7 @@ class _LocalNamesCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              '🗣️  Noms locaux',
+              trUi('🗣️  Noms locaux'),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
@@ -1091,24 +1097,29 @@ class _MarketSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                '💰  Maraîchage',
+                trUi('💰  Maraîchage'),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                'Ordres de grandeur indicatifs (marchés urbains).',
-                style: TextStyle(
+              Text(
+                trUi('Ordres de grandeur indicatifs (marchés urbains).'),
+                style: const TextStyle(
                   fontSize: 11,
                   color: KultivaColors.textSecondary,
                   fontStyle: FontStyle.italic,
                 ),
               ),
               const SizedBox(height: 10),
-              _MarketRow('Rendement', '~$yieldStr par pied/cycle'),
-              _MarketRow('Prix marché', '~${info.priceFcfaPerKg} FCFA / kg'),
-              _MarketRow('Valeur estimée', '~$value FCFA par pied'),
+              _MarketRow(trUi('Rendement'),
+                  trUiArgs('~{0} par pied/cycle', <Object?>[yieldStr])),
+              _MarketRow(
+                  trUi('Prix marché'),
+                  trUiArgs(
+                      '~{0} FCFA / kg', <Object?>[info.priceFcfaPerKg])),
+              _MarketRow(trUi('Valeur estimée'),
+                  trUiArgs('~{0} FCFA par pied', <Object?>[value])),
             ],
           ),
         ),
@@ -1191,18 +1202,18 @@ class _RecipesSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '🫙  Garder ta récolte',
+                      trUi('🫙  Garder ta récolte'),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w800,
                           ),
                     ),
                     if (top.any((r) => r.isPreservation))
-                      const Padding(
-                        padding: EdgeInsets.only(top: 2),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
                         child: Text(
-                          'Trois façons de la faire durer. Un jardinier n\'a '
-                          'pas un légume, il en a quinze d\'un coup.',
-                          style: TextStyle(
+                          trUi('Trois façons de la faire durer. Un jardinier '
+                              'n\'a pas un légume, il en a quinze d\'un coup.'),
+                          style: const TextStyle(
                             fontSize: 12,
                             height: 1.35,
                             color: KultivaColors.textSecondary,
@@ -1268,7 +1279,11 @@ class _AutresRecettesState extends State<_AutresRecettes> {
                   // Le top 3 garde la récolte ; le reste se mange le jour
                   // même. Dire lequel est lequel évite de chercher une
                   // conserve dans la liste des plats.
-                  '$n recette${n > 1 ? 's' : ''} à manger tout de suite',
+                  n > 1
+                      ? trUiArgs('{0} recettes à manger tout de suite',
+                          <Object?>[n])
+                      : trUiArgs('{0} recette à manger tout de suite',
+                          <Object?>[n]),
                   style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
@@ -1308,7 +1323,7 @@ class _BuyingTipsSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                '🛍️  Bien acheter au marché',
+                trUi('🛍️  Bien acheter au marché'),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),

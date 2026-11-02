@@ -1,6 +1,8 @@
+import '../../data/names_en.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/regions/regional_calendar.dart';
+import '../../data/ui_i18n.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/plantation.dart';
 import '../../models/region_data.dart';
@@ -82,9 +84,13 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return false;
       }
       if (_query.isNotEmpty) {
-        // Recherche insensible aux accents : « echalote » trouve « Échalote ».
+        // Recherche insensible aux accents : « echalote » trouve
+        // « Échalote ». Et dans **les deux langues** : un hispanophone
+        // tape « zanahoria », mais le nom français reste la clé du
+        // catalogue, donc les deux doivent répondre.
         final q = foldAccents(_query);
         return foldAccents(v.name).contains(q) ||
+            foldAccents(v.displayName).contains(q) ||
             (v.description != null && foldAccents(v.description!).contains(q));
       }
       return true;
@@ -92,11 +98,11 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
 
     switch (_sortMode) {
       case _SortMode.alpha:
-        filtered.sort((a, b) => compareFolded(a.name, b.name));
+        filtered.sort((a, b) => compareFolded(a.displayName, b.displayName));
       case _SortMode.category:
         filtered.sort((a, b) {
           final cmp = compareFolded(a.category.label, b.category.label);
-          return cmp != 0 ? cmp : compareFolded(a.name, b.name);
+          return cmp != 0 ? cmp : compareFolded(a.displayName, b.displayName);
         });
       case _SortMode.sowNow:
         filtered.sort((a, b) {
@@ -106,7 +112,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
               (rd) => rd.vegetableId == b.id && rd.sowingMonths.contains(now));
           if (aCanSow && !bCanSow) return -1;
           if (!aCanSow && bCanSow) return 1;
-          return compareFolded(a.name, b.name);
+          return compareFolded(a.displayName, b.displayName);
         });
     }
     return filtered;
@@ -185,9 +191,9 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Étal',
-                                  style: TextStyle(
+                                Text(
+                                  trUi('Étal'),
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
                                     fontSize: 22,
@@ -198,7 +204,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                                   ),
                                 ),
                                 Text(
-                                  '${filtered.length} variétés',
+                                  trUiArgs('{0} variétés', <Object?>[filtered.length]),
                                   style: TextStyle(
                                     color: Colors.white.withValues(alpha: 0.8),
                                     fontWeight: FontWeight.w600,
@@ -219,8 +225,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                               children: [
                                 Semantics(
                                   label: _gridView
-                                      ? 'Afficher en liste'
-                                      : 'Afficher en grille',
+                                      ? trUi('Afficher en liste')
+                                      : trUi('Afficher en grille'),
                                   button: true,
                                   child: IconButton(
                                     icon: Icon(
@@ -239,15 +245,15 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                                   onSelected: (m) =>
                                       setState(() => _sortMode = m),
                                   itemBuilder: (_) => [
-                                    const PopupMenuItem(
+                                    PopupMenuItem(
                                         value: _SortMode.alpha,
-                                        child: Text('Alphabétique')),
-                                    const PopupMenuItem(
+                                        child: Text(trUi('Alphabétique'))),
+                                    PopupMenuItem(
                                         value: _SortMode.category,
-                                        child: Text('Par catégorie')),
-                                    const PopupMenuItem(
+                                        child: Text(trUi('Par catégorie'))),
+                                    PopupMenuItem(
                                         value: _SortMode.sowNow,
-                                        child: Text('À semer ce mois')),
+                                        child: Text(trUi('À semer ce mois'))),
                                   ],
                                 ),
                               ],
@@ -262,18 +268,18 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Semantics(
-                      label: 'Rechercher un légume',
+                      label: trUi('Rechercher un légume'),
                       textField: true,
                       child: TextField(
                         controller: _searchCtrl,
                         onChanged: (v) => setState(() => _query = v.trim()),
                         decoration: InputDecoration(
-                          hintText: 'Rechercher un légume…',
+                          hintText: trUi('Rechercher un légume…'),
                           prefixIcon: const Icon(Icons.search),
                           suffixIcon: _query.isEmpty
                               ? null
                               : Semantics(
-                                  label: 'Effacer la recherche',
+                                  label: trUi('Effacer la recherche'),
                                   button: true,
                                   child: IconButton(
                                     icon: const Icon(Icons.close),
@@ -296,7 +302,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                         children: [
                           Expanded(
                             child: PastelChip(
-                              label: 'Favoris',
+                              label: trUi('Favoris'),
                               emoji: '❤️',
                               color: KultivaColors.terracotta,
                               selected: _favOnly,
@@ -311,7 +317,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                           ),
                           Expanded(
                             child: PastelChip(
-                              label: 'Toutes',
+                              label: trUi('Toutes'),
                               emoji: '✨',
                               color: KultivaColors.primaryGreen,
                               selected: _selectedCategory == null && !_favOnly,
@@ -392,15 +398,16 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                   // Liste ou grille.
                   Expanded(
                     child: filtered.isEmpty
-                        ? const Center(
+                        ? Center(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text('🌱', style: TextStyle(fontSize: 48)),
-                                SizedBox(height: 12),
+                                const Text('🌱',
+                                    style: TextStyle(fontSize: 48)),
+                                const SizedBox(height: 12),
                                 Text(
-                                  'Aucun légume trouvé',
-                                  style: TextStyle(
+                                  trUi('Aucun légume trouvé'),
+                                  style: const TextStyle(
                                     color: KultivaColors.textSecondary,
                                     fontWeight: FontWeight.w600,
                                   ),

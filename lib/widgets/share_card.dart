@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../data/ui_i18n.dart';
 import '../models/plantation.dart';
 import '../models/vegetable.dart';
 import '../theme/app_theme.dart';
@@ -59,14 +60,17 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
       await file.writeAsBytes(bytes);
       await Share.shareXFiles(
         <XFile>[XFile(file.path)],
-        text:
-            "Regarde mon ${widget.vegetable.displayName.toLowerCase()} dans mon Poussidex Kultiva ! 🌱",
+        text: trUiArgs('Regarde mon {0} dans mon Poussidex Kultiva ! 🌱',
+            <Object?>[widget.vegetable.displayName.toLowerCase()]),
       );
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Impossible de partager : $e")),
+          SnackBar(
+            content: Text(
+                trUiArgs('Impossible de partager : {0}', <Object?>[e])),
+          ),
         );
       }
     } finally {
@@ -103,7 +107,7 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
                     foregroundColor: KultivaColors.textPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
-                  child: const Text('Annuler'),
+                  child: Text(trUi('Annuler')),
                 ),
               ),
               const SizedBox(width: 10),
@@ -119,7 +123,7 @@ class _SharePreviewDialogState extends State<SharePreviewDialog> {
                               strokeWidth: 2, color: Colors.white),
                         )
                       : const Icon(Icons.share, size: 18),
-                  label: Text(_sharing ? 'Export…' : 'Partager'),
+                  label: Text(_sharing ? trUi('Export…') : trUi('Partager')),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: KultivaColors.primaryGreen,
                     foregroundColor: Colors.white,
@@ -242,14 +246,15 @@ class _ShareCardContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _StatBlock(label: 'Jour', value: '${days + 1}'),
+              _StatBlock(label: trUi('Jour'), value: '${days + 1}'),
               _StatBlock(label: '💧', value: '${plantation.wateredAt.length}'),
               _StatBlock(label: '🧺', value: '${plantation.harvestCount}'),
             ],
           ),
           const SizedBox(height: 10),
           Text(
-            'Planté le ${_fmt(plantation.plantedAt)}  •  Kultiva',
+            trUiArgs('Planté le {0}  •  Kultiva',
+                <Object?>[_fmt(plantation.plantedAt)]),
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 11,
