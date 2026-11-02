@@ -11,7 +11,7 @@ Pour l'actualiser : relancer le même prompt.
   l'Ouest (pas une déclinaison française).
 - **Publics** : d'abord les jardiniers amateurs de France
   métropolitaine ; les jardiniers et maraîchers des 8 pays
-  francophones d'AO (contenu local : FCFA, marchés, zones climatiques,
+  francophones d'AO (contenu local : noms locaux, achat au marché, zones climatiques,
   cultures locales) ; et, depuis le 1er novembre 2026, les jardiniers
   anglophones et francophones de 73 pays — Europe, Maghreb, Amériques,
   Asie, Océanie, outre-mer français.

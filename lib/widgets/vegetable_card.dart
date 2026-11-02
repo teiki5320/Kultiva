@@ -15,6 +15,12 @@ import 'medal_badge.dart';
 class VegetableCard extends StatelessWidget {
   final Vegetable vegetable;
   final bool canSowNow;
+
+  /// Vrai quand la culture ne tient pas dehors ici. La pastille le dit
+  /// plutôt que de faire disparaître le légume : un jardinier qui a une
+  /// serre le cherche, et cacher une culture est une décision qu'on
+  /// prendrait à sa place.
+  final bool shelterOnly;
   final VoidCallback? onTap;
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
@@ -24,6 +30,7 @@ class VegetableCard extends StatelessWidget {
     super.key,
     required this.vegetable,
     this.canSowNow = false,
+    this.shelterOnly = false,
     this.onTap,
     this.isFavorite = false,
     this.onFavoriteToggle,
@@ -36,6 +43,7 @@ class VegetableCard extends StatelessWidget {
     return Semantics(
       label: '${vegetable.displayName}, ${vegetable.category.label}'
           '${canSowNow ? trUi(', à semer ce mois') : ''}'
+          '${shelterOnly ? trUi(', sous serre seulement') : ''}'
           '${isFavorite ? trUi(', favori') : ''}',
       button: onTap != null,
       child: Card(
@@ -79,6 +87,25 @@ class VegetableCard extends StatelessWidget {
                               ),
                             ),
                           ),
+                          if (shelterOnly)
+                            Container(
+                              margin: const EdgeInsets.only(right: 6),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: KultivaColors.terracotta
+                                    .withValues(alpha: 0.9),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                trUi('Sous serre'),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
                           if (canSowNow)
                             Container(
                               padding: const EdgeInsets.symmetric(

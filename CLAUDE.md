@@ -161,7 +161,7 @@ Kultiva/
 │   │   ├── vegetables_base.dart    # 169 entrées (130 cultures + 39 accessoires)
 │   │   ├── badges.dart (50) / challenges.dart (50) / diseases.dart
 │   │   ├── companions.dart / rotation.dart / lexicon.dart
-│   │   ├── local_names.dart / market_data.dart / market_buying_tips.dart
+│   │   ├── local_names.dart / market_buying_tips.dart
 │   │   ├── recipes.dart      # 736 recettes, source de vérité (français)
 │   │   ├── recipes_i18n.dart # le mécanisme de surcouche par langue
 │   │   ├── recipes_en.dart   # les recettes en anglais (tomate faite)
@@ -207,7 +207,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 50 fichiers — 1 104 tests (02/11/2026)
+├── test/                   # 51 fichiers — 1 109 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -591,7 +591,7 @@ Décisions et évolutions significatives :
     ocre/vert. Seuil canicule 40 °C (AO) vs 30 °C, alerte « premières pluies ».
   - **Contenu** : calendrier AO 130 cultures + 10 locales (mil, fonio,
     moringa, djakhatou, corète…), noms locaux (`local_names.dart`),
-    mode maraîchage FCFA (`market_data.dart`), conseils d'achat au marché
+    conseils d'achat au marché (⚠️ le mode maraîchage FCFA a été retiré le 02/11/2026)
     (`market_buying_tips.dart`, remplace Amazon masqué en AO), recettes
     (`recipes.dart`), maladies tropicales, 4 tutos AO.
   - **Poids/data** : assets 245→33 Mo, Nunito bundlée, tutos 100 % hors-ligne,
@@ -658,7 +658,7 @@ Décisions et évolutions significatives :
   culture** (voir la section sur les calendriers plus bas). Le
   subtropical reste dérivé.
   ⚠️ **`Region.westAfrica` ne veut plus dire « tropical ».** Il veut
-  dire « tropical **et** contenu ouest-africain » (noms locaux, FCFA,
+  dire « tropical **et** contenu ouest-africain » (noms locaux,
   achat au marché). Pour une question climatique, utiliser
   `region.isTropicalBase`, jamais `== Region.westAfrica` — sinon un
   Brésilien reçoit des prix en francs CFA.
@@ -704,7 +704,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 104 tests au 02/11/2026, dont une
+1. **Pas de test d'intégration** — 1 109 tests au 02/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
    fait de même aux dimensions d'un iPad en portrait et en paysage, et
@@ -1059,6 +1059,64 @@ du schéma, et CLAUDE.md le conserve comme point de départ si un backend
 revenait (Cloudflare, pas Supabase). Il ne coûte rien et ne s'exécute
 jamais.
 
+## 🌴 Le manioc ne se sème pas à Lyon (02/11/2026)
+
+**Signalé par Jean** : « certains produits ne devraient pas être en
+Europe ». En mai, l'écran Semer d'un jardinier lyonnais comptait le
+**manioc, le taro, l'igname, le bissap, l'arachide et le sésame**
+parmi les légumes à semer.
+
+⚠️ **L'information existait, mais en prose.** Vingt-six notes
+régionales disaient « non adapté au climat français hors DOM-TOM » ou
+« besoin de froid hivernal » — et le code n'en savait rien. Une
+donnée que seul un humain peut lire n'est pas une donnée.
+
+⚠️ **Et la base tropicale, elle, réglait déjà le problème** : pommier,
+cassissier et kiwi y ont des mois **vides**, donc ils n'apparaissent
+jamais dans Semer à Dakar. La convention existait ; elle n'était
+appliquée que d'un côté. C'est le genre d'asymétrie qu'on ne voit
+qu'en comparant les deux fichiers.
+
+**`RegionData.shelterOnly`**, posé sur les neuf cultures françaises
+dont la note le disait. La vignette porte une pastille **« Sous
+serre »**, dans le catalogue et dans le calendrier mensuel.
+
+⚠️ **Choix de Jean : montrer, pas cacher.** Trois options lui ont été
+proposées — faire disparaître de Semer, afficher avec une pastille,
+retirer du catalogue. Il a pris la pastille : un jardinier qui a une
+serre cherche ces cultures, et les cacher serait décider à sa place.
+
+⚠️ **C'est une propriété du couple culture + zone, pas de la
+culture.** La pastèque est sous serre à Lille et en pleine terre à
+Séville : `deriveTemperate` **ne reprend pas** le drapeau quand la
+zone a son calendrier écrit à la main, et le reprend sinon. Donc le
+manioc reste marqué à Varsovie et à Tokyo sans qu'on l'écrive.
+
+`test/sous_serre_test.dart` verrouille, et son test le plus utile est
+celui qui refuse la **contradiction** : une note qui dit « non adapté »
+sous un drapeau qui dit le contraire. C'est exactement ce qui avait
+laissé passer le manioc.
+
+### 💰 Le bloc Maraîchage est retiré
+
+`market_data.dart` donnait un rendement et un **prix de détail au kg
+en FCFA** pour 45 légumes, affiché dans les 8 pays d'Afrique de
+l'Ouest. Il venait du virage AO du 03/08/2026.
+
+Décision de Jean le 02/11/2026 : **il disparaît**. C'est une
+fonctionnalité de maraîcher professionnel dans une app de jardiniers
+amateurs, et les prix dataient de 2025 — vieux d'un an dans une app
+qui promet de ne rien dire de faux.
+
+Partis avec : `lib/data/market_data.dart`, `_MarketSection`,
+`_MarketRow`, le test « données marché » et sept clés d'interface
+devenues orphelines. ⚠️ **« Rendement » est restée** : elle sert aussi
+à la fiche du catalogue.
+
+⚠️ **Ne pas confondre avec `market_buying_tips.dart`**, qui reste : ce
+sont les conseils pour **choisir** au marché, pas pour vendre. Ils
+remplacent le bouton Amazon là où Amazon ne livre pas.
+
 ## 🗂️ Le catalogue n'était pas traduit du tout (02/11/2026)
 
 **Trouvé en regardant le catalogue espagnol à l'écran**, pas en lisant
@@ -1215,7 +1273,7 @@ les plus vides de l'app, et de loin.
 ⚠️ **Un fichier à part, pas cinq champs sur `Vegetable`** : les 130
 cultures n'ont que faire d'un « combien il en faut pour un carré », et
 le modèle porte déjà vingt champs. C'est le patron de
-`local_names.dart`, `market_data.dart` et `market_buying_tips.dart`.
+`local_names.dart` et `market_buying_tips.dart`.
 
 ⚠️ **Pas de gras Markdown** : `LexiconText` ne le rend pas, les
 astérisques s'afficheraient en clair. J'en avais écrit 26 avant de m'en

@@ -306,22 +306,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Adaptation — {0}',
   '🗣️  Noms locaux':
       '🗣️  Local names',
-  '💰  Maraîchage':
-      '💰  Market gardening',
-  'Ordres de grandeur indicatifs (marchés urbains).':
-      'Ballpark figures (urban markets).',
   'Rendement':
       'Yield',
-  '~{0} par pied/cycle':
-      '~{0} per plant/cycle',
-  'Prix marché':
-      'Market price',
-  '~{0} FCFA / kg':
-      '~{0} FCFA / kg',
-  'Valeur estimée':
-      'Estimated value',
-  '~{0} FCFA par pied':
-      '~{0} FCFA per plant',
   '🫙  Garder ta récolte':
       '🫙  Preserve your harvest',
   'Trois façons de la faire durer. Un jardinier n\'a pas un légume, il en a quinze d\'un coup.':
@@ -1570,4 +1556,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Language switched to {0}. You can change it just below.',
   'Le pays choisit le calendrier de semis, les saisons et la langue.':
       'The country sets the sowing calendar, the seasons and the language.',
+  'Sous serre':
+      'Greenhouse',
+  ', sous serre seulement':
+      ', greenhouse only',
 };

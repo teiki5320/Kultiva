@@ -122,6 +122,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [9, 10],
     regionalNote:
         "Culture possible dans le sud de la France ou sous serre chauffée. Demande au moins 4 mois de chaleur continue.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -130,6 +131,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [8, 9],
     regionalNote:
         "Très exigeant en chaleur — réservé au sud méditerranéen ou à la culture sous serre chauffée (min. 20 °C).",
+    shelterOnly: true,
   ),
   // ── Légumes 21–40 ──────────────────────────────────────────────────────
   RegionData(
@@ -177,6 +179,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [8, 9],
     regionalNote:
         "Culture réservée au sud méditerranéen ou sous serre chauffée dans le reste de la France.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -245,6 +248,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [10, 11],
     regionalNote:
         "Culture expérimentale en France — possible dans le sud ou sous serre chauffée. Cycle très long (8 mois minimum).",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -253,6 +257,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [10, 11],
     regionalNote:
         "Non adapté au climat français hors DOM-TOM. Possible en serre chauffée à titre expérimental uniquement.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -300,6 +305,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [9, 10],
     regionalNote:
         "Culture expérimentale en France — possible dans le sud-ouest (Landes) en sol sableux chaud.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -308,6 +314,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [9, 10],
     regionalNote:
         "Annuelle tropicale — possible sous serre chauffée ou en pot rentré en hiver. Résultats aléatoires en plein air.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -316,6 +323,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [9, 10],
     regionalNote:
         "Culture rare en France — réservée au sud méditerranéen, sol chaud et sec.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',
@@ -362,6 +370,7 @@ const List<RegionData> franceData = <RegionData>[
     harvestMonths: [10, 11],
     regionalNote:
         "Non adapté au climat français sauf DOM-TOM. Possible en pot sous serre chauffée.",
+    shelterOnly: true,
   ),
   RegionData(
     regionId: 'france',

@@ -10,7 +10,6 @@ import '../data/companions.dart';
 import '../data/diseases.dart';
 import '../data/local_names.dart';
 import '../data/market_buying_tips.dart';
-import '../data/market_data.dart';
 import '../data/recipes.dart';
 import '../widgets/recipe_row.dart';
 import '../data/rotation.dart';
@@ -287,8 +286,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               marketBuyingTips[vegetable.id] != null &&
               vegetable.category != VegetableCategory.accessories)
             _BuyingTipsSection(tips: marketBuyingTips[vegetable.id]!),
-          if (region == Region.westAfrica && marketData[vegetable.id] != null)
-            _MarketSection(info: marketData[vegetable.id]!),
           if (top3For(vegetable.id).isNotEmpty ||
               otherRecipesFor(vegetable.id).isNotEmpty)
             _RecipesSection(vegetableId: vegetable.id),
@@ -1107,108 +1104,6 @@ class _LocalNamesCard extends StatelessWidget {
 
 /// Estimation maraîchage (rendement + valeur marché en FCFA), affichée
 /// en Afrique de l'Ouest pour les jardiniers qui cultivent pour vendre.
-class _MarketSection extends StatelessWidget {
-  final MarketInfo info;
-  const _MarketSection({required this.info});
-
-  @override
-  Widget build(BuildContext context) {
-    final yieldStr = info.yieldPerPlantKg >= 1
-        ? '${info.yieldPerPlantKg.toStringAsFixed(info.yieldPerPlantKg % 1 == 0 ? 0 : 1)} kg'
-        : '${(info.yieldPerPlantKg * 1000).round()} g';
-    final value = (info.yieldPerPlantKg * info.priceFcfaPerKg).round();
-    return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                trUi('💰  Maraîchage'),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                trUi('Ordres de grandeur indicatifs (marchés urbains).'),
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: KultivaColors.textSecondary,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              const SizedBox(height: 10),
-              _MarketRow(trUi('Rendement'),
-                  trUiArgs('~{0} par pied/cycle', <Object?>[yieldStr])),
-              _MarketRow(
-                  trUi('Prix marché'),
-                  trUiArgs(
-                      '~{0} FCFA / kg', <Object?>[info.priceFcfaPerKg])),
-              _MarketRow(trUi('Valeur estimée'),
-                  trUiArgs('~{0} FCFA par pied', <Object?>[value])),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MarketRow extends StatelessWidget {
-  final String label;
-  final String value;
-  const _MarketRow(this.label, this.value);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            width: 130,
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w700,
-                color: KultivaColors.textSecondary,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Idées de plats liées à la récolte — boucle le jardin vers la cuisine.
-/// La section « En cuisine » d'une fiche légume.
-///
-/// ⚠️ Elle affichait les recettes **sans pouvoir les ouvrir** : ni
-/// lecteur animé, ni temps, ni favori. Le pas-à-pas n'était atteignable
-/// que depuis l'onglet Recettes, alors que c'est ici qu'on se demande
-/// quoi faire de sa récolte. Elle délègue maintenant à [RecipeRow],
-/// comme l'onglet : une seule ligne de recette dans toute l'app.
-/// La section « En cuisine » d'une fiche légume.
-///
-/// Le **top 3** d'abord — contrainte de Jean : trois recettes mises en
-/// avant, jamais plus, parce que vingt idées de plat ne se choisissent
-/// pas. En dessous, ce qui emploie ce légume sans être dans son top 3,
-/// replié : une recette hors du top doit rester joignable.
-///
-/// ⚠️ Cette section affichait les recettes **sans pouvoir les ouvrir** :
-/// le lecteur animé n'était atteignable que depuis l'onglet, alors que
-/// c'est ici qu'on se demande quoi faire de sa récolte. Elle délègue
-/// maintenant à [RecipeRow], comme l'onglet.
 class _RecipesSection extends StatelessWidget {
   final String vegetableId;
   const _RecipesSection({required this.vegetableId});

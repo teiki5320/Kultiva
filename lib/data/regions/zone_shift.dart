@@ -89,6 +89,9 @@ RegionData deriveTemperate(
           'Décalé de six mois : tu es dans l\'hémisphère sud, où les '
               'saisons sont inversées.',
       ].join(' '),
+      // ⚠️ Le drapeau de la base n'est **pas** repris : une zone qui a
+      // son calendrier écrit à la main a déjà tranché. La pastèque est
+      // sous serre à Lille et en pleine terre à Séville.
     );
   }
 
@@ -144,5 +147,9 @@ RegionData deriveTemperate(
     sowingMonths: shiftMonths(semis, o),
     harvestMonths: shiftMonths(recolte, o),
     regionalNote: morceaux.isEmpty ? null : morceaux.join(' '),
+    // Sans calendrier écrit pour cette zone, la contrainte de la base
+    // vaut toujours : un manioc ne tient pas plus dehors à Varsovie
+    // qu'à Lyon.
+    shelterOnly: base.shelterOnly,
   );
 }

@@ -65,6 +65,10 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
         final isHarvest = widget.mode == CalendarMode.harvest;
         final activeVegs = <Vegetable>[];
         final later = <Vegetable>[];
+        // Les cultures qui ne tiennent pas dehors ici gardent leur
+        // place dans la liste, avec une pastille. Choix de Jean le
+        // 02/11/2026 : les cacher serait décider à sa place.
+        final sousSerre = <String>{};
         for (final veg in vegetablesBase) {
           if (veg.category == VegetableCategory.accessories) continue;
           if (_selectedCategory != null && veg.category != _selectedCategory) {
@@ -76,6 +80,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               : (entry?.sowingMonths ?? const <int>[]);
           if (entry != null && months.contains(_selectedMonth)) {
             activeVegs.add(veg);
+            if (entry.shelterOnly) sousSerre.add(veg.id);
           } else {
             later.add(veg);
           }
@@ -227,6 +232,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                         VegetableCard(
                           vegetable: v,
                           canSowNow: true,
+                          shelterOnly: sousSerre.contains(v.id),
                           isFavorite: favs.contains(v.id),
                           onFavoriteToggle: () =>
                               PrefsService.instance.toggleFavorite(v.id),

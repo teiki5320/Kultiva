@@ -30,7 +30,7 @@ et qu'un **hémisphère** retourne :
 - 🇫🇷 **France métropolitaine** — le calendrier de référence, climat tempéré
 - 🌍 **Afrique de l'Ouest** (8 pays) — saisons sèches et pluies, légumes
   tropicaux (gombo, niébé, manioc, taro, igname, sorgho, bissap…), noms
-  locaux, maraîchage en FCFA, conseils d'achat au marché
+  locaux et conseils d'achat au marché
 - 🇪🇺 **Europe, Maghreb, Proche-Orient** — zones méditerranéenne,
   continentale et océanique
 - 🌎 **Amériques, Asie, Océanie** et l'**outre-mer français** (Réunion,

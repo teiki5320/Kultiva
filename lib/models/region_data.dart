@@ -75,11 +75,34 @@ class RegionData {
   final List<int> harvestMonths;
   final String? regionalNote;
 
+  /// Vrai quand la culture ne tient pas dehors ici : serre chauffée,
+  /// pot rentré l'hiver, ou sud méditerranéen seulement.
+  ///
+  /// ⚠️ **Cette information existait déjà, mais en prose.** Vingt-six
+  /// notes régionales disaient « non adapté au climat français » ou
+  /// « besoin de froid hivernal », et le code n'en savait rien : en
+  /// mai, l'écran Semer d'un jardinier lyonnais comptait le manioc,
+  /// le taro et l'igname parmi les légumes à semer. Signalé par Jean
+  /// le 02/11/2026 — « certains produits ne devraient pas être en
+  /// Europe ».
+  ///
+  /// Le choix retenu est de **les montrer quand même**, avec une
+  /// pastille « sous serre » : un jardinier qui a une serre les
+  /// cherche, et cacher une culture est une décision qu'on prend à sa
+  /// place.
+  ///
+  /// ⚠️ C'est une propriété du **couple culture + zone**, pas de la
+  /// culture. La pastèque est sous serre à Lille et en pleine terre à
+  /// Séville : la surcharge méditerranéenne la perd, et c'est voulu
+  /// (voir `deriveTemperate`).
+  final bool shelterOnly;
+
   const RegionData({
     required this.regionId,
     required this.vegetableId,
     required this.sowingMonths,
     required this.harvestMonths,
     this.regionalNote,
+    this.shelterOnly = false,
   });
 }

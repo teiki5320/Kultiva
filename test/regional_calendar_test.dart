@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/local_names.dart';
-import 'package:kultiva/data/market_data.dart';
 import 'package:kultiva/data/recipes.dart';
 import 'package:kultiva/data/regions/france.dart';
 import 'package:kultiva/data/regions/regional_calendar.dart';
@@ -169,13 +168,6 @@ void main() {
     test('noms locaux', () {
       for (final id in localNames.keys) {
         expect(catalogIds, contains(id), reason: '$id (localNames)');
-      }
-    });
-    test('données marché', () {
-      for (final id in marketData.keys) {
-        expect(catalogIds, contains(id), reason: '$id (marketData)');
-        expect(marketData[id]!.priceFcfaPerKg, greaterThan(0));
-        expect(marketData[id]!.yieldPerPlantKg, greaterThan(0));
       }
     });
     test('recettes', () {
