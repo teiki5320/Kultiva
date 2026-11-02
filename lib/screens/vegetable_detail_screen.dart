@@ -293,9 +293,11 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
               ),
             ),
           // Bouton Acheter en bas, sauf accessoires qui ont déjà le panier
-          // dans le bandeau. Amazon ne livrant pas en Afrique de l'Ouest,
-          // le lien partenaire n'est proposé qu'en France.
-          if (region == Region.france &&
+          // dans le bandeau.
+          //
+          // ⚠️ `region == Region.france` ne suffit pas : voir
+          // `amazonLinkVisible`.
+          if (amazonLinkVisible(region, PrefsService.instance.country.value) &&
               vegetable.category != VegetableCategory.accessories &&
               amazonUrlFor(vegetable) != null) ...<Widget>[
             const SizedBox(height: 20),

@@ -56,7 +56,9 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `google_fonts` ^6.1 — typographie **Nunito**
 - `shared_preferences` ^2.2 — persistance locale
 - `url_launcher` ^6.2 — liens externes (Instagram ; boutons « Acheter »
-  Amazon remis le 30/10/2026, tag `kultiva1-21`, France seulement)
+  Amazon remis le 30/10/2026, tag `kultiva1-21`, France seulement —
+  la condition est le **pays**, pas la région, voir
+  `amazonLinkVisible`)
 - `flutter_local_notifications` ^17.2.3 + `timezone` ^0.9 +
   `flutter_timezone` ^3.0.1 — rappels mensuels,
   arrosage et canicule, planifiés dans le **fuseau réel** du device
@@ -205,7 +207,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 44 fichiers — 1 070 tests (02/11/2026)
+├── test/                   # 45 fichiers — 1 074 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -360,8 +362,8 @@ dart run tool/exporter_recettes.dart --squelette --langue=en --lot=3
   maladies, lexique, badges, défis (780 phrases). Soit ≈ 2 900 chaînes
   par langue, écrites par huit agents Sonnet et validées par les tests
   de nombres.
-  **L'interface aussi**, depuis le 02/11/2026 : 773 chaînes par
-  langue, branchées par 722 appels `trUi()` dans 53 fichiers. Vérifié
+  **L'interface aussi**, depuis le 02/11/2026 : 772 chaînes par
+  langue, branchées par 718 appels `trUi()` dans 53 fichiers. Vérifié
   à l'écran dans les trois langues. ⚠️ Les mois, les jours et les
   73 noms de pays passent par des **tables indexées** et non par le
   dictionnaire — voir la section « Traduire l'interface » plus bas, et
@@ -702,7 +704,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 070 tests au 02/11/2026, dont une
+1. **Pas de test d'intégration** — 1 074 tests au 02/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
    fait de même aux dimensions d'un iPad en portrait et en paysage, et
@@ -1399,7 +1401,7 @@ portent désormais sur le sarrasin, qui n'a pas de surcharge.
 n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
 
 20. ~~**L'interface n'est pas traduite**~~ — ✅ **FAIT le
-    02/11/2026.** 773 chaînes par langue, 722 appels `trUi()` dans
+    02/11/2026.** 772 chaînes par langue, 718 appels `trUi()` dans
     53 fichiers, et les 33 clés ARB orphelines retirées. Treize agents
     en deux vagues : sept pour **brancher** (envelopper les littérales
     sans traduire), six pour **traduire**.
@@ -1473,6 +1475,43 @@ n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
     c'est une **clé de préférence** déjà écrite sur les téléphones. La
     renommer relancerait la migration de l'ancienne grille chez tous
     ceux qui l'ont déjà faite.
+
+22. **Trois choses trouvées en dessinant le schéma de couverture
+    (02/11/2026)** — la fiche publiée est à
+    `https://claude.ai/artifact/Dpxa9TsY3QQ4Au3L56cLgF`.
+
+    - ✅ **Corrigé** : le bouton « Acheter » s'affichait dans **36
+      pays**. Il testait `region == Region.france`, qui veut dire
+      « base tempérée » depuis l'ouverture mondiale — donc aussi le
+      Japon, les États-Unis, l'Australie, le Chili, la Turquie, le
+      Maroc, tous renvoyés vers amazon.fr avec un tag français. Les
+      quatre fiches du dépôt annonçaient « France seulement » depuis
+      un jour. La règle vit maintenant dans `amazonLinkVisible`
+      (`vegetables_base.dart`, à côté du tag et de l'URL), avec
+      `test/amazon_link_test.dart` qui passe les 73 pays en revue.
+      ⚠️ **C'est le piège dont la fiche prévient pour
+      `== Region.westAfrica`, retombé de l'autre côté** : les deux
+      valeurs ont changé de sens le 01/11, et seule la première a été
+      relue.
+
+    - ⬜ **À trancher** : la fiche légume affiche
+      `trUiArgs('Semis — {0}', [region.displayLabel])`, et
+      `pdf_service` écrit `Calendrier — {région}`. Un jardinier
+      allemand lit donc **« Semis — France »**. Deux réponses
+      possibles, et elles ne promettent pas la même chose : le **pays**
+      (« Semis — Allemagne ») est ce qu'il a choisi, mais laisse croire
+      à un calendrier allemand ; la **zone** (« Semis — Continental »)
+      dit la vérité — ce calendrier est partagé par dix pays — mais
+      personne ne se présente comme continental. Trois endroits :
+      `vegetable_detail_screen.dart` (semis, récolte, adaptation) et
+      `pdf_service.dart`.
+
+    - ⬜ **À trancher** : la **Nouvelle-Calédonie** est classée
+      `subtropical` avec `Region.france`, donc sur la **base
+      tempérée** décalée de six mois, alors que Nouméa est à 22° sud
+      avec un climat tropical à saison sèche. La base tropicale lui
+      irait mieux (`guinean` ou `sudan`). Une ligne dans
+      `country.dart`.
 
 ## 🗣️ Traduire le contenu (structure posée le 02/11/2026)
 
@@ -1715,7 +1754,7 @@ n'avait vu :
 
 ### Traduire l'interface (02/11/2026)
 
-**773 chaînes par langue**, 722 appels `trUi()` dans 53 fichiers.
+**772 chaînes par langue**, 718 appels `trUi()` dans 53 fichiers.
 `lib/data/ui_i18n.dart` porte le mécanisme, `ui_en.dart` et
 `ui_es.dart` les dictionnaires.
 
@@ -1723,7 +1762,7 @@ n'avait vu :
 tête de `ui_i18n.dart`, en trois points : la moitié de ces chaînes
 vivent dans des services sans `BuildContext` (y faire descendre un
 contexte, ce serait mélanger présentation et logique métier) ; nommer
-773 clés produit 773 noms qui mentent à la première retouche ; et
+772 clés produit 772 noms qui mentent à la première retouche ; et
 c'est déjà le patron des trois autres surcouches. Les ARB gardent les
 cinq onglets et la note du réglage « Langue ».
 

@@ -1,3 +1,5 @@
+import '../models/country.dart';
+import '../models/region_data.dart';
 import '../models/vegetable.dart';
 
 /// Catalogue de base des légumes Kultiva (v2 : 20 légumes).
@@ -4274,6 +4276,23 @@ Vegetable vegetableOfTheDay(DateTime day) {
 /// autant pour les remettre avec `kultiva1-21` le 30/10. Désormais un
 /// changement de compte, c'est cette ligne.
 const String kAmazonAffiliateTag = 'kultiva1-21';
+
+/// Vrai là où le lien partenaire a un sens : en France, et nulle part
+/// ailleurs.
+///
+/// ⚠️ Tester `region == Region.france` ne suffit plus depuis l'ouverture
+/// mondiale du 01/11/2026 : cette valeur veut dire « base tempérée »,
+/// donc aussi le Japon, les États-Unis, l'Australie, le Chili ou la
+/// Turquie — trente-six pays renvoyés vers amazon.fr avec un tag
+/// français. C'est le piège dont la fiche prévient pour
+/// `== Region.westAfrica`, retombé de l'autre côté.
+///
+/// [country] est nul chez qui n'a jamais passé l'onboarding ou n'a
+/// choisi qu'une région ; `Region.france` voulait alors déjà dire la
+/// France, et on ne lui retire rien.
+bool amazonLinkVisible(Region region, Country? country) =>
+    region == Region.france &&
+    (country == null || country == Country.france);
 
 /// Le lien partenaire Amazon pour ce légume, ou `null` s'il n'en a pas.
 ///

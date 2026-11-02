@@ -60,7 +60,7 @@ lexique, les badges, les défis et les conseils. Tout passe par une
 surcouche par langue — le français reste la source de vérité, et rien
 n'est recopié :
 
-**L'interface aussi**, depuis le 2 novembre 2026 : 773 libellés,
+**L'interface aussi**, depuis le 2 novembre 2026 : 772 libellés,
 titres, boutons, messages et notifications, du tableau de bord à
 l'onboarding. Les 73 noms de pays sont traduits et **triés dans la
 langue affichée** — un catalogue espagnol commence à Alemania, pas à
