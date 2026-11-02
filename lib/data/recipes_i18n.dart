@@ -1,6 +1,7 @@
 import '../services/prefs_service.dart';
 import 'recipes.dart';
 import 'recipes_en.dart';
+import 'recipes_es.dart';
 
 /// Les textes d'une recette dans une autre langue.
 ///
@@ -58,6 +59,7 @@ class RecipeText {
 const Map<String, Map<String, RecipeText>> recipeTextsByLanguage =
     <String, Map<String, RecipeText>>{
   'en': recipeTextsEn,
+  'es': recipeTextsEs,
 };
 
 /// La clé d'une recette dans les surcouches.
@@ -118,6 +120,17 @@ const Map<String, Map<PreservationMethod, String>> _methodLabels =
     PreservationMethod.dansHuile: 'In oil',
     PreservationMethod.auVinaigre: 'Pickled',
   },
+  'es': <PreservationMethod, String>{
+    PreservationMethod.congelation: 'Congelación',
+    PreservationMethod.blanchiCongele: 'Escaldado y congelado',
+    PreservationMethod.transformeCongele: 'Cocinado y congelado',
+    PreservationMethod.bocalSterilise: 'En conserva',
+    PreservationMethod.lactoFermentation: 'Lactofermentado',
+    PreservationMethod.sechage: 'Secado',
+    PreservationMethod.confiture: 'Mermelada',
+    PreservationMethod.dansHuile: 'En aceite',
+    PreservationMethod.auVinaigre: 'En vinagre',
+  },
 };
 
 /// Le nom d'une méthode de conservation dans la langue de l'interface.
@@ -133,6 +146,7 @@ String methodLabelIn(PreservationMethod method, String languageCode) =>
 const Map<String, List<String>> _unitesDuree = <String, List<String>>{
   // [min, h, jour, jours, semaines, mois]
   'en': <String>['min', 'h', 'day', 'days', 'weeks', 'months'],
+  'es': <String>['min', 'h', 'día', 'días', 'semanas', 'meses'],
 };
 
 /// « 45 min », « 1 h 30 », « 3 weeks » — la durée dans la langue de
@@ -163,6 +177,7 @@ String dureeLisibleIn(int minutes, String languageCode) {
 /// « 4 pers. » — le nombre de parts, dans la langue de l'interface.
 const Map<String, String> _libellePartsCourt = <String, String>{
   'en': 'servings',
+  'es': 'raciones',
 };
 
 /// Les libellés du lecteur de recettes, par langue.
@@ -206,6 +221,36 @@ const Map<String, Map<String, dynamic>> _playerUi =
     'mois': <String>[
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December',
+    ],
+  },
+  'es': <String, dynamic>{
+    'intro': '¡Vamos allá!',
+    'depart': '¡Vamos allá! 🌱',
+    'suivant': 'Siguiente',
+    'termine': 'Hecho',
+    'revoir': 'Ver la receta otra vez',
+    'etape': 'paso',
+    'etapePrec': 'Paso anterior',
+    'ilTeFaut': 'Lo que necesitas',
+    'rien': 'Todo ocurre en los pasos 🌱',
+    'etiquette': 'Escribe esto en la etiqueta',
+    'prepareLe': 'Preparado el',
+    'pret': '¡Listo!',
+    'pretCourt': '⏰ Listo',
+    'tourne': 'En marcha… sueno al terminar',
+    'pause': 'En pausa',
+    'quandPret': ', cuando quieras',
+    'relancer': '↺ Reiniciar',
+    'enPause': '❚❚ Pausa',
+    'reprendre': '▶ Reanudar',
+    'lancer': '▶ Empezar',
+    'premier': '1.º',
+    'uMin': 'min',
+    'uH': 'h',
+    'mois': <String>[
+      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre',
+      'diciembre',
     ],
   },
 };

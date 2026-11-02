@@ -37,7 +37,7 @@ physiques, dons.
 
 - 🫙 **Garder ta récolte** : pour chaque légume, trois conservations (bocal, congélation, séchage, lacto-fermentation…) avec leur durée de garde et un pas-à-pas animé — 736 recettes, dont 448 déroulées étape par étape.
 - 📔 **Cahier de culture** : « à faire aujourd'hui » dit qui a soif, qui est mûr et s'il va faire trop chaud, puis les jardins pleine terre, le suivi par plant et l'avertissement de rotation.
-- 🌍 **73 pays, deux langues, hors ligne** : calendriers par pays et zone climatique (hémisphère sud compris), interface en français et en anglais, sans compte ni serveur. L'app est **entièrement bilingue** depuis le 2 novembre 2026 : recettes, tutos, maladies, lexique, badges et défis.
+- 🌍 **73 pays, deux langues, hors ligne** : calendriers par pays et zone climatique (hémisphère sud compris), interface en français et en anglais, sans compte ni serveur. L'app est **entièrement bilingue français-anglais** depuis le 2 novembre 2026 (recettes, tutos, maladies, lexique, badges et défis), et l'**espagnol** a commencé le même jour : interface et noms des 130 cultures.
 
 ## Canaux
 

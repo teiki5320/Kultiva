@@ -49,8 +49,9 @@ Le pays se choisit au premier lancement (avec recherche) et se modifie
 ## 🗣️ Langues
 
 - 🇫🇷 **Français** — la source, tout y est
-- 🇬🇧 **Anglais** — l'interface, les noms des 130 cultures, les neuf
-  méthodes de conservation et les durées de garde
+- 🇬🇧 **Anglais** — complet : interface, 130 cultures, 736 recettes,
+  33 tutos, maladies, lexique, badges et défis
+- 🇪🇸 **Espagnol** — l'interface, les 130 cultures et 120 recettes sur 736 ; le reste arrive
 
 **L'app est entièrement bilingue depuis le 2 novembre 2026** : les
 736 recettes, les 33 tutos, les maladies, le lexique, les badges, les

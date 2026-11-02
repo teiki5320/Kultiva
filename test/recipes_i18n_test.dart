@@ -189,15 +189,47 @@ void main() {
     });
   });
 
-  test('les neuf méthodes de conservation sont traduites', () {
+  test('les neuf méthodes sont traduites dans chaque langue', () {
+    // Une langue déclarée dans `recipeTextsByLanguage` doit aussi
+    // avoir ses neuf méthodes et ses unités de durée : sinon la
+    // pastille de garde et le sous-titre restent en français sous un
+    // titre traduit. C'est le genre de demi-traduction qu'on veut
+    // voir échouer tout de suite.
+    for (final langue in recipeTextsByLanguage.keys) {
+      for (final m in PreservationMethod.values) {
+        final t = methodLabelIn(m, langue);
+        expect(t, isNotEmpty, reason: '$langue · ${m.label}');
+        expect(t, isNot(m.label),
+            reason: '$langue : « ${m.label} » n\'a pas d\'équivalent, '
+                'la pastille de garde afficherait du français.');
+      }
+      expect(dureeLisibleIn(21 * 24 * 60, langue),
+          isNot(dureeLisible(21 * 24 * 60)),
+          reason: '$langue n\'a pas ses unités de durée : une '
+              'conservation afficherait « 3 semaines ».');
+      expect(playerUiFor(langue), isNotNull,
+          reason: '$langue n\'a pas les libellés du lecteur : une '
+              'recette traduite s\'ouvrirait dans une boîte '
+              'française.');
+    }
     for (final m in PreservationMethod.values) {
-      final en = methodLabelIn(m, 'en');
-      expect(en, isNotEmpty);
-      expect(en, isNot(m.label),
-          reason: '« ${m.label} » n\'a pas d\'équivalent anglais : la '
-              'pastille de garde afficherait du français.');
       expect(methodLabelIn(m, 'fr'), m.label);
     }
+  });
+
+  test('l\'espagnol a commencé et couvre un lot', () {
+    // Verrou d'avancement : il dit où on en est, et il échouera quand
+    // un lot de plus arrivera — c'est voulu, les chiffres des fiches
+    // doivent suivre.
+    final traduites = <String>[
+      for (final e in recipesByVegetable.entries)
+        for (final r in e.value)
+          if (recipeTextFor(r, 'es') != null) '${e.key}/${r.name}',
+    ];
+    expect(traduites, hasLength(120),
+        reason: '${traduites.length} recettes en espagnol. Si un lot '
+            'vient d\'arriver, corrige ce chiffre, le README et '
+            'docs/traduction-recettes.md.');
   });
 
   test('les durées se lisent dans la langue affichée', () {

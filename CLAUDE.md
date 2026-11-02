@@ -353,11 +353,19 @@ dart run tool/exporter_recettes.dart --squelette --langue=en --lot=3
 - **Tone of voice** : chaleureux, ludique, enfantin. Exemples : « Kultiva
   utilise ta localisation pour afficher la météo de ton jardin », « Le potager
   kawaii dans ta poche 🌱 ».
-- **Localisation** : **français (source) et anglais** depuis le
-  01/11/2026. Interface + noms des 130 cultures traduits ; les
-  **recettes** sont traduisibles depuis le 02/11/2026 (voir la section
-  « Traduire le contenu » plus bas) ; tutos, conseils, maladies, badges
-  et défis restent en français, et le réglage « Langue » le dit. Les chaînes passent par
+- **Localisation** : **français (source), anglais, espagnol**.
+  L'anglais est **complet** depuis le 02/11/2026 — interface, 130
+  cultures, 736 recettes, 33 tutos, maladies, lexique, badges, défis.
+  L'espagnol a commencé le même jour : interface (`app_es.arb`), 130
+  cultures (`names_es.dart`) et **120 recettes sur 736**
+  (`recipes_es.dart`, lot 1 sur 7) ; le reste retombe sur le français.
+  Les neuf méthodes de conservation, les unités de durée et les
+  libellés du lecteur sont traduits aussi — un test refuse une langue
+  qui aurait les recettes sans eux. Voir
+  « Traduire le contenu » plus bas. ⚠️ **La note du réglage « Langue »
+  vit dans les trois ARB** (`settingsLanguagePartial`) et change avec
+  la langue : chacune n'est pas au même stade. Elle était écrite en
+  dur dans le widget et disait faux dès que l'anglais a été fini. Les chaînes passent par
   `lib/l10n/*.arb` (`flutter gen-l10n`), les noms de légumes par
   `lib/data/names_en.dart` et `v.displayName`. **`v.name` reste le nom
   français** : c'est la source de vérité des clés, de la recherche

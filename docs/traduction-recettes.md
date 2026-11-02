@@ -147,7 +147,10 @@ Garde ce qui rend une étape utile : la raison derrière le geste.
 | Recettes — les 736 | ✅ anglais, 123 légumes |
 | Tutos — les 33 | ✅ anglais, 1 266 phrases |
 | Maladies, badges, défis, lexique, conseils | ✅ anglais, 784 phrases |
-| Espagnol, portugais | ⬜ à faire — même outillage, `--langue=es` |
+| Espagnol — interface et 130 cultures | ✅ `app_es.arb`, `names_es.dart` |
+| Espagnol — 120 recettes sur 736 | 🟡 lot 1 fait, 6 lots restent |
+| Espagnol — tutos et contenu | ⬜ à faire, même outillage |
+| Portugais | ⬜ à faire — `--langue=pt` |
 
 **Le prix réel d'un lot de recettes, mesuré** : 190 000 jetons sur
 Sonnet pour 20 légumes et 120 recettes — soit ≈ 1,3 million de jetons
