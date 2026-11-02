@@ -2,7 +2,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../models/country.dart';
-import '../models/region_data.dart';
 
 /// Service de géolocalisation pour détecter automatiquement le pays
 /// (et donc la région) de l'utilisateur.
@@ -62,24 +61,6 @@ class GeolocationService {
       // Géocodage indisponible (offline, quota…) → secours ci-dessous.
     }
     return null;
-  }
-
-  /// Tente de déterminer la région à partir de la position GPS.
-  /// Retourne null si la localisation est indisponible ou refusée.
-  static Future<Region?> detectRegion() async {
-    final country = await detectCountry();
-    if (country != null) return country.region;
-
-    // Secours sans géocodage, par latitude. Grossier mais honnête :
-    // sous les tropiques, le calendrier suit les pluies ; ailleurs, il
-    // suit les saisons thermiques. Le contenu ouest-africain n'est
-    // jamais attribué ici — il faut avoir identifié le pays pour cela.
-    final position = await _currentPosition(requestPermission: true);
-    if (position == null) return null;
-    if (Country.coordsInWestAfrica(position.latitude, position.longitude)) {
-      return Region.westAfrica;
-    }
-    return position.latitude.abs() <= 23.5 ? Region.tropical : Region.france;
   }
 
   static Position? _lastPosition;

@@ -118,15 +118,6 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
     return filtered;
   }
 
-  /// Vrai quand cette culture ne tient pas dehors dans la zone active.
-  /// La vignette le dit par une pastille ; la fiche le détaille.
-  bool _sousSerre(Vegetable v, List<RegionData> data) {
-    for (final rd in data) {
-      if (rd.vegetableId == v.id) return rd.shelterOnly;
-    }
-    return false;
-  }
-
   bool _canSow(Vegetable v, List<RegionData> regionData) {
     final now = DateTime.now().month;
     return regionData
@@ -213,7 +204,8 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                                   ),
                                 ),
                                 Text(
-                                  trUiArgs('{0} variétés', <Object?>[filtered.length]),
+                                  trUiArgs('{0} variétés',
+                                      <Object?>[filtered.length]),
                                   style: TextStyle(
                                     color: Colors.white.withValues(alpha: 0.8),
                                     fontWeight: FontWeight.w600,
@@ -464,7 +456,7 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
         return VegetableCard(
           vegetable: v,
           canSowNow: _canSow(v, regionData),
-          shelterOnly: _sousSerre(v, regionData),
+          shelterOnly: calendarEntryFor(regionData, v.id)?.shelterOnly ?? false,
           isFavorite: favs.contains(v.id),
           medalTier: medals[v.id] ?? MedalTier.none,
           onFavoriteToggle: () => PrefsService.instance.toggleFavorite(v.id),

@@ -65,6 +65,22 @@ List<RegionData> regionalCalendar(
   return calcule;
 }
 
+/// L'entrée d'une culture dans un calendrier, ou `null` si elle n'y est
+/// pas.
+///
+/// ⚠️ Cette boucle de quatre lignes était recopiée **quatre fois** —
+/// dans la fiche légume, le calendrier mensuel, le catalogue et le
+/// service PDF — dont une version qui passait par `firstWhere` et un
+/// `try/catch` pour rattraper l'exception. Une recherche dans une
+/// liste n'a pas à être réinventée par chaque écran, et c'est le
+/// genre de copie qui diverge à la première correction.
+RegionData? calendarEntryFor(List<RegionData> calendrier, String vegetableId) {
+  for (final d in calendrier) {
+    if (d.vegetableId == vegetableId) return d;
+  }
+  return null;
+}
+
 /// Le calendrier de l'utilisateur, lu dans ses préférences.
 ///
 /// Trois écrans portaient chacun leur copie d'une méthode `_dataFor`

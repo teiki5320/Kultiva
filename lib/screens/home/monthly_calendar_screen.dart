@@ -49,13 +49,6 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
     super.dispose();
   }
 
-  RegionData? _findRegionData(List<RegionData> list, String vegetableId) {
-    for (final d in list) {
-      if (d.vegetableId == vegetableId) return d;
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Region>(
@@ -74,7 +67,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
           if (_selectedCategory != null && veg.category != _selectedCategory) {
             continue;
           }
-          final entry = _findRegionData(data, veg.id);
+          final entry = calendarEntryFor(data, veg.id);
           final months = isHarvest
               ? (entry?.harvestMonths ?? const <int>[])
               : (entry?.sowingMonths ?? const <int>[]);

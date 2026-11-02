@@ -3,27 +3,27 @@ import 'package:flutter/foundation.dart';
 
 import 'prefs_service.dart';
 
-/// Sons disponibles.
+/// Sons disponibles — ceux que l'app joue vraiment.
 ///
-/// Les entrées "sémantiques" (water, fertilize, levelUp…)
-/// partagent pour l'instant les mêmes fichiers audio que les sons
-/// historiques — on pourra les remplacer par des sons dédiés plus
-/// tard sans toucher au code appelant.
+/// ⚠️ **Sept valeurs ont été retirées le 02/11/2026** : `drop`, `rain`,
+/// `fertilize`, `levelUp`, `sneeze`, `shake` et `success`. Aucune
+/// n'était jouée nulle part, et le commentaire d'origine disait
+/// pourquoi elles étaient là — « on pourra les remplacer par des sons
+/// dédiés plus tard ». C'est exactement ce que la règle 10 de
+/// `CLAUDE.md` refuse : du code prêt pour un plus tard qui n'est
+/// jamais venu. `sfx_rain.mp3` est parti avec, plus aucun son ne le
+/// désignait.
+///
+/// Plusieurs entrées partagent encore un fichier — `water` et `plant`
+/// par exemple. Celles-là sont jouées, elles restent.
 enum Sfx {
   tap('sounds/sfx_tap.mp3'),
   plant('sounds/sfx_plant.mp3'),
   favorite('sounds/sfx_favorite.mp3'),
-  drop('sounds/sfx_drop.mp3'),
-  rain('sounds/sfx_rain.mp3'),
   cart('sounds/sfx_cart.mp3'),
   water('sounds/sfx_drop.mp3'),
-  fertilize('sounds/sfx_plant.mp3'),
-  levelUp('sounds/sfx_favorite.mp3'),
   celebrate('sounds/sfx_favorite.mp3'),
-  sneeze('sounds/sfx_drop.mp3'),
-  shake('sounds/sfx_tap.mp3'),
-  camera('sounds/sfx_cart.mp3'),
-  success('sounds/sfx_favorite.mp3');
+  camera('sounds/sfx_cart.mp3');
 
   final String asset;
   const Sfx(this.asset);

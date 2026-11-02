@@ -22,7 +22,9 @@ class PdfService {
   static Future<void> printVegetableSheet(
       Vegetable vegetable, Region region) async {
     final doc = pw.Document();
-    final regionData = _findRegionData(vegetable.id, region);
+    final regionData = calendarEntryFor(
+        regionalCalendar(region, zone: PrefsService.instance.effectiveZone),
+        vegetable.id);
     // L'en-tête disait « Calendrier — France » à un jardinier
     // allemand : `Region.label` vaut « France » pour la base tempérée.
     final pays = PrefsService.instance.country.value;
@@ -335,8 +337,8 @@ class PdfService {
                     '${c.endedAt == null ? trUi("en cours") : _fmtShort(c.endedAt!)}'
                     '   ${_vegName(c.vegetableId)}'
                     '   ${trUiArgs("({0} arrosages)", <Object?>[
-                      wateringCounts[c.id] ?? 0
-                    ])}',
+                          wateringCounts[c.id] ?? 0
+                        ])}',
                     style: const pw.TextStyle(fontSize: 11),
                   ),
                 ),
@@ -371,16 +373,6 @@ class PdfService {
 
   static String _fmtShort(DateTime d) =>
       '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}';
-
-  static RegionData? _findRegionData(String vegetableId, Region region) {
-    final list =
-        regionalCalendar(region, zone: PrefsService.instance.effectiveZone);
-    try {
-      return list.firstWhere((rd) => rd.vegetableId == vegetableId);
-    } catch (_) {
-      return null;
-    }
-  }
 
   /// Les douze initiales de la barre de mois.
   ///

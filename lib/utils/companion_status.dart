@@ -31,19 +31,3 @@ CompanionStatus statusFor({
   }
   return hasGood ? CompanionStatus.good : CompanionStatus.neutral;
 }
-
-/// Statut de compagnonnage entre deux légumes spécifiques.
-CompanionStatus pairStatus(String a, String b) {
-  final aIncompat = incompatibleMap[a] ?? const <String>[];
-  final aCompanion = companionMap[a] ?? const <String>[];
-  final bIncompat = incompatibleMap[b] ?? const <String>[];
-  final bCompanion = companionMap[b] ?? const <String>[];
-
-  if (aIncompat.contains(b) || bIncompat.contains(a)) {
-    return CompanionStatus.bad;
-  }
-  if (aCompanion.contains(b) || bCompanion.contains(a)) {
-    return CompanionStatus.good;
-  }
-  return CompanionStatus.neutral;
-}

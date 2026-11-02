@@ -97,13 +97,6 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
     );
   }
 
-  RegionData? _findRegionData(List<RegionData> list, String vegId) {
-    for (final d in list) {
-      if (d.vegetableId == vegId) return d;
-    }
-    return null;
-  }
-
   Future<void> _openUrl(BuildContext context, String url) async {
     final uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -193,7 +186,7 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
   }
 
   Widget _buildPage(Vegetable vegetable, Region region) {
-    final data = _findRegionData(currentCalendar(), vegetable.id);
+    final data = calendarEntryFor(currentCalendar(), vegetable.id);
     final lieu = placeLabelFor(region, PrefsService.instance.country.value);
     return ReadableWidth(
       child: ListView(
