@@ -146,5 +146,5 @@ class LEn extends L {
 
   @override
   String get settingsLanguagePartial =>
-      'The interface is translated. The catalog, guides and recipes are still in French for now.';
+      'English is complete: interface, catalogue, the 736 recipes, the 33 guides and the advice. French is the source language. Spanish has the interface and the crop names so far.';
 }

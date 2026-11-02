@@ -206,7 +206,8 @@ class PrefsService {
 
   /// Les langues dans lesquelles l'interface existe. Le français est
   /// la source : tout ce qui n'est pas traduit y retombe.
-  static const List<String> supportedLanguages = <String>['fr', 'en'];
+  static const List<String> supportedLanguages =
+      <String>['fr', 'en', 'es'];
 
   /// La langue réellement affichée : celle choisie à la main, sinon
   /// celle du téléphone si on la parle, sinon le français.

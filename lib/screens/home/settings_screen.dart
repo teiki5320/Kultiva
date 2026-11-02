@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../config/app_info.dart';
 import '../../models/country.dart';
 import '../../models/region_data.dart';
@@ -255,18 +256,19 @@ class SettingsScreen extends StatelessWidget {
                                         fontWeight: FontWeight.w700),
                                   ),
                                 ),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(16, 0, 16, 14),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 0, 16, 14),
                                 child: Text(
                                   // On le dit plutôt que de le laisser
-                                  // découvrir : une interface anglaise
-                                  // sur des tutos français surprend
-                                  // moins quand on a été prévenu.
-                                  'L\'interface et les noms de légumes sont '
-                                  'traduits. Les tutos, les recettes et les '
-                                  'conseils restent en français pour '
-                                  'l\'instant.',
-                                  style: TextStyle(
+                                  // découvrir : une interface traduite
+                                  // sur du contenu français surprend
+                                  // moins quand on a été prévenu. Le
+                                  // texte vit dans les ARB et change
+                                  // avec la langue : chacune n'est pas
+                                  // au même stade.
+                                  L.of(context).settingsLanguagePartial,
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     height: 1.4,
                                     color: KultivaColors.textSecondary,
@@ -468,6 +470,8 @@ String _langueLabel(String code) {
   switch (code) {
     case 'en':
       return '🇬🇧  English';
+    case 'es':
+      return '🇪🇸  Español';
     case 'fr':
     default:
       return '🇫🇷  Français';

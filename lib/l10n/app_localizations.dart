@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
 import 'app_localizations_fr.dart';
 
 // ignore_for_file: type=lint
@@ -94,6 +95,7 @@ abstract class L {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
+    Locale('es'),
     Locale('fr')
   ];
 
@@ -334,7 +336,7 @@ abstract class L {
   /// No description provided for @settingsLanguagePartial.
   ///
   /// In fr, this message translates to:
-  /// **'L\'interface est traduite. Le catalogue, les tutos et les recettes restent en français pour l\'instant.'**
+  /// **'Le français est la langue source : tout y est. L\'anglais est complet lui aussi — interface, catalogue, recettes, tutos et conseils. L\'espagnol n\'a pour l\'instant que l\'interface et les noms de légumes.'**
   String get settingsLanguagePartial;
 }
 
@@ -348,7 +350,7 @@ class _LDelegate extends LocalizationsDelegate<L> {
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'fr'].contains(locale.languageCode);
+      <String>['en', 'es', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_LDelegate old) => false;
@@ -359,6 +361,8 @@ L lookupL(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return LEn();
+    case 'es':
+      return LEs();
     case 'fr':
       return LFr();
   }

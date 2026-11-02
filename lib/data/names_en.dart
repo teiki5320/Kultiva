@@ -1,4 +1,5 @@
 import '../models/vegetable.dart';
+import 'names_es.dart';
 import '../services/prefs_service.dart';
 
 /// Les 130 cultures du catalogue, en anglais.
@@ -172,9 +173,17 @@ const Map<String, String> vegetableNamesEn = <String, String>{
 /// et la zone climatique. Les call-sites sont des centaines, et leur
 /// faire porter un `BuildContext` aurait surtout produit des oublis.
 String vegetableNameIn(String id, String frenchName, String languageCode) {
-  if (languageCode == 'en') return vegetableNamesEn[id] ?? frenchName;
-  return frenchName;
+  final table = _tables[languageCode];
+  return table?[id] ?? frenchName;
 }
+
+/// Les surcouches de noms, par langue. Ajouter une langue, c'est un
+/// fichier et une ligne ici.
+const Map<String, Map<String, String>> _tables =
+    <String, Map<String, String>>{
+  'en': vegetableNamesEn,
+  'es': vegetableNamesEs,
+};
 
 /// Le nom affiché d'un légume, traduit si la langue l'est.
 ///

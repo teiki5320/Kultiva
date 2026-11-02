@@ -1,0 +1,77 @@
+{
+  "@@locale": "es",
+  "tabHome": "Inicio",
+  "tabCahier": "Diario",
+  "tabEtal": "Catálogo",
+  "tabTutos": "Guías",
+  "tabRecettes": "Recetas",
+  "commonAll": "Todo",
+  "commonCancel": "Cancelar",
+  "commonDelete": "Eliminar",
+  "commonClose": "Cerrar",
+  "commonBack": "Volver",
+  "commonNext": "Siguiente",
+  "commonDone": "Hecho",
+  "commonSearch": "Buscar",
+  "photosTitle": "Fotos",
+  "photosFilm": "Carrete",
+  "photosEvolution": "Evolución",
+  "photosTake": "Hacer una foto",
+  "photosNoMemories": "El huerto aún no tiene recuerdos",
+  "photosCount": "{count, plural, =1{1 foto del huerto} other{{count} fotos del huerto}}",
+  "@photosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photosEmptyTitle": "Todavía no hay ninguna foto",
+  "photosEmptyBody": "Fotografía una planta hoy y la misma dentro de una semana: al verlas juntas te das cuenta de que crece.",
+  "photosEmptyPlantsTitle": "Ninguna planta fotografiada",
+  "photosEmptyPlantsBody": "En cuanto una planta tiene dos fotos, Kultiva las pone juntas y cuenta los días entre ambas.",
+  "photosWhichPlant": "¿Qué planta estás fotografiando?",
+  "photosPlantFirst": "Planta algo primero: una foto se engancha a una planta.",
+  "photosDeleteTitle": "¿Eliminar esta foto?",
+  "photosDeleteBody": "Se borrará del dispositivo. Kultiva no guarda ninguna copia en otro sitio, así que es definitivo.",
+  "photosGone": "Esta foto ya no está en el dispositivo.",
+  "photosAgeDay": "D+{days}",
+  "@photosAgeDay": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "recipesTitle": "Recetas",
+  "recipesSubtitle": "{recipes} recetas para {crops} cosechas",
+  "@recipesSubtitle": {
+    "placeholders": {
+      "recipes": {
+        "type": "int"
+      },
+      "crops": {
+        "type": "int"
+      }
+    }
+  },
+  "recipesSearchHint": "Una hortaliza, o un plato…",
+  "recipesInYourGarden": "En tu huerto",
+  "recipesNoStepsYet": "El paso a paso animado de esta receta aún no está escrito — llegará.",
+  "recipesIngredients": "Lo que necesitas",
+  "recipesStep": "Paso {current} de {total}",
+  "@recipesStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "recipesBonAppetit": "¡Buen provecho!",
+  "settingsLanguage": "Idioma",
+  "settingsLanguageSystem": "El del teléfono",
+  "settingsLanguagePartial": "El español tiene por ahora la interfaz y los nombres de las hortalizas; las recetas, las guías y los consejos siguen en francés y llegarán. El francés es el idioma de origen, y el inglés está completo."
+}

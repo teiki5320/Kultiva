@@ -146,5 +146,5 @@ class LFr extends L {
 
   @override
   String get settingsLanguagePartial =>
-      'L\'interface est traduite. Le catalogue, les tutos et les recettes restent en français pour l\'instant.';
+      'Le français est la langue source : tout y est. L\'anglais est complet lui aussi — interface, catalogue, recettes, tutos et conseils. L\'espagnol n\'a pour l\'instant que l\'interface et les noms de légumes.';
 }
