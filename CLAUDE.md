@@ -204,7 +204,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 41 fichiers — 1 043 tests (02/11/2026)
+├── test/                   # 43 fichiers — 1 052 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -1231,11 +1231,16 @@ vinaigre dilué ne protège plus d'un botulisme. Vérifié en cassant
 volontairement une étape : l'erreur nomme le fichier, la recette et
 l'étape.
 
-**L'état réel** : la tomate est traduite en anglais (ses 3
-conservations, en entier), comme modèle de ton. **733 recettes
-attendent**, en 7 lots de 20 légumes, indépendants les uns des autres.
+**L'état réel (02/11/2026)** : **21 légumes sur 123** sont traduits en
+anglais — la tomate, écrite comme modèle de ton, et les 20 du lot 1,
+traduits par un agent Sonnet. **616 recettes attendent**, en 6 lots.
 La fiche de passation est `docs/traduction-recettes.md` — elle suffit à
 une session, sans explorer le dépôt.
+
+⚠️ **Le prix réel d'un lot, mesuré** : 190 000 jetons sur Sonnet pour
+20 légumes et 120 recettes. Donc ≈ **1,3 million de jetons par
+langue**, pas 360 000 comme je l'avais estimé — l'agent lit, vérifie et
+réfléchit en plus d'écrire. Mesurer avant de citer, ici comme ailleurs.
 
 **Ajouter une langue** : écrire `lib/data/recipes_<code>.dart`, ajouter
 une ligne à `recipeTextsByLanguage`, ajouter le code à
@@ -1255,12 +1260,43 @@ en capture.
 pas de ce chantier : « Il te faut », « Une idée pour ta récolte de… »
 (partage) et « Pour 4 personnes · écrite pour 4 » (choix des parts).
 
-⚠️ **Les tutos, les maladies, les badges, les défis et les conseils
-n'ont pas encore de structure de traduction.** Pour les 34 tutos HTML,
-la décision n'est pas prise : dupliquer les fichiers par langue, ou
-sortir leurs textes en JSON et faire du HTML un gabarit. Deuxième
-option recommandée — 34 fichiers × n langues divergent à la première
-correction, c'est le même raisonnement que `zone_shift.dart`.
+### Les tutos : traduits sans être touchés (02/11/2026)
+
+**Le volume, mesuré** : 34 tutos, **1 266 textes distincts, 11 157
+mots** — cinq fois moins que les recettes. J'avais raisonné comme si
+c'était un second chantier de même taille ; c'était faux.
+
+**Ni copie par langue, ni gabarit.** Dupliquer, c'est 34 fichiers × n
+langues qui divergent. Transformer les 34 pages en gabarits demandait
+de les réécrire une par une, chacune ayant sa structure. À la place :
+on injecte un dictionnaire et dix lignes de JavaScript avant
+`</body>`, et le navigateur remplace les textes **dans le DOM**. Les
+34 fichiers ne bougent jamais.
+
+- `lib/data/tutos_i18n.dart` — le dictionnaire par langue et
+  `tutoTraduit(html, langue)`. En français, le HTML ressort inchangé :
+  pas de script inutile.
+- `lib/data/tutos_en.dart` — l'anglais. **Clé = la phrase française
+  exacte** : si le français est corrigé, la clé ne correspond plus et
+  la phrase reste en français. Pas de traduction fantôme.
+- `tool/exporter_tutos.py` — extrait les textes (nœuds de texte et
+  attributs `alt`/`title`/`aria-label`), jamais le contenu des
+  `<script>` ni des `<style>`.
+- `test/tutos_i18n_test.dart` — 9 tests : chaque clé existe encore dans
+  un tuto, les nombres ne bougent pas, le corps du tuto est intact,
+  aucun appel réseau, et le français ressort tel quel.
+
+Le walker ignore `<script>` et `<style>`, et un `MutationObserver`
+reprend les textes ajoutés après coup — le tuto du dashboard écrit ses
+légendes au fil de l'animation.
+
+**`conserver_legumes` est le modèle**, traduit en entier et vérifié en
+capture : mise en page intacte, 8-12 °C, 3 %, 100 °C préservés.
+
+⚠️ **Restent sans structure** : maladies, badges, défis, lexique,
+rotation, conseils canicule et achat au marché — environ 8 600 mots en
+tout. Le compagnonnage n'en a pas besoin : ce sont des identifiants de
+légumes, déjà traduits par `displayName`.
 
 ### Voir un écran HTML sans le simulateur
 

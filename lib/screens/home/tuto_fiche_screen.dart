@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../data/tutos_i18n.dart';
+import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../root_tabs.dart';
 import 'defis/defis_badges_screen.dart';
@@ -57,6 +59,10 @@ class _TutoFicheScreenState extends State<TutoFicheScreen> {
     try {
       var html = await rootBundle.loadString(widget.assetPath);
       html = await _inlineAssetImages(html);
+      // Les 34 tutos sont écrits en français et ne sont jamais
+      // modifiés : la traduction est injectée ici et appliquée dans le
+      // DOM. En français, le HTML ressort inchangé.
+      html = tutoTraduit(html, PrefsService.instance.effectiveLanguage);
       await _controller.loadHtmlString(html);
     } catch (e) {
       if (mounted) {

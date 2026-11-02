@@ -37,7 +37,7 @@ physiques, dons.
 
 - 🫙 **Garder ta récolte** : pour chaque légume, trois conservations (bocal, congélation, séchage, lacto-fermentation…) avec leur durée de garde et un pas-à-pas animé — 736 recettes, dont 448 déroulées étape par étape.
 - 📔 **Cahier de culture** : « à faire aujourd'hui » dit qui a soif, qui est mûr et s'il va faire trop chaud, puis les jardins pleine terre, le suivi par plant et l'avertissement de rotation.
-- 🌍 **73 pays, deux langues, hors ligne** : calendriers par pays et zone climatique (hémisphère sud compris), interface en français et en anglais, sans compte ni serveur. Les recettes passent à l'anglais depuis le 2 novembre 2026 — la tomate est traduite, les 733 autres suivent.
+- 🌍 **73 pays, deux langues, hors ligne** : calendriers par pays et zone climatique (hémisphère sud compris), interface en français et en anglais, sans compte ni serveur. Recettes et tutos passent à l'anglais depuis le 2 novembre 2026 — 21 légumes sur 123 et un premier tuto sont faits, le reste suit.
 
 ## Canaux
 

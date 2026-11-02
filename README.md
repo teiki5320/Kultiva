@@ -52,20 +52,24 @@ Le pays se choisit au premier lancement (avec recherche) et se modifie
 - 🇬🇧 **Anglais** — l'interface, les noms des 130 cultures, les neuf
   méthodes de conservation et les durées de garde
 
-Les **recettes** sont traduisibles depuis le 2 novembre 2026 : une
-surcouche par langue (`lib/data/recipes_en.dart`) recouvre le texte
-sans toucher au catalogue, qui reste la source de vérité. Les trois
-conservations de la tomate sont traduites en anglais comme modèle ; les
-733 autres recettes se traduisent en sept lots indépendants — la marche
-à suivre est dans `docs/traduction-recettes.md`.
+**Recettes et tutos se traduisent depuis le 2 novembre 2026**, par
+surcouche : une table par langue recouvre le texte sans toucher ni au
+catalogue ni aux fichiers HTML, qui restent la source de vérité.
+
+- **Recettes** — `lib/data/recipes_en.dart`. **21 légumes sur 123**
+  traduits ; 6 lots restent.
+- **Tutos** — `lib/data/tutos_en.dart`. Le dictionnaire est injecté
+  dans la page et appliqué dans le DOM : les 34 fichiers HTML ne sont
+  jamais modifiés. **1 tuto sur 33** traduit, comme modèle.
 
 Chaque champ retombe sur le français séparément : une recette à moitié
 traduite affiche un nom anglais et des étapes françaises, jamais un
-écran vide.
+écran vide. La marche à suivre est dans `docs/traduction-recettes.md`.
 
-Les 33 tutos, les conseils, les maladies, les badges et les défis
-restent en français. Le réglage **Langue** des paramètres le dit, et
-permet de revenir au français même sur un téléphone anglophone.
+Les conseils, les maladies, les badges et les défis restent en
+français, sans structure de traduction pour l'instant. Le réglage
+**Langue** des paramètres le dit, et permet de revenir au français même
+sur un téléphone anglophone.
 
 ## 🛠️ Stack technique
 

@@ -144,10 +144,28 @@ Garde ce qui rend une étape utile : la raison derrière le geste.
 | 9 méthodes de conservation | ✅ français + anglais |
 | Durées (« 3 semaines ») | ✅ français + anglais |
 | Libellés du lecteur animé | ✅ français + anglais (`playerUiFor`) |
-| Recettes — tomate (3) | ✅ anglais, **le modèle** |
-| Recettes — les 733 autres | ⬜ à faire, 7 lots |
-| 33 tutos HTML | ⬜ structure pas encore faite |
-| Maladies, badges, défis, conseils | ⬜ structure pas encore faite |
+| Recettes — 21 légumes sur 123 | ✅ anglais (tomate = le modèle, + lot 1) |
+| Recettes — les 102 légumes restants | ⬜ à faire, 6 lots |
+| Tutos — mécanisme | ✅ dictionnaire injecté dans le DOM |
+| Tutos — `conserver_legumes` | ✅ anglais, **le modèle** |
+| Tutos — les 32 autres | ⬜ à faire (`tool/exporter_tutos.py`) |
+| Maladies, badges, défis, lexique, conseils | ⬜ structure pas encore faite |
+
+**Le prix réel d'un lot de recettes, mesuré** : 190 000 jetons sur
+Sonnet pour 20 légumes et 120 recettes — soit ≈ 1,3 million de jetons
+par langue. L'agent lit, vérifie et réfléchit en plus d'écrire.
+
+## Traduire un tuto
+
+```bash
+python3 tool/exporter_tutos.py --compte
+python3 tool/exporter_tutos.py --squelette --langue=en --tuto=paillage
+```
+
+La clé est la **phrase française exacte**. Les 34 fichiers HTML ne sont
+jamais modifiés : le dictionnaire est injecté dans la page et appliqué
+dans le DOM au chargement. Colle le résultat dans
+`lib/data/tutos_en.dart`, puis `flutter test test/tutos_i18n_test.dart`.
 
 ## Deux choses encore en français dans l'écran Recettes
 
