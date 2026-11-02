@@ -2843,4 +2843,401 @@ const Map<String, String> contentTextsEn = <String, String>{
       'Stems to cut all year round in a warm climate',
   'Vivace — récolte continue':
       'Perennial — harvested continuously',
+  // ─── fiche : durée de récolte ───
+  '10 à 14 mois (plantation en début de saison des pluies)':
+      '10 to 14 months (planted at the start of the rains)',
+  '100 à 110 jours':
+      '100 to 110 days',
+  '100 à 110 jours (semis d\'octobre-novembre, climat doux)':
+      '100 to 110 days (sown in October-November, mild climate)',
+  '100 à 110 jours (semis sous abri en avril)':
+      '100 to 110 days (sown under cover in April)',
+  '100 à 110 jours (semis sous abri en mars-avril)':
+      '100 to 110 days (sown under cover in March-April)',
+  '100 à 120 jours':
+      '100 to 120 days',
+  '100 à 120 jours (plantation d\'octobre, récolte en été)':
+      '100 to 120 days (planted in October, harvested in summer)',
+  '100 à 120 jours (repiquage en mai)':
+      '100 to 120 days (pricked out in May)',
+  '100 à 120 jours (semis direct en mai-juin)':
+      '100 to 120 days (sown direct in May-June)',
+  '100 à 120 jours (semis en mai, climat tempéré chaud)':
+      '100 to 120 days (sown in May, warm temperate climate)',
+  '100 à 120 jours (semis sous abri en avril)':
+      '100 to 120 days (sown under cover in April)',
+  '100 à 120 jours (semis sous abri, climat tempéré chaud)':
+      '100 to 120 days (sown under cover, warm temperate climate)',
+  '100 à 120 jours (variétés d\'automne)':
+      '100 to 120 days (autumn varieties)',
+  '100 à 120 jours (variétés d\'hiver, climat doux)':
+      '100 to 120 days (winter varieties, mild climate)',
+  '100 à 120 jours (variétés de garde)':
+      '100 to 120 days (storage varieties)',
+  '100 à 120 jours (variétés tardives)':
+      '100 to 120 days (late varieties)',
+  '100 à 130 jours':
+      '100 to 130 days',
+  '110 à 120 jours (semis en mai, climat tempéré chaud)':
+      '110 to 120 days (sown in May, warm temperate climate)',
+  '110 à 130 jours (variétés d\'hiver, résistantes au gel)':
+      '110 to 130 days (winter varieties, frost-hardy)',
+  '120 à 130 jours (semis en mai, climat tempéré chaud)':
+      '120 to 130 days (sown in May, warm temperate climate)',
+  '120 à 130 jours (semis sous abri en avril)':
+      '120 to 130 days (sown under cover in April)',
+  '120 à 130 jours (semis sous abri en février-mars)':
+      '120 to 130 days (sown under cover in February-March)',
+  '120 à 140 jours (saison des pluies, Afrique de l\'Ouest)':
+      '120 to 140 days (rainy season, West Africa)',
+  '120 à 140 jours (semis de mai, récolte d\'automne-hiver)':
+      '120 to 140 days (sown in May, harvested in autumn-winter)',
+  '120 à 150 jours':
+      '120 to 150 days',
+  '120 à 150 jours (poireau d\'automne, semis de mai)':
+      '120 to 150 days (autumn leek, sown in May)',
+  '120 à 150 jours (semis de fin d\'hiver)':
+      '120 to 150 days (sown in late winter)',
+  '130 à 150 jours (plantation sous abri en avril)':
+      '130 to 150 days (planted under cover in April)',
+  '130 à 150 jours (semis de mars-avril)':
+      '130 to 150 days (sown in March-April)',
+  '140 à 150 jours (semis en mai, climat tempéré chaud)':
+      '140 to 150 days (sown in May, warm temperate climate)',
+  '150 à 180 jours':
+      '150 to 180 days',
+  '150 à 180 jours (plantation d\'oeilletons au printemps, 1re année)':
+      '150 to 180 days (offsets planted in spring, 1st year)',
+  '150 à 180 jours (poireau d\'hiver, semis de mars)':
+      '150 to 180 days (winter leek, sown in March)',
+  '150 à 180 jours (semis d\'automne, récolte au printemps)':
+      '150 to 180 days (sown in autumn, harvested in spring)',
+  '150 à 180 jours (semis en mai, arrachage en automne, forçage en cave)':
+      '150 to 180 days (sown in May, lifted in autumn, forced in a cellar)',
+  '160 à 190 jours (forçage inclus, récolte hivernale)':
+      '160 to 190 days (forcing included, winter harvest)',
+  '180 à 210 jours':
+      '180 to 210 days',
+  '180 à 210 jours (ail rose, planté en février-mars)':
+      '180 to 210 days (pink garlic, planted in February-March)',
+  '180 à 210 jours (récolte en place, variétés rustiques)':
+      '180 to 210 days (harvested where grown, hardy varieties)',
+  '180 à 240 jours (saison des pluies, Afrique de l\'Ouest)':
+      '180 to 240 days (rainy season, West Africa)',
+  '2 à 3 ans avant la première récolte (griffes plantées au printemps)':
+      '2 to 3 years before the first harvest (crowns planted in spring)',
+  '200 à 240 jours':
+      '200 to 240 days',
+  '21 à 35 jours':
+      '21 to 35 days',
+  '210 à 270 jours (plantation en saison chaude et humide)':
+      '210 to 270 days (planted in the warm, wet season)',
+  '240 à 270 jours (ail blanc et violet, planté en octobre-novembre)':
+      '240 to 270 days (white and purple garlic, planted in October-November)',
+  '240 à 300 jours (plantation en début de saison des pluies)':
+      '240 to 300 days (planted at the start of the rains)',
+  '240 à 300 jours (plantation en mars-avril, récolte en hiver)':
+      '240 to 300 days (planted in March-April, harvested in winter)',
+  '25 à 35 jours':
+      '25 to 35 days',
+  '25 à 35 jours (semis de mars-avril)':
+      '25 to 35 days (sown in March-April)',
+  '270 à 365 jours (bouturage en début de saison des pluies)':
+      '270 to 365 days (cuttings taken at the start of the rains)',
+  '30 à 40 jours':
+      '30 to 40 days',
+  '30 à 40 jours (semis de septembre)':
+      '30 to 40 days (sown in September)',
+  '30 à 45 jours':
+      '30 to 45 days',
+  '30 à 50 jours':
+      '30 to 50 days',
+  '30 à 50 jours (saison des pluies, coupes répétées)':
+      '30 to 50 days (rainy season, repeated cuts)',
+  '40 à 45 jours (monte vite en graines)':
+      '40 to 45 days (it bolts quickly)',
+  '40 à 50 jours (semis de mars)':
+      '40 to 50 days (sown in March)',
+  '40 à 50 jours (semis de mars-avril)':
+      '40 to 50 days (sown in March-April)',
+  '40 à 55 jours':
+      '40 to 55 days',
+  '40 à 60 jours':
+      '40 to 60 days',
+  '40 à 60 jours (saison des pluies, récoltes répétées)':
+      '40 to 60 days (rainy season, repeated harvests)',
+  '45 à 55 jours (semis de septembre-octobre)':
+      '45 to 55 days (sown in September-October)',
+  '45 à 60 jours':
+      '45 to 60 days',
+  '45 à 60 jours (navet de printemps)':
+      '45 to 60 days (spring turnip)',
+  '50 à 60 jours (pleine terre)':
+      '50 to 60 days (in open ground)',
+  '50 à 60 jours (récolte sous abri ou en place)':
+      '50 to 60 days (harvested under cover or where grown)',
+  '50 à 60 jours (semis de septembre)':
+      '50 to 60 days (sown in September)',
+  '50 à 60 jours (semis direct en mai-juin)':
+      '50 to 60 days (sown direct in May-June)',
+  '50 à 65 jours':
+      '50 to 65 days',
+  '50 à 65 jours (semis de juillet-août)':
+      '50 to 65 days (sown in July-August)',
+  '50 à 70 jours':
+      '50 to 70 days',
+  '50 à 70 jours (saison chaude et humide, récoltes répétées)':
+      '50 to 70 days (warm wet season, repeated harvests)',
+  '55 à 60 jours (semis de mai-juin)':
+      '55 to 60 days (sown in May-June)',
+  '55 à 65 jours (semis d\'avril)':
+      '55 to 65 days (sown in April)',
+  '55 à 70 jours':
+      '55 to 70 days',
+  '55 à 75 jours':
+      '55 to 75 days',
+  '60 à 70 jours (saison des pluies, Afrique de l\'Ouest)':
+      '60 to 70 days (rainy season, West Africa)',
+  '60 à 70 jours (semis de juillet-août)':
+      '60 to 70 days (sown in July-August)',
+  '60 à 70 jours (semis de mars-avril)':
+      '60 to 70 days (sown in March-April)',
+  '60 à 70 jours (semis de mars-avril, première coupe)':
+      '60 to 70 days (sown in March-April, first cut)',
+  '60 à 70 jours (semis sous abri en avril)':
+      '60 to 70 days (sown under cover in April)',
+  '60 à 70 jours (semis sous abri en mars-avril)':
+      '60 to 70 days (sown under cover in March-April)',
+  '60 à 70 jours (sous abri, variétés rustiques)':
+      '60 to 70 days (under cover, hardy varieties)',
+  '60 à 75 jours':
+      '60 to 75 days',
+  '60 à 75 jours (bouturage ou division, première coupe)':
+      '60 to 75 days (from cuttings or division, first cut)',
+  '60 à 75 jours (pleine production)':
+      '60 to 75 days (in full production)',
+  '60 à 75 jours (pleine terre)':
+      '60 to 75 days (in open ground)',
+  '60 à 75 jours (saison chaude, croissance rapide)':
+      '60 to 75 days (warm season, fast growth)',
+  '60 à 75 jours (saison des pluies, Afrique de l\'Ouest)':
+      '60 to 75 days (rainy season, West Africa)',
+  '60 à 75 jours (semis en avril)':
+      '60 to 75 days (sown in April)',
+  '60 à 75 jours (semis échelonnés)':
+      '60 to 75 days (staggered sowings)',
+  '60 à 75 jours (variétés de garde)':
+      '60 to 75 days (storage varieties)',
+  '60 à 80 jours':
+      '60 to 80 days',
+  '60 à 80 jours (semis de février-mars)':
+      '60 to 80 days (sown in February-March)',
+  '60 à 80 jours (vivace, récolte en continu)':
+      '60 to 80 days (perennial, harvested continuously)',
+  '60 à 90 jours (climat tropical, touffe établie)':
+      '60 to 90 days (tropical climate, established clump)',
+  '60 à 90 jours (plants repiqués, variétés remontantes)':
+      '60 to 90 days (transplanted, everbearing varieties)',
+  '60 à 90 jours (semis en début de saison des pluies)':
+      '60 to 90 days (sown at the start of the rains)',
+  '60 à 90 jours (vivace, récolte en continu)':
+      '60 to 90 days (perennial, harvested continuously)',
+  '60 à 90 jours pour les premières feuilles (semis en saison des pluies)':
+      '60 to 90 days for the first leaves (sown in the rainy season)',
+  '65 à 80 jours (semis de juin pour récolte d\'automne)':
+      '65 to 80 days (sown in June for an autumn harvest)',
+  '70 à 80 jours (récolte de conservation)':
+      '70 to 80 days (a keeping harvest)',
+  '70 à 80 jours (récolte en continu)':
+      '70 to 80 days (harvested continuously)',
+  '70 à 80 jours (semis sous abri, climat tempéré)':
+      '70 to 80 days (sown under cover, temperate climate)',
+  '70 à 85 jours (repiquage en plein champ)':
+      '70 to 85 days (pricked out in open ground)',
+  '70 à 85 jours (repiquage pleine terre)':
+      '70 to 85 days (pricked out in open ground)',
+  '70 à 85 jours (semis de mars-avril)':
+      '70 to 85 days (sown in March-April)',
+  '70 à 85 jours (semis direct en mai-juin)':
+      '70 to 85 days (sown direct in May-June)',
+  '70 à 90 jours':
+      '70 to 90 days',
+  '70 à 90 jours (dernières coupes avant l\'hiver)':
+      '70 to 90 days (last cuts before winter)',
+  '70 à 90 jours (plein champ)':
+      '70 to 90 days (in open ground)',
+  '70 à 90 jours (récolte améliorée par le gel)':
+      '70 to 90 days (frost improves the harvest)',
+  '70 à 90 jours (semis au chaud, climat tempéré)':
+      '70 to 90 days (sown in the warm, temperate climate)',
+  '70 à 90 jours (semis de mars, première récolte)':
+      '70 to 90 days (sown in March, first harvest)',
+  '70 à 90 jours (semis en climat chaud)':
+      '70 to 90 days (sown in a warm climate)',
+  '70 à 90 jours (semis en mai, feuilles récoltées tôt)':
+      '70 to 90 days (sown in May, leaves picked early)',
+  '70 à 90 jours (semis sous abri en avril)':
+      '70 to 90 days (sown under cover in April)',
+  '70 à 90 jours (semis sous abri en février-mars)':
+      '70 to 90 days (sown under cover in February-March)',
+  '70 à 90 jours (variétés précoces, plantation en mars)':
+      '70 to 90 days (early varieties, planted in March)',
+  '75 à 90 jours':
+      '75 to 90 days',
+  '75 à 90 jours (pleine terre, climat chaud)':
+      '75 to 90 days (in open ground, warm climate)',
+  '75 à 90 jours (variétés remontantes, fin de saison)':
+      '75 to 90 days (everbearing varieties, late season)',
+  '80 à 100 jours':
+      '80 to 100 days',
+  '80 à 100 jours (pépinière en début de saison des pluies)':
+      '80 to 100 days (seedbed at the start of the rains)',
+  '80 à 100 jours (semis de février-mars)':
+      '80 to 100 days (sown in February-March)',
+  '80 à 100 jours (semis sous abri en février)':
+      '80 to 100 days (sown under cover in February)',
+  '80 à 100 jours (variétés d\'automne)':
+      '80 to 100 days (autumn varieties)',
+  '80 à 100 jours (vivace, récolte en continu)':
+      '80 to 100 days (perennial, harvested continuously)',
+  '80 à 90 jours (repiquage pleine terre)':
+      '80 to 90 days (pricked out in open ground)',
+  '80 à 90 jours (semis d\'été, récolte d\'automne)':
+      '80 to 90 days (sown in summer, harvested in autumn)',
+  '80 à 90 jours (semis de mars, première coupe)':
+      '80 to 90 days (sown in March, first cut)',
+  '80 à 90 jours (semis de septembre, variétés à grain rond)':
+      '80 to 90 days (sown in September, round-seeded varieties)',
+  '80 à 90 jours (semis précoce sous abri chauffé)':
+      '80 to 90 days (sown early under heated cover)',
+  '80 à 95 jours (pleine terre, plein soleil)':
+      '80 to 95 days (in open ground, full sun)',
+  '80 à 95 jours (semis direct en mai-juin)':
+      '80 to 95 days (sown direct in May-June)',
+  '9 à 12 mois du semis aux premiers fruits (climat tropical)':
+      '9 to 12 months from sowing to the first fruit (tropical climate)',
+  '90 à 100 jours (semis précoce sous abri chauffé)':
+      '90 to 100 days (sown early under heated cover)',
+  '90 à 100 jours (semis sous abri en avril)':
+      '90 to 100 days (sown under cover in April)',
+  '90 à 100 jours (semis sous abri en mars)':
+      '90 to 100 days (sown under cover in March)',
+  '90 à 100 jours (semis sous abri en mars-avril)':
+      '90 to 100 days (sown under cover in March-April)',
+  '90 à 105 jours (saison des pluies, Afrique de l\'Ouest)':
+      '90 to 105 days (rainy season, West Africa)',
+  '90 à 105 jours (semis direct en mai)':
+      '90 to 105 days (sown direct in May)',
+  '90 à 110 jours':
+      '90 to 110 days',
+  '90 à 110 jours (plantation de février-mars)':
+      '90 to 110 days (planted in February-March)',
+  '90 à 110 jours (saison des pluies, Afrique de l\'Ouest)':
+      '90 to 110 days (rainy season, West Africa)',
+  '90 à 110 jours (semis aux premières pluies, Afrique de l\'Ouest)':
+      '90 to 110 days (sown with the first rains, West Africa)',
+  '90 à 110 jours (semis de juillet)':
+      '90 to 110 days (sown in July)',
+  '90 à 110 jours (semis direct en mai)':
+      '90 to 110 days (sown direct in May)',
+  '90 à 110 jours (semis précoce sous abri)':
+      '90 to 110 days (sown early under cover)',
+  '90 à 110 jours (semis sous abri en février)':
+      '90 to 110 days (sown under cover in February)',
+  '90 à 110 jours (variétés d\'automne)':
+      '90 to 110 days (autumn varieties)',
+  '90 à 110 jours (variétés tardives)':
+      '90 to 110 days (late varieties)',
+  '90 à 120 jours (plantation au chaud, climat tempéré)':
+      '90 to 120 days (planted in the warm, temperate climate)',
+  '90 à 120 jours (plantation de bulbilles)':
+      '90 to 120 days (bulbils planted)',
+  '90 à 120 jours (pleine terre, climat chaud)':
+      '90 to 120 days (in open ground, warm climate)',
+  '90 à 120 jours (variétés de conservation)':
+      '90 to 120 days (keeping varieties)',
+  '90 à 120 jours (vivace installée, à partir de la 2e année)':
+      '90 to 120 days (established perennial, from the 2nd year)',
+  '90 à 120 jours (vivace, récolte en continu dès la 1re année)':
+      '90 to 120 days (perennial, harvested continuously from the 1st year)',
+  'Culture toute l\'année en cave':
+      'Grown all year round in a cellar',
+  'Détruite par les gelées (-5 °C)':
+      'Killed by frost (-5 °C)',
+  'Enfouir 5 à 7 semaines après semis':
+      'Dig in 5 to 7 weeks after sowing',
+  'Enfouir 6 à 8 semaines après semis':
+      'Dig in 6 to 8 weeks after sowing',
+  'Enfouir 8 à 10 semaines après semis':
+      'Dig in 8 to 10 weeks after sowing',
+  'Enfouir avant les fortes gelées':
+      'Dig in before the hard frosts',
+  'Figues fleurs en juin-juillet':
+      'Breba figs in June-July',
+  'Floraison continue':
+      'Flowers continuously',
+  'Floraison de juillet à octobre':
+      'Flowers from July to October',
+  'Floraison de juillet à septembre':
+      'Flowers from July to September',
+  'Floraison de juin à août':
+      'Flowers from June to August',
+  'Floraison de juin à octobre':
+      'Flowers from June to October',
+  'Floraison de mai à août':
+      'Flowers from May to August',
+  'Floraison de mai à novembre':
+      'Flowers from May to November',
+  'Floraison de mai à octobre':
+      'Flowers from May to October',
+  'Floraison de mars à juin':
+      'Flowers from March to June',
+  'Floraison de septembre à novembre':
+      'Flowers from September to November',
+  'Floraison hivernale au sud':
+      'Flowers in winter in the south',
+  'Récolte continue':
+      'Harvested continuously',
+  'Récolte continue jusqu\'aux gelées':
+      'Harvested continuously until the frosts',
+  'Récolte d\'avril à juin':
+      'Harvested from April to June',
+  'Récolte d\'octobre à novembre':
+      'Harvested from October to November',
+  'Récolte de fin août à septembre':
+      'Harvested from late August to September',
+  'Récolte de juillet (plant établi)':
+      'Harvested in July (established plant)',
+  'Récolte de juillet à août':
+      'Harvested from July to August',
+  'Récolte de juillet à septembre':
+      'Harvested from July to September',
+  'Récolte de juillet à septembre selon la variété':
+      'Harvested from July to September depending on the variety',
+  'Récolte de septembre à novembre':
+      'Harvested from September to November',
+  'Récolte de septembre à octobre':
+      'Harvested from September to October',
+  'Récolte des remontants en septembre-octobre':
+      'Everbearers harvested in September-October',
+  'Récolte en juillet':
+      'Harvested in July',
+  'Récolte en juin-juillet':
+      'Harvested in June-July',
+  'Récolte principale de septembre à octobre':
+      'Main harvest from September to October',
+  'Récolte principale en août-octobre':
+      'Main harvest in August-October',
+  'Récolte printanière annuelle dès la 3e année (avril à juin)':
+      'An annual spring harvest from the 3rd year (April to June)',
+  'Semer fin août-septembre, enfouir au printemps':
+      'Sow in late August-September, dig in in spring',
+  'Variétés de saison de septembre à novembre':
+      'Main-season varieties from September to November',
+  'Variétés de saison de septembre à octobre':
+      'Main-season varieties from September to October',
+  'Variétés précoces de juillet à août':
+      'Early varieties from July to August',
+  'Variétés précoces en août':
+      'Early varieties in August',
 };

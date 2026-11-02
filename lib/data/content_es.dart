@@ -2842,4 +2842,401 @@ const Map<String, String> contentTextsEs = <String, String>{
       'Tallos para cortar todo el año en clima cálido',
   'Vivace — récolte continue':
       'Vivaz: cosecha continua',
+  // ─── fiche : durée de récolte ───
+  '10 à 14 mois (plantation en début de saison des pluies)':
+      'De 10 a 14 meses (plantación al principio de la estación de lluvias)',
+  '100 à 110 jours':
+      'De 100 a 110 días',
+  '100 à 110 jours (semis d\'octobre-novembre, climat doux)':
+      'De 100 a 110 días (siembra de octubre-noviembre, clima suave)',
+  '100 à 110 jours (semis sous abri en avril)':
+      'De 100 a 110 días (siembra bajo abrigo en abril)',
+  '100 à 110 jours (semis sous abri en mars-avril)':
+      'De 100 a 110 días (siembra bajo abrigo en marzo-abril)',
+  '100 à 120 jours':
+      'De 100 a 120 días',
+  '100 à 120 jours (plantation d\'octobre, récolte en été)':
+      'De 100 a 120 días (plantación de octubre, cosecha en verano)',
+  '100 à 120 jours (repiquage en mai)':
+      'De 100 a 120 días (trasplante en mayo)',
+  '100 à 120 jours (semis direct en mai-juin)':
+      'De 100 a 120 días (siembra directa en mayo-junio)',
+  '100 à 120 jours (semis en mai, climat tempéré chaud)':
+      'De 100 a 120 días (siembra en mayo, clima templado cálido)',
+  '100 à 120 jours (semis sous abri en avril)':
+      'De 100 a 120 días (siembra bajo abrigo en abril)',
+  '100 à 120 jours (semis sous abri, climat tempéré chaud)':
+      'De 100 a 120 días (siembra bajo abrigo, clima templado cálido)',
+  '100 à 120 jours (variétés d\'automne)':
+      'De 100 a 120 días (variedades de otoño)',
+  '100 à 120 jours (variétés d\'hiver, climat doux)':
+      'De 100 a 120 días (variedades de invierno, clima suave)',
+  '100 à 120 jours (variétés de garde)':
+      'De 100 a 120 días (variedades de guarda)',
+  '100 à 120 jours (variétés tardives)':
+      'De 100 a 120 días (variedades tardías)',
+  '100 à 130 jours':
+      'De 100 a 130 días',
+  '110 à 120 jours (semis en mai, climat tempéré chaud)':
+      'De 110 a 120 días (siembra en mayo, clima templado cálido)',
+  '110 à 130 jours (variétés d\'hiver, résistantes au gel)':
+      'De 110 a 130 días (variedades de invierno, resistentes a la helada)',
+  '120 à 130 jours (semis en mai, climat tempéré chaud)':
+      'De 120 a 130 días (siembra en mayo, clima templado cálido)',
+  '120 à 130 jours (semis sous abri en avril)':
+      'De 120 a 130 días (siembra bajo abrigo en abril)',
+  '120 à 130 jours (semis sous abri en février-mars)':
+      'De 120 a 130 días (siembra bajo abrigo en febrero-marzo)',
+  '120 à 140 jours (saison des pluies, Afrique de l\'Ouest)':
+      'De 120 a 140 días (estación de lluvias, África Occidental)',
+  '120 à 140 jours (semis de mai, récolte d\'automne-hiver)':
+      'De 120 a 140 días (siembra de mayo, cosecha de otoño-invierno)',
+  '120 à 150 jours':
+      'De 120 a 150 días',
+  '120 à 150 jours (poireau d\'automne, semis de mai)':
+      'De 120 a 150 días (puerro de otoño, sembrado en mayo)',
+  '120 à 150 jours (semis de fin d\'hiver)':
+      'De 120 a 150 días (siembra de finales de invierno)',
+  '130 à 150 jours (plantation sous abri en avril)':
+      'De 130 a 150 días (plantación bajo abrigo en abril)',
+  '130 à 150 jours (semis de mars-avril)':
+      'De 130 a 150 días (siembra de marzo-abril)',
+  '140 à 150 jours (semis en mai, climat tempéré chaud)':
+      'De 140 a 150 días (siembra en mayo, clima templado cálido)',
+  '150 à 180 jours':
+      'De 150 a 180 días',
+  '150 à 180 jours (plantation d\'oeilletons au printemps, 1re année)':
+      'De 150 a 180 días (hijuelos plantados en primavera, 1.er año)',
+  '150 à 180 jours (poireau d\'hiver, semis de mars)':
+      'De 150 a 180 días (puerro de invierno, sembrado en marzo)',
+  '150 à 180 jours (semis d\'automne, récolte au printemps)':
+      'De 150 a 180 días (siembra de otoño, cosecha en primavera)',
+  '150 à 180 jours (semis en mai, arrachage en automne, forçage en cave)':
+      'De 150 a 180 días (siembra en mayo, arranque en otoño, forzado en bodega)',
+  '160 à 190 jours (forçage inclus, récolte hivernale)':
+      'De 160 a 190 días (forzado incluido, cosecha invernal)',
+  '180 à 210 jours':
+      'De 180 a 210 días',
+  '180 à 210 jours (ail rose, planté en février-mars)':
+      'De 180 a 210 días (ajo rosado, plantado en febrero-marzo)',
+  '180 à 210 jours (récolte en place, variétés rustiques)':
+      'De 180 a 210 días (cosecha en su sitio, variedades rústicas)',
+  '180 à 240 jours (saison des pluies, Afrique de l\'Ouest)':
+      'De 180 a 240 días (estación de lluvias, África Occidental)',
+  '2 à 3 ans avant la première récolte (griffes plantées au printemps)':
+      'De 2 a 3 años antes de la primera cosecha (garras plantadas en primavera)',
+  '200 à 240 jours':
+      'De 200 a 240 días',
+  '21 à 35 jours':
+      'De 21 a 35 días',
+  '210 à 270 jours (plantation en saison chaude et humide)':
+      'De 210 a 270 días (plantación en estación cálida y húmeda)',
+  '240 à 270 jours (ail blanc et violet, planté en octobre-novembre)':
+      'De 240 a 270 días (ajo blanco y morado, plantado en octubre-noviembre)',
+  '240 à 300 jours (plantation en début de saison des pluies)':
+      'De 240 a 300 días (plantación al principio de la estación de lluvias)',
+  '240 à 300 jours (plantation en mars-avril, récolte en hiver)':
+      'De 240 a 300 días (plantación en marzo-abril, cosecha en invierno)',
+  '25 à 35 jours':
+      'De 25 a 35 días',
+  '25 à 35 jours (semis de mars-avril)':
+      'De 25 a 35 días (siembra de marzo-abril)',
+  '270 à 365 jours (bouturage en début de saison des pluies)':
+      'De 270 a 365 días (esquejes al principio de la estación de lluvias)',
+  '30 à 40 jours':
+      'De 30 a 40 días',
+  '30 à 40 jours (semis de septembre)':
+      'De 30 a 40 días (siembra de septiembre)',
+  '30 à 45 jours':
+      'De 30 a 45 días',
+  '30 à 50 jours':
+      'De 30 a 50 días',
+  '30 à 50 jours (saison des pluies, coupes répétées)':
+      'De 30 a 50 días (estación de lluvias, cortes repetidos)',
+  '40 à 45 jours (monte vite en graines)':
+      'De 40 a 45 días (se espiga rápido)',
+  '40 à 50 jours (semis de mars)':
+      'De 40 a 50 días (siembra de marzo)',
+  '40 à 50 jours (semis de mars-avril)':
+      'De 40 a 50 días (siembra de marzo-abril)',
+  '40 à 55 jours':
+      'De 40 a 55 días',
+  '40 à 60 jours':
+      'De 40 a 60 días',
+  '40 à 60 jours (saison des pluies, récoltes répétées)':
+      'De 40 a 60 días (estación de lluvias, cosechas repetidas)',
+  '45 à 55 jours (semis de septembre-octobre)':
+      'De 45 a 55 días (siembra de septiembre-octubre)',
+  '45 à 60 jours':
+      'De 45 a 60 días',
+  '45 à 60 jours (navet de printemps)':
+      'De 45 a 60 días (nabo de primavera)',
+  '50 à 60 jours (pleine terre)':
+      'De 50 a 60 días (en plena tierra)',
+  '50 à 60 jours (récolte sous abri ou en place)':
+      'De 50 a 60 días (cosecha bajo abrigo o en su sitio)',
+  '50 à 60 jours (semis de septembre)':
+      'De 50 a 60 días (siembra de septiembre)',
+  '50 à 60 jours (semis direct en mai-juin)':
+      'De 50 a 60 días (siembra directa en mayo-junio)',
+  '50 à 65 jours':
+      'De 50 a 65 días',
+  '50 à 65 jours (semis de juillet-août)':
+      'De 50 a 65 días (siembra de julio-agosto)',
+  '50 à 70 jours':
+      'De 50 a 70 días',
+  '50 à 70 jours (saison chaude et humide, récoltes répétées)':
+      'De 50 a 70 días (estación cálida y húmeda, cosechas repetidas)',
+  '55 à 60 jours (semis de mai-juin)':
+      'De 55 a 60 días (siembra de mayo-junio)',
+  '55 à 65 jours (semis d\'avril)':
+      'De 55 a 65 días (siembra de abril)',
+  '55 à 70 jours':
+      'De 55 a 70 días',
+  '55 à 75 jours':
+      'De 55 a 75 días',
+  '60 à 70 jours (saison des pluies, Afrique de l\'Ouest)':
+      'De 60 a 70 días (estación de lluvias, África Occidental)',
+  '60 à 70 jours (semis de juillet-août)':
+      'De 60 a 70 días (siembra de julio-agosto)',
+  '60 à 70 jours (semis de mars-avril)':
+      'De 60 a 70 días (siembra de marzo-abril)',
+  '60 à 70 jours (semis de mars-avril, première coupe)':
+      'De 60 a 70 días (siembra de marzo-abril, primer corte)',
+  '60 à 70 jours (semis sous abri en avril)':
+      'De 60 a 70 días (siembra bajo abrigo en abril)',
+  '60 à 70 jours (semis sous abri en mars-avril)':
+      'De 60 a 70 días (siembra bajo abrigo en marzo-abril)',
+  '60 à 70 jours (sous abri, variétés rustiques)':
+      'De 60 a 70 días (bajo abrigo, variedades rústicas)',
+  '60 à 75 jours':
+      'De 60 a 75 días',
+  '60 à 75 jours (bouturage ou division, première coupe)':
+      'De 60 a 75 días (de esqueje o división, primer corte)',
+  '60 à 75 jours (pleine production)':
+      'De 60 a 75 días (en plena producción)',
+  '60 à 75 jours (pleine terre)':
+      'De 60 a 75 días (en plena tierra)',
+  '60 à 75 jours (saison chaude, croissance rapide)':
+      'De 60 a 75 días (estación cálida, crecimiento rápido)',
+  '60 à 75 jours (saison des pluies, Afrique de l\'Ouest)':
+      'De 60 a 75 días (estación de lluvias, África Occidental)',
+  '60 à 75 jours (semis en avril)':
+      'De 60 a 75 días (siembra en abril)',
+  '60 à 75 jours (semis échelonnés)':
+      'De 60 a 75 días (siembras escalonadas)',
+  '60 à 75 jours (variétés de garde)':
+      'De 60 a 75 días (variedades de guarda)',
+  '60 à 80 jours':
+      'De 60 a 80 días',
+  '60 à 80 jours (semis de février-mars)':
+      'De 60 a 80 días (siembra de febrero-marzo)',
+  '60 à 80 jours (vivace, récolte en continu)':
+      'De 60 a 80 días (vivaz, cosecha continua)',
+  '60 à 90 jours (climat tropical, touffe établie)':
+      'De 60 a 90 días (clima tropical, mata establecida)',
+  '60 à 90 jours (plants repiqués, variétés remontantes)':
+      'De 60 a 90 días (plantas trasplantadas, variedades reflorecientes)',
+  '60 à 90 jours (semis en début de saison des pluies)':
+      'De 60 a 90 días (siembra al principio de la estación de lluvias)',
+  '60 à 90 jours (vivace, récolte en continu)':
+      'De 60 a 90 días (vivaz, cosecha continua)',
+  '60 à 90 jours pour les premières feuilles (semis en saison des pluies)':
+      'De 60 a 90 días para las primeras hojas (siembra en la estación de lluvias)',
+  '65 à 80 jours (semis de juin pour récolte d\'automne)':
+      'De 65 a 80 días (siembra de junio para cosecha de otoño)',
+  '70 à 80 jours (récolte de conservation)':
+      'De 70 a 80 días (cosecha de conservación)',
+  '70 à 80 jours (récolte en continu)':
+      'De 70 a 80 días (cosecha continua)',
+  '70 à 80 jours (semis sous abri, climat tempéré)':
+      'De 70 a 80 días (siembra bajo abrigo, clima templado)',
+  '70 à 85 jours (repiquage en plein champ)':
+      'De 70 a 85 días (trasplante en campo abierto)',
+  '70 à 85 jours (repiquage pleine terre)':
+      'De 70 a 85 días (trasplante en plena tierra)',
+  '70 à 85 jours (semis de mars-avril)':
+      'De 70 a 85 días (siembra de marzo-abril)',
+  '70 à 85 jours (semis direct en mai-juin)':
+      'De 70 a 85 días (siembra directa en mayo-junio)',
+  '70 à 90 jours':
+      'De 70 a 90 días',
+  '70 à 90 jours (dernières coupes avant l\'hiver)':
+      'De 70 a 90 días (últimos cortes antes del invierno)',
+  '70 à 90 jours (plein champ)':
+      'De 70 a 90 días (en campo abierto)',
+  '70 à 90 jours (récolte améliorée par le gel)':
+      'De 70 a 90 días (la helada mejora la cosecha)',
+  '70 à 90 jours (semis au chaud, climat tempéré)':
+      'De 70 a 90 días (siembra en calor, clima templado)',
+  '70 à 90 jours (semis de mars, première récolte)':
+      'De 70 a 90 días (siembra de marzo, primera cosecha)',
+  '70 à 90 jours (semis en climat chaud)':
+      'De 70 a 90 días (siembra en clima cálido)',
+  '70 à 90 jours (semis en mai, feuilles récoltées tôt)':
+      'De 70 a 90 días (siembra en mayo, hojas cosechadas pronto)',
+  '70 à 90 jours (semis sous abri en avril)':
+      'De 70 a 90 días (siembra bajo abrigo en abril)',
+  '70 à 90 jours (semis sous abri en février-mars)':
+      'De 70 a 90 días (siembra bajo abrigo en febrero-marzo)',
+  '70 à 90 jours (variétés précoces, plantation en mars)':
+      'De 70 a 90 días (variedades tempranas, plantación en marzo)',
+  '75 à 90 jours':
+      'De 75 a 90 días',
+  '75 à 90 jours (pleine terre, climat chaud)':
+      'De 75 a 90 días (en plena tierra, clima cálido)',
+  '75 à 90 jours (variétés remontantes, fin de saison)':
+      'De 75 a 90 días (variedades reflorecientes, final de temporada)',
+  '80 à 100 jours':
+      'De 80 a 100 días',
+  '80 à 100 jours (pépinière en début de saison des pluies)':
+      'De 80 a 100 días (semillero al principio de la estación de lluvias)',
+  '80 à 100 jours (semis de février-mars)':
+      'De 80 a 100 días (siembra de febrero-marzo)',
+  '80 à 100 jours (semis sous abri en février)':
+      'De 80 a 100 días (siembra bajo abrigo en febrero)',
+  '80 à 100 jours (variétés d\'automne)':
+      'De 80 a 100 días (variedades de otoño)',
+  '80 à 100 jours (vivace, récolte en continu)':
+      'De 80 a 100 días (vivaz, cosecha continua)',
+  '80 à 90 jours (repiquage pleine terre)':
+      'De 80 a 90 días (trasplante en plena tierra)',
+  '80 à 90 jours (semis d\'été, récolte d\'automne)':
+      'De 80 a 90 días (siembra de verano, cosecha de otoño)',
+  '80 à 90 jours (semis de mars, première coupe)':
+      'De 80 a 90 días (siembra de marzo, primer corte)',
+  '80 à 90 jours (semis de septembre, variétés à grain rond)':
+      'De 80 a 90 días (siembra de septiembre, variedades de grano redondo)',
+  '80 à 90 jours (semis précoce sous abri chauffé)':
+      'De 80 a 90 días (siembra temprana bajo abrigo con calor)',
+  '80 à 95 jours (pleine terre, plein soleil)':
+      'De 80 a 95 días (en plena tierra, pleno sol)',
+  '80 à 95 jours (semis direct en mai-juin)':
+      'De 80 a 95 días (siembra directa en mayo-junio)',
+  '9 à 12 mois du semis aux premiers fruits (climat tropical)':
+      'De 9 a 12 meses de la siembra a los primeros frutos (clima tropical)',
+  '90 à 100 jours (semis précoce sous abri chauffé)':
+      'De 90 a 100 días (siembra temprana bajo abrigo con calor)',
+  '90 à 100 jours (semis sous abri en avril)':
+      'De 90 a 100 días (siembra bajo abrigo en abril)',
+  '90 à 100 jours (semis sous abri en mars)':
+      'De 90 a 100 días (siembra bajo abrigo en marzo)',
+  '90 à 100 jours (semis sous abri en mars-avril)':
+      'De 90 a 100 días (siembra bajo abrigo en marzo-abril)',
+  '90 à 105 jours (saison des pluies, Afrique de l\'Ouest)':
+      'De 90 a 105 días (estación de lluvias, África Occidental)',
+  '90 à 105 jours (semis direct en mai)':
+      'De 90 a 105 días (siembra directa en mayo)',
+  '90 à 110 jours':
+      'De 90 a 110 días',
+  '90 à 110 jours (plantation de février-mars)':
+      'De 90 a 110 días (plantación de febrero-marzo)',
+  '90 à 110 jours (saison des pluies, Afrique de l\'Ouest)':
+      'De 90 a 110 días (estación de lluvias, África Occidental)',
+  '90 à 110 jours (semis aux premières pluies, Afrique de l\'Ouest)':
+      'De 90 a 110 días (siembra con las primeras lluvias, África Occidental)',
+  '90 à 110 jours (semis de juillet)':
+      'De 90 a 110 días (siembra de julio)',
+  '90 à 110 jours (semis direct en mai)':
+      'De 90 a 110 días (siembra directa en mayo)',
+  '90 à 110 jours (semis précoce sous abri)':
+      'De 90 a 110 días (siembra temprana bajo abrigo)',
+  '90 à 110 jours (semis sous abri en février)':
+      'De 90 a 110 días (siembra bajo abrigo en febrero)',
+  '90 à 110 jours (variétés d\'automne)':
+      'De 90 a 110 días (variedades de otoño)',
+  '90 à 110 jours (variétés tardives)':
+      'De 90 a 110 días (variedades tardías)',
+  '90 à 120 jours (plantation au chaud, climat tempéré)':
+      'De 90 a 120 días (plantación en calor, clima templado)',
+  '90 à 120 jours (plantation de bulbilles)':
+      'De 90 a 120 días (plantación de bulbillos)',
+  '90 à 120 jours (pleine terre, climat chaud)':
+      'De 90 a 120 días (en plena tierra, clima cálido)',
+  '90 à 120 jours (variétés de conservation)':
+      'De 90 a 120 días (variedades de conservación)',
+  '90 à 120 jours (vivace installée, à partir de la 2e année)':
+      'De 90 a 120 días (vivaz establecida, a partir del 2.º año)',
+  '90 à 120 jours (vivace, récolte en continu dès la 1re année)':
+      'De 90 a 120 días (vivaz, cosecha continua desde el 1.er año)',
+  'Culture toute l\'année en cave':
+      'Cultivo todo el año en bodega',
+  'Détruite par les gelées (-5 °C)':
+      'Destruida por las heladas (-5 °C)',
+  'Enfouir 5 à 7 semaines après semis':
+      'Enterrar de 5 a 7 semanas después de la siembra',
+  'Enfouir 6 à 8 semaines après semis':
+      'Enterrar de 6 a 8 semanas después de la siembra',
+  'Enfouir 8 à 10 semaines après semis':
+      'Enterrar de 8 a 10 semanas después de la siembra',
+  'Enfouir avant les fortes gelées':
+      'Enterrar antes de las heladas fuertes',
+  'Figues fleurs en juin-juillet':
+      'Brevas en junio-julio',
+  'Floraison continue':
+      'Floración continua',
+  'Floraison de juillet à octobre':
+      'Floración de julio a octubre',
+  'Floraison de juillet à septembre':
+      'Floración de julio a septiembre',
+  'Floraison de juin à août':
+      'Floración de junio a agosto',
+  'Floraison de juin à octobre':
+      'Floración de junio a octubre',
+  'Floraison de mai à août':
+      'Floración de mayo a agosto',
+  'Floraison de mai à novembre':
+      'Floración de mayo a noviembre',
+  'Floraison de mai à octobre':
+      'Floración de mayo a octubre',
+  'Floraison de mars à juin':
+      'Floración de marzo a junio',
+  'Floraison de septembre à novembre':
+      'Floración de septiembre a noviembre',
+  'Floraison hivernale au sud':
+      'Floración invernal en el sur',
+  'Récolte continue':
+      'Cosecha continua',
+  'Récolte continue jusqu\'aux gelées':
+      'Cosecha continua hasta las heladas',
+  'Récolte d\'avril à juin':
+      'Cosecha de abril a junio',
+  'Récolte d\'octobre à novembre':
+      'Cosecha de octubre a noviembre',
+  'Récolte de fin août à septembre':
+      'Cosecha de finales de agosto a septiembre',
+  'Récolte de juillet (plant établi)':
+      'Cosecha en julio (planta establecida)',
+  'Récolte de juillet à août':
+      'Cosecha de julio a agosto',
+  'Récolte de juillet à septembre':
+      'Cosecha de julio a septiembre',
+  'Récolte de juillet à septembre selon la variété':
+      'Cosecha de julio a septiembre según la variedad',
+  'Récolte de septembre à novembre':
+      'Cosecha de septiembre a noviembre',
+  'Récolte de septembre à octobre':
+      'Cosecha de septiembre a octubre',
+  'Récolte des remontants en septembre-octobre':
+      'Cosecha de las reflorecientes en septiembre-octubre',
+  'Récolte en juillet':
+      'Cosecha en julio',
+  'Récolte en juin-juillet':
+      'Cosecha en junio-julio',
+  'Récolte principale de septembre à octobre':
+      'Cosecha principal de septiembre a octubre',
+  'Récolte principale en août-octobre':
+      'Cosecha principal en agosto-octubre',
+  'Récolte printanière annuelle dès la 3e année (avril à juin)':
+      'Cosecha anual de primavera a partir del 3.er año (de abril a junio)',
+  'Semer fin août-septembre, enfouir au printemps':
+      'Sembrar a finales de agosto-septiembre, enterrar en primavera',
+  'Variétés de saison de septembre à novembre':
+      'Variedades de temporada de septiembre a noviembre',
+  'Variétés de saison de septembre à octobre':
+      'Variedades de temporada de septiembre a octubre',
+  'Variétés précoces de juillet à août':
+      'Variedades tempranas de julio a agosto',
+  'Variétés précoces en août':
+      'Variedades tempranas en agosto',
 };
