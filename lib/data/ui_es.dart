@@ -1549,4 +1549,14 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Huerto 1',
   'COLLECTION':
       'COLECCIÓN',
+  'Quand s\'en servir':
+      'Cuándo usarlo',
+  'Comment l\'utiliser':
+      'Cómo usarlo',
+  'Combien il en faut':
+      'Cuánto necesitas',
+  'Entretien':
+      'Mantenimiento',
+  'À faire soi-même':
+      'Hazlo tú mismo',
 };

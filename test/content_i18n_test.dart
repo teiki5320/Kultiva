@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/data/challenges.dart';
 import 'package:kultiva/data/content_i18n.dart';
+import 'package:kultiva/data/accessory_guide.dart';
 import 'package:kultiva/data/diseases.dart';
 import 'package:kultiva/data/lexicon.dart';
 import 'package:kultiva/data/market_buying_tips.dart';
@@ -46,6 +47,16 @@ void main() {
     for (final c in VegetableCategory.values) heatwaveTipFor(c),
     for (final liste in marketBuyingTips.values)
       for (final t in liste) ...<String>[t.what, t.advice],
+    // Les 177 phrases des modes d'emploi d'accessoires, ajoutées le
+    // 02/11/2026. Sans cette ligne, leurs traductions seraient toutes
+    // déclarées orphelines.
+    for (final g in accessoryGuides.values) ...<String>[
+      g.when,
+      g.how,
+      g.howMuch,
+      g.care,
+      if (g.diy != null) g.diy!,
+    ],
   };
 
   List<String> nombres(String texte) => RegExp(r'\d+(?:[.,]\d+)?')
@@ -56,7 +67,9 @@ void main() {
   test('l\'app a bien le contenu qu\'on croit', () {
     // Si ce nombre bouge, des phrases ont été ajoutées ou retirées :
     // relancer `flutter test tool/exporter_contenu.dart` pour voir où.
-    expect(sources.length, greaterThan(700));
+    // 780 phrases jusqu'au 02/11/2026, puis 957 avec les modes d'emploi
+    // des 39 accessoires.
+    expect(sources.length, greaterThan(940));
   });
 
   test('aucune clé traduite n\'est orpheline', () {

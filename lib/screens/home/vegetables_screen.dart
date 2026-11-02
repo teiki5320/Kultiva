@@ -548,15 +548,31 @@ class _VegetablesScreenState extends State<VegetablesScreen> {
                             showCornerMedal: tier != MedalTier.none,
                           ),
                           const SizedBox(height: 6),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: Text(
-                              v.name,
-                              style: const TextStyle(
-                                  fontSize: 11, fontWeight: FontWeight.w700),
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                          // ⚠️ Deux défauts ici, vus à l'écran le
+                          // 02/11/2026 et invisibles au compilateur.
+                          //
+                          // `v.name` est le nom **français** : la vue
+                          // grille affichait « Chou kale » à un
+                          // anglophone, alors que la vue liste juste à
+                          // côté affichait « Kale ». Douzième endroit
+                          // où `name` servait d'affichage.
+                          //
+                          // Et sans `Flexible`, un nom sur deux lignes
+                          // débordait de 1,5 px : la colonne dépassait
+                          // la tuile carrée, et le second mot était
+                          // rogné — « Activateur de » puis rien.
+                          Flexible(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              child: Text(
+                                v.displayName,
+                                style: const TextStyle(
+                                    fontSize: 11, fontWeight: FontWeight.w700),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ),
                         ],

@@ -3,6 +3,7 @@ import 'badges.dart';
 import 'challenges.dart';
 import 'content_en.dart';
 import 'content_es.dart';
+import 'accessory_guide.dart';
 import 'diseases.dart';
 import 'lexicon.dart';
 
@@ -53,6 +54,15 @@ String trIn(String fr, String languageCode) {
 /// les préférences. Les call-sites sont nombreux, et leur faire porter
 /// un `BuildContext` aurait surtout produit des oublis.
 String tr(String fr) => trIn(fr, PrefsService.instance.effectiveLanguage);
+
+/// Le mode d'emploi d'un accessoire, dans la langue de l'interface.
+extension AccessoryGuideLocalized on AccessoryGuide {
+  String get displayWhen => tr(when);
+  String get displayHow => tr(how);
+  String get displayHowMuch => tr(howMuch);
+  String get displayCare => tr(care);
+  String? get displayDiy => diy == null ? null : tr(diy!);
+}
 
 /// Une maladie, dans la langue de l'interface.
 extension DiseaseLocalized on Disease {

@@ -1550,4 +1550,14 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Garden 1',
   'COLLECTION':
       'COLLECTION',
+  'Quand s\'en servir':
+      'When to use it',
+  'Comment l\'utiliser':
+      'How to use it',
+  'Combien il en faut':
+      'How much you need',
+  'Entretien':
+      'Upkeep',
+  'À faire soi-même':
+      'Make it yourself',
 };

@@ -23,6 +23,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
+import '../lib/data/accessory_guide.dart';
 import '../lib/data/badges.dart';
 import '../lib/data/challenges.dart';
 import '../lib/data/diseases.dart';
@@ -79,6 +80,17 @@ Map<String, List<String>> _blocs() {
   ajoute('achat_marche', <String>[
     for (final liste in marketBuyingTips.values)
       for (final t in liste) ...<String>[t.what, t.advice],
+  ]);
+
+  // Les modes d'emploi des 39 accessoires, écrits le 02/11/2026.
+  ajoute('accessoires', <String>[
+    for (final g in accessoryGuides.values) ...<String>[
+      g.when,
+      g.how,
+      g.howMuch,
+      g.care,
+      if (g.diy != null) g.diy!,
+    ],
   ]);
 
   return out;

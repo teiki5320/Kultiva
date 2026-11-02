@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../services/audio_service.dart';
 import '../data/regions/regional_calendar.dart';
+import '../data/accessory_guide.dart';
 import '../data/companions.dart';
 import '../data/diseases.dart';
 import '../data/local_names.dart';
@@ -200,6 +201,14 @@ class _VegetableDetailScreenState extends State<VegetableDetailScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         children: <Widget>[
           _HeaderCard(vegetable: vegetable),
+          // Les 39 fiches d'accessoires n'avaient ni calendrier, ni
+          // maladies, ni recettes : elles étaient les plus vides de
+          // l'app. Un accessoire n'a pas de saison de semis, mais il a
+          // un moment, un geste, une quantité et un entretien.
+          if (accessoryGuideFor(vegetable.id) != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _AccessoryGuideCard(guide: accessoryGuideFor(vegetable.id)!),
+          ],
           if (region == Region.westAfrica &&
               localNames[vegetable.id] != null) ...<Widget>[
             const SizedBox(height: 12),
@@ -1382,6 +1391,73 @@ class _BuyingTipsSection extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Le mode d'emploi d'un accessoire : quand, comment, combien,
+/// l'entretien, et ce qu'on peut fabriquer à la place.
+class _AccessoryGuideCard extends StatelessWidget {
+  final AccessoryGuide guide;
+  const _AccessoryGuideCard({required this.guide});
+
+  @override
+  Widget build(BuildContext context) {
+    final diy = guide.displayDiy;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _ligne('🗓️', trUi('Quand s\'en servir'), guide.displayWhen),
+            _ligne('🤲', trUi('Comment l\'utiliser'), guide.displayHow),
+            _ligne('📐', trUi('Combien il en faut'), guide.displayHowMuch),
+            _ligne('🧽', trUi('Entretien'), guide.displayCare),
+            // Tout n'a pas d'équivalent maison : on ne forge pas un
+            // sécateur. Le champ est nul là où ce serait mentir.
+            if (diy != null)
+              _ligne('🔨', trUi('À faire soi-même'), diy, dernier: true)
+            else
+              const SizedBox.shrink(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _ligne(String emoji, String titre, String texte,
+      {bool dernier = false}) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: dernier ? 0 : 14),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(emoji, style: const TextStyle(fontSize: 18)),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  titre,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12,
+                    color: KultivaColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                LexiconText(
+                  texte,
+                  style: const TextStyle(fontWeight: FontWeight.w600,
+                      height: 1.35),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

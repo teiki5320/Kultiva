@@ -9,7 +9,7 @@ Une app Flutter de jardinage au style pastel kawaii japonais, en **français et 
 ## ✨ Ce qu'on y trouve
 
 - 📅 **Calendrier de semis et de récolte**, mois par mois, adapté à ta région ; vue annuelle d'une ligne par légume, douze segments, sans défilement latéral
-- 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils)
+- 🌽 **Catalogue de 169 légumes, aromates, tubercules et accessoires** — fiches détaillées (semis, exposition, arrosage, rendement, conseils), et pour chacun des 39 accessoires un mode d'emploi : quand s'en servir, comment, combien il en faut, l'entretien, et ce qu'on peut fabriquer soi-même à la place
 - 🫙 **Onglet Garder ta récolte** : un jardinier n'a pas une courgette, il en a quinze d'un coup. Chaque légume a **trois conservations** — bocal, congélation, séchage, lacto-fermentation, confiture, huile, vinaigre — chacune avec sa durée de garde (« 1 an au placard », « 8 mois au congélateur ») et son pas-à-pas animé. 736 recettes en tout, dont 448 déroulées étape par étape ; les plats à manger le jour même sont dessous, et les légumes de ton jardin passent en tête
 - 📔 **Cahier de culture** (2ᵉ onglet) : « à faire aujourd'hui » — qui a soif, qui est mûr, s'il va faire trop chaud — puis les jardins pleine terre, placement des plants par glisser-déposer, suivi par plant (arrosage, phase de croissance auto, photos), avertissement de rotation
 - 📖 **Journal du jardin** : plantations, arrosages, récoltes et photos inscrits à leur date, jour par jour, dans le cahier de culture
