@@ -122,6 +122,8 @@ Kultiva/
 │   │   ├── onboarding_screen.dart
 │   │   ├── root_tabs.dart          # Conteneur 5 onglets (Bottom nav)
 │   │   ├── vegetable_detail_screen.dart
+│   │   ├── vegetable_detail/       # detail_header / _calendar / _culture
+│   │   │                           # / _voisins / _recettes (02/11/2026)
 │   │   └── home/                   # sow, vegetables, my_garden, tutos,
 │   │                               # settings, weather, calendrier mensuel,
 │   │                               # tuto_fiche (WebView),
@@ -172,7 +174,8 @@ Kultiva/
 │   │                         # zone_shift.dart (dérive les zones tempérées)
 │   ├── theme/
 │   │   └── app_theme.dart  # KultivaColors, thèmes Material3 light/dark
-│   ├── widgets/            # 13 fichiers
+│   ├── widgets/            # 16 fichiers (dont badge_card/ : recto,
+│   │                       #  verso, déblocage — découpé le 02/11/2026)
 │   │                       # badge_card (1 097 lignes), readable_width,
 │   │                       # petal_animation, season_header, share_card,
 │   │                       # challenge_story_card, garden_tutorial_sheet,
@@ -715,17 +718,34 @@ Règles spécifiques au projet pour être efficace dès la première action :
 2. ~~**L'`anonKey` Supabase est committée**~~ — sans objet depuis le
    retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
    est supprimé.
-3. **Fichiers volumineux restants** — mesurés le 31/10/2026 :
-   `vegetable_detail_screen.dart` (1 373), `badge_card.dart` (1 097),
-   `sow_screen.dart` (1 051). Ils ont grossi d'une centaine de lignes
-   chacun le 02/11 en branchant la traduction — mesuré, pas estimé. `vegetables_base.dart` (4 281) et
+3. ~~**Fichiers volumineux restants**~~ — ✅ **FAIT le 02/11/2026.**
+   Les trois derniers fichiers au-dessus de 1 000 lignes sont
+   découpés, et **plus aucun fichier de `lib/` hors données ne
+   dépasse 723 lignes** (`plantation_detail_sheet.dart`).
+
+   | Avant | Après |
+   | --- | --- |
+   | `vegetable_detail_screen.dart` 1 357 | l'écran 342 + cinq fichiers dans `vegetable_detail/` (header, calendar, culture, voisins, recettes) |
+   | `badge_card.dart` 1 097 | le point d'entrée 212 + trois dans `badge_card/` (recto, verso, déblocage) |
+   | `sow_screen.dart` 1 051 | l'écran 478 + deux dans `accueil/` (cartes, diapos) |
+
+   Même patron que le potager carré : un fichier par sujet, les
+   classes privées deviennent publiques puisqu'elles changent de
+   fichier, et le fichier d'origine **réexporte** pour que les imports
+   existants continuent de marcher.
+
+   ⚠️ **Deux pièges du découpage**, tous deux attrapés par `analyze` :
+   un import relatif sans `../` pointe sur le dossier du fichier, donc
+   il casse dès qu'on descend d'un cran ; et `dart fix --apply` a
+   retiré un import devenu « inutile » dans `challenges_grid.dart`
+   alors qu'il servait à joindre une fonction déplacée — c'est
+   l'export du point d'entrée qui le rattrape. `vegetables_base.dart` (4 281) et
    `west_africa.dart` (945) sont des fichiers de données, ils ne sont
    pas concernés.
-   `planner_widgets.dart` a été découpé le 30/10 en `planner_cell`,
-   `planner_advice` et `planner_plants`, le fichier d'origine servant de
-   point d'entrée. ⚠️ Les chiffres précédents (1 740 / 1 777) étaient
-   périmés : ces deux fichiers avaient déjà été découpés. **Mesurer
-   avant de citer.**
+   `vegetables_base.dart` (4 306) et `west_africa.dart` (945) sont des
+   fichiers de données, ils ne sont pas concernés. **Mesurer avant de
+   citer** : les chiffres du 30/10 (1 740 / 1 777) étaient périmés, ces
+   fichiers avaient déjà été découpés.
 4. ~~**Connexion obligatoire au premier lancement**~~ — ✅ **RÉSOLU
    (24/08/2026, commit d60b962)** : mode invité livré. Bouton
    « Continuer sans compte » sur l'écran de connexion,

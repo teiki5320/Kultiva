@@ -174,9 +174,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     if (tmax.isNaN || tmin.isNaN) {
       return trUi('🌱 Température du jour indisponible');
     }
-    if (tmax > 28) return trUi('☀️ Très chaud — arrose tôt le matin ou le soir');
-    if (tmin < 2) return trUi('❄️ Risque de gel — protège tes plants sensibles');
-    if (tmax - tmin > 15) return trUi('🌡️ Grosse amplitude — surveille tes semis');
+    if (tmax > 28) {
+      return trUi('☀️ Très chaud — arrose tôt le matin ou le soir');
+    }
+    if (tmin < 2) {
+      return trUi('❄️ Risque de gel — protège tes plants sensibles');
+    }
+    if (tmax - tmin > 15) {
+      return trUi('🌡️ Grosse amplitude — surveille tes semis');
+    }
     return trUi('🌱 Belle journée pour jardiner !');
   }
 
@@ -387,7 +393,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               Semantics(
                 label: tmax.isNaN
                     ? trUi('température indisponible')
-                    : trUiArgs('{0} degrés', <Object?>[tmax.toStringAsFixed(0)]),
+                    : trUiArgs(
+                        '{0} degrés', <Object?>[tmax.toStringAsFixed(0)]),
                 child: Text(_temp(tmax),
                     style: const TextStyle(
                         fontSize: 48, fontWeight: FontWeight.w800)),
@@ -395,7 +402,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
             const SizedBox(height: 16),
             // Température min/max.
             Semantics(
-              label: trUiArgs('Minimum {0} degrés, maximum {1} degrés', <Object?>[
+              label:
+                  trUiArgs('Minimum {0} degrés, maximum {1} degrés', <Object?>[
                 tmin.toStringAsFixed(0),
                 tmax.toStringAsFixed(0),
               ]),

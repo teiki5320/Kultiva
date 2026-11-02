@@ -27,7 +27,6 @@ class PlannerPhaseAdviceTile extends StatelessWidget {
     required this.phase,
   });
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -218,8 +217,8 @@ class PlannerRotationWarning extends StatelessWidget {
       // le cas courant, où rien ne s'affiche, laisse un trou.
       padding: const EdgeInsets.only(bottom: 12),
       child: Semantics(
-        label: trUiArgs('Attention à la rotation. {0}',
-            <Object?>[avertissement.message]),
+        label: trUiArgs(
+            'Attention à la rotation. {0}', <Object?>[avertissement.message]),
         excludeSemantics: true,
         child: Container(
           padding: const EdgeInsets.all(12),

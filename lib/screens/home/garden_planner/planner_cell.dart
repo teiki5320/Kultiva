@@ -226,8 +226,7 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
       return trUiArgs("Planté aujourd'hui ({0})", <Object?>[dateStr]);
     }
     if (days == 1) return trUiArgs('Planté hier ({0})', <Object?>[dateStr]);
-    return trUiArgs(
-        'Planté il y a {0} jours ({1})', <Object?>[days, dateStr]);
+    return trUiArgs('Planté il y a {0} jours ({1})', <Object?>[days, dateStr]);
   }
 
   /// Date dernier arrosage formatée pour l'utilisateur (ou message
@@ -388,7 +387,8 @@ class _PlannerCellActionSheetState extends State<PlannerCellActionSheet> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              trUiArgs('Stade : {0} {1}', <Object?>[phase.emoji, phase.label]),
+                              trUiArgs('Stade : {0} {1}',
+                                  <Object?>[phase.emoji, phase.label]),
                               style: const TextStyle(
                                 fontSize: 11,
                                 color: KultivaColors.textSecondary,

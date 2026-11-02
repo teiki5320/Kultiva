@@ -21,52 +21,55 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _page = 0;
 
   static List<_OnboardingContent> get _pages => <_OnboardingContent>[
-    _OnboardingContent(
-      imagePath: 'assets/images/onboarding_1.png',
-      fallbackEmoji: '🌱',
-      title: trUi('Bienvenue sur Kultiva'),
-      subtitle: trUi(
-          'Le potager kawaii dans ta poche. Calendrier de semis, suivi '
-          'de tes plants, météo, conseils — tout au même endroit, en '
-          'français.'),
-    ),
-    _OnboardingContent(
-      imagePath: 'assets/images/onboarding_2.png',
-      fallbackEmoji: '📔',
-      title: trUi('Ton cahier de culture'),
-      subtitle: trUi('Crée ton potager pleine terre, place tes plants par '
-          'glisser-déposer dans les cases et suis chaque phase de '
-          'croissance.'),
-    ),
-    _OnboardingContent(
-      imagePath: 'assets/images/onboarding_3.png',
-      fallbackEmoji: '🌦️',
-      title: trUi('Météo + alertes arrosage'),
-      subtitle: trUi("L'app suit la météo de ton jardin et te prévient quand "
-          "il faut arroser, protéger d'une canicule ou rentrer un plant."),
-    ),
-    // Cette page présentait le Poussidex, puis a été renommée « Ton
-    // cahier de culture » sans que son texte change : l'onboarding
-    // annonçait donc deux fois le même écran, avec les mêmes carrés et
-    // le même glisser-déposer. Elle parle maintenant de ce qui s'ajoute
-    // au cahier — le journal, les défis, les médailles.
-    _OnboardingContent(
-      imagePath: 'assets/images/onboarding_journal.png',
-      fallbackEmoji: '📖',
-      title: trUi('Le journal de ton jardin'),
-      subtitle: trUi("Chaque semis, chaque arrosage, chaque récolte s'inscrit "
-          "à sa date. Relis ta saison jour par jour, décroche des "
-          "médailles par légume et 50 défis photo."),
-    ),
-    _OnboardingContent(
-      imagePath: 'assets/images/onboarding_tutos.png',
-      fallbackEmoji: '📚',
-      title: trUi('Apprends à ton rythme'),
-      subtitle: trUi("L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
-          "bien arroser, lutter contre les nuisibles et apprendre les "
-          "bons gestes au jardin."),
-    ),
-  ];
+        _OnboardingContent(
+          imagePath: 'assets/images/onboarding_1.png',
+          fallbackEmoji: '🌱',
+          title: trUi('Bienvenue sur Kultiva'),
+          subtitle: trUi(
+              'Le potager kawaii dans ta poche. Calendrier de semis, suivi '
+              'de tes plants, météo, conseils — tout au même endroit, en '
+              'français.'),
+        ),
+        _OnboardingContent(
+          imagePath: 'assets/images/onboarding_2.png',
+          fallbackEmoji: '📔',
+          title: trUi('Ton cahier de culture'),
+          subtitle: trUi('Crée ton potager pleine terre, place tes plants par '
+              'glisser-déposer dans les cases et suis chaque phase de '
+              'croissance.'),
+        ),
+        _OnboardingContent(
+          imagePath: 'assets/images/onboarding_3.png',
+          fallbackEmoji: '🌦️',
+          title: trUi('Météo + alertes arrosage'),
+          subtitle: trUi(
+              "L'app suit la météo de ton jardin et te prévient quand "
+              "il faut arroser, protéger d'une canicule ou rentrer un plant."),
+        ),
+        // Cette page présentait le Poussidex, puis a été renommée « Ton
+        // cahier de culture » sans que son texte change : l'onboarding
+        // annonçait donc deux fois le même écran, avec les mêmes carrés et
+        // le même glisser-déposer. Elle parle maintenant de ce qui s'ajoute
+        // au cahier — le journal, les défis, les médailles.
+        _OnboardingContent(
+          imagePath: 'assets/images/onboarding_journal.png',
+          fallbackEmoji: '📖',
+          title: trUi('Le journal de ton jardin'),
+          subtitle:
+              trUi("Chaque semis, chaque arrosage, chaque récolte s'inscrit "
+                  "à sa date. Relis ta saison jour par jour, décroche des "
+                  "médailles par légume et 50 défis photo."),
+        ),
+        _OnboardingContent(
+          imagePath: 'assets/images/onboarding_tutos.png',
+          fallbackEmoji: '📚',
+          title: trUi('Apprends à ton rythme'),
+          subtitle:
+              trUi("L'onglet Tutos t'accompagne pas à pas : réussir tes semis, "
+                  "bien arroser, lutter contre les nuisibles et apprendre les "
+                  "bons gestes au jardin."),
+        ),
+      ];
 
   int get _totalPages => _pages.length + 1; // +1 pour le sélecteur de région
 

@@ -171,8 +171,8 @@ class SettingsScreen extends StatelessWidget {
                             },
                             activeThumbColor: KultivaColors.primaryGreen,
                             title: Text(trUi('Musique de fond'),
-                                style:
-                                    const TextStyle(fontWeight: FontWeight.w700)),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700)),
                             subtitle: Text(trUi('Ambiance douce japonisante')),
                           ),
                         ),
@@ -182,8 +182,8 @@ class SettingsScreen extends StatelessWidget {
                           builder: (context, v, _) => ListTile(
                             leading: const Icon(Icons.volume_up),
                             title: Text(trUi('Volume'),
-                                style:
-                                    const TextStyle(fontWeight: FontWeight.w700)),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700)),
                             subtitle: Slider(
                               value: v,
                               min: 0,
@@ -289,8 +289,8 @@ class SettingsScreen extends StatelessWidget {
                             trUi('Revoir la présentation'),
                             style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
-                          subtitle: Text(
-                              trUi('Réafficher les écrans de bienvenue')),
+                          subtitle:
+                              Text(trUi('Réafficher les écrans de bienvenue')),
                           onTap: () async {
                             await PrefsService.instance
                                 .setOnboardingDone(false);
@@ -521,12 +521,10 @@ class _SelecteurPays extends StatelessWidget {
                     ],
                     onSelected: (v) async {
                       if (v == null) return;
-                      final avant =
-                          PrefsService.instance.effectiveLanguage;
+                      final avant = PrefsService.instance.effectiveLanguage;
                       await PrefsService.instance.setCountry(v);
                       if (!context.mounted) return;
-                      final apres =
-                          PrefsService.instance.effectiveLanguage;
+                      final apres = PrefsService.instance.effectiveLanguage;
                       if (apres != avant) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

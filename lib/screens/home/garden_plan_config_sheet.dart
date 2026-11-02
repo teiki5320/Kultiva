@@ -257,8 +257,8 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                  trUi("Localisation refusée. Tape ta ville à la main.")),
+              content:
+                  Text(trUi("Localisation refusée. Tape ta ville à la main.")),
             ),
           );
         }
@@ -284,7 +284,8 @@ class _GardenPlanConfigSheetState extends State<GardenPlanConfigSheet> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(trUiArgs('Échec de la géoloc : {0}', <Object?>[e]))),
+              content:
+                  Text(trUiArgs('Échec de la géoloc : {0}', <Object?>[e]))),
         );
       }
     } finally {

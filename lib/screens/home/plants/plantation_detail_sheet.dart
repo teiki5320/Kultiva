@@ -58,15 +58,14 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
     final thirsty = p.isActive && p.daysSinceWatered >= v.effectiveWateringDays;
 
     final events = <_TimelineEvent>[];
-    events.add(_TimelineEvent(date: p.plantedAt, emoji: '🌱', label: trUi('Planté')));
+    events.add(
+        _TimelineEvent(date: p.plantedAt, emoji: '🌱', label: trUi('Planté')));
     for (final w in p.wateredAt) {
       events.add(_TimelineEvent(date: w, emoji: '💧', label: trUi('Arrosé')));
     }
     if (p.harvestedAt != null) {
       events.add(_TimelineEvent(
-          date: p.harvestedAt!,
-          emoji: '🏁',
-          label: trUi('Culture terminée')));
+          date: p.harvestedAt!, emoji: '🏁', label: trUi('Culture terminée')));
     }
     events.sort((a, b) => b.date.compareTo(a.date));
 
@@ -142,7 +141,8 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
                 children: <Widget>[
                   Text(
                     p.isActive
-                        ? trUiArgs('Jour {0} / {1}', <Object?>[days + 1, expected])
+                        ? trUiArgs(
+                            'Jour {0} / {1}', <Object?>[days + 1, expected])
                         : trUi('Culture terminée'),
                     style: const TextStyle(
                         fontWeight: FontWeight.w800, fontSize: 14),
@@ -184,14 +184,15 @@ class _PlantationDetailSheetState extends State<PlantationDetailSheet> {
               _InfoRow(
                 icon: '🧺',
                 label: p.harvestCount > 1
-                    ? trUiArgs('{0} récoltes enregistrées',
-                        <Object?>[p.harvestCount])
-                    : trUiArgs('{0} récolte enregistrée',
-                        <Object?>[p.harvestCount]),
+                    ? trUiArgs(
+                        '{0} récoltes enregistrées', <Object?>[p.harvestCount])
+                    : trUiArgs(
+                        '{0} récolte enregistrée', <Object?>[p.harvestCount]),
               ),
               _InfoRow(
                 icon: '📅',
-                label: trUiArgs('Planté le {0}', <Object?>[_fmtDate(p.plantedAt)]),
+                label:
+                    trUiArgs('Planté le {0}', <Object?>[_fmtDate(p.plantedAt)]),
               ),
               if (v.watering != null) _InfoRow(icon: '🌊', label: v.watering!),
               const SizedBox(height: 18),
@@ -699,7 +700,9 @@ class _NoteEditorState extends State<_NoteEditor> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  text == null || text.isEmpty ? trUi('Ajouter une note…') : text,
+                  text == null || text.isEmpty
+                      ? trUi('Ajouter une note…')
+                      : text,
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,

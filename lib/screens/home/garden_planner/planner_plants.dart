@@ -267,7 +267,8 @@ class PlannerIrrigationBanner extends StatelessWidget {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(trUiArgs('💧 {0} plant(s) arrosé(s)', <Object?>[count])),
+          content:
+              Text(trUiArgs('💧 {0} plant(s) arrosé(s)', <Object?>[count])),
           duration: const Duration(seconds: 2),
         ),
       );

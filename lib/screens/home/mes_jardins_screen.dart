@@ -323,7 +323,12 @@ class _SoilGardenCard extends StatelessWidget {
                       Text(
                         trUiArgs(
                             'Pleine terre  ·  {0}×{1}  ·  {2}/{3} occupées',
-                            <Object?>[plan.cols, plan.rows, filledCells, total]),
+                            <Object?>[
+                              plan.cols,
+                              plan.rows,
+                              filledCells,
+                              total
+                            ]),
                         style: const TextStyle(
                           fontSize: 12,
                           color: KultivaColors.textSecondary,

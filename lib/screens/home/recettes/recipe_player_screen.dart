@@ -60,8 +60,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
   /// Pour combien de personnes on veut cuisiner, maintenant.
   late int _parts;
 
-  String get _cle =>
-      RecipeService.keyFor(widget.vegetableId, widget.recipe);
+  String get _cle => RecipeService.keyFor(widget.vegetableId, widget.recipe);
 
   /// Le nombre de parts pour lequel la recette a été écrite.
   int get _partsEcrites => widget.recipe.serves ?? 4;
@@ -242,9 +241,8 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
                         ? Icons.check_circle
                         : Icons.check_circle_outline),
                     color: cuisine ? KultivaColors.primaryGreen : null,
-                    onPressed: () => cuisine
-                        ? svc.unmarkCooked(_cle)
-                        : svc.markCooked(_cle),
+                    onPressed: () =>
+                        cuisine ? svc.unmarkCooked(_cle) : svc.markCooked(_cle),
                   ),
                   IconButton(
                     tooltip: favori

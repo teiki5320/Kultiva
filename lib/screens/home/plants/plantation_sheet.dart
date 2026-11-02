@@ -120,8 +120,8 @@ Future<void> _addPhoto(
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                trUi('📷 Photo impossible — réessaie dans un instant')),
+            content:
+                Text(trUi('📷 Photo impossible — réessaie dans un instant')),
           ),
         );
       }

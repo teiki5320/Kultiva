@@ -251,7 +251,8 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              trUi("Rien à semer ce mois-ci. Patience, jardinier !"),
+                              trUi(
+                                  "Rien à semer ce mois-ci. Patience, jardinier !"),
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),

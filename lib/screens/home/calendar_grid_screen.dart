@@ -91,8 +91,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
     final mois =
         _filterMonth == null ? null : monthNamesLong[_filterMonth! - 1];
     if (_category != null && mois != null) {
-      return trUiArgs(
-          'Aucun {0} à semer ni à récolter en {1} chez toi.',
+      return trUiArgs('Aucun {0} à semer ni à récolter en {1} chez toi.',
           <Object?>[_category!.label.toLowerCase(), mois]);
     }
     if (_category != null) {
@@ -100,8 +99,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
           <Object?>[_category!.label.toLowerCase()]);
     }
     if (mois != null) {
-      return trUiArgs('Rien à semer ni à récolter en {0} dans ta région.',
-          <Object?>[mois]);
+      return trUiArgs(
+          'Rien à semer ni à récolter en {0} dans ta région.', <Object?>[mois]);
     }
     return trUi('Le calendrier de ta région est vide.');
   }
