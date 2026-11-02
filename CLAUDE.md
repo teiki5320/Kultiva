@@ -204,7 +204,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 43 fichiers — 1 052 tests (02/11/2026)
+├── test/                   # 45 fichiers — 1 076 tests (02/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -633,8 +633,10 @@ Décisions et évolutions significatives :
   `Hemisphere` retourne de six mois. Les zones méditerranéenne,
   continentale et subtropicale **dérivent** de la base française par
   décalage explicite (`lib/data/regions/zone_shift.dart`) et portent
-  une note qui le dit. ⚠️ Ce sont des approximations : les affiner
-  culture par culture reste à faire.
+  une note qui le dit. ⚠️ C'étaient des approximations ;
+  **méditerranéen et continental sont désormais écrits culture par
+  culture** (voir la section sur les calendriers plus bas). Le
+  subtropical reste dérivé.
   ⚠️ **`Region.westAfrica` ne veut plus dire « tropical ».** Il veut
   dire « tropical **et** contenu ouest-africain » (noms locaux, FCFA,
   achat au marché). Pour une question climatique, utiliser
@@ -1180,6 +1182,46 @@ journée alors qu'il y en avait 369 et 7.
     légume peint corresponde sa version détourée : **en ajoutant un
     légume, relancer l'outil** avec son id.
 
+## 🌍 Les calendriers méditerranéen et continental (02/11/2026)
+
+**Ce que le décalage uniforme ratait.** `zone_shift.dart` dérivait ces
+deux zones de la base française par un décalage d'un mois. Pour un
+pommier, bonne approximation. Pour une laitue, faux de six mois : en
+climat méditerranéen, **l'été est la saison morte** des
+légumes-feuilles, pas leur pic. Une laitue semée en juillet à Séville
+monte en graine avant de pommer. Salades, choux, radis et légumineuses
+s'y sèment à l'**automne** et se récoltent en **hiver et au
+printemps** — l'inverse du rythme français.
+
+En continental, le problème est à l'autre bout : le sol gèle de
+novembre à mars. Le poireau, la mâche, le chou pommé et le panais, que
+la France récolte tout l'hiver, doivent y être **arrachés avant les
+gelées**. Le décalage les laissait récolter en janvier, sous la neige.
+
+**`lib/data/regions/temperate_zones.dart`** porte 51 calendriers
+méditerranéens et 48 continentaux, écrits culture par culture, chacun
+avec une note qui explique l'écart — sans elle, un jardinier français
+installé en Espagne croit à une erreur.
+
+**Ça ne remplace pas la dérivation, ça la corrige où elle se trompe.**
+Une culture absente du fichier garde son calendrier dérivé et sa note
+qui le dit. `deriveTemperate()` consulte la surcharge en premier, puis
+applique l'hémisphère. Même principe que les surcouches de traduction.
+
+`test/temperate_zones_test.dart` (16 tests) verrouille : aucune clé
+inventée, mois valides, une note partout, **rien d'identique à ce que
+le décalage dirait** (une surcharge inutile est du bruit), pas de
+salade semée en plein été au sud, rien semé ni récolté dans le sol
+gelé au nord — sauf l'ail, parce que c'est le froid qui fait diviser
+la tête, et sauf les semis marqués « à l'abri ».
+
+⚠️ **Deux anciens tests ont dû changer** : ils vérifiaient le décalage
+uniforme sur la **tomate**, qui a maintenant un calendrier écrit. Ils
+portent désormais sur le sarrasin, qui n'a pas de surcharge.
+
+⚠️ **Restent des moyennes de zone.** Le méditerranéen de Marrakech
+n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
+
 ## 🗣️ Traduire le contenu (structure posée le 02/11/2026)
 
 **Le problème que ça règle.** L'app avait une interface anglaise posée
@@ -1342,6 +1384,37 @@ ne contient que des identifiants de légumes, déjà traduits par
 ⚠️ **`rotation_advisor.dart` compose ses messages par interpolation**
 (« il y a 2 ans », « recommande 3 ans d'attente »). Ils ne passent pas
 par le dictionnaire et relèvent des ARB. Non fait.
+
+### Ce que la traduction a révélé dans le français
+
+Traduire oblige à relire, et la relecture a trouvé ce que personne
+n'avait vu :
+
+- ✅ **Corrigé** : `pommier/Compote de pommes en bocaux`, étape 5,
+  disait « stérilise à 100 °C à partir de l'ébullition » **sans
+  durée**. Le minuteur de l'étape portait bien 25 minutes, mais la
+  fiche courte affiche le texte sans minuteur. Une durée de
+  stérilisation muette, c'est une règle sanitaire perdue : la phrase
+  le dit maintenant, en français et en anglais.
+- ⬜ **À trancher** : `fraise/Confiture de fraises` annonce « poids
+  pour poids avec le sucre » mais donne 1 kg de fraises pour 700 g de
+  sucre. L'anglais reproduit fidèlement l'incohérence.
+- ⬜ **À trancher** : le lexique définit encore **« poussidex »** et
+  **« streak »**, deux notions supprimées le 31/10/2026, et la
+  définition de « streak » cite un badge « Fidèle » qui n'existe pas
+  dans les 50.
+- ⬜ **À faire relire par un jardinier anglophone** : une dizaine de
+  noms de ravageurs sans équivalent anglais établi — « Mouche de
+  l'ail », « Puceron noir du prunier », « Mouche de la figue »,
+  « Charançon de la rhubarbe », « Mouche mineuse du poireau »,
+  « Maruca », « Mineuse de l'épi du mil ». **« Mildiou » est une
+  seule clé** partagée par neuf cultures, rendue « Late blight /
+  downy mildew » : juste pour la tomate et la pomme de terre, approché
+  pour les autres. Un nom de maladie faux envoie acheter le mauvais
+  traitement.
+- ⬜ **Détail de forme** : les heures gardent la notation française en
+  anglais (« Water before 9h ») parce que « 9 am » changerait le
+  chiffre et ferait échouer le test des nombres. Lisible, mais sec.
 
 ### Voir un écran HTML sans le simulateur
 
