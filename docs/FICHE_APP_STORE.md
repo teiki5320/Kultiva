@@ -79,12 +79,17 @@ posée à l'upload.
 
 ### 1.5 Réglementations — déclaration DSA (obligatoire pour l'UE)
 
-⚠️ **Décision à revoir (21/10/2026).** Le 24/08/2026, on avait choisi
-de garder l'affiliation Amazon, donc de te déclarer **trader**. Mais les
-159 liens d'affiliation ont été retirés le 20/10/2026 (le compte Amazon
-du tag `kultiva-21` avait été fermé le 18/10). L'app ne tire plus aucun
-revenu : le statut **non-trader**, sans aucune coordonnée publiée,
-redevient possible. À trancher avant la soumission.
+⚠️ **Cette section a dit faux pendant deux semaines (corrigé le
+03/11/2026).** Elle annonçait que l'app ne tirait plus aucun revenu et
+que le statut **non-trader** redevenait possible. C'était vrai le
+21/10, et faux dès le 30/10 : les 159 liens d'affiliation sont
+**revenus** sous le tag `kultiva1-21`, vérifié dans le code
+(`kAmazonAffiliateTag` et 159 `amazonQuery` dans
+`lib/data/vegetables_base.dart`).
+
+**Tu es donc trader**, et il n'y a rien à trancher : l'app tire un
+revenu de l'affiliation en France, le statut s'applique. La question
+ne se rouvrirait que si l'affiliation repartait.
 
 **Si tu restes trader, ce que ça implique concrètement.** Tu fournis une adresse postale, un
 téléphone et un e-mail. Apple les vérifie, puis les **affiche
@@ -138,9 +143,20 @@ sans défilement**, elles font la décision :
 8. (facultatif) Le calendrier en mode Afrique de l'Ouest (hivernage) —
    montre le bi-marché
 
-Prends-les sur une installation garnie à la main (deux ou trois
-jardins remplis, des plants plantés il y a plusieurs semaines, des
-photos, quelques badges débloqués) : des écrans vides ne vendent rien.
+✅ **Les 1 à 7 sont prises** (03/11/2026), dans les deux tailles, sur
+une installation garnie — 6 plants suivis, un potager 4×4 à six
+cases, 13 badges débloqués. Elles sont dans `build/captures/` :
+`iphone69/` et `ipad13/`, nommées dans l'ordre ci-dessus. La 8 reste
+à faire, et elle est facultative.
+
+⚠️ **`build/` n'est pas suivi par git** : ces fichiers vivent sur le
+Mac de Jean et disparaîtront à un `flutter clean`. Les déposer dans
+App Store Connect, ou les copier ailleurs, avant d'y toucher.
+
+Pour les refaire : `tool/garnir_simulateur.py` écrit le jardin dans
+les préférences du simulateur, sans un seul geste à l'écran. Des
+écrans vides ne vendent rien, et les garnir à la main coûtait une
+cinquantaine de gestes.
 
 ### 2.2 Texte promotionnel — 125/170 caractères
 
@@ -313,17 +329,15 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 
 1. **Ton numéro de téléphone** — champ obligatoire des informations
    pour la revue.
-2. **Une installation garnie pour les captures** : crée deux jardins et
-   remplis-en un, ajoute 2-3 plants depuis le catalogue (« Je l'ai
-   planté ») avec une date de plantation ancienne pour que le cahier ait
-   quelque chose à dire, et une photo. Il n'y a pas de compte de
-   démonstration à créer, mais des captures sur une app vide ne vendent
-   rien.
-3. **Tes coordonnées de trader**, seulement si tu restes trader (§1.5,
-   à revoir depuis le retrait de l'affiliation) — adresse postale (**une BP suffit**), téléphone et
-   e-mail, qui seront **publics dans l'UE**.
-4. **Les captures d'écran** : 8 en iPhone 6,9″ + les mêmes en iPad 13″
-   (§2.1).
+2. ~~**Une installation garnie pour les captures**~~ — ✅ **fait le
+   03/11/2026.** `tool/garnir_simulateur.py` écrit le jardin
+   directement dans les préférences du simulateur : 6 plants avec
+   leurs arrosages et récoltes datés, un potager 4×4 à six cases,
+   13 badges débloqués. ⚠️ Redémarrer le simulateur après l'écriture,
+   sinon iOS sert ses préférences depuis son cache.
+3. **Tes coordonnées de trader** (§1.5 — tu l'es, l'affiliation est
+   revenue le 30/10/2026) : adresse postale (**une BP suffit**),
+   téléphone et e-mail, qui seront **publics dans l'UE**.
 
 ---
 
@@ -342,7 +356,7 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | URL d'assistance / marketing / confidentialité | ✅ `kultiva.toakeur.com` en ligne (§2.5, §4) — ⏳ Toi : les coller dans ASC |
 | Téléphone (revue) | ⏳ Toi |
 | Compte de démonstration | ✅ Sans objet — l'app n'a pas de compte (§2.8) |
-| Déclaration DSA | ⏳ **À retrancher** (§1.5) — le motif « trader » a disparu avec l'affiliation le 20/10/2026 |
+| Déclaration DSA | ⏳ Toi — **trader** (§1.5), l'affiliation est revenue le 30/10/2026 |
 | Captures d'écran | ⏳ Toi (sur une installation garnie, §5) |
 
 ---

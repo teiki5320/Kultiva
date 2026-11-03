@@ -43,7 +43,7 @@
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste inactif (vérifié le 3 novembre 2026), inutilisé, et ne bloque plus rien
 - **Monétisation** : affiliation Amazon en France. Les 159 liens, retirés le 20 octobre 2026 (compte fermé le 18), sont **revenus le 30 octobre 2026** sous le tag `kultiva1-21`. ⚠️ Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, redevient donc applicable : à déclarer dans App Store Connect et Play Console avant soumission
 - **Classification attendue** : **4+** depuis le retrait du feed communautaire — plus aucun contenu généré par les utilisateurs
-- **Chemin critique** : captures d'écran → trancher la déclaration DSA → compléter la fiche App Store → soumettre iOS
+- **Chemin critique** : compléter la fiche App Store (téléphone de revue, trois URL, déclaration de trader DSA) → soumettre iOS. Les captures sont prises depuis le 3 novembre 2026, 7 en iPhone 6,9″ et 7 en iPad 13″
 
 Aucune boutique n'a reçu de soumission : côté Apple, seuls des builds
 TestFlight internes sont arrivés dans la fiche ; côté Google, rien n'a
@@ -78,14 +78,15 @@ coller champ par champ.
 désormais — assistance et marketing `https://kultiva.toakeur.com`,
 confidentialité `https://kultiva.toakeur.com/privacy.html` — et restent à
 coller dans App Store Connect (à vérifier dans la console). Le testeur Apple n'a plus ni connexion ni suppression de compte à
-essayer : l'app n'en a plus depuis le 30 octobre 2026. Restent
-le **numéro de téléphone** des informations de revue, les **captures
-d'écran** (8 en iPhone 6,9″ et, l'iPad étant conservé, 8 en iPad 13″ au
-format 2064 × 2752), et la déclaration DSA dans *Entreprise → Accords →
-Digital Services Act* : le statut de trader avait été choisi pour les
-liens d'affiliation, retirés le 20 octobre 2026 puis revenus le 30 octobre
-2026 ; il s'applique donc de nouveau, et les coordonnées seront publiques dans les 27 pays de l'UE (une boîte postale
-est acceptée).
+essayer : l'app n'en a plus depuis le 30 octobre 2026. Les **captures d'écran** sont faites
+depuis le 3 novembre 2026 : 7 en iPhone 6,9″ (1320 × 2868) et 7 en
+iPad 13″ (2064 × 2752), prises sur une installation garnie. Restent
+le **numéro de téléphone** des informations de revue et la
+déclaration DSA dans *Entreprise → Accords → Digital Services Act* :
+le statut de trader, choisi pour les liens d'affiliation, s'applique
+puisque ces liens sont revenus le 30 octobre 2026, et les coordonnées
+seront publiques dans les 27 pays de l'UE (une boîte postale est
+acceptée).
 
 **Sur l'iPad.** L'app se lance en plein écran portrait sur iPadOS 26.5 et
 produit des captures au format exact attendu par Apple. Les mises en page
@@ -241,7 +242,7 @@ la synchro (Cloudflare, ci-dessous).
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (avertissement ITMS-90683) ; builds 127 à 195 envoyés depuis.
 9. **Soumettre iOS** : le build 195 (nuit du 2 au 3 novembre 2026) depuis `docs/FICHE_APP_STORE.md`.
 10. **Créer la fiche Google Play** : puis lancer le test fermé sans attendre, ses quatorze jours courent en arrière-plan.
-11. **Relier les boutons « Télécharger »** : remplacer les `href="#"` du site par les liens des boutiques (la mention « Partenaire Amazon » a été ôtée le 21 octobre 2026).
+11. **Relier les boutons « Télécharger »** : le site n'a plus de `href="#"` — les deux boutons sont inertes et disent « Bientôt sur l'App Store » / « Bientôt sur Google Play ». À remplacer par de vrais liens une fois l'app en ligne.
 
 ---
 
