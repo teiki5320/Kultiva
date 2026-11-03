@@ -100,10 +100,20 @@ class _AutresRecettesState extends State<AutresRecettes> {
   @override
   Widget build(BuildContext context) {
     final n = widget.recipes.length;
+    final libelle = n > 1
+        ? trUiArgs('{0} recettes à manger tout de suite', <Object?>[n])
+        : trUiArgs('{0} recette à manger tout de suite', <Object?>[n]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        InkWell(
+        // ⚠️ Sans `Semantics`, VoiceOver lit la phrase mais ne dit pas
+        // que c'est un bouton ni s'il est déplié : l'utilisateur ne
+        // sait pas qu'il peut appuyer.
+        Semantics(
+          label: libelle,
+          button: true,
+          expanded: _ouvert,
+          child: InkWell(
           onTap: () => setState(() => _ouvert = !_ouvert),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -119,11 +129,7 @@ class _AutresRecettesState extends State<AutresRecettes> {
                   // Le top 3 garde la récolte ; le reste se mange le jour
                   // même. Dire lequel est lequel évite de chercher une
                   // conserve dans la liste des plats.
-                  n > 1
-                      ? trUiArgs(
-                          '{0} recettes à manger tout de suite', <Object?>[n])
-                      : trUiArgs(
-                          '{0} recette à manger tout de suite', <Object?>[n]),
+                  libelle,
                   style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
@@ -133,6 +139,7 @@ class _AutresRecettesState extends State<AutresRecettes> {
               ],
             ),
           ),
+        ),
         ),
         if (_ouvert)
           for (final r in widget.recipes)

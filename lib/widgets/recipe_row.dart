@@ -48,7 +48,14 @@ class RecipeRow extends StatelessWidget {
         final svc = RecipeService.instance;
         final favori = svc.isFavorite(_cle);
         final cuisineLe = svc.cookedOn(_cle);
-        return InkWell(
+        // ⚠️ Sans `label`, VoiceOver égrenait l'emoji, le nom, la
+        // méthode, la durée de garde et le temps comme cinq éléments
+        // sans lien, et ne disait pas que la ligne s'ouvre. Le signet
+        // garde son propre bouton : il reste un enfant.
+        return Semantics(
+          label: recipe.displayName,
+          button: true,
+          child: InkWell(
           onTap: () => openRecipe(context,
               vegetableId: vegetableId, recipe: recipe),
           child: Padding(
@@ -141,7 +148,7 @@ class RecipeRow extends StatelessWidget {
               ],
             ),
           ),
-        );
+        ));
       },
     );
   }
