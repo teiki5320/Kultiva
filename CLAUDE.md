@@ -912,6 +912,25 @@ Règles spécifiques au projet pour être efficace dès la première action :
    prend des **points** (ici 402 × 874 pour 1206 × 2622 pixels, donc
    diviser par 3).
 
+   **Garnir une installation sans un seul tap (03/11/2026).** Les
+   captures des boutiques demandent un jardin peuplé, et le peupler à
+   la main coûte une cinquantaine de gestes — dont chacun passe par
+   l'autorisation d'accès au simulateur, qui se **redemande dès que
+   l'appareil change d'identifiant** (c'est ce qui arrive après un
+   `killall CoreSimulatorService`). Tout le cahier tient pourtant dans
+   trois chaînes JSON de NSUserDefaults :
+   `kultiva.plantations.v1`, `kultiva.cultures.v1` et
+   `garden_plans_v1`, toutes préfixées `flutter.`.
+   `tool/garnir_simulateur.py` les écrit — 6 plants, 6 cases, 6
+   cultures, 13 badges débloqués — et porte la marche à suivre.
+
+   ⚠️ **Le redémarrage du simulateur est obligatoire, pas prudent.**
+   `cfprefsd` sert le plist depuis son cache : sans
+   `shutdown` + `boot`, l'app relit ce qu'elle avait avant et on croit
+   que l'écriture n'a rien fait. C'est exactement la cause de
+   l'avertissement ci-dessous sur la langue, et le redémarrage est ce
+   qui le lève — vérifié dans les deux sens le 03/11.
+
    **Changer la langue de l'app** : écrire la préférence dans le plist
    ne marche pas — `shared_preferences` le réécrit au lancement. Deux
    voies : le réglage « Langue » de l'app, ou la langue du **device**,
