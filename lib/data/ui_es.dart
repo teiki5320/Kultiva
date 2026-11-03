@@ -621,8 +621,8 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Aprende a cultivar, ficha a ficha',
   'Ouvre la fiche':
       'Abre la ficha',
-  'Le tour complet — dashboard, Cahier, Étal, Recettes':
-      'La visita completa: inicio, Diario, Catálogo, Recetas',
+  'Le tour complet — Home, Cahier, Étal, Conservation, Tutos':
+      'La visita completa: Inicio, Diario, Catálogo, Conservas, Guías',
   'Étal':
       'Catálogo',
   '{0} variétés':

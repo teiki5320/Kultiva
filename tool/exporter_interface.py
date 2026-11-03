@@ -177,12 +177,23 @@ def main():
         mots = sum(len(c.split()) for c in ordre)
         print(f'\n  {total} appels, {len(ordre)} clés distinctes '
               f'(dont {nb_enums} venues des enums), {mots} mots')
-        suspectes = [c for c in ordre if c.startswith('⚠️')]
-        if suspectes:
-            print(f'  ⚠️  {len(suspectes)} appels dont l\'argument '
-                  f'n\'est pas une littérale. Les trois attendus sont '
-                  f'les getters d\'enum (`trUi(label)`) ; tout autre '
+        # ⚠️ On compte les **appels**, pas les clés : tous les
+        # arguments non littéraux tombent sur la même clé, donc
+        # `ordre` n'en contient qu'une seule. Le message disait « 1
+        # appels » alors qu'il y en a trois.
+        suspects = {
+            p: sum(1 for c in cles if c.startswith('⚠️'))
+            for p, cles in par_fichier.items()
+        }
+        suspects = {p: n for p, n in suspects.items() if n}
+        if suspects:
+            n = sum(suspects.values())
+            print(f'  ⚠️  {n} appel(s) dont l\'argument n\'est pas une '
+                  f'littérale. Les attendus sont les getters d\'enum '
+                  f'(`trUi(label)`, `trUi(capitalName)`) ; tout autre '
                   f'est un branchement à reprendre.')
+            for p, k in suspects.items():
+                print(f'       {k}  {p}')
         if not a.squelette:
             return
 

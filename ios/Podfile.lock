@@ -23,8 +23,6 @@ PODS:
     - Flutter
   - printing (1.0.0):
     - Flutter
-  - sensors_plus (0.0.1):
-    - Flutter
   - Sentry/HybridSDK (8.58.4)
   - sentry_flutter (9.30.1):
     - Flutter
@@ -53,7 +51,6 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - printing (from `.symlinks/plugins/printing/ios`)
-  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -87,8 +84,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   printing:
     :path: ".symlinks/plugins/printing/ios"
-  sensors_plus:
-    :path: ".symlinks/plugins/sensors_plus/ios"
   sentry_flutter:
     :path: ".symlinks/plugins/sentry_flutter/ios"
   share_plus:
@@ -112,7 +107,6 @@ SPEC CHECKSUMS:
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   permission_handler_apple: 92d754bbaa7361d436db2d6c3c1c2a0fdcec462e
   printing: a8960104e6c1a2b4bd3483a2f79c69be60830d08
-  sensors_plus: b70a93b69dafdabd26ce4ac3f4d0529ab9acc4ca
   Sentry: 5321d74bdd28d6f6f8beaa1ca06f1fdc746bff49
   sentry_flutter: c89c731736fabbbac53a4714df8ba0d21ba4100d
   share_plus: de6030e33b4e106470e09322d87cf2a4258d2d1d

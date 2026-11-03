@@ -622,8 +622,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Learn gardening, one card at a time',
   'Ouvre la fiche':
       'Open the guide',
-  'Le tour complet — dashboard, Cahier, Étal, Recettes':
-      'The full tour — dashboard, Journal, Catalog, Recipes',
+  'Le tour complet — Home, Cahier, Étal, Conservation, Tutos':
+      'The full tour — Home, Journal, Catalog, Preserving, Guides',
   'Étal':
       'Catalog',
   '{0} variétés':

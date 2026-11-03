@@ -477,7 +477,7 @@ class _TutoTile extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             trUi(
-                                'Le tour complet — dashboard, Cahier, Étal, Recettes'),
+                                'Le tour complet — Home, Cahier, Étal, Conservation, Tutos'),
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
