@@ -11,6 +11,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../utils/text_scale.dart';
 import '../../widgets/jardins_intro_sheet.dart';
+import '../root_tabs.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import 'cahier/cahier_journal_section.dart';
@@ -39,17 +40,41 @@ class MesJardinsScreen extends StatefulWidget {
 }
 
 class _MesJardinsScreenState extends State<MesJardinsScreen> {
+  /// L'index de l'onglet Cahier dans `RootTabs`.
+  static const _ongletCahier = 1;
+
+  bool _introEnCours = false;
+
   @override
   void initState() {
     super.initState();
     GardenPlanService.instance.load();
+    // ⚠️ `initState` n'est **pas** « quand on ouvre l'onglet ».
+    // `RootTabs` empile ses cinq pages dans un `IndexedStack`, qui les
+    // construit toutes au premier affichage : la présentation du
+    // cahier s'ouvrait donc par-dessus le **tableau de bord**, juste
+    // après l'onboarding, pour un onglet où l'utilisateur n'était pas
+    // encore allé. Vu à l'écran le 03/11/2026 sur iPhone et sur iPad.
+    RootTabs.tabIndex.addListener(_surChangementOnglet);
+    _surChangementOnglet();
+  }
+
+  @override
+  void dispose() {
+    RootTabs.tabIndex.removeListener(_surChangementOnglet);
+    super.dispose();
+  }
+
+  void _surChangementOnglet() {
+    if (RootTabs.tabIndex.value != _ongletCahier) return;
     _maybeShowIntro();
   }
 
-  /// Affiche le sheet de présentation à la première ouverture (flag
-  /// prefs jardinsTutorialDone). Plus jamais après.
+  /// Affiche le sheet de présentation à la première ouverture **de
+  /// l'onglet** (flag prefs jardinsTutorialDone). Plus jamais après.
   Future<void> _maybeShowIntro() async {
-    if (PrefsService.instance.jardinsTutorialDone) return;
+    if (_introEnCours || PrefsService.instance.jardinsTutorialDone) return;
+    _introEnCours = true;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       await showModalBottomSheet<void>(
@@ -60,6 +85,7 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
         builder: (_) => const JardinsIntroSheet(),
       );
       await PrefsService.instance.setJardinsTutorialDone(true);
+      _introEnCours = false;
     });
   }
 

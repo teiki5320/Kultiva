@@ -5,6 +5,7 @@ import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/models/garden_plan.dart';
 import 'package:kultiva/models/vegetable.dart';
 import 'package:kultiva/screens/home/mes_jardins_screen.dart';
+import 'package:kultiva/screens/root_tabs.dart';
 import 'package:kultiva/services/culture_service.dart';
 import 'package:kultiva/services/garden_plan_service.dart';
 import 'package:kultiva/services/plantation_service.dart';
@@ -88,6 +89,30 @@ void main() {
       await monte(tester, taille: const Size(393, 852));
       expect(find.text('Aucun jardin pour l\'instant'), findsOneWidget);
       expect(find.text('+ Nouveau jardin'), findsOneWidget);
+    });
+
+    // ⚠️ `RootTabs` empile ses cinq pages dans un `IndexedStack`, qui
+    // les construit **toutes** au premier affichage. `initState` du
+    // cahier n'est donc pas « quand on ouvre l'onglet » : la
+    // présentation s'ouvrait par-dessus le tableau de bord, juste
+    // après l'onboarding, pour un onglet où personne n'était allé.
+    testWidgets('la présentation attend qu\'on ouvre vraiment le cahier',
+        (tester) async {
+      await PrefsService.instance.setJardinsTutorialDone(false);
+      RootTabs.tabIndex.value = 0;
+      addTearDown(() => RootTabs.tabIndex.value = 0);
+
+      // ⚠️ Pas de `pumpAndSettle` : le bandeau de saison fait tomber
+      // des pétales en boucle, donc l'arbre ne se stabilise jamais.
+      await monte(tester, taille: const Size(393, 852));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(find.text('Bienvenue dans Mes jardins'), findsNothing,
+          reason: 'on est sur le tableau de bord, pas sur le cahier');
+
+      RootTabs.tabIndex.value = 1;
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(find.text('Bienvenue dans Mes jardins'), findsOneWidget);
     });
 
     testWidgets('ne montre pas « à faire » sans un seul plant', (tester) async {
