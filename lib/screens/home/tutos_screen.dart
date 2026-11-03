@@ -371,13 +371,42 @@ class TutosScreen extends StatelessWidget {
             else
               SizedBox(
                 height: scaledHeight(context, 100),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  itemCount: cat.items.length,
-                  itemBuilder: (ctx, i) {
-                    final item = cat.items[i];
-                    return _TutoTile(item: item, color: cat.color);
+                // ⚠️ Sur un téléphone, les tuiles défilent latéralement :
+                // quatre tuiles de 98 points ne tiennent pas dans 375.
+                // Sur un iPad elles tiennent largement, et la liste les
+                // laissait alignées à gauche avec la moitié de l'écran
+                // vide à droite — ce que Jean a vu le 03/11/2026. Quand
+                // la place y est, on étale plutôt que de défiler.
+                child: LayoutBuilder(
+                  builder: (ctx, contraintes) {
+                    const largeurTuile = 98.0;
+                    final tiennent = cat.items.length * largeurTuile <=
+                        contraintes.maxWidth - 24;
+                    if (tiennent) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: <Widget>[
+                            for (final item in cat.items)
+                              Expanded(
+                                child: _TutoTile(
+                                    item: item,
+                                    color: cat.color,
+                                    etire: true),
+                              ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: cat.items.length,
+                      itemBuilder: (ctx, i) {
+                        final item = cat.items[i];
+                        return _TutoTile(item: item, color: cat.color);
+                      },
+                    );
                   },
                 ),
               ),
@@ -399,7 +428,16 @@ class _TutoTile extends StatelessWidget {
   /// emoji et un libellé plus lisible.
   final bool wide;
 
-  const _TutoTile({required this.item, required this.color, this.wide = false});
+  /// Vrai quand la tuile est posée dans un `Expanded` : elle laisse
+  /// alors son parent décider de sa largeur, au lieu de la fixer à 90.
+  final bool etire;
+
+  const _TutoTile({
+    required this.item,
+    required this.color,
+    this.wide = false,
+    this.etire = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -421,7 +459,7 @@ class _TutoTile extends StatelessWidget {
           }
         },
         child: Container(
-          width: wide ? double.infinity : 90,
+          width: wide ? double.infinity : (etire ? null : 90),
           margin: wide
               ? const EdgeInsets.symmetric(vertical: 4)
               : const EdgeInsets.symmetric(horizontal: 4),

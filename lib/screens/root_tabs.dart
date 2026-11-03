@@ -101,25 +101,26 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // Kultiva a été dessinée pour un téléphone. Sur un iPad, la même
-    // mise en page s'étire sur 1 032 points : les cartes du tableau de
-    // bord deviennent des bandes presque vides, et une ligne de texte
-    // traverse l'écran d'un bord à l'autre.
+    // ⚠️ Deux traitements, et la frontière est le **contenu**, pas
+    // l'écran. Les grilles prennent toute la largeur : une tuile de
+    // plus par ligne, c'est une tuile de plus qu'on voit sans défiler.
+    // Les colonnes de texte gardent leur mesure : au-delà, l'œil perd
+    // le début de la ligne suivante, et le signet d'une recette finit
+    // à 1 400 points de son titre.
     //
-    // ⚠️ L'Étal est la seule exception, et c'est voulu : sa grille de
-    // tuiles se répartit toute seule (huit colonnes sur un iPad, deux
-    // sur un téléphone) et profite vraiment de la largeur. La borner
-    // lui ferait perdre ce qu'elle sait faire.
+    // Première version du 03/11/2026 : tout était borné à 720, y
+    // compris les grilles. Jean a regardé l'iPad et dit ce qui se
+    // voyait — « ça ne prend pas toute la place ». Il avait raison.
     final pages = <Widget>[
-      // Le tableau de bord est plus étroit que les autres : ses six
-      // cartes sont des tuiles de hauteur fixe (138 points). À 720 de
-      // large elles font deux fois et demie leur hauteur — des bandes,
-      // là où le téléphone montre des tuiles presque carrées.
-      const ReadableWidth(maxWidth: 560, child: SowScreen()),
-      const ReadableWidth(child: MesJardinsScreen()),
+      // Tableau de bord, Étal et Tutos sont des grilles : elles
+      // comptent leurs colonnes d'après la place disponible.
+      const SowScreen(),
+      const ReadableWidth(maxWidth: 900, child: MesJardinsScreen()),
       const VegetablesScreen(),
-      const ReadableWidth(child: RecettesScreen()),
-      const ReadableWidth(child: TutosScreen()),
+      // Conservation est la seule vraie colonne de texte des cinq :
+      // trois lignes de description par recette, et un signet au bout.
+      const ReadableWidth(maxWidth: 760, child: RecettesScreen()),
+      const TutosScreen(),
     ];
     // Les libellés de la barre sont la première chose traduite : ils
     // sont visibles sur tous les écrans.

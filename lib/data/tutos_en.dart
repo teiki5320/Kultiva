@@ -443,6 +443,8 @@ const Map<String, String> tutoTextsEn = <String, String>{
       'The Stall, your kawaii market',
   '130 cultures en fiches détaillées, plus les accessoires.':
       '130 crops in detailed sheets, plus accessories.',
+  '50 défis, 50 badges':
+      '50 challenges, 50 badges',
   '50 défis photo, 50 badges':
       '50 photo challenges, 50 badges',
   'Les badges récompensent ce que tu fais vraiment au jardin.':

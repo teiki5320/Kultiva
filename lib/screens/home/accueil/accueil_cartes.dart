@@ -30,6 +30,21 @@ class KawaiiCard extends StatelessWidget {
     required this.onTap,
   });
 
+  /// Hauteur de la carte pour une largeur donnée.
+  ///
+  /// 138 est le plancher, et il vient d'une mesure : la hauteur utile
+  /// est de 98 px, et un libellé sur deux lignes en demande 99
+  /// (44 d'icône + 40 de titre + 2 + 13 de sous-titre). « Défis &
+  /// badges » tient sur une ligne, « Challenges & badges » et « Retos e
+  /// insignias » non — la carte les coupait au milieu.
+  ///
+  /// ⚠️ Au-dessus, la hauteur suit la largeur. Sur un iPad, trois
+  /// colonnes font 325 points de large : à 138 de haut, c'est une
+  /// bande, pas une tuile. Le plafond de 190 évite l'excès inverse sur
+  /// un écran encore plus large.
+  static double hauteurPour(double largeur) =>
+      (largeur * 0.62).clamp(138.0, 190.0);
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -40,13 +55,13 @@ class KawaiiCard extends StatelessWidget {
           AudioService.instance.play(Sfx.tap);
           onTap();
         },
-        child: Container(
-          // 138 et non 130 : la hauteur utile était de 98 px, et un
-          // libellé sur deux lignes en demande 99 (44 d'icône + 40 de
-          // titre + 2 + 13 de sous-titre). « Défis & badges » tient sur
-          // une ligne, « Challenges & badges » et « Retos e insignias »
-          // non — la carte les coupait au milieu.
-          height: scaledHeight(context, 138),
+        child: LayoutBuilder(
+          builder: (context, contraintes) => Container(
+          height: scaledHeight(
+              context,
+              hauteurPour(contraintes.hasBoundedWidth
+                  ? contraintes.maxWidth
+                  : 170)),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -164,6 +179,7 @@ class KawaiiCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

@@ -510,8 +510,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Vegetable of the day',
   'Défis & badges':
       'Challenges & badges',
-  '50 défis photo, 50 badges':
-      '50 photo challenges, 50 badges',
+  '50 défis, 50 badges':
+      '50 challenges, 50 badges',
   'Actualités':
       'News',
   'Suis-nous sur Instagram':

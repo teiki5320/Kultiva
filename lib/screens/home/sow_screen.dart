@@ -28,6 +28,8 @@ import 'defis/defis_badges_screen.dart';
 import 'weather_screen.dart';
 import 'accueil/accueil_cartes.dart';
 import 'accueil/accueil_diapos.dart';
+import '../../widgets/grille_adaptative.dart';
+import '../../widgets/readable_width.dart';
 
 /// URL Instagram Kultiva — ouverte au tap sur la carte « Actualités ».
 /// Le compte sert d'actualités (publications + stories) plutôt que de
@@ -256,133 +258,118 @@ class _SowScreenState extends State<SowScreen> {
 
               const SizedBox(height: 20),
 
-              // ── 4 cartes 2×2 + carte Cahier de culture pleine largeur ──
+              // ── Les six cartes, en grille qui suit la largeur ──
+              //
+              // Deux colonnes sur un téléphone, trois sur un iPad : la
+              // grille les compte elle-même d'après la place. Avant le
+              // 03/11/2026 c'était trois `Row` de deux `Expanded`,
+              // donc deux colonnes quelle que soit la largeur — et sur
+              // 1 032 points, des tuiles deux fois et demie plus larges
+              // que hautes.
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: KawaiiCard(
-                            emoji: '🌱',
-                            imagePath: 'assets/images/card_semer.png',
-                            label: trUi('Semer'),
-                            subtitle: trUiArgs(
-                                '{0} légumes', <Object?>[toSow.length]),
-                            gradientColors: const [
-                              KultivaColors.springA,
-                              KultivaColors.springB,
-                            ],
-                            bubbleColor: KultivaColors.primaryGreen,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                  builder: (_) => const MonthlyCalendarScreen(
-                                      mode: CalendarMode.sow)),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: KawaiiCard(
-                            emoji: '🧺',
-                            imagePath: 'assets/images/card_recolter.png',
-                            label: trUi('Récolter'),
-                            subtitle: trUiArgs(
-                                '{0} légumes', <Object?>[toHarvest.length]),
-                            gradientColors: const [
-                              KultivaColors.summerA,
-                              KultivaColors.summerB,
-                            ],
-                            bubbleColor: KultivaColors.terracotta,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                  builder: (_) => const MonthlyCalendarScreen(
-                                      mode: CalendarMode.harvest)),
-                            ),
-                          ),
-                        ),
+                child: GrilleAdaptative(
+                  // ⚠️ 160 et non 200 : sur un téléphone de 375 points
+                  // il reste 343 après les marges, et une cible de 200
+                  // n'y fait tenir **qu'une** colonne. Le tableau de
+                  // bord serait passé à une carte par ligne sur
+                  // iPhone — l'inverse du défaut qu'on corrige.
+                  largeurCible: 160,
+                  colonnesMax: 3,
+                  enfants: <Widget>[
+                    KawaiiCard(
+                      emoji: '🌱',
+                      imagePath: 'assets/images/card_semer.png',
+                      label: trUi('Semer'),
+                      subtitle:
+                          trUiArgs('{0} légumes', <Object?>[toSow.length]),
+                      gradientColors: const [
+                        KultivaColors.springA,
+                        KultivaColors.springB,
                       ],
+                      bubbleColor: KultivaColors.primaryGreen,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                            builder: (_) => const MonthlyCalendarScreen(
+                                mode: CalendarMode.sow)),
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: KawaiiCard(
-                            emoji: '📅',
-                            imagePath: 'assets/images/card_calendrier.png',
-                            label: trUi('Calendrier'),
-                            subtitle: trUi('Vue annuelle'),
-                            gradientColors: const [
-                              KultivaColors.winterA,
-                              KultivaColors.winterB,
-                            ],
-                            bubbleColor: const Color(0xFF7BAFD4),
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                  builder: (_) => const CalendarGridScreen()),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: KawaiiCard(
-                            emoji: '🌻',
-                            imagePath: 'assets/images/card_dujour.png',
-                            label: trUi('Légume du jour'),
-                            subtitle: vegOfDay.displayName,
-                            gradientColors: const [
-                              KultivaColors.autumnA,
-                              KultivaColors.autumnB,
-                            ],
-                            bubbleColor: KultivaColors.terracotta,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) =>
-                                    VegetableDetailScreen(vegetable: vegOfDay),
-                              ),
-                            ),
-                          ),
-                        ),
+                    KawaiiCard(
+                      emoji: '🧺',
+                      imagePath: 'assets/images/card_recolter.png',
+                      label: trUi('Récolter'),
+                      subtitle:
+                          trUiArgs('{0} légumes', <Object?>[toHarvest.length]),
+                      gradientColors: const [
+                        KultivaColors.summerA,
+                        KultivaColors.summerB,
                       ],
+                      bubbleColor: KultivaColors.terracotta,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                            builder: (_) => const MonthlyCalendarScreen(
+                                mode: CalendarMode.harvest)),
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: KawaiiCard(
-                            emoji: '📸',
-                            imagePath: null,
-                            label: trUi('Défis & badges'),
-                            subtitle: trUi('50 défis photo, 50 badges'),
-                            gradientColors: const [
-                              KultivaColors.springA,
-                              KultivaColors.springB,
-                            ],
-                            bubbleColor: KultivaColors.primaryGreen,
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const DefisBadgesScreen(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: KawaiiCard(
-                            emoji: '📸',
-                            imagePath: null,
-                            label: trUi('Actualités'),
-                            subtitle: trUi('Suis-nous sur Instagram'),
-                            gradientColors: const [
-                              KultivaColors.summerA,
-                              KultivaColors.summerB,
-                            ],
-                            bubbleColor: KultivaColors.terracotta,
-                            onTap: () => _openInstagram(context),
-                          ),
-                        ),
+                    KawaiiCard(
+                      emoji: '📅',
+                      imagePath: 'assets/images/card_calendrier.png',
+                      label: trUi('Calendrier'),
+                      subtitle: trUi('Vue annuelle'),
+                      gradientColors: const [
+                        KultivaColors.winterA,
+                        KultivaColors.winterB,
                       ],
+                      bubbleColor: const Color(0xFF7BAFD4),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                            builder: (_) => const CalendarGridScreen()),
+                      ),
+                    ),
+                    KawaiiCard(
+                      emoji: '🌻',
+                      imagePath: 'assets/images/card_dujour.png',
+                      label: trUi('Légume du jour'),
+                      subtitle: vegOfDay.displayName,
+                      gradientColors: const [
+                        KultivaColors.autumnA,
+                        KultivaColors.autumnB,
+                      ],
+                      bubbleColor: KultivaColors.terracotta,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) =>
+                              VegetableDetailScreen(vegetable: vegOfDay),
+                        ),
+                      ),
+                    ),
+                    KawaiiCard(
+                      emoji: '📸',
+                      imagePath: null,
+                      label: trUi('Défis & badges'),
+                      subtitle: trUi('50 défis, 50 badges'),
+                      gradientColors: const [
+                        KultivaColors.springA,
+                        KultivaColors.springB,
+                      ],
+                      bubbleColor: KultivaColors.primaryGreen,
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const DefisBadgesScreen(),
+                        ),
+                      ),
+                    ),
+                    KawaiiCard(
+                      emoji: '📸',
+                      imagePath: null,
+                      label: trUi('Actualités'),
+                      subtitle: trUi('Suis-nous sur Instagram'),
+                      gradientColors: const [
+                        KultivaColors.summerA,
+                        KultivaColors.summerB,
+                      ],
+                      bubbleColor: KultivaColors.terracotta,
+                      onTap: () => _openInstagram(context),
                     ),
                   ],
                 ),
@@ -391,7 +378,15 @@ class _SowScreenState extends State<SowScreen> {
               const SizedBox(height: 24),
 
               // ── Carrousel de slides ──
-              SizedBox(
+              //
+              // ⚠️ Borné, contrairement à la grille au-dessus. Une
+              // diapositive porte une phrase — « Bananier plantain
+              // adore pousser à côté de Taro ! ». À 88 % de 1 032
+              // points, elle s'étalait sur 908 points pour cette seule
+              // ligne. Une grille gagne à s'élargir, une phrase non.
+              ReadableWidth(
+                maxWidth: 620,
+                child: SizedBox(
                 height: scaledHeight(context, 160),
                 child: PageView.builder(
                   controller: _slideController,
@@ -432,7 +427,7 @@ class _SowScreenState extends State<SowScreen> {
                     );
                   },
                 ),
-              ),
+              )),
               const SizedBox(height: 12),
               // Dots.
               Row(

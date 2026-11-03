@@ -1027,7 +1027,7 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
 `import` depuis le 31/10, mais du code natif dans chaque build) et
 `cupertino_icons`, qui venait du gabarit Flutter et n'a jamais servi.
 
-## 📐 L'iPad : du contenu borné (03/11/2026)
+## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 
 **Ce qui a été regardé** : l'app, écran par écran, sur un **iPad Pro
 13″** en simulateur. C'est la première fois — jusqu'ici seuls des tests
@@ -1041,36 +1041,59 @@ sur une seule ligne de 130 caractères. Dans l'onglet Conservation, le
 signet d'une recette était à 1 400 points de son titre. Une feuille
 modale occupait toute la largeur.
 
-**Le correctif, et sa honte** : `ReadableWidth` existait **depuis le
-30/10/2026**, avec un commentaire qui décrivait exactement ce problème
-— et il était branché sur **un** écran sur trente-trois. Encore un
-widget écrit et non relié (règle 10, cinquième fois). Il l'est
-maintenant partout :
+**Le premier correctif, et sa honte** : `ReadableWidth` existait
+**depuis le 30/10/2026**, avec un commentaire qui décrivait exactement
+ce problème — et il était branché sur **un** écran sur trente-trois.
+Encore un widget écrit et non relié (règle 10, cinquième fois).
 
-- les onglets, dans `root_tabs.dart` : 720 points, **560 pour le
-  tableau de bord** (ses tuiles ont une hauteur fixe de 138) ;
-- les écrans poussés : paramètres, calendrier annuel, calendrier
-  mensuel, météo, défis & badges, potager carré, lecteur de recettes,
-  onboarding ;
-- **toutes** les feuilles modales d'un coup, par
-  `bottomSheetTheme.constraints` dans `app_theme.dart` — un seul
-  endroit plutôt que dix appels à `showModalBottomSheet`.
+⚠️ **Et j'ai corrigé trop fort.** Tout borner à 720 laissait 150 points
+vides de chaque côté, et à l'intérieur les tuiles des tutos — larges de
+90 points dans une liste horizontale — n'en remplissaient pas la
+moitié. Jean a regardé l'écran et dit ce qui s'y voyait : « ça ne prend
+pas toute la place ». **La règle juste n'est pas « borner », c'est
+« borner le texte »** :
 
-⚠️ **L'Étal est l'exception, et elle est voulue.** Sa grille de tuiles
-se répartit seule — huit colonnes sur un iPad, deux sur un téléphone —
-et profite vraiment de la largeur. La borner lui ferait perdre ce
-qu'elle sait faire. `test/ipad_landscape_test.dart` connaît cette
-exception par son nom : ajouter un onglet sans le borner fait échouer
-la suite.
+| Contenu | Traitement | Pourquoi |
+| --- | --- | --- |
+| Grille de tuiles | prend toute la largeur | une tuile de plus par ligne, c'est une tuile de plus qu'on voit sans défiler |
+| Colonne de texte | garde sa mesure | au-delà, l'œil perd le début de la ligne suivante |
+
+**Ce qui prend la largeur** : le tableau de bord (trois colonnes au
+lieu de deux, via `GrilleAdaptative`), l'Étal (huit colonnes de
+vignettes), les tutos (quatre tuiles par ligne au lieu d'une liste qui
+défile). **Ce qui reste borné** : Conservation (760 — trois lignes de
+description par recette et un signet au bout), le cahier (900), les
+écrans poussés, la diapositive du conseil du jour (620 — une phrase
+n'a pas besoin de 908 points), et **toutes** les feuilles modales d'un
+coup par `bottomSheetTheme.constraints` dans `app_theme.dart`.
+
+⚠️ **`GrilleAdaptative` se règle par la largeur *souhaitée* d'une
+tuile**, pas par un nombre de colonnes. Et la valeur se vérifie des
+deux côtés : une cible de 200 donnait **une seule colonne** sur un
+iPhone de 375 points — l'inverse du défaut qu'on corrigeait. C'est
+160. Un test monte la grille à 343 et à 1 000 points et compte les
+colonnes.
+
+⚠️ **Une tuile de hauteur fixe redevient une bande dès qu'elle
+s'élargit.** `KawaiiCard.hauteurPour()` fait suivre la hauteur
+(0,62 × largeur, entre 138 et 190) : à 325 de large sur iPad, la carte
+fait 190 de haut et non 138.
 
 ⚠️ **En dessous de la borne, rien ne change.** Sur un téléphone,
 l'affichage est identique au pixel près — un test le vérifie à 390
-points.
+points, et les deux colonnes du tableau de bord sont retombées sur
+leurs 165 points d'avant.
 
-**Ce qui reste, non bloquant** : le logo du splash natif s'affiche à sa
-taille de téléphone au milieu des 13 pouces (`flutter_native_splash`
-pose une image de taille fixe dans le storyboard), et le bas de l'écran
-reste vide sur les pages courtes.
+**Le splash suit aussi.** Le logo mesurait 256 points sur tous les
+appareils : 65 % de la largeur d'un iPhone, 25 % de celle d'un iPad
+13 pouces. `LaunchScreen.storyboard` lui donne maintenant 65 % de la
+largeur, entre 256 et 384 points — 384 étant la taille à laquelle
+l'image @3x de 768 px reste nette sur un écran @2x.
+⚠️ **`flutter_native_splash` réécrit ce storyboard** s'il est relancé :
+la contrainte est à reposer après coup.
+
+**Ce qui reste, non bloquant** : le bas de l'écran est vide sur les
+pages courtes.
 
 ## 🔭 Sentry ne parle qu'en release (02/11/2026)
 

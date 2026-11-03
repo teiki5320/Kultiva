@@ -8,6 +8,7 @@ import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/screens/home/defis/badges_grid.dart';
 import 'package:kultiva/theme/app_theme.dart';
 import 'package:kultiva/widgets/petal_animation.dart';
+import 'package:kultiva/widgets/grille_adaptative.dart';
 import 'package:kultiva/widgets/readable_width.dart';
 import 'package:kultiva/widgets/season_header.dart';
 import 'package:kultiva/widgets/vegetable_card.dart';
@@ -146,26 +147,84 @@ void _bornes() {
       }
     });
 
-    test('chaque onglet est borné, sauf l\'Étal et son damier', () {
+    // Les trois onglets qui sont des **grilles** prennent toute la
+    // largeur, et c'est voulu : elles comptent leurs colonnes d'après
+    // la place. Les deux autres sont des colonnes de texte et gardent
+    // leur mesure. Ce test existe pour qu'un sixième onglet ne
+    // s'ajoute pas sans qu'on ait tranché dans quel camp il tombe.
+    const grilles = <String>{
+      'SowScreen',
+      'VegetablesScreen',
+      'TutosScreen',
+    };
+
+    test('chaque onglet est rangé : grille pleine largeur, ou texte borné',
+        () {
       final src = File('lib/screens/root_tabs.dart').readAsStringSync();
       final bloc = src.substring(
           src.indexOf('final pages = <Widget>['), src.indexOf('];'));
-      // Un écran par ligne qui se termine par `Screen()`.
       final ecrans = RegExp(r'const (?:ReadableWidth\([^)]*child: )?(\w+)\(\)')
           .allMatches(bloc)
           .map((m) => m.group(1)!)
           .toList();
       expect(ecrans.length, 5, reason: 'cinq onglets');
       for (final e in ecrans) {
-        if (e == 'VegetablesScreen') {
-          // Exception documentée : la grille de l'Étal se répartit
-          // toute seule et profite de la largeur.
-          expect(bloc, contains('const VegetablesScreen()'));
-          continue;
+        if (grilles.contains(e)) {
+          expect(bloc, contains('const $e()'),
+              reason: '$e est une grille : elle prend la largeur');
+        } else {
+          expect(bloc, contains('child: $e()'),
+              reason: '$e est du texte : il passe par ReadableWidth');
         }
-        expect(bloc, contains('child: $e()'),
-            reason: '$e doit passer par ReadableWidth');
       }
+    });
+
+    testWidgets('la grille du tableau de bord passe à trois colonnes',
+        (tester) async {
+      // 160 de cible, 12 d'espacement, plafond à 3 : sur un téléphone
+      // deux colonnes, sur un iPad trois. C'est le réglage réel de
+      // `sow_screen.dart`, marges de 16 comprises.
+      Future<int> colonnes(double largeur) async {
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.physicalSize = Size(largeur, 1200);
+        addTearDown(tester.view.reset);
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+            body: GrilleAdaptative(
+              largeurCible: 160,
+              colonnesMax: 3,
+              enfants: <Widget>[
+                for (var i = 0; i < 6; i++)
+                  SizedBox(key: ValueKey<int>(i), height: 100),
+              ],
+            ),
+          ),
+        ));
+        final l = tester.getSize(find.byKey(const ValueKey<int>(0))).width;
+        return ((largeur + 12) / (l + 12)).round();
+      }
+
+      expect(await colonnes(343), 2);
+      expect(await colonnes(1000), 3);
+    });
+
+    testWidgets('une grille ne fait jamais plus de colonnes que de tuiles',
+        (tester) async {
+      tester.view.devicePixelRatio = 1.0;
+      tester.view.physicalSize = const Size(1032, 1200);
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(
+          body: GrilleAdaptative(
+            largeurCible: 100,
+            enfants: <Widget>[
+              SizedBox(key: Key('seule'), height: 50),
+            ],
+          ),
+        ),
+      ));
+      // Une tuile seule occupe toute la ligne, et pas un dixième.
+      expect(tester.getSize(find.byKey(const Key('seule'))).width, 1032);
     });
   });
 }
