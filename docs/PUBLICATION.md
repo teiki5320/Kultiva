@@ -58,7 +58,7 @@ et des champs de formulaire (le backend ne bloque plus rien depuis le 30 octobre
 
 | | |
 |---|---|
-| État | **Jamais soumise** — restent l'installation à garnir, les captures et les champs de la fiche (le projet Supabase, inactif, ne bloque plus rien depuis le retrait des comptes le 30 octobre 2026) |
+| État | **Jamais soumise** — les captures sont prises depuis le 3 novembre 2026 ; restent les champs de la fiche (le projet Supabase, inactif, ne bloque plus rien depuis le retrait des comptes le 30 octobre 2026) |
 | Console | <https://appstoreconnect.apple.com> |
 | Version publiée | aucune — l'app n'est jamais sortie |
 | Version en cours | `1.0.0` — fiche App Store Connect créée (Apple ID `6762550020`), builds Xcode Cloud 95, 96, 97, 127 (30 octobre 2026), 134 (31 octobre 2026), 152 (1er novembre 2026), 166 (2 novembre 2026) puis **195 (nuit du 2 au 3 novembre 2026)** reçus ; aucune soumission |
@@ -107,10 +107,14 @@ splash natif s'affiche à sa taille de téléphone au milieu d'un écran de
 13 pouces, et le bas de l'écran est vide sur les pages courtes.
 
 **Compte de démonstration.** Sans objet depuis le retrait des comptes :
-laisse la case « Connexion requise » décochée dans App Store Connect. Il
-reste à garnir une installation à la main pour les captures (deux ou
-trois plants, une photo, un jardin dessiné) — des captures sur une app
-vide ne vendent rien.
+laisse la case « Connexion requise » décochée dans App Store Connect.
+
+**Garnir une installation pour les captures** ne se fait plus à la
+main : `tool/garnir_simulateur.py` écrit le jardin dans les
+préférences du simulateur — 6 plants avec leurs arrosages et récoltes
+datés, un potager 4×4 à six cases, 13 badges débloqués. ⚠️ Redémarrer
+le simulateur après l'écriture, sinon iOS sert ses préférences depuis
+son cache et rien ne change à l'écran.
 
 ~~Il n'était plus obligatoire depuis le mode
 invité livré le 24 août 2026 : le testeur accède à tout via « Continuer
@@ -236,8 +240,9 @@ la synchro (Cloudflare, ci-dessous).
 2. ✅ **Adresse de contact** : `kultiva@toakeur.com` sur le site, la confidentialité et les textes des fiches.
 3. ✅ **Backend supprimé** : les comptes ont été retirés de la v1 le 30 octobre 2026. Plus rien à rallumer, plus de clés Google à recréer.
 4. **Compléter la fiche App Store** : fiche créée (Apple ID `6762550020`) ; restent les trois URL, l'adresse de contact, la déclaration DSA (trader) et le téléphone de revue.
-5. **Garnir une installation pour les captures** : 2 ou 3 plants, une photo, un jardin dessiné. Plus de compte de démonstration à créer.
-6. **Captures d'écran** : 8 en iPhone 6,9″ (1320 × 2868) et 8 en iPad 13″ (2064 × 2752).
+5. ✅ **Garnir une installation pour les captures** : fait, et outillé — `tool/garnir_simulateur.py`.
+6. ✅ **Captures d'écran Apple** : 7 en iPhone 6,9″ (1320 × 2868) et 7 en iPad 13″ (2064 × 2752), prises le 3 novembre 2026 dans `build/captures/`. La 8ᵉ, facultative, reste à faire.
+6 bis. ⬜ **Captures d'écran Google Play** : **aucune des 14 ne convient.** Play exige que le côté le plus long fasse **moins du double** du côté le plus court ; l'iPhone 6,9″ est à 2,17 (1320 × 2868) et tombe. L'iPad passe l'exigence (1,33) mais pas la recommandation de 9:16, et montre une interface iOS. Il faut un émulateur Android en 1080 × 1920, qui n'est pas installé sur le Mac (`~/Library/Android/sdk/emulator` absent, aucun AVD).
 7. ✅ **Liens Amazon remis** : ôtés le 20 octobre 2026 (compte fermé), les 159 liens sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`. ⚠️ Pense au statut trader (DSA) à la soumission.
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (avertissement ITMS-90683) ; builds 127 à 195 envoyés depuis.
 9. **Soumettre iOS** : le build 195 (nuit du 2 au 3 novembre 2026) depuis `docs/FICHE_APP_STORE.md`.
