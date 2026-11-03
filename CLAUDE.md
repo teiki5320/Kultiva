@@ -209,7 +209,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 51 fichiers — 1 109 tests (02/11/2026)
+├── test/                   # 52 fichiers — 1 130 tests (03/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -706,7 +706,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 117 tests au 03/11/2026, dont une
+1. **Pas de test d'intégration** — 1 130 tests au 03/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3 ;
    `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
@@ -1078,6 +1078,46 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
     `recipe_player_test` tombe. rembg n'est pas sur le système — venv
     jetable, et le modèle `isnet-general-use` pèse 179 Mo au premier
     lancement.
+
+24. ~~**« Légume du jour · Arachide » à un jardinier français**~~ — ✅
+    **FAIT le 03/11/2026.** Vu à l'écran en prenant la capture du
+    tableau de bord pour les boutiques, pas en lisant le code.
+
+    `vegetableOfTheDay()` tirait dans les **130 cultures** sans
+    regarder le calendrier de l'utilisateur. Mesuré avant de corriger :
+    **19 cultures sur 130** sont impossibles en France, soit **un jour
+    sur sept** — dix n'ont aucune entrée au calendrier français (mil,
+    fonio, moringa, aubergine africaine, corète, célosie, baselle,
+    citronnelle, papayer, bananier plantain), neuf y sont marquées
+    `shelterOnly` (patate douce, gombo, pastèque, igname, manioc,
+    arachide, bissap, sésame, taro). Côté tropical, quatorze cultures
+    ont des mois vides — pommier, cassissier, kiwi.
+
+    **Deux exclusions, et elles ne disent pas la même chose** : une
+    culture **sans mois** au calendrier d'ici ne s'y cultive pas, c'est
+    la convention que la base tropicale appliquait déjà ; une culture
+    `shelterOnly` s'y cultive, mais sa note dit « culture
+    expérimentale » ou « résultats aléatoires en plein air ». Elle
+    **reste au catalogue avec sa pastille** — montrer plutôt que
+    cacher, décision de Jean le 02/11. Mais une **mise en avant** est
+    une recommandation, pas un inventaire.
+
+    ⚠️ **Le paramètre `calendar` est obligatoire exprès.** Avec une
+    valeur par défaut, l'appelant qui l'oublie ramène le défaut sans
+    qu'`analyze` ni aucun test ne voient rien passer. C'est la même
+    précaution que `displayName` contre `v.name`.
+
+    ⚠️ **Et un test par calendrier ne suffit pas** : chacun vérifie le
+    sien, donc un paramètre purement ignoré les passerait tous les
+    deux. Un quatrième test exige que France et Afrique de l'Ouest ne
+    mettent pas en avant la même culture plus de 266 jours sur 366.
+    Vérifié en recassant volontairement la ligne : le test nomme les
+    coupables, arachide comprise.
+
+    **Troisième fois que cette famille de défaut sort** — après le
+    manioc semé à Lyon (02/11) et les trois images du catalogue
+    (alerte 23). À chaque fois, l'information existait et le code ne
+    la lisait pas, et à chaque fois c'est l'écran qui l'a dit.
 
 ## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 

@@ -1,5 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kultiva/data/regions/france.dart';
+import 'package:kultiva/data/regions/west_africa.dart';
 import 'package:kultiva/data/vegetables_base.dart';
+import 'package:kultiva/models/region_data.dart';
 import 'package:kultiva/models/vegetable.dart';
 
 /// Les liens partenaires Amazon.
@@ -58,7 +61,7 @@ void main() {
       final fautifs = <String>[];
       for (int j = 0; j < 366; j++) {
         final jour = DateTime(2026, 1, 1).add(Duration(days: j));
-        final v = vegetableOfTheDay(jour);
+        final v = vegetableOfTheDay(jour, calendar: franceData);
         if (v.category == VegetableCategory.accessories) {
           fautifs.add('${jour.toIso8601String().substring(0, 10)} → ${v.name}');
         }
@@ -69,9 +72,74 @@ void main() {
     });
 
     test('le même jour donne toujours le même légume', () {
-      final a = vegetableOfTheDay(DateTime(2026, 6, 14, 8));
-      final b = vegetableOfTheDay(DateTime(2026, 6, 14, 23));
+      final a = vegetableOfTheDay(DateTime(2026, 6, 14, 8), calendar: franceData);
+      final b =
+          vegetableOfTheDay(DateTime(2026, 6, 14, 23), calendar: franceData);
       expect(a.id, b.id);
+    });
+
+    /// Vu à l'écran le 03/11/2026 sur une installation française :
+    /// « Légume du jour · Arachide ». Le tirage piochait dans les 130
+    /// cultures sans regarder le calendrier.
+    ///
+    /// Une culture est impossible ici de deux façons : elle n'a aucune
+    /// entrée au calendrier d'ici, ou elle y a des mois mais la mention
+    /// `shelterOnly` — « culture expérimentale », « résultats
+    /// aléatoires en plein air ». Elle reste au catalogue avec sa
+    /// pastille ; elle n'est pas mise en avant.
+    for (final cas in <List<Object>>[
+      <Object>['France', franceData],
+      <Object>['Afrique de l\'Ouest', westAfricaData],
+    ]) {
+      final nom = cas[0] as String;
+      final calendrier = cas[1] as List<RegionData>;
+
+      test('$nom : le légume du jour pousse là où on jardine', () {
+        final cultivables = <String>{};
+        final sousAbri = <String>{};
+        for (final rd in calendrier) {
+          if (rd.shelterOnly) sousAbri.add(rd.vegetableId);
+          if (rd.sowingMonths.isEmpty && rd.harvestMonths.isEmpty) continue;
+          cultivables.add(rd.vegetableId);
+        }
+
+        final fautifs = <String>[];
+        for (int j = 0; j < 366; j++) {
+          final jour = DateTime(2026, 1, 1).add(Duration(days: j));
+          final v = vegetableOfTheDay(jour, calendar: calendrier);
+          final date = jour.toIso8601String().substring(0, 10);
+          if (!cultivables.contains(v.id)) {
+            fautifs.add('$date → ${v.id} (aucun mois au calendrier)');
+          } else if (sousAbri.contains(v.id)) {
+            fautifs.add('$date → ${v.id} (sous serre)');
+          }
+        }
+        expect(fautifs, isEmpty,
+            reason: 'Mis en avant alors qu\'ils ne poussent pas en $nom :\n'
+                '${fautifs.take(12).join('\n')}');
+      });
+    }
+
+    test('changer de calendrier change ce qui est mis en avant', () {
+      // Sans ça, un paramètre ignoré passerait les tests ci-dessus :
+      // ils vérifient chacun leur propre calendrier.
+      var differents = 0;
+      for (int j = 0; j < 366; j++) {
+        final jour = DateTime(2026, 1, 1).add(Duration(days: j));
+        if (vegetableOfTheDay(jour, calendar: franceData).id !=
+            vegetableOfTheDay(jour, calendar: westAfricaData).id) {
+          differents++;
+        }
+      }
+      expect(differents, greaterThan(100),
+          reason: 'France et Afrique de l\'Ouest n\'excluent pas les mêmes '
+              'cultures : leurs listes ne peuvent pas coïncider.');
+    });
+
+    test('un calendrier vide ne vide pas l\'écran d\'accueil', () {
+      final v =
+          vegetableOfTheDay(DateTime(2026, 6, 14), calendar: <RegionData>[]);
+      expect(v.category, isNot(VegetableCategory.accessories));
     });
 
     test('les cultures excluent les 39 accessoires', () {

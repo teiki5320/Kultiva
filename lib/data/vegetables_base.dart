@@ -4255,17 +4255,54 @@ final List<Vegetable> cultures = vegetablesBase
     .where((v) => v.category != VegetableCategory.accessories)
     .toList(growable: false);
 
-/// Le légume mis en avant ce jour-là.
+/// Le légume mis en avant ce jour-là, **parmi ceux qui poussent ici**.
 ///
-/// Déterministe : le même jour donne le même légume à tout le monde,
-/// et la liste tourne sur l'année.
+/// Déterministe : le même jour donne le même légume à tous ceux qui
+/// jardinent sous le même calendrier, et la liste tourne sur l'année.
 ///
 /// ⚠️ Tirait dans `vegetablesBase` jusqu'au 30/10/2026, accessoires
 /// compris : près d'un jour sur quatre, le « légume du jour » était un
 /// sac d'engrais ou un sécateur.
-Vegetable vegetableOfTheDay(DateTime day) {
+///
+/// ⚠️ Et il ignorait le calendrier jusqu'au 03/11/2026 : vu à l'écran
+/// sur une installation française, qui annonçait **l'arachide** comme
+/// légume du jour un 3 novembre. Mesuré : 19 des 130 cultures sont
+/// dans ce cas en France — 10 n'ont aucune entrée au calendrier
+/// français (mil, fonio, moringa, papayer, bananier plantain…) et 9
+/// y sont marquées `shelterOnly`. Soit un jour sur sept.
+///
+/// **Deux exclusions, et elles ne disent pas la même chose :**
+///
+/// - une culture **sans mois** au calendrier d'ici ne s'y cultive pas.
+///   C'est la convention déjà suivie par la base tropicale, où
+///   pommier, cassissier et kiwi ont des mois vides ;
+/// - une culture `shelterOnly` s'y cultive, mais sous abri, et sa note
+///   le dit en toutes lettres : « culture expérimentale »,
+///   « résultats aléatoires en plein air ». Le catalogue continue de
+///   la montrer avec sa pastille — décision de Jean le 02/11/2026,
+///   montrer plutôt que cacher. Mais une **mise en avant** est une
+///   recommandation, pas un inventaire : on ne propose pas l'arachide
+///   comme sujet du jour à quelqu'un qui jardine en Normandie.
+///
+/// [calendar] est obligatoire exprès. Avec une valeur par défaut, le
+/// seul appelant qui l'oublie ramène le défaut sans qu'`analyze` ni
+/// aucun test ne voient rien passer.
+Vegetable vegetableOfTheDay(DateTime day,
+    {required List<RegionData> calendar}) {
+  final cultivables = <String>{};
+  final sousAbri = <String>{};
+  for (final rd in calendar) {
+    if (rd.shelterOnly) sousAbri.add(rd.vegetableId);
+    if (rd.sowingMonths.isEmpty && rd.harvestMonths.isEmpty) continue;
+    cultivables.add(rd.vegetableId);
+  }
+  final candidats = cultures
+      .where((v) => cultivables.contains(v.id) && !sousAbri.contains(v.id))
+      .toList(growable: false);
+  // Un calendrier vide ou inconnu ne doit pas vider l'écran d'accueil.
+  final liste = candidats.isEmpty ? cultures : candidats;
   final dayOfYear = day.difference(DateTime(day.year)).inDays;
-  return cultures[dayOfYear % cultures.length];
+  return liste[dayOfYear % liste.length];
 }
 
 /// Identifiant d'affiliation Amazon Partenaires.

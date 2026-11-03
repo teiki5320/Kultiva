@@ -90,7 +90,10 @@ class _SowScreenState extends State<SowScreen> {
     if (mounted) setState(() => _loadingWeather = false);
   }
 
-  Vegetable get _vegetableOfTheDay => vegetableOfTheDay(DateTime.now());
+  /// Le calendrier est passé, pas lu ici : c'est lui qui dit si une
+  /// culture pousse chez cet utilisateur.
+  Vegetable _vegetableOfTheDay(List<RegionData> calendar) =>
+      vegetableOfTheDay(DateTime.now(), calendar: calendar);
 
   String get _tipOfTheDay {
     final tips = <String>[];
@@ -160,7 +163,7 @@ class _SowScreenState extends State<SowScreen> {
           }
         }
 
-        final vegOfDay = _vegetableOfTheDay;
+        final vegOfDay = _vegetableOfTheDay(data);
         final tip = _tipOfTheDay;
 
         // ── Build slides ──
