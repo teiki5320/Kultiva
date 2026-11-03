@@ -653,12 +653,12 @@ Décisions et évolutions significatives :
   calendrier seulement — tempérée (`franceData`) et tropicale
   (`westAfricaData`) — qu'une `ClimateZone` affine et qu'un
   `Hemisphere` retourne de six mois. Les zones méditerranéenne,
-  continentale et subtropicale **dérivent** de la base française par
-  décalage explicite (`lib/data/regions/zone_shift.dart`) et portent
-  une note qui le dit. ⚠️ C'étaient des approximations ;
-  **méditerranéen et continental sont désormais écrits culture par
-  culture** (voir la section sur les calendriers plus bas). Le
-  subtropical reste dérivé.
+  continentale et subtropicale **dérivaient** de la base française par
+  décalage explicite (`lib/data/regions/zone_shift.dart`) et portaient
+  une note qui le disait. ⚠️ C'étaient des approximations ; les
+  **trois sont désormais écrites culture par culture** (voir la
+  section sur les calendriers plus bas). La dérivation reste le repli
+  pour les cultures qu'aucune surcharge ne couvre.
   ⚠️ **`Region.westAfrica` ne veut plus dire « tropical ».** Il veut
   dire « tropical **et** contenu ouest-africain » (noms locaux,
   achat au marché). Pour une question climatique, utiliser
@@ -1741,7 +1741,7 @@ journée alors qu'il y en avait 369 et 7.
     légume peint corresponde sa version détourée : **en ajoutant un
     légume, relancer l'outil** avec son id.
 
-## 🌍 Les calendriers méditerranéen et continental (02/11/2026)
+## 🌍 Les calendriers écrits à la main (02 et 03/11/2026)
 
 **Ce que le décalage uniforme ratait.** `zone_shift.dart` dérivait ces
 deux zones de la base française par un décalage d'un mois. Pour un
@@ -1778,8 +1778,48 @@ la tête, et sauf les semis marqués « à l'abri ».
 uniforme sur la **tomate**, qui a maintenant un calendrier écrit. Ils
 portent désormais sur le sarrasin, qui n'a pas de surcharge.
 
+### Le subtropical humide (03/11/2026)
+
+**Ce n'est pas un méditerranéen un peu plus chaud**, et c'est l'erreur
+que faisait la dérivation. Les deux ont un hiver doux, mais le
+méditerranéen a un été **sec** et celui-ci un été **lourd** : 30 à
+35 °C avec de l'humidité et des orages. Une tomate n'y souffre pas de
+la soif, elle attrape le mildiou ; une laitue n'y grille pas, elle
+pourrit du collet.
+
+**La dérivation subtropicale élargissait** : semis = base ∪ base−1,
+récolte = base ∪ base+1. Elle ajoutait donc des mois de part et
+d'autre sans jamais rien retirer — une laitue restait semable en
+juillet à Atlanta comme à Buenos Aires.
+
+`subtropicalCalendar` porte **58 cultures**, et sa signature est le
+**double semis** : une récolte de printemps et une d'automne, de part
+et d'autre du creux humide de juillet-août. Tomate, courgette,
+concombre, maïs et pomme de terre se sèment deux fois ; le
+méditerranéen, lui, n'a qu'une saison.
+
+⚠️ **Trois détails qui ne se devinent pas** :
+
+- **la fraise s'y mène en annuelle** — plants à l'automne, récolte
+  d'hiver, puis on arrache : un pied laissé en place ne passe pas
+  l'été humide ;
+- **le chou de Bruxelles est possible sans être confortable** : les
+  pommes ne se serrent qu'au froid, et l'hiver est doux. Sa note le
+  dit, plutôt que de le faire disparaître ;
+- **semer en août est normal ici** pour les choux, les racines et le
+  poireau : c'est la pépinière de la récolte d'hiver. Le test
+  n'interdit l'été lourd qu'aux salades, parce que c'est pour elles
+  seules que c'est faux.
+
+Zones concernées : sud-est des États-Unis, Argentine, Uruguay, sud du
+Brésil, Japon, est de l'Australie, haut plateau sud-africain. Quatre
+sur sept sont dans l'**hémisphère sud** : les calendriers s'écrivent
+en mois du nord, et `deriveTemperate` applique le retournement après
+la surcharge. Un test le vérifie nommément sur l'Argentine.
+
 ⚠️ **Restent des moyennes de zone.** Le méditerranéen de Marrakech
-n'est pas celui de Zagreb. Les affiner pays par pays reste à faire.
+n'est pas celui de Zagreb, et le subtropical de Tokyo n'est pas celui
+de Houston. Les affiner pays par pays reste à faire.
 
 20. ~~**L'interface n'est pas traduite**~~ — ✅ **FAIT le
     02/11/2026.** 772 chaînes par langue, 718 appels `trUi()` dans
@@ -2159,9 +2199,16 @@ n'avait vu :
   fiche courte affiche le texte sans minuteur. Une durée de
   stérilisation muette, c'est une règle sanitaire perdue : la phrase
   le dit maintenant, en français et en anglais.
-- ⬜ **À trancher** : `fraise/Confiture de fraises` annonce « poids
-  pour poids avec le sucre » mais donne 1 kg de fraises pour 700 g de
-  sucre. L'anglais reproduit fidèlement l'incohérence.
+- ✅ **Sans objet, et c'était une erreur de cette fiche** (vérifié le
+  03/11/2026). Elle annonçait que `fraise/Confiture de fraises` disait
+  « poids pour poids avec le sucre » tout en donnant 1 kg de fraises
+  pour 700 g de sucre. La recette dit « 700 g de sucre par kilo de
+  fruits » et liste 1 kg / 700 g : elle est cohérente, en français, en
+  anglais et en espagnol. `git log -S'poids pour poids'` ne trouve
+  **aucun** commit : la phrase n'a jamais existé dans `recipes.dart`.
+  ⚠️ C'est une incohérence inventée, pas corrigée — la fiche a décrit
+  de mémoire un fichier qu'elle n'avait pas relu. **Mesurer avant de
+  citer**, y compris quand on signale un défaut.
 - ⬜ **À trancher** : le lexique définit encore **« poussidex »** et
   **« streak »**, deux notions supprimées le 31/10/2026, et la
   définition de « streak » cite un badge « Fidèle » qui n'existe pas

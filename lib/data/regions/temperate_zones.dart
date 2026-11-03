@@ -313,6 +313,190 @@ const Map<String, ZoneCalendar> continentalCalendar =
   'rhubarbe': ZoneCalendar(<int>[4, 9], <int>[5, 6, 7], _noteCourte),
 };
 
+// ──────────────────────── Subtropical humide ────────────────────────
+//
+// Sud-est des États-Unis, Argentine, Uruguay, sud du Brésil, Japon,
+// est de l'Australie, haut plateau sud-africain.
+//
+// ⚠️ **Ce n'est pas un méditerranéen un peu plus chaud.** Les deux ont
+// un hiver doux, mais le méditerranéen a un été **sec** et celui-ci un
+// été **lourd** : 30 à 35 °C avec de l'humidité et des orages. Une
+// tomate n'y souffre pas de la soif, elle attrape le mildiou ; une
+// laitue n'y grille pas, elle pourrit du collet. D'où un rythme à
+// **deux saisons de culture** — printemps puis fin d'été — avec un
+// creux au cœur de l'été, là où le méditerranéen n'en a qu'une.
+//
+// Trois règles portent presque tout :
+//   1. ce qui craint la chaleur passe à la saison fraîche, d'octobre à
+//      avril, comme en méditerranéen ;
+//   2. ce qui la supporte profite de neuf mois sans gel ;
+//   3. entre les deux, les cultures de plein été se sèment **deux
+//      fois**, en encadrant le creux humide de juillet-août.
+
+const String _noteEteLourd =
+    'Ici l\'été est chaud **et** humide : cette culture monte en graine '
+    'ou pourrit avant d\'être bonne. Elle se sème en fin d\'été et se '
+    'récolte de l\'automne au printemps, sur la saison fraîche.';
+
+const String _noteDeuxSemis =
+    'Deux semis plutôt qu\'un : au printemps pour récolter avant les '
+    'grosses chaleurs, puis en fin d\'été pour une récolte d\'automne. '
+    'Au cœur de l\'été, l\'humidité amène les maladies.';
+
+const String _noteLongueSaison =
+    'Neuf mois sans gel : tu démarres tôt et tu récoltes tard. Cette '
+    'culture, serrée en climat tempéré, a ici tout son temps — et '
+    'l\'humidité de l\'été lui va bien.';
+
+const String _noteHiverDoux =
+    'L\'hiver est doux, avec au pire quelques gelées légères : semé à '
+    'l\'automne, récolté en hiver ou au début du printemps.';
+
+const Map<String, ZoneCalendar> subtropicalCalendar =
+    <String, ZoneCalendar>{
+  // ─── Légumes-feuilles : toute la saison fraîche ───
+  'laitue': ZoneCalendar(
+      <int>[9, 10, 11, 1, 2], <int>[11, 12, 1, 2, 3, 4, 5], _noteEteLourd),
+  'epinard': ZoneCalendar(
+      <int>[9, 10, 11], <int>[11, 12, 1, 2, 3], _noteEteLourd),
+  'mache': ZoneCalendar(<int>[10, 11], <int>[12, 1, 2, 3], _noteEteLourd),
+  'roquette': ZoneCalendar(
+      <int>[9, 10, 11, 2], <int>[10, 11, 12, 1, 2, 3, 4], _noteEteLourd),
+  'cresson': ZoneCalendar(
+      <int>[10, 11, 2], <int>[12, 1, 2, 3, 4], _noteEteLourd),
+  'oseille': ZoneCalendar(<int>[9, 10, 2, 3],
+      <int>[10, 11, 12, 1, 2, 3, 4, 5], _noteEteLourd),
+  'blette': ZoneCalendar(<int>[9, 10, 2, 3],
+      <int>[11, 12, 1, 2, 3, 4, 5, 6], _noteEteLourd),
+  'pak_choi': ZoneCalendar(
+      <int>[9, 10, 1, 2], <int>[11, 12, 1, 2, 3, 4], _noteEteLourd),
+  'chou_chinois':
+      ZoneCalendar(<int>[9, 10], <int>[11, 12, 1, 2], _noteEteLourd),
+  'celeri': ZoneCalendar(<int>[8, 9], <int>[12, 1, 2, 3], _noteEteLourd),
+
+  // ─── Choux : semés en fin d'été, récoltés tout l'hiver ───
+  'chou_pomme': ZoneCalendar(
+      <int>[8, 9, 10], <int>[11, 12, 1, 2, 3], _noteEteLourd),
+  'chou_fleur':
+      ZoneCalendar(<int>[8, 9], <int>[11, 12, 1, 2], _noteEteLourd),
+  'brocoli': ZoneCalendar(
+      <int>[8, 9, 10], <int>[11, 12, 1, 2, 3], _noteEteLourd),
+  'chou_kale': ZoneCalendar(
+      <int>[8, 9, 10], <int>[11, 12, 1, 2, 3, 4], _noteEteLourd),
+  'chou_rave': ZoneCalendar(
+      <int>[9, 10, 1, 2], <int>[11, 12, 1, 2, 3, 4], _noteEteLourd),
+  // ⚠️ Le chou de Bruxelles demande des semaines franchement froides
+  // pour que les pommes se serrent. Il reste possible, il n'est pas
+  // confortable : la fenêtre est étroite et le résultat inégal.
+  'chou_bruxelles': ZoneCalendar(<int>[7, 8], <int>[12, 1, 2],
+      'Les pommes ne se serrent qu\'au froid, et l\'hiver est doux '
+      'ici : sème tôt, vise les semaines les plus fraîches, et '
+      'attends-toi à des pommes plus lâches qu\'en climat tempéré.'),
+
+  // ─── Racines : la saison fraîche, jamais le plein été ───
+  'radis': ZoneCalendar(<int>[9, 10, 11, 1, 2, 3],
+      <int>[10, 11, 12, 1, 2, 3, 4], _noteEteLourd),
+  'carotte': ZoneCalendar(<int>[8, 9, 10, 1, 2],
+      <int>[11, 12, 1, 2, 3, 4, 5], _noteEteLourd),
+  'navet': ZoneCalendar(
+      <int>[8, 9, 10, 1], <int>[10, 11, 12, 1, 2, 3], _noteEteLourd),
+  'betterave': ZoneCalendar(
+      <int>[9, 10, 1, 2], <int>[12, 1, 2, 3, 4, 5], _noteEteLourd),
+  'panais': ZoneCalendar(<int>[8, 9], <int>[12, 1, 2, 3], _noteEteLourd),
+  'radis_noir':
+      ZoneCalendar(<int>[8, 9], <int>[11, 12, 1, 2], _noteEteLourd),
+
+  // ─── Légumineuses d'hiver ───
+  'feve': ZoneCalendar(<int>[10, 11, 12], <int>[2, 3, 4], _noteHiverDoux),
+  'petit_pois':
+      ZoneCalendar(<int>[9, 10, 11], <int>[12, 1, 2, 3], _noteHiverDoux),
+  'pois_mange_tout':
+      ZoneCalendar(<int>[9, 10, 11], <int>[12, 1, 2, 3], _noteHiverDoux),
+  'lentille': ZoneCalendar(<int>[10, 11], <int>[4, 5], _noteHiverDoux),
+  'pois_chiche': ZoneCalendar(<int>[11, 12], <int>[4, 5], _noteHiverDoux),
+
+  // ─── Légumineuses d'été : deux semis, ou la chaleur en entier ───
+  'haricot': ZoneCalendar(
+      <int>[3, 4, 8], <int>[5, 6, 7, 10, 11], _noteDeuxSemis),
+  'haricot_beurre': ZoneCalendar(
+      <int>[3, 4, 8], <int>[5, 6, 7, 10, 11], _noteDeuxSemis),
+  'niebe':
+      ZoneCalendar(<int>[4, 5, 6], <int>[7, 8, 9, 10], _noteLongueSaison),
+
+  // ─── Bulbes : plantés à l'automne, levés avant l'été ───
+  'ail': ZoneCalendar(<int>[10, 11], <int>[5, 6], _noteHiverDoux),
+  'oignon': ZoneCalendar(<int>[9, 10, 11], <int>[4, 5, 6], _noteHiverDoux),
+  'echalote': ZoneCalendar(<int>[10, 11], <int>[5, 6], _noteHiverDoux),
+  'poireau':
+      ZoneCalendar(<int>[8, 9], <int>[12, 1, 2, 3, 4], _noteEteLourd),
+
+  // ─── Aromatiques ───
+  'persil': ZoneCalendar(
+      <int>[9, 10, 2, 3], <int>[11, 12, 1, 2, 3, 4, 5], _noteEteLourd),
+  'coriandre': ZoneCalendar(
+      <int>[9, 10, 11, 2], <int>[11, 12, 1, 2, 3, 4], _noteEteLourd),
+  'cerfeuil': ZoneCalendar(
+      <int>[9, 10, 2], <int>[11, 12, 1, 2, 3], _noteEteLourd),
+  'aneth': ZoneCalendar(
+      <int>[9, 10, 2, 3], <int>[11, 12, 1, 2, 3, 4], _noteEteLourd),
+  'basilic': ZoneCalendar(<int>[3, 4, 5, 6],
+      <int>[5, 6, 7, 8, 9, 10], _noteLongueSaison),
+
+  // ─── Légumes-fruits : deux récoltes autour du creux humide ───
+  'tomate': ZoneCalendar(
+      <int>[1, 2, 6, 7], <int>[5, 6, 7, 10, 11], _noteDeuxSemis),
+  'aubergine': ZoneCalendar(
+      <int>[1, 2], <int>[5, 6, 7, 8, 9, 10], _noteLongueSaison),
+  'poivron': ZoneCalendar(
+      <int>[1, 2], <int>[5, 6, 7, 8, 9, 10], _noteLongueSaison),
+  'piment': ZoneCalendar(
+      <int>[1, 2], <int>[5, 6, 7, 8, 9, 10], _noteLongueSaison),
+  'courgette': ZoneCalendar(
+      <int>[2, 3, 7, 8], <int>[4, 5, 6, 9, 10, 11], _noteDeuxSemis),
+  'concombre': ZoneCalendar(
+      <int>[2, 3, 7, 8], <int>[4, 5, 6, 9, 10], _noteDeuxSemis),
+  'cornichon': ZoneCalendar(
+      <int>[2, 3, 7, 8], <int>[4, 5, 6, 9, 10], _noteDeuxSemis),
+  'mais': ZoneCalendar(
+      <int>[2, 3, 4, 7], <int>[5, 6, 7, 10], _noteDeuxSemis),
+  'melon':
+      ZoneCalendar(<int>[2, 3, 4], <int>[6, 7, 8, 9], _noteLongueSaison),
+  'pasteque':
+      ZoneCalendar(<int>[2, 3, 4], <int>[6, 7, 8, 9], _noteLongueSaison),
+  'gombo': ZoneCalendar(
+      <int>[3, 4, 5], <int>[6, 7, 8, 9, 10], _noteLongueSaison),
+  'courge_butternut':
+      ZoneCalendar(<int>[2, 3, 4], <int>[7, 8, 9, 10], _noteLongueSaison),
+  'potiron':
+      ZoneCalendar(<int>[2, 3, 4], <int>[7, 8, 9, 10], _noteLongueSaison),
+
+  // ─── Tubercules et racines de chaleur ───
+  'patate_douce': ZoneCalendar(
+      <int>[3, 4, 5], <int>[8, 9, 10, 11], _noteLongueSaison),
+  'arachide':
+      ZoneCalendar(<int>[3, 4, 5], <int>[8, 9, 10], _noteLongueSaison),
+  'gingembre':
+      ZoneCalendar(<int>[2, 3], <int>[9, 10, 11], _noteLongueSaison),
+  // ⚠️ Deux récoltes de pomme de terre, et c'est la pratique courante
+  // du sud-est américain comme de la pampa : une de printemps plantée
+  // en fin d'hiver, une d'automne plantée en août.
+  'pomme_de_terre': ZoneCalendar(
+      <int>[1, 2, 8], <int>[4, 5, 6, 11, 12], _noteDeuxSemis),
+
+  // ─── Le reste ───
+  'artichaut':
+      ZoneCalendar(<int>[9, 10], <int>[2, 3, 4, 5], _noteHiverDoux),
+  'fenouil': ZoneCalendar(
+      <int>[8, 9, 10], <int>[11, 12, 1, 2, 3], _noteEteLourd),
+  // ⚠️ La fraise se cultive ici en **annuelle** : plants mis en terre
+  // à l'automne, récolte d'hiver et de printemps, puis on arrache.
+  // Un pied laissé en place passe l'été humide et meurt.
+  'fraise': ZoneCalendar(<int>[9, 10], <int>[12, 1, 2, 3, 4],
+      'Ici la fraise se mène en annuelle : plants en terre à '
+      'l\'automne, récolte de l\'hiver au printemps, puis on arrache. '
+      'Un pied laissé en place ne survit pas à l\'été humide.'),
+};
+
 /// Le calendrier écrit d'une culture pour une zone, ou null si elle
 /// garde le calendrier dérivé.
 ZoneCalendar? zoneCalendarFor(ClimateZone zone, String vegetableId) {
@@ -321,8 +505,9 @@ ZoneCalendar? zoneCalendarFor(ClimateZone zone, String vegetableId) {
       return mediterraneanCalendar[vegetableId];
     case ClimateZone.continental:
       return continentalCalendar[vegetableId];
-    case ClimateZone.temperate:
     case ClimateZone.subtropical:
+      return subtropicalCalendar[vegetableId];
+    case ClimateZone.temperate:
     case ClimateZone.sahel:
     case ClimateZone.sudan:
     case ClimateZone.guinean:

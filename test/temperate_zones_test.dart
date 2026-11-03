@@ -6,7 +6,8 @@ import 'package:kultiva/data/regions/zone_shift.dart';
 import 'package:kultiva/models/region_data.dart';
 import 'package:kultiva/models/country.dart';
 
-/// Les calendriers méditerranéen et continental écrits à la main.
+/// Les calendriers méditerranéen, continental et subtropical écrits à
+/// la main.
 ///
 /// Ils corrigent la dérivation là où elle se trompe. Trois choses à
 /// garder vraies :
@@ -32,10 +33,11 @@ void main() {
   /// une laitue y monte en graine avant de pommer.
   const canicule = <int>{7, 8};
 
-  group('les deux calendriers écrits', () {
+  group('les trois calendriers écrits', () {
     final tous = <String, Map<String, ZoneCalendar>>{
       'méditerranéen': mediterraneanCalendar,
       'continental': continentalCalendar,
+      'subtropical': subtropicalCalendar,
     };
 
     test('ne parlent que de cultures du catalogue', () {
@@ -81,24 +83,38 @@ void main() {
     test('disent autre chose que la dérivation', () {
       // Une surcharge identique au simple décalage ne sert à rien et
       // crée un deuxième endroit où se tromper.
+      //
+      // ⚠️ Les trois zones ne se dérivent pas pareil : un décalage
+      // d'un mois pour les deux premières, un **élargissement** des
+      // deux côtés pour la subtropicale. Comparer à la mauvaise
+      // formule laisserait passer une surcharge inutile.
+      List<int> deriveSemis(ClimateZone z, List<int> base) =>
+          z == ClimateZone.subtropical
+              ? (<int>{...base, ...shiftMonths(base, -1)}.toList()..sort())
+              : shiftMonths(base, z == ClimateZone.mediterranean ? -1 : 1);
+      List<int> deriveRecolte(ClimateZone z, List<int> base) =>
+          z == ClimateZone.subtropical
+              ? (<int>{...base, ...shiftMonths(base, 1)}.toList()..sort())
+              : shiftMonths(base, z == ClimateZone.mediterranean ? -1 : 1);
+
       for (final entree in <MapEntry<ClimateZone, Map<String, ZoneCalendar>>>[
         const MapEntry(ClimateZone.mediterranean, mediterraneanCalendar),
         const MapEntry(ClimateZone.continental, continentalCalendar),
+        const MapEntry(ClimateZone.subtropical, subtropicalCalendar),
       ]) {
-        final decale = entree.key == ClimateZone.mediterranean ? -1 : 1;
         for (final r in franceData) {
           final c = entree.value[r.vegetableId];
           if (c == null) continue;
-          final attenduSemis = shiftMonths(r.sowingMonths, decale);
-          final attenduRecolte = shiftMonths(r.harvestMonths, decale);
+          final attenduSemis = deriveSemis(entree.key, r.sowingMonths);
+          final attenduRecolte = deriveRecolte(entree.key, r.harvestMonths);
           final identique =
               (c.sowing.toList()..sort()).join(',') == attenduSemis.join(',') &&
                   (c.harvest.toList()..sort()).join(',') ==
                       attenduRecolte.join(',');
           expect(identique, isFalse,
               reason: '${entree.key.name} · ${r.vegetableId} : la '
-                  'surcharge dit exactement ce que le décalage dirait. '
-                  'Retire-la, ou corrige-la.');
+                  'surcharge dit exactement ce que la dérivation '
+                  'dirait. Retire-la, ou corrige-la.');
         }
       }
     });
@@ -134,6 +150,94 @@ void main() {
           reason: 'La tomate produit plus longtemps qu\'en France.');
       expect(tomate.sowing.first, lessThanOrEqualTo(2),
           reason: 'Elle démarre dès janvier ou février.');
+    });
+  });
+
+  group('le climat subtropical humide', () {
+    /// Juin à août : chaud **et** humide. Une salade y monte en graine
+    /// ou pourrit du collet.
+    const eteLourd = <int>{6, 7, 8};
+
+    test('ne sème pas de salade dans l\'été lourd', () {
+      for (final id in <String>[
+        'laitue',
+        'epinard',
+        'mache',
+        'roquette',
+        'cresson',
+      ]) {
+        final c = subtropicalCalendar[id];
+        expect(c, isNotNull, reason: '$id devrait être corrigé.');
+        for (final m in c!.sowing) {
+          expect(eteLourd.contains(m), isFalse,
+              reason: '$id : semis en mois $m, dans l\'été lourd.');
+        }
+      }
+    });
+
+    test('sème deux fois ce qui encadre le creux humide', () {
+      // La signature de cette zone, et ce qui la distingue du
+      // méditerranéen : une récolte de printemps **et** une
+      // d'automne, de part et d'autre de juillet-août.
+      for (final id in <String>[
+        'tomate',
+        'courgette',
+        'concombre',
+        'mais',
+        'pomme_de_terre',
+      ]) {
+        final c = subtropicalCalendar[id]!;
+        expect(c.sowing.any((m) => m <= 5), isTrue,
+            reason: '$id : aucun semis de printemps.');
+        expect(c.sowing.any((m) => m >= 6), isTrue,
+            reason: '$id : aucun semis de fin d\'été.');
+      }
+    });
+
+    test('laisse les légumes de chaleur traverser l\'été', () {
+      for (final id in <String>[
+        'gombo',
+        'patate_douce',
+        'niebe',
+        'pasteque',
+        'aubergine',
+      ]) {
+        final c = subtropicalCalendar[id]!;
+        expect(c.harvest.any(eteLourd.contains), isTrue,
+            reason: '$id : rien récolté entre juin et août, alors que '
+                'c\'est sa saison.');
+      }
+    });
+
+    test('sème les légumineuses d\'hiver à l\'automne', () {
+      for (final id in <String>['feve', 'petit_pois', 'pois_mange_tout']) {
+        final c = subtropicalCalendar[id]!;
+        expect(c.sowing.every((m) => m >= 9 || m <= 1), isTrue,
+            reason: '$id : un semis hors de la fenêtre d\'automne.');
+      }
+    });
+
+    test('mène la fraise en annuelle d\'automne', () {
+      // Un pied laissé en place ne passe pas l'été humide : on plante
+      // à l'automne, on récolte l'hiver, on arrache.
+      final c = subtropicalCalendar['fraise']!;
+      expect(c.sowing.every((m) => m == 9 || m == 10), isTrue,
+          reason: 'la fraise se plante à l\'automne, pas ailleurs.');
+      expect(c.harvest.any(<int>{12, 1, 2}.contains), isTrue,
+          reason: 'aucune récolte en hiver, qui est pourtant sa saison.');
+    });
+
+    test('se retourne pour l\'Argentine, qui est au sud', () {
+      // Une tomate semée en janvier dans l'hémisphère nord se sème en
+      // juillet à Buenos Aires. C'est le cas qui a motivé la
+      // vérification des 73 pays le 02/11.
+      final base = franceData.firstWhere((r) => r.vegetableId == 'tomate');
+      final nord = deriveTemperate(base, ClimateZone.subtropical);
+      final sud = deriveTemperate(base, ClimateZone.subtropical,
+          hemisphere: Hemisphere.south);
+      expect(nord.sowingMonths, <int>[1, 2, 6, 7]);
+      expect(sud.sowingMonths, <int>[1, 7, 8, 12]);
+      expect(sud.regionalNote, contains('hémisphère sud'));
     });
   });
 
