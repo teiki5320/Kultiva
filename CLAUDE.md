@@ -72,7 +72,6 @@ L'hydroponie a été retirée (archivée sur `archive/hydroponie-2026-05-03`).
 - `audioplayers` ^6.1 — SFX et musique de fond
 - `image_picker` ^1.0 + `path_provider` ^2.1 — caméra / galerie et stockage local
 - `share_plus` ^7.2 — partage Instagram / social
-- `sensors_plus` ^6.0 — accéléromètre / gyroscope (animations de la créature)
 - `webview_flutter` ^4.10 — tutoriels HTML
 - `sentry_flutter` ^8.3 — crash reporting (erreurs + stack traces)
 - `in_app_review` ^2.0 — demande de note sur les stores
@@ -196,10 +195,10 @@ Kultiva/
 │   │                       # 736 recettes, nourri par du JSON injecté
 │   ├── images/             # badges (50),
 │   │                       # accessories (38 images kawaii), légumes (120),
-│   │                       # backgrounds (4 time-of-day), cards, onboarding,
+│   │                       # cards, onboarding,
 │   │                       # app_icon
-│   ├── sounds/             # 7 fichiers (1 musique + 6 SFX)
-│   └── tutos/              # 34 fichiers HTML (33 tutos + privacy) + screens/
+│   ├── sounds/             # 6 fichiers (1 musique + 5 SFX)
+│   └── tutos/              # 34 fichiers HTML (33 tutos + privacy)
 ├── .github/workflows/      # ci.yml, site.yml
 ├── docs/                   # INFRA (fiche technique), MARKETING (plan),
 │                           # FICHE_APP_STORE (fiche ASC copiable),
@@ -1004,6 +1003,29 @@ Règles spécifiques au projet pour être efficace dès la première action :
     Vérifié dans le navigateur à 375 × 812 : les dix scènes
     s'enchaînent, le halo désigne le bon élément, la barre d'onglets
     suit, et le bouton pause répond.
+
+## 🧹 3,2 Mo d'images que personne n'affichait (03/11/2026)
+
+**Ce qui partait dans chaque téléchargement sans jamais s'afficher** :
+les quatre fonds par moment de la journée
+(`assets/images/backgrounds/`, 2,3 Mo) — ils servaient à la créature
+supprimée le 31/10 — plus `potager.png`, `potager_bg.png` et
+`onboarding_5.png` (864 Ko). Le dossier `backgrounds/` était déclaré
+dans `pubspec.yaml`, donc bel et bien embarqué.
+
+**Pourquoi aucun test ne le voyait** : `assets_exist_test.dart` ne
+regardait que dans un sens — qu'un chemin déclaré par le catalogue
+existe. Jamais qu'un fichier présent serve à quelqu'un. Le test
+inverse existe maintenant, et il ne regarde **que ce que
+`pubspec.yaml` déclare** : les dossiers `*_png_v1` qui traînent sur le
+disque depuis la bascule vers le WebP ne sont ni suivis par git ni
+déclarés, les signaler serait du bruit. Les dossiers adressés par
+identifiant (badges, légumes, accessoires) sont exclus par leur nom.
+
+**Deux dépendances sont parties avec** : `sensors_plus`
+(accéléromètre, pour les animations de la créature — plus aucun
+`import` depuis le 31/10, mais du code natif dans chaque build) et
+`cupertino_icons`, qui venait du gabarit Flutter et n'a jamais servi.
 
 ## 📐 L'iPad : du contenu borné (03/11/2026)
 

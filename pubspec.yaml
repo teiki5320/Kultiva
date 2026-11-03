@@ -23,7 +23,6 @@ dependencies:
   # au milieu d'une app 100 % française. Locale fr-FR forcée dans main.dart.
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: ^1.0.8
 
   # UI
   google_fonts: ^6.1.0
@@ -88,10 +87,6 @@ dependencies:
   # Partage d'images (cartes Poussidex sur Instagram / Stories)
   share_plus: ^7.2.1
 
-  # Capteurs (inclinaison + secouer pour les animations de la créature)
-  # Monté 6 → 7 le 30/10/2026 : `accelerometerEventStream` et
-  # `AccelerometerEvent`, seuls usages de l'app, sont inchangés.
-  sensors_plus: ^7.1.0
 
   # WebView pour les fiches tuto HTML
   webview_flutter: ^4.10.0
@@ -142,7 +137,6 @@ flutter:
     # dans ses scènes animées (envoyés en data:URI, voir
     # recipe_player_screen.dart). Seul ce sous-dossier est embarqué.
     - assets/images/vegetables_kawaii/detoure/
-    - assets/images/backgrounds/
     - assets/tutos/
     # Un seul template HTML, nourri par les données : le lecteur
     # de recette animé (voir recipe_player_screen.dart).
