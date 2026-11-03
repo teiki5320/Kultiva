@@ -9,6 +9,7 @@ import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
+import '../../utils/text_scale.dart';
 import '../../widgets/readable_width.dart';
 
 /// Page météo détaillée avec slides par jour.
@@ -150,21 +151,26 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return '${weekdayNamesShort[date.weekday - 1]} ${date.day}';
   }
 
-  String _weatherEmojiForCode(int code) {
-    if (code == 0) return '☀️';
-    if (code <= 2) return '⛅';
-    if (code == 3) return '☁️';
-    if (code >= 45 && code <= 48) return '🌫️';
-    if (code >= 51 && code <= 67) return '🌧️';
-    if (code >= 71 && code <= 77) return '❄️';
-    if (code >= 80 && code <= 82) return '🌦️';
-    if (code >= 95) return '⛈️';
-    return '🌤️';
-  }
-
   /// Formate une température, ou « — » si Open-Meteo n'a pas fourni la
   /// valeur du jour (marquée NaN à la lecture).
   String _temp(double t) => t.isNaN ? '—' : '${t.toStringAsFixed(0)}°';
+
+  /// L'emoji d'un jour **à venir**, déduit de ce qu'on sait vraiment.
+  ///
+  /// ⚠️ Les jours à venir recevaient tous le même emoji, obtenu en
+  /// passant le code météo **0** à une table de correspondance :
+  /// un grand soleil, y compris sous 8 mm de pluie annoncés. La
+  /// table n'avait plus d'autre appelant, elle est partie avec. Open-Meteo ne nous rend pas de code météo par jour,
+  /// seulement les pluies et les températures ; mais les pluies, on
+  /// les a. Un nuage sous 3 mm de pluie est approximatif ; un soleil
+  /// est faux.
+  String _emojiPourJour(double rain, double tmax, double tmin) {
+    if (!rain.isNaN && rain >= 3) return '🌧️';
+    if (!rain.isNaN && rain >= 0.5) return '🌦️';
+    if (!tmax.isNaN && tmax <= 2) return '❄️';
+    if (!tmin.isNaN && tmin <= 0) return '🌫️';
+    return '⛅';
+  }
 
   String _adviceForDay(double rain, double tmax, double tmin) {
     if (rain > 5) return trUi('🌧️ Pluie prévue — pas besoin d\'arroser !');
@@ -278,7 +284,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
             Expanded(child: Center(child: Text(trUi('Météo indisponible'))))
           else
             Expanded(
-              child: Column(
+              child: LayoutBuilder(builder: (context, contraintes) {
+              final semaine = _bandeauSemaine(context, contraintes);
+              return Column(
                 children: [
                   // Slides jour par jour.
                   Expanded(
@@ -336,11 +344,139 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ],
                     ),
                   ),
+                  if (semaine != null) semaine,
                 ],
-              ),
+              );
+              }),
             ),
         ],
       )),
+    );
+  }
+
+  /// Les sept prochains jours d'un coup, quand l'écran a la place.
+  ///
+  /// ⚠️ **Pourquoi ça manquait.** Cet écran est un carrousel : un jour
+  /// par page, quatorze pages. Sur un téléphone c'est le bon choix, la
+  /// page est pleine. Sur un iPad 13″ la même page laisse **la moitié
+  /// de l'écran blanc** — mesuré le 03/11/2026 en préparant les
+  /// captures des boutiques — alors que la fiche App Store promet une
+  /// « météo 7 jours » que l'écran ne montrait jamais d'un seul coup.
+  ///
+  /// Le bandeau n'apparaît que s'il a la place d'être lisible : sept
+  /// vignettes d'au moins 92 points, et une page de jour qui reste
+  /// l'élément principal avec ses 380 points. Sur un téléphone, ni
+  /// l'une ni l'autre condition n'est remplie, et **l'affichage ne
+  /// bouge pas d'un pixel**.
+  ///
+  /// Une vignette n'est pas décorative : elle amène le carrousel sur
+  /// son jour.
+  Widget? _bandeauSemaine(BuildContext context, BoxConstraints contraintes) {
+    const largeurVignette = 92.0;
+    // ⚠️ 128 débordait de 11 pixels le jour où une vignette portait sa
+    // ligne de pluie — vu à l'écran, pas deviné. Et la hauteur passe
+    // par `scaledHeight` : une vignette qui tient à police normale
+    // déborde à 1,3.
+    final hauteurBandeau = scaledHeight(context, 152);
+    if (contraintes.maxWidth < largeurVignette * 7 + 8 * 6 + 24) return null;
+    if (contraintes.maxHeight - hauteurBandeau < 380) return null;
+
+    final w = _weather!;
+    const premier = 7; // aujourd'hui
+    final dernier = premier + 6 < w.dailyDates.length
+        ? premier + 6
+        : w.dailyDates.length - 1;
+    if (dernier <= premier) return null;
+
+    return SizedBox(
+      height: hauteurBandeau,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+        child: Row(
+          children: <Widget>[
+            for (var i = premier; i <= dernier; i++)
+              Expanded(child: _vignetteJour(i)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _vignetteJour(int dayIndex) {
+    final w = _weather!;
+    final offset = dayIndex - 7;
+    final tmax = w.dailyTempMax[dayIndex];
+    final tmin = w.dailyTempMin[dayIndex];
+    final rain = w.dailyPrecipitation[dayIndex];
+    final actif = dayIndex == _currentIndex;
+
+    return Semantics(
+      button: true,
+      label: trUiArgs('{0}, max {1}, min {2}',
+          <Object?>[_dayLabel(offset), _temp(tmax), _temp(tmin)]),
+      child: GestureDetector(
+        onTap: () => _pageCtrl.animateToPage(dayIndex,
+            duration: const Duration(milliseconds: 250), curve: Curves.easeOut),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          decoration: BoxDecoration(
+            color: actif
+                ? KultivaColors.lightGreen.withValues(alpha: 0.35)
+                : Colors.white.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: actif
+                  ? KultivaColors.primaryGreen
+                  : KultivaColors.lightGreen.withValues(alpha: 0.5),
+              width: actif ? 2 : 1,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                _dayLabel(offset),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: actif
+                      ? KultivaColors.primaryGreen
+                      : KultivaColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              ExcludeSemantics(
+                child: Text(
+                  offset == 0
+                      ? w.weatherEmoji
+                      : _emojiPourJour(rain, tmax, tmin),
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(_temp(tmax),
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w800)),
+              Text(_temp(tmin),
+                  style: const TextStyle(
+                      fontSize: 11, color: KultivaColors.textSecondary)),
+              if (!rain.isNaN && rain >= 0.5)
+                Text(
+                  trUiArgs('{0} mm', <Object?>[rain.toStringAsFixed(1)]),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: KultivaColors.waterBlue),
+                ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -351,7 +487,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final tmin = w.dailyTempMin[dayIndex];
     final rain = w.dailyPrecipitation[dayIndex];
     // Pour aujourd'hui utiliser le code météo actuel.
-    final emoji = offset == 0 ? w.weatherEmoji : _weatherEmojiForCode(0);
+    final emoji =
+        offset == 0 ? w.weatherEmoji : _emojiPourJour(rain, tmax, tmin);
     final advice = _adviceForDay(rain, tmax, tmin);
 
     final String daySemanticLabel = offset == 0
@@ -364,9 +501,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     return Semantics(
       label: daySemanticLabel,
-      child: SingleChildScrollView(
+      // ⚠️ La diapositive était collée en haut, et sur un grand écran
+      // elle laissait un demi-écran blanc sous elle. `ConstrainedBox`
+      // + `minHeight` lui donne au moins la hauteur du carrousel, donc
+      // le `center` de la colonne a prise ; au-delà, ça défile comme
+      // avant. Le téléphone y gagne aussi : il avait le même creux,
+      // en plus petit.
+      child: LayoutBuilder(
+        builder: (context, contraintes) => SingleChildScrollView(
         padding: const EdgeInsets.all(24),
-        child: Column(
+        child: ConstrainedBox(
+          constraints:
+              BoxConstraints(minHeight: contraintes.maxHeight - 48),
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(_dayLabel(offset),
                 style: const TextStyle(
@@ -490,7 +638,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
             ),
           ],
+          ),
         ),
+      ),
       ),
     );
   }

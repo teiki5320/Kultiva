@@ -4,6 +4,7 @@ import '../../../data/ui_i18n.dart';
 import '../../../services/plantation_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/petal_animation.dart';
+import '../../../widgets/readable_width.dart';
 import '../../../widgets/season_header.dart';
 import 'journal_view.dart';
 
@@ -83,7 +84,15 @@ class JournalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
     return Scaffold(
-      body: SafeArea(
+      // ⚠️ Cet écran n'était pas borné, alors que le cahier d'où il
+      // part l'est à 900. Sur un iPad 13″ la même ligne de journal
+      // s'étirait sur 1 032 points et l'heure se retrouvait à l'autre
+      // bout de l'écran, à treize centimètres de son libellé. C'est
+      // le défaut que la fiche décrivait pour l'onglet Conservation,
+      // resté sur un écran poussé qu'on avait oublié.
+      body: ReadableWidth(
+        maxWidth: 900,
+        child: SafeArea(
         bottom: false,
         child: Column(
           children: <Widget>[
@@ -161,6 +170,7 @@ class JournalScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -753,6 +753,10 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Para {0} persona',
   'Prends le temps de regarder ton jardin.':
       'Tómate un momento para mirar tu huerto.',
+  '{0}, max {1}, min {2}':
+      '{0}, máx {1}, mín {2}',
+  '{0} mm':
+      '{0} mm',
   'écrite pour {0}':
       'escrita para {0}',
   'Moins':

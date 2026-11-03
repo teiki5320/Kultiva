@@ -230,7 +230,18 @@ class _SowScreenState extends State<SowScreen> {
                   // bord serait passé à une carte par ligne sur
                   // iPhone — l'inverse du défaut qu'on corrige.
                   largeurCible: 160,
-                  colonnesMax: 3,
+                  // ⚠️ Deux colonnes, pas trois, et c'est une
+                  // exception assumée à « les grilles prennent la
+                  // largeur ». Cette grille-là a un nombre de tuiles
+                  // **fixe** : six. À trois colonnes elles tiennent en
+                  // deux rangs, et sur un iPad 13″ il reste 500 points
+                  // de blanc sous la dernière (mesuré le 03/11/2026).
+                  // À deux colonnes, trois rangs remplissent l'écran et
+                  // les six tuiles restent visibles sans défiler — ce
+                  // que la règle cherchait à obtenir. Sur un téléphone
+                  // rien ne bouge : 358 points n'en ont jamais fait
+                  // tenir plus de deux.
+                  colonnesMax: 2,
                   enfants: <Widget>[
                     KawaiiCard(
                       emoji: '🌱',

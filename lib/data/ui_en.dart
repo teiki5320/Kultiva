@@ -754,6 +754,10 @@ const Map<String, String> uiTextsEn = <String, String>{
       'For {0} person',
   'Prends le temps de regarder ton jardin.':
       'Take a moment to look at your garden.',
+  '{0}, max {1}, min {2}':
+      '{0}, max {1}, min {2}',
+  '{0} mm':
+      '{0} mm',
   'écrite pour {0}':
       'written for {0}',
   'Moins':

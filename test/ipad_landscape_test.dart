@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/badges.dart';
 import 'package:kultiva/data/vegetables_base.dart';
+import 'package:kultiva/screens/home/accueil/accueil_cartes.dart';
 import 'package:kultiva/screens/home/defis/badges_grid.dart';
 import 'package:kultiva/theme/app_theme.dart';
 import 'package:kultiva/widgets/petal_animation.dart';
@@ -64,6 +65,7 @@ void main() {
   }
 
   _bornes();
+  _cartesTableauDeBord();
 
   group('iPad', () {
     for (final cas in <(String, Size)>[
@@ -179,11 +181,24 @@ void _bornes() {
       }
     });
 
-    testWidgets('la grille du tableau de bord passe à trois colonnes',
+    test('le tableau de bord demande deux colonnes, pas trois', () {
+      // ⚠️ Ce test lit le **réglage réel** de `sow_screen.dart`. Celui
+      // d'à côté construit sa propre grille : il vérifie
+      // `GrilleAdaptative`, pas le tableau de bord. Il s'appelait
+      // pourtant « la grille du tableau de bord passe à trois
+      // colonnes » et il est resté vert le jour où elle est passée à
+      // deux. Un test qui ne lit pas la valeur qu'il nomme ne la
+      // protège pas.
+      final src = File('lib/screens/home/sow_screen.dart').readAsStringSync();
+      expect(src, contains('colonnesMax: 2'),
+          reason: 'six tuiles sur trois colonnes laissent 500 points de '
+              'blanc sous la dernière, sur un iPad 13″.');
+    });
+
+    testWidgets('GrilleAdaptative compte ses colonnes d\'après la place',
         (tester) async {
-      // 160 de cible, 12 d'espacement, plafond à 3 : sur un téléphone
-      // deux colonnes, sur un iPad trois. C'est le réglage réel de
-      // `sow_screen.dart`, marges de 16 comprises.
+      // 160 de cible, 12 d'espacement : sur un téléphone deux
+      // colonnes, sur un iPad trois si le plafond l'autorise.
       Future<int> colonnes(double largeur) async {
         tester.view.devicePixelRatio = 1.0;
         tester.view.physicalSize = Size(largeur, 1200);
@@ -208,6 +223,43 @@ void _bornes() {
       expect(await colonnes(1000), 3);
     });
 
+    // Un écran **poussé** s'ouvre par-dessus l'onglet, donc il perd le
+    // `ReadableWidth` que `root_tabs.dart` posait autour de lui. Sans
+    // le sien, sa ligne s'étire sur les 1 032 points d'un iPad : le
+    // journal du jardin y affichait l'heure à treize centimètres de
+    // son libellé, trouvé le 03/11/2026 en prenant les captures.
+    test('tout écran poussé borne sa largeur, ou dit pourquoi non', () {
+      // Les grilles et les documents pleine largeur : une vignette de
+      // plus par ligne, c'est une vignette de plus qu'on voit.
+      const pleineLargeur = <String>{
+        'garden_planner_screen.dart', // la grille du potager carré
+        'defis_badges_screen.dart', // deux grilles de 50 tuiles
+        'tuto_fiche_screen.dart', // une WebView, qui se borne elle-même
+        'recipe_player_screen.dart', // idem
+      };
+      // Les onglets sont bornés **de l'extérieur**, dans
+      // `root_tabs.dart`, et le test juste au-dessus le vérifie. Les
+      // chercher ici une seconde fois ne dirait que des faux positifs.
+      const onglets = <String>{
+        'recettes_screen.dart',
+        'mes_jardins_screen.dart',
+      };
+      final nus = <String>[];
+      for (final f in Directory('lib/screens').listSync(recursive: true)) {
+        if (f is! File || !f.path.endsWith('.dart')) continue;
+        final nom = f.path.split('/').last;
+        if (pleineLargeur.contains(nom) || onglets.contains(nom)) continue;
+        final src = f.readAsStringSync();
+        if (!src.contains('Scaffold(')) continue;
+        if (src.contains('ReadableWidth')) continue;
+        nus.add(f.path);
+      }
+      expect(nus, isEmpty,
+          reason: 'Écrans sans largeur bornée :\n${nus.join('\n')}\n'
+              'Soit ils passent par ReadableWidth, soit ils entrent dans '
+              '`pleineLargeur` avec la raison.');
+    });
+
     testWidgets('une grille ne fait jamais plus de colonnes que de tuiles',
         (tester) async {
       tester.view.devicePixelRatio = 1.0;
@@ -225,6 +277,61 @@ void _bornes() {
       ));
       // Une tuile seule occupe toute la ligne, et pas un dixième.
       expect(tester.getSize(find.byKey(const Key('seule'))).width, 1032);
+    });
+  });
+}
+
+/// Les cartes du tableau de bord grandissent sur iPad, et **seulement**
+/// sur iPad.
+///
+/// ⚠️ Le défaut, vu le 03/11/2026 en comparant deux captures : agrandir
+/// la boîte sans agrandir son contenu ne donne pas une carte d'iPad,
+/// ça donne une carte de téléphone étirée — 493 × 300 d'aplat de
+/// couleur avec une icône de 44 points dans un coin.
+///
+/// ⚠️ Et le premier seuil d'échelle, posé à 173, faisait grossir
+/// l'icône de 14 % sur un iPhone 18 Pro Max pendant que le commentaire
+/// jurait que le téléphone ne bougeait pas. **Une promesse de
+/// non-régression se teste**, sinon c'est un vœu.
+void _cartesTableauDeBord() {
+  group('la carte du tableau de bord suit sa largeur', () {
+    /// Largeur d'une carte à deux colonnes pour un écran donné :
+    /// l'écran, moins 16 de marge de chaque côté, moins 12 de
+    /// gouttière, divisé par deux.
+    double carteA(double ecran) => (ecran - 32 - 12) / 2;
+
+    test('aucun téléphone n\'agrandit quoi que ce soit', () {
+      // iPhone SE, 14, 16 Pro, 18 Pro Max : le plus large des quatre
+      // donne une carte de 198 points, sous le seuil de 220.
+      for (final ecran in <double>[375, 390, 402, 440]) {
+        expect(KawaiiCard.echellePour(carteA(ecran)), 1.0,
+            reason: 'un écran de $ecran points a bougé');
+        expect(KawaiiCard.hauteurPour(carteA(ecran)), 138.0,
+            reason: 'la hauteur a bougé sur un écran de $ecran points');
+      }
+    });
+
+    test('un iPad 13″ agrandit le contenu et la carte', () {
+      final largeur = carteA(1032);
+      expect(largeur, closeTo(494, 1));
+      expect(KawaiiCard.echellePour(largeur), 1.8,
+          reason: 'le facteur doit être plafonné, pas proportionnel');
+      expect(KawaiiCard.hauteurPour(largeur), 260.0,
+          reason: 'la hauteur doit être plafonnée à 260');
+    });
+
+    test('la hauteur reste bornée des deux côtés', () {
+      expect(KawaiiCard.hauteurPour(10), 138.0);
+      expect(KawaiiCard.hauteurPour(10000), 260.0);
+      expect(KawaiiCard.echellePour(10), 1.0);
+      expect(KawaiiCard.echellePour(10000), 1.8);
+    });
+
+    test('entre les deux, la hauteur suit vraiment la largeur', () {
+      // Sans ça, les bornes passeraient même si la fonction rendait
+      // une constante.
+      expect(KawaiiCard.hauteurPour(300), closeTo(186, 0.5));
+      expect(KawaiiCard.echellePour(330), closeTo(1.5, 0.01));
     });
   });
 }

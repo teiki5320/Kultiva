@@ -38,12 +38,44 @@ class KawaiiCard extends StatelessWidget {
   /// badges » tient sur une ligne, « Challenges & badges » et « Retos e
   /// insignias » non — la carte les coupait au milieu.
   ///
-  /// ⚠️ Au-dessus, la hauteur suit la largeur. Sur un iPad, trois
-  /// colonnes font 325 points de large : à 138 de haut, c'est une
-  /// bande, pas une tuile. Le plafond de 190 évite l'excès inverse sur
-  /// un écran encore plus large.
+  /// ⚠️ Au-dessus, la hauteur suit la largeur. Sur un iPad, deux
+  /// colonnes font 493 points de large : à 138 de haut, c'est une
+  /// bande, pas une tuile. Le plafond évite l'excès inverse sur un
+  /// écran encore plus large.
+  ///
+  /// ⚠️ Ce plafond était à 190, ce qui le rendait contraignant dès
+  /// qu'on dépassait le téléphone. Il est passé à 260, mais **pas
+  /// au-delà, et pour une raison qui se voit à l'écran** : essayé à
+  /// 300 le 03/11/2026, la carte devenait un aplat de couleur de
+  /// 493 × 300 avec une icône de 44 points perdue dans un coin. Le
+  /// défaut n'était pas la hauteur, c'était que le **contenu** ne
+  /// suivait pas la taille de la carte — voir [echellePour].
   static double hauteurPour(double largeur) =>
-      (largeur * 0.62).clamp(138.0, 190.0);
+      (largeur * 0.62).clamp(138.0, 260.0);
+
+  /// De combien agrandir le contenu d'une carte large.
+  ///
+  /// Une carte d'iPad fait presque trois fois la largeur d'une carte
+  /// d'iPhone. Agrandir la boîte sans agrandir ce qu'elle contient ne
+  /// donne pas une carte d'iPad, ça donne une carte de téléphone
+  /// étirée, avec une icône minuscule dans un angle.
+  ///
+  /// **220 est le seuil, et il est mesuré, pas choisi.** La carte la
+  /// plus large qu'un téléphone produise est celle d'un iPhone 18 Pro
+  /// Max : 440 points d'écran, moins 32 de marges et 12 de gouttière,
+  /// divisé par deux colonnes, soit **198**. Le seuil est posé
+  /// au-dessus, donc le facteur vaut exactement 1 sur **tous** les
+  /// téléphones et leur affichage ne bouge pas d'un pixel.
+  ///
+  /// ⚠️ Il valait 173 dans la première version, et c'était faux pour
+  /// cette raison même : sur un 18 Pro Max le facteur montait à 1,14
+  /// et l'icône grossissait de 14 % — pendant que le commentaire
+  /// affirmait le contraire. Vu en comparant deux captures.
+  ///
+  /// Le plafond de 1,8 évite qu'un écran encore plus large produise
+  /// une icône d'affiche. Un iPad 13″ en deux colonnes donne 493
+  /// points de large, donc 2,24 : il est plafonné.
+  static double echellePour(double largeur) => (largeur / 220).clamp(1.0, 1.8);
 
   @override
   Widget build(BuildContext context) {
@@ -55,13 +87,12 @@ class KawaiiCard extends StatelessWidget {
           AudioService.instance.play(Sfx.tap);
           onTap();
         },
-        child: LayoutBuilder(
-          builder: (context, contraintes) => Container(
-          height: scaledHeight(
-              context,
-              hauteurPour(contraintes.hasBoundedWidth
-                  ? contraintes.maxWidth
-                  : 170)),
+        child: LayoutBuilder(builder: (context, contraintes) {
+          final largeur =
+              contraintes.hasBoundedWidth ? contraintes.maxWidth : 170.0;
+          final k = echellePour(largeur);
+          return Container(
+          height: scaledHeight(context, hauteurPour(largeur)),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -84,29 +115,29 @@ class KawaiiCard extends StatelessWidget {
                 top: -8,
                 right: -8,
                 child: Bubble(
-                    size: 40, color: bubbleColor.withValues(alpha: 0.15)),
+                    size: 40 * k, color: bubbleColor.withValues(alpha: 0.15)),
               ),
               Positioned(
                 bottom: 10,
                 right: 12,
                 child: Bubble(
-                    size: 24, color: bubbleColor.withValues(alpha: 0.12)),
+                    size: 24 * k, color: bubbleColor.withValues(alpha: 0.12)),
               ),
               Positioned(
                 top: 20,
                 right: 30,
                 child: Bubble(
-                    size: 14, color: bubbleColor.withValues(alpha: 0.10)),
+                    size: 14 * k, color: bubbleColor.withValues(alpha: 0.10)),
               ),
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16 * k),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 44,
-                      height: 44,
+                      width: 44 * k,
+                      height: 44 * k,
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.7),
                         shape: BoxShape.circle,
@@ -122,13 +153,13 @@ class KawaiiCard extends StatelessWidget {
                       child: imagePath != null
                           ? ClipOval(
                               child: Image.asset(imagePath!,
-                                  width: 44,
-                                  height: 44,
+                                  width: 44 * k,
+                                  height: 44 * k,
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, __, ___) => Text(emoji,
-                                      style: const TextStyle(fontSize: 22))),
+                                      style: TextStyle(fontSize: 22 * k))),
                             )
-                          : Text(emoji, style: const TextStyle(fontSize: 22)),
+                          : Text(emoji, style: TextStyle(fontSize: 22 * k)),
                     ),
                     // ⚠️ Le titre et le sous-titre forment **un seul**
                     // enfant flexible, collé en bas par le
@@ -153,20 +184,23 @@ class KawaiiCard extends StatelessWidget {
                                 color: KultivaColors.textPrimary
                                     .withValues(alpha: 0.9),
                                 fontWeight: FontWeight.w800,
-                                fontSize: 15,
+                                // Échelle adoucie de moitié : une icône
+                                // peut doubler, un titre qui doublerait
+                                // crierait.
+                                fontSize: 15 * (1 + (k - 1) * 0.5),
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          SizedBox(height: 2 * k),
                           Text(
                             subtitle,
                             style: TextStyle(
                               color: KultivaColors.textPrimary
                                   .withValues(alpha: 0.55),
                               fontWeight: FontWeight.w600,
-                              fontSize: 11,
+                              fontSize: 11 * (1 + (k - 1) * 0.5),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -179,8 +213,8 @@ class KawaiiCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        ),
+        );
+        }),
       ),
     );
   }
