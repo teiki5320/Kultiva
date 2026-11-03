@@ -492,8 +492,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       '{0} {1} loves growing next to {2} {3}!',
   '{0} {1} : attendre {2} ans avant de replanter au même endroit.':
       '{0} {1}: wait {2} years before replanting in the same spot.',
-  '{0} {1} : attention au {2}. {3}.':
-      '{0} {1}: watch out for {2}. {3}.',
+  '{0} {1} — {2} : {3}.':
+      '{0} {1} — {2}: {3}.',
   'Météo : {0} degrés, {1}':
       'Weather: {0} degrees, {1}',
   'Semer':

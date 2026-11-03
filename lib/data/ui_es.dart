@@ -491,8 +491,8 @@ const Map<String, String> uiTextsEs = <String, String>{
       '{0} {1} se lleva genial con {2} {3}.',
   '{0} {1} : attendre {2} ans avant de replanter au même endroit.':
       '{0} {1}: espera {2} años antes de volver a plantar en el mismo sitio.',
-  '{0} {1} : attention au {2}. {3}.':
-      '{0} {1}: ojo con {2}. {3}.',
+  '{0} {1} — {2} : {3}.':
+      '{0} {1} — {2}: {3}.',
   'Météo : {0} degrés, {1}':
       'Tiempo: {0} grados, {1}',
   'Semer':

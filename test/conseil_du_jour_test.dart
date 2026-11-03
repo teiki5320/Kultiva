@@ -25,7 +25,7 @@ void main() {
     final nom = cas[0] as String;
     final calendrier = cas[1] as List<RegionData>;
 
-    group('$nom', () {
+    group(nom, () {
       test('aucun conseil ne cite une culture qui ne pousse pas ici', () {
         final ici = cultivablesEnPleineTerre(calendrier);
         final citees = culturesCiteesParLesConseils(calendrier);

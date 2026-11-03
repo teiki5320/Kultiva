@@ -68,7 +68,14 @@ List<String> conseilsPossibles(List<RegionData> calendar) {
     final veg = dIci(entry.key);
     if (veg != null && entry.value.isNotEmpty) {
       final d = entry.value.first;
-      conseils.add(trUiArgs('{0} {1} : attention au {2}. {3}.', <Object?>[
+      // ⚠️ « attention au {2} » ne se dit en français que pour un nom
+      // masculin à initiale consonne. Mesuré sur les 36 maladies
+      // citées en France, c'est juste 8 fois : les autres sont
+      // féminines (« à la piéride »), commencent par une voyelle
+      // (« à l'oïdium ») ou sont au pluriel (« aux pucerons »). Le
+      // tiret se passe du genre, et l'anglais comme l'espagnol s'en
+      // accommodent aussi bien que de leur préposition.
+      conseils.add(trUiArgs('{0} {1} — {2} : {3}.', <Object?>[
         veg.emoji,
         veg.displayName,
         d.displayName,
