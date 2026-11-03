@@ -706,14 +706,20 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 109 tests au 02/11/2026, dont une
+1. **Pas de test d'intégration** — 1 117 tests au 03/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
-   sur un iPhone SE à police normale puis 1,3, `ipad_landscape_test.dart`
-   fait de même aux dimensions d'un iPad en portrait et en paysage, et
-   `assets_exist_test.dart` vérifie que chaque image déclarée existe.
+   sur un iPhone SE à police normale puis 1,3 ;
+   `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
+   portrait et en paysage, **et** vérifie que grilles et colonnes de
+   texte sont rangées chacune dans son camp ;
+   `assets_exist_test.dart` vérifie qu'une image déclarée existe **et**
+   qu'une image embarquée sert à quelqu'un ;
+   `accessibilite_test.dart` compte les zones tactiles nues sans
+   étiquette VoiceOver.
    Aucun parcours complet n'est joué de bout en bout, et **rien n'a
-   encore été essayé avec VoiceOver réellement activé** : un test voit
-   qu'une boîte ne déborde pas, pas qu'un écran est agréable à écouter.
+   encore été essayé avec VoiceOver réellement activé** : un compte
+   voit qu'une étiquette existe, pas qu'un écran est agréable à
+   écouter.
 2. ~~**L'`anonKey` Supabase est committée**~~ — sans objet depuis le
    retrait des comptes (30/10/2026) : `lib/config/supabase_config.dart`
    est supprimé.
