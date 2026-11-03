@@ -209,7 +209,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 53 fichiers — 1 139 tests (03/11/2026)
+├── test/                   # 54 fichiers — 1 145 tests (03/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -706,7 +706,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 139 tests au 03/11/2026, dont une
+1. **Pas de test d'intégration** — 1 145 tests au 03/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3 ;
    `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
@@ -1140,6 +1140,36 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
     manioc semé à Lyon (02/11) et les trois images du catalogue
     (alerte 23). À chaque fois, l'information existait et le code ne
     la lisait pas, et à chaque fois c'est l'écran qui l'a dit.
+
+25. ~~**La description d'un badge était coupée en plein milieu d'une
+    ligne**~~ — ✅ **FAIT le 03/11/2026.** Vu en prenant la capture
+    « Défis & badges » pour les boutiques : « Planter ton premier »
+    suivi de la moitié haute des lettres de « légume ».
+
+    **Ce n'est pas l'ellipse qui manquait, c'est qu'elle ne partait
+    pas.** Le `Text` portait `maxLines: 4` dans un `Expanded` qui
+    n'offrait la place que d'**une** ligne (mesuré). Le paragraphe se
+    croyait donc dans les clous, aucune ellipse n'était demandée, et
+    c'est la **boîte** qui tranchait. ⚠️ Un `RenderParagraph` plus
+    haut que sa boîte ne déclenche **pas** la bande jaune : il est
+    simplement rogné. Ni `analyze` ni les tests de débordement ne
+    pouvaient le voir.
+
+    **Un `maxLines` doit valoir ce que la boîte peut montrer**, pas ce
+    que l'auteur espère. `lignesQuiTiennent()` (`utils/text_scale.dart`)
+    le calcule depuis la hauteur disponible, **échelle de police
+    comprise** — sans ça le compte retomberait faux dès que
+    l'utilisateur agrandit le texte, soit exactement le cas que ce
+    fichier existe pour couvrir. La tuile passe de 145 à 175 points :
+    trois lignes pour un badge débloqué, deux pour un badge verrouillé
+    (le cadenas prend la troisième).
+
+    ⚠️ **Le premier test était aveugle au défaut** : il filtrait les
+    `Text` sur `maxLines != 1`, c'est-à-dire précisément la valeur que
+    le défaut produisait. Il échouait, mais en disant « aucune tuile
+    rendue » au lieu de « une description n'a qu'une ligne ». Un test
+    qui échoue pour la mauvaise raison passera le jour où la mauvaise
+    raison disparaît.
 
 ## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 

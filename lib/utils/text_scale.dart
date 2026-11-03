@@ -42,3 +42,34 @@ class FixedTextScale extends StatelessWidget {
     );
   }
 }
+
+/// Combien de lignes **entières** d'un texte tiennent dans [hauteur].
+///
+/// ⚠️ Le défaut que ça corrige, vu à l'écran le 03/11/2026 en prenant
+/// la capture « Défis & badges » pour les boutiques : les descriptions
+/// des tuiles de badge étaient **coupées en plein milieu d'une ligne**
+/// — « Planter ton premier » puis la moitié haute des lettres de
+/// « légume ».
+///
+/// La cause n'est pas l'ellipse, c'est qu'elle ne se déclenchait pas.
+/// Le `Text` portait `maxLines: 4` dans un `Expanded` qui n'offrait que
+/// la place d'une ligne et demie : le paragraphe se croyait dans les
+/// clous, donc pas d'ellipse, et c'est la **boîte** qui tranchait. Un
+/// `maxLines` doit valoir ce que la boîte peut montrer, pas ce que
+/// l'auteur espère.
+///
+/// [taille] est la taille de police **non mise à l'échelle** ; c'est
+/// cette fonction qui applique le réglage de l'utilisateur, sans quoi
+/// le calcul retomberait faux dès qu'il agrandit la police — soit
+/// exactement le cas que `scaledHeight` existe pour couvrir.
+int lignesQuiTiennent(
+  BuildContext context,
+  double hauteur,
+  double taille, {
+  double interligne = 1.3,
+  int max = 4,
+}) {
+  final hauteurLigne = MediaQuery.textScalerOf(context).scale(taille) * interligne;
+  if (hauteurLigne <= 0) return 1;
+  return (hauteur / hauteurLigne).floor().clamp(1, max);
+}

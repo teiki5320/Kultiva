@@ -22,7 +22,7 @@ class BadgesGrid extends StatelessWidget {
         maxCrossAxisExtent: 170,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        mainAxisExtent: scaledHeight(context, 145),
+        mainAxisExtent: scaledHeight(context, 175),
       ),
       itemCount: allBadges.length,
       itemBuilder: (context, i) {
@@ -123,19 +123,26 @@ class _BadgeTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
+                  // `maxLines: 4` dans une boîte qui n'offre la place
+                  // que d'une ligne et demie : le paragraphe se croyait
+                  // dans les clous, l'ellipse ne partait pas, et la
+                  // boîte coupait la deuxième ligne en deux.
                   Expanded(
-                    child: Text(
-                      badge.displayDescription,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 10,
-                        height: 1.3,
-                        color: unlocked
-                            ? KultivaColors.textSecondary
-                            : Colors.grey.shade400,
+                    child: LayoutBuilder(
+                      builder: (context, contraintes) => Text(
+                        badge.displayDescription,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 10,
+                          height: 1.3,
+                          color: unlocked
+                              ? KultivaColors.textSecondary
+                              : Colors.grey.shade400,
+                        ),
+                        maxLines: lignesQuiTiennent(
+                            context, contraintes.maxHeight, 10),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (!unlocked)
