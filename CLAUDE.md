@@ -1033,6 +1033,40 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
 `import` depuis le 31/10, mais du code natif dans chaque build) et
 `cupertino_icons`, qui venait du gabarit Flutter et n'a jamais servi.
 
+23. **Trois images du catalogue montrent le mauvais légume
+    (03/11/2026)** — trouvées en garnissant une installation pour les
+    captures des boutiques, pas en lisant le code.
+
+    | Fichier | Ce qu'il montre | Ce qu'il devrait montrer |
+    | --- | --- | --- |
+    | `haricot.webp` | une courgette | une gousse de haricot vert |
+    | `navet.webp` | un radis (le même dessin que `radis.webp`) | un navet blanc et violet |
+    | `concombre.webp` | un troisième rendu de la même courgette | un concombre |
+
+    ⚠️ **Aucun test ne pouvait le voir.** `assets_exist_test` vérifie
+    qu'un fichier existe, et depuis ce matin qu'un fichier embarqué
+    sert à quelqu'un. Ni l'un ni l'autre ne regarde **ce que l'image
+    montre**. C'est exactement l'angle mort des quatre médaillons de
+    badge du 31/10 : le fichier existe, il raconte autre chose.
+
+    `test/images_distinctes_test.dart` compare les 130 images deux à
+    deux et refuse une **quatrième** paire. Les trois connues y sont
+    inscrites comme une **dette datée**, pas comme une exception
+    tolérée.
+
+    ⚠️ **Et une empreinte en noir et blanc ne marche pas** : ces
+    images sont toutes « un objet centré sur fond crème », donc elles
+    se ressemblent toutes en luminance — ma première version trouvait
+    qu'une carotte orange et une aubergine violette étaient la même
+    image. C'est la couleur qui sépare. Seuil retenu : 7, parce que
+    les doublons avérés sont entre 4 et 6 et que la première paire
+    légitimement proche — panais et salsifis, deux racines pâles — est
+    à 7,6.
+
+    **Les refaire coûte des crédits OpenArt** : à demander à Jean
+    avant de dépenser (règle permanente). Garder les noms de
+    fichiers : `assets/images/vegetables/<id>.webp`.
+
 ## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 
 **Ce qui a été regardé** : l'app, écran par écran, sur un **iPad Pro
