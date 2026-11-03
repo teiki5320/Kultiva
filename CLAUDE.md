@@ -209,7 +209,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 54 fichiers — 1 145 tests (03/11/2026)
+├── test/                   # 54 fichiers — 1 151 tests (03/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -706,7 +706,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 145 tests au 03/11/2026, dont une
+1. **Pas de test d'intégration** — 1 151 tests au 03/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3 ;
    `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
