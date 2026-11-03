@@ -124,12 +124,20 @@ Future<void> _bootstrapAndRun() async {
   // app dessinée, ce qu'iOS attend.
   runApp(const KultivaApp());
 
-  unawaited(_guard('notifications_init', () async {
-    await NotificationService.init();
-    if (PrefsService.instance.notifications.value) {
-      await NotificationService.scheduleMonthlyReminder();
-    }
-  }));
+  // ⚠️ Et pas seulement « après `runApp` » : **après la première
+  // image**. `runApp` rend la main avant que Flutter ait peint quoi
+  // que ce soit ; sur une installation neuve, iOS posait donc encore
+  // sa question par-dessus le splash. Ce n'est plus le blocage sans
+  // fin du 02/11 — la question partait — mais l'utilisateur répondait
+  // devant un écran vide. Vu sur un iPhone 18 Pro Max le 03/11/2026.
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    unawaited(_guard('notifications_init', () async {
+      await NotificationService.init();
+      if (PrefsService.instance.notifications.value) {
+        await NotificationService.scheduleMonthlyReminder();
+      }
+    }));
+  });
   if (PrefsService.instance.musicEnabled.value) {
     unawaited(_guard(
       'start_music',
