@@ -1,8 +1,10 @@
 # Fiches App Store & Google Play — Kultiva 🌱
 
 > Textes prêts à copier-coller pour App Store Connect et Play Console,
-> par marché (France 🇫🇷 / Afrique de l'Ouest 🌍).
-> Dernière mise à jour : 2026-08-03 — v1.0.0.
+> par marché (France 🇫🇷 / Afrique de l'Ouest 🌍). L'app couvre 73 pays
+> depuis le 1er novembre 2026 ; ces deux blocs restent les deux
+> marchés **visés**, pas la couverture.
+> Dernière mise à jour : 2026-11-03 — v1.0.0.
 >
 > **Méthode de comptage** : les longueurs indiquées sont en unités UTF-16
 > (comme les formulaires web d'App Store Connect et de la Play Console :
@@ -29,13 +31,13 @@
 Ton potager kawaii de poche
 ```
 
-### Texte promotionnel App Store — 125/170
+### Texte promotionnel App Store — 126/170
 
 ```
 Semis, récoltes, météo et cahier de culture : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
 ```
 
-### Description complète — App Store & description longue Play — 2 305/4 000
+### Description complète — App Store & description longue Play — 2 630/4 000
 
 > Un seul texte, à coller tel quel dans les deux consoles (champ
 > « Description » côté App Store, « Description longue » côté Play).
@@ -43,13 +45,16 @@ Semis, récoltes, météo et cahier de culture : Kultiva t'accompagne des premi�
 ```
 Le potager kawaii dans ta poche 🌱
 
-Kultiva t'accompagne du choix des graines à la fierté de la première tomate — que tu jardines sur un balcon en ville, dans un carré potager en Bretagne… ou sous les premières pluies de Dakar : l'app couvre la France métropolitaine et 8 pays francophones d'Afrique de l'Ouest.
+Kultiva t'accompagne du choix des graines à la fierté de la première tomate — que tu jardines sur un balcon en ville, dans un carré potager en Bretagne… ou sous les premières pluies de Dakar : l'app connaît le climat de 73 pays, sur six continents.
 
 📅 UN CALENDRIER QUI CONNAÎT TA RÉGION
 Chaque mois, découvre quoi semer, planter et récolter chez toi. Semis sous abri, pleine terre, récoltes : tout est adapté à ton climat, et exportable en PDF pour l'accrocher dans l'abri de jardin.
 
 🌽 130 CULTURES EN FICHES DÉTAILLÉES
 Tomate, courgette, radis, fraisier, basilic… mais aussi gombo, niébé, mil ou bissap. Pour chaque plante : profondeur de semis, exposition, arrosage, distances de plantation, rendement estimé et petits conseils de pro.
+
+🫙 GARDER TA RÉCOLTE
+Quinze courgettes d'un coup, c'est le vrai problème du potager. Pour chaque légume, trois façons de le conserver — bocal, congélation, séchage, lacto-fermentation, confiture — avec sa durée de garde, et un pas-à-pas animé qui marche sans réseau.
 
 📓 MES JARDINS, TON POTAGER EN CARRÉS
 Dessine tes carrés, place tes plants par glisser-déposer et suis chacun d'eux : arrosages, phases de croissance auto-suggérées, photos, avertissement de rotation des cultures et conseils selon la météo du jour.
@@ -72,7 +77,7 @@ Chaque plantation, chaque arrosage, chaque récolte et chaque photo s'inscrit à
 🎓 POUR APPRENDRE EN S'AMUSANT
 33 tutoriels illustrés, un lexique du jardinier, un guide des maladies et le compagnonnage (qui aime pousser à côté de qui).
 
-Et surtout : Kultiva fonctionne sans connexion et sans compte. Tes données restent sur ton téléphone, et nulle part ailleurs.
+Et surtout : Kultiva fonctionne sans connexion et sans compte, en français, en anglais et en espagnol. Tes données restent sur ton téléphone, et nulle part ailleurs.
 
 Télécharge Kultiva et fais pousser ton premier bonheur. 🌸
 ```
@@ -106,13 +111,13 @@ si l'on crée une fiche Play personnalisée par pays (voir section 3).
 Jardine au rythme des pluies
 ```
 
-#### Texte promotionnel App Store — 165/170
+#### Texte promotionnel App Store — 166/170
 
 ```
 Gombo, niébé, mil, bissap… Kultiva connaît tes cultures et ta saison : sème aux premières pluies, suis la météo de ta ville et note chaque récolte dans ton cahier. 🌱
 ```
 
-#### Description complète — App Store & description longue Play — 2 204/4 000
+#### Description complète — App Store & description longue Play — 2 480/4 000
 
 ```
 Le potager kawaii dans ta poche — pensé pour l'Afrique de l'Ouest 🌍
@@ -130,6 +135,9 @@ Dessine tes planches, place tes cultures par glisser-déposer, suis les arrosage
 
 🌦️ MÉTÉO ET CONSEILS FORTE CHALEUR
 Prévisions 7 jours pour ta ville, rappels d'arrosage intelligents et conseils culture par culture pour protéger tes plants pendant la saison sèche et l'harmattan.
+
+🫙 GARDER TA RÉCOLTE
+Une récolte qui arrive d'un coup se perd vite. Pour chaque culture, trois façons de la conserver — séchage, bocal, lacto-fermentation, huile — avec sa durée de garde et un pas-à-pas animé, hors connexion.
 
 📔 CHAQUE MATIN, CE QU'IL Y A À FAIRE
 Ton cahier de culture dit qui a soif, qui est mûr et s'il va faire trop chaud. Badges et médailles récompensent chaque geste : le jardin devient un jeu, pour toi comme pour les enfants.
@@ -167,7 +175,7 @@ Le reste de la fiche = bloc commun 2.1.
 
 #### 🇸🇳 Sénégal — niébé, bissap
 
-Texte promotionnel — 159/170 :
+Texte promotionnel — 160/170 :
 
 ```
 Niébé semé aux premières pluies, bissap pour le jus de l'hivernage : de Dakar aux Niayes, Kultiva connaît ton calendrier — et ton cahier note chaque récolte. 🌱
@@ -185,7 +193,7 @@ du thiéboudienne. »
 
 #### 🇨🇮 Côte d'Ivoire — igname, plantain
 
-Texte promotionnel — 157/170 :
+Texte promotionnel — 158/170 :
 
 ```
 Igname en buttes, plantain pour l'alloco : Kultiva connaît tes cultures et tes saisons des pluies, te dit quand semer et ce qu'il y a à faire chaque matin. 🌱
@@ -203,7 +211,7 @@ plantain de l'alloco. »
 
 #### 🇲🇱 Mali — mil, sorgho
 
-Texte promotionnel — 152/170 :
+Texte promotionnel — 153/170 :
 
 ```
 Mil et sorgho semés en poquets dès les premières pluies : Kultiva connaît l'hivernage, ta météo et tes cultures — et garde la trace de chaque récolte. 🌱
@@ -221,7 +229,7 @@ premières pluies utiles. »
 
 #### 🇧🇫 Burkina Faso — zaï, sorgho
 
-Texte promotionnel — 152/170 :
+Texte promotionnel — 153/170 :
 
 ```
 Sorgho semé en zaï, gombo d'hivernage : Kultiva connaît tes techniques, ta saison et ta météo — et te dit chaque matin ce qu'il y a à faire au jardin. 🌱
@@ -239,7 +247,7 @@ tous les jours. »
 
 #### 🇧🇯 Bénin — igname, crincrin (corète)
 
-Texte promotionnel — 153/170 :
+Texte promotionnel — 154/170 :
 
 ```
 Igname pour la pilée, crincrin pour la sauce : Kultiva connaît tes cultures, ton hivernage et ta météo. Et ton cahier garde la trace de chaque récolte. 🌱
@@ -257,7 +265,7 @@ l'hivernage. »
 
 #### 🇹🇬 Togo — adémè, gboma
 
-Texte promotionnel — 156/170 :
+Texte promotionnel — 157/170 :
 
 ```
 Adémè et gboma pour tes sauces : Kultiva connaît tes cultures, tes saisons des pluies et ta météo — et te dit chaque matin ce qu'il y a à faire au jardin. 🌱
@@ -275,7 +283,7 @@ des pluies. »
 
 #### 🇳🇪 Niger — mil, moringa
 
-Texte promotionnel — 153/170 :
+Texte promotionnel — 154/170 :
 
 ```
 Mil semé aux premières pluies, moringa qui repousse toute l'année : Kultiva connaît le Sahel, ta météo et l'harmattan. Et note chacune de tes récoltes. 🌱
@@ -293,7 +301,7 @@ chaque coupe, et l'harmattan. »
 
 #### 🇬🇳 Guinée — fonio, taro
 
-Texte promotionnel — 140/170 :
+Texte promotionnel — 141/170 :
 
 ```
 Fonio du Fouta-Djalon, taro des bas-fonds : Kultiva connaît tes cultures, ton hivernage et ta météo — et garde la trace de chaque récolte. 🌱

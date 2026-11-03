@@ -158,7 +158,7 @@ les préférences du simulateur, sans un seul geste à l'écran. Des
 écrans vides ne vendent rien, et les garnir à la main coûtait une
 cinquantaine de gestes.
 
-### 2.2 Texte promotionnel — 125/170 caractères
+### 2.2 Texte promotionnel — 126/170 caractères
 
 Modifiable à tout moment sans nouvelle version :
 
@@ -166,7 +166,7 @@ Modifiable à tout moment sans nouvelle version :
 Semis, récoltes, météo et cahier de culture : Kultiva t'accompagne des premières graines à la fierté de la première tomate. 🌱
 ```
 
-### 2.3 Description — 2 697/4 000 caractères
+### 2.3 Description — 2 711/4 000 caractères
 
 Texte brut, sans HTML. Les trois premières lignes accrochent avant le
 « plus » :
@@ -268,7 +268,7 @@ sans le symbole © (Apple l'ajoute) — 20 caractères :
 **Notes au testeur** — 1 156/4 000 caractères, à coller telles quelles :
 
 ```
-Kultiva est une application de jardinage 100 % en français, destinée à la France et à 8 pays francophones d'Afrique de l'Ouest.
+Kultiva est une application de jardinage en français, en anglais et en espagnol. Elle couvre 73 pays sur six continents : le calendrier de semis, les saisons et les conseils s'adaptent au climat du pays choisi.
 
 • Aucun compte : l'app n'a pas d'écran de connexion et ne demande aucune donnée personnelle. Elle s'ouvre directement sur son contenu. Il n'y a donc ni inscription, ni mot de passe, ni suppression de compte à tester.
 • Localisation : facultative. En cas de refus, l'app bascule automatiquement sur la météo de Paris (ou de la capitale du pays choisi) — ce n'est pas un bug.
@@ -388,13 +388,13 @@ Kultiva
 Your pocket kawaii garden
 ```
 
-**Promotional text** — 128/170 :
+**Promotional text** — 129/170 :
 
 ```
 Sowing, harvests, weather and a growing journal: Kultiva walks with you from the first seeds to the pride of the first tomato. 🌱
 ```
 
-**Description** — 2616/4 000 :
+**Description** — 2630/4 000 :
 
 ```
 The kawaii vegetable garden in your pocket 🌱
@@ -456,13 +456,13 @@ Kultiva
 Tu huerto kawaii de bolsillo
 ```
 
-**Texto promocional** — 126/170 :
+**Texto promocional** — 127/170 :
 
 ```
 Siembras, cosechas, tiempo y cuaderno de cultivo: Kultiva te acompaña de las primeras semillas al orgullo del primer tomate. 🌱
 ```
 
-**Descripción** — 2709/4 000 :
+**Descripción** — 2723/4 000 :
 
 ```
 El huerto kawaii en tu bolsillo 🌱
