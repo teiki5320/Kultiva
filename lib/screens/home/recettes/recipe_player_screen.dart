@@ -14,6 +14,7 @@ import '../../../services/recipe_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/recipe_portions.dart';
 import '../../../widgets/recipe_row.dart';
+import '../../../widgets/readable_width.dart';
 
 /// Déroule une recette pas à pas, en animation.
 ///
@@ -266,7 +267,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
           ),
         ],
       ),
-      body: _erreur != null
+      body: ReadableWidth(child: _erreur != null
           ? Center(
               child: Padding(
                 padding: const EdgeInsets.all(28),
@@ -296,7 +297,7 @@ class _RecipePlayerScreenState extends State<RecipePlayerScreen> {
                   ),
                 ),
               ],
-            ),
+            )),
     );
   }
 }

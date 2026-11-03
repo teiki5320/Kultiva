@@ -15,6 +15,7 @@ import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
 import '../../widgets/vegetable_card.dart';
 import '../vegetable_detail_screen.dart';
+import '../../widgets/readable_width.dart';
 
 enum CalendarMode { sow, harvest }
 
@@ -80,7 +81,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
         }
 
         return Scaffold(
-          body: ListView(
+          body: ReadableWidth(child: ListView(
             padding: EdgeInsets.zero,
             children: [
               // Header saisonnier avec flèche retour.
@@ -287,7 +288,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               ],
               const SizedBox(height: 24),
             ],
-          ),
+          )),
         );
       },
     );

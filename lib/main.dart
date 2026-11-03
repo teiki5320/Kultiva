@@ -16,6 +16,25 @@ import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ⚠️ **Sentry n'est pas initialisé du tout en debug.**
+  //
+  // `beforeSend` rejetait déjà tout ce qui n'est pas une release
+  // (décision du 02/11/2026) : le SDK natif ne faisait donc, en
+  // développement, que coûter. Et il coûtait cher — mesuré le
+  // 03/11/2026 sur un iPad Pro 13" en simulateur, l'app restait plus
+  // de deux minutes sur son splash, processus vivant à 0 % de CPU.
+  // Un `sample` du processus a montré le fil principal bloqué dans
+  // `objc_copyClassList` → `realizeAllClasses` → CloudKit : le
+  // balayage de classes que fait Sentry pour instrumenter les
+  // contrôleurs de vue. C'est le même défaut que le dialogue de
+  // notifications du 02/11 — une initialisation attendue avant
+  // `runApp`, et rien à l'écran tant qu'elle n'a pas rendu la main.
+  if (!kReleaseMode) {
+    await _bootstrapAndRun();
+    return;
+  }
+
   // Sentry est initialisé AVANT le bootstrap, pas après : tout ce que
   // fait `_bootstrapAndRun` (préférences, notifications, fuseau
   // horaire) tourne ainsi dans la zone surveillée. Sinon un
@@ -29,18 +48,12 @@ Future<void> main() async {
       // Échantillonnage bas : limite le trafic réseau de télémétrie
       // (forfaits data limités) tout en gardant les crash reports.
       options.tracesSampleRate = 0.05;
-      // ⚠️ **Rien ne part depuis un build de développement.**
-      //
-      // Le 02/11/2026, un débordement de 6 px vu sur un simulateur
-      // pendant le développement a déclenché une alerte « New issue,
-      // level fatal » dans la boîte mail de Jean. Une erreur de mise
-      // en page qu'on est en train de corriger n'est pas un incident :
-      // elle se voit à l'écran, en rayures jaunes, et elle est
-      // bruyante par nature en debug.
-      //
-      // Noyer les vraies alertes sous les siennes, c'est apprendre à
-      // ne plus les lire. Sentry ne parle donc qu'en release.
-      options.beforeSend = (event, hint) => kReleaseMode ? event : null;
+      // ⚠️ Il n'y a plus de `beforeSend` qui filtre le debug : on
+      // n'arrive ici qu'en release (voir la garde dans `main`). Le
+      // filtre d'origine, posé le 02/11/2026 après qu'un débordement
+      // de 6 px vu en développement a réveillé une alerte « level
+      // fatal » dans la boîte mail de Jean, rendait désormais
+      // toujours `event`.
     },
     appRunner: _bootstrapAndRun,
   );

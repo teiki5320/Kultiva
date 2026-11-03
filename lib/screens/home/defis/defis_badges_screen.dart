@@ -11,6 +11,7 @@ import '../../../widgets/petal_animation.dart';
 import '../../../widgets/season_header.dart';
 import 'badges_grid.dart';
 import 'challenges_grid.dart';
+import '../../../widgets/readable_width.dart';
 
 /// Défis photo et badges.
 ///
@@ -84,7 +85,7 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
     final mois = DateTime.now().month;
     final faits = GardenStats.loadCompletedChallenges().length;
     return Scaffold(
-      body: SafeArea(
+      body: ReadableWidth(child: SafeArea(
         bottom: false,
         child: Column(
           children: <Widget>[
@@ -163,7 +164,7 @@ class _DefisBadgesScreenState extends State<DefisBadgesScreen> {
             ),
           ],
         ),
-      ),
+      )),
     );
   }
 }

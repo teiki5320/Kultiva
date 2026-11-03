@@ -10,6 +10,7 @@ import 'home/recettes/recettes_screen.dart';
 import 'home/sow_screen.dart';
 import 'home/tutos_screen.dart';
 import 'home/vegetables_screen.dart';
+import '../widgets/readable_width.dart';
 
 /// Conteneur des 5 onglets principaux de Kultiva.
 /// Paramètres accessible via icône engrenage en haut à droite.
@@ -100,12 +101,25 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // Kultiva a été dessinée pour un téléphone. Sur un iPad, la même
+    // mise en page s'étire sur 1 032 points : les cartes du tableau de
+    // bord deviennent des bandes presque vides, et une ligne de texte
+    // traverse l'écran d'un bord à l'autre.
+    //
+    // ⚠️ L'Étal est la seule exception, et c'est voulu : sa grille de
+    // tuiles se répartit toute seule (huit colonnes sur un iPad, deux
+    // sur un téléphone) et profite vraiment de la largeur. La borner
+    // lui ferait perdre ce qu'elle sait faire.
     final pages = <Widget>[
-      const SowScreen(),
-      const MesJardinsScreen(),
+      // Le tableau de bord est plus étroit que les autres : ses six
+      // cartes sont des tuiles de hauteur fixe (138 points). À 720 de
+      // large elles font deux fois et demie leur hauteur — des bandes,
+      // là où le téléphone montre des tuiles presque carrées.
+      const ReadableWidth(maxWidth: 560, child: SowScreen()),
+      const ReadableWidth(child: MesJardinsScreen()),
       const VegetablesScreen(),
-      const RecettesScreen(),
-      const TutosScreen(),
+      const ReadableWidth(child: RecettesScreen()),
+      const ReadableWidth(child: TutosScreen()),
     ];
     // Les libellés de la barre sont la première chose traduite : ils
     // sont visibles sur tous les écrans.

@@ -90,11 +90,20 @@ est acceptée).
 **Sur l'iPad.** L'app se lance en plein écran portrait sur iPadOS 26.5 et
 produit des captures au format exact attendu par Apple. Les mises en page
 s'adaptent — le catalogue passe à 8 colonnes au-delà de 900 points, les
-grilles de badges et de défis se dimensionnent seules. L'allure générale des écrans en 13 pouces n'a toujours pas
-été jugée à l'œil : depuis le 31 octobre 2026, le simulateur iOS est installé
-sur le Mac et l'app s'y lance, mais `Simulator.app` manque à cette
-installation de Xcode et toutes les captures sortent noires ; les tests ne
-voient qu'une chose, qu'une boîte ne déborde pas.
+grilles de badges et de défis se dimensionnent seules.
+
+Les écrans ont été **regardés sur un iPad Pro 13″ le 3 novembre 2026**,
+et l'ergonomie y a été corrigée le même jour. Avant : les six cartes du
+tableau de bord mesuraient 510 points de large pour 138 de haut, une
+phrase traversait l'écran d'un bord à l'autre, et une feuille modale
+occupait les 1 032 points. Depuis : le contenu est borné et centré
+(720 points, 560 pour le tableau de bord et les feuilles modales), avec
+**une exception voulue**, l'Étal, dont la grille se répartit toute seule
+et profite de la largeur. Le bandeau de saison reste dans la colonne.
+
+Restent deux défauts d'allure, connus et non bloquants : le logo du
+splash natif s'affiche à sa taille de téléphone au milieu d'un écran de
+13 pouces, et le bas de l'écran est vide sur les pages courtes.
 
 **Compte de démonstration.** Sans objet depuis le retrait des comptes :
 laisse la case « Connexion requise » décochée dans App Store Connect. Il

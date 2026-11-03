@@ -123,7 +123,6 @@ extension DiseaseLocalized on Disease {
 /// plus rien — c'est pour ça que les deux se traduisent ensemble, ou
 /// pas du tout.
 extension LexiconLocalized on LexiconEntry {
-  String get displayTerm => tr(term);
   String get displayDefinition => tr(definition);
 }
 
@@ -138,13 +137,13 @@ extension BadgeLocalized on GardenBadge {
 
 /// Un défi photo, dans la langue de l'interface.
 ///
-/// La variante ouest-africaine (`waName`, `waDescription`) se traduit
-/// comme le reste : un anglophone au Ghana ou au Nigeria voit le défi
-/// local, en anglais.
+/// ⚠️ La variante ouest-africaine n'a **pas** de getter à elle, et
+/// c'est volontaire : `PhotoChallenge.forRegion()` remplace déjà
+/// `name` et `description` par `waName` et `waDescription` avant que
+/// l'écran les lise. Un `displayWaName` serait un second chemin vers
+/// la même phrase — personne ne l'appelait, et les deux auraient
+/// divergé.
 extension ChallengeLocalized on PhotoChallenge {
   String get displayName => tr(name);
   String get displayDescription => tr(description);
-  String? get displayWaName => waName == null ? null : tr(waName!);
-  String? get displayWaDescription =>
-      waDescription == null ? null : tr(waDescription!);
 }

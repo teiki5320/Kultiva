@@ -7,6 +7,7 @@ import '../services/geolocation_service.dart';
 import '../services/prefs_service.dart';
 import '../theme/app_theme.dart';
 import '../utils/text_normalize.dart';
+import '../widgets/readable_width.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback onDone;
@@ -90,7 +91,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: KultivaColors.lightBackground,
-      body: SafeArea(
+      body: ReadableWidth(child: SafeArea(
         child: Column(
           children: <Widget>[
             Expanded(
@@ -159,7 +160,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
-      ),
+      )),
     );
   }
 }

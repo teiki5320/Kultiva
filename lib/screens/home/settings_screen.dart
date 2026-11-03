@@ -12,6 +12,7 @@ import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/text_normalize.dart';
 import '../home/tuto_fiche_screen.dart';
+import '../../widgets/readable_width.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -22,7 +23,8 @@ class SettingsScreen extends StatelessWidget {
     // et les SnackBars (détection pays, suppression de compte…) sont
     // rendues derrière la route opaque, donc invisibles.
     return Scaffold(
-      body: SafeArea(
+      body: ReadableWidth(
+          child: SafeArea(
         bottom: false,
         child: Column(
           children: <Widget>[
@@ -367,7 +369,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      )),
     );
   }
 

@@ -120,8 +120,6 @@ class PrefsService {
         _kPrefsUpdatedAt, DateTime.now().toUtc().toIso8601String());
   }
 
-  bool _loaded = false;
-  bool get isLoaded => _loaded;
 
   Future<void> load() async {
     _prefs = await SharedPreferences.getInstance();
@@ -138,7 +136,6 @@ class PrefsService {
     soundEnabled.value = _prefs!.getBool(_kSoundEnabled) ?? true;
     musicEnabled.value = _prefs!.getBool(_kMusicEnabled) ?? false;
     soundVolume.value = _prefs!.getDouble(_kSoundVolume) ?? 0.7;
-    _loaded = true;
   }
 
   /// Lecture/écriture générique pour stocker des données arbitraires

@@ -1005,6 +1005,51 @@ Règles spécifiques au projet pour être efficace dès la première action :
     s'enchaînent, le halo désigne le bon élément, la barre d'onglets
     suit, et le bouton pause répond.
 
+## 📐 L'iPad : du contenu borné (03/11/2026)
+
+**Ce qui a été regardé** : l'app, écran par écran, sur un **iPad Pro
+13″** en simulateur. C'est la première fois — jusqu'ici seuls des tests
+widget disaient qu'une boîte ne débordait pas, ce qui ne dit rien de
+l'allure.
+
+**Ce qu'on y voyait.** Les six cartes du tableau de bord faisaient
+510 points de large pour 138 de haut — des bandes, là où le téléphone
+montre des tuiles presque carrées. Le sous-titre de l'onboarding tenait
+sur une seule ligne de 130 caractères. Dans l'onglet Conservation, le
+signet d'une recette était à 1 400 points de son titre. Une feuille
+modale occupait toute la largeur.
+
+**Le correctif, et sa honte** : `ReadableWidth` existait **depuis le
+30/10/2026**, avec un commentaire qui décrivait exactement ce problème
+— et il était branché sur **un** écran sur trente-trois. Encore un
+widget écrit et non relié (règle 10, cinquième fois). Il l'est
+maintenant partout :
+
+- les onglets, dans `root_tabs.dart` : 720 points, **560 pour le
+  tableau de bord** (ses tuiles ont une hauteur fixe de 138) ;
+- les écrans poussés : paramètres, calendrier annuel, calendrier
+  mensuel, météo, défis & badges, potager carré, lecteur de recettes,
+  onboarding ;
+- **toutes** les feuilles modales d'un coup, par
+  `bottomSheetTheme.constraints` dans `app_theme.dart` — un seul
+  endroit plutôt que dix appels à `showModalBottomSheet`.
+
+⚠️ **L'Étal est l'exception, et elle est voulue.** Sa grille de tuiles
+se répartit seule — huit colonnes sur un iPad, deux sur un téléphone —
+et profite vraiment de la largeur. La borner lui ferait perdre ce
+qu'elle sait faire. `test/ipad_landscape_test.dart` connaît cette
+exception par son nom : ajouter un onglet sans le borner fait échouer
+la suite.
+
+⚠️ **En dessous de la borne, rien ne change.** Sur un téléphone,
+l'affichage est identique au pixel près — un test le vérifie à 390
+points.
+
+**Ce qui reste, non bloquant** : le logo du splash natif s'affiche à sa
+taille de téléphone au milieu des 13 pouces (`flutter_native_splash`
+pose une image de taille fixe dans le storyboard), et le bas de l'écran
+reste vide sur les pages courtes.
+
 ## 🔭 Sentry ne parle qu'en release (02/11/2026)
 
 **Ce qui s'est passé** : un débordement de 6 px vu sur un simulateur
@@ -1017,14 +1062,35 @@ en rayures jaunes. Elle est bruyante par nature en debug — chaque
 contrainte trop serrée pendant un remaniement en produit une. Noyer les
 vraies alertes sous les siennes, c'est apprendre à ne plus les lire.
 
+**Le filtre `beforeSend` a été remplacé le 03/11/2026 par une garde
+plus haut**, dans `main()` : en debug, Sentry n'est **pas initialisé du
+tout**, et `_bootstrapAndRun()` est appelé directement.
+
 ```dart
-options.beforeSend = (event, hint) => kReleaseMode ? event : null;
+if (!kReleaseMode) {
+  await _bootstrapAndRun();
+  return;
+}
 ```
 
+**Pourquoi** : le filtre rejetait déjà tout en debug, donc le SDK natif
+n'y faisait que coûter — et il coûtait cher. Mesuré sur un **iPad Pro
+13″ en simulateur** : plus de **deux minutes** de splash, processus
+vivant à 0 % de CPU. Un `sample` du processus a montré le fil principal
+bloqué dans `objc_copyClassList` → `realizeAllClasses` → **CloudKit**,
+c'est-à-dire le balayage de classes que fait Sentry pour instrumenter
+les contrôleurs de vue. Sans Sentry, le même build dessine en **20 s**.
+
+⚠️ **Et ce n'est pas un défaut de l'app livrée.** Le même commit
+compilé en **release** dessine le tableau de bord en **moins de 4 s**
+sur le même iPad, Sentry compris. Le blocage est propre au debug
+(JIT + simulateur). Ne pas le citer comme un bug utilisateur.
+
 ⚠️ **Conséquence à connaître** : un plantage survenu pendant un
-`flutter run` ne remonte plus à Sentry. C'est voulu — il est déjà dans
-la console, avec sa pile d'appels. Pour tester Sentry lui-même, il faut
-un build release.
+`flutter run` ne remonte plus à Sentry — et il n'y a plus de zone
+surveillée du tout en debug. C'est voulu : il est déjà dans la console,
+avec sa pile d'appels. Pour tester Sentry lui-même, il faut un build
+release.
 
 ## 🧹 Zéro installation : ce que ça autorise (02/11/2026)
 
@@ -2113,8 +2179,11 @@ dans la même phrase.
 
 ### Voir un écran HTML sans le simulateur
 
-Le simulateur rend des captures noires (alerte 9), mais tutos et
-recettes sont du HTML : Chrome headless suffit.
+Le simulateur rend bien l'écran depuis le 02/11/2026 (alerte 9), mais
+pour un tuto ou une recette, qui sont du HTML, Chrome headless reste
+plus rapide : pas de build, pas d'installation. ⚠️ À une réserve près,
+apprise le 02/11 : **un asset rendu dans une WebView se vérifie dans la
+WebView** — Chrome n'a pas de `NavigationDelegate`.
 
 ```bash
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \

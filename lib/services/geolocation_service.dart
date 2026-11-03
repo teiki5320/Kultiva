@@ -14,22 +14,11 @@ import '../models/country.dart';
 class GeolocationService {
   GeolocationService._();
 
-  /// Tente de déterminer le pays à partir de la position GPS, en
-  /// demandant la permission de localisation si nécessaire.
-  /// Retourne null si la localisation est indisponible, refusée, ou si
-  /// le pays détecté n'est pas couvert par Kultiva.
-  static Future<Country?> detectCountry() =>
-      _detectCountryOnly(requestPermission: true);
-
   /// Variante passive : ne déclenche JAMAIS le dialogue de permission.
   /// Utilisée à l'onboarding pour suggérer silencieusement le pays quand
   /// la permission est déjà accordée.
   static Future<Country?> detectCountryPassive() async =>
       (await _detect(requestPermission: false))?.country;
-
-  static Future<Country?> _detectCountryOnly(
-          {required bool requestPermission}) async =>
-      (await _detect(requestPermission: requestPermission))?.country;
 
   /// Détecte le pays ET affine la sous-zone climatique par latitude
   /// (le nord de la Côte d'Ivoire n'est pas Abidjan…). Retourne null si

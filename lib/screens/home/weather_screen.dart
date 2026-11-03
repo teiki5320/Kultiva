@@ -9,6 +9,7 @@ import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
+import '../../widgets/readable_width.dart';
 
 /// Page météo détaillée avec slides par jour.
 class WeatherScreen extends StatefulWidget {
@@ -189,7 +190,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ReadableWidth(child: Column(
         children: [
           // Header saisonnier — mois masqué, on injecte notre propre
           // titre "🌤 Météo" + localisation à la place.
@@ -339,7 +340,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
             ),
         ],
-      ),
+      )),
     );
   }
 

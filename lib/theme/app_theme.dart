@@ -158,6 +158,15 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
+      // ⚠️ Toutes les feuilles modales sont bornées ici, en un seul
+      // endroit. Sur un iPad, une feuille non bornée traverse les
+      // 1 032 points de l'écran : le dossier d'un plant, dessiné pour
+      // un téléphone, y devient une bande vide avec un bouton perdu
+      // dans un coin. En dessous de 560 points, cette contrainte ne
+      // fait rien — sur téléphone, l'affichage est identique.
+      bottomSheetTheme: const BottomSheetThemeData(
+        constraints: BoxConstraints(maxWidth: 560),
+      ),
       dividerTheme: DividerThemeData(
         color: KultivaColors.lightGreen.withValues(alpha: 0.5),
         thickness: 1,
@@ -279,6 +288,15 @@ class AppTheme {
             GoogleFonts.nunito(fontWeight: FontWeight.w600, fontSize: 12),
         type: BottomNavigationBarType.fixed,
         elevation: 8,
+      ),
+      // ⚠️ Toutes les feuilles modales sont bornées ici, en un seul
+      // endroit. Sur un iPad, une feuille non bornée traverse les
+      // 1 032 points de l'écran : le dossier d'un plant, dessiné pour
+      // un téléphone, y devient une bande vide avec un bouton perdu
+      // dans un coin. En dessous de 560 points, cette contrainte ne
+      // fait rien — sur téléphone, l'affichage est identique.
+      bottomSheetTheme: const BottomSheetThemeData(
+        constraints: BoxConstraints(maxWidth: 560),
       ),
       dividerTheme: DividerThemeData(
         color: Colors.white.withValues(alpha: 0.12),

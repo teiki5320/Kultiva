@@ -14,6 +14,7 @@ import '../../../theme/app_theme.dart';
 import '../../../utils/companion_status.dart';
 import '../garden_plan_config_sheet.dart';
 import 'planner_widgets.dart';
+import '../../../widgets/readable_width.dart';
 
 /// Filtre actif sur le plant picker. Reflète le pattern Étal :
 /// favoris / tous / par catégorie.
@@ -250,7 +251,8 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
             ),
           ],
         ),
-        body: SafeArea(
+        body: ReadableWidth(
+            child: SafeArea(
           child: Column(
             children: <Widget>[
               // Barre Configurer / Conseils.
@@ -271,7 +273,7 @@ class _GardenPlannerScreenState extends State<GardenPlannerScreen> {
               ),
             ],
           ),
-        ),
+        )),
       ),
     );
   }

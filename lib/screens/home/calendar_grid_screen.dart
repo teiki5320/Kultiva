@@ -16,6 +16,7 @@ import '../../widgets/petal_animation.dart';
 import '../../widgets/pastel_chip.dart';
 import '../../widgets/season_header.dart';
 import '../vegetable_detail_screen.dart';
+import '../../widgets/readable_width.dart';
 
 /// Vue calendrier annuel — une ligne par légume, douze segments.
 ///
@@ -160,7 +161,8 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
         }
 
         return Scaffold(
-          body: Column(
+          body: ReadableWidth(
+              child: Column(
             children: [
               // Header saisonnier avec flèche retour + bouton filtre off.
               Stack(
@@ -372,7 +374,7 @@ class _CalendarGridScreenState extends State<CalendarGridScreen> {
                       ),
               ),
             ],
-          ),
+          )),
         );
       },
     );
