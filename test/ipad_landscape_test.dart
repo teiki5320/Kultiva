@@ -333,5 +333,63 @@ void _cartesTableauDeBord() {
       expect(KawaiiCard.hauteurPour(300), closeTo(186, 0.5));
       expect(KawaiiCard.echellePour(330), closeTo(1.5, 0.01));
     });
+
+    test('aucun téléphone ne passe la carte en ligne', () {
+      for (final ecran in <double>[375, 390, 402, 440]) {
+        expect(KawaiiCard.enLignePour(carteA(ecran)), isFalse,
+            reason: 'un écran de $ecran points a changé de disposition');
+      }
+      expect(KawaiiCard.enLignePour(carteA(1032)), isTrue);
+    });
+
+    /// ⚠️ Les deux tests ci-dessous regardent **où les choses sont
+    /// dessinées**, pas ce qu'une fonction renvoie. C'est le défaut
+    /// qu'ils attrapent : une carte dont l'icône reste au-dessus du
+    /// titre garde 86 points de vide au milieu sur un iPad, et aucune
+    /// borne ni aucun calcul ne le dit.
+    testWidgets('une carte large pose son icône à gauche du titre',
+        (tester) async {
+      await _monteCarte(tester, 494);
+      final icone = tester.getCenter(find.text('🌱'));
+      final titre = tester.getCenter(find.text('Semer'));
+      expect(icone.dx, lessThan(titre.dx),
+          reason: 'l\'icône doit précéder le titre, pas le surmonter');
+      expect((icone.dy - titre.dy).abs(), lessThan(24),
+          reason: 'les deux doivent être sur la même ligne');
+    });
+
+    testWidgets('une carte de téléphone garde son icône au-dessus',
+        (tester) async {
+      await _monteCarte(tester, 165);
+      final icone = tester.getCenter(find.text('🌱'));
+      final titre = tester.getCenter(find.text('Semer'));
+      expect(icone.dy, lessThan(titre.dy));
+      expect((icone.dx - titre.dx).abs(), lessThan(40),
+          reason: 'les deux restent alignés sur le bord gauche');
+    });
   });
+}
+
+/// Monte une seule carte à la largeur voulue, sans le reste de l'écran.
+Future<void> _monteCarte(WidgetTester tester, double largeur) async {
+  tester.view.devicePixelRatio = 1.0;
+  tester.view.physicalSize = Size(largeur + 40, 400);
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(MaterialApp(
+    home: Scaffold(
+      body: Center(
+        child: SizedBox(
+          width: largeur,
+          child: KawaiiCard(
+            emoji: '🌱',
+            label: 'Semer',
+            subtitle: '22 légumes',
+            gradientColors: const <Color>[Colors.white, Colors.white],
+            bubbleColor: Colors.green,
+            onTap: () {},
+          ),
+        ),
+      ),
+    ),
+  ));
 }

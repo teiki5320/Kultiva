@@ -209,7 +209,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 54 fichiers — 1 151 tests (03/11/2026)
+├── test/                   # 54 fichiers — 1 154 tests (03/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -706,7 +706,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 151 tests au 03/11/2026, dont une
+1. **Pas de test d'intégration** — 1 154 tests au 03/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3 ;
    `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
@@ -777,9 +777,21 @@ Règles spécifiques au projet pour être efficace dès la première action :
    ET blocage), repasser le questionnaire d'âge en CGU/13+ et remettre
    les mentions dans les fiches et les privacy policies.
 
-6. **Liens stores dans `landing/index.html`** — les boutons Télécharger
-   pointent vers `href="#"`. À remplacer par les vrais liens App Store /
-   Play Store une fois l'app publiée.
+6. ~~**Liens stores dans `landing/index.html`**~~ — ✅ **SANS OBJET
+   (vérifié le 03/11/2026).** Les deux boutons ne sont plus des liens
+   morts : ce sont des `<span class="btn disabled">Bientôt sur l'App
+   Store</span>`, changés par le commit `a68ae1f`. Un `href="#"`
+   renvoie en haut de la page, ce qui est pire qu'un bouton inerte, et
+   le commentaire du fichier le dit.
+
+   ⚠️ **Cette alerte a survécu une semaine à sa correction**, et je
+   l'ai reproposée à Jean comme travail à faire sans ouvrir le
+   fichier. Une alerte qu'on ne referme pas devient une fausse
+   information de plus. **Mesurer avant de citer** vaut aussi pour sa
+   propre liste de tâches.
+
+   **Reste vrai** : au moment de la publication, remettre de vrais
+   `<a href>` vers les fiches des boutiques.
 
 8. ~~**Le Poussidex « collection de plants » n'existait pas dans l'app**~~ —
    ✅ **RÉSOLU (30/10/2026)**. Diagnostic : 2 168 lignes écrites et
@@ -1236,6 +1248,37 @@ deux côtés : une cible de 200 donnait **une seule colonne** sur un
 iPhone de 375 points — l'inverse du défaut qu'on corrigeait. C'est
 160. Un test monte la grille à 343 et à 1 000 points et compte les
 colonnes.
+
+⚠️ **Et une tuile large ne se remplit pas en grandissant.** Sur un
+téléphone, la carte du tableau de bord fait 165 × 138 et une icône
+posée au-dessus d'un titre remplit la boîte. Sur un iPad elle fait
+492 × 260, et la même disposition laisse **86 points de vide** au
+milieu — mesurés à l'écran le 03/11/2026. Au-delà de 220 points de
+large, la carte range donc son contenu **en ligne**
+(`KawaiiCard.enLignePour`) : icône à gauche, titre et sous-titre à
+droite.
+
+⚠️ **Le remède n'était pas de raccourcir la carte.** Sa hauteur est
+ce qui fait que six cartes remplissent l'écran : mesuré, trois
+colonnes de 202 points laissent 594 points nus sous la grille, deux
+colonnes de 260 n'en laissent que 206. C'est le contenu qui devait
+occuper la surface, pas la surface se réduire au contenu.
+
+⚠️ **Et le passage en ligne n'a pas suffi du premier coup** : sans
+`Center`, le `Row` prend la hauteur de son plus grand enfant et le
+`Stack` le colle en haut — les deux tiers bas de la carte restaient
+nus. Vu à l'écran juste après avoir cru le problème réglé. Deux tests
+de `ipad_landscape_test.dart` regardent maintenant **où les choses
+sont dessinées** (l'icône est-elle à gauche du titre, et sur la même
+ligne), pas ce qu'une fonction renvoie ; vérifiés en recassant
+`enLignePour`.
+
+⚠️ **Un diagnostic faux, corrigé par la mesure** : j'avais annoncé à
+Jean que le carrousel du tableau de bord était « décalé » sur iPad,
+une diapositive dépassant à gauche. C'est le comportement normal d'un
+`PageView` à `viewportFraction: 0.88` **sur sa dernière page** : il ne
+peut plus montrer de suivante, donc seul le bord de la précédente
+reste visible. Identique sur iPhone. Rien à corriger.
 
 ⚠️ **Une tuile de hauteur fixe redevient une bande dès qu'elle
 s'élargit.** `KawaiiCard.hauteurPour()` fait suivre la hauteur

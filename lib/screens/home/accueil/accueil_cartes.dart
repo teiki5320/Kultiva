@@ -77,6 +77,23 @@ class KawaiiCard extends StatelessWidget {
   /// points de large, donc 2,24 : il est plafonné.
   static double echellePour(double largeur) => (largeur / 220).clamp(1.0, 1.8);
 
+  /// Une carte large range son contenu **en ligne** plutôt qu'en colonne.
+  ///
+  /// Sur un téléphone la carte fait 165 × 138 : une icône au-dessus
+  /// d'un titre remplit la boîte. Sur un iPad elle fait 492 × 251, et
+  /// la même disposition laisse **86 points de vide** entre l'icône et
+  /// le titre, mesurés à l'écran le 03/11/2026 — une bande claire au
+  /// milieu de la carte.
+  ///
+  /// ⚠️ Le remède n'est pas de raccourcir la carte. Sa hauteur est ce
+  /// qui fait que six cartes remplissent l'écran : à 202 de haut
+  /// (trois colonnes), deux rangées laissent 350 points nus en
+  /// dessous. C'est le **contenu** qui doit occuper la surface.
+  ///
+  /// Le seuil est celui de [echellePour], et pour la même raison : la
+  /// carte la plus large qu'un téléphone produise fait 198 points.
+  static bool enLignePour(double largeur) => largeur >= 220;
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -131,85 +148,42 @@ class KawaiiCard extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.all(16 * k),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 44 * k,
-                      height: 44 * k,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.7),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: bubbleColor.withValues(alpha: 0.15),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      child: imagePath != null
-                          ? ClipOval(
-                              child: Image.asset(imagePath!,
-                                  width: 44 * k,
-                                  height: 44 * k,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) => Text(emoji,
-                                      style: TextStyle(fontSize: 22 * k))),
-                            )
-                          : Text(emoji, style: TextStyle(fontSize: 22 * k)),
-                    ),
-                    // ⚠️ Le titre et le sous-titre forment **un seul**
-                    // enfant flexible, collé en bas par le
-                    // `spaceBetween` de la colonne.
-                    //
-                    // Avant, un `Spacer()` poussait le texte vers le
-                    // bas. Mais un `Spacer` est un `Expanded`, donc il
-                    // se partageait l'espace libre à parts égales avec
-                    // le titre : celui-ci n'obtenait qu'une ligne, et
-                    // « Challenges & badges » s'affichait
-                    // « Challenges & ». Le français, qui tient sur une
-                    // ligne, ne montrait rien du problème.
-                    Flexible(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                child: enLignePour(largeur)
+                    // ⚠️ Le `Center` n'est pas décoratif : sans lui le
+                    // `Row` prend la hauteur de son plus grand enfant
+                    // et le `Stack` le colle en haut, laissant les deux
+                    // tiers bas de la carte nus. Vu à l'écran le
+                    // 03/11/2026, juste après avoir cru le problème
+                    // réglé par le passage en ligne.
+                    ? Center(
+                        child: Row(
+                          children: <Widget>[
+                            _icone(k),
+                            SizedBox(width: 16 * k),
+                            Expanded(child: _texte(k)),
+                          ],
+                        ),
+                      )
+                    : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              label,
-                              style: TextStyle(
-                                color: KultivaColors.textPrimary
-                                    .withValues(alpha: 0.9),
-                                fontWeight: FontWeight.w800,
-                                // Échelle adoucie de moitié : une icône
-                                // peut doubler, un titre qui doublerait
-                                // crierait.
-                                fontSize: 15 * (1 + (k - 1) * 0.5),
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(height: 2 * k),
-                          Text(
-                            subtitle,
-                            style: TextStyle(
-                              color: KultivaColors.textPrimary
-                                  .withValues(alpha: 0.55),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 11 * (1 + (k - 1) * 0.5),
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          _icone(k),
+                          // ⚠️ Le titre et le sous-titre forment **un
+                          // seul** enfant flexible, collé en bas par le
+                          // `spaceBetween` de la colonne.
+                          //
+                          // Avant, un `Spacer()` poussait le texte vers
+                          // le bas. Mais un `Spacer` est un `Expanded`,
+                          // donc il se partageait l'espace libre à parts
+                          // égales avec le titre : celui-ci n'obtenait
+                          // qu'une ligne, et « Challenges & badges »
+                          // s'affichait « Challenges & ». Le français,
+                          // qui tient sur une ligne, ne montrait rien du
+                          // problème.
+                          Flexible(child: _texte(k)),
                         ],
                       ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
@@ -218,6 +192,67 @@ class KawaiiCard extends StatelessWidget {
       ),
     );
   }
+
+  /// La pastille ronde qui porte l'image du légume, ou son emoji.
+  Widget _icone(double k) => Container(
+        width: 44 * k,
+        height: 44 * k,
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.7),
+          shape: BoxShape.circle,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: bubbleColor.withValues(alpha: 0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        child: imagePath != null
+            ? ClipOval(
+                child: Image.asset(imagePath!,
+                    width: 44 * k,
+                    height: 44 * k,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) =>
+                        Text(emoji, style: TextStyle(fontSize: 22 * k))),
+              )
+            : Text(emoji, style: TextStyle(fontSize: 22 * k)),
+      );
+
+  /// Le titre et le sous-titre, dans cet ordre.
+  Widget _texte(double k) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: KultivaColors.textPrimary.withValues(alpha: 0.9),
+                fontWeight: FontWeight.w800,
+                // Échelle adoucie de moitié : une icône peut doubler,
+                // un titre qui doublerait crierait.
+                fontSize: 15 * (1 + (k - 1) * 0.5),
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          SizedBox(height: 2 * k),
+          Text(
+            subtitle,
+            style: TextStyle(
+              color: KultivaColors.textPrimary.withValues(alpha: 0.55),
+              fontWeight: FontWeight.w600,
+              fontSize: 11 * (1 + (k - 1) * 0.5),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      );
 }
 
 class Bubble extends StatelessWidget {
