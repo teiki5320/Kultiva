@@ -130,16 +130,54 @@ class _PlantRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
           child: Row(
             children: <Widget>[
-              Container(
+              // ⚠️ La vignette montre le **légume**, pas son stade.
+              // Elle montrait l'emoji de l'étape phénologique : cinq
+              // plants semés le même jour affichaient donc cinq fois
+              // la même graine brune, et la liste ne se lisait plus
+              // qu'en déchiffrant les noms. Vu à l'écran le
+              // 03/11/2026 en préparant les captures des boutiques.
+              // Le stade reste là, en pastille de coin, où il ne
+              // vole la place de personne.
+              SizedBox(
                 width: 36,
                 height: 36,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: veg.category.familyColor.withValues(alpha: 0.18),
-                  borderRadius: BorderRadius.circular(12),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    Container(
+                      width: 36,
+                      height: 36,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color:
+                            veg.category.familyColor.withValues(alpha: 0.18),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: veg.imageAsset == null
+                          ? Text(veg.emoji,
+                              style: const TextStyle(fontSize: 17))
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(veg.imageAsset!,
+                                  width: 36, height: 36, fit: BoxFit.cover),
+                            ),
+                    ),
+                    if (etape != null)
+                      Positioned(
+                        right: -4,
+                        bottom: -4,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(etape.emoji,
+                              style: const TextStyle(fontSize: 11)),
+                        ),
+                      ),
+                  ],
                 ),
-                child: Text(etape?.emoji ?? veg.emoji,
-                    style: const TextStyle(fontSize: 17)),
               ),
               const SizedBox(width: 10),
               Expanded(
