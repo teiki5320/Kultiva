@@ -66,6 +66,14 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            // Flutter active R8 en release. Sans nos règles, il efface
+            // l'attribut `Signature` dont Gson a besoin et
+            // flutter_local_notifications plante au lancement — voir
+            // l'en-tête de proguard-rules.pro.
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }

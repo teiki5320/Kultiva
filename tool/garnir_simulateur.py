@@ -33,6 +33,7 @@ import json
 import subprocess
 import sys
 from datetime import datetime, timedelta
+from xml.sax.saxutils import escape
 
 AUJOURDHUI = datetime(2026, 11, 3, 9, 0)
 
@@ -139,10 +140,40 @@ def main(plist):
         subprocess.run(
             ['plutil', '-replace', chemin, '-' + genre, valeur, plist],
             check=True)
-    print('%d clés écrites dans %s' % (len(PREFS), plist))
+    dit(len(PREFS), plist)
+
+
+def android(fichier):
+    """Écrit le même jardin au format que lit `shared_preferences`.
+
+    ⚠️ **Les clés sont identiques aux deux plateformes**, préfixe
+    `flutter.` compris : c'est le plugin qui le pose, pas nous. Le
+    garnissage a donc **un seul propriétaire de la donnée**, et un
+    jardin corrigé ici sort juste sur les deux systèmes.
+    """
+    lignes = ["<?xml version='1.0' encoding='utf-8' standalone='yes' ?>",
+              '<map>']
+    for cle, (genre, valeur) in PREFS.items():
+        if genre == 'bool':
+            lignes.append('    <boolean name="%s" value="%s" />'
+                          % (cle, 'true' if valeur == 'YES' else 'false'))
+        else:
+            lignes.append('    <string name="%s">%s</string>'
+                          % (cle, escape(valeur)))
+    lignes.append('</map>')
+    with open(fichier, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lignes) + '\n')
+    dit(len(PREFS), fichier)
+
+
+def dit(n, ou):
+    print('%d clés écrites dans %s' % (n, ou))
     print('%d plants, %d cases, %d cultures'
           % (len(plantations), len(cells), len(cultures)))
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    if sys.argv[1] == '--android':
+        android(sys.argv[2])
+    else:
+        main(sys.argv[1])

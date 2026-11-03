@@ -1202,6 +1202,114 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
     qui échoue pour la mauvaise raison passera le jour où la mauvaise
     raison disparaît.
 
+26. **L'app Android plantait au lancement en release** — ✅ **CORRIGÉ
+    le 03/11/2026**, trouvé en installant le premier émulateur Android
+    du projet pour les captures Google Play. **Aucun humain n'avait
+    jamais lancé l'app sur Android.**
+
+    ```
+    FATAL EXCEPTION: main
+    Unable to start receiver ScheduledNotificationBootReceiver
+    Caused by: java.lang.RuntimeException: Missing type parameter.
+      at FlutterLocalNotificationsPlugin.loadScheduledNotifications
+    ```
+
+    **La cause** : `flutter_local_notifications` relit ses
+    notifications programmées avec Gson, qui a besoin du type
+    générique de la liste. R8 — que Flutter active **en release
+    seulement** — efface l'attribut `Signature`, donc `TypeToken` ne
+    trouve plus rien. `android/app/proguard-rules.pro` le garde
+    maintenant.
+
+    ⚠️ **Trois raisons pour lesquelles rien ne pouvait le voir** :
+    R8 ne tourne pas en debug, donc tout le développement se fait du
+    bon côté du défaut ; `flutter analyze` et les 1 154 tests ne
+    regardent que du Dart, et celui-ci est entièrement correct ; et la
+    CI **construit** l'appbundle sans jamais le lancer. Un build qui
+    réussit ne dit pas qu'une app démarre.
+
+    ⚠️ **Il se déclenche au deuxième lancement, pas au premier** : il
+    faut que `scheduled_notifications.xml` existe déjà pour qu'il y
+    ait quelque chose à relire. Une installation neuve ouverte une
+    seule fois ne le montre pas — c'est exactement ce que fait un test
+    manuel rapide.
+
+    ⚠️ **Et `-keepattributes Signature` seul ne suffit pas**, mesuré :
+    R8 en « full mode » (le défaut depuis AGP 8) efface quand même la
+    signature des sous-classes **anonymes** de `TypeToken`, que le
+    plugin utilise. Il faut les règles officielles de Gson, qui sont
+    dans le fichier.
+
+    **Ce qu'il reste à faire** : la seule garde aujourd'hui est
+    d'avoir lancé l'app deux fois à la main. Un émulateur en CI
+    coûterait cher ; à défaut, **lancer deux fois un build release sur
+    un appareil Android avant chaque soumission**.
+
+## 🤖 L'émulateur Android (03/11/2026)
+
+Installé pour les captures Google Play, qui exigent un ratio **sous
+2,0** — l'iPhone 6,9″ est à 2,17 et ne passe pas. L'AVD `kultiva_play`
+est un **1080 × 1920** (exactement le 9:16 recommandé), densité 420,
+image `system-images;android-36;google_apis;arm64-v8a`.
+
+```bash
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+"$ANDROID_HOME/emulator/emulator" -avd kultiva_play -no-window -no-audio \
+  -no-boot-anim -gpu swiftshader_indirect &
+adb wait-for-device && adb root
+flutter build apk --release --target-platform android-arm64
+adb install -r build/app/outputs/flutter-apk/app-release.apk
+python3 tool/garnir_simulateur.py --android /tmp/FlutterSharedPreferences.xml
+adb push /tmp/FlutterSharedPreferences.xml /data/local/tmp/
+adb shell am force-stop com.toa.kultiva
+adb shell cp /data/local/tmp/FlutterSharedPreferences.xml \
+  /data/data/com.toa.kultiva/shared_prefs/
+adb shell chown u0_a214:u0_a214 \
+  /data/data/com.toa.kultiva/shared_prefs/FlutterSharedPreferences.xml
+adb shell am start -n com.toa.kultiva/.MainActivity
+adb exec-out screencap -p > capture.png
+```
+
+⚠️ **Le garnissage a un seul propriétaire** :
+`tool/garnir_simulateur.py` sort le plist iOS **et** le XML Android
+depuis la même donnée, préfixe `flutter.` compris — c'est le plugin
+qui le pose, pas nous. Un jardin corrigé sort juste des deux côtés.
+
+⚠️ **Pas de `shutdown`/`boot` ici, contrairement à iOS** : Android ne
+cache pas les préférences dans un démon, le `force-stop` suffit.
+Mais il faut **lancer l'app une fois avant** d'écrire, sinon
+`shared_prefs/` n'existe pas encore. Et le propriétaire du fichier
+change à chaque réinstallation (`u0_a213`, `u0_a214`…) : le lire sur
+un fichier voisin plutôt que l'écrire en dur.
+
+⚠️ **Deux boîtes de dialogue bloquent tout** si on ne les désamorce
+pas : celle de la permission de localisation, et celle de « Location
+Accuracy » de Google Play Services, qui reste au premier plan et
+empêche l'app de démarrer. Les taps `adb input` ne les atteignent pas
+de façon fiable. La parade est de **fixer la permission comme refusée
+par l'utilisateur**, ce qui supprime la demande :
+
+```bash
+adb shell pm set-permission-flags com.toa.kultiva \
+  android.permission.ACCESS_FINE_LOCATION user-set user-fixed
+```
+
+L'app retombe alors sur Paris, comme le prévoit le repli documenté.
+
+⚠️ **Le coût en disque, mesuré, et il est brutal.** L'émulateur et
+l'image système pèsent ~3 Go, l'AVD en prend 1,9 de plus en
+tournant — mais le vrai consommateur est le **swap** : lui donner
+4 Go de RAM a fait monter le fichier d'échange à **16 Go**, et le Mac
+est passé de 13 Go libres à **900 Mo** en une session. Rester à 2 Go
+de RAM, et surveiller `df` entre deux captures.
+
+⚠️ **Le rendu logiciel est lent, et ça se voit dans les taps.** Après
+un lancement il faut une quinzaine de secondes avant qu'un tap sur la
+barre d'onglets soit pris en compte ; un tap envoyé trop tôt est
+perdu sans erreur, et l'écran suivant ne vient jamais. Vérifier par
+capture après chaque tap, pas enchaîner à l'aveugle.
+
 ## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 
 **Ce qui a été regardé** : l'app, écran par écran, sur un **iPad Pro
