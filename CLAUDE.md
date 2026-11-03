@@ -1033,9 +1033,10 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
 `import` depuis le 31/10, mais du code natif dans chaque build) et
 `cupertino_icons`, qui venait du gabarit Flutter et n'a jamais servi.
 
-23. **Trois images du catalogue montrent le mauvais légume
-    (03/11/2026)** — trouvées en garnissant une installation pour les
-    captures des boutiques, pas en lisant le code.
+23. ~~**Trois images du catalogue montrent le mauvais légume**~~ — ✅
+    **FAIT le 03/11/2026, une planche 2×2, 37 crédits, accord de
+    Jean.** Trouvées en garnissant une installation pour les captures
+    des boutiques, pas en lisant le code.
 
     | Fichier | Ce qu'il montre | Ce qu'il devrait montrer |
     | --- | --- | --- |
@@ -1050,9 +1051,10 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
     badge du 31/10 : le fichier existe, il raconte autre chose.
 
     `test/images_distinctes_test.dart` compare les 130 images deux à
-    deux et refuse une **quatrième** paire. Les trois connues y sont
-    inscrites comme une **dette datée**, pas comme une exception
-    tolérée.
+    deux. Sa liste de dette est **vide** depuis la correction : la
+    paire la plus proche est maintenant `haricot_beurre` et
+    `salsifis` à 7,21 — deux sujets pâles et allongés, légitimement
+    voisins. Le test refuse toute paire sous 7.
 
     ⚠️ **Et une empreinte en noir et blanc ne marche pas** : ces
     images sont toutes « un objet centré sur fond crème », donc elles
@@ -1063,9 +1065,19 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
     légitimement proche — panais et salsifis, deux racines pâles — est
     à 7,6.
 
-    **Les refaire coûte des crédits OpenArt** : à demander à Jean
-    avant de dépenser (règle permanente). Garder les noms de
-    fichiers : `assets/images/vegetables/<id>.webp`.
+    **Ce que la correction a coûté, mesuré** : une planche 2×2 en
+    image-to-image sur GPT Image 2, 1:1, 2k, qualité moyenne —
+    **37 crédits**, une seule génération. Trois images séparées en
+    auraient coûté 126. La quatrième case a servi à un second essai du
+    haricot vert, le sujet le plus dur : une gousse plate se confond
+    vite avec une courgette, et c'est précisément celui qui tombait
+    dans la capture de boutique.
+
+    ⚠️ **Un légume repeint demande sa version détourée** :
+    `python3 tool/detoure_legumes.py haricot navet concombre`, sinon
+    `recipe_player_test` tombe. rembg n'est pas sur le système — venv
+    jetable, et le modèle `isnet-general-use` pèse 179 Mo au premier
+    lancement.
 
 ## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 

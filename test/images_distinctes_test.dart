@@ -38,20 +38,14 @@ void main() {
   /// ⚠️ Ce n'est pas une liste d'exceptions tolérées : c'est une dette
   /// datée. Chaque paire ici est une image à refaire, et la refaire
   /// coûte des crédits OpenArt — à demander à Jean avant de dépenser
-  /// (règle permanente). Le test existe pour qu'une **quatrième** ne
+  /// (règle permanente).
+  ///
+  /// **Elle est vide depuis le 03/11/2026** : les trois images fausses
+  /// (`haricot` et `concombre` qui montraient une courgette, `navet`
+  /// qui montrait un radis) ont été refaites en une planche 2×2,
+  /// 37 crédits. Le test existe maintenant pour qu'une quatrième ne
   /// s'ajoute pas sans qu'on le voie.
-  const dette = <String, String>{
-    'navet|radis':
-        'navet.webp est un deuxième dessin du radis — un navet est '
-            'blanc et violet, pas rouge. À refaire (03/11/2026).',
-    'concombre|haricot':
-        'haricot.webp montre une courgette. À refaire (03/11/2026).',
-    'courgette|haricot':
-        'haricot.webp montre une courgette. À refaire (03/11/2026).',
-    'concombre|courgette':
-        'concombre.webp est un troisième rendu de la même courgette. '
-            'À trancher avec les deux autres (03/11/2026).',
-  };
+  const dette = <String, String>{};
 
   Future<List<int>> vignette(String chemin) async {
     final octets = await File(chemin).readAsBytes();
@@ -111,15 +105,13 @@ void main() {
     // Une paire qui ne correspond plus à rien, c'est une dette qu'on
     // croit avoir et qui n'existe plus — ou une faute de frappe.
     final ids = <String>{for (final v in vegetablesBase) v.id};
-    for (final cle in <String>[
-      'navet|radis',
-      'concombre|haricot',
-      'courgette|haricot',
-      'concombre|courgette',
-    ]) {
+    for (final cle in dette.keys) {
       for (final id in cle.split('|')) {
         expect(ids.contains(id), isTrue, reason: '« $id » n\'existe pas.');
       }
+      expect(dette[cle]!.length, greaterThan(20),
+          reason: '$cle : dis ce qu\'il faut faire, pas seulement '
+              'qu\'il y a un doublon.');
     }
   });
 }

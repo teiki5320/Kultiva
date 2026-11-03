@@ -62,6 +62,17 @@ auraient coûté **200**.
 | Planche de 6 | 6,7 crédits | ≈ 1 200 |
 | **Planche de 20** | **2,1 crédits** | **≈ 380** |
 
+⚠️ **Le prix dépend de la résolution, et 42 n'est pas une constante.**
+Mesuré le 03/11/2026 sur `gpt-image-2` en image-to-image, qualité
+moyenne : **37 crédits en 2k**, 57 en 4k. Demander le prix exact avec
+`openart_model_cost` avant d'annoncer un chiffre — c'est lui qui fait
+foi, pas cette table.
+
+**Une planche de 4 en 2k suffit pour corriger quelques icônes** :
+2048 × 2048 demandés donnent des cellules largement au-dessus des
+512 px finaux (la génération du 03/11 est sortie en 1360 × 1360, soit
+des cellules de 680 — encore confortable).
+
 La planche de 20 est la bonne : grille 5×4 en `aspectRatio: "5:4"` et
 `resolutionTier: "4k"`, ce qui donne 2560×2048 — des cellules de
 512×512 pile, la taille finale des icônes. Elle met deux à trois
