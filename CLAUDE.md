@@ -1304,11 +1304,34 @@ tournant — mais le vrai consommateur est le **swap** : lui donner
 est passé de 13 Go libres à **900 Mo** en une session. Rester à 2 Go
 de RAM, et surveiller `df` entre deux captures.
 
-⚠️ **Le rendu logiciel est lent, et ça se voit dans les taps.** Après
-un lancement il faut une quinzaine de secondes avant qu'un tap sur la
-barre d'onglets soit pris en compte ; un tap envoyé trop tôt est
-perdu sans erreur, et l'écran suivant ne vient jamais. Vérifier par
-capture après chaque tap, pas enchaîner à l'aveugle.
+⚠️ **Le premier tap après une pause est avalé.** Pas seulement au
+lancement : chaque fois qu'on laisse l'émulateur tranquille une
+minute, le tap suivant sur la barre d'onglets ne fait rien, et le
+second passe. **Taper deux fois** et vérifier par capture ; enchaîner
+à l'aveugle fait atterrir les taps sur le lanceur, et on croit à un
+plantage de l'app.
+
+⚠️ **`adb screencap` rend du PNG RGBA**, et Google Play veut du
+« PNG 24 bits sans canal alpha ». `tool/sans_alpha.py` retire le
+canal sans recompresser. Ne pas contourner par du JPEG : le texte est
+ce qu'une capture de boutique montre le plus.
+
+⚠️ **Deux boîtes de Google Play Services, pas une**, et la seconde ne
+se ferme pas. Accorder la localisation déclenche
+`LocationSettingsCheckerActivity` (« Location Accuracy »), que
+`adb input tap` n'atteint pas et que `BACK` ne ferme pas : elle se
+recrée en boucle. D'où le choix de **refuser** la localisation pour
+les captures. Conséquence : l'écran Météo 7 jours est inaccessible en
+émulateur, puisqu'il ne s'ouvre que si la météo a chargé.
+
+⚠️ **`du` traverse les points de montage, et ça fait mentir une
+mesure de disque.** `~/Library/Developer/CoreDevice/DeviceFS` est un
+montage `devicefs` : `du -sh` y annonce **82 Go**, qui sont le
+contenu des iPhone vus à travers lui ; le dossier réel pèse **4 Ko**.
+J'ai proposé à Jean d'effacer ces 82 Go, ce qui n'aurait rien
+libéré. **Mesurer avec `du -x`** — qui reste sur un système de
+fichiers — et vérifier avec `mount` avant de parler d'un gros
+dossier.
 
 ## 📐 L'iPad : les grilles prennent la largeur (03/11/2026)
 

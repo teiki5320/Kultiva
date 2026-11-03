@@ -242,17 +242,26 @@ la synchro (Cloudflare, ci-dessous).
 4. **Compléter la fiche App Store** : fiche créée (Apple ID `6762550020`) ; restent les trois URL, l'adresse de contact, la déclaration DSA (trader) et le téléphone de revue.
 5. ✅ **Garnir une installation pour les captures** : fait, et outillé — `tool/garnir_simulateur.py`.
 6. ✅ **Captures d'écran Apple** : 7 en iPhone 6,9″ (1320 × 2868) et 7 en iPad 13″ (2064 × 2752), prises le 3 novembre 2026 dans `build/captures/`. La 8ᵉ, facultative, reste à faire.
-6 bis. ⬜ **Captures d'écran Google Play — 4 sur 7 faites.** Aucune des 14 captures Apple ne convenait : Play exige que le côté le plus long fasse **moins du double** du côté le plus court, et l'iPhone 6,9″ est à 2,17 (1320 × 2868). Un émulateur Android a donc été installé le 3 novembre 2026, en **1080 × 1920** — le 9:16 recommandé. Faites : tableau de bord, « à semer en novembre », cahier de culture, badges. Restent : journal, fiche tomate, potager carré, météo. Elles sont dans `build/captures/play/`, qui **n'est pas suivi par git**.
+6 bis. ✅ **Captures d'écran Google Play — faites le 4 novembre 2026.** Dix captures en **1080 × 1920**, dans `build/captures/play/` (dossier **non suivi par git**) : tableau de bord, « à semer en novembre », cahier de culture, potager carré, journal, « Garder ta récolte », fiche tomate, badges, plus l'Étal et « au jardin en ce moment » en réserve. Play en accepte huit par type d'appareil.
 
-    ⚠️ **Le chantier est arrêté par le disque, pas par l'app** : le Mac est descendu à **900 Mo libres** pendant la session (le swap est monté à 16 Go), et l'émulateur refuse de démarrer en dessous. Voir le point 12.
+    **Pourquoi il a fallu un émulateur Android** : aucune des 14 captures Apple ne convenait. Play exige que le côté le plus long fasse **moins du double** du côté le plus court, et l'iPhone 6,9″ est à 2,17 (1320 × 2868). Celles-ci sont à **1,78**, le 9:16 que Play recommande.
 
-    ✅ **Et cette installation a servi à autre chose** : elle a trouvé que l'app **plantait au lancement en release sur Android**, pour tout le monde. Corrigé le même jour (`android/app/proguard-rules.pro`), détail dans l'alerte 26 de `CLAUDE.md`.
+    ⚠️ **L'alpha** : `adb screencap` rend du PNG **RGBA**, que Play peut refuser (« PNG 24 bits sans canal alpha »). `tool/sans_alpha.py` le retire sans recompresser — passer par du JPEG abîmerait le texte, qui est ce qu'une capture de boutique montre le plus.
+
+    ⬜ **Il manque l'écran Météo 7 jours**, qui était prévu. Il ne s'ouvre que si la météo a chargé, donc il faut la localisation ; et l'accorder dans l'émulateur déclenche en boucle la boîte « Location Accuracy » de Google Play Services, qui reste au premier plan. À prendre sur un vrai téléphone Android.
+
+    ✅ **Et cette installation a servi à autre chose** : elle a trouvé que l'app **plantait au lancement en release sur Android**, pour tout le monde. Corrigé le 3 novembre 2026 (`android/app/proguard-rules.pro`), détail dans l'alerte 26 de `CLAUDE.md`.
 7. ✅ **Liens Amazon remis** : ôtés le 20 octobre 2026 (compte fermé), les 159 liens sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`. ⚠️ Pense au statut trader (DSA) à la soumission.
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (avertissement ITMS-90683) ; builds 127 à 195 envoyés depuis.
 9. **Soumettre iOS** : le build 195 (nuit du 2 au 3 novembre 2026) depuis `docs/FICHE_APP_STORE.md`.
 10. **Créer la fiche Google Play** : puis lancer le test fermé sans attendre, ses quatorze jours courent en arrière-plan.
 11. **Relier les boutons « Télécharger »** : le site n'a plus de `href="#"` — les deux boutons sont inertes et disent « Bientôt sur l'App Store » / « Bientôt sur Google Play ». À remplacer par de vrais liens une fois l'app en ligne.
-12. ⬜ **Le disque du Mac est plein** : **900 Mo libres** le 3 novembre 2026, mesuré. Deux causes, de tailles très différentes — le **swap** monté à 16 Go pendant la session d'émulateur (il se résorbe tout seul), et surtout `~/Library/Developer/CoreDevice/DeviceFS`, qui pèse **82 Go**. C'est le cache que Xcode garde des iPhone branchés ; il se reconstruit tout seul si on l'efface. Décision à prendre par Jean — rien n'a été supprimé.
+12. ⬜ **Le disque du Mac est plein** : **5 Go libres** le 4 novembre 2026, et l'émulateur refuse de démarrer sous 1 Go. Le swap monte à 16 Go pendant une session d'émulateur, puis se résorbe.
+
+    ⚠️ **Correction d'une erreur de cette fiche** : elle annonçait 82 Go récupérables dans `~/Library/Developer/CoreDevice/DeviceFS`. C'est **faux**. Ce chemin est un **point de montage** (`devicefs`), pas un dossier : `du` y mesure le contenu des iPhone vus à travers le montage. Le dossier réel pèse **4 Ko**, et l'effacer n'aurait rien libéré. Mesuré avec `mount` et `du -x`, qui ne traverse pas les montages.
+
+    **Les vrais gros postes, mesurés** : `~/Library/Developer/CoreSimulator` 11 Go (les runtimes et appareils iOS), `~/Dev` 18 Go, `~/Pictures` 9,7 Go. Rien n'a été supprimé.
+
 
 ---
 
