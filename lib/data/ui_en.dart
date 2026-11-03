@@ -752,6 +752,8 @@ const Map<String, String> uiTextsEn = <String, String>{
       'For {0} people',
   'Pour {0} personne':
       'For {0} person',
+  'Prends le temps de regarder ton jardin.':
+      'Take a moment to look at your garden.',
   'écrite pour {0}':
       'written for {0}',
   'Moins':

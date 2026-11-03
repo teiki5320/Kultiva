@@ -4287,8 +4287,15 @@ final List<Vegetable> cultures = vegetablesBase
 /// [calendar] est obligatoire exprès. Avec une valeur par défaut, le
 /// seul appelant qui l'oublie ramène le défaut sans qu'`analyze` ni
 /// aucun test ne voient rien passer.
-Vegetable vegetableOfTheDay(DateTime day,
-    {required List<RegionData> calendar}) {
+/// Les identifiants des cultures qu'on peut **mettre en avant** sous ce
+/// calendrier — pleine terre, chez cet utilisateur.
+///
+/// Un seul endroit pour la règle : le tableau de bord s'en sert deux
+/// fois, pour le légume du jour et pour le conseil du jour, et les
+/// deux portaient le même défaut. Le second a survécu une heure à la
+/// correction du premier parce que la règle était écrite dans la
+/// fonction au lieu d'être nommée.
+Set<String> cultivablesEnPleineTerre(List<RegionData> calendar) {
   final cultivables = <String>{};
   final sousAbri = <String>{};
   for (final rd in calendar) {
@@ -4296,9 +4303,15 @@ Vegetable vegetableOfTheDay(DateTime day,
     if (rd.sowingMonths.isEmpty && rd.harvestMonths.isEmpty) continue;
     cultivables.add(rd.vegetableId);
   }
-  final candidats = cultures
-      .where((v) => cultivables.contains(v.id) && !sousAbri.contains(v.id))
-      .toList(growable: false);
+  cultivables.removeAll(sousAbri);
+  return cultivables;
+}
+
+Vegetable vegetableOfTheDay(DateTime day,
+    {required List<RegionData> calendar}) {
+  final ici = cultivablesEnPleineTerre(calendar);
+  final candidats =
+      cultures.where((v) => ici.contains(v.id)).toList(growable: false);
   // Un calendrier vide ou inconnu ne doit pas vider l'écran d'accueil.
   final liste = candidats.isEmpty ? cultures : candidats;
   final dayOfYear = day.difference(DateTime(day.year)).inDays;

@@ -209,7 +209,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 52 fichiers — 1 130 tests (03/11/2026)
+├── test/                   # 53 fichiers — 1 139 tests (03/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -706,7 +706,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 130 tests au 03/11/2026, dont une
+1. **Pas de test d'intégration** — 1 139 tests au 03/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3 ;
    `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
@@ -1113,6 +1113,28 @@ identifiant (badges, légumes, accessoires) sont exclus par leur nom.
     mettent pas en avant la même culture plus de 266 jours sur 366.
     Vérifié en recassant volontairement la ligne : le test nomme les
     coupables, arachide comprise.
+
+    ⚠️ **Et le même écran portait le défaut deux fois.** Une heure
+    après la correction, le tableau de bord conseillait « 🍌 Bananier
+    plantain adore pousser à côté de 🟤 Taro ! » à la même
+    installation française : `_tipOfTheDay` composait ses conseils sur
+    les 130 cultures — compagnonnage, rotation, maladies — sans
+    regarder le calendrier non plus. **Une règle écrite dans une
+    fonction se corrige une fois ; une règle nommée se corrige
+    partout.** D'où `cultivablesEnPleineTerre()`, que les deux
+    appellent maintenant.
+
+    ⚠️ **Pour le compagnonnage, les deux cultures doivent pousser
+    ici** : un filtre posé sur la seule culture de gauche aurait laissé
+    « tomate adore pousser à côté de taro ».
+
+    Le conseil du jour vivait dans l'état de `SowScreen`, donc aucun
+    test ne pouvait l'atteindre. Il est parti dans
+    `lib/utils/conseil_du_jour.dart` — c'est de la logique métier, et
+    la règle 10 dit où elle vit. `conseilsPossibles()` et
+    `culturesCiteesParLesConseils()` existent pour que le test lise les
+    **identifiants** plutôt que de relire la phrase à l'envers avec une
+    expression régulière.
 
     **Troisième fois que cette famille de défaut sort** — après le
     manioc semé à Lyon (02/11) et les trois images du catalogue

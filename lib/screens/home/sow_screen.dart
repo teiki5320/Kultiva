@@ -1,14 +1,10 @@
-import '../../data/content_i18n.dart';
 import '../../data/names_en.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../data/companions.dart';
-import '../../data/diseases.dart';
 import '../../data/regions/regional_calendar.dart';
-import '../../data/rotation.dart';
 import '../../data/ui_i18n.dart';
 import '../../data/vegetables_base.dart';
 import '../../models/region_data.dart';
@@ -17,6 +13,7 @@ import '../../services/prefs_service.dart';
 import '../../models/weather_data.dart';
 import '../../services/weather_service.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/conseil_du_jour.dart';
 import '../../utils/text_scale.dart';
 import '../../widgets/petal_animation.dart';
 import '../../widgets/season_header.dart';
@@ -95,51 +92,6 @@ class _SowScreenState extends State<SowScreen> {
   Vegetable _vegetableOfTheDay(List<RegionData> calendar) =>
       vegetableOfTheDay(DateTime.now(), calendar: calendar);
 
-  String get _tipOfTheDay {
-    final tips = <String>[];
-
-    for (final entry in companionMap.entries) {
-      final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
-      final comp = entry.value.isNotEmpty
-          ? vegetablesBase.where((v) => v.id == entry.value.first).firstOrNull
-          : null;
-      if (veg != null && comp != null) {
-        tips.add(trUiArgs(
-            '{0} {1} adore pousser à côté de {2} {3} !', <Object?>[
-          veg.emoji,
-          veg.displayName,
-          comp.emoji,
-          comp.displayName
-        ]));
-      }
-    }
-
-    for (final entry in rotationMap.entries) {
-      final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
-      if (veg != null) {
-        tips.add(trUiArgs(
-            '{0} {1} : attendre {2} ans avant de replanter au même endroit.',
-            <Object?>[veg.emoji, veg.displayName, entry.value.waitYears]));
-      }
-    }
-
-    for (final entry in diseaseMap.entries) {
-      final veg = vegetablesBase.where((v) => v.id == entry.key).firstOrNull;
-      if (veg != null && entry.value.isNotEmpty) {
-        final d = entry.value.first;
-        tips.add(trUiArgs('{0} {1} : attention au {2}. {3}.', <Object?>[
-          veg.emoji,
-          veg.displayName,
-          d.displayName,
-          d.displayRemedy
-        ]));
-      }
-    }
-
-    final dayOfYear =
-        DateTime.now().difference(DateTime(DateTime.now().year)).inDays;
-    return tips[dayOfYear % tips.length];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +116,7 @@ class _SowScreenState extends State<SowScreen> {
         }
 
         final vegOfDay = _vegetableOfTheDay(data);
-        final tip = _tipOfTheDay;
+        final tip = conseilDuJour(DateTime.now(), data);
 
         // ── Build slides ──
         final slides = <Widget>[
