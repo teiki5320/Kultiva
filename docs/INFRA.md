@@ -18,7 +18,7 @@ Mis à jour le 4 novembre 2026 d'après le dépôt et le site en ligne. Pour met
 ## Parcours
 
 - 🍎 **iOS** : 🐙 GitHub — main · CI au vert [ok] → ☁️ Xcode Cloud — build 231 réussi le 4/11, premier archivé pour l'App Store [ok] → 🛍️ App Store Connect — fiche remplie, build rattaché ; restent les tarifs et l'envoi en vérification [en cours] → 📱 App Store — pas publiée [pas encore]
-- 🤖 **Android** : 🐙 GitHub — CI construit l'App Bundle [ok] → 🔑 Keystore Android — clé locale, valable 2053 [ok] → 🛍️ Google Play Console — compte Toa (personnel), fiche et déclarations complètes le 4/11 (11 tâches sur 11, PEGI 3) ; reste le test fermé de 12 testeurs × 14 jours [en cours] → 📱 Google Play — pas publiée [pas encore]
+- 🤖 **Android** : 🐙 GitHub — CI construit l'App Bundle [ok] → 🔑 Keystore Android — clé locale, valable 2053 [ok] → 🛍️ Google Play Console — **13 modifications envoyées à l'examen le 4/11 à 17 h 20**, test fermé Alpha compris ; reste les 12 testeurs × 14 jours [en cours] → 📱 Google Play — pas publiée [pas encore]
 - 🛒 **Affiliation** : 🥕 Fiche légume — bouton « Acheter » [ok] → 🛒 Amazon Partenaires (affiliation) — tag kultiva1-21 [ok] → 📱 Utilisateurs — app pas publiée [pas encore]
 - 🌐 **Web** : 🐙 GitHub — dossier landing/ [ok] → 📄 GitHub Pages — désactivé, dépôt passé en privé [bloquant] → 🌐 Nom de domaine — kultiva.toakeur.com répond 404 [bloquant] → ⬇️ Boutons « Télécharger » — encore sans lien [pas encore]
 
