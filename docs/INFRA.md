@@ -17,8 +17,8 @@ Mis à jour le 4 novembre 2026 d'après le dépôt et le site en ligne. Pour met
 
 ## Parcours
 
-- 🍎 **iOS** : 🐙 GitHub — main · CI au vert [ok] → ☁️ Xcode Cloud — build 220 réussi le 3/11, en TestFlight [ok] → 🛍️ App Store Connect — fiche à compléter, captures prises [à faire] → 📱 App Store — pas publiée [pas encore]
-- 🤖 **Android** : 🐙 GitHub — CI construit l'App Bundle [ok] → 🔑 Keystore Android — clé locale, valable 2053 [ok] → 🛍️ Google Play Console — compte Toa (personnel), captures, bannière et bundle prêts, fiche en cours de création [en cours] → 📱 Google Play — pas publiée [pas encore]
+- 🍎 **iOS** : 🐙 GitHub — main · CI au vert [ok] → ☁️ Xcode Cloud — build 231 réussi le 4/11, premier archivé pour l'App Store [ok] → 🛍️ App Store Connect — fiche remplie, build rattaché ; restent les tarifs et l'envoi en vérification [en cours] → 📱 App Store — pas publiée [pas encore]
+- 🤖 **Android** : 🐙 GitHub — CI construit l'App Bundle [ok] → 🔑 Keystore Android — clé locale, valable 2053 [ok] → 🛍️ Google Play Console — compte Toa (personnel), fiche et déclarations complètes le 4/11 (11 tâches sur 11, PEGI 3) ; reste le test fermé de 12 testeurs × 14 jours [en cours] → 📱 Google Play — pas publiée [pas encore]
 - 🛒 **Affiliation** : 🥕 Fiche légume — bouton « Acheter » [ok] → 🛒 Amazon Partenaires (affiliation) — tag kultiva1-21 [ok] → 📱 Utilisateurs — app pas publiée [pas encore]
 - 🌐 **Web** : 🐙 GitHub — dossier landing/ [ok] → 📄 GitHub Pages — désactivé, dépôt passé en privé [bloquant] → 🌐 Nom de domaine — kultiva.toakeur.com répond 404 [bloquant] → ⬇️ Boutons « Télécharger » — encore sans lien [pas encore]
 
@@ -100,7 +100,7 @@ Mis à jour le 4 novembre 2026 d'après le dépôt et le site en ligne. Pour met
 ### 8. Hébergement web (GitHub Pages)
 
 - **Rôle** : site de présentation `landing/` (`index.html` + `privacy.html` + images WebP), publié sur **GitHub Pages** par le workflow `.github/workflows/site.yml` à chaque modification de `landing/`. Fournit l'URL d'assistance, l'URL marketing et l'URL de confidentialité exigées par les stores.
-- **État** : **hors ligne depuis le passage du dépôt en privé** — <https://kultiva.toakeur.com>, `/privacy.html` et l'ancienne adresse `teiki5320.github.io/Kultiva/` répondent **404**, et GitHub ne déclare plus de site Pages pour le dépôt (vérifié le 4 novembre 2026). Les en-têtes montrent toujours Cloudflare devant GitHub Pages (`server: cloudflare`, `x-github-request-id`). Le site était en ligne du 7 octobre au 3 novembre 2026. Les deux boutons « Télécharger » sont inertes (« Bientôt sur l'App Store » / « Bientôt sur Google Play »).
+- **État** : **en ligne** — <https://kultiva.toakeur.com> et `/privacy.html` répondent 200 (revérifié le 4 novembre 2026 au soir). Le site a été **404 du 3 au 4 novembre 2026** : le dépôt était passé en privé et GitHub avait alors **supprimé** le site Pages, le domaine personnalisé avec. Dépôt repassé en public, site recréé, et le domaine vit maintenant dans `landing/CNAME` — versionné, donc il revient tout seul au prochain déploiement au lieu de dépendre d'un réglage de console. En ligne du 7 octobre au 3 novembre 2026, puis depuis le 4 novembre. Les deux boutons « Télécharger » sont inertes (« Bientôt sur l'App Store » / « Bientôt sur Google Play »).
 - **Console** : <https://github.com/teiki5320/Kultiva/settings/pages>
 - **Identifiants publics** : adresse du site.
 - **Secrets** : aucun (jeton GitHub automatique du workflow).

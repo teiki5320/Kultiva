@@ -386,7 +386,7 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | Droits d'auteur, version, publication | ✅ Prêts |
 | Questionnaire de confidentialité | ✅ Réponses fournies (§4) — réduit à 2 types depuis le retrait des comptes |
 | Notes au testeur | ✅ **Collées le 04/11/2026**, avec le contact de revue (Jean Perraudeau, `kultiva@toakeur.com`) et « Connexion requise » décochée |
-| Build | ⛔ **Impossible à rattacher** — tous les builds (jusqu'au 226) sont **grisés** dans « Ajouter un build ». Ni la version (passée de 1.0 à 1.0.0), ni le rechargement de la page, ni l'état TestFlight (« Prêt à tester », conformité au chiffrement déjà réglée par `ITSAppUsesNonExemptEncryption` dans `Info.plist`) ne l'expliquent. Piste la plus probable : **la classification par âge n'est pas encore configurée** |
+| Build | ✅ **Build 231 rattaché le 4 novembre 2026** — voir l'encadré ci-dessous : la cause n'était ni la version, ni la classification |
 | URL d'assistance / marketing | ✅ **Collées le 04/11/2026** — `https://kultiva.toakeur.com` pour les deux |
 | Téléphone (revue) | ⛔ **Toi, et c'est la seule erreur qui reste sur la page** : « Ce champ est obligatoire » et le format exige le « + » suivi de l'indicatif |
 | Compte de démonstration | ✅ Sans objet — l'app n'a pas de compte (§2.8) |
@@ -553,3 +553,33 @@ jardinería,siembra,huerto,hortalizas,calendario,cosecha,plantas,semillas,balcó
 - Les **informations pour la revue** : Apple les lit en anglais.
 - Le **questionnaire de confidentialité** et la **déclaration DSA** :
   ils ne sont pas localisables.
+
+
+### ⛔ Pourquoi les 230 builds étaient grisés (résolu le 4 novembre 2026)
+
+Tous les builds Xcode Cloud, jusqu'au 230, apparaissaient **grisés**
+dans « Ajouter un build », alors qu'ils étaient sains côté TestFlight
+(« Prêt à tester », « En cours de test »). Quatre pistes ont été
+écartées par la mesure : la version (1.0 → 1.0.0), l'état TestFlight,
+la conformité au chiffrement (`ITSAppUsesNonExemptEncryption` est dans
+`Info.plist`) et la classification par âge, déjà remplie.
+
+**La cause était dans le processus Xcode Cloud**, pas dans App Store
+Connect. L'action *Archiver — iOS* du processus `Default` portait
+**« Préparation de la distribution : TestFlight (tests internes
+uniquement) »**. Apple pose ce drapeau **à l'archivage** : un build
+produit ainsi ne peut jamais être soumis à l'App Store, et aucune page
+de la version ne le dit.
+
+**Le correctif** : passer ce réglage sur **App Store Connect**
+(App Store Connect → Xcode Cloud → kultiva → Processus → Default →
+Actions → Archiver — iOS), enregistrer, puis **relancer un build**.
+
+⚠️ **Un build déjà produit ne se rattrape pas.** Le 231, lancé après
+le changement, est le seul sélectionnable ; les 230 précédents gardent
+leur marque pour toujours.
+
+⚠️ **Le diagnostic n'était pas lisible depuis la page de version.**
+Il a fallu comparer TestFlight (builds sains) et le sélecteur (builds
+grisés), puis aller lire le processus. Une mesure à refaire ainsi si
+le symptôme revient.

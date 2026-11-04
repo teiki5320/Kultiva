@@ -340,6 +340,10 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 
 ## 8. État d'avancement
 
+> **Au soir du 4 novembre 2026 : les 11 tâches de configuration de
+> l'application sont terminées.** Ne restent que le test fermé
+> (12 testeurs × 14 jours) et le statut de professionnel.
+
 | Élément | État |
 | --- | --- |
 | Nom, description courte, description longue | ✅ Prêts à coller, décomptes vérifiés |
@@ -357,13 +361,13 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Page de confidentialité en ligne | ✅ Rétablie le 4 novembre 2026 (§ 4.1) |
 | Création de l'app dans la console | ✅ **Faite le 4 novembre 2026** — `Kultiva : potager kawaii`, `com.toa.kultiva` |
 | Test fermé | ⏳ **Obligatoire, et les 14 jours s'appliquent** (§ 0) — « 0 testeur actuellement inscrit » |
-| Fiche Play Store | ✅ **Remplie le 4 novembre 2026** — nom, brève description (75/80), description complète (2 698/4 000), icône 512, bannière 1024 × 500, **8 captures** 1080 × 1920 |
+| Fiche Play Store | ✅ **Remplie et enregistrée le 4 novembre 2026** — nom, brève description (75/80), description complète (2 698/4 000), icône 512, bannière 1024 × 500, **8 captures** 1080 × 1920, déclaration IA : *ne pas signaler* (choix de Jean) |
 | Règles de confidentialité | ✅ `https://kultiva.toakeur.com/privacy.html` |
 | Informations de connexion | ✅ « Aucune section de l'appli n'est limitée » |
 | Annonces | ✅ **Non** — voir § 4.3, la recommandation a changé après lecture de la console |
-| Classification du contenu | ⏳ **Toi** — le questionnaire IARC demande d'accepter les conditions d'un tiers |
-| Cible | ⏳ Après la classification — Play bloque déjà les tranches sous 13 ans |
-| Sécurité des données | ✅ **Remplie le 4 novembre 2026** (position approximative, position exacte, journaux de plantage) — ⛔ **mais non envoyable** tant que « Cible et contenu » n'est pas fait, lui-même bloqué par la classification IARC |
+| Classification du contenu | ✅ **Envoyée par Jean le 4 novembre 2026 à 16 h 54** — examen IARC *Terminée*, **PEGI 3 / ESRB Everyone / USK 0 / IARC 3+** |
+| Cible | ✅ **Validée le 4 novembre 2026** |
+| Sécurité des données | ✅ **Enregistrée le 4 novembre 2026** (position approximative, position exacte, journaux de plantage), une fois « Cible » validée |
 | Applis gouvernementales, finance, santé | ✅ **Non** aux trois, le 4 novembre 2026 |
 | Identifiant publicitaire | ✅ **Non utilisé** — mesuré dans le bundle (§ 6) |
 | Statut de professionnel | ⏳ **Toi** — « Action requise », échéance **février 2027**, sans quoi le profil développeur et les applis sont retirés |

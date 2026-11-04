@@ -26,24 +26,26 @@
 
 | | 🍎 App Store | 🤖 Google Play |
 |---|---|---|
-| État | [pas encore] jamais soumise ; fiche App Store Connect créée (Apple ID `6762550020`), dernier build reçu : 220 (3 novembre 2026 au soir) | [pas encore] jamais envoyée ; fiche à vérifier dans la console |
+| État | [pas encore] jamais soumise ; fiche App Store Connect remplie (Apple ID `6762550020`), **build 231 rattaché à la version 1.0.0 le 4 novembre 2026** | [pas encore] jamais envoyée ; fiche et déclarations **complètes** dans la console le 4 novembre 2026 (11 tâches sur 11) |
 | Construction | [ok] Xcode Cloud (`ci_post_clone.sh`, Flutter 3.47.3) : **build 220 réussi le 3 novembre 2026 au soir**, disponible en TestFlight (vérifié le 4 novembre 2026 dans les mails d'Apple) ; le build 195 avait réussi dans la nuit du 2 au 3 novembre 2026 ; tous les builds du 2 novembre, du 166 au 195, ont réussi ; le build 165 avait échoué le 1er novembre 2026 au soir dans `ci_post_clone.sh`, les autres builds du 1er novembre (dont le 152 et le 164) avaient réussi, comme ceux depuis le 31 octobre (dont le 134) ; build 127 réussi le 30 octobre 2026, après deux échecs le même soir (122 et 125, pin Flutter devenu plus ancien que le code). Auparavant : builds 95 et 96 réussis le 25 octobre 2026, build 97 le 27 octobre, avec l'étape « TestFlight internes - iOS » (vérifié le 28 octobre 2026) ; le build 94 avait échoué le 24 octobre | [ok] App Bundle construit par la CI GitHub Actions ; plantage au lancement en release corrigé le 3 novembre 2026 |
 | Signature | [ok] gérée par Xcode Cloud, équipe `K597U7X3FZ` | [ok] keystore local, valable jusqu'en 2053 |
-| Classification | [à faire] 4+ attendu, questionnaire prêt à reporter | [à faire] questionnaire de contenu à remplir |
+| Classification | [ok] **4+**, questionnaire de confidentialité rempli le 4 novembre 2026 (position approximative, position exacte, données de pannes — fonctionnalité de l'app, sans lien avec l'identité, sans suivi) ; reste à publier les étiquettes | [ok] **PEGI 3 / ESRB Everyone / USK 0 / IARC 3+** — questionnaire IARC envoyé par Jean le 4 novembre 2026 à 16 h 54 |
 | Cible | [ok] iOS 15.0 et plus (depuis le 25 octobre 2026 : Xcode et les pods, dont Sentry, l’exigent ; avant : 13.0), iPhone en portrait, iPad dans les quatre sens | [ok] valeurs par défaut de Flutter, rien de figé dans le dépôt |
 | Permissions | [ok] caméra, photos, localisation en français ; clé `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (fin de l'avertissement ITMS-90683) | [ok] localisation, notifications, alarmes exactes |
 | Poids | [pas encore] à mesurer au premier envoi (21 Mo d'assets depuis le ménage du 2 novembre 2026, contre 37 Mo avant) | [ok] 48,6 Mio au téléchargement (release arm64, mesuré le 1er novembre 2026, avant l'ajout des 130 légumes détourés et le retrait de 16 Mo d'images inutilisées, tous deux le 2 novembre) |
 
 ## Vue d'ensemble
 
-- **État du projet** : **en pause** (choix de Jean) — rien n'est soumis aux boutiques
+- **État du projet** : **en cours de soumission** (décision de Jean du 4 novembre 2026) — rien n'est encore envoyé, mais les deux fiches sont remplies
 - **iOS** : jamais soumise — la fiche App Store Connect existe (Apple ID `6762550020`), ses textes sont rédigés et l'URL de confidentialité répond de nouveau (vérifiée le 4 novembre 2026) ; le build Xcode Cloud 94 a échoué le 24 octobre 2026 (cible iOS trop basse), corrigé le 25 octobre ; les builds 95 et 96 ont réussi le 25 octobre 2026, le build 97 le 27 octobre 2026, le build 127 le 30 octobre 2026, le build 134 le 31 octobre 2026, le build 152 le 1er novembre 2026, le build 166 le 2 novembre 2026, le build 195 dans la nuit du 2 au 3 novembre 2026 et le **build 220 le 3 novembre 2026 au soir**, disponible en TestFlight (le 165 avait échoué le 1er novembre au soir). La clé de localisation que réclamait Apple (ITMS-90683) a été ajoutée le 30 octobre 2026
 - **Android** : jamais envoyée à Play. Vérifié dans la console le 4 novembre 2026 : **aucune fiche Kultiva n'existait**, et `com.toa.kultiva` est disponible. Le formulaire de création est rempli, il reste les deux cases de déclaration, que seul Jean peut cocher. App Bundle signé reconstruit le 4 novembre 2026 — premier à porter le correctif du plantage au lancement en release ; icône 512, bannière 1024 × 500 et dix captures produites. Marche à suivre complète : `docs/FICHE_PLAY.md`
 - **Web** : site de présentation <https://kultiva.toakeur.com>, en ligne depuis le 7 octobre 2026. Il a répondu **404 du 3 au 4 novembre 2026**, le dépôt étant passé en privé : GitHub avait alors **supprimé** le site Pages. Dépôt repassé en public et site recréé le 4 novembre 2026 ; `/privacy.html` répond aussi (200, vérifié)
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste inactif (vérifié le 4 novembre 2026), inutilisé, et ne bloque plus rien
 - **Monétisation** : affiliation Amazon en France. Les 159 liens, retirés le 20 octobre 2026 (compte fermé le 18), sont **revenus le 30 octobre 2026** sous le tag `kultiva1-21`. ⚠️ Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, redevient donc applicable : à déclarer dans App Store Connect et Play Console avant soumission
 - **Classification attendue** : **4+** depuis le retrait du feed communautaire — plus aucun contenu généré par les utilisateurs
-- **Chemin critique** : la fiche App Store est remplie au 4 novembre 2026 (16 captures, textes, URL, version 1.0.0, droits d'auteur, sous-titre, catégories, classification **4+**, notes au testeur, publication manuelle). Restent **le numéro de téléphone de revue** — seule erreur affichée par la page — le **questionnaire de confidentialité**, les **tarifs et la disponibilité**, et le **build**, que la console refuse de rattacher (voir `docs/FICHE_APP_STORE.md`) → soumettre iOS. Côté Play, tout est prêt sauf les deux cases de déclaration (`docs/FICHE_PLAY.md`). Les captures Apple ont été **refaites le 4 novembre 2026** : 10 en iPhone 6,9″ et 6 en iPad 13″, dans `captures/`
+- **Chemin critique (4 novembre 2026, fin de journée)** — côté **Apple**, il reste trois choses : publier les étiquettes de confidentialité (un clic, réservé à Jean), remplir **Tarifs et disponibilité**, puis **Ajouter pour vérification**. Tout le reste est fait : 16 captures, textes, les trois URL, version 1.0.0, classification 4+, notes au testeur, publication manuelle, téléphone de revue, et le **build 231 rattaché**. Côté **Play**, les 11 tâches de configuration sont terminées ; il reste le **test fermé de 12 testeurs pendant 14 jours**, qu'aucune décision ne raccourcit, et le **statut de professionnel** (action requise avant février 2027)
+
+- ⛔ **Pourquoi la console refusait le build, et ce n'était pas la version.** Les 230 builds Xcode Cloud étaient grisés dans le sélecteur de la version alors qu'ils étaient sains en TestFlight. Cause trouvée le 4 novembre 2026 : l'action *Archiver — iOS* du processus `Default` avait **« Préparation de la distribution : TestFlight (tests internes uniquement) »**. Un build archivé ainsi ne peut pas être soumis à l'App Store, et rien ne le dit sur la page de version. Le réglage est passé à **App Store Connect**, le build **231** lancé dans la foulée, et il est le seul sélectionnable — les précédents gardent leur marque. ⚠️ **Un build déjà produit ne se rattrape pas** : le drapeau est posé à l'archivage, il faut en relancer un
 
 Aucune boutique n'a reçu de soumission : côté Apple, seuls des builds
 TestFlight internes sont arrivés dans la fiche ; côté Google, rien n'a
@@ -75,11 +77,14 @@ la classification par âge et la déclaration de chiffrement ont leurs
 réponses. Tout est rassemblé dans `docs/FICHE_APP_STORE.md`, prêt à
 coller champ par champ.
 
-**Ce qui bloque, dans l'ordre.** Les trois URL de la fiche —
-assistance et marketing `https://kultiva.toakeur.com`, confidentialité
-`https://kultiva.toakeur.com/privacy.html` — **répondent de nouveau**
-depuis le 4 novembre 2026 : restent à coller dans App Store Connect
-(à vérifier dans la console). Le testeur Apple n'a plus ni connexion ni suppression de compte à
+**Ce qui bloque, dans l'ordre (au soir du 4 novembre 2026).** Il reste
+**trois** choses : publier les étiquettes de confidentialité (le
+questionnaire est rempli, le bouton *Publier* est une déclaration
+réservée à Jean), remplir **Tarifs et disponibilité**, puis **Ajouter
+pour vérification**. Les trois URL de la fiche — assistance et
+marketing `https://kultiva.toakeur.com`, confidentialité
+`https://kultiva.toakeur.com/privacy.html` — répondent et sont
+collées. Le testeur Apple n'a plus ni connexion ni suppression de compte à
 essayer : l'app n'en a plus depuis le 30 octobre 2026. Les **captures d'écran** sont faites
 **refaites le 4 novembre 2026** : 10 en iPhone 6,9″ (1320 × 2868)
 et 6 en iPad 13″ (2064 × 2752), dans `captures/`. Les 14 du
@@ -165,11 +170,22 @@ par Play pour les nouvelles applications.
 description longue, la description courte (78/80 caractères) et des
 variantes d'accroche par pays pour les storefronts d'Afrique de l'Ouest.
 
-**Ce qui bloque.** Rien côté code, et plus grand-chose côté rédaction :
-`docs/FICHE_PLAY.md` donne page par page les réponses à la
-classification du contenu, à *Sécurité des données* et au reste. Il
-reste les deux cases de déclaration à la création, le statut
-« contient des annonces » à trancher, et les coordonnées de trader.
+**Ce qui bloque (au soir du 4 novembre 2026).** Plus rien dans les
+formulaires : les **11 tâches de configuration sont terminées** —
+règles de confidentialité, informations de connexion, annonces (non),
+classification du contenu (**PEGI 3 / ESRB Everyone / USK 0**, envoyée
+par Jean à 16 h 54), cible et contenu, sécurité des données, applis
+gouvernementales, fonctionnalités financières, santé, catégorie et
+coordonnées, fiche Play Store. Restent **le test fermé — 12 testeurs
+inscrits pendant 14 jours consécutifs** — et le **statut de
+professionnel** (action requise avant février 2027), plus les
+coordonnées de trader au titre du DSA.
+
+⚠️ **L'ordre des déclarations n'est pas libre** : *Sécurité des
+données* refuse d'être enregistrée tant que *Cible et contenu* est
+vide, qui attend lui-même la **classification IARC**, laquelle exige
+d'accepter les conditions d'un tiers — donc Jean. La chaîne est
+IARC → Cible → Sécurité des données.
 
 ⚠️ **L'identifiant publicitaire est réglé, et c'est une mesure.** Cette
 fiche disait qu'aucune permission `AD_ID` « ne devrait » figurer. Le
