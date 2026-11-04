@@ -375,6 +375,31 @@ Il fournit un **groupe Google** — `testers-community@googlegroups.com`
 jours tenus **du 8 au 22 septembre 2026**, accès à la production
 accordé le 17 octobre.
 
+**Ce que le service dit lui-même**, lu sur son site le 4 novembre 2026 :
+testeurs au travail « sous 6 heures », la fenêtre de 14 jours démarre
+**quand ils acceptent l'invitation**, le test est mené sur **16 jours**
+pour garder de la marge, et la demande d'accès production se fait au
+jour 14. Environ **15 jours** entre la soumission et la demande.
+
+⚠️ **L'ordre est l'inverse de l'intuition : on paie d'abord.** Le
+tableau de bord ne donne l'adresse du groupe Google **qu'après
+l'achat**, et le site ne la publie nulle part. L'adresse utilisée ici
+vient des fiches d'Erea : **à comparer avec celle du tableau de bord**
+et à corriger dans la console si elle diffère.
+
+⚠️ **Le lien d'inscription est prévisible**, et il n'y a pas à
+attendre que la console l'affiche. La console dit « Le lien sera
+affiché ici quand vous publierez votre application », mais l'adresse
+est toujours `https://play.google.com/apps/testing/<package>` — pour
+Kultiva, `https://play.google.com/apps/testing/com.toa.kultiva`, qui
+répondait déjà **200** le 4 novembre 2026, release encore en examen.
+
+**Formulaire du service, ce qu'il demande** : nom de l'app, plan, le
+lien ci-dessus, une icône carrée (≤ 5 Mo — `captures/play-assets/icone-512.png`)
+et des notes facultatives aux testeurs. Il pose aussi une question
+piège : « votre app a-t-elle été faite avec PWABuilder ou Bubblewrap ? »
+— **non** pour une app Flutter, et leur propre encadré le dit.
+
 ⚠️ **Le compteur part au douzième inscrit, pas à la souscription.**
 Et s'inscrire veut dire **ouvrir le lien et accepter**, pas figurer
 sur une liste. C'est le seul délai qu'aucune décision ne raccourcit :
