@@ -38,12 +38,12 @@
 
 - **État du projet** : **en pause** (choix de Jean) — rien n'est soumis aux boutiques
 - **iOS** : jamais soumise — la fiche App Store Connect existe (Apple ID `6762550020`), ses textes sont rédigés ; l'URL de confidentialité répond 404 depuis le passage du dépôt en privé (vérifié le 4 novembre 2026) ; le build Xcode Cloud 94 a échoué le 24 octobre 2026 (cible iOS trop basse), corrigé le 25 octobre ; les builds 95 et 96 ont réussi le 25 octobre 2026, le build 97 le 27 octobre 2026, le build 127 le 30 octobre 2026, le build 134 le 31 octobre 2026, le build 152 le 1er novembre 2026, le build 166 le 2 novembre 2026, le build 195 dans la nuit du 2 au 3 novembre 2026 et le **build 220 le 3 novembre 2026 au soir**, disponible en TestFlight (le 165 avait échoué le 1er novembre au soir). La clé de localisation que réclamait Apple (ITMS-90683) a été ajoutée le 30 octobre 2026
-- **Android** : jamais envoyée à Play — le bundle release est signé et vérifié localement ; l'app plantait au lancement en release (corrigé le 3 novembre 2026) ; les captures Play sont prises depuis le 4 novembre 2026 ; l'existence d'une fiche Play reste à vérifier dans la console
+- **Android** : jamais envoyée à Play. Vérifié dans la console le 4 novembre 2026 : **aucune fiche Kultiva n'existait**, et `com.toa.kultiva` est disponible. Le formulaire de création est rempli, il reste les deux cases de déclaration, que seul Jean peut cocher. App Bundle signé reconstruit le 4 novembre 2026 — premier à porter le correctif du plantage au lancement en release ; icône 512, bannière 1024 × 500 et dix captures produites. Marche à suivre complète : `docs/FICHE_PLAY.md`
 - **Web** : site de présentation <https://kultiva.toakeur.com>, en ligne du 7 octobre au 3 novembre 2026 ; **hors ligne depuis le passage du dépôt en privé (404, vérifié le 4 novembre 2026)**, `/privacy.html` comprise
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste inactif (vérifié le 4 novembre 2026), inutilisé, et ne bloque plus rien
 - **Monétisation** : affiliation Amazon en France. Les 159 liens, retirés le 20 octobre 2026 (compte fermé le 18), sont **revenus le 30 octobre 2026** sous le tag `kultiva1-21`. ⚠️ Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, redevient donc applicable : à déclarer dans App Store Connect et Play Console avant soumission
 - **Classification attendue** : **4+** depuis le retrait du feed communautaire — plus aucun contenu généré par les utilisateurs
-- **Chemin critique** : remettre en ligne la page de confidentialité (404 depuis le passage du dépôt en privé, vérifié le 4 novembre 2026) → compléter la fiche App Store (téléphone de revue, trois URL, déclaration de trader DSA) → soumettre iOS. Les captures sont prises depuis le 3 novembre 2026, 7 en iPhone 6,9″ et 7 en iPad 13″
+- **Chemin critique** : remettre en ligne la page de confidentialité (404 depuis le passage du dépôt en privé, vérifié le 4 novembre 2026) → compléter la fiche App Store (téléphone de revue, trois URL, déclaration de trader DSA) → soumettre iOS. Côté Play, tout est prêt sauf les deux cases de déclaration (`docs/FICHE_PLAY.md`). Les captures sont prises depuis le 3 novembre 2026, 7 en iPhone 6,9″ et 7 en iPad 13″
 
 Aucune boutique n'a reçu de soumission : côté Apple, seuls des builds
 TestFlight internes sont arrivés dans la fiche ; côté Google, rien n'a
@@ -141,13 +141,13 @@ payant* si la distribution doit couvrir tous les pays.
 
 | | |
 |---|---|
-| État | **Jamais envoyée — rien n'a été téléversé sur Play** |
-| Console | <https://play.google.com/console> |
+| État | **Jamais envoyée — rien n'a été téléversé sur Play.** Fiche en cours de création depuis le 4 novembre 2026 |
+| Console | <https://play.google.com/console> — compte **Toa**, ID `4741246028443998966`, **compte personnel** (lu dans la console le 4 novembre 2026) |
 | Version publiée | aucune |
-| Version en cours | App Bundle `1.0.0` (`versionCode 5`) — construit par la CI à chaque envoi (dernier au vert le 3 novembre 2026), jamais téléversé ; plantage au lancement en release corrigé le 3 novembre 2026 |
+| Version en cours | App Bundle `1.0.0` (`versionCode 5`) — construit par la CI à chaque envoi, et **reconstruit en local le 4 novembre 2026** : c'est le premier à porter le correctif R8 du 3 novembre, qui répare le plantage au lancement en release. ⚠️ Celui du 23 août 2026 ne l'a pas : ne pas le téléverser |
 | Distribution | App Bundle signé localement via `android/key.properties` (non commité, ignoré par git) |
 | Signature | certificat RSA 2048 / SHA384 au nom de l'organisation `Kultiva`, créé le 21 avril 2026, valable jusqu'au **6 septembre 2053** |
-| Niveaux d'API | valeurs par défaut de Flutter (`flutter.minSdkVersion`, `flutter.targetSdkVersion`, `flutter.compileSdkVersion` dans `android/app/build.gradle.kts`) — aucun chiffre figé dans le dépôt |
+| Niveaux d'API | valeurs par défaut de Flutter, lues dans le bundle livré le 4 novembre 2026 : `minSdk` **24**, `targetSdk` **36** — au-delà du minimum exigé par Play |
 | Poids | 48,6 Mio au téléchargement (release arm64, mesuré le 1er novembre 2026, avant l'ajout des 130 légumes détourés du 2 novembre) ; 21 Mo d'assets depuis le retrait de 16 Mo d'images inutilisées le 2 novembre 2026 (37 Mo avant) ; la CI produit aussi des APK `--split-per-abi` |
 
 **Ce qui est prêt.** Le build release fonctionne : il était cassé et a été
@@ -163,24 +163,42 @@ par Play pour les nouvelles applications.
 description longue, la description courte (78/80 caractères) et des
 variantes d'accroche par pays pour les storefronts d'Afrique de l'Ouest.
 
-**Ce qui bloque.** Rien côté code. Tout le travail restant est dans la
-console : créer la fiche, remplir la classification du contenu, le
-questionnaire *Sécurité des données*, la déclaration d'identifiant
-publicitaire — sur ce dernier point, l'app ne contient aucun SDK
-publicitaire, donc aucune permission `AD_ID` ne devrait figurer au
-manifeste fusionné.
+**Ce qui bloque.** Rien côté code, et plus grand-chose côté rédaction :
+`docs/FICHE_PLAY.md` donne page par page les réponses à la
+classification du contenu, à *Sécurité des données* et au reste. Il
+reste les deux cases de déclaration à la création, le statut
+« contient des annonces » à trancher, et les coordonnées de trader.
 
-**Le délai à anticiper.** Si le compte Play est un compte **personnel**
-(à vérifier dans la console), Google impose **douze testeurs pendant
-quatorze jours consécutifs** avant toute mise en production. Le décompte
+⚠️ **L'identifiant publicitaire est réglé, et c'est une mesure.** Cette
+fiche disait qu'aucune permission `AD_ID` « ne devrait » figurer. Le
+manifeste du bundle livré le 4 novembre 2026 a été lu : il demande
+exactement sept permissions — `INTERNET`, `VIBRATE`,
+`POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM`,
+`ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION` — et **pas `AD_ID`**.
+
+**Le délai à anticiper.** Le compte **est** personnel (lu dans la
+console le 4 novembre 2026), et Google impose alors **douze testeurs
+pendant quatorze jours consécutifs** avant toute mise en production.
+
+⚠️ **Mais il est peut-être déjà purgé.** Cette obligation vise le
+**compte** et non l'application, une seule fois — or **Erea est déjà
+en production sur ce même compte**. Soit le compte est antérieur au
+13 novembre 2023, soit l'accès à la production a déjà été accordé.
+C'est une **déduction, pas une mesure** : la page *Production* de
+Kultiva affichera la condition si elle s'applique. Ne rien replanifier
+avant de l'avoir vue. Le décompte
 ne démarre qu'au douzième inscrit, et s'inscrire veut dire ouvrir le lien
 reçu et l'accepter — pas figurer sur une liste. C'est le seul délai
 qu'aucune décision ne raccourcit : il mérite d'être lancé tôt, en
 parallèle de la soumission iOS.
 
-**À vérifier dans la console** : l'existence d'une fiche pour
-`com.toa.kultiva`, le type de compte (personnel ou organisation), et si
-la signature d'application par Play est activée.
+**Vérifié dans la console le 4 novembre 2026** : aucune fiche
+`com.toa.kultiva` n'existait (le compte ne portait qu'Erea, en
+production, et Palabre, en brouillon), le compte est **personnel**, et
+l'identifiant de package est disponible. **Reste à vérifier** : que la
+signature d'application par Play soit activée à la création de la
+première version — sans elle, perdre le keystore rendrait toute mise à
+jour impossible.
 
 ---
 
@@ -258,7 +276,13 @@ la synchro (Cloudflare, ci-dessous).
 7. ✅ **Liens Amazon remis** : ôtés le 20 octobre 2026 (compte fermé), les 159 liens sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`. ⚠️ Pense au statut trader (DSA) à la soumission.
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (avertissement ITMS-90683) ; builds 127 à 220 envoyés depuis.
 9. **Soumettre iOS** : le build 220 (3 novembre 2026 au soir, en TestFlight) depuis `docs/FICHE_APP_STORE.md`.
-10. **Créer la fiche Google Play** : avec les captures du 4 novembre 2026, puis lancer le test fermé sans attendre, ses quatorze jours courent en arrière-plan.
+10. **Créer la fiche Google Play** : le formulaire de création est
+    rempli et attend ses **deux cases de déclaration**, que seul Jean
+    peut cocher (règlement du programme, lois d'exportation). Tout le
+    reste — textes, icône 512, bannière 1024 × 500, dix captures, bundle
+    signé, réponses aux questionnaires — est prêt dans
+    `docs/FICHE_PLAY.md`. Lancer le test fermé dans la foulée ;
+    ses quatorze jours ne s'appliquent peut-être même pas (§ Android).
 11. **Relier les boutons « Télécharger »** : le site n'a plus de `href="#"` — les deux boutons sont inertes et disent « Bientôt sur l'App Store » / « Bientôt sur Google Play ». À remplacer par de vrais liens une fois l'app en ligne.
 12. ⬜ **Le disque du Mac est plein** : **5 Go libres** le 4 novembre 2026, et l'émulateur refuse de démarrer sous 1 Go. Le swap monte à 16 Go pendant une session d'émulateur, puis se résorbe.
 

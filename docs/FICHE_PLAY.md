@@ -1,0 +1,341 @@
+# FICHE_PLAY.md — remplir la fiche Google Play de Kultiva
+
+> Réponses prêtes à coller dans la Play Console, page par page, dans
+> l'ordre où la console les demande.
+> Dernière mise à jour : 2026-11-04 — v1.0.0 (`versionCode` 5).
+>
+> Pendant du `docs/FICHE_APP_STORE.md` côté Apple. Les deux fiches
+> doivent dire la même chose : une déclaration de confidentialité qui
+> diffère d'une boutique à l'autre est un signal d'alerte pour les deux.
+
+---
+
+## 0. Ce qui a été mesuré dans la console le 4 novembre 2026
+
+| Fait | Valeur |
+| --- | --- |
+| Compte développeur | **Toa** — ID `4741246028443998966` |
+| Type de compte | **Compte personnel** (écrit sous le nom, pas déduit) |
+| Applis déjà présentes | `com.beiki.eewa` (Erea, **en production**) et `sn.palabre.app` (Palabre, brouillon) |
+| Fiche Kultiva | **n'existait pas** — à créer |
+| `com.toa.kultiva` | ✅ « Nom de package disponible » |
+
+⚠️ **Le délai des douze testeurs est peut-être déjà purgé.** La règle
+de Google — douze testeurs pendant quatorze jours avant l'accès à la
+production — vise le **compte**, pas l'application, et une seule fois.
+Or **Erea est déjà en production sur ce compte personnel**. Soit le
+compte est antérieur au 13 novembre 2023, soit l'accès a déjà été
+accordé : dans les deux cas Kultiva n'aurait rien à attendre.
+**C'est une déduction, pas une mesure** : elle se confirmera d'un coup
+d'œil sur la page *Production* de Kultiva, qui affiche la condition
+quand elle s'applique. Ne pas replanifier la sortie avant de l'avoir vu.
+
+---
+
+## 1. Page « Créer une application »
+
+| Champ | Valeur |
+| --- | --- |
+| Nom de l'application | `Kultiva : potager kawaii` — **24/30** |
+| Nom du package | `com.toa.kultiva` |
+| Langue par défaut | **Français (France) – fr-FR** |
+| Application ou jeu | **Appli** |
+| Gratuite ou payante | **Sans frais** |
+
+⚠️ **Le nom n'est pas « Kultiva » tout court, et c'est voulu.** Play
+n'a pas de sous-titre : le titre est le seul champ court indexé, donc
+il porte le mot que les gens tapent. C'est l'équivalent du sous-titre
+App Store « Ton potager kawaii de poche ». Il se change à tout moment
+dans *Fiche principale du Play Store*.
+
+⚠️ **« Sans frais » est irréversible après publication** — la console
+le dit elle-même. Aucun risque ici : il n'y a ni prix ni achat intégré.
+
+### Les deux déclarations
+
+Elles ne sont pas des cases administratives : ce sont des attestations
+signées par le développeur. **À cocher par Jean lui-même.**
+
+1. *Confirmer que l'application respecte le Règlement du programme pour
+   les développeurs.*
+2. *Accepter les lois américaines sur l'exportation* — l'app n'embarque
+   aucun chiffrement propriétaire, seulement HTTPS standard, ce qui est
+   exactement le cas prévu par l'exemption déjà déclarée côté Apple.
+
+---
+
+## 2. Fiche principale du Play Store
+
+*Croissance → Présence sur le Play Store → Fiche principale du Play Store.*
+
+| Champ | Où le prendre | Longueur |
+| --- | --- | --- |
+| Nom de l'application | § 1 | 24/30 |
+| Description courte | `docs/store-listings.md` § 1 | 75/80 |
+| Description longue | `docs/store-listings.md` § 1 — **le même texte que la description App Store** | 2 630/4 000 |
+
+### Les visuels, tous produits et prêts
+
+| Élément | Fichier | Format exigé |
+| --- | --- | --- |
+| Icône | `build/captures/play-assets/icone-512.png` | 512 × 512, 32 bits, < 1 Mo → **376 Ko, sans alpha** ✅ |
+| Bannière (*feature graphic*) | `build/captures/play-assets/graphique-vedette-1024x500.png` | 1024 × 500, sans alpha → **404 Ko** ✅ |
+| Captures téléphone | `build/captures/play/` — dix fichiers | 1080 × 1920, ratio **1,78** (Play exige < 2,0), 24 bits sans alpha ✅ |
+
+⚠️ **La bannière n'existait pas**, et c'était le seul visuel obligatoire
+qui manquait. Elle est composée en HTML par
+`tool/graphique_vedette.py` plutôt que générée par un modèle d'image :
+zéro crédit, elle se recompose en une seconde quand un mot change, et
+elle réemploie les **vrais** visuels de l'app — l'icône et six légumes
+détourés du catalogue. La boutique montre donc ce que l'utilisateur
+verra.
+
+⚠️ **Play n'en prend que huit sur les dix captures.** L'ordre est
+l'ordre d'affichage et les trois premières font la conversion ; ordre
+conseillé dans `docs/store-listings.md` § 3.3. L'Étal et « au jardin en
+ce moment » sont les deux de réserve.
+
+⬜ **Il manque la météo 7 jours.** Elle n'est pas prenable sur
+l'émulateur : l'écran exige la localisation, et l'accorder déclenche en
+boucle la boîte « Location Accuracy » de Google Play Services. À
+prendre sur un vrai téléphone Android.
+
+---
+
+## 3. Paramètres de la fiche Play Store
+
+| Champ | Valeur |
+| --- | --- |
+| Catégorie de l'application | **Maison et loisirs** (*Lifestyle* dans la liste anglaise) |
+| Tags | potager, jardinage, plantes, calendrier, hors ligne |
+| E-mail | `kultiva@toakeur.com` |
+| Site Web | `https://kultiva.toakeur.com` — ⚠️ **en 404 depuis le passage du dépôt en privé**, voir § 4.1 |
+| Téléphone | ⏳ **Toi** — facultatif côté Play, obligatoire côté Apple |
+
+---
+
+## 4. Contenu de l'application
+
+C'est la page la plus longue de la console, et la seule qui puisse
+faire rejeter l'app sans qu'on touche au code.
+
+### 4.1 Règles de confidentialité
+
+`https://kultiva.toakeur.com/privacy.html`, tenue identique à la
+politique embarquée (`assets/tutos/privacy_policy.html`).
+
+⚠️ **Et elle répond 404 depuis le passage du dépôt en privé** (vérifié
+le 4 novembre 2026). C'est un **bloquant pour les deux boutiques** :
+Play refuse une URL de confidentialité qui ne répond pas, et Apple
+aussi. À remettre en ligne avant d'envoyer quoi que ce soit — c'est la
+première ligne du chemin critique de `docs/PUBLICATION.md`.
+
+### 4.2 Accès à l'application
+
+**« Toutes les fonctionnalités sont accessibles sans restriction. »**
+Il n'y a ni compte, ni identifiant, ni contenu réservé depuis le retrait
+des comptes le 30 octobre 2026 — donc aucun identifiant de test à
+fournir.
+
+### 4.3 Annonces
+
+⚠️ **C'est la seule réponse qui se discute vraiment, et je recommande
+« Oui ».**
+
+L'app n'affiche aucune publicité : pas de SDK, pas de bannière, pas
+d'interstitiel, et le manifeste livré ne demande **pas** `AD_ID`
+(mesuré, § 6). Mais elle porte 159 boutons « Acheter » vers Amazon sous
+le tag `kultiva1-21`, qui rapportent une commission. Google définit une
+annonce comme « du contenu promotionnel pour les produits d'un tiers
+pour lequel vous êtes rémunéré » : des liens d'affiliation entrent dans
+cette phrase.
+
+**Le calcul de risque est asymétrique.** Déclarer des annonces qu'on
+n'a pas coûte une étiquette « Contient des annonces » sur la fiche. Ne
+pas déclarer ce que Google considère comme des annonces coûte un
+avertissement de non-conformité, voire une suspension. C'est le même
+fait qui rend Jean **trader** au sens du DSA : si l'affiliation est
+assez commerciale pour ça, elle l'est pour ici.
+
+### 4.4 Classification du contenu
+
+Catégorie : **Utilitaire, productivité, communication ou autre**.
+
+Toutes les réponses sont **Non** : pas de violence, pas de contenu
+sexuel, pas de grossièreté, pas de drogue, pas de jeu d'argent, pas de
+contenu généré par les utilisateurs, aucun échange entre utilisateurs,
+aucun partage de position entre utilisateurs.
+
+Résultat attendu : **PEGI 3 / Tout public**, cohérent avec le 4+
+obtenu côté Apple depuis le retrait du feed communautaire.
+
+⚠️ **« Les utilisateurs peuvent-ils acheter des biens physiques ? »
+→ Non.** Les boutons Amazon ouvrent le **navigateur** ; la question
+porte sur un achat dans l'application.
+
+### 4.5 Public cible et contenu
+
+**Tranches d'âge : 13-15, 16-17, 18 et plus. Ne pas cocher sous 13 ans.**
+
+⚠️ **Et il y a une phrase de la description à revoir avant d'envoyer.**
+Cocher une tranche sous 13 ans soumettrait l'app à la *Politique
+Familles*, qui encadre durement la collecte de **position précise**
+chez les mineurs — or l'app envoie bien des coordonnées à Open-Meteo.
+On reste donc à 13+. Mais Google relit la description pour vérifier
+qu'elle ne contredit pas la cible déclarée, et la nôtre dit :
+
+> « Kultiva est pensée pour donner la main verte aux enfants »
+
+C'est une revendication d'app pour enfants sous une déclaration 13+.
+Proposition de réécriture, qui garde la promesse en s'adressant au
+parent :
+
+> « Tutoriels pas à pas, défis photo et badges à collectionner : de quoi
+> embarquer toute la famille au potager — et transformer le jardin en
+> aventure du dimanche. »
+
+À changer **dans les trois langues** si elle est retenue (le même
+paragraphe existe en anglais et en espagnol dans
+`docs/FICHE_APP_STORE.md` § 7).
+
+### 4.6 Sécurité des données
+
+⚠️ **Ne pas répondre « aucune donnée collectée ».** Il n'y a plus ni
+compte ni serveur, mais deux choses quittent encore l'appareil, et les
+deux sont déjà déclarées à Apple. Une déclaration qui diffère d'une
+boutique à l'autre se voit.
+
+| Type | Collectée | Partagée | Finalité | Obligatoire ? |
+| --- | --- | --- | --- | --- |
+| **Position** (approximative **et** précise) | Oui | **Oui** — les coordonnées partent vers Open-Meteo | Fonctionnalité de l'application | Non — refus possible, l'app retombe sur Paris |
+| **Journaux de plantage** | Oui | **Oui** — Sentry | Fonctionnalité + analyse | Oui, automatique |
+
+Pour les deux : **chiffrées en transit** (HTTPS), **non utilisées pour
+le suivi publicitaire**, et **aucune suppression à proposer** puisque
+rien n'est conservé côté Kultiva.
+
+⚠️ **« Partagée » plutôt que « collectée seulement »**, et c'est
+délibéré : Open-Meteo et Sentry sont des tiers, pas des sous-traitants
+agissant pour le compte de Kultiva. Sur-déclarer ne coûte rien ;
+sous-déclarer est un motif de retrait.
+
+**Ne rien déclarer d'autre.** Photos, plantations, notes, arrosages,
+badges : tout vit dans `shared_preferences` et
+`app documents/plant_photos/`, et rien ne sort. Play ne considère comme
+collectée qu'une donnée transmise hors de l'appareil.
+
+### 4.7 Les autres déclarations
+
+| Question | Réponse |
+| --- | --- |
+| Application financière | Non |
+| Application de santé | Non |
+| Application d'actualités | Non |
+| COVID-19 / traçage de contacts | Non |
+| Application gouvernementale | Non |
+| Identifiant publicitaire | **Non utilisé** — `AD_ID` absent du manifeste livré (§ 6) |
+
+⚠️ **Les alarmes exactes.** Le manifeste demande
+`SCHEDULE_EXACT_ALARM` (apporté par `flutter_local_notifications`, pour
+les rappels d'arrosage à l'heure dite). Le formulaire de déclaration de
+Play vise `USE_EXACT_ALARM`, que l'app ne demande pas — il ne devrait
+donc rien y avoir à remplir. **À vérifier dans la console** : si une
+déclaration apparaît quand même, la justification est « rappels
+programmés par l'utilisateur ».
+
+### 4.8 Commerçant (DSA)
+
+**Tu es trader**, et il n'y a rien à trancher : l'affiliation Amazon est
+revenue le 30 octobre 2026 sous le tag `kultiva1-21`, donc l'app tire un
+revenu. Même raisonnement et mêmes précautions que
+`docs/FICHE_APP_STORE.md` § 1.5 — **boîte postale** plutôt que domicile,
+`kultiva@toakeur.com` plutôt que l'adresse personnelle, numéro
+secondaire plutôt que le mobile. Les coordonnées seront **publiques**
+dans l'UE.
+
+---
+
+## 5. Pays et versions
+
+| Champ | Valeur |
+| --- | --- |
+| Pays de distribution | **Tous** — l'app couvre 73 pays sur six continents depuis le 1er novembre 2026. A minima : France, Belgique, Suisse, Luxembourg, Canada, et les 8 pays d'Afrique de l'Ouest |
+| Fichier à téléverser | `build/app/outputs/bundle/release/app-release.aab` |
+| Notes de version | « Première version de Kultiva. » |
+
+⚠️ **Activer la signature d'application par Play.** Sans elle, perdre
+`android/key.properties` ou le `.jks` rendrait toute mise à jour
+impossible à jamais. Avec elle, Google détient la clé de signature et
+la nôtre ne sert plus qu'à l'envoi.
+
+---
+
+## 6. Le bundle, mesuré le 4 novembre 2026
+
+Construit avec le JDK d'Android Studio (le `java` du PATH est un
+OpenJDK 25 que Gradle 8.14 refuse) :
+
+```bash
+JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" flutter build appbundle --release
+```
+
+| Mesure | Valeur |
+| --- | --- |
+| Poids du `.aab` | 92 Mio sur disque (96,9 Mo décimaux) — toutes architectures et densités confondues. Un utilisateur télécharge ~48 Mio, Play découpant par appareil |
+| `versionCode` / `versionName` | 5 / 1.0.0 |
+| `minSdk` / `targetSdk` | 24 / **36** — au-delà du minimum exigé par Play |
+| Signature | `jarsigner -verify` : **jar verified**, `CN=Perraudeau Jean, O=Kultiva`, auto-signé, valable jusqu'au 6 septembre 2053 |
+
+**Les sept permissions du bundle livré**, lues dans son propre
+manifeste et non dans le source :
+
+`INTERNET`, `VIBRATE`, `POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED`,
+`SCHEDULE_EXACT_ALARM`, `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`.
+
+⚠️ **Aucune permission `AD_ID`** — c'était une supposition de
+`docs/PUBLICATION.md` (« ne devrait pas figurer »), c'est maintenant une
+mesure.
+
+⚠️ **`android.permission.DUMP` apparaît dans le manifeste sans être
+demandée.** Ce n'est pas un `uses-permission` : c'est la permission qui
+**protège** le `ProfileInstallReceiver` d'AndroidX, présent dans toutes
+les apps Flutter. Rien à déclarer. Le noter parce qu'un `strings` sur le
+manifeste la fait remonter et qu'on croit à une fuite.
+
+⚠️ **Ce bundle est le premier à contenir le correctif R8 du
+3 novembre.** Sans lui l'app plante au deuxième lancement en release —
+voir l'en-tête de `android/app/proguard-rules.pro`. Le bundle construit
+le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
+
+---
+
+## 7. Ce que le dépôt ne peut pas te donner
+
+1. **Les deux cases de déclaration** à la création de l'app (§ 1).
+2. **Tes coordonnées de trader** : adresse postale (une BP suffit),
+   téléphone, e-mail — **publiques dans l'UE**.
+3. **La capture météo**, sur un vrai téléphone Android (§ 2).
+4. **La décision sur les annonces** (§ 4.3) et sur la phrase
+   « main verte aux enfants » (§ 4.5).
+
+---
+
+## 8. État d'avancement
+
+| Élément | État |
+| --- | --- |
+| Nom, description courte, description longue | ✅ Prêts à coller, décomptes vérifiés |
+| Icône 512 × 512 | ✅ Produite |
+| Bannière 1024 × 500 | ✅ Produite (`tool/graphique_vedette.py`) |
+| Captures téléphone | ✅ Dix, au format Play — ⬜ la météo manque |
+| App Bundle signé | ✅ Construit le 4 novembre 2026, correctif R8 inclus |
+| Permissions / `AD_ID` | ✅ Mesurées dans le bundle |
+| Catégorie, coordonnées, URL | ✅ Réponses fournies |
+| Classification du contenu | ✅ Réponses fournies (attendu : tout public) |
+| Sécurité des données | ✅ Réponses fournies, alignées sur Apple |
+| Public cible | ✅ 13+ — ⬜ une phrase de description à revoir |
+| Annonces | ⏳ Toi — recommandation : **Oui** (§ 4.3) |
+| Déclaration DSA | ⏳ Toi — **trader** |
+| Page de confidentialité en ligne | ⛔ **Bloquant** — 404 depuis le passage du dépôt en privé (§ 4.1) |
+| Création de l'app dans la console | ⏳ **Toi** — le formulaire est rempli, il reste les deux cases |
+| Test fermé | ⏳ Après la création — et peut-être sans les 14 jours (§ 0) |

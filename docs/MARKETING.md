@@ -83,4 +83,4 @@ n'est branché (Sentry ne suit que les crashs).
 
 - Remettre en ligne `kultiva.toakeur.com/privacy.html` : la page répond 404 depuis le passage du dépôt en privé (vérifié le 4 novembre 2026), et les deux boutiques exigent une politique de confidentialité.
 - Compléter la fiche App Store déjà créée (trois URL, `kultiva@toakeur.com`, les 14 captures prises le 3 novembre, déclaration de trader DSA, téléphone de revue), puis soumettre le build 220 déjà en TestFlight.
-- Créer la fiche Google Play avec les captures du 4 novembre et lancer tout de suite le test fermé (douze testeurs pendant quatorze jours si le compte est personnel).
+- Finir la fiche Google Play : tout est prêt depuis le 4 novembre 2026 (textes, icône 512, bannière 1024 × 500, dix captures, bundle signé, réponses aux questionnaires dans `docs/FICHE_PLAY.md`), il reste les deux cases de déclaration à cocher soi-même. Puis lancer le test fermé — ses quatorze jours ne s'appliquent peut-être pas, Erea étant déjà en production sur le même compte.
