@@ -106,11 +106,11 @@ prendre sur un vrai téléphone Android.
 
 | Champ | Valeur |
 | --- | --- |
-| Catégorie de l'application | **Maison et loisirs** (*Lifestyle* dans la liste anglaise) |
+| Catégorie de l'application | ✅ **Style de vie**, posée le 4 novembre 2026. ⚠️ Cette fiche disait « Maison et loisirs » : cette entrée n'existe pas dans la liste de Play. Les deux voisines sont **Style de vie** et **Maison et intérieur** — la seconde vise la décoration et l'immobilier |
 | Tags | potager, jardinage, plantes, calendrier, hors ligne |
-| E-mail | `kultiva@toakeur.com` |
-| Site Web | `https://kultiva.toakeur.com` — en ligne, vérifié le 4 novembre 2026 |
-| Téléphone | ⏳ **Toi** — facultatif côté Play, obligatoire côté Apple |
+| E-mail | ✅ `kultiva@toakeur.com`, posée le 4 novembre 2026 |
+| Site Web | ✅ `https://kultiva.toakeur.com`, posé le 4 novembre 2026 |
+| Téléphone | ⏳ **Toi** — facultatif côté Play, laissé vide ; obligatoire côté Apple |
 
 ---
 
@@ -150,12 +150,17 @@ annonce comme « du contenu promotionnel pour les produits d'un tiers
 pour lequel vous êtes rémunéré » : des liens d'affiliation entrent dans
 cette phrase.
 
-**Le calcul de risque est asymétrique.** Déclarer des annonces qu'on
-n'a pas coûte une étiquette « Contient des annonces » sur la fiche. Ne
-pas déclarer ce que Google considère comme des annonces coûte un
-avertissement de non-conformité, voire une suspension. C'est le même
-fait qui rend Jean **trader** au sens du DSA : si l'affiliation est
-assez commerciale pour ça, elle l'est pour ici.
+⚠️ **Recommandation inversée le 4 novembre 2026, après avoir lu la
+page elle-même.** Elle définit ce qu'elle demande : « Dites-nous si
+votre application contient des annonces. **Cela comprend les annonces
+diffusées par des réseaux publicitaires tiers.** » Kultiva n'en
+diffuse aucune. Déclarer « Contient des annonces » collerait sur la
+fiche une étiquette durable et fausse, qui déprime les installations
+d'une app qui n'a pas de publicité. **Réponse posée : Non.**
+
+Ce qui subsiste du raisonnement inverse : le statut de **trader** au
+sens du DSA, lui, s'applique bel et bien, et c'est par là que
+l'affiliation est déclarée — pas par cette case.
 
 ### 4.4 Classification du contenu
 
@@ -337,5 +342,13 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Annonces | ⏳ Toi — recommandation : **Oui** (§ 4.3) |
 | Déclaration DSA | ⏳ Toi — **trader** |
 | Page de confidentialité en ligne | ✅ Rétablie le 4 novembre 2026 (§ 4.1) |
-| Création de l'app dans la console | ⏳ **Toi** — le formulaire est rempli, il reste les deux cases |
-| Test fermé | ⏳ Après la création — et peut-être sans les 14 jours (§ 0) |
+| Création de l'app dans la console | ✅ **Faite le 4 novembre 2026** — `Kultiva : potager kawaii`, `com.toa.kultiva` |
+| Test fermé | ⏳ **Obligatoire, et les 14 jours s'appliquent** (§ 0) — « 0 testeur actuellement inscrit » |
+| Fiche Play Store | ✅ **Remplie le 4 novembre 2026** — nom, brève description (75/80), description complète (2 698/4 000), icône 512, bannière 1024 × 500, **8 captures** 1080 × 1920 |
+| Règles de confidentialité | ✅ `https://kultiva.toakeur.com/privacy.html` |
+| Informations de connexion | ✅ « Aucune section de l'appli n'est limitée » |
+| Annonces | ✅ **Non** — voir § 4.3, la recommandation a changé après lecture de la console |
+| Classification du contenu | ⏳ **Toi** — le questionnaire IARC demande d'accepter les conditions d'un tiers |
+| Cible | ⏳ Après la classification — Play bloque déjà les tranches sous 13 ans |
+| Sécurité des données, applis gouvernementales, finance, santé | ⏳ Restent à remplir |
+| Statut de professionnel | ⏳ **Toi** — « Action requise », échéance **février 2027**, sans quoi le profil développeur et les applis sont retirés |

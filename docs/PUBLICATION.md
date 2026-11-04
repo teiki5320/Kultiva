@@ -143,7 +143,7 @@ payant* si la distribution doit couvrir tous les pays.
 
 | | |
 |---|---|
-| État | **Jamais envoyée — rien n'a été téléversé sur Play.** Fiche en cours de création depuis le 4 novembre 2026 |
+| État | **Jamais envoyée.** App créée le 4 novembre 2026 (`Kultiva : potager kawaii`) ; fiche Play Store remplie — nom, descriptions, icône, bannière, 8 captures, catégorie Style de vie, coordonnées |
 | Console | <https://play.google.com/console> — compte **Toa**, ID `4741246028443998966`, **compte personnel** (lu dans la console le 4 novembre 2026) |
 | Version publiée | aucune |
 | Version en cours | App Bundle `1.0.0` (`versionCode 5`) — construit par la CI à chaque envoi, et **reconstruit en local le 4 novembre 2026** : c'est le premier à porter le correctif R8 du 3 novembre, qui répare le plantage au lancement en release. ⚠️ Celui du 23 août 2026 ne l'a pas : ne pas le téléverser |
@@ -182,13 +182,15 @@ exactement sept permissions — `INTERNET`, `VIBRATE`,
 console le 4 novembre 2026), et Google impose alors **douze testeurs
 pendant quatorze jours consécutifs** avant toute mise en production.
 
-⚠️ **Mais il est peut-être déjà purgé.** Cette obligation vise le
-**compte** et non l'application, une seule fois — or **Erea est déjà
-en production sur ce même compte**. Soit le compte est antérieur au
-13 novembre 2023, soit l'accès à la production a déjà été accordé.
-C'est une **déduction, pas une mesure** : la page *Production* de
-Kultiva affichera la condition si elle s'applique. Ne rien replanifier
-avant de l'avoir vue. Le décompte
+⚠️ **Et ce n'est pas purgé — ma déduction était fausse.** J'avais
+écrit que l'obligation visant le compte et non l'application, Erea
+étant déjà en production, Kultiva n'aurait rien à attendre. Le
+tableau de bord de Kultiva dit le contraire, noir sur blanc :
+« Publier une version de test fermé », « Avoir au moins 12 testeurs
+inscrits — *0 testeur actuellement inscrit* », « Exécuter votre test
+fermé avec au moins 12 testeurs pour au moins 14 jours ».
+**Mesurer avant de citer** : la page existait, il suffisait de
+l'ouvrir. Le décompte
 ne démarre qu'au douzième inscrit, et s'inscrire veut dire ouvrir le lien
 reçu et l'accepter — pas figurer sur une liste. C'est le seul délai
 qu'aucune décision ne raccourcit : il mérite d'être lancé tôt, en
