@@ -71,3 +71,7 @@ _recette_demo.html
 assets/images/badges_png_v1/
 assets/images/vegetables_png_v1/
 assets/images/accessories_png_v1/
+
+# Captures des boutiques : des livraisons, pas des artefacts de build.
+# Hors de build/, que `flutter clean` vide sans prévenir (perdu le 04/11/2026).
+captures/

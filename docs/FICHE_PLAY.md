@@ -78,9 +78,9 @@ signées par le développeur. **À cocher par Jean lui-même.**
 
 | Élément | Fichier | Format exigé |
 | --- | --- | --- |
-| Icône | `build/captures/play-assets/icone-512.png` | 512 × 512, 32 bits, < 1 Mo → **376 Ko, sans alpha** ✅ |
-| Bannière (*feature graphic*) | `build/captures/play-assets/graphique-vedette-1024x500.png` | 1024 × 500, sans alpha → **404 Ko** ✅ |
-| Captures téléphone | `build/captures/play/` — dix fichiers | 1080 × 1920, ratio **1,78** (Play exige < 2,0), 24 bits sans alpha ✅ |
+| Icône | `captures/play-assets/icone-512.png` | 512 × 512, 32 bits, < 1 Mo → **376 Ko, sans alpha** ✅ |
+| Bannière (*feature graphic*) | `captures/play-assets/graphique-vedette-1024x500.png` | 1024 × 500, sans alpha → **404 Ko** ✅ |
+| Captures téléphone | `captures/play/` — dix fichiers | 1080 × 1920, ratio **1,78** (Play exige < 2,0), 24 bits sans alpha ✅ |
 
 ⚠️ **La bannière n'existait pas**, et c'était le seul visuel obligatoire
 qui manquait. Elle est composée en HTML par
@@ -109,7 +109,7 @@ prendre sur un vrai téléphone Android.
 | Catégorie de l'application | **Maison et loisirs** (*Lifestyle* dans la liste anglaise) |
 | Tags | potager, jardinage, plantes, calendrier, hors ligne |
 | E-mail | `kultiva@toakeur.com` |
-| Site Web | `https://kultiva.toakeur.com` — ⚠️ **en 404 depuis le passage du dépôt en privé**, voir § 4.1 |
+| Site Web | `https://kultiva.toakeur.com` — en ligne, vérifié le 4 novembre 2026 |
 | Téléphone | ⏳ **Toi** — facultatif côté Play, obligatoire côté Apple |
 
 ---
@@ -124,11 +124,11 @@ faire rejeter l'app sans qu'on touche au code.
 `https://kultiva.toakeur.com/privacy.html`, tenue identique à la
 politique embarquée (`assets/tutos/privacy_policy.html`).
 
-⚠️ **Et elle répond 404 depuis le passage du dépôt en privé** (vérifié
-le 4 novembre 2026). C'est un **bloquant pour les deux boutiques** :
-Play refuse une URL de confidentialité qui ne répond pas, et Apple
-aussi. À remettre en ligne avant d'envoyer quoi que ce soit — c'est la
-première ligne du chemin critique de `docs/PUBLICATION.md`.
+✅ **En ligne**, vérifiée le 4 novembre 2026 (200, titre « Politique de
+confidentialité — Kultiva »). Elle avait répondu 404 du 3 au 4
+novembre : passer le dépôt en privé ne suspend pas GitHub Pages, il
+**supprime** le site. Le domaine vit maintenant dans `landing/CNAME`,
+donc il revient tout seul à la prochaine publication.
 
 ### 4.2 Accès à l'application
 
@@ -336,6 +336,6 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Public cible | ✅ 13+ — ⬜ une phrase de description à revoir |
 | Annonces | ⏳ Toi — recommandation : **Oui** (§ 4.3) |
 | Déclaration DSA | ⏳ Toi — **trader** |
-| Page de confidentialité en ligne | ⛔ **Bloquant** — 404 depuis le passage du dépôt en privé (§ 4.1) |
+| Page de confidentialité en ligne | ✅ Rétablie le 4 novembre 2026 (§ 4.1) |
 | Création de l'app dans la console | ⏳ **Toi** — le formulaire est rempli, il reste les deux cases |
 | Test fermé | ⏳ Après la création — et peut-être sans les 14 jours (§ 0) |
