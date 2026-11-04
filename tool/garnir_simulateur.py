@@ -35,7 +35,12 @@ import sys
 from datetime import datetime, timedelta
 from xml.sax.saxutils import escape
 
-AUJOURDHUI = datetime(2026, 11, 3, 9, 0)
+# ⚠️ **Le jour du garnissage, pas une date écrite en dur.** La valeur
+# était figée au 03/11/2026 : relancé le lendemain, l'outil produisait
+# un cahier dont les arrosages « dus aujourd'hui » l'étaient la veille,
+# et la carte du matin ne montrait plus rien. Une capture de boutique
+# doit montrer un jardin vivant le jour où on la prend.
+AUJOURDHUI = datetime.now().replace(hour=9, minute=0, second=0, microsecond=0)
 
 
 def jours(n):

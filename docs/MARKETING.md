@@ -81,6 +81,6 @@ n'est branché (Sentry ne suit que les crashs).
 
 ## Les 3 priorités
 
-- Reprendre les 14 captures Apple : elles vivaient dans `build/`, qu'un `flutter clean` a effacé le 4 novembre 2026. Les ranger hors du dépôt cette fois.
+- Finir la fiche App Store : elle est ouverte et connectée, les 16 captures sont prêtes (10 iPhone 6,9″, 6 iPad 13″) ; restent le téléphone de revue, les trois URL et la déclaration de trader DSA.
 - Compléter la fiche App Store déjà créée (trois URL, `kultiva@toakeur.com`, les 14 captures prises le 3 novembre, déclaration de trader DSA, téléphone de revue), puis soumettre le build 220 déjà en TestFlight.
 - Finir la fiche Google Play : tout est prêt depuis le 4 novembre 2026 (textes, icône 512, bannière 1024 × 500, dix captures, bundle signé, réponses aux questionnaires dans `docs/FICHE_PLAY.md`), il reste les deux cases de déclaration à cocher soi-même. Puis lancer le test fermé — ses quatorze jours ne s'appliquent peut-être pas, Erea étant déjà en production sur le même compte.

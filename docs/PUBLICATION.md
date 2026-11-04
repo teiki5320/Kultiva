@@ -43,7 +43,7 @@
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste inactif (vérifié le 4 novembre 2026), inutilisé, et ne bloque plus rien
 - **Monétisation** : affiliation Amazon en France. Les 159 liens, retirés le 20 octobre 2026 (compte fermé le 18), sont **revenus le 30 octobre 2026** sous le tag `kultiva1-21`. ⚠️ Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, redevient donc applicable : à déclarer dans App Store Connect et Play Console avant soumission
 - **Classification attendue** : **4+** depuis le retrait du feed communautaire — plus aucun contenu généré par les utilisateurs
-- **Chemin critique** : ~~remettre en ligne la page de confidentialité~~ (fait le 4 novembre 2026) → compléter la fiche App Store (téléphone de revue, trois URL, déclaration de trader DSA) → soumettre iOS. Côté Play, tout est prêt sauf les deux cases de déclaration (`docs/FICHE_PLAY.md`). ⚠️ Les 14 captures Apple sont **à reprendre** : elles vivaient dans `build/`, effacé par un `flutter clean` le 4 novembre 2026
+- **Chemin critique** : ~~remettre en ligne la page de confidentialité~~ (fait le 4 novembre 2026) → compléter la fiche App Store (téléphone de revue, trois URL, déclaration de trader DSA) → soumettre iOS. Côté Play, tout est prêt sauf les deux cases de déclaration (`docs/FICHE_PLAY.md`). Les captures Apple ont été **refaites le 4 novembre 2026** : 10 en iPhone 6,9″ et 6 en iPad 13″, dans `captures/`
 
 Aucune boutique n'a reçu de soumission : côté Apple, seuls des builds
 TestFlight internes sont arrivés dans la fiche ; côté Google, rien n'a
@@ -59,7 +59,7 @@ restent des champs de formulaire (le backend ne bloque plus rien depuis le 30 oc
 
 | | |
 |---|---|
-| État | **Jamais soumise** — captures Apple à reprendre (effacées le 4 novembre 2026) ; restent les champs de la fiche (le projet Supabase, inactif, ne bloque plus rien depuis le retrait des comptes le 30 octobre 2026) |
+| État | **Jamais soumise** — captures Apple refaites le 4 novembre 2026 (10 iPhone + 6 iPad) ; restent les champs de la fiche (le projet Supabase, inactif, ne bloque plus rien depuis le retrait des comptes le 30 octobre 2026) |
 | Console | <https://appstoreconnect.apple.com> |
 | Version publiée | aucune — l'app n'est jamais sortie |
 | Version en cours | `1.0.0` — fiche App Store Connect créée (Apple ID `6762550020`), builds Xcode Cloud 95, 96, 97, 127 (30 octobre 2026), 134 (31 octobre 2026), 152 (1er novembre 2026), 166 (2 novembre 2026), 195 (nuit du 2 au 3 novembre 2026) puis **220 (3 novembre 2026 au soir)** reçus ; aucune soumission |
@@ -81,10 +81,10 @@ assistance et marketing `https://kultiva.toakeur.com`, confidentialité
 depuis le 4 novembre 2026 : restent à coller dans App Store Connect
 (à vérifier dans la console). Le testeur Apple n'a plus ni connexion ni suppression de compte à
 essayer : l'app n'en a plus depuis le 30 octobre 2026. Les **captures d'écran** sont faites
-⚠️ **à reprendre** : les 14 fichiers du 3 novembre 2026 — 7 en
-iPhone 6,9″ (1320 × 2868) et 7 en iPad 13″ (2064 × 2752) — ont été
-effacés le 4 novembre par un `flutter clean`, qui vide `build/`. Ils
-se refont sur une installation garnie. Restent
+**refaites le 4 novembre 2026** : 10 en iPhone 6,9″ (1320 × 2868)
+et 6 en iPad 13″ (2064 × 2752), dans `captures/`. Les 14 du
+3 novembre avaient été effacées le matin même par un `flutter clean`,
+qui vide `build/`. Restent
 le **numéro de téléphone** des informations de revue et la
 déclaration DSA dans *Entreprise → Accords → Digital Services Act* :
 le statut de trader, choisi pour les liens d'affiliation, s'applique
@@ -264,17 +264,32 @@ la synchro (Cloudflare, ci-dessous).
 3. ✅ **Backend supprimé** : les comptes ont été retirés de la v1 le 30 octobre 2026. Plus rien à rallumer, plus de clés Google à recréer.
 4. **Compléter la fiche App Store** : fiche créée (Apple ID `6762550020`) ; restent les trois URL, l'adresse de contact, la déclaration DSA (trader) et le téléphone de revue.
 5. ✅ **Garnir une installation pour les captures** : fait, et outillé — `tool/garnir_simulateur.py`.
-6. ⬜ **Captures d'écran Apple — à reprendre.** Les 14 fichiers du
-    3 novembre 2026 (7 en iPhone 6,9″, 1320 × 2868 ; 7 en iPad 13″,
-    2064 × 2752) sont **perdus** : ils étaient dans `build/captures/`,
-    et `flutter clean` vide `build/`. Ils se refont en une session —
-    `tool/garnir_simulateur.py` garnit le jardin, la recette du
-    simulateur est dans l'alerte 9 de `CLAUDE.md`.
+6. ✅ **Captures d'écran Apple — refaites le 4 novembre 2026.**
+    **10 en iPhone 6,9″** (1320 × 2868) : tableau de bord, cahier de
+    culture, potager carré, Étal, fiche tomate, Garder ta récolte,
+    **météo**, à semer en novembre, badges, journal. **6 en
+    iPad 13″** (2064 × 2752) : tableau de bord, cahier, potager
+    carré, Étal, Garder ta récolte, tutos. Dans `captures/`.
 
-    ⚠️ **Et il ne faut pas les y remettre.** `build/` est le dossier
-    de travail du compilateur : tout ce qu'on y dépose est à la merci
-    du prochain `clean`. Les captures d'une boutique sont une
-    livraison, pas un artefact de build.
+    Les 14 du 3 novembre étaient dans `build/captures/`, qu'un
+    `flutter clean` a vidé le matin du 4. ⚠️ **`build/` est le
+    dossier de travail du compilateur** : une livraison n'y a rien à
+    faire. `captures/` est ignoré par git mais hors de portée d'un
+    `clean`.
+
+    ⚠️ **Et les simulateurs avaient disparu avec**, tous :
+    `~/Library/Developer/CoreSimulator` pesait 0 octet, les appareils
+    étaient déclarés par `simctl` sans données sur le disque. Le
+    runtime iOS 27.2, lui, était intact — deux appareils neufs
+    recréés en une commande.
+
+    ⚠️ **Deux pièges du pilotage par `simctl`**, tous deux rencontrés :
+    le **collage de texte échoue en silence** (la recherche d'un
+    légume est donc inatteignable, il faut filtrer par catégorie), et
+    une **fiche poussée n'a pas de barre d'onglets** — taper à
+    l'emplacement habituel touche le bouton flottant « Je l'ai
+    planté », ce qui ajoute un plant et fausse les captures
+    suivantes.
 6 bis. ✅ **Captures d'écran Google Play — faites le 4 novembre 2026.** Dix captures en **1080 × 1920** (dossier non suivi par git ; ⚠️ à sortir de `build/`, voir le point 6) : tableau de bord, « à semer en novembre », cahier de culture, potager carré, journal, « Garder ta récolte », fiche tomate, badges, plus l'Étal et « au jardin en ce moment » en réserve. Play en accepte huit par type d'appareil.
 
     **Pourquoi il a fallu un émulateur Android** : aucune des 14 captures Apple ne convenait. Play exige que le côté le plus long fasse **moins du double** du côté le plus court, et l'iPhone 6,9″ est à 2,17 (1320 × 2868). Celles-ci sont à **1,78**, le 9:16 que Play recommande.
