@@ -219,6 +219,19 @@ Pour les deux : **chiffrées en transit** (HTTPS), **non utilisées pour
 le suivi publicitaire**, et **aucune suppression à proposer** puisque
 rien n'est conservé côté Kultiva.
 
+⚠️ **Deux nuances que la console demande et que cette fiche n'avait
+pas** : la position est déclarée **traitée de manière éphémère** (les
+coordonnées servent à la requête et ne sont pas conservées), les
+journaux de plantage **non** ; et la position est **facultative**
+(l'app retombe sur Paris), les plantages **obligatoires** (aucun
+réglage ne les coupe).
+
+⚠️ **Et l'ordre des déclarations n'est pas libre.** « Sécurité des
+données » refuse d'être envoyée tant que « Cible et contenu » n'est
+pas rempli, qui lui-même attend la **classification IARC**. La chaîne
+est donc : IARC → Cible → Sécurité des données. Les réponses sont
+enregistrées en brouillon en attendant.
+
 ⚠️ **« Partagée » plutôt que « collectée seulement »**, et c'est
 délibéré : Open-Meteo et Sentry sont des tiers, pas des sous-traitants
 agissant pour le compte de Kultiva. Sur-déclarer ne coûte rien ;
@@ -350,5 +363,7 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Annonces | ✅ **Non** — voir § 4.3, la recommandation a changé après lecture de la console |
 | Classification du contenu | ⏳ **Toi** — le questionnaire IARC demande d'accepter les conditions d'un tiers |
 | Cible | ⏳ Après la classification — Play bloque déjà les tranches sous 13 ans |
-| Sécurité des données, applis gouvernementales, finance, santé | ⏳ Restent à remplir |
+| Sécurité des données | ✅ **Remplie le 4 novembre 2026** (position approximative, position exacte, journaux de plantage) — ⛔ **mais non envoyable** tant que « Cible et contenu » n'est pas fait, lui-même bloqué par la classification IARC |
+| Applis gouvernementales, finance, santé | ✅ **Non** aux trois, le 4 novembre 2026 |
+| Identifiant publicitaire | ✅ **Non utilisé** — mesuré dans le bundle (§ 6) |
 | Statut de professionnel | ⏳ **Toi** — « Action requise », échéance **février 2027**, sans quoi le profil développeur et les applis sont retirés |
