@@ -350,7 +350,7 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Icône 512 × 512 | ✅ Produite |
 | Bannière 1024 × 500 | ✅ Produite (`tool/graphique_vedette.py`) |
 | Captures téléphone | ✅ Dix, au format Play — ⬜ la météo manque |
-| App Bundle signé | ✅ Construit le 4 novembre 2026, correctif R8 inclus |
+| App Bundle signé | ✅ Construit et **téléversé le 4 novembre 2026**, correctif R8 inclus — 96,9 Mo d'AAB, mais **31,7 Mo à l'installation** et 17 s de téléchargement après découpe par Play |
 | Permissions / `AD_ID` | ✅ Mesurées dans le bundle |
 | Catégorie, coordonnées, URL | ✅ Réponses fournies |
 | Classification du contenu | ✅ Réponses fournies (attendu : tout public) |
