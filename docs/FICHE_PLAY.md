@@ -384,15 +384,28 @@ jour 14. Environ **15 jours** entre la soumission et la demande.
 ⚠️ **L'ordre est l'inverse de l'intuition : on paie d'abord.** Le
 tableau de bord ne donne l'adresse du groupe Google **qu'après
 l'achat**, et le site ne la publie nulle part. L'adresse utilisée ici
-vient des fiches d'Erea : **à comparer avec celle du tableau de bord**
-et à corriger dans la console si elle diffère.
+vient des fiches d'Erea, et elle est **confirmée** : le canal de test
+d'Erea porte toujours `testers-community@googlegroups.com` (lu dans
+la console le 4 novembre 2026).
 
 ⚠️ **Le lien d'inscription est prévisible**, et il n'y a pas à
-attendre que la console l'affiche. La console dit « Le lien sera
-affiché ici quand vous publierez votre application », mais l'adresse
-est toujours `https://play.google.com/apps/testing/<package>` — pour
-Kultiva, `https://play.google.com/apps/testing/com.toa.kultiva`, qui
-répondait déjà **200** le 4 novembre 2026, release encore en examen.
+attendre que la console l'affiche. Elle dit « Le lien sera affiché ici
+quand vous publierez votre application », mais le format est fixe —
+**vérifié dans la console d'Erea** le 4 novembre 2026, même compte,
+canal de test encore en place :
+
+| Participer | Lien |
+| --- | --- |
+| sur le **Web** | `https://play.google.com/apps/testing/<package>` |
+| sur **Android** | `https://play.google.com/store/apps/details?id=<package>` |
+
+C'est le **lien Web** que demande Testers Community. Pour Kultiva :
+`https://play.google.com/apps/testing/com.toa.kultiva`.
+
+⚠️ **Ne pas « vérifier » ce lien avec un curl.** Il renvoie vers la
+connexion Google et répond **200 pour n'importe quel nom de paquet**,
+même inventé. Je m'en suis servi comme preuve, et ça n'en était pas
+une. La preuve, c'est une app du compte dont le canal est ouvert.
 
 **Formulaire du service, ce qu'il demande** : nom de l'app, plan, le
 lien ci-dessus, une icône carrée (≤ 5 Mo — `captures/play-assets/icone-512.png`)
