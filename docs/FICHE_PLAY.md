@@ -360,7 +360,13 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Déclaration DSA | ⏳ Toi — **trader** |
 | Page de confidentialité en ligne | ✅ Rétablie le 4 novembre 2026 (§ 4.1) |
 | Création de l'app dans la console | ✅ **Faite le 4 novembre 2026** — `Kultiva : potager kawaii`, `com.toa.kultiva` |
-| Test fermé | ⏳ **Obligatoire, et les 14 jours s'appliquent** (§ 0) — « 0 testeur actuellement inscrit » |
+| Test fermé | ⏳ **Obligatoire, et les 14 jours s'appliquent** (§ 0) — canal **Alpha** créé le 4 novembre 2026, **178 pays** ciblés, release brouillon « 1.0.0 (5) — premier test fermé » avec ses notes ; restent le **bundle** et les **testeurs** |
+
+⚠️ **Le bundle ne se téléverse pas depuis le navigateur piloté.** L'App
+Bundle pèse **92 Mo** et le pont du navigateur plafonne à 10 Mo : le
+fichier doit être **glissé à la main** dans la zone « Déposez ici les
+app bundles à importer ». Il est dans
+`build/app/outputs/bundle/release/app-release.aab`.
 | Fiche Play Store | ✅ **Remplie et enregistrée le 4 novembre 2026** — nom, brève description (75/80), description complète (2 698/4 000), icône 512, bannière 1024 × 500, **8 captures** 1080 × 1920, déclaration IA : *ne pas signaler* (choix de Jean) |
 | Règles de confidentialité | ✅ `https://kultiva.toakeur.com/privacy.html` |
 | Informations de connexion | ✅ « Aucune section de l'appli n'est limitée » |
