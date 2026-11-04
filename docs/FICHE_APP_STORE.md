@@ -123,10 +123,26 @@ professionnel.
 Deux tailles à fournir, 3 à 10 captures chacune, PNG ou JPEG **sans
 transparence**, l'app étant verrouillée portrait :
 
-- **iPhone 6,9″** : 1320 × 2868 px (simulateur iPhone 16 Pro Max)
+- **iPhone** : **1206 × 2622 px** (ou 1179 × 2556) — l'onglet
+  s'appelle « iPhone avec Dynamic Island (écran moyen) » et couvre
+  les 6,1 et 6,3 pouces
 - **iPad 13″** : 2064 × 2752 px (simulateur iPad Pro 13″) —
   **obligatoire** car l'app cible aussi l'iPad
   (`TARGETED_DEVICE_FAMILY = 1,2`)
+
+⚠️ **Le 6,9″ (1320 × 2868) n'est plus accepté** (mesuré le
+04/11/2026) : la zone de dépôt liste exactement 2556 × 1179,
+1179 × 2556, 2622 × 1206 et 1206 × 2622, et rien d'autre. Apple a
+consolidé ses tailles — un seul jeu iPhone sert désormais tous les
+modèles, redimensionné automatiquement. Les captures du 3 novembre,
+prises en 1320 × 2868, auraient été refusées même si le
+`flutter clean` ne les avait pas effacées.
+
+⚠️ **Prendre les captures sur un iPhone 17** (402 × 874 points,
+1206 × 2622 pixels) plutôt que sur un Pro Max. À défaut,
+`sips --resampleHeightWidth 2622 1206` ramène du 6,9″ à la bonne
+taille : c'est une réduction de 9 %, le texte reste net (vérifié à
+l'écran avant de s'en contenter).
 
 Ordre conseillé — rappel : **seules les deux premières sont visibles
 sans défilement**, elles font la décision :
@@ -157,6 +173,24 @@ Pour les refaire : `tool/garnir_simulateur.py` écrit le jardin dans
 les préférences du simulateur, sans un seul geste à l'écran. Des
 écrans vides ne vendent rien, et les garnir à la main coûtait une
 cinquantaine de gestes.
+
+### ⚠️ App Store Connect refuse les emoji (mesuré le 04/11/2026)
+
+**Le texte promotionnel et la description n'acceptent aucun emoji.**
+ASC répond « Ce champ contient un ou plusieurs caractères non
+valides » et refuse d'enregistrer. Vérifié en isolant la cause : le
+texte promotionnel ne contenait qu'un seul caractère exotique, le
+🌱 final, et l'erreur a disparu dès qu'il a été retiré — la
+description, laissée telle quelle, restait en faute.
+
+**Les textes ci-dessous gardent leurs emoji** parce qu'ils servent
+aussi à **Google Play**, qui les accepte. Côté Apple, retirer les
+emoji et garder les titres de section en capitales : c'est ce qui est
+en place dans la fiche depuis le 04/11/2026.
+
+⚠️ **Et l'em-dash, les points de suspension et les apostrophes
+courbes passent sans problème** — seuls les emoji sont refusés. Ne pas
+appauvrir la typographie en croyant bien faire.
 
 ### 2.2 Texte promotionnel — 126/170 caractères
 
@@ -352,12 +386,12 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | Droits d'auteur, version, publication | ✅ Prêts |
 | Questionnaire de confidentialité | ✅ Réponses fournies (§4) — réduit à 2 types depuis le retrait des comptes |
 | Notes au testeur | ✅ Prêtes à coller |
-| Build | ✅ Xcode Cloud opérationnel — sélectionner le dernier |
+| Build | ⛔ **Impossible à rattacher** — tous les builds (jusqu'au 226) sont **grisés** dans « Ajouter un build ». Ni la version (passée de 1.0 à 1.0.0), ni le rechargement de la page, ni l'état TestFlight (« Prêt à tester », conformité au chiffrement déjà réglée par `ITSAppUsesNonExemptEncryption` dans `Info.plist`) ne l'expliquent. Piste la plus probable : **la classification par âge n'est pas encore configurée** |
 | URL d'assistance / marketing / confidentialité | ✅ `kultiva.toakeur.com` en ligne (§2.5, §4) — ⏳ Toi : les coller dans ASC |
 | Téléphone (revue) | ⏳ Toi |
 | Compte de démonstration | ✅ Sans objet — l'app n'a pas de compte (§2.8) |
-| Déclaration DSA | ⏳ Toi — **trader** (§1.5), l'affiliation est revenue le 30/10/2026 |
-| Captures d'écran | ⏳ Toi (sur une installation garnie, §5) |
+| Déclaration DSA | ✅ **Faite** — « Ce développeur s'est identifié comme commerçant pour cette app » (lu dans la console le 04/11/2026) |
+| Captures d'écran | ✅ **Téléversées le 04/11/2026** — 10 en 1206 × 2622 ; les 6 de l'iPad restent à charger |
 
 ---
 
