@@ -360,7 +360,25 @@ le 23 août 2026 ne l'avait pas : **ne pas le téléverser.**
 | Déclaration DSA | ⏳ Toi — **trader** |
 | Page de confidentialité en ligne | ✅ Rétablie le 4 novembre 2026 (§ 4.1) |
 | Création de l'app dans la console | ✅ **Faite le 4 novembre 2026** — `Kultiva : potager kawaii`, `com.toa.kultiva` |
-| Test fermé | ⏳ **Obligatoire, et les 14 jours s'appliquent** (§ 0) — canal **Alpha** créé le 4 novembre 2026, **178 pays** ciblés, release brouillon « 1.0.0 (5) — premier test fermé » avec ses notes ; restent le **bundle** et les **testeurs** |
+| Test fermé | ⏳ **Obligatoire, et les 14 jours s'appliquent** (§ 0) — canal **Alpha** créé le 4 novembre 2026, **178 pays** ciblés, release « 1.0.0 (5) — premier test fermé » **avec son bundle** ; reste l'envoi pour examen et les **testeurs** |
+
+### Les douze testeurs : ce qui a marché pour Erea
+
+**Ne pas chercher douze volontaires.** Erea est passé par le service
+payant **Testers Community** (<https://testerscommunity.com>), plan
+**Starter à 14 €**, 15 testeurs, souscrit le 8 septembre 2026 à 22 h.
+Il fournit un **groupe Google** — `testers-community@googlegroups.com`
+— qu'on ajoute comme liste de testeurs du canal fermé.
+
+**Le calendrier mesuré sur Erea** : souscription le 8 septembre,
+« 12 testeurs inscrits » au compteur de Google **le 10**, quatorze
+jours tenus **du 8 au 22 septembre 2026**, accès à la production
+accordé le 17 octobre.
+
+⚠️ **Le compteur part au douzième inscrit, pas à la souscription.**
+Et s'inscrire veut dire **ouvrir le lien et accepter**, pas figurer
+sur une liste. C'est le seul délai qu'aucune décision ne raccourcit :
+à lancer en parallèle de l'examen, pas après.
 
 ⚠️ **Le bundle ne se téléverse pas depuis le navigateur piloté.** L'App
 Bundle pèse **92 Mo** et le pont du navigateur plafonne à 10 Mo : le
