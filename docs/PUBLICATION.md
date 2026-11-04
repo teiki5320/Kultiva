@@ -43,7 +43,7 @@
 - **Backend** : **aucun**. Les comptes ont été retirés de la v1 le 30 octobre 2026 — le jardin vit sur l'appareil. Le projet Supabase reste inactif (vérifié le 4 novembre 2026), inutilisé, et ne bloque plus rien
 - **Monétisation** : affiliation Amazon en France. Les 159 liens, retirés le 20 octobre 2026 (compte fermé le 18), sont **revenus le 30 octobre 2026** sous le tag `kultiva1-21`. ⚠️ Le statut **trader** au sens du DSA, décidé le 24 août 2026 à cause de ces liens, redevient donc applicable : à déclarer dans App Store Connect et Play Console avant soumission
 - **Classification attendue** : **4+** depuis le retrait du feed communautaire — plus aucun contenu généré par les utilisateurs
-- **Chemin critique** : ~~remettre en ligne la page de confidentialité~~ (fait le 4 novembre 2026) → compléter la fiche App Store (téléphone de revue, trois URL, déclaration de trader DSA) → soumettre iOS. Côté Play, tout est prêt sauf les deux cases de déclaration (`docs/FICHE_PLAY.md`). Les captures Apple ont été **refaites le 4 novembre 2026** : 10 en iPhone 6,9″ et 6 en iPad 13″, dans `captures/`
+- **Chemin critique** : la fiche App Store est remplie au 4 novembre 2026 (16 captures, textes, URL, version 1.0.0, droits d'auteur, sous-titre, catégories, classification **4+**, notes au testeur, publication manuelle). Restent **le numéro de téléphone de revue** — seule erreur affichée par la page — le **questionnaire de confidentialité**, les **tarifs et la disponibilité**, et le **build**, que la console refuse de rattacher (voir `docs/FICHE_APP_STORE.md`) → soumettre iOS. Côté Play, tout est prêt sauf les deux cases de déclaration (`docs/FICHE_PLAY.md`). Les captures Apple ont été **refaites le 4 novembre 2026** : 10 en iPhone 6,9″ et 6 en iPad 13″, dans `captures/`
 
 Aucune boutique n'a reçu de soumission : côté Apple, seuls des builds
 TestFlight internes sont arrivés dans la fiche ; côté Google, rien n'a
@@ -262,7 +262,7 @@ la synchro (Cloudflare, ci-dessous).
 1. ✅ **Site et confidentialité** : remis en ligne le 4 novembre 2026 — dépôt repassé en public, site Pages recréé, et le domaine fixé dans `landing/CNAME` pour qu'il ne se reperde plus.
 2. ✅ **Adresse de contact** : `kultiva@toakeur.com` sur le site, la confidentialité et les textes des fiches.
 3. ✅ **Backend supprimé** : les comptes ont été retirés de la v1 le 30 octobre 2026. Plus rien à rallumer, plus de clés Google à recréer.
-4. **Compléter la fiche App Store** : fiche créée (Apple ID `6762550020`) ; restent les trois URL, l'adresse de contact, la déclaration DSA (trader) et le téléphone de revue.
+4. **Compléter la fiche App Store** : très avancée au 4 novembre 2026 — URL, textes, 16 captures, classification 4+, notes au testeur, publication manuelle, et la **déclaration DSA était déjà faite**. Restent le **téléphone de revue**, le questionnaire de confidentialité, les tarifs, et le **build** (bloqué).
 5. ✅ **Garnir une installation pour les captures** : fait, et outillé — `tool/garnir_simulateur.py`.
 6. ✅ **Captures d'écran Apple — refaites le 4 novembre 2026.**
     **10 en iPhone 6,9″** (1320 × 2868) : tableau de bord, cahier de

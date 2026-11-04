@@ -381,17 +381,17 @@ publicité, pas d'analytics, pas de partage inter-apps → pas de popup ATT.
 | --- | --- |
 | Nom, sous-titre, texte promo, description, mots-clés | ✅ Prêts à coller (décomptes vérifiés) |
 | Catégories, droits sur le contenu, UGS | ✅ Réponses fournies |
-| Questionnaire de classification par âge | ✅ Réponses fournies (attendu : **4+** depuis le retrait du feed, §1.3) |
+| Questionnaire de classification par âge | ✅ **Rempli le 04/11/2026** — résultat **4+ dans 172 pays** (AL au Brésil, TOUS en Corée du Sud, 00+ au Vietnam) |
 | Chiffrement | ✅ Rien à faire (Info.plist déjà configuré) |
 | Droits d'auteur, version, publication | ✅ Prêts |
 | Questionnaire de confidentialité | ✅ Réponses fournies (§4) — réduit à 2 types depuis le retrait des comptes |
-| Notes au testeur | ✅ Prêtes à coller |
+| Notes au testeur | ✅ **Collées le 04/11/2026**, avec le contact de revue (Jean Perraudeau, `kultiva@toakeur.com`) et « Connexion requise » décochée |
 | Build | ⛔ **Impossible à rattacher** — tous les builds (jusqu'au 226) sont **grisés** dans « Ajouter un build ». Ni la version (passée de 1.0 à 1.0.0), ni le rechargement de la page, ni l'état TestFlight (« Prêt à tester », conformité au chiffrement déjà réglée par `ITSAppUsesNonExemptEncryption` dans `Info.plist`) ne l'expliquent. Piste la plus probable : **la classification par âge n'est pas encore configurée** |
-| URL d'assistance / marketing / confidentialité | ✅ `kultiva.toakeur.com` en ligne (§2.5, §4) — ⏳ Toi : les coller dans ASC |
-| Téléphone (revue) | ⏳ Toi |
+| URL d'assistance / marketing | ✅ **Collées le 04/11/2026** — `https://kultiva.toakeur.com` pour les deux |
+| Téléphone (revue) | ⛔ **Toi, et c'est la seule erreur qui reste sur la page** : « Ce champ est obligatoire » et le format exige le « + » suivi de l'indicatif |
 | Compte de démonstration | ✅ Sans objet — l'app n'a pas de compte (§2.8) |
 | Déclaration DSA | ✅ **Faite** — « Ce développeur s'est identifié comme commerçant pour cette app » (lu dans la console le 04/11/2026) |
-| Captures d'écran | ✅ **Téléversées le 04/11/2026** — 10 en 1206 × 2622 ; les 6 de l'iPad restent à charger |
+| Captures d'écran | ✅ **Téléversées le 04/11/2026** — 10 en 1206 × 2622 et 6 en 2064 × 2752 |
 
 ---
 
