@@ -959,8 +959,6 @@ const Map<String, String> uiTextsEs = <String, String>{
       '📖  Diario del huerto',
   'Tout ce que tu as fait, jour par jour':
       'Todo lo que has hecho, día a día',
-  'Au jardin en ce moment  ·  {0}':
-      'En el huerto ahora  ·  {0}',
   'Voir les {0} autres':
       'Ver las otras {0}',
   'il y a {0} j':
@@ -997,8 +995,6 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Nada urgente hoy. {0} plantas en la tierra.',
   'Rien d\'urgent aujourd\'hui. {0} plant en terre.':
       'Nada urgente hoy. {0} planta en la tierra.',
-  'À faire aujourd\'hui':
-      'Para hacer hoy',
   '{0} et {1} autres':
       '{0} y {1} más',
   '{0} et {1} autre':
@@ -1571,4 +1567,57 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Buscar un país…',
   'Aucun pays ne correspond.':
       'Ningún país coincide.',
+  // Cahier en pile et Conservation par meuble (06/11/2026).
+  'Urgent : la terre est sèche':
+      'Urgente: la tierra está seca',
+  'Récolte notée 🧺':
+      'Cosecha anotada 🧺',
+  '{0} récoltes notées 🧺':
+      '{0} cosechas anotadas 🧺',
+  'Ma pile du jour':
+      'Mi pila del día',
+  'Tout est fait pour aujourd\'hui 🌱':
+      'Todo hecho por hoy 🌱',
+  'Fait →':
+      'Hecho →',
+  'Glisse à droite quand c\'est fait, à gauche pour demain.':
+      'Desliza a la derecha cuando esté hecho, a la izquierda para mañana.',
+  'FAIT':
+      'HECHO',
+  'Pour demain':
+      'Para mañana',
+  '{0} faits sur {1}':
+      '{0} de {1} hechas',
+  '{0} fait sur {1}':
+      '{0} de {1} hecha',
+  'Mes plants, étape par étape  ·  {0}':
+      'Mis plantas, etapa por etapa  ·  {0}',
+  'Croissance':
+      'Crecimiento',
+  'Congélateur':
+      'Congelador',
+  'Placard':
+      'Despensa',
+  'Réfrigérateur':
+      'Nevera',
+  'Dans le congélateur':
+      'En el congelador',
+  'Dans le placard':
+      'En la despensa',
+  'Dans le réfrigérateur':
+      'En la nevera',
+  'pour le congélateur':
+      'para el congelador',
+  'pour le placard':
+      'para la despensa',
+  'pour le réfrigérateur':
+      'para la nevera',
+  '{0} façons':
+      '{0} formas',
+  '{0} façon':
+      '{0} forma',
+  'Touche un meuble pour l\'ouvrir':
+      'Toca un mueble para abrirlo',
+  'Où veux-tu ranger ta récolte ?':
+      '¿Dónde quieres guardar tu cosecha?',
 };

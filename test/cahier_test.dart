@@ -119,7 +119,7 @@ void main() {
       // Une carte de tâches vide sur un jardin inexistant, c'est du
       // bruit : l'écran doit d'abord dire comment commencer.
       await monte(tester, taille: const Size(393, 852));
-      expect(find.text('À faire aujourd\'hui'), findsNothing);
+      expect(find.text('Ma pile du jour'), findsNothing);
     });
   });
 
@@ -176,7 +176,7 @@ void main() {
 
     testWidgets('liste les plants en terre avec leur âge', (tester) async {
       await monte(tester, taille: const Size(393, 852));
-      expect(find.text('Au jardin en ce moment  ·  1'), findsOneWidget);
+      expect(find.text('Mes plants, étape par étape  ·  1'), findsOneWidget);
       expect(
         labels(tester).any((l) =>
             l.startsWith('Laitue,') &&
@@ -190,7 +190,7 @@ void main() {
     testWidgets('montre la carte des tâches dès qu\'un plant existe',
         (tester) async {
       await monte(tester, taille: const Size(393, 852));
-      expect(find.text('À faire aujourd\'hui'), findsOneWidget);
+      expect(find.text('Ma pile du jour'), findsOneWidget);
     });
 
     testWidgets('pas de récap de saison sans culture cette année',

@@ -506,6 +506,32 @@ Décisions et évolutions significatives :
   de la grille sur chaque carte de jardin, liste « au jardin en ce
   moment ». `showPlantationSheet()` devient le point d'entrée unique du
   dossier d'un plant, partagé avec le Poussidex.
+- **Cahier en pile, Conservation par meuble (06/11/2026)** — deux
+  maquettes validées par Jean sur le canvas Design (« C4c · La pile du
+  jour » et « F · Les portes qui s'ouvrent »).
+  - **Cahier** : `CahierTodayCard` devient une **pile de post-it**, une
+    tâche à la fois. Glisser à droite **écrit** (arrosage par
+    `waterMany`, récolte par `harvest`), à gauche remet à demain.
+    « Plus tard » ne vit que la journée et la session (ensembles
+    statiques), volontairement : pas de nouvelle préférence pour un
+    report d'un jour. ⚠️ `_regler` est **synchrone** : un `Dismissible`
+    glissé doit quitter l'arbre dans la même image.
+    `CahierPlantsSection` range les plants en **trois colonnes**
+    (levée / croissance / récolte) d'après `expectedStage`.
+  - **Conservation** : trois meubles en tête de liste
+    (`widgets/storage_doors.dart`), dont les portes s'entrouvrent à
+    tour de rôle ; celle qu'on touche s'ouvre et pose ses bocaux sur
+    une étagère (`StorageShelf`), et la liste ne garde que ce qui s'y
+    range. Le meuble se **lit dans `Recipe.keeps`**
+    (`utils/storage_place.dart`) : 167 congélateur, 96 réfrigérateur,
+    106 placard. « au sec » l'emporte sur « au frais » (un cellier),
+    et rien de ce qui est dans l'huile ne va au placard —
+    `test/storage_place_test.dart` le vérifie.
+  - Les animations d'attente s'arrêtent avec
+    `MediaQuery.disableAnimations`.
+  - ⚠️ **Écrit sans `flutter analyze` ni `flutter test`** : la session
+    qui l'a produit n'avait ni Flutter ni pub.dev. À lancer avant tout
+    build.
 - **CI GitHub Actions** : `ci.yml` (analyze + test + builds Android sur
   push main et PR) et `site.yml` (publication de `landing/`).
 - **Cahier de culture pleine terre** (v5) : multi-jardins avec placement par

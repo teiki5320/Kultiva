@@ -960,8 +960,6 @@ const Map<String, String> uiTextsEn = <String, String>{
       '📖  Garden journal',
   'Tout ce que tu as fait, jour par jour':
       'Everything you\'ve done, day by day',
-  'Au jardin en ce moment  ·  {0}':
-      'In the garden now  ·  {0}',
   'Voir les {0} autres':
       'See the other {0}',
   'il y a {0} j':
@@ -998,8 +996,6 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Nothing urgent today. {0} plants in the ground.',
   'Rien d\'urgent aujourd\'hui. {0} plant en terre.':
       'Nothing urgent today. {0} plant in the ground.',
-  'À faire aujourd\'hui':
-      'To do today',
   '{0} et {1} autres':
       '{0} and {1} others',
   '{0} et {1} autre':
@@ -1572,4 +1568,57 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Search for a country…',
   'Aucun pays ne correspond.':
       'No country matches.',
+  // Cahier en pile et Conservation par meuble (06/11/2026).
+  'Urgent : la terre est sèche':
+      'Urgent: the soil is dry',
+  'Récolte notée 🧺':
+      'Harvest logged 🧺',
+  '{0} récoltes notées 🧺':
+      '{0} harvests logged 🧺',
+  'Ma pile du jour':
+      'My stack for today',
+  'Tout est fait pour aujourd\'hui 🌱':
+      'All done for today 🌱',
+  'Fait →':
+      'Done →',
+  'Glisse à droite quand c\'est fait, à gauche pour demain.':
+      'Swipe right when it\'s done, left for tomorrow.',
+  'FAIT':
+      'DONE',
+  'Pour demain':
+      'For tomorrow',
+  '{0} faits sur {1}':
+      '{0} of {1} done',
+  '{0} fait sur {1}':
+      '{0} of {1} done',
+  'Mes plants, étape par étape  ·  {0}':
+      'My plants, stage by stage  ·  {0}',
+  'Croissance':
+      'Growth',
+  'Congélateur':
+      'Freezer',
+  'Placard':
+      'Cupboard',
+  'Réfrigérateur':
+      'Fridge',
+  'Dans le congélateur':
+      'In the freezer',
+  'Dans le placard':
+      'In the cupboard',
+  'Dans le réfrigérateur':
+      'In the fridge',
+  'pour le congélateur':
+      'for the freezer',
+  'pour le placard':
+      'for the cupboard',
+  'pour le réfrigérateur':
+      'for the fridge',
+  '{0} façons':
+      '{0} ways',
+  '{0} façon':
+      '{0} way',
+  'Touche un meuble pour l\'ouvrir':
+      'Tap a cupboard to open it',
+  'Où veux-tu ranger ta récolte ?':
+      'Where do you want to store your harvest?',
 };

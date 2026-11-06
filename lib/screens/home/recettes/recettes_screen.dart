@@ -7,13 +7,16 @@ import '../../../data/regions/regional_calendar.dart';
 import '../../../data/ui_i18n.dart';
 import '../../../data/vegetables_base.dart';
 import '../../../models/vegetable.dart';
+import '../../../services/audio_service.dart';
 import '../../../services/plantation_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/category_colors.dart';
+import '../../../utils/storage_place.dart';
 import '../../../utils/text_normalize.dart';
 import '../../../widgets/pastel_chip.dart';
 import '../../../widgets/petal_animation.dart';
 import '../../../widgets/season_header.dart';
+import '../../../widgets/storage_doors.dart';
 import '../../../services/recipe_service.dart';
 import '../../../widgets/recipe_row.dart';
 import '../../../widgets/vegetable_image.dart';
@@ -37,6 +40,12 @@ import '../../../widgets/vegetable_image.dart';
 ///   confondus — c'est la seule vue où le nom du légume s'affiche sous
 ///   la recette, puisqu'elle les mélange.
 /// - les **familles** (feuilles, fruits…), comme ailleurs dans l'app.
+///
+/// Et, depuis le 06/11/2026, **le meuble** (maquette « F · Les portes
+/// qui s'ouvrent », validée par Jean) : congélateur, placard ou
+/// réfrigérateur, en tête de liste. Ouvrir une porte pose ses bocaux
+/// sur une étagère et ne garde dans la liste que ce qui s'y range. Le
+/// meuble se lit dans la durée de garde (`storagePlaceOf`).
 class RecettesScreen extends StatefulWidget {
   const RecettesScreen({super.key});
 
@@ -50,6 +59,53 @@ class _RecettesScreenState extends State<RecettesScreen> {
   VegetableCategory? _categorie;
   bool _saison = false;
   bool _favoris = false;
+  StoragePlace? _meuble;
+
+  /// Combien de conservations vont dans chaque meuble — sur tout le
+  /// catalogue, pour que le chiffre sous une porte ne bouge pas quand
+  /// on tape une recherche.
+  late final Map<StoragePlace, int> _comptes = _compterMeubles();
+
+  static Map<StoragePlace, int> _compterMeubles() {
+    final out = <StoragePlace, int>{
+      for (final p in StoragePlace.values) p: 0,
+    };
+    for (final recettes in recipesByVegetable.values) {
+      for (final r in recettes) {
+        final p = storagePlaceOf(r);
+        if (p != null) out[p] = out[p]! + 1;
+      }
+    }
+    return out;
+  }
+
+  /// Les légumes à montrer derrière chaque porte : ceux du jardin
+  /// d'abord, puis ceux de saison, quatre au plus.
+  Map<StoragePlace, List<String>> _imagesDesMeubles(Set<String> auJardin) {
+    final out = <StoragePlace, List<String>>{
+      for (final p in StoragePlace.values) p: <String>[],
+    };
+    final ids = recipesByVegetable.keys.toList()
+      ..sort((a, b) {
+        int rang(String id) => auJardin.contains(id)
+            ? 0
+            : (_recoltablesCeMois.contains(id) ? 1 : 2);
+        return rang(a).compareTo(rang(b));
+      });
+    for (final id in ids) {
+      final image = vegetableById(id).imageAsset;
+      if (image == null) continue;
+      final lieux = recipesByVegetable[id]!
+          .map(storagePlaceOf)
+          .whereType<StoragePlace>()
+          .toSet();
+      for (final p in lieux) {
+        final liste = out[p]!;
+        if (liste.length < 4 && !liste.contains(image)) liste.add(image);
+      }
+    }
+    return out;
+  }
 
   /// Les légumes récoltables ce mois-ci, d'après le calendrier de la
   /// région et de la zone climatique de l'utilisateur. Calculé une
@@ -123,6 +179,16 @@ class _RecettesScreenState extends State<RecettesScreen> {
 
         if (recettes.isEmpty) return;
       }
+      // Une porte ouverte ne garde que ce qui va dans ce meuble — hors
+      // du top 3 compris : une confiture rangée quatrième reste une
+      // conservation de placard.
+      if (_meuble != null) {
+        final base = _favoris ? recettes : toutes;
+        recettes = base
+            .where((r) => storagePlaceOf(r) == _meuble)
+            .toList(growable: false);
+        if (recettes.isEmpty) return;
+      }
 
       if (q.isNotEmpty) {
         final dansLeNom = foldAccents(veg.displayName).contains(q);
@@ -157,6 +223,45 @@ class _RecettesScreenState extends State<RecettesScreen> {
     final mois = DateTime.now().month;
     final entrees = _entrees;
     final total = entrees.fold<int>(0, (n, e) => n + e.recettes.length);
+    final auJardin =
+        PlantationService.instance.active.map((p) => p.vegetableId).toSet();
+    // L'étagère montre les trois premières recettes de la liste, qui a
+    // déjà mis le jardin devant.
+    final etagere = _meuble == null
+        ? const <(String, Recipe)>[]
+        : <(String, Recipe)>[
+            for (final e in entrees)
+              for (final r in e.recettes) (e.vegetable.id, r),
+          ].take(3).toList();
+    final enTete = <Widget>[
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 6, 0, 12),
+        child: Text(
+          trUi('Où veux-tu ranger ta récolte ?'),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+        ),
+      ),
+      StorageDoors(
+        selected: _meuble,
+        counts: _comptes,
+        images: _imagesDesMeubles(auJardin),
+        onTap: (p) {
+          AudioService.instance.play(Sfx.tap);
+          setState(() => _meuble = _meuble == p ? null : p);
+        },
+      ),
+      const SizedBox(height: 16),
+      if (etagere.isNotEmpty) ...<Widget>[
+        StorageShelf(
+          key: ValueKey<StoragePlace?>(_meuble),
+          place: _meuble!,
+          items: etagere,
+          onOpen: (vegId, r) =>
+              openRecipe(context, vegetableId: vegId, recipe: r),
+        ),
+        const SizedBox(height: 16),
+      ],
+    ];
 
     return Scaffold(
       body: SafeArea(
@@ -241,11 +346,15 @@ class _RecettesScreenState extends State<RecettesScreen> {
                     label: trUi('Tout'),
                     emoji: '🍽',
                     color: KultivaColors.primaryGreen,
-                    selected: _categorie == null && !_saison && !_favoris,
+                    selected: _categorie == null &&
+                        !_saison &&
+                        !_favoris &&
+                        _meuble == null,
                     onTap: () => setState(() {
                       _categorie = null;
                       _saison = false;
                       _favoris = false;
+                      _meuble = null;
                     }),
                   ),
                   PastelChip(
@@ -276,21 +385,26 @@ class _RecettesScreenState extends State<RecettesScreen> {
               ),
             ),
             Expanded(
-              child: entrees.isEmpty
-                  ? _RienTrouve(
+              child: ListView.builder(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                itemCount: enTete.length + (entrees.isEmpty ? 1 : entrees.length),
+                itemBuilder: (_, i) {
+                  if (i < enTete.length) return enTete[i];
+                  if (entrees.isEmpty) {
+                    return _RienTrouve(
                       query: _query,
                       categorie: _categorie,
                       saison: _saison,
                       favoris: _favoris,
-                    )
-                  : ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-                      itemCount: entrees.length,
-                      itemBuilder: (_, i) => _CarteLegume(
-                        entree: entrees[i],
-                        montrerLeLegume: _favoris,
-                      ),
-                    ),
+                      meuble: _meuble,
+                    );
+                  }
+                  return _CarteLegume(
+                    entree: entrees[i - enTete.length],
+                    montrerLeLegume: _favoris,
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -399,17 +513,24 @@ class _RienTrouve extends StatelessWidget {
   final bool saison;
   final bool favoris;
 
+  final StoragePlace? meuble;
+
   const _RienTrouve({
     required this.query,
     required this.categorie,
     this.saison = false,
     this.favoris = false,
+    this.meuble,
   });
 
   /// Un écran vide doit dire **lequel** des filtres a tout mangé,
   /// sinon on croit que l'app n'a pas de recettes.
   String get _message {
-    if (favoris && query.isEmpty && !saison && categorie == null) {
+    if (favoris &&
+        query.isEmpty &&
+        !saison &&
+        categorie == null &&
+        meuble == null) {
       return trUi("Tu n'as encore mis aucune recette de côté.\n"
           'Touche le marque-page sur celles qui te tentent.');
     }
@@ -420,6 +541,7 @@ class _RienTrouve extends StatelessWidget {
             <Object?>[categorie!.label.toLowerCase()]),
       if (saison) trUi('à récolter ce mois-ci'),
       if (favoris) trUi('parmi tes favoris'),
+      if (meuble != null) meuble!.forLabel,
     ];
     if (bouts.isEmpty) return trUi('Aucune recette.');
     return trUiArgs('Aucune recette {0}.', <Object?>[bouts.join(', ')]);
@@ -429,7 +551,7 @@ class _RienTrouve extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(32, 0, 32, 60),
+        padding: const EdgeInsets.fromLTRB(16, 24, 16, 60),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
