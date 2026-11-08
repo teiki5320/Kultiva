@@ -13,6 +13,7 @@
 
 ## En bref
 
+- **Décision du 8 novembre 2026** : 1.0.0 validée par Apple le 6 novembre, publication gardée en attente par choix de Jean (pause).
 - **Version commune** : `1.0.0+5` (`pubspec.yaml`) — validée par Apple le 6 novembre 2026, en test fermé sur Google Play
 - **Identifiant de bundle** : `com.toa.kultiva` (iOS et Android)
 - **Monétisation** : gratuite ; ni pub ni achat intégré, mais affiliation Amazon en France (liens remis le 30 octobre 2026, tag `kultiva1-21`)

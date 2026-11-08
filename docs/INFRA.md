@@ -7,6 +7,7 @@ Mis à jour le 7 novembre 2026 d'après le dépôt et le site en ligne. Pour met
 
 ## En bref
 
+- **Décision du 8 novembre 2026** : 1.0.0 validée par Apple le 6 novembre, publication gardée en attente par choix de Jean (pause).
 - **Plateforme** : iOS + Android (Flutter), iPhone en portrait, iPad dans les quatre sens
 - **Stack** : Flutter/Dart Material 3, local-first, hors ligne
 - **Backend** : **aucun** — ni compte ni serveur à soi (seulement Open-Meteo et Sentry)
