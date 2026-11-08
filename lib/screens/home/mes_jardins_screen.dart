@@ -10,6 +10,7 @@ import '../../services/prefs_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/category_colors.dart';
 import '../../utils/text_scale.dart';
+import '../../widgets/grille_adaptative.dart';
 import '../../widgets/jardins_intro_sheet.dart';
 import '../root_tabs.dart';
 import '../../widgets/petal_animation.dart';
@@ -105,9 +106,15 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
               children: <Widget>[
                 _CahierHeader(plans: plans),
                 const CahierTodayCard(),
-                if (plans.isEmpty)
-                  const _EmptyState()
-                else ...<Widget>[
+                if (plans.isEmpty) const _EmptyState(),
+                const CahierPlantsSection(),
+                const CahierJournalSection(),
+                // Les jardins ferment le cahier, en post-it : la
+                // maquette C4c les met après le journal, parce qu'on
+                // ouvre un plan pour **modifier**, pas pour savoir
+                // quoi faire ce matin. Ce qui répond au matin — la
+                // pile, les plants, le journal — passe devant.
+                if (plans.isNotEmpty) ...<Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
                     child: Text(
@@ -116,14 +123,17 @@ class _MesJardinsScreenState extends State<MesJardinsScreen> {
                           fontSize: 15, fontWeight: FontWeight.w800),
                     ),
                   ),
-                  for (final p in plans)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: _SoilGardenCard(plan: p),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: GrilleAdaptative(
+                      largeurCible: 170,
+                      enfants: <Widget>[
+                        for (var i = 0; i < plans.length; i++)
+                          _SoilGardenCard(plan: plans[i], rang: i),
+                      ],
                     ),
+                  ),
                 ],
-                const CahierPlantsSection(),
-                const CahierJournalSection(),
                 const CahierSeasonRecap(),
               ],
             );
@@ -270,102 +280,118 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-/// Card d'un jardin pleine terre, avec l'aperçu de sa grille.
+/// Un jardin en post-it, avec l'aperçu de sa grille.
+///
+/// Maquette « C4c · La pile du jour » : deux papiers pastel côte à
+/// côte, nom et « 6 / 8 cases ». ⚠️ **L'aperçu de la grille reste** :
+/// il date du 31/10/2026 et c'est lui qui distingue deux jardins du
+/// premier coup d'œil — la maquette ne le montrait pas, le retirer
+/// aurait rendu deux potagers identiques au regard.
 class _SoilGardenCard extends StatelessWidget {
   final GardenPlan plan;
-  const _SoilGardenCard({required this.plan});
+
+  /// Sa place dans la liste : donne sa couleur et son inclinaison,
+  /// pour que deux post-it voisins ne soient pas jumeaux.
+  final int rang;
+
+  const _SoilGardenCard({required this.plan, required this.rang});
+
+  static const List<Color> _papiers = <Color>[
+    Color(0xFFE3F1E0),
+    Color(0xFFFBD8E6),
+    Color(0xFFD6ECF5),
+    Color(0xFFFFF3C4),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final filledCells = plan.cells.length;
+    final occupees = plan.cells.length;
     final total = plan.cols * plan.rows;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Semantics(
-        label: trUiArgs('Jardin {0}, {1} cases occupées sur {2}',
-            <Object?>[plan.name, filledCells, total]),
-        hint: trUi('Ouvre le plan de ce jardin'),
-        button: true,
-        excludeSemantics: true,
-        child: InkWell(
-          onTap: () {
-            AudioService.instance.play(Sfx.tap);
-            Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => GardenPlannerScreen(initialPlan: plan),
-              ),
-            );
-          },
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: <Color>[
-                  KultivaColors.springB.withValues(alpha: 0.55),
-                  KultivaColors.springA.withValues(alpha: 0.45),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: KultivaColors.primaryGreen.withValues(alpha: 0.5),
-                width: 1.4,
-              ),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: KultivaColors.primaryGreen.withValues(alpha: 0.15),
-                  blurRadius: 14,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+    final papier = _papiers[rang % _papiers.length];
+    final pair = rang.isEven;
+    return Semantics(
+      label: trUiArgs('Jardin {0}, {1} cases occupées sur {2}',
+          <Object?>[plan.name, occupees, total]),
+      hint: trUi('Ouvre le plan de ce jardin'),
+      button: true,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: () {
+          AudioService.instance.play(Sfx.tap);
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => GardenPlannerScreen(initialPlan: plan),
             ),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  width: scaledHeight(context, 56),
-                  height: scaledHeight(context, 56),
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: _PlanThumbnail(plan: plan),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        plan.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        trUiArgs(
-                            'Pleine terre  ·  {0}×{1}  ·  {2}/{3} occupées',
-                            <Object?>[
-                              plan.cols,
-                              plan.rows,
-                              filledCells,
-                              total
-                            ]),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: KultivaColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right),
-              ],
+          );
+        },
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: papier,
+            // Le coin arrondi change de côté d'un post-it à l'autre,
+            // comme sur la maquette.
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(4),
+              topRight: const Radius.circular(4),
+              bottomLeft: Radius.circular(pair ? 20 : 4),
+              bottomRight: Radius.circular(pair ? 4 : 20),
             ),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.10),
+                blurRadius: 10,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: scaledHeight(context, 46),
+                height: scaledHeight(context, 46),
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.85),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: _PlanThumbnail(plan: plan),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      plan.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        height: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      total > 1
+                          ? trUiArgs('{0} / {1} cases',
+                              <Object?>[occupees, total])
+                          : trUiArgs('{0} / {1} case',
+                              <Object?>[occupees, total]),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: KultivaColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

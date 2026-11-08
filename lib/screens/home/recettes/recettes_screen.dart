@@ -218,6 +218,48 @@ class _RecettesScreenState extends State<RecettesScreen> {
     return out;
   }
 
+  /// Par laquelle commencer, parmi ce que l'étagère porte.
+  ///
+  /// Ce qui pousse chez toi **et** se récolte ce mois-ci passe devant :
+  /// c'est le seul cas où la conservation est à faire aujourd'hui,
+  /// pas un jour. Puis le jardin seul, puis la saison seule. Faute de
+  /// quoi, la première de la liste — qui est déjà triée jardin
+  /// d'abord.
+  ShelfPick? _aMettreEnAvant(
+    List<(String, Recipe)> etagere,
+    Set<String> auJardin,
+  ) {
+    if (etagere.isEmpty) return null;
+    (String, Recipe)? meilleur;
+    var meilleurRang = 9;
+    for (final item in etagere) {
+      final jardin = auJardin.contains(item.$1);
+      final saison = _recoltablesCeMois.contains(item.$1);
+      final rang = jardin && saison
+          ? 0
+          : jardin
+              ? 1
+              : saison
+                  ? 2
+                  : 3;
+      if (rang < meilleurRang) {
+        meilleurRang = rang;
+        meilleur = item;
+      }
+    }
+    final choisi = meilleur ?? etagere.first;
+    return ShelfPick(
+      vegetableId: choisi.$1,
+      recipe: choisi.$2,
+      reason: switch (meilleurRang) {
+        0 => trUi('DE SAISON · AU JARDIN'),
+        1 => trUi('AU JARDIN'),
+        2 => trUi('DE SAISON'),
+        _ => trUi('À ESSAYER'),
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mois = DateTime.now().month;
@@ -256,6 +298,7 @@ class _RecettesScreenState extends State<RecettesScreen> {
           key: ValueKey<StoragePlace?>(_meuble),
           place: _meuble!,
           items: etagere,
+          pick: _aMettreEnAvant(etagere, auJardin),
           onOpen: (vegId, r) =>
               openRecipe(context, vegetableId: vegId, recipe: r),
         ),

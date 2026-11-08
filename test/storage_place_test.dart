@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/recipes.dart';
+import 'package:kultiva/services/prefs_service.dart';
 import 'package:kultiva/utils/storage_place.dart';
+import 'package:kultiva/widgets/storage_doors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Le meuble d'une conservation se lit dans sa durée de garde
 /// (`Recipe.keeps`). Ces tests vérifient que la lecture tombe juste sur
@@ -8,6 +12,9 @@ import 'package:kultiva/utils/storage_place.dart';
 /// CLAUDE.md : ce qui est dans l'huile ou au vinaigre ne va pas au
 /// placard.
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  _etagere();
+
   Iterable<Recipe> toutes() => recipesByVegetable.values.expand((l) => l);
 
   Recipe recette(String legume, String nom) =>
@@ -70,5 +77,67 @@ void main() {
     expect(shortKeeps('8 mois au congélateur'), '8 mois');
     expect(shortKeeps('1 an au sec, à l\'abri de la lumière'), '1 an');
     expect(shortKeeps('3 semaines'), '3 semaines');
+  });
+}
+
+/// L'étagère du meuble ouvert, et la carte qui dit par quelle
+/// conservation commencer (maquette « F · Les portes qui s'ouvrent »).
+void _etagere() {
+  testWidgets('la carte de saison annonce sa raison et ouvre la recette',
+      (tester) async {
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'flutter.kultiva.language': 'fr',
+    });
+    await PrefsService.instance.load();
+    PrefsService.instance.language.value = 'fr';
+
+    final coulis = recipesByVegetable['tomate']!
+        .firstWhere((r) => storagePlaceOf(r) == StoragePlace.cupboard);
+    String? ouverte;
+
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: StorageShelf(
+            place: StoragePlace.cupboard,
+            items: <(String, Recipe)>[('tomate', coulis)],
+            pick: ShelfPick(
+              vegetableId: 'tomate',
+              recipe: coulis,
+              reason: 'DE SAISON · AU JARDIN',
+            ),
+            onOpen: (vegId, r) => ouverte = r.name,
+          ),
+        ),
+      ),
+    ));
+    await tester.pump();
+
+    expect(find.text('Dans le placard'), findsOneWidget);
+    expect(find.text('DE SAISON · AU JARDIN'), findsOneWidget);
+    expect(find.text('C\'est parti'), findsOneWidget);
+
+    await tester.tap(find.text('C\'est parti'));
+    await tester.pump();
+    expect(ouverte, coulis.name,
+        reason: '« C\'est parti » ouvre la conservation mise en avant');
+  });
+
+  testWidgets('sans mise en avant, pas de bouton', (tester) async {
+    final coulis = recipesByVegetable['tomate']!
+        .firstWhere((r) => storagePlaceOf(r) == StoragePlace.cupboard);
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: StorageShelf(
+            place: StoragePlace.cupboard,
+            items: <(String, Recipe)>[('tomate', coulis)],
+            onOpen: (_, __) {},
+          ),
+        ),
+      ),
+    ));
+    await tester.pump();
+    expect(find.text('C\'est parti'), findsNothing);
   });
 }

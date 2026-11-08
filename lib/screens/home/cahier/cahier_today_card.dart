@@ -40,6 +40,20 @@ import '../../../utils/phenology.dart';
 class CahierTodayCard extends StatefulWidget {
   const CahierTodayCard({super.key});
 
+  /// Vide la mémoire du jour entre deux tests.
+  ///
+  /// ⚠️ « Fait » et « plus tard » vivent dans des ensembles
+  /// **statiques** — c'est voulu, la journée ne se reconstruit pas
+  /// quand le cahier se reconstruit. Mais un test qui glisse un
+  /// post-it laissait la pile vide pour le test suivant, qui ne
+  /// trouvait plus rien à glisser et échouait pour une raison qui
+  /// n'était pas la sienne.
+  @visibleForTesting
+  static void resetForTesting() {
+    _CahierTodayCardState._faites.clear();
+    _CahierTodayCardState._remises.clear();
+  }
+
   @override
   State<CahierTodayCard> createState() => _CahierTodayCardState();
 }

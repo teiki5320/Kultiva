@@ -412,8 +412,6 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Garden {0}, {1} of {2} beds occupied',
   'Ouvre le plan de ce jardin':
       'Opens this garden\'s plan',
-  'Pleine terre  ·  {0}×{1}  ·  {2}/{3} occupées':
-      'In-ground  ·  {0}×{1}  ·  {2}/{3} occupied',
   '+ Nouveau jardin':
       '+ New garden',
   'Fermer le calendrier du mois':
@@ -1621,4 +1619,20 @@ const Map<String, String> uiTextsEn = <String, String>{
       'Tap a cupboard to open it',
   'Où veux-tu ranger ta récolte ?':
       'Where do you want to store your harvest?',
+  'DE SAISON · AU JARDIN':
+      'IN SEASON · IN YOUR GARDEN',
+  'AU JARDIN':
+      'IN YOUR GARDEN',
+  'DE SAISON':
+      'IN SEASON',
+  'À ESSAYER':
+      'WORTH A TRY',
+  '{0} / {1} cases':
+      '{0} / {1} beds',
+  '{0} / {1} case':
+      '{0} / {1} bed',
+  'C\'est parti : {0}':
+      'Let\'s go: {0}',
+  'C\'est parti':
+      'Let\'s go',
 };

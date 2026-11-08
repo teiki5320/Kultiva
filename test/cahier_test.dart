@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kultiva/data/vegetables_base.dart';
 import 'package:kultiva/models/garden_plan.dart';
 import 'package:kultiva/models/vegetable.dart';
+import 'package:kultiva/screens/home/cahier/cahier_today_card.dart';
 import 'package:kultiva/screens/home/mes_jardins_screen.dart';
 import 'package:kultiva/screens/root_tabs.dart';
 import 'package:kultiva/services/culture_service.dart';
@@ -32,6 +33,7 @@ void main() {
     WidgetTester tester, {
     required Size taille,
     double police = 1.0,
+    bool sombre = false,
   }) async {
     tester.view.devicePixelRatio = 1.0;
     tester.view.physicalSize = taille;
@@ -39,7 +41,7 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       localizationsDelegates: L.localizationsDelegates,
       supportedLocales: L.supportedLocales,
-      theme: AppTheme.light,
+      theme: sombre ? AppTheme.dark : AppTheme.light,
       home: MediaQuery(
         data: MediaQueryData(
           size: taille,
@@ -49,6 +51,18 @@ void main() {
       ),
     ));
     await tester.pump();
+  }
+
+  /// Descend jusqu'au bas du cahier, par petits pas.
+  ///
+  /// `scrollUntilVisible` ne convient pas : il s'arrête à un widget
+  /// nommé, et on veut simplement que la fin de la liste soit
+  /// construite.
+  Future<void> descendre(WidgetTester tester) async {
+    for (var i = 0; i < 6; i++) {
+      await tester.drag(find.byType(ListView).first, const Offset(0, -400));
+      await tester.pump(const Duration(milliseconds: 100));
+    }
   }
 
   setUp(() async {
@@ -66,6 +80,10 @@ void main() {
     await PrefsService.instance.setJardinsTutorialDone(true);
     await GardenPlanService.instance.resetForTesting();
     PlantationService.instance.load();
+    // La pile du jour se souvient de ce qu'on y a réglé, dans des
+    // ensembles statiques voulus. Sans ce ménage, un test qui glisse
+    // un post-it vide la pile du test suivant.
+    CahierTodayCard.resetForTesting();
   });
 
   group('cahier vide', () {
@@ -167,6 +185,7 @@ void main() {
 
     testWidgets('annonce le remplissage de chaque jardin', (tester) async {
       await monte(tester, taille: const Size(393, 852));
+      await descendre(tester);
       expect(
         labels(tester).any((l) =>
             l.contains('Carré nord') && l.contains('3 cases occupées sur 12')),
@@ -191,6 +210,92 @@ void main() {
         (tester) async {
       await monte(tester, taille: const Size(393, 852));
       expect(find.text('Ma pile du jour'), findsOneWidget);
+    });
+
+    // ⚠️ Le point qui casse : un `Dismissible` glissé doit quitter
+    // l'arbre **dans la même image**, sinon Flutter lève « A dismissed
+    // Dismissible widget is still part of the tree ». C'est pour ça
+    // que `_regler` est synchrone, et c'est une propriété qu'on ne
+    // voit ni à `analyze` ni à la lecture : il faut glisser.
+    testWidgets('un post-it glissé à droite quitte la pile sans erreur',
+        (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      final pile = find.byType(Dismissible);
+      expect(pile, findsOneWidget,
+          reason: 'la laitue de 50 jours donne au moins une tâche');
+      final avant = tester.widget<Dismissible>(pile).key;
+
+      await tester.fling(pile, const Offset(400, 0), 1200);
+      // ⚠️ Pas de `pumpAndSettle` ici : les pétales du bandeau de
+      // saison tournent en boucle, il expirerait toujours. On laisse
+      // passer le temps du glissement, pas celui de l'écran.
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
+
+      expect(tester.takeException(), isNull);
+      // La pile peut porter plusieurs tâches : ce qui compte n'est pas
+      // qu'elle soit vide, c'est que **celle-là** soit partie.
+      final restant = find.byType(Dismissible);
+      if (restant.evaluate().isNotEmpty) {
+        expect(tester.widget<Dismissible>(restant).key, isNot(avant),
+            reason: 'la tâche réglée a cédé la place à la suivante');
+      }
+    });
+
+    testWidgets('un post-it remis à demain part aussi proprement',
+        (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      await tester.fling(
+          find.byType(Dismissible), const Offset(-400, 0), 1200);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('le journal s\'ouvre en éventail de trois post-it',
+        (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      // ⚠️ Le cahier est une `ListView` : ce qui est sous la ligne de
+      // flottaison n'est pas construit. Il faut descendre pour que le
+      // journal existe, sinon le test dit « absent » d'un widget qui
+      // n'a simplement pas encore été demandé.
+      await descendre(tester);
+      expect(find.text('Journal'), findsOneWidget);
+      expect(find.text('Tout le journal'), findsOneWidget);
+      // Quatre plants posés il y a 50 jours : au moins trois gestes.
+      expect(
+        labels(tester).where((l) => l.contains('·') && l.contains('Planté')),
+        isNotEmpty,
+        reason: 'chaque papier annonce son jour et son geste',
+      );
+    });
+
+    // Les deux réglages qui cassent une boîte figée : un texte plus
+    // grand, et un fond qui change. L'éventail et les post-it de
+    // jardin sont dessinés à la main, donc ni l'un ni l'autre n'est
+    // garanti par le thème.
+    for (final cas in <(String, double, bool)>[
+      ('police 1,3', 1.3, false),
+      ('thème sombre', 1.0, true),
+      ('police 1,3 en sombre', 1.3, true),
+    ]) {
+      testWidgets('le cahier entier tient — ${cas.$1}', (tester) async {
+        await monte(tester,
+            taille: const Size(393, 852), police: cas.$2, sombre: cas.$3);
+        await descendre(tester);
+        expect(tester.takeException(), isNull);
+      });
+    }
+
+    testWidgets('les jardins sont des post-it qui disent leurs cases',
+        (tester) async {
+      await monte(tester, taille: const Size(393, 852));
+      await descendre(tester);
+      expect(find.text('Mes jardins'), findsOneWidget);
+      expect(find.text('3 / 12 cases'), findsOneWidget);
+      expect(find.text('Carré nord'), findsOneWidget);
     });
 
     testWidgets('pas de récap de saison sans culture cette année',

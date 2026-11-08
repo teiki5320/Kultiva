@@ -16,6 +16,90 @@ import '../../../utils/months.dart';
 /// culture le 31/10/2026, c'est devenu la forme principale : les
 /// dates de tous ces gestes étaient déjà enregistrées, elles
 /// n'étaient visibles que plant par plant.
+/// Un geste du jardin, daté : planté, arrosé, récolté, photographié.
+///
+/// Public depuis le 07/11/2026 : l'éventail du cahier montre les trois
+/// derniers gestes et la liste les montre tous. Deux lectures du même
+/// registre, une seule fonction qui le compose — recopier la boucle
+/// aurait fait deux journaux qui divergent à la première correction.
+class JournalEvent {
+  final DateTime date;
+  final String icon;
+  final String action;
+  final String vegetableLabel;
+  final Color color;
+  const JournalEvent({
+    required this.date,
+    required this.icon,
+    required this.action,
+    required this.vegetableLabel,
+    required this.color,
+  });
+}
+
+/// Tous les gestes de ces plants, du plus récent au plus ancien.
+List<JournalEvent> journalEvents(List<Plantation> plantations) {
+  final events = <JournalEvent>[];
+  for (final p in plantations) {
+    final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
+    final label = v == null ? p.vegetableId : '${v.emoji} ${v.displayName}';
+    final color =
+        v == null ? KultivaColors.primaryGreen : v.category.familyColor;
+
+    events.add(JournalEvent(
+      date: p.plantedAt,
+      icon: '🌱',
+      action: trUi('Planté'),
+      vegetableLabel: label,
+      color: color,
+    ));
+    for (final w in p.wateredAt) {
+      events.add(JournalEvent(
+        date: w,
+        icon: '💧',
+        action: trUi('Arrosé'),
+        vegetableLabel: label,
+        color: KultivaColors.waterBlue,
+      ));
+    }
+    if (p.harvestedAt != null) {
+      events.add(JournalEvent(
+        date: p.harvestedAt!,
+        icon: '🏁',
+        action: trUi('Culture terminée'),
+        vegetableLabel: label,
+        color: KultivaColors.terracotta,
+      ));
+    }
+    for (final path in p.photoPaths) {
+      final match = RegExp(r'plant_(\d+)\.').firstMatch(path);
+      if (match == null) continue;
+      final ts = int.tryParse(match.group(1)!);
+      if (ts == null) continue;
+      events.add(JournalEvent(
+        date: DateTime.fromMillisecondsSinceEpoch(ts),
+        icon: '📷',
+        action: trUi('Photo ajoutée'),
+        vegetableLabel: label,
+        color: const Color(0xFFFFB74D),
+      ));
+    }
+  }
+  events.sort((a, b) => b.date.compareTo(a.date));
+  return events;
+}
+
+/// « AUJOURD'HUI », « HIER », « 12 NOVEMBRE ».
+String journalDayLabel(DateTime d) {
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  final dd = DateTime(d.year, d.month, d.day);
+  final diff = today.difference(dd).inDays;
+  if (diff == 0) return trUi("AUJOURD'HUI");
+  if (diff == 1) return trUi('HIER');
+  return '${d.day} ${monthNamesLong[d.month - 1].toUpperCase()}';
+}
+
 class GardenJournalView extends StatelessWidget {
   final List<Plantation> plantations;
 
@@ -35,64 +119,9 @@ class GardenJournalView extends StatelessWidget {
     this.shrinkWrap = false,
   });
 
-  String _dayLabel(DateTime d) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dd = DateTime(d.year, d.month, d.day);
-    final diff = today.difference(dd).inDays;
-    if (diff == 0) return trUi("AUJOURD'HUI");
-    if (diff == 1) return trUi('HIER');
-    return '${d.day} ${monthNamesLong[d.month - 1].toUpperCase()}';
-  }
-
   @override
   Widget build(BuildContext context) {
-    final events = <_JournalEvent>[];
-    for (final p in plantations) {
-      final v = vegetablesBase.where((x) => x.id == p.vegetableId).firstOrNull;
-      final label = v == null ? p.vegetableId : '${v.emoji} ${v.displayName}';
-      final color =
-          v == null ? KultivaColors.primaryGreen : v.category.familyColor;
-
-      events.add(_JournalEvent(
-        date: p.plantedAt,
-        icon: '🌱',
-        action: trUi('Planté'),
-        vegetableLabel: label,
-        color: color,
-      ));
-      for (final w in p.wateredAt) {
-        events.add(_JournalEvent(
-          date: w,
-          icon: '💧',
-          action: trUi('Arrosé'),
-          vegetableLabel: label,
-          color: KultivaColors.waterBlue,
-        ));
-      }
-      if (p.harvestedAt != null) {
-        events.add(_JournalEvent(
-          date: p.harvestedAt!,
-          icon: '🏁',
-          action: trUi('Culture terminée'),
-          vegetableLabel: label,
-          color: KultivaColors.terracotta,
-        ));
-      }
-      for (final path in p.photoPaths) {
-        final match = RegExp(r'plant_(\d+)\.').firstMatch(path);
-        if (match == null) continue;
-        final ts = int.tryParse(match.group(1)!);
-        if (ts == null) continue;
-        events.add(_JournalEvent(
-          date: DateTime.fromMillisecondsSinceEpoch(ts),
-          icon: '📷',
-          action: trUi('Photo ajoutée'),
-          vegetableLabel: label,
-          color: const Color(0xFFFFB74D),
-        ));
-      }
-    }
+    final events = journalEvents(plantations);
 
     if (events.isEmpty) {
       return Center(
@@ -112,12 +141,10 @@ class GardenJournalView extends StatelessWidget {
       );
     }
 
-    events.sort((a, b) => b.date.compareTo(a.date));
-
-    final groups = <String, List<_JournalEvent>>{};
+    final groups = <String, List<JournalEvent>>{};
     for (final e in events) {
       final key = '${e.date.year}-${e.date.month}-${e.date.day}';
-      groups.putIfAbsent(key, () => <_JournalEvent>[]).add(e);
+      groups.putIfAbsent(key, () => <JournalEvent>[]).add(e);
     }
     var keys = groups.keys.toList();
     if (maxDays != null && keys.length > maxDays!) {
@@ -139,7 +166,7 @@ class GardenJournalView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(6, 14, 6, 6),
               child: Text(
-                _dayLabel(day),
+                journalDayLabel(day),
                 style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: 12,
@@ -175,23 +202,8 @@ class GardenJournalView extends StatelessWidget {
   }
 }
 
-class _JournalEvent {
-  final DateTime date;
-  final String icon;
-  final String action;
-  final String vegetableLabel;
-  final Color color;
-  const _JournalEvent({
-    required this.date,
-    required this.icon,
-    required this.action,
-    required this.vegetableLabel,
-    required this.color,
-  });
-}
-
 class _JournalTile extends StatelessWidget {
-  final _JournalEvent event;
+  final JournalEvent event;
   const _JournalTile({required this.event});
 
   String _timeLabel(DateTime d) {

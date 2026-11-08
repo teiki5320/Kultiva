@@ -529,9 +529,51 @@ Décisions et évolutions significatives :
     `test/storage_place_test.dart` le vérifie.
   - Les animations d'attente s'arrêtent avec
     `MediaQuery.disableAnimations`.
-  - ⚠️ **Écrit sans `flutter analyze` ni `flutter test`** : la session
-    qui l'a produit n'avait ni Flutter ni pub.dev. À lancer avant tout
-    build.
+  - **Compilé, testé et complété le 07/11/2026.** La session du 06/11
+    n'avait ni Flutter ni pub.dev : son code n'avait jamais été
+    compilé. Il l'était pourtant juste — `analyze` propre et les
+    1 160 tests verts dès le premier passage. Ce qui manquait, c'était
+    la **couverture** : rien ne glissait un `Dismissible`.
+  - **Ce qui a été ajouté pour finir les deux maquettes** : le journal
+    en **éventail** de trois post-it (−14° / 0° / +14°, le plus récent
+    au-dessus, couleur selon le geste), les **jardins en post-it**
+    pastel, et sous l'étagère la carte **« DE SAISON · AU JARDIN »**
+    avec son bouton « C'est parti » qui ouvre le pas-à-pas. L'aperçu
+    de grille **reste** dans la carte de jardin : la maquette ne le
+    montrait pas, mais c'est lui qui distingue deux potagers d'un
+    coup d'œil.
+  - ⚠️ **Un seul propriétaire pour le journal** : l'éventail et la
+    liste datée lisent la même fonction, `journalEvents()`, remontée
+    publique dans `journal_view.dart`. Deux lecteurs du même registre,
+    pas deux registres.
+  - ⚠️ **Trois pièges du test de glissement**, qu'aucune lecture
+    n'aurait donnés : `pumpAndSettle` **n'expire jamais** sur ces
+    écrans (les pétales du bandeau de saison tournent en boucle, donc
+    `pump()` explicites) ; les ensembles « fait / plus tard » sont
+    **statiques**, donc un test vidait la pile du suivant (d'où
+    `CahierTodayCard.resetForTesting`) ; et la pile porte **plusieurs**
+    tâches, donc la bonne assertion est « la clé a changé », pas « la
+    pile est vide ».
+  - ⚠️ **Le cahier est un `ListView` paresseux** : trois tests sont
+    tombés parce que les widgets passés sous la ligne de flottaison
+    n'étaient jamais construits. Il faut faire défiler dans le test.
+  - ⚠️ **Et c'est l'écran qui a trouvé le vrai défaut, pas les
+    tests.** L'éventail sortait par la gauche, deux post-it coupés
+    par le bord. Cause : la colonne du cahier est en
+    `CrossAxisAlignment.start`, donc une boîte **sans largeur** se
+    réduit à son contenu et se colle à gauche — il manquait
+    `width: double.infinity`. Ni `analyze` ni les 1 169 tests ne
+    pouvaient le voir : aucun ne regarde **où** une boîte est
+    dessinée. Deuxième passe à l'écran, deuxième défaut : à 34 points
+    d'écart les post-it se coupaient un mot l'un l'autre
+    (« Arrosé 🍅 Tom »). Le décalage est passé à 46.
+  - **Vérifié sur simulateur le 07/11/2026** : pile, trois colonnes,
+    éventail, post-it de jardin, les trois meubles, l'étagère, la
+    carte « De saison · au jardin » et son bouton qui ouvre bien le
+    pas-à-pas. En clair et en **sombre**, à police normale et à
+    **1,3** : rien n'est coupé, les pastilles passent à la ligne, et
+    le papier des post-it reste clair avec du texte foncé en mode
+    sombre, comme le veut le système de design.
 - **CI GitHub Actions** : `ci.yml` (analyze + test + builds Android sur
   push main et PR) et `site.yml` (publication de `landing/`).
 - **Cahier de culture pleine terre** (v5) : multi-jardins avec placement par

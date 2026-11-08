@@ -411,8 +411,6 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Huerto {0}, {1} bancales ocupados de {2}',
   'Ouvre le plan de ce jardin':
       'Abre el plano de este huerto',
-  'Pleine terre  ·  {0}×{1}  ·  {2}/{3} occupées':
-      'En tierra  ·  {0}×{1}  ·  {2}/{3} ocupados',
   '+ Nouveau jardin':
       '+ Nuevo huerto',
   'Fermer le calendrier du mois':
@@ -1620,4 +1618,20 @@ const Map<String, String> uiTextsEs = <String, String>{
       'Toca un mueble para abrirlo',
   'Où veux-tu ranger ta récolte ?':
       '¿Dónde quieres guardar tu cosecha?',
+  'DE SAISON · AU JARDIN':
+      'DE TEMPORADA · EN TU HUERTO',
+  'AU JARDIN':
+      'EN TU HUERTO',
+  'DE SAISON':
+      'DE TEMPORADA',
+  'À ESSAYER':
+      'PARA PROBAR',
+  '{0} / {1} cases':
+      '{0} / {1} bancales',
+  '{0} / {1} case':
+      '{0} / {1} bancal',
+  'C\'est parti : {0}':
+      '¡Vamos!: {0}',
+  'C\'est parti':
+      '¡Vamos!',
 };

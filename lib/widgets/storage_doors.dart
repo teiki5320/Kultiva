@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import '../data/recipes.dart';
 import '../data/recipes_i18n.dart';
 import '../data/ui_i18n.dart';
+import '../data/vegetables_base.dart';
 import '../theme/app_theme.dart';
 import '../utils/storage_place.dart';
+import '../utils/text_scale.dart';
 
 /// Les trois meubles de l'onglet Conservation : congélateur, placard,
 /// réfrigérateur. Maquette « F · Les portes qui s'ouvrent », validée
@@ -341,6 +343,26 @@ class _Porte extends StatelessWidget {
   }
 }
 
+/// La conservation mise en avant sous l'étagère, et pourquoi.
+///
+/// « De saison · au jardin » : l'étagère montre ce que le meuble peut
+/// accueillir, cette carte dit par laquelle commencer **ce mois-ci**,
+/// avec ce qui pousse chez toi. Sans elle, trois bocaux se valent et
+/// on referme la porte.
+class ShelfPick {
+  final String vegetableId;
+  final Recipe recipe;
+
+  /// Le libellé qui explique le choix, déjà traduit.
+  final String reason;
+
+  const ShelfPick({
+    required this.vegetableId,
+    required this.recipe,
+    required this.reason,
+  });
+}
+
 /// L'étagère du meuble ouvert : trois bocaux qui glissent en place,
 /// chacun avec son étiquette de durée qui se balance.
 class StorageShelf extends StatefulWidget {
@@ -350,11 +372,15 @@ class StorageShelf extends StatefulWidget {
   final List<(String, Recipe)> items;
   final void Function(String vegetableId, Recipe recipe) onOpen;
 
+  /// La conservation à mettre en avant sous la planche, s'il y en a une.
+  final ShelfPick? pick;
+
   const StorageShelf({
     super.key,
     required this.place,
     required this.items,
     required this.onOpen,
+    this.pick,
   });
 
   @override
@@ -423,13 +449,35 @@ class _StorageShelfState extends State<StorageShelf>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(
-            widget.place.insideLabel,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w800,
-              color: KultivaColors.textPrimary,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  widget.place.insideLabel,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: KultivaColors.textPrimary,
+                  ),
+                ),
+              ),
+              if (_methodes.isNotEmpty)
+                Flexible(
+                  child: Text(
+                    _methodes,
+                    textAlign: TextAlign.end,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: KultivaColors.textSecondary,
+                    ),
+                  ),
+                ),
+            ],
           ),
           const SizedBox(height: 14),
           Row(
@@ -453,9 +501,30 @@ class _StorageShelfState extends State<StorageShelf>
               ),
             ),
           ),
+          if (widget.pick != null) ...<Widget>[
+            const SizedBox(height: 14),
+            _CarteDeSaison(
+              pick: widget.pick!,
+              onOpen: () => widget.onOpen(
+                  widget.pick!.vegetableId, widget.pick!.recipe),
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  /// « bocal, séchage, confiture » — ce qu'on range dans ce meuble,
+  /// d'après les bocaux posés sur l'étagère.
+  String get _methodes {
+    final vus = <String>[];
+    for (final (_, r) in widget.items.take(3)) {
+      final m = r.displayMethodLabel;
+      if (m == null) continue;
+      final bas = m.toLowerCase();
+      if (!vus.contains(bas)) vus.add(bas);
+    }
+    return vus.join(', ');
   }
 
   Widget _bocal(int i, String vegId, Recipe r, _Teintes t) {
@@ -587,6 +656,126 @@ class _StorageShelfState extends State<StorageShelf>
           ),
         ),
       ),
+    );
+  }
+}
+
+/// La carte sous la planche : par quelle conservation commencer.
+///
+/// Maquette « F · Les portes qui s'ouvrent ». L'image du légume, la
+/// raison du choix, le nom de la conservation, son temps et sa durée
+/// de garde — puis « C'est parti », qui ouvre le pas-à-pas.
+class _CarteDeSaison extends StatelessWidget {
+  final ShelfPick pick;
+  final VoidCallback onOpen;
+
+  const _CarteDeSaison({required this.pick, required this.onOpen});
+
+  @override
+  Widget build(BuildContext context) {
+    final veg = vegetableById(pick.vegetableId);
+    final r = pick.recipe;
+    final keeps = r.displayKeeps ?? r.keeps;
+    final sousTitre = <String>[
+      if (r.displaySubtitle != null) r.displaySubtitle!,
+      if (keeps != null) keeps,
+    ].join('  ·  ');
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFFAF0),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: scaledHeight(context, 44),
+                height: scaledHeight(context, 44),
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEEF6EC),
+                  shape: BoxShape.circle,
+                ),
+                child: veg.imageAsset == null
+                    ? Center(
+                        child: Text(veg.emoji,
+                            style: const TextStyle(fontSize: 20)))
+                    : Image.asset(veg.imageAsset!, fit: BoxFit.contain),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      pick.reason,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5,
+                        color: KultivaColors.primaryGreen,
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+                    Text(
+                      r.displayName,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        height: 1.2,
+                      ),
+                    ),
+                    if (sousTitre.isNotEmpty) ...<Widget>[
+                      const SizedBox(height: 1),
+                      Text(
+                        sousTitre,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          height: 1.25,
+                          color: KultivaColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Semantics(
+          button: true,
+          label: trUiArgs(
+              'C\'est parti : {0}', <Object?>[r.displayName]),
+          excludeSemantics: true,
+          child: FilledButton(
+            onPressed: onOpen,
+            style: FilledButton.styleFrom(
+              backgroundColor: KultivaColors.primaryGreen,
+              minimumSize: Size(0, scaledHeight(context, 48)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            child: Text(
+              trUi('C\'est parti'),
+              style: const TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w800),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
