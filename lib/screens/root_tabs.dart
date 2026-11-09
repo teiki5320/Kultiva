@@ -127,52 +127,89 @@ class _RootTabsState extends State<RootTabs> with WidgetsBindingObserver {
     final t = L.of(context);
     return Scaffold(
       body: IndexedStack(index: _index, children: pages),
-      bottomNavigationBar: BottomNavigationBar(
-        // Au-delà de trois onglets, Material bascule en mode
-        // « shifting » et masque les libellés non sélectionnés. On les
-        // garde tous : « Cahier » et « Étal » ne se devinent pas à
-        // l'icône.
-        type: BottomNavigationBarType.fixed,
-        // À la taille par défaut, « Recettes » est tronqué. On
-        // rétrécit plutôt que de masquer les libellés — « Cahier » et
-        // « Étal » ne se devinent pas à l'icône.
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        iconSize: 22,
-        currentIndex: _index,
-        onTap: (i) {
-          AudioService.instance.play(Sfx.tap);
-          setState(() => _index = i);
-          RootTabs.tabIndex.value = i;
-        },
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home_outlined),
-            activeIcon: const Icon(Icons.home),
-            label: t.tabHome,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.menu_book_outlined),
-            activeIcon: const Icon(Icons.menu_book),
-            label: t.tabCahier,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.storefront_outlined),
-            activeIcon: const Icon(Icons.storefront),
-            label: t.tabEtal,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.restaurant_menu_outlined),
-            activeIcon: const Icon(Icons.restaurant_menu),
-            label: t.tabRecettes,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.school_outlined),
-            activeIcon: const Icon(Icons.school),
-            label: t.tabTutos,
-          ),
-        ],
+      bottomNavigationBar: _sousEncoche(
+        context,
+        BottomNavigationBar(
+          // Au-delà de trois onglets, Material bascule en mode
+          // « shifting » et masque les libellés non sélectionnés. On les
+          // garde tous : « Cahier » et « Étal » ne se devinent pas à
+          // l'icône.
+          type: BottomNavigationBarType.fixed,
+          // À la taille par défaut, « Recettes » est tronqué. On
+          // rétrécit plutôt que de masquer les libellés — « Cahier » et
+          // « Étal » ne se devinent pas à l'icône.
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          iconSize: 22,
+          currentIndex: _index,
+          onTap: (i) {
+            AudioService.instance.play(Sfx.tap);
+            setState(() => _index = i);
+            RootTabs.tabIndex.value = i;
+          },
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home_outlined),
+              activeIcon: const Icon(Icons.home),
+              label: t.tabHome,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.menu_book_outlined),
+              activeIcon: const Icon(Icons.menu_book),
+              label: t.tabCahier,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.storefront_outlined),
+              activeIcon: const Icon(Icons.storefront),
+              label: t.tabEtal,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.restaurant_menu_outlined),
+              activeIcon: const Icon(Icons.restaurant_menu),
+              label: t.tabRecettes,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.school_outlined),
+              activeIcon: const Icon(Icons.school),
+              label: t.tabTutos,
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+/// Range la barre d'onglets à l'intérieur d'une encoche **latérale**.
+///
+/// L'iPhone Duo (09/11/2026) est le premier appareil visé qui en a
+/// une : écran fermé, `MediaQuery.padding` vaut `right: 84`, parce
+/// qu'iOS dessine sa barre d'état verticalement, sur le côté. Un
+/// `Scaffold` descend la marge **basse** jusqu'à sa barre d'onglets,
+/// jamais les latérales — « Tutos », le cinquième onglet, était donc
+/// peint à 435 points sur un bord sûr qui s'arrête à 382. Mesuré par
+/// `test/iphone_duo_test.dart`, et vu à l'écran sur le simulateur.
+///
+/// Le fond reste **pleine largeur** : c'est le contenu qui se range,
+/// pas la barre. Une barre rétrécie laisserait voir le fond de l'app
+/// dans les 84 points, ce qui se verrait bien plus qu'un libellé
+/// décalé.
+///
+/// ⚠️ **Sur un appareil sans encoche latérale, cette fonction rend la
+/// barre telle quelle** — pas un `ColoredBox` de plus, pas un
+/// `Padding` de zéro. C'est ce que vérifie le test « rien ne bouge
+/// sur un téléphone » : à marges nulles, l'arbre rendu est celui
+/// d'avant, au widget près.
+Widget _sousEncoche(BuildContext context, Widget barre) {
+  final marges = MediaQuery.paddingOf(context);
+  if (marges.left == 0 && marges.right == 0) return barre;
+  final theme = Theme.of(context);
+  return ColoredBox(
+    color: theme.bottomNavigationBarTheme.backgroundColor ??
+        theme.colorScheme.surface,
+    child: Padding(
+      padding: EdgeInsets.only(left: marges.left, right: marges.right),
+      child: barre,
+    ),
+  );
 }

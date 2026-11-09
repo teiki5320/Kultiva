@@ -209,7 +209,7 @@ Kultiva/
 ├── android/                # app/build.gradle.kts, key.properties (ignoré)
 ├── ios/                    # Podfile, Runner, ci_scripts/, entitlements
 ├── landing/                # Site vitrine (index.html + privacy.html + img/ WebP)
-├── test/                   # 54 fichiers — 1 154 tests (03/11/2026)
+├── test/                   # 56 fichiers — 1 183 tests (09/11/2026)
 │                           # badges, medals, plantation, vegetable,
 │                           # culture_entry, garden_plan, phenology,
 │                           # region_data, vegetable_medal,
@@ -774,7 +774,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    `challenge_posts.country`, FK feed→profiles, RPC `sync_xp`) et edge
    function `delete-account` déployée.
 
-1. **Pas de test d'intégration** — 1 154 tests au 03/11/2026, dont une
+1. **Pas de test d'intégration** — 1 183 tests au 09/11/2026, dont une
    première couche de widgets : `text_scale_test.dart` monte dix écrans
    sur un iPhone SE à police normale puis 1,3 ;
    `ipad_landscape_test.dart` fait de même aux dimensions d'un iPad en
@@ -1499,6 +1499,89 @@ la contrainte est à reposer après coup.
 
 **Ce qui reste, non bloquant** : le bas de l'écran est vide sur les
 pages courtes.
+
+## 📱 L'iPhone Duo : une encoche sur le côté (09/11/2026)
+
+Premier pliable d'Apple, en vente depuis le 23/10/2026. **Les deux
+tailles sont mesurées, pas déduites** : simulateur `iPhone Duo`
+(iPhone19,4) créé sous iOS 27.2, app installée, et un point d'entrée
+jetable a lu `MediaQuery` à l'écran.
+
+| État | Points | Pixels | Pouces |
+| --- | --- | --- | --- |
+| Fermé, écran externe | **466 × 678** | 1398 × 2034 | 5,4″ |
+| Ouvert, écran interne | **669 × 951** | 2007 × 2853 | 7,6″ |
+
+Densité 3 pour les deux. Les pouces se recalculent à 460 ppi, celle
+des iPhone : 1398 × 2034 donne 5,37″ de diagonale et 2007 × 2853 en
+donne 7,58″. Les deux chiffres annoncés par Apple tombent, ce qui
+confirme quelle dalle est laquelle.
+
+⚠️ **Ce que l'écran fermé n'est pas : un petit écran.** À 466 points
+il est plus **large** que tous les iPhone — 402 pour un 17, 440 pour
+un 17 Pro Max. J'avais annoncé à Jean trois défauts probables avant de
+mesurer ; **deux étaient faux**, et pour la même raison : j'avais
+supposé un écran étroit.
+
+| Annoncé | Mesuré |
+| --- | --- |
+| le tableau de bord retomberait à une colonne | **non** — il en garde deux, de 169 points, comme un iPhone 17 |
+| le logo du splash serait démesuré | **non** — 65 % de 466 font 303, dans les bornes 256-384 posées pour l'iPad |
+| la barre à cinq onglets serait tronquée | **oui, mais pas pour cette raison** — voir plus bas |
+
+### Le seul vrai défaut, et il est neuf
+
+`padding` vaut, écran fermé, **`top 0, bottom 34, left 0, right 84`**.
+iOS dessine sa barre d'état **verticalement, sur le côté droit**.
+Aucun appareil Apple n'avait eu de marge horizontale de cette taille,
+et **aucun test du dépôt n'en posait** : ils montent tous un
+`MediaQueryData` dont le `padding` est nul.
+
+Or un `Scaffold` descend sa marge **basse** jusqu'à la barre
+d'onglets, jamais les latérales. « Tutos » était donc peint à
+**435 points** sur un bord sûr qui s'arrête à 382 — trouvé par le
+test, et visible sur la capture.
+
+`_sousEncoche()` (`root_tabs.dart`) range le **contenu** de la barre
+et laisse le **fond pleine largeur** : une barre rétrécie laisserait
+voir le fond de l'app dans les 84 points, ce qui se verrait bien plus
+qu'un libellé décalé. Vérifié au pixel sur le simulateur — le fond est
+uniforme d'un bord à l'autre.
+
+⚠️ **Le correctif ne s'applique qu'en présence d'une encoche
+latérale** : à marges nulles la fonction rend la barre telle quelle,
+sans `ColoredBox` ni `Padding` de zéro. `iphone_duo_test.dart` le
+vérifie **dans les deux sens** — sinon un correctif qui ne
+s'appliquerait jamais passerait le test de non-régression.
+
+### Ce qui n'a pas pu être vérifié
+
+- **L'état ouvert sur l'appareil.** Le pliage se commande depuis
+  `Simulator.app`, absent de ce Mac (alerte 9), et `simctl ui` n'a que
+  `appearance`, `increase_contrast` et `content_size`. Flutter ne voit
+  d'ailleurs qu'**un seul écran** à la fois (`displays.length == 1`).
+  La taille ouverte est donc jouée en test, pas à l'écran, et sa marge
+  n'est **pas** mesurée — le test joue la géométrie seule plutôt que
+  d'inventer un chiffre.
+- **Les autres écrans à l'écran.** Une alerte système de notification,
+  restée sans réponse, bloque toute interaction : `simctl` ne sait pas
+  la fermer, et l'outil de pilotage demande une autorisation que
+  personne n'était là pour donner. Les cinq onglets sont quand même
+  couverts par le test : `RootTabs` est un `IndexedStack`, qui
+  **dispose** ses cinq pages même s'il n'en peint qu'une.
+
+⚠️ **Le dépliage est un redimensionnement, pas un relancement** : la
+même fenêtre passe de 466 × 678 à 669 × 951. Rien ne casse par
+construction — aucun `initState` de `lib/` ne lit `MediaQuery`,
+vérifié au peigne.
+
+⚠️ **CocoaPods est tombé sur l'encodage du terminal** avant de pouvoir
+construire quoi que ce soit : Ruby 4.0 refuse `unicode_normalize` sur
+de l'ASCII-8BIT. Préfixer `LANG=en_US.UTF-8`. Et après une mise à jour
+d'Xcode, un `pod install` périmé donne un
+« `Flutter/Flutter.h` file not found » dans `VerifyModule` qui ne dit
+pas son vrai nom : `flutter clean` + suppression du `DerivedData` du
+projet + `pod install`.
 
 ## 🔭 Sentry ne parle qu'en release (02/11/2026)
 
