@@ -1,0 +1,61 @@
+name: Vérif release Android
+
+# Sur chaque tag v* : construit l'APK release et l'ouvre deux fois de suite
+# sur un émulateur Android (scripts/verif-lancement-android.sh). Sans
+# android/key.properties (secret non commité), le gradle signe avec la clé
+# debug : ce contrôle valide le démarrage, pas la signature de publication.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: "3.47.3"
+
+jobs:
+  apk-et-emulateur:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: SDK Android 37
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-37.0" > /dev/null
+
+      - run: flutter pub get
+
+      - name: APK release (x86_64 pour l'émulateur)
+        run: flutter build apk --release --target-platform android-x64
+
+      - name: Accès KVM pour l'émulateur
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Ouvrir l'APK deux fois sur l'émulateur
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: bash scripts/verif-lancement-android.sh build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Journal en cas d'échec
+        if: failure()
+        run: echo "Voir le journal de l'étape précédente (logcat des 80 dernières lignes)."
