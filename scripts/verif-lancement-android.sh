@@ -4,7 +4,7 @@
 # Échec si l'appli plante ou ne reste pas ouverte. À lancer dans emulator-runner.
 set -euo pipefail
 
-APK="${1:?chemin de l'APK}"
+APK="${1:?chemin de la fiche APK}"
 PAQUET="com.toa.kultiva"
 ACTIVITE="$PAQUET/.MainActivity"
 
