@@ -17,7 +17,7 @@ for essai in 1 2; do
   sleep 20
   if ! adb shell pidof "$PAQUET" > /dev/null; then
     echo "L'appli n'est plus ouverte après 20 s (ouverture $essai)."
-    adb logcat -d | tail -n 80
+    adb logcat -d | grep -E "kultiva|AndroidRuntime|FATAL|ActivityManager|DEBUG|libc|flutter" | tail -n 120
     exit 1
   fi
   if adb logcat -d | grep -E "FATAL EXCEPTION|Process: $PAQUET.*(died|crash)|ANR in $PAQUET" ; then
