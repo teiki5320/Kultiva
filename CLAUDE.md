@@ -2785,3 +2785,40 @@ WebView** — Chrome n'a pas de `NavigationDelegate`.
 - Le panneau navigateur de Claude Code **fige** les fichiers hors du
   projet (« static snapshots ») : le JavaScript ne tourne pas, la page
   sort vide. Et il n'a pas réussi à joindre un `http.server` local.
+
+## Garde-fou de version (depuis le 10 novembre 2026)
+
+Même mécanisme que dans Erea : Apple ferme une version approuvée à tout
+nouveau build (ITMS-90186 et ITMS-90062), et chaque poussée suivante finit en
+build Xcode Cloud échoué. Deux hooks git versionnés dans `.githooks/`, qui
+s'appuient sur `scripts/garde-version.sh` et sur
+[`version-approuvee.txt`](version-approuvee.txt) (dernière version de Kultiva
+approuvée par Apple ou Google, et son numéro de build).
+
+- **`pre-commit`** : si `pubspec.yaml` porte une version égale ou plus
+  ancienne que celle de `version-approuvee.txt`, ou un numéro de build qui ne
+  la dépasse pas, il la monte lui-même (patch +1, build +1) **dans le même
+  commit**.
+  Il recopie aussi la nouvelle version dans `lib/config/app_info.dart`
+  (`AppInfo.version`, copie volontaire de `pubspec.yaml`) et l'ajoute au
+  commit, pour que l'écran des réglages ne devienne pas faux.
+- **`pre-push`** : filet de sécurité. Il refuse de pousser sur `main` un
+  commit dont la version est périmée et indique la commande de correction :
+  `scripts/garde-version.sh --corriger`, puis commit et nouvelle poussée.
+
+**À faire une fois par clone** : `scripts/installer-hooks.sh` (règle
+`core.hooksPath` sur `.githooks`).
+
+**Le déclencheur est `version-approuvee.txt`** : le hook ne sait pas qu'Apple
+a approuvé une version, il faut le lui dire. **Quand une version est
+approuvée (ou publiée sur Google Play), mets ce fichier à jour dans le même
+commit que les fiches** : le hook monte alors la version dans ce commit. Après
+une montée automatique, saisis la nouvelle version dans App Store Connect
+avant de soumettre : elle doit être identique à celle de `pubspec.yaml`.
+
+*État au 10 novembre 2026 : `version-approuvee.txt` vaut `1.0.0` (build 5) : la 1.0.0 est validée par Apple depuis le 6 novembre, publication en attente. Le prochain commit monte donc `pubspec.yaml` en `1.0.1+6`, sans toucher à la 1.0.0 qui attend sa publication dans App Store Connect.*
+
+Limites : les hooks tournent sur la machine qui commit, pas sur Xcode Cloud ni
+sur l'interface web de GitHub ; `git commit --no-verify` contourne le
+`pre-commit`, `git push --no-verify` le `pre-push`. Pendant un rebase, un
+merge ou un cherry-pick, le `pre-commit` ne touche à rien.

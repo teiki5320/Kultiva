@@ -1,0 +1,7 @@
+# Dernière version de Kultiva APPROUVÉE par Apple ou Google (et son numéro de build).
+# Lue par scripts/garde-version.sh : tant que pubspec.yaml porte cette version
+# (ou une plus ancienne), tout commit la monte tout seul. À mettre à jour dans
+# le même commit que les fiches qui notent une approbation.
+# État au 10 novembre 2026 : 1.0.0 validée par Apple le 6 novembre 2026 (publication en attente), versionCode 5 envoyé en test fermé Google Play.
+version=1.0.0
+build=5

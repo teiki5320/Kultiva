@@ -15,7 +15,7 @@ class AppInfo {
 
   /// Version marketing (`CFBundleShortVersionString` côté iOS,
   /// `versionName` côté Android).
-  static const String version = '1.0.0';
+  static const String version = '1.0.1';
 
   /// Libellé prêt à afficher : « Kultiva 1.0.0 ».
   ///
