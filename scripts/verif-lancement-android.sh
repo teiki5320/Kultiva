@@ -8,12 +8,20 @@ APK="${1:?chemin de la fiche APK}"
 PAQUET="com.toa.kultiva"
 ACTIVITE="$PAQUET/.MainActivity"
 
-adb install -r "$APK"
+# -g : accorde d'emblée les autorisations (notifications…), sinon la fenêtre Android
+# d'autorisation reste au premier plan et avale la 2e ouverture.
+adb install -r -g "$APK"
 
 for essai in 1 2; do
   echo "=== Ouverture $essai sur 2 ==="
   adb logcat -c
-  adb shell am start -W -n "$ACTIVITE"
+  adb shell input keyevent KEYCODE_HOME
+  sortie=$(adb shell am start -W -n "$ACTIVITE")
+  echo "$sortie"
+  if echo "$sortie" | grep -q "Activity not started"; then
+    echo "L'appli n'a pas été lancée (une autre fenêtre est au premier plan)."
+    exit 1
+  fi
   sleep 20
   if ! adb shell pidof "$PAQUET" > /dev/null; then
     echo "L'appli n'est plus ouverte après 20 s (ouverture $essai)."
