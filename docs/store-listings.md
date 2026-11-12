@@ -4,7 +4,7 @@
 > par marché (France 🇫🇷 / Afrique de l'Ouest 🌍). L'app couvre 73 pays
 > depuis le 1er novembre 2026 ; ces deux blocs restent les deux
 > marchés **visés**, pas la couverture.
-> Dernière mise à jour : 2026-11-03 — v1.0.0.
+> Dernière mise à jour : 2026-11-12 — v1.0.0. Fiches Play en-US et es-ES : section 4.
 >
 > **Méthode de comptage** : les longueurs indiquées sont en unités UTF-16
 > (comme les formulaires web d'App Store Connect et de la Play Console :
@@ -425,3 +425,176 @@ la custom product page et l'In-App Event hivernage.
 ratio entre 16:9 et 9:16, 8 captures max par type d'appareil, plus la
 bannière (*feature graphic*) 1024 × 500 — prévoir une bannière par fiche
 (France / AO).
+
+---
+
+## 4. Fiches Google Play en anglais et en espagnol
+
+> Ajoutées le 12 novembre 2026. **Documentation seulement : rien n'a été
+> saisi dans la Play Console.** Les textes App Store EN/ES existent déjà
+> (`docs/FICHE_APP_STORE.md` § 7) ; ceux-ci en sont la version **Play**,
+> avec les écarts expliqués en 4.4. Décomptes en UTF-16, comme plus haut.
+>
+> Console : *Croissance → Présence sur le Play Store → Fiche principale
+> du Play Store* → menu des langues → **Gérer les traductions** →
+> *Anglais (États-Unis) – en-US* puis *Espagnol (Espagne) – es-ES*.
+> Le titre se saisit par langue (le français reste `Kultiva : potager
+> kawaii`, 24/30). Les captures et la bannière peuvent rester les mêmes
+> tant qu'elles ne portent pas de texte incrusté en français — à
+> vérifier sur les dix captures et sur la bannière avant de les
+> réutiliser.
+
+### 4.1 English (United States) — en-US
+
+#### Titre — 29/30
+
+```
+Kultiva: Kawaii Veggie Garden
+```
+
+#### Description courte — 75/80
+
+```
+Your kawaii veggie garden: sowing, harvests, weather and a growing journal.
+```
+
+#### Description longue — 2 694/4 000
+
+```
+The kawaii vegetable garden in your pocket
+
+Kultiva walks with you from choosing the seeds to the pride of the first tomato — whether you garden on a city balcony, in a raised bed in Brittany, or under the first rains of Dakar: the app covers 73 countries on six continents, in French, English and Spanish.
+
+A CALENDAR THAT KNOWS WHERE YOU LIVE
+Every month, find out what to sow, plant and harvest where you are. Under cover, in open ground, harvests: everything follows your climate — nine climate zones and both hemispheres — and it exports to PDF to pin up in the shed.
+
+130 CROPS IN DETAILED CARDS
+Tomato, zucchini, radish, strawberry, basil… and also okra, cowpea, pearl millet and roselle. For each plant: sowing depth, aspect, watering, spacing, expected yield and the small things that make the difference.
+
+KEEPING YOUR HARVEST
+736 recipes, and the first three for every vegetable are ways to keep it: jars, freezing, drying, lacto-fermentation, jam. Each one says how long it keeps, and 448 walk you through step by step, offline, with a timer.
+
+MY GARDENS, YOUR BED BY BED
+Draw your beds, place your plants by dragging them, and follow each one: watering, growth stages suggested for you, photos, a crop-rotation warning and advice based on today's weather.
+
+EVERY MORNING, WHAT NEEDS DOING
+Your growing journal answers the only question that matters when you wake up: who is thirsty, what is ripe, and whether it will be too hot today. One tap logs the watering for the whole garden.
+
+GARDENING TOGETHER
+Step-by-step tutorials, photo challenges and badges to collect: everything you need to bring the whole family to the garden — and turn it into a Sunday adventure.
+
+WEATHER AND SMART ALERTS
+A 7-day forecast for your town, sensible watering reminders, heatwave alerts with advice crop by crop. Your garden warns you before it gets thirsty.
+
+YOUR GARDEN'S DIARY
+Every planting, every watering, every harvest and every photo is written down on its date. Read your season back day by day, and earn bronze, silver and gold medals for each vegetable you grow.
+
+PHOTO CHALLENGES AND BADGES
+50 photo challenges and 50 badges to unlock. The badges reward what you actually do: your first plant, three days of watering in a row, a bed filled right to the edges.
+
+LEARNING WHILE HAVING FUN
+33 illustrated tutorials, a gardener's glossary, a guide to diseases and companion planting (who likes growing next to whom).
+
+And above all: Kultiva needs no account, and your garden stays on your phone. Only the weather forecast (it uses your location) and crash reports go online; everything else works offline. Details in the privacy policy.
+
+Download Kultiva and grow your first small happiness.
+```
+
+### 4.2 Español (España) — es-ES
+
+#### Título — 22/30
+
+```
+Kultiva: huerto kawaii
+```
+
+#### Descripción breve — 67/80
+
+```
+Tu huerto kawaii: siembras, cosechas, tiempo y cuaderno de cultivo.
+```
+
+#### Descripción completa — 2 801/4 000
+
+```
+El huerto kawaii en tu bolsillo
+
+Kultiva te acompaña desde la elección de las semillas hasta el orgullo del primer tomate — cultives en un balcón de ciudad, en un bancal en Bretaña o bajo las primeras lluvias de Dakar: la app cubre 73 países en seis continentes, en francés, inglés y español.
+
+UN CALENDARIO QUE CONOCE TU ZONA
+Cada mes, descubre qué sembrar, plantar y cosechar donde vives. Siembra protegida, plena tierra, cosechas: todo se adapta a tu clima — nueve zonas climáticas y los dos hemisferios — y se exporta en PDF para colgarlo en la caseta.
+
+130 CULTIVOS EN FICHAS DETALLADAS
+Tomate, calabacín, rábano, fresa, albahaca… y también okra, caupí, mijo perla y flor de Jamaica. De cada planta: profundidad de siembra, exposición, riego, marco de plantación, rendimiento estimado y los pequeños trucos que marcan la diferencia.
+
+GUARDAR LA COSECHA
+736 recetas, y las tres primeras de cada hortaliza son formas de conservarla: tarros, congelación, secado, fermentación, mermelada. Cada una dice cuánto se guarda, y 448 te llevan paso a paso, sin conexión y con temporizador.
+
+MIS HUERTOS, BANCAL A BANCAL
+Dibuja tus bancales, coloca las plantas arrastrándolas y sigue cada una: riegos, fases de crecimiento sugeridas, fotos, aviso de rotación de cultivos y consejos según el tiempo de hoy.
+
+CADA MAÑANA, LO QUE HAY QUE HACER
+Tu cuaderno de cultivo responde a la única pregunta que importa al despertar: quién tiene sed, qué está maduro y si hoy hará demasiado calor. Un gesto para anotar el riego de todo el huerto.
+
+CULTIVAR EN FAMILIA
+Tutoriales paso a paso, retos fotográficos e insignias para coleccionar: todo lo que hace falta para llevar a toda la familia al huerto — y convertirlo en la aventura del domingo.
+
+TIEMPO Y AVISOS ÚTILES
+Previsión de 7 días para tu ciudad, recordatorios de riego con cabeza, avisos de ola de calor con consejos hortaliza por hortaliza. Tu huerto te avisa antes de tener sed.
+
+EL DIARIO DE TU HUERTO
+Cada plantación, cada riego, cada cosecha y cada foto queda anotada en su fecha. Relee tu temporada día a día y gana medallas de bronce, plata y oro por cada hortaliza cultivada.
+
+RETOS FOTOGRÁFICOS E INSIGNIAS
+50 retos fotográficos y 50 insignias por desbloquear. Las insignias premian lo que haces de verdad: tu primera planta, tres días de riego seguidos, un bancal lleno hasta el borde.
+
+APRENDER DISFRUTANDO
+33 tutoriales ilustrados, un léxico del hortelano, una guía de enfermedades y el compañerismo vegetal (a quién le gusta crecer al lado de quién).
+
+Y sobre todo: Kultiva no necesita cuenta, y tu huerto se queda en tu teléfono. Solo la previsión del tiempo (usa tu ubicación) y los informes de fallos salen a internet; todo lo demás funciona sin conexión. Detalles en la política de privacidad.
+
+Descarga Kultiva y haz crecer tu primera alegría.
+```
+
+### 4.3 Pas d'es-419 (espagnol d'Amérique latine), et pourquoi
+
+L'app parle un **castillan d'Espagne** (`lib/data/names_es.dart` le dit :
+« patata », « judía verde », « calabacín »). Une fiche es-419 qui
+promettrait « tu huerto » à Mexico, puis une app qui parle de
+« judía » et de « bancal », serait une demi-vérité. Google Play sert
+la fiche es-ES aux appareils hispanophones qui n'ont pas de fiche es-419.
+**À reprendre si** l'app reçoit un jour un lexique latino
+(calabacita, ejote, elote…). Même logique pour **en-GB** : en-US suffit,
+et le catalogue de l'app dit « Zucchini », pas « courgette ».
+
+### 4.4 Écarts avec les textes App Store, et pourquoi
+
+1. **Aucun emoji.** Les textes App Store en portent douze, en tête de
+   chaque rubrique. Google Play déconseille les emoji répétés dans le
+   titre et la description et peut s'en servir pour refuser une mise à
+   jour. Les rubriques restent en capitales.
+2. **Dernier paragraphe réécrit.** « Tes données restent sur ton
+   téléphone, et nulle part ailleurs » est **inexact** : la localisation
+   part vers Open-Meteo pour la météo, et Sentry reçoit les plantages
+   (voir `docs/FICHE_PLAY.md` § 4.6, où les deux sont déclarés). Une
+   description plus rassurante que la déclaration de sécurité des
+   données est un motif de rejet. Le nouveau texte dit la même chose
+   que la déclaration.
+3. **Rubrique famille.** « Pensée pour donner la main verte aux
+   enfants » est remplacée par la proposition de `docs/FICHE_PLAY.md`
+   § 4.5, qui s'adresse au parent : un texte qui vise les enfants peut
+   faire entrer l'app dans la politique *Familles*.
+4. **Noms de plantes** alignés sur l'app (`names_en.dart`,
+   `names_es.dart`) : « zucchini », « pearl millet », « roselle » ;
+   « okra », « caupí », « mijo perla », « flor de Jamaica ».
+5. **Aucun** « meilleur », « n° 1 », prix, mention de classement ou
+   promesse de gain : vérifié à la relecture.
+
+⚠️ **Le texte français de la section 1 a le même défaut** (emoji,
+« nulle part ailleurs »). Je n'y ai pas touché : c'est la fiche en cours
+d'examen. À décider : le corriger à la prochaine mise à jour de la
+fiche.
+
+⬜ **Titres à valider par Kaiser** : « Kultiva: Kawaii Veggie Garden » et « Kultiva: huerto kawaii » sont des
+propositions calquées sur le titre français, sans mot-clé de plus.
+Variante plus indexée si voulue : « Kultiva: Garden Calendar » (24/30).

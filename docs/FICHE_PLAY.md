@@ -74,6 +74,14 @@ signées par le développeur. **À cocher par Jean lui-même.**
 | Description courte | `docs/store-listings.md` § 1 | 75/80 |
 | Description longue | `docs/store-listings.md` § 1 — **le même texte que la description App Store** | 2 630/4 000 |
 
+### Autres langues (ajouté le 12 novembre 2026)
+
+Les fiches **anglais (États-Unis)** et **espagnol (Espagne)** sont
+prêtes dans `docs/store-listings.md` § 4 (titre, description courte,
+description longue, décomptes). Pas encore saisies dans la console. Les
+écarts avec les textes App Store, dont l'absence d'emoji et un dernier
+paragraphe aligné sur la sécurité des données (§ 4.6), y sont expliqués.
+
 ### Les visuels, tous produits et prêts
 
 | Élément | Fichier | Format exigé |
