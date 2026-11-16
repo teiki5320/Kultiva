@@ -225,7 +225,7 @@ Tables supprimées (migration 008) : `culture_readings`, `hydro_builds`,
   de routing.
 - **Lints** : `prefer_const_constructors`, `prefer_const_literals_to_create_immutables`,
   `avoid_print`, `use_key_in_widget_constructors`. Lancer `flutter analyze`
-  avant toute PR.
+  avant tout commit (commit et push directs sur `main`, sans pull request).
 - **Thème** : couleurs centralisées dans `lib/theme/app_theme.dart`
   (`KultivaColors`). Pour les catégories de légumes, utiliser
   `lib/utils/category_colors.dart`.
@@ -486,7 +486,7 @@ Règles spécifiques au projet pour être efficace dès la première action :
    descriptions de permissions, les textes des notifications.
 5. **Pas de nouvelle dépendance sans justification** dans le `pubspec.yaml`
    (commentaire inline obligatoire).
-6. **Avant toute PR** : `flutter analyze` + `flutter test` doivent passer.
+6. **Avant tout push** (commit et push directs sur `main`, sans pull request) : `flutter analyze` + `flutter test` doivent passer.
 7. **Tests** : pour un nouveau modèle, ajouter `test/<nom>_test.dart` sur le
    pattern existant (voir `vegetable_test.dart`).
 8. **Navigation** : rester sur `Navigator.push` / `showModalBottomSheet`. Pas
