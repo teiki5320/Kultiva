@@ -7,7 +7,7 @@ Mis à jour le 18 novembre 2026 d'après le dépôt et le site en ligne. Pour me
 
 ## En bref
 
-- **Décision du 8 novembre 2026** : 1.0.0 validée par Apple le 6 novembre, publication gardée en attente par choix de Jean (pause).
+- **Décision du 18 novembre 2026** : Kultiva est relancée, le projet est de nouveau **actif** (choix de Jean, relance décidée le 30 octobre). La 1.0.0, validée par Apple le 6 novembre, reste à publier d'un clic.
 - **Plateforme** : iOS + Android (Flutter), iPhone en portrait, iPad dans les quatre sens
 - **Stack** : Flutter/Dart Material 3, local-first, hors ligne
 - **Backend** : **aucun** — ni compte ni serveur à soi (seulement Open-Meteo et Sentry)
@@ -24,7 +24,7 @@ Mis à jour le 18 novembre 2026 d'après le dépôt et le site en ligne. Pour me
 
 ## Vue d'ensemble
 
-- **État du projet** : **en pause** (choix de Jean). Les soumissions faites le 4 novembre 2026 suivent leur cours : Apple a **validé la version 1.0.0 (build 231) le 6 novembre 2026** (mail d'App Store Review, 19 h 19 UTC) — publication manuelle, l'app n'est donc pas encore dans l'App Store ; Google Play est en **test fermé**, 12 testeurs inscrits pour 13 jours sans interruption (vérifié le 18 novembre 2026 dans la console). Ni l'une ni l'autre boutique ne propose l'app au public.
+- **État du projet** : **actif** (relancé par Jean le 18 novembre 2026). Les soumissions faites le 4 novembre 2026 suivent leur cours : Apple a **validé la version 1.0.0 (build 231) le 6 novembre 2026** (mail d'App Store Review, 19 h 19 UTC) — publication manuelle, l'app n'est donc pas encore dans l'App Store ; Google Play est en **test fermé**, 12 testeurs inscrits pour 13 jours sans interruption (vérifié le 18 novembre 2026 dans la console). Ni l'une ni l'autre boutique ne propose l'app au public.
 - **Plateforme** : iOS + Android (Flutter ≥ 3.47), iPhone en portrait, iPad dans les quatre sens depuis le 30 octobre 2026 — app `com.toa.kultiva` ; `pubspec.yaml` porte la **1.0.1+6 depuis le 10 novembre 2026** (montée par le garde-fou de version), la 1.0.0+5 étant celle validée par Apple et en test fermé sur Google Play. ⚠️ L'app a été **regardée sur un iPad Pro 13″ le 3 novembre 2026**, pour la première fois : le contenu y est désormais borné et centré (720 points, 560 pour le tableau de bord et les feuilles modales), sauf le catalogue, dont la grille profite volontairement de la largeur.
 - **Stack** : Flutter/Dart Material 3, local-first (SharedPreferences + services singletons, `ValueNotifier`, sans framework d'état)
 - **Backend** : **aucun depuis le 30 octobre 2026.** Les comptes ont été retirés de la v1 : le jardin, les photos et les badges vivent uniquement sur l'appareil. Les seuls appels sortants sont Open-Meteo (météo), Sentry (plantages) et, au toucher d'un bouton « Acheter », Amazon.fr.

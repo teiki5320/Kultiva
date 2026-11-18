@@ -13,7 +13,7 @@
 
 ## En bref
 
-- **Décision du 8 novembre 2026** : 1.0.0 validée par Apple le 6 novembre, publication gardée en attente par choix de Jean (pause).
+- **Décision du 18 novembre 2026** : Kultiva est relancée, le projet est de nouveau **actif** (choix de Jean, relance décidée le 30 octobre). La 1.0.0, validée par Apple le 6 novembre, reste à publier d'un clic.
 - **Version commune** : `1.0.0+5` validée par Apple le 6 novembre 2026 et en test fermé sur Google Play ; `pubspec.yaml` porte `1.0.1+6` depuis le 10 novembre 2026 (garde-fou de version)
 - **Identifiant de bundle** : `com.toa.kultiva` (iOS et Android)
 - **Monétisation** : gratuite ; ni pub ni achat intégré, mais affiliation Amazon en France (liens remis le 30 octobre 2026, tag `kultiva1-21`)
@@ -36,7 +36,7 @@
 
 ## Vue d'ensemble
 
-- **État du projet** : **en pause** (choix de Jean). Les soumissions envoyées le 4 novembre 2026 — Google Play à 17 h 20, Apple à 17 h 39 — suivent leur cours : ni l'une ni l'autre boutique ne propose encore l'app au public.
+- **État du projet** : **actif** (relancé par Jean le 18 novembre 2026). Les soumissions envoyées le 4 novembre 2026 — Google Play à 17 h 20, Apple à 17 h 39 — suivent leur cours : ni l'une ni l'autre boutique ne propose encore l'app au public.
 - **iOS** : ⭐ **version 1.0.0 (build 231) validée par l'App Review le 6 novembre 2026** (« eligible for distribution », mail du 6 novembre à 19 h 19 UTC, vérifié le 7 novembre 2026). La fiche est réglée en **publication manuelle** : l'app n'apparaîtra dans l'App Store que lorsque Jean cliquera sur « Publier cette version » dans App Store Connect. Le dernier build reçu en TestFlight est le 253, en 1.0.1 (16 novembre 2026, après le 252 et le 251 du même jour, le 250 du 15 novembre, les 247, 248 et 249 du 14 novembre, le 246 du 13 novembre et le 245 du 12 novembre) ; le 242 avait échoué le 10 novembre 2026 dans `ci_post_clone.sh`, le 243 est repassé au vert
 - **Android** : app « Kultiva : potager kawaii » créée le 4 novembre 2026, première soumission envoyée le même jour à 17 h 20 (13 modifications, puis 2 de plus à 17 h 29). **Test fermé publié** ; **12 testeurs inscrits pour 13 jours sans interruption** (tableau de bord de la console, 18 novembre 2026), fournis par le service Testers Community commandé le 4 novembre. Il faut 14 jours d'affilée — le 19 novembre 2026 — avant de demander l'accès en production. Le **statut de professionnel** reste à déclarer (« Action requise », avant février 2027)
 - **Web** : site de présentation <https://kultiva.toakeur.com>, en ligne depuis le 7 octobre 2026. Il a répondu **404 du 3 au 4 novembre 2026**, le dépôt étant passé en privé : GitHub avait alors **supprimé** le site Pages. Dépôt repassé en public et site recréé le 4 novembre 2026 ; le site et `/privacy.html` répondent 200 (vérifié le 18 novembre 2026)
@@ -302,7 +302,7 @@ la synchro (Cloudflare, ci-dessous).
 7. ✅ **Liens Amazon remis** : ôtés le 20 octobre 2026 (compte fermé), les 159 liens sont revenus le 30 octobre 2026 sous le tag `kultiva1-21`. ⚠️ Pense au statut trader (DSA) à la soumission.
 8. ✅ **Clé de localisation** : `NSLocationAlwaysAndWhenInUseUsageDescription` ajoutée le 30 octobre 2026 (avertissement ITMS-90683) ; builds 127 à 220 envoyés depuis.
 9. ✅ **Soumettre iOS** : version 1.0.0 (build 231) envoyée le 4 novembre 2026 à 17 h 39, **validée par Apple le 6 novembre 2026**.
-9 bis. **Publier sur l'App Store** : un clic dans App Store Connect (publication manuelle) — décision de Jean, le projet étant en pause.
+9 bis. **Publier sur l'App Store** : un clic dans App Store Connect (publication manuelle) — le projet étant relancé, c'est le prochain pas (clic de Jean).
 9 ter. ✅ **Remettre Xcode Cloud au vert** : le build 242 avait échoué le 10 novembre 2026 dans `ci_post_clone.sh` ; le 243 a réussi le 11 novembre 2026, le 245 le 12 novembre 2026, le 246 le 13 novembre 2026, puis les 247, 248 et 249 le 14 novembre 2026, le 250 le 15 novembre 2026, puis les 251, 252 et 253 le 16 novembre 2026 : la 1.0.1 (253) est en TestFlight.
 10. ✅ **Créer la fiche Google Play** : faite et soumise le 4 novembre 2026 à 17 h 20 ; test fermé publié.
 10 bis. **Tenir le test fermé 14 jours** : 12 testeurs inscrits pour 13 jours sans interruption au 18 novembre 2026, donc le 19 novembre — puis demander l'accès en production.
