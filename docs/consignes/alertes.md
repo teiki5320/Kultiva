@@ -288,7 +288,7 @@
     ```
 
 11. **Les planches 4K d'origine** (294 crédits OpenART) sont hors du
-    dépôt, dans `~/Dev/apps/kultiva-planches-sources/`. Le découpeur,
+    dépôt, dans `~/Dev/dossiers/kultiva/planches-sources/`. Le découpeur,
     lui, est versionné : `assets/images/vegetables_kawaii/_split.py`.
 
 12. ~~**La fiche App Store et les fiches par pays parlent encore de
